@@ -15,7 +15,7 @@ class CreateTiposCortesConceptosTable extends Migration
         //
         Schema::create('tipos_cortes_conceptos', function($table){
             $table->increments('id');
-            $table->string('nombre', 45)
+            $table->string('nombre', 45);
         });
     }
 
