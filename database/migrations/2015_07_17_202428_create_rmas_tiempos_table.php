@@ -12,7 +12,11 @@ class RmasTiemposTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('rma_tiempos', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('nombre', 45);
+        });
     }
 
     /**
@@ -22,6 +26,6 @@ class RmasTiemposTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('rma_tiempos');
     }
 }

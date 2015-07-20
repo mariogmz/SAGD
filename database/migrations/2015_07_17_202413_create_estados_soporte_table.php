@@ -12,7 +12,13 @@ class CreateEstadosSoporteTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('estados_soporte', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->string('clave', 6);
+            $table->string('nombre', 50);
+            $table->unique('clave');
+        });
     }
 
     /**
@@ -22,6 +28,6 @@ class CreateEstadosSoporteTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('estados_soporte');
     }
 }
