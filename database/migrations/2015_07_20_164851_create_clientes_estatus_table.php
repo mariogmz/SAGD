@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesClientesEstatusTable extends Migration
+class CreateClientesEstatusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -27,6 +27,6 @@ class CreateClientesClientesEstatusTable extends Migration
     public function down()
     {
         //
-        Schama::drop('clientes_estatus');
+        Schema::drop('clientes_estatus');
     }
 }

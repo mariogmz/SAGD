@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesPaginasWebDistribuidoresTable extends Migration
+class CreatePaginasWebDistribuidoresTable extends Migration
 {
     /**
      * Run the migrations.

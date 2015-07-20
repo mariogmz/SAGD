@@ -13,7 +13,9 @@ class CreateEmpleadosRolesTable extends Migration
     public function up()
     {
         //
-        Schema::create('empleados_roles', function($table){});
+        Schema::create('empleados_roles', function($table){
+            $table->timestamp('fecha');
+        });
     }
 
     /**
@@ -24,6 +26,6 @@ class CreateEmpleadosRolesTable extends Migration
     public function down()
     {
         //
-        Schama::drop('empleados_roles');
+        Schema::drop('empleados_roles');
     }
 }
