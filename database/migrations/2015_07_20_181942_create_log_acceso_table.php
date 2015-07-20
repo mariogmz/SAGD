@@ -27,6 +27,6 @@ class CreateLogAccesoTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('log_acceso');
     }
 }
