@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSubfamiliasTable extends Migration
-{
+class CreateSubfamiliasTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateSubfamiliasTable extends Migration
     public function up()
     {
         //
-        Schema::create('subfamilias', function($table) {
+        Schema::create('subfamilias', function ($table)
+        {
             $table->increments('id');
             $table->char('clave', 4);
             $table->string('nombre', 45);

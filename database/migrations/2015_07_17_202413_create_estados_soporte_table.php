@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstadosSoporteTable extends Migration
-{
+class CreateEstadosSoporteTable extends Migration {
+
     /**
      * Run the migrations.
      *

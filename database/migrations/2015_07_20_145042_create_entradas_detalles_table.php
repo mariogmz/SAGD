@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEntradasDetallesTable extends Migration
-{
+class CreateEntradasDetallesTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -12,7 +12,13 @@ class CreateEntradasDetallesTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('entradas', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->decimal('costo', 10, 2)->default(0.0);
+            $table->integer('cantidad')->default('1');
+            $table->decimal('importe', 10, 2);
+        });
     }
 
     /**

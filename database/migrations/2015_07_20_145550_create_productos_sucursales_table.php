@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductosSucursalesTable extends Migration
-{
+class CreateProductosSucursalesTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateProductosSucursalesTable extends Migration
     public function up()
     {
         //
-        Schema::create('productos_sucursales', function($table){
+        Schema::create('productos_sucursales', function ($table)
+        {
             $table->increments('id');
             $table->integer('proveedor_id');
         });

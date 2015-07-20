@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RmasTiemposTable extends Migration
-{
+class RmasTiemposTable extends Migration {
+
     /**
      * Run the migrations.
      *

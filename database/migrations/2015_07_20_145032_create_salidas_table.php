@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalidasTable extends Migration
-{
+class CreateSalidasTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -12,7 +12,12 @@ class CreateSalidasTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('salidas', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->timestamp('fecha_salida')->nullable();
+            $table->string('motivo', 255);
+        });
     }
 
     /**

@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstadosEntradasTable extends Migration
-{
+class CreateEstadosEntradasTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,9 +13,10 @@ class CreateEstadosEntradasTable extends Migration
     public function up()
     {
         //
-        Schema::create('estados_entradas', function(Blueprint $table) {
+        Schema::create('estados_entradas', function (Blueprint $table)
+        {
             $table->increments('id');
-            $table->string('nombre',45);
+            $table->string('nombre', 45);
         });
     }
 

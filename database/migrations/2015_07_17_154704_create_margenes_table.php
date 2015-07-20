@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMargenesTable extends Migration
-{
+class CreateMargenesTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateMargenesTable extends Migration
     public function up()
     {
         //
-        Schema::create('margenes', function (Blueprint $table) {
+        Schema::create('margenes', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->string('nombre', 45);
             $table->decimal('valor', 4, 3)->default(0.0);

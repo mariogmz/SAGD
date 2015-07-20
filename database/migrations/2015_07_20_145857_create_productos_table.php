@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductosTable extends Migration
-{
+class CreateProductosTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateProductosTable extends Migration
     public function up()
     {
         //
-        Schema::create('productos', function($table){
+        Schema::create('productos', function ($table)
+        {
             $table->increments('id');
             $table->boolean('activo')->default(true)->unsigned();
             $table->string('clave', 60);

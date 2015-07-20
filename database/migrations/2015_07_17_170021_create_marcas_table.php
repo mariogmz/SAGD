@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMarcasTable extends Migration
-{
+class CreateMarcasTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateMarcasTable extends Migration
     public function up()
     {
         //
-        Schema::create('marcas', function(Blueprint $table) {
+        Schema::create('marcas', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->char('clave', 3);
             $table->string('nombre', 25);

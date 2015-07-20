@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDimensionesTable extends Migration
-{
+class CreateDimensionesTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateDimensionesTable extends Migration
     public function up()
     {
         //
-        Schema::create('dimensiones', function($table){
+        Schema::create('dimensiones', function ($table)
+        {
             $table->increments('id');
             $table->decimal('largo', 5, 2)->default(0.0)->unsigned();
             $table->decimal('ancho', 5, 2)->default(0.0)->unsigned();

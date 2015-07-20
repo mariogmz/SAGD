@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUnidadesTable extends Migration
-{
+class CreateUnidadesTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateUnidadesTable extends Migration
     public function up()
     {
         //
-        Schema::create('unidades', function(Blueprint $table) {
+        Schema::create('unidades', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->char('clave', 4);
             $table->string('nombre', 45);

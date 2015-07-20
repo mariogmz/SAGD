@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePreciosTable extends Migration
-{
+class CreatePreciosTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreatePreciosTable extends Migration
     public function up()
     {
         //
-        Schema::create('precios', function($table){
+        Schema::create('precios', function ($table)
+        {
             $table->increments('id');
             $table->decimal('costo', 14, 4)->default(0.0)->unsigned();
             $table->decimal('precio_1', 14, 4)->default(0.0)->unsigned();

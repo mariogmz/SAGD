@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTiposGarantiasTable extends Migration
-{
+class CreateTiposGarantiasTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateTiposGarantiasTable extends Migration
     public function up()
     {
         //
-        Schema::create('tipos_garantias', function(Blueprint $table) {
+        Schema::create('tipos_garantias', function (Blueprint $table)
+        {
             $table->increments('id');
             $table->boolean('seriado')->unsigned()->default(1);
             $table->string('descripcion', 45);

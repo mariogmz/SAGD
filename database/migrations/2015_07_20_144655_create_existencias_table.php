@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExistenciasTable extends Migration
-{
+class CreateExistenciasTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,7 +13,8 @@ class CreateExistenciasTable extends Migration
     public function up()
     {
         //
-        Schema::create('existencias', function($table){
+        Schema::create('existencias', function ($table)
+        {
             $table->increments('id');
             $table->integer('cantidad')->default(0)->unsigned();
             $table->integer('cantidad_apartado')->default(0)->unsigned();

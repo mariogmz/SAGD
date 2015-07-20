@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateApartadosDetallesTable extends Migration
-{
+class CreateApartadosDetallesTable extends Migration {
+
     /**
      * Run the migrations.
      *
