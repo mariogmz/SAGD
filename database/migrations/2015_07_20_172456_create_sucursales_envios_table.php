@@ -29,5 +29,6 @@ class CreateSucursalesEnviosTable extends Migration {
     public function down()
     {
         //
+        Schema::drop('sucursales_envios');
     }
 }
