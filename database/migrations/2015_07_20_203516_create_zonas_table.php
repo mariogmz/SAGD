@@ -27,6 +27,6 @@ class CreateZonasTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('zonas');
     }
 }
