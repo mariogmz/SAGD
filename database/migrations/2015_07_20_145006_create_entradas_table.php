@@ -31,6 +31,6 @@ class CreateEntradasTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('entradas');
     }
 }

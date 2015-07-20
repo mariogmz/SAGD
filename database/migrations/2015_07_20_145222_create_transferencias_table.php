@@ -12,7 +12,12 @@ class CreateTransferenciasTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('transferencias', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->timestamp('fecha_transferencia')->nullable();
+            $table->timestamp('fecha_recepcion')->nullable();
+        });
     }
 
     /**
@@ -22,6 +27,6 @@ class CreateTransferenciasTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('transferencias');
     }
 }

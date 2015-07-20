@@ -12,7 +12,13 @@ class CreateApartadosTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('apartados', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->timestamp('fecha_apartado')->nullable();
+            $table->timestamp('fecha_desapartado')->nullable();
+            $table->string('concepto', 255);
+        });
     }
 
     /**
@@ -22,6 +28,6 @@ class CreateApartadosTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('apartados');
     }
 }

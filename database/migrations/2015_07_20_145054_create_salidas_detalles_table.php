@@ -12,7 +12,12 @@ class CreateSalidasDetallesTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('salidas_detalles', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('cantidad');
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +27,6 @@ class CreateSalidasDetallesTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('salidas_detalles');
     }
 }

@@ -12,7 +12,14 @@ class CreateApartadosDetallesTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('apartados_detalles', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('cantidad')->unsigned()->default(0);
+            $table->integer('existencia_antes')->unsigned()->default(0);
+            $table->integer('existencia_antes')->unsigned()->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +29,6 @@ class CreateApartadosDetallesTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('apartados_detalles');
     }
 }

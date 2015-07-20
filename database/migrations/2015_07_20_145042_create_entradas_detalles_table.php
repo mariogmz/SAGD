@@ -12,12 +12,13 @@ class CreateEntradasDetallesTable extends Migration {
      */
     public function up()
     {
-        Schema::create('entradas', function (Blueprint $table)
+        Schema::create('entradas_detalles', function (Blueprint $table)
         {
             $table->increments('id');
             $table->decimal('costo', 10, 2)->default(0.0);
             $table->integer('cantidad')->default('1');
             $table->decimal('importe', 10, 2);
+            $table->timestamps();
         });
     }
 
@@ -28,6 +29,6 @@ class CreateEntradasDetallesTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('entradas_detalles');
     }
 }

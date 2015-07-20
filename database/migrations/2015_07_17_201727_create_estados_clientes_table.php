@@ -12,7 +12,6 @@ class CreateEstadosClientesTable extends Migration {
      */
     public function up()
     {
-        //
         Schema::create('estados_clientes', function (Blueprint $table)
         {
             $table->increments('id');

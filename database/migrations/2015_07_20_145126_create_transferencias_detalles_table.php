@@ -12,7 +12,16 @@ class CreateTransferenciasDetallesTable extends Migration {
      */
     public function up()
     {
-        //
+        Schema::create('transferencias_detalles', function (Blueprint $table)
+        {
+            $table->increments('id');
+            $table->integer('cantidad')->default(0);
+            $table->integer('existencia_origen_antes')->default(0)->unsigned();
+            $table->integer('existencia_origen_despues')->default(0)->unsigned();
+            $table->integer('existencia_destino_antes')->default(0)->unsigned();
+            $table->integer('existencia_destino_despues')->default(0)->unsigned();
+            $table->timestamps();
+        });
     }
 
     /**
@@ -22,6 +31,6 @@ class CreateTransferenciasDetallesTable extends Migration {
      */
     public function down()
     {
-        //
+        Schema::drop('transferencias_detalles');
     }
 }

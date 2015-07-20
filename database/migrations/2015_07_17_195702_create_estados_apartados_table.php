@@ -12,7 +12,6 @@ class CreateEstadosApartadosTable extends Migration {
      */
     public function up()
     {
-        //
         Schema::create('estados_apartados', function (Blueprint $table)
         {
             $table->increments('id');
@@ -27,7 +26,6 @@ class CreateEstadosApartadosTable extends Migration {
      */
     public function down()
     {
-        //
         Schema::drop('estados_apartados');
     }
 }
