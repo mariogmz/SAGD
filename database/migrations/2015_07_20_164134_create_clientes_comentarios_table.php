@@ -16,6 +16,7 @@ class CreateClientesComentariosTable extends Migration
         Schema::create('clientes_comentarios', function($table){
             $table->increments('id');
             $table->string('comentario', 200);
+            $table->timestamps();
         });
     }
 

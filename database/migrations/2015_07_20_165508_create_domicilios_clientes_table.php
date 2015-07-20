@@ -15,6 +15,7 @@ class CreateDomiciliosClientesTable extends Migration
         //
         Schema::create('domicilios_clientes', function($table){
             $table->increments('id');
+            $table->timestamps();
         });
     }
 

@@ -18,6 +18,7 @@ class CreateClientesPaginasWebDistribuidoresTable extends Migration
             $table->boolean('activo')->default(false);
             $table->timestamp('fecha_vencimiento');
             $table->string('url', 50)->nullable();
+            $table->timestamps();
         });
     }
 

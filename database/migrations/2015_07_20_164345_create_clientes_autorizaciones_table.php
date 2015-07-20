@@ -17,6 +17,7 @@ class CreateClientesAutorizacionesTable extends Migration
             $table->increments('id');
             $table->integer('clientes_autorizado_id')->nullable();
             $table->string('nombre_autorizado', 200)->nullable();
+            $table->timestamps();
         });
     }
 
