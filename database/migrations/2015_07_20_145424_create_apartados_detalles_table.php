@@ -17,7 +17,7 @@ class CreateApartadosDetallesTable extends Migration {
             $table->increments('id');
             $table->integer('cantidad')->unsigned()->default(0);
             $table->integer('existencia_antes')->unsigned()->default(0);
-            $table->integer('existencia_antes')->unsigned()->default(0);
+            $table->integer('existencia_despues')->unsigned()->default(0);
             $table->timestamps();
         });
     }
