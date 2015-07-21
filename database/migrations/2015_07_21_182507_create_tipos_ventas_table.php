@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAnticiposTable extends Migration
+class CreateTiposVentasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,9 @@ class CreateAnticiposTable extends Migration
     public function up()
     {
         //
-        Schema::create('anticipos', function($table){
+        Schema::create('tipos_ventas', function($table){
             $table->increments('id');
-            $table->string('concepto', 50);
-            $table->decimal('monto', 10, 2)->default(0.0)->unsigned();
-            $table->boolean('cobrado')->default(false);
-            $table->timestamps();
+            $table->string('nombre', 60);
         });
     }
 
@@ -30,6 +27,6 @@ class CreateAnticiposTable extends Migration
     public function down()
     {
         //
-        Schema::drop('anticipos');
+        Schema::drop('tipos_ventas');
     }
 }
