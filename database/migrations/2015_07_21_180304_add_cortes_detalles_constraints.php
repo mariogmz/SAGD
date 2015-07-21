@@ -28,11 +28,11 @@ class AddCortesDetallesConstraints extends Migration {
      */
     public function down()
     {
-        Schema::table('cortes_conceptos', function ($table)
+        Schema::table('cortes_detalles', function ($table)
         {
             $table->dropForeign('cortes_detalles_corte_id_foreign');
             $table->dropForeign('cortes_detalles_corte_concepto_id_foreign');
-            $table->dropColumn(['corte_id', 'concepto_id']);
+            $table->dropColumn(['corte_id', 'corte_concepto_id']);
         });
     }
 }
