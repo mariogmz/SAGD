@@ -15,7 +15,6 @@ class CreateAnticiposTable extends Migration
         //
         Schema::create('anticipos', function($table){
             $table->increments('id');
-            $table->integer('venta_entrega_id')->nullable();
             $table->string('concepto', 50);
             $table->decimal('monto', 10, 2)->default(0.0)->unsigned();
             $table->boolean('cobrado')->default(false);

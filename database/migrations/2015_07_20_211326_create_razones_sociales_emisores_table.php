@@ -14,7 +14,7 @@ class CreateRazonesSocialesEmisoresTable extends Migration
     {
         Schema::create('razones_sociales_emisores', function (Blueprint $table)
         {
-            $table->integer('sucursal_id');
+            $table->integer('sucursal_id')->unsigned();
             $table->string('rfc', 13);
             $table->string('regimen', 60);
             $table->string('serie', 3);

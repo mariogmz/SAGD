@@ -17,8 +17,8 @@ class CreateCortesTable extends Migration
             $table->increments('id');
             $table->decimal('fondo', 10, 2);
             $table->decimal('fondo_reportado', 10, 2)->nullable();
-            $table->integer('caja_id')->nullable();
-            $table->integer('caja_corte_global')->nullable();
+            $table->integer('caja_id')->unsigned()->nullable();
+            $table->integer('corte_global_id')->unsigned()->nullable();
             $table->timestamps();
         });
     }
@@ -30,7 +30,6 @@ class CreateCortesTable extends Migration
      */
     public function down()
     {
-        //
         Schema::drop('cortes');
     }
 }

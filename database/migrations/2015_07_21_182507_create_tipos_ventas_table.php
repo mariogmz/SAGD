@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmpleadosPermisosTable extends Migration
+class CreateTiposVentasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateEmpleadosPermisosTable extends Migration
     public function up()
     {
         //
-        Schema::create('empleados_permisos', function($table){
-            $table->integer('id_empleado')->unsigned();
-            $table->primary('id_empleado');
+        Schema::create('tipos_ventas', function($table){
+            $table->increments('id');
+            $table->string('nombre', 60);
         });
     }
 
@@ -27,6 +27,6 @@ class CreateEmpleadosPermisosTable extends Migration
     public function down()
     {
         //
-        Schema::drop('empleados_permisos');
+        Schema::drop('tipos_ventas');
     }
 }

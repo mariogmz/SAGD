@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmpleadosPermisosTable extends Migration
+class AddEmpleadosPermisosConstraints extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,8 @@ class CreateEmpleadosPermisosTable extends Migration
     public function up()
     {
         //
-        Schema::create('empleados_permisos', function($table){
-            $table->integer('id_empleado')->unsigned();
-            $table->primary('id_empleado');
+        Schema::table('empleados_permisos', function($table){
+            $table->foreign('id_empleado')->references('id')->on('empleados');
         });
     }
 
@@ -27,6 +26,8 @@ class CreateEmpleadosPermisosTable extends Migration
     public function down()
     {
         //
-        Schema::drop('empleados_permisos');
+        Schema::table('empleados_permisos', function($table){
+            $table->dropForeign('empleados_permisos_id_empleado_foreign');
+        });
     }
 }
