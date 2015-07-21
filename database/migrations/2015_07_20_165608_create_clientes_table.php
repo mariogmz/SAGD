@@ -25,8 +25,6 @@ class CreateClientesTable extends Migration
             $table->timestamp('fecha_verificacion_correo')->nullable();
             $table->timestamp('fecha_expira_club_zegucom')->nullable();
             $table->string('referencia_otro', 50)->nullable();
-            $table->integer('empleado_id')->nullable();
-            $table->integer('vendedor_id')->nullable();
             $table->string('access_token', 20)->nullable();
             $table->timestamps();
             $table->unique('email');
