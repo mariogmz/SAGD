@@ -14,8 +14,7 @@ class CreateSucursalesEnviosTable extends Migration {
     {
         Schema::create('sucursales_envios', function (Blueprint $table)
         {
-            $table->integer('sucursal_origen_id');
-            $table->integer('sucursal_destino_id');
+            $table->increments('id');
             $table->boolean('genera_costo')->default(false);
             $table->integer('dias_max_envio')->unsigned()->default(0);
         });
