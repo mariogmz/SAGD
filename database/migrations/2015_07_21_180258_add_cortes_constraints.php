@@ -15,8 +15,6 @@ class AddCortesConstraints extends Migration {
         Schema::table('cortes', function ($table)
         {
             // Foreign Key Fields
-            $table->integer('corte_global_id')->unsigned();
-            $table->integer('caja_id')->unsigned();
             $table->integer('empleado_id')->unsigned();
             // Constraints
             $table->foreign('corte_global_id')->references('id')->on('cortes');
@@ -37,7 +35,7 @@ class AddCortesConstraints extends Migration {
             $table->dropForeign('cortes_corte_global_id_foreign');
             $table->dropForeign('cortes_caja_id_foreign');
             $table->dropForeign('cortes_empleado_id_foreign');
-            $table->dropColumn(['corte_global_id', 'caja_id', 'empleado_id']);
+            $table->dropColumn('empleado_id');
         });
     }
 }
