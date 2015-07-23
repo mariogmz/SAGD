@@ -23,7 +23,7 @@ $factory->defineAs(App\Marca::class, 'longname', function ($faker) use ($factory
     $clave = $faker->regexify('[A-Z]{3}');
     return [
         'clave' => $clave,
-        'nombre' => $clave . $faker->text(45),
+        'nombre' => $clave . $faker->text(),
     ];
 });
 
