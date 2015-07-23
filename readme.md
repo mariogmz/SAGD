@@ -5,9 +5,14 @@ APP_DEBUG=true
 APP_KEY=anK2OwTLR0C4w2SgePIj7qTjaPMKx8dt
 
 DB_HOST=localhost
-DB_DATABASE=homestead
-DB_USERNAME=homestead
-DB_PASSWORD=secret
+DB_DATABASE=sagd_local
+DB_USERNAME=sagd_local
+DB_PASSWORD=zegucomlocal
+
+TEST_DB_HOST=localhost
+TEST_DB_DATABASE=sagd_test
+TEST_DB_USERNAME=sagd_test
+TEST_DB_PASSWORD=zegucomtest
 
 CACHE_DRIVER=file
 SESSION_DRIVER=file
@@ -19,6 +24,18 @@ MAIL_PORT=2525
 MAIL_USERNAME=null
 MAIL_PASSWORD=null
 MAIL_ENCRYPTION=null
+
+```
+
+## Correr estos queries
+```
+CREATE SCHEMA `sagd_local` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+CREATE USER 'sagd_local'@'localhost' IDENTIFIED BY 'zegucomlocal';
+GRANT ALL ON sagd_local.* TO 'sagd_local'@'localhost';
+
+CREATE SCHEMA `sagd_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+CREATE USER 'sagd_test'@'localhost' IDENTIFIED BY 'zegucomtest';
+GRANT ALL ON sagd_test.* TO 'sagd_test'@'localhost';
 ```
 
 
