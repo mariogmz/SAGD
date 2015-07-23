@@ -2,21 +2,26 @@
 
 use App\LogAcceso;
 
-class DatoContactoTest extends TestCase {
+class LogAccesoTest extends TestCase {
 
 
-    public function testDatoContactoExiste()
+    public function testLogAccesoExiste()
     {
         $la = new LogAcceso();
-        $this->assertInstanceOf(DatoContacto::class, $la);
+        $this->assertInstanceOf(LogAcceso::class, $la);
     }
 
-    public function testModeloDatoContactoTieneAsociadoTablaDatos_contactos(){
+    public function testLogAccesoTieneTablaLog_Acceso()
+    {
         $la = new LogAcceso();
-        $this->assertAttributeEquals('log_acceso','table',$la);
+        $this->assertAttributeEquals('log_acceso', 'table', $la);
     }
 
-    public function test
+    public function testFechaEsValida()
+    {
+        $log_entry = factory(LogAcceso::class)->make();
+        $this->assertTrue($log_entry->isValid());
+    }
 
 
 }

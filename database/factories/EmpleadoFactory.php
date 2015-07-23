@@ -4,7 +4,7 @@ $factory->define(App\Empleado::class, function ($faker)
 {
     return [
         'nombre'       => $faker->name,
-        'usuario'      => $faker->username,
+        'usuario'      => $faker->unique()->username,
         'password'     => $faker->password,
         'activo'       => $faker->boolean(),
         'access_token' => $faker->regexify('[a-zA-Z0-9_%+-]+{20}')
