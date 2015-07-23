@@ -25,6 +25,24 @@ class DatoContacto extends Model {
         'fotografia_url' => 'active_url'
     ];
 
+    /**
+     * Define the model hooks
+     */
+    public static function boot()
+    {
+        Marca::creating(function ($dato_contacto)
+        {
+            $dato_contacto->email = strtoupper($dato_contacto->email);
+            if (!$dato_contacto->isValid())
+            {
+                return false;
+            }
+
+            return true;
+        });
+    }
+
+
     public function isValid()
     {
         $validation = Validator::make($this->attributes, static::$rules);

@@ -25,11 +25,28 @@ class Empleado extends Model {
         'access_token'          => 'max:20|unique:empleados'
     ];
 
+    /**
+     * Define the model hooks
+     */
+    public static function boot()
+    {
+        Marca::creating(function ($empleado)
+        {
+            if (!$empleado->isValid())
+            {
+                return false;
+            }
+
+            return true;
+        });
+    }
+
     public function isValid()
     {
         $validation = Validator::make($this->attributes, static::$rules);
         if ($validation->passes()) return true;
         $this->errors = $validation->messages();
+
         return false;
     }
 }

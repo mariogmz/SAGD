@@ -16,6 +16,23 @@ class LogAcceso extends Model {
         'exitoso'     => 'required|boolean'
     ];
 
+    /**
+     * Define the model hooks
+     */
+    public static function boot()
+    {
+        Marca::creating(function ($log_entry)
+        {
+            if (!$log_entry->isValid())
+            {
+                return false;
+            }
+
+            return true;
+        });
+    }
+
+
     public function isValid()
     {
         $validation = Validator::make($this->attributes, static::$rules);
