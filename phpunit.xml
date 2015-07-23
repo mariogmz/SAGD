@@ -25,4 +25,7 @@
         <env name="SESSION_DRIVER" value="array"/>
         <env name="QUEUE_DRIVER" value="sync"/>
     </php>
+    <logging>
+      <log type="testdox-text" target="php://stdout"/>
+    </logging>
 </phpunit>
