@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Validator;
 
 class Marca extends Model
 {
-    //
+    protected $table = 'marcas';
 
     public $timestamps = false;
 

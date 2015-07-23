@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDatosContactoConstraints extends Migration
+class AddDatosContactosConstraints extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddDatosContactoConstraints extends Migration
     public function up()
     {
         //
-        Schema::table('datos_contacto', function($table){
+        Schema::table('datos_contactos', function($table){
             $table->integer('empleado_id')->unsigned();
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
         });
@@ -27,8 +27,8 @@ class AddDatosContactoConstraints extends Migration
     public function down()
     {
         //
-        Schema::table('datos_contacto', function($table){
-            $table->dropForeign('datos_contacto_empleado_id_foreign');
+        Schema::table('datos_contactos', function($table){
+            $table->dropForeign('datos_contactos_empleado_id_foreign');
             $table->dropColumn('empleado_id');
         });
     }
