@@ -12,9 +12,17 @@
 */
 
 $factory->define(App\Marca::class, function ($faker) {
-  $clave = $faker->lexify('???');
+  $clave = $faker->regexify('[A-Z]{3}');
     return [
         'clave' => $clave,
         'nombre' => $clave . $faker->word(),
+    ];
+});
+
+$factory->defineAs(App\Marca::class, 'longname', function ($faker) use ($factory) {
+  $clave = $faker->regexify('[A-Z]{3}');
+    return [
+        'clave' => $clave,
+        'nombre' => $clave . $faker->text(45),
     ];
 });

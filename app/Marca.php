@@ -12,10 +12,24 @@ class Marca extends Model
     public $timestamps = false;
 
     protected $fillable = ['clave', 'nombre'];
+
     public static $rules = [
-        'clave' => 'required',
-        'nombre' => 'required'
+        'clave' => ['required','max:3','alpha','regex:/[A-Z]{3}/'],
+        'nombre' => 'required|max:25'
     ];
+
+    /**
+     * Define the model hooks
+     */
+    public static function boot() {
+        Marca::creating(function($marca){
+            $marca->clave = strtoupper($marca->clave);
+            if ( !$marca->isValid() ){
+                return false;
+            }
+            return true;
+        });
+    }
 
     /**
      * This method is responsible for validating the model
