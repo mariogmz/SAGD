@@ -18,6 +18,7 @@ class CreateMarcasTable extends Migration {
             $table->increments('id');
             $table->char('clave', 3);
             $table->string('nombre', 25);
+            $table->unique('clave');
         });
     }
 
