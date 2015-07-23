@@ -30,7 +30,7 @@ class DatoContacto extends Model {
      */
     public static function boot()
     {
-        Marca::creating(function ($dato_contacto)
+        DatoContacto::creating(function ($dato_contacto)
         {
             $dato_contacto->email = strtoupper($dato_contacto->email);
             if (!$dato_contacto->isValid())

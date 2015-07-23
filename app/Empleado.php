@@ -30,7 +30,7 @@ class Empleado extends Model {
      */
     public static function boot()
     {
-        Marca::creating(function ($empleado)
+        Empleado::creating(function ($empleado)
         {
             if (!$empleado->isValid())
             {

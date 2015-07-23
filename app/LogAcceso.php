@@ -21,7 +21,7 @@ class LogAcceso extends Model {
      */
     public static function boot()
     {
-        Marca::creating(function ($log_entry)
+        LogAcceso::creating(function ($log_entry)
         {
             if (!$log_entry->isValid())
             {
