@@ -6,6 +6,13 @@
 .env.php
 .env
 
+### Omarcito's Prettyness_###
+/node_modules
+Homestead.yaml
+laravel-ide-helper.php
+composer.lock
+/vendor
+
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
