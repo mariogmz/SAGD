@@ -32,6 +32,10 @@ class DatoContactoTest extends TestCase {
         $this->assertFalse($dato_contacto->isValid());
     }
 
+    public function testDatoTieneAsociadoUnEmpleado(){
+
+    }
+
     public function testUrlTieneFormatoValido(){
         $dato_contacto = factory(DatoContacto::class)->make([
             'fotografia_url' => 'http:://google.com.mx'
