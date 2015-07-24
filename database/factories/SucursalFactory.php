@@ -11,34 +11,13 @@
 |
 */
 
-$factory->define(App\Familia::class, function ($faker) {
+$factory->define(App\Sucursal::class, function ($faker) {
 	return [
-		'clave' => $faker->regexify('[A-Z]{4}'),
+		'clave' => $faker->regexify('[A-Z]{8}'),
 		'nombre' => $faker->word,
-		'descripcion' => $faker->text(100)
-	];
-});
-
-$factory->defineAs(App\Familia::class, 'minclave', function ($faker) use ($factory){
-	return [
-		'clave' => $faker->regexify('[a-z]{4}'),
-		'nombre' => $faker->word,
-		'descripcion' => $faker->text(100)
-	];
-});
-
-$factory->defineAs(App\Familia::class, 'longname', function ($faker) use ($factory){
-	return [
-		'clave' => $faker->regexify('[A-Z]{4}'),
-		'nombre' => $faker->text,
-		'descripcion' => $faker->text(100)
-	];
-});
-
-$factory->defineAs(App\Familia::class, 'longdesc', function ($faker) use ($factory){
-	return [
-		'clave' => $faker->regexify('[A-Z]{4}'),
-		'nombre' => $faker->word,
-		'descripcion' => $faker->text . $faker->text
-	];
+		'horarios' => $faker->text(100),
+        'ubicacion' => $faker->text(45),
+        'proveedor_id' => factory(App\Proveedor::class)->create()->id,
+        'domicilio_id' => factory(App\Domicilio::class)->create()->id
+    ];
 });

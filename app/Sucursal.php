@@ -8,15 +8,17 @@ use Illuminate\Support\Facades\Validator;
 
 class Sucursal extends Model {
 
-    protected $table = 'proveedores';
+    protected $table = 'sucursales';
     public $timestamps = false;
 
-    protected $fillable = ['clave', 'razon_social', 'externo', 'pagina_web'];
+    protected $fillable = ['clave', 'nombre', 'horarios', 'ubicacion'];
     public static $rules = [
-        'clave'        => 'required|size:4|unique:proveedores|alpha',
-        'razon_social' => 'required',
-        'externo'      => 'required|boolean',
-        'pagina_web'   => 'url'
+        'clave'        => 'required|string|size:8|alpha',
+        'nombre'       => 'required|string|max:45|alpha',
+        'ubicacion'    => 'max:45',
+        'horarios'     => 'required',
+        'proveedor_id' => 'required|integer',
+        'domicilio_id' => 'required|integer'
     ];
 
     /**
@@ -24,10 +26,10 @@ class Sucursal extends Model {
      */
     public static function boot()
     {
-        Sucursal::creating(function ($proveedor)
+        Sucursal::creating(function ($sucursal)
         {
-            $proveedor->clave = strtoupper($proveedor->clave);
-            if (!$proveedor->isValid())
+            $sucursal->clave = strtoupper($sucursal->clave);
+            if (!$sucursal->isValid())
             {
                 return false;
             }
