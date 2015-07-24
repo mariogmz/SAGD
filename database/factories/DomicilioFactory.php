@@ -14,8 +14,9 @@
 $factory->define(App\CodigoPostal::class, function ($faker)
 {
     return [
-        'estado'        => $faker->word,
-        'municipio'     => $faker->word,
-        'codigo_postal' => $faker->numerify('#####'),
+        'calle'            => $faker->word,
+        'localidad'        => $faker->word,
+        'codigo_postal_id' => $faker->numerify('#####'),
+        'telefono_id'
     ];
 });

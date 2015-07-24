@@ -29,7 +29,6 @@ class CreateCodigosPostalesTable extends Migration {
      */
     public function down()
     {
-        //
         Schema::drop('codigos_postales');
     }
 }
