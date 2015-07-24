@@ -84,4 +84,15 @@ class FamiliaTest extends TestCase
         $fam = factory(App\Familia::class, 'longdesc')->make();
         $this->assertFalse($fam->isValid());
     }
+
+    /**
+     * @covers Familia::subfamilias()
+     */
+    public function testSubfamilias()
+    {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $familia = $subfamilia->familia;
+        $subfamilia = $familia->subfamilias[0];
+        $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
+    }
 }
