@@ -7,11 +7,3 @@ $factory->define(App\Telefono::class, function ($faker)
         'tipo'   => $faker->word,
     ];
 });
-
-$factory->defineAs(App\Telefono::class, 'mismonum', function ($faker) use ($factory)
-{
-    return [
-        'numero' => '01236459871',
-        'tipo'   => $faker->word,
-    ];
-});

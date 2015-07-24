@@ -28,19 +28,11 @@ class TelefonoTest extends TestCase {
 
     public function testTelefonoUnico()
     {
-        $telefonos_unicos = factory(Telefono::class, 10)->make();
-        $telefonos_nounicos = factory(Telefono::class, 'mismonum', 10)->make();
-        for ($i = 0; $i < 10; $i ++)
-        {
-            $this->assertTrue($telefonos_unicos[$i]->save());
-            if (!$i)
-            {
-                $telefonos_nounicos[$i]->save();
-            } else
-            {
-                $this->assertFalse($telefonos_nounicos[$i]->save());
-            }
-        }
+        $telefono1 = factory(Telefono::class)->create();
+        $telefono2 = factory(Telefono::class)->make([
+            'numero' => $telefono1->numero
+        ]);
+        $this->assertFalse($telefono2->isValid());
     }
 
 }

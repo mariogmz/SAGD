@@ -14,7 +14,7 @@
 $factory->define(App\Domicilio::class, function ($faker)
 {
     return [
-        'calle'            => $faker->sentence(5),
+        'calle'            => $faker->text(45),
         'localidad'        => $faker->word,
         'codigo_postal_id' => factory(App\CodigoPostal::class)->create()->id,
         'telefono_id'      => factory(App\Telefono::class)->create()->id

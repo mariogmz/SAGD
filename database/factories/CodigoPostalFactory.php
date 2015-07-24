@@ -16,6 +16,6 @@ $factory->define(App\CodigoPostal::class, function ($faker)
     return [
         'estado'        => $faker->word,
         'municipio'     => $faker->word,
-        'codigo_postal' => $faker->numerify('#####'),
+        'codigo_postal' => $faker->unique()->numerify('#####'),
     ];
 });

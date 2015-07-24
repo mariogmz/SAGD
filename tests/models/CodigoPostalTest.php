@@ -41,11 +41,11 @@ class CodigoPostalTest extends TestCase {
 
     public function testCodigoPostalEsUnico()
     {
-        $codigo_postal = factory(CodigoPostal::class, 5)->make();
-        foreach ($codigo_postal as $cp)
-        {
-            $this->assertTrue($cp->isValid());
-        }
+        $codigo_postal1 = factory(CodigoPostal::class)->create();
+        $codigo_postal2 = factory(CodigoPostal::class)->make([
+            'codigo_postal' => $codigo_postal1->codigo_postal
+        ]);
+        $this->assertFalse($codigo_postal2->isValid());
     }
 
     public function testCodigoPostalEsDe5Caracteres()
