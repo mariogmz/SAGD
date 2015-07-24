@@ -11,12 +11,12 @@
 |
 */
 
-$factory->define(App\CodigoPostal::class, function ($faker)
+$factory->define(App\Domicilio::class, function ($faker)
 {
     return [
-        'calle'            => $faker->word,
+        'calle'            => $faker->sentence(5),
         'localidad'        => $faker->word,
-        'codigo_postal_id' => $faker->numerify('#####'),
-        'telefono_id'
+        'codigo_postal_id' => factory(App\CodigoPostal::class)->create()->id,
+        'telefono_id'      => factory(App\Telefono::class)->create()->id
     ];
 });
