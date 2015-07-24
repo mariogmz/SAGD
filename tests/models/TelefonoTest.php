@@ -4,7 +4,8 @@ use App\Telefono;
 
 class TelefonoTest extends TestCase {
 
-    public function testTelefonoValido(){
+    public function testTelefonoValido()
+    {
         $telefono = factory(Telefono::class)->make();
         $this->assertTrue($telefono->isValid());
     }
@@ -27,10 +28,18 @@ class TelefonoTest extends TestCase {
 
     public function testTelefonoUnico()
     {
-        $telefono = factory(Telefono::class, 'mismonum', 3)->make();
-        foreach ($telefono as $telefono)
+        $telefonos_unicos = factory(Telefono::class, 10)->make();
+        $telefonos_nounicos = factory(Telefono::class, 'mismonum', 10)->make();
+        for ($i = 0; $i < 10; $i ++)
         {
-            $this->assertFalse($telefono->isValid());
+            $this->assertTrue($telefonos_unicos[$i]->save());
+            if (!$i)
+            {
+                $telefonos_nounicos[$i]->save();
+            } else
+            {
+                $this->assertFalse($telefonos_nounicos[$i]->save());
+            }
         }
     }
 

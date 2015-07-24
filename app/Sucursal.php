@@ -13,7 +13,7 @@ class Sucursal extends Model {
 
     protected $fillable = ['clave', 'nombre', 'horarios', 'ubicacion'];
     public static $rules = [
-        'clave'        => 'required|string|size:8|alpha',
+        'clave'        => 'required|string|size:8|alpha|unique:sucursales',
         'nombre'       => 'required|string|max:45|alpha',
         'ubicacion'    => 'max:45',
         'horarios'     => 'required',

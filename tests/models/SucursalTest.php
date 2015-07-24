@@ -6,18 +6,24 @@ class SucursalTest extends TestCase {
     public function testClaveDebeSerDe8CaracteresAlfa()
     {
         $sucursal = factory(App\Sucursal::class)->make();
-        print_r($sucursal);
         $this->assertTrue($sucursal->isValid());
     }
 
     public function testClaveDebeSerUnica()
     {
-        $sucursales = factory(App\Sucursal::class, 2)->make([
-            'clave' => 'ABCDEFGT'
-        ]);
-        $this->assertFalse($sucursales[0]->isValid());
-        $this->assertFalse($sucursales[1]->isValid());
-
+        $sucursales_validas = factory(App\Sucursal::class, 5)->make();
+        $sucursales_invalidas = factory(App\Sucursal::class, 'mismaclave', 5)->make();
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertTrue($sucursales_validas[$i]->save());
+            if (!$i)
+            {
+                $sucursales_invalidas[$i]->save();
+            } else
+            {
+                $this->assertFalse($sucursales_invalidas[$i]->save());
+            }
+        }
     }
 
     public function testNombreDebeExistir()
@@ -39,18 +45,17 @@ class SucursalTest extends TestCase {
     public function testProveedorAsociadoDebeExistir()
     {
         $sucursal = factory(App\Sucursal::class)->make([
-            'proveedor_id' => ''
+            'proveedor_id' => null
         ]);
         $this->assertFalse($sucursal->isValid());
     }
 
     public function testDomicilioAsociadoDebeExistir()
     {
-        $this->markTestIncomplete('Not yet implemented...');
-//        $sucursal = factory(App\Sucursal::class)->make([
-//            'domicilio_id' => ''
-//        ]);
-//        $this->assertFalse($sucursal->isValid());
+        $sucursal = factory(App\Sucursal::class)->make([
+            'domicilio_id' => null
+        ]);
+        $this->assertFalse($sucursal->isValid());
     }
 
 
