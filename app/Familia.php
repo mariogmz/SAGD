@@ -2,10 +2,7 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
-class Familia extends Model
+class Familia extends LGGModel
 {
     //
     protected $table = "familias";
@@ -31,16 +28,8 @@ class Familia extends Model
         });
     }
 
-    /**
-     * This method is responsible for validating the model
-     *
-     * @return bool
-     */
-    public function isValid()
+    public function subfamilias()
     {
-        $validation = Validator::make($this->attributes, static ::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-        return false;
+        return $this->hasMany('App\Subfamilia');
     }
 }
