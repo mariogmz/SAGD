@@ -13,8 +13,8 @@ class Telefono extends Model {
 
     protected $fillable = ['numero', 'tipo'];
     public static $rules = [
-        'numero' => 'required|size:11|unique:telefonos',
-        'tipo'   => 'required|size:45'
+        'numero' => ['required','unique:telefonos','regex:/[0-9]{7,11}/'],
+        'tipo'   => 'required|max:45'
     ];
 
     /**

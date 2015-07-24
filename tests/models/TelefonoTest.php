@@ -4,6 +4,11 @@ use App\Telefono;
 
 class TelefonoTest extends TestCase {
 
+    public function testTelefonoValido(){
+        $telefono = factory(Telefono::class)->make();
+        $this->assertTrue($telefono->isValid());
+    }
+
     public function testNumeroEsRequerido()
     {
         $telefono = factory(Telefono::class)->make([
