@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class Proveedor extends Model {
+class Sucursal extends Model {
 
     protected $table = 'proveedores';
     public $timestamps = false;
@@ -24,7 +24,7 @@ class Proveedor extends Model {
      */
     public static function boot()
     {
-        Proveedor::creating(function ($proveedor)
+        Sucursal::creating(function ($proveedor)
         {
             $proveedor->clave = strtoupper($proveedor->clave);
             if (!$proveedor->isValid())

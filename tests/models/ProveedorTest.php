@@ -1,25 +1,25 @@
 <?php
 
-use App\Proveedor;
+use App\Sucursal;
 
 class ProveedorTest extends TestCase {
 
     public function testClaveNoDebeTenerMasDe4Digitos()
     {
-        $proveedor = factory(Proveedor::class)->make(['clave' => 'AAAAB']);
+        $proveedor = factory(Sucursal::class)->make(['clave' => 'AAAAB']);
         $this->assertFalse($proveedor->isValid());
 
     }
 
     public function testClaveDebeSerUpperCase()
     {
-        $proveedor = factory(Proveedor::class, 'uppercaseKey')->make();
+        $proveedor = factory(Sucursal::class, 'uppercaseKey')->make();
         $this->assertTrue($proveedor->isValid());
     }
 
     public function testPaginaWebDebeSerUnaUrlValida()
     {
-        $proveedor = factory(Proveedor::class)->make([
+        $proveedor = factory(Sucursal::class)->make([
             'pagina_web' => 'http:/paginaproveedor.io'
         ]);
         $this->assertFalse($proveedor->isValid());
@@ -28,7 +28,7 @@ class ProveedorTest extends TestCase {
 
     public function testProveedorDebeTenerDatosBasicos()
     {
-        $proveedor = factory(Proveedor::class)->make([
+        $proveedor = factory(Sucursal::class)->make([
             'clave' => '',
         ]);
         $this->assertFalse($proveedor->isValid());

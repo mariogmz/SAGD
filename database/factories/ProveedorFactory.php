@@ -11,7 +11,7 @@
 |
 */
 
-$factory->define(App\Proveedor::class, function ($faker)
+$factory->define(App\Sucursal::class, function ($faker)
 {
     return [
         'clave'        => $faker->regexify('[a-z]{4}'),
@@ -21,9 +21,9 @@ $factory->define(App\Proveedor::class, function ($faker)
     ];
 });
 
-$factory->defineAs(\App\Proveedor::class, 'uppercaseKey', function ($faker) use ($factory)
+$factory->defineAs(\App\Sucursal::class, 'uppercaseKey', function ($faker) use ($factory)
 {
-    $proveedor = $factory->raw(\App\Proveedor::class);
+    $proveedor = $factory->raw(\App\Sucursal::class);
 
     return array_merge($proveedor, ['clave' => strtoupper($proveedor['clave'])]);
 });
