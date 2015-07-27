@@ -35,4 +35,21 @@ class Domicilio extends LGGModel {
         });
     }
 
+    public function codigoPostal()
+    {
+        return $this->hasMany('App\CodigoPostal');
+    }
+
+    public function telefono()
+    {
+        return $this->hasMany('App\Telefono');
+    }
+
+    public function sucursal()
+    {
+        return $this->hasMany('App\Sucursal');
+    }
+
+
+
 }

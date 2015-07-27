@@ -38,4 +38,14 @@ class Sucursal extends LGGModel {
         });
     }
 
+    public function proveedor()
+    {
+        return $this->belongsTo('App\Proveedor');
+    }
+
+    public function domicilio()
+    {
+        return $this->belongsTo('App\Domicilio');
+    }
+
 }

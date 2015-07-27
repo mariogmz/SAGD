@@ -3,9 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
 class CodigoPostal extends LGGModel {
 
     protected $table = 'codigos_postales';
@@ -15,7 +12,7 @@ class CodigoPostal extends LGGModel {
     public static $rules = [
         'estado'        => 'required|string|max:45|alpha',
         'municipio'     => 'required|string|max:45|alpha',
-        'codigo_postal' => ['required','unique:codigos_postales','Regex:/[0-9]{5}/']
+        'codigo_postal' => ['required', 'unique:codigos_postales', 'Regex:/[0-9]{5}/']
     ];
 
     /**
@@ -34,5 +31,10 @@ class CodigoPostal extends LGGModel {
 
             return true;
         });
+    }
+
+    public function domicilio()
+    {
+        return $this->belongsTo('App\Domicilio');
     }
 }

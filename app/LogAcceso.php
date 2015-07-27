@@ -32,13 +32,9 @@ class LogAcceso extends LGGModel {
         });
     }
 
-
-    public function isValid()
+    public function empleado()
     {
-        $validation = Validator::make($this->attributes, static::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-
-        return false;
+        return $this->belongsTo('App\Empleado');
     }
+
 }

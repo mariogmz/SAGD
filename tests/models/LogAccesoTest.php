@@ -22,6 +22,4 @@ class LogAccesoTest extends TestCase {
         $log_entry = factory(LogAcceso::class)->make();
         $this->assertTrue($log_entry->isValid());
     }
-
-
 }

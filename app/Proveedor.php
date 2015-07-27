@@ -36,4 +36,10 @@ class Proveedor extends LGGModel {
         });
     }
 
+    public function sucursal()
+    {
+        return $this->hasMany('App\Sucursal');
+    }
+
+
 }

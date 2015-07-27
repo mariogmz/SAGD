@@ -41,4 +41,20 @@ class Empleado extends LGGModel {
         });
     }
 
+    public function logAcceso()
+    {
+        return $this->hasMany('App\LogAcceso');
+    }
+
+    public function datoContacto()
+    {
+        return $this->hasMany('App\DatoContacto');
+    }
+
+    public function sucursal()
+    {
+        return $this->belongsTo('App\Sucursal');
+    }
+
+
 }

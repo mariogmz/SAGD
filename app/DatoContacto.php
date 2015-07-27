@@ -3,10 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
-
 class DatoContacto extends LGGModel {
 
     /**
@@ -41,4 +37,10 @@ class DatoContacto extends LGGModel {
             return true;
         });
     }
+
+    public function empleados()
+    {
+        return $this->belongsTo('App\Empleados');
+    }
+
 }
