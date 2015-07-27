@@ -16,10 +16,4 @@ class LogAccesoTest extends TestCase {
         $la = new LogAcceso();
         $this->assertAttributeEquals('log_acceso', 'table', $la);
     }
-
-    public function testFechaEsValida()
-    {
-        $log_entry = factory(LogAcceso::class)->make();
-        $this->assertTrue($log_entry->isValid());
-    }
 }

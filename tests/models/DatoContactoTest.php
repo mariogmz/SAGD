@@ -33,7 +33,7 @@ class DatoContactoTest extends TestCase {
     }
 
     public function testDatoTieneAsociadoUnEmpleado(){
-
+        $this->markTestIncomplete('Not implemented yet');
     }
 
     public function testUrlTieneFormatoValido(){
