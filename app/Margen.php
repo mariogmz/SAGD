@@ -18,6 +18,7 @@ class Margen extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Margen::creating(function($margen){

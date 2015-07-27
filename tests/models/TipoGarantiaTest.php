@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\TipoGarantia
+ */
 class TipoGarantiaTest extends TestCase
 {
     protected $unidad;
 
     /**
-     * @covers TipoGarantia::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,7 +18,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::SeriadoSoloPuedeSerBooleano()
+     * @coversNothing
      */
     public function testSeriadoSoloPuedeSerBooleano()
     {
@@ -26,7 +28,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::SeriadoCuandoNuloSeGuardaVerdadero()
+     * @coversNothing
      */
     public function testSeriadoCuandoNuloSeGuardaVerdadero()
     {
@@ -37,7 +39,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::DescripcionNoPuedeSerNulo()
+     * @coversNothing
      */
     public function testDescripcionNoPuedeSerNulo()
     {
@@ -47,7 +49,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::DescripcionNoPuedeSerMuyLargo()
+     * @coversNothing
      */
     public function testDescripcionNoPuedeSerMuyLargo()
     {
@@ -57,7 +59,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::DiasCuandoEsNuloGuardaCero()
+     * @coversNothing
      */
     public function testDiasCuandoEsNuloGuardaCero()
     {
@@ -68,7 +70,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::DiasNoPuedeSerNegativo()
+     * @coversNothing
      */
     public function testDiasNoPuedeSerNegativo()
     {
@@ -77,7 +79,7 @@ class TipoGarantiaTest extends TestCase
     }
 
     /**
-     * @covers TipoGarantia::productos()
+     * @covers ::productos
      */
     public function testProductos()
     {

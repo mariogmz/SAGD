@@ -3,6 +3,9 @@
 
 class ProveedorTest extends TestCase {
 
+    /**
+     * @coversNothing
+     */
     public function testClaveNoDebeTenerMasDe4Digitos()
     {
         $proveedor = factory(App\Proveedor::class)->make(['clave' => 'AAAAB']);
@@ -10,12 +13,18 @@ class ProveedorTest extends TestCase {
 
     }
 
+    /**
+     * @coversNothing
+     */
     public function testClaveDebeSerUpperCase()
     {
         $proveedor = factory(App\Proveedor::class, 'uppercaseKey')->make();
         $this->assertTrue($proveedor->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testPaginaWebDebeSerUnaUrlValida()
     {
         $proveedor = factory(App\Proveedor::class)->make([
@@ -25,6 +34,9 @@ class ProveedorTest extends TestCase {
 
     }
 
+    /**
+     * @coversNothing
+     */
     public function testProveedorDebeTenerDatosBasicos()
     {
         $proveedor = factory(App\Proveedor::class)->make([

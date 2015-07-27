@@ -3,12 +3,18 @@
 
 class SucursalTest extends TestCase {
 
+    /**
+     * @coversNothing
+     */
     public function testClaveDebeSerDe8CaracteresAlfa()
     {
         $sucursal = factory(App\Sucursal::class)->make();
         $this->assertTrue($sucursal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testClaveDebeSerUnica()
     {
         $sucursales_validas = factory(App\Sucursal::class, 5)->make();
@@ -26,6 +32,9 @@ class SucursalTest extends TestCase {
         }
     }
 
+    /**
+     * @coversNothing
+     */
     public function testNombreDebeExistir()
     {
         $sucursal = factory(App\Sucursal::class)->make([
@@ -34,6 +43,9 @@ class SucursalTest extends TestCase {
         $this->assertFalse($sucursal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testHorariosDebeExistir()
     {
         $sucursal = factory(App\Sucursal::class)->make([
@@ -42,6 +54,9 @@ class SucursalTest extends TestCase {
         $this->assertFalse($sucursal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testProveedorAsociadoDebeExistir()
     {
         $sucursal = factory(App\Sucursal::class)->make([
@@ -50,6 +65,9 @@ class SucursalTest extends TestCase {
         $this->assertFalse($sucursal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testDomicilioAsociadoDebeExistir()
     {
         $sucursal = factory(App\Sucursal::class)->make([

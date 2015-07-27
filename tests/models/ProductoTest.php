@@ -1,16 +1,14 @@
 <?php
 
 /**
- * ProductoTest
- *
- * @group group
+ * @coversDefaultClass \App\Producto
  */
 class ProductoTest extends TestCase
 {
     protected $producto;
 
     /**
-     * @covers Producto::modeloEsValido()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -20,7 +18,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::ActivoEsRequerido()
+     * @coversNothing
      */
     public function testActivoEsRequerido()
     {
@@ -29,7 +27,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::ActivoEsBooleano()
+     * @coversNothing
      */
     public function testActivoEsBooleano()
     {
@@ -38,7 +36,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::claveEsRequerido()
+     * @coversNothing
      */
     public function testClaveEsRequerido()
     {
@@ -47,7 +45,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::ClaveEsUnico()
+     * @coversNothing
      */
     public function testClaveEsUnico()
     {
@@ -57,7 +55,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::claveEsMenorDe60Caracteres()
+     * @coversNothing
      */
     public function testClaveEsMenorDe60Caracteres()
     {
@@ -66,7 +64,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::DescripcionEsRequerido()
+     * @coversNothing
      */
     public function testDescripcionEsRequerido()
     {
@@ -75,7 +73,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::DescripcionNoPuedeSerMayorA300Caracteres()
+     * @coversNothing
      */
     public function testDescripcionNoPuedeSerMayorA300Caracteres()
     {
@@ -84,7 +82,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::DescripcionCortaPuedeSerNulaPeroNoMayorA50Caracteres()
+     * @coversNothing
      */
     public function testDescripcionCortaNoEsRequerido()
     {
@@ -93,7 +91,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::DescripcionCortaNoPuedeSerMayorA50Caracteres()
+     * @coversNothing
      */
     public function testDescripcionCortaNoPuedeSerMayorA50Caracteres()
     {
@@ -102,7 +100,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::FechaEntradaEsRequerido()
+     * @coversNothing
      */
     public function testFechaEntradaEsRequerido()
     {
@@ -111,7 +109,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::FechaEntradaEsValido()
+     * @coversNothing
      */
     public function testFechaEntradaEsValido()
     {
@@ -120,7 +118,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::NumeroDeParteEsRequerido()
+     * @coversNothing
      */
     public function testNumeroDeParteEsRequerido()
     {
@@ -129,7 +127,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::NumeroDeParteEsUnico()
+     * @coversNothing
      */
     public function testNumeroDeParteEsUnico()
     {
@@ -141,7 +139,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::RemateEsRequerido()
+     * @coversNothing
      */
     public function testRemateEsRequerido()
     {
@@ -150,7 +148,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::RemateEsBooleano()
+     * @coversNothing
      */
     public function testRemateEsBooleano()
     {
@@ -159,7 +157,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::SpiffEsRequerido()
+     * @coversNothing
      */
     public function testSpiffEsRequerido()
     {
@@ -168,7 +166,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::SpiffEsDecimal()
+     * @coversNothing
      */
     public function testSpiffEsDecimal()
     {
@@ -177,7 +175,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::SubclaveEsRequerido()
+     * @coversNothing
      */
     public function testSubclaveEsRequerido()
     {
@@ -186,7 +184,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::SubclaveSiesVacioTomaValorDeNumeroDeParte()
+     * @covers ::boot
      */
     public function testSubclaveSiesVacioTomaValorDeNumeroDeParte()
     {
@@ -196,7 +194,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::UpcEsRequerido()
+     * @coversNothing
      */
     public function testUpcEsRequerido()
     {
@@ -205,7 +203,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::UpcEsUnico()
+     * @coversNothing
      */
     public function testUpcEsUnico()
     {
@@ -215,7 +213,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::UpcEsEntero()
+     * @coversNothing
      */
     public function testUpcEsEntero()
     {
@@ -224,7 +222,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::tipoGarantia()
+     * @covers ::tipoGarantia
      */
     public function testTipoGarantia()
     {
@@ -234,7 +232,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::marca()
+     * @covers ::marca
      */
     public function testMarca()
     {
@@ -244,7 +242,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::margen()
+     * @covers ::margen
      */
     public function testMargen()
     {
@@ -254,7 +252,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::unidad()
+     * @covers ::unidad
      */
     public function testUnidad()
     {
@@ -264,7 +262,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers Producto::subfamilia()
+     * @covers ::subfamilia
      */
     public function testSubfamilia()
     {

@@ -18,6 +18,7 @@ class Subfamilia extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot(){
         Subfamilia::creating(function($subfamilia){

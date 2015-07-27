@@ -20,6 +20,7 @@ class TipoGarantia extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot(){
         TipoGarantia::creating(function($tipogarantia){

@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Marca
+ */
 class MarcaTest extends TestCase
 {
     protected $marca;
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,8 +18,8 @@ class MarcaTest extends TestCase
     }
 
     /**
-    * @covers Marca::()
-    */
+     * @coversNothing
+     */
     public function testClaveVaciaNoEsValido() {
         $marca = factory(App\Marca::class)->make(['clave' => '']);
         $this->assertFalse($marca->isValid());
@@ -25,8 +27,8 @@ class MarcaTest extends TestCase
     }
 
     /**
-    * @covers Marca::()
-    */
+     * @coversNothing
+     */
     public function testNombreVacioNoEsValido()
     {
         $marca = factory(App\Marca::class)->make(['nombre' => '']);
@@ -35,8 +37,8 @@ class MarcaTest extends TestCase
     }
 
     /**
-    * @covers Marca::()
-    */
+     * @coversNothing
+     */
     public function testClaveNoPuedeTenerMasDeTresDigitos()
     {
       $marca = factory(App\Marca::class)->make(['clave' => 'AAAA']);
@@ -45,8 +47,8 @@ class MarcaTest extends TestCase
     }
 
     /**
-    * @covers Marca::()
-    */
+     * @coversNothing
+     */
     public function testNombreNoPuedeTenerMasDe25Digitos()
     {
       $marca = factory(App\Marca::class, 'longname')->make();
@@ -55,8 +57,8 @@ class MarcaTest extends TestCase
     }
 
     /**
-    * @covers Marca::()
-    */
+     * @coversNothing
+     */
     public function testClaveDebeSerGuardadaEnMayusculas()
     {
         $marca = factory(App\Marca::class, 'lowercase')->make();
@@ -66,7 +68,7 @@ class MarcaTest extends TestCase
     }
 
     /**
-     * @covers Marca::Productos()
+     * @covers ::productos
      */
     public function testProductos()
     {

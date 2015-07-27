@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Margen
+ */
 class MargenTest extends TestCase
 {
     protected $margen;
 
     /**
-     * @covers Margen::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,7 +18,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::NombreNoPuedeSerNulo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerNulo()
     {
@@ -26,7 +28,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::NombreNoPuedeSerMuyLargo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerMuyLargo()
     {
@@ -36,7 +38,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::ValoresDecimalesHaenDefaultACero()
+     * @coversNothing
      */
     public function testValoresDecimalesHaenDefaultACero()
     {
@@ -49,7 +51,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::DecimalesNoPuedenSerNegativos()
+     * @coversNothing
      */
     public function testDecimalesNoPuedenSerNegativos()
     {
@@ -59,7 +61,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::DecimalesNoPuedenSerMayorAUno()
+     * @coversNothing
      */
     public function testDecimalesNoPuedenSerMayorAUno()
     {
@@ -70,7 +72,7 @@ class MargenTest extends TestCase
 
 
     /**
-     * @covers Margen::subfamilias()
+     * @covers ::subfamilias
      */
     public function testSubfamilias()
     {
@@ -81,7 +83,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::productos()
+     * @covers ::productos
      */
     public function testProductos()
     {

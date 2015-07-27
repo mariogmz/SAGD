@@ -19,6 +19,7 @@ class Unidad extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Unidad::creating(function($unidad){

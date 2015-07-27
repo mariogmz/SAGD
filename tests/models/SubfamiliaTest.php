@@ -1,9 +1,7 @@
 <?php
 
 /**
- * SubfamiliaTest
- *
- * @group group
+ * @coversDefaultClass \App\Subfamilia
  */
 class SubfamiliaTest extends TestCase
 {
@@ -12,7 +10,7 @@ class SubfamiliaTest extends TestCase
     protected $margen;
 
     /**
-     * @covers Subfamilia::ModeloEsValido()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -22,7 +20,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::ClaveNoPuedeSerNula()
+     * @coversNothing
      */
     public function testClaveNoPuedeSerNula()
     {
@@ -31,7 +29,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::ClaveEsMenorDeCuatroCaracteres()
+     * @coversNothing
      */
     public function testClaveEsMenorDeCuatroCaracteres()
     {
@@ -40,7 +38,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::ClaveEsSoloMayusculas()
+     * @coversNothing
      */
     public function testClaveEsSoloMayusculas()
     {
@@ -52,7 +50,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::NombreNoPuedeSerNulo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerNulo()
     {
@@ -61,7 +59,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::NombreNoPuedeTenerMasDe45Caracteres()
+     * @coversNothing
      */
     public function testNombreNoPuedeTenerMasDe45Caracteres()
     {
@@ -70,7 +68,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::DebeTenerFamilia()
+     * @coversNothing
      */
     public function testDebeTenerFamilia()
     {
@@ -79,7 +77,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::DebeTenerMargen()
+     * @coversNothing
      */
     public function testDebeTenerMargen()
     {
@@ -88,7 +86,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::last()
+     * @coversNothing
      */
     public function testLast()
     {
@@ -97,7 +95,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::familia()
+     * @covers ::familia
      */
     public function testFamilia()
     {
@@ -107,7 +105,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::Margen()
+     * @covers ::margen
      */
     public function testMargen()
     {
@@ -117,7 +115,7 @@ class SubfamiliaTest extends TestCase
     }
 
     /**
-     * @covers Subfamilia::Productos()
+     * @covers ::productos
      */
     public function testProductos()
     {

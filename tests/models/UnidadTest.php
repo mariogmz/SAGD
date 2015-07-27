@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Unidad
+ */
 class UnidadTest extends TestCase
 {
     protected $unidad;
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,7 +18,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testClaveVaciaNoEsValido()
     {
@@ -26,7 +28,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testNombreVacioNoEsValido()
     {
@@ -36,7 +38,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testClaveNoPuedeTenerMasDeCuatroDigitos()
     {
@@ -46,7 +48,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testNombreNoPuedeTenerMasDe45Digitos()
     {
@@ -56,7 +58,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testClaveDebeSerGuardadaEnMayusculas()
     {
@@ -67,7 +69,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::productos()
+     * @covers ::productos
      */
     public function testProductos()
     {

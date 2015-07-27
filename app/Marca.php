@@ -20,6 +20,7 @@ class Marca extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Marca::creating(function($marca){

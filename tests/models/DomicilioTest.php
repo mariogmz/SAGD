@@ -4,12 +4,18 @@ use App\Domicilio;
 
 class DomicilioTest extends TestCase {
 
+    /**
+     * @coversNothing
+     */
     public function testDomicilioEsValido()
     {
         $domicilio = factory(Domicilio::class)->make();
         $this->assertTrue($domicilio->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testCalleEsRequerida()
     {
         $domicilio = factory(Domicilio::class)->make([
@@ -18,6 +24,9 @@ class DomicilioTest extends TestCase {
         $this->assertFalse($domicilio->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testLocalidadEsRequerida()
     {
         $domicilio = factory(Domicilio::class)->make([
@@ -26,6 +35,9 @@ class DomicilioTest extends TestCase {
         $this->assertFalse($domicilio->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testCodigoPostalAsociadoEsRequerido()
     {
         $domicilio = factory(Domicilio::class)->make([
@@ -34,6 +46,9 @@ class DomicilioTest extends TestCase {
         $this->assertFalse($domicilio->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testTelefonoAsociadoEsRequerido()
     {
         $domicilio = factory(Domicilio::class)->make([
