@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 
-class Empleado extends Model {
+class Empleado extends LGGModel {
 
     protected $table = 'empleados';
 
@@ -41,12 +41,4 @@ class Empleado extends Model {
         });
     }
 
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-
-        return false;
-    }
 }

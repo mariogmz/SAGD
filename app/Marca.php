@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class Marca extends Model
+class Marca extends LGGModel
 {
     protected $table = 'marcas';
 
@@ -31,16 +31,4 @@ class Marca extends Model
         });
     }
 
-    /**
-     * This method is responsible for validating the model
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static ::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-        return false;
-    }
 }

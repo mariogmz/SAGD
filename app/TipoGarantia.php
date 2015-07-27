@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class TipoGarantia extends Model
+class TipoGarantia extends LGGModel
 {
     //
     protected $table = "tipos_garantias";
@@ -32,16 +32,4 @@ class TipoGarantia extends Model
         });
     }
 
-    /**
-     * This method is responsible for validating the model
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static ::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-        return false;
-    }
 }

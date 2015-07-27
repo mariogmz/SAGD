@@ -5,7 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class Unidad extends Model
+class Unidad extends LGGModel
 {
     //
     protected $table = "unidades";
@@ -30,16 +30,4 @@ class Unidad extends Model
         });
     }
 
-    /**
-     * This method is responsible for validating the model
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static ::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-        return false;
-    }
 }

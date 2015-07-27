@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class LogAcceso extends Model {
+class LogAcceso extends LGGModel {
 
     protected $table = 'log_acceso';
     public $timestamps = false;

@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class Telefono extends Model {
+class Telefono extends LGGModel {
 
     protected $table = 'telefonos';
     public $timestamps = false;
@@ -33,17 +33,4 @@ class Telefono extends Model {
         });
     }
 
-    /**
-     * This method is responsible for validating the model
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-
-        return false;
-    }
 }

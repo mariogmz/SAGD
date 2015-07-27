@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class Sucursal extends Model {
+class Sucursal extends LGGModel {
 
     protected $table = 'sucursales';
     public $timestamps = false;
@@ -38,17 +38,4 @@ class Sucursal extends Model {
         });
     }
 
-    /**
-     * This method is responsible for validating the model
-     *
-     * @return bool
-     */
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-
-        return false;
-    }
 }

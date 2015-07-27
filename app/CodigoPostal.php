@@ -6,7 +6,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
-class CodigoPostal extends Model {
+class CodigoPostal extends LGGModel {
 
     protected $table = 'codigos_postales';
     public $timestamps = false;
@@ -34,15 +34,5 @@ class CodigoPostal extends Model {
 
             return true;
         });
-    }
-
-
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-
-        return false;
     }
 }

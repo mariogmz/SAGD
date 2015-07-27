@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Validator;
 
 
-class DatoContacto extends Model {
+class DatoContacto extends LGGModel {
 
     /**
      * The table associated with the model.
@@ -40,15 +40,5 @@ class DatoContacto extends Model {
 
             return true;
         });
-    }
-
-
-    public function isValid()
-    {
-        $validation = Validator::make($this->attributes, static::$rules);
-        if ($validation->passes()) return true;
-        $this->errors = $validation->messages();
-
-        return false;
     }
 }
