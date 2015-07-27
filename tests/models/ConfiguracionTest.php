@@ -1,63 +1,54 @@
 <?php
 
-use App\CodigoPostal;
+use App\Configuracion;
 
-class CodigoPostalTest extends TestCase {
+class ConfiguracionTest extends TestCase {
 
-    public function testEstadoEsRequerido()
+    public function testNombreEsRequerido()
     {
-        $codigo_postal = factory(CodigoPostal::class)->make([
-            'estado' => ''
+        $instance = factory(Configuracion::class)->make([
+            'nombre' => ''
         ]);
-        $this->assertFalse($codigo_postal->isValid());
+        $this->assertFalse($instance->isValid());
     }
 
-    public function testMunicipioEsRequerido()
+    public function testTipoEsRequerido()
     {
-        $codigo_postal = factory(CodigoPostal::class)->make([
-            'municipio' => ''
+        $instance = factory(Configuracion::class)->make([
+            'tipo' => ''
         ]);
-        $this->assertFalse($codigo_postal->isValid());
+        $this->assertFalse($instance->isValid());
     }
 
-    public function testCodigoPostalEsRequerido()
+    public function testModuloEsRequerido()
     {
-        $codigo_postal = factory(CodigoPostal::class)->make([
-            'codigo_postal' => ''
+        $instance = factory(Configuracion::class)->make([
+            'modulo' => ''
         ]);
-        $this->assertFalse($codigo_postal->isValid());
+        $this->assertFalse($instance->isValid());
     }
 
-    public function testCodigoPostalNoContieneLetras()
+    public function testNombreEsDeMaximo15Caracteres()
     {
-        $codigo_postal = factory(CodigoPostal::class)->make([
-            'codigo_postal' => 'ASCBD'
-        ]);
-        $this->assertFalse($codigo_postal->isValid());
-        $codigo_postal->codigo_postal = '20000';
-        $this->assertTrue($codigo_postal->isValid());
+        $instance = factory(Configuracion::class, 'nombrelargo')->make();
+        $this->assertFalse($instance->isValid());
     }
 
-
-    public function testCodigoPostalEsUnico()
+    public function testTipoEsDeMaximo10Caracteres()
     {
-        $codigo_postal1 = factory(CodigoPostal::class)->create();
-        $codigo_postal2 = factory(CodigoPostal::class)->make([
-            'codigo_postal' => $codigo_postal1->codigo_postal
-        ]);
-        $this->assertFalse($codigo_postal2->isValid());
+        $instance = factory(Configuracion::class, 'tipolargo')->make();
+        $this->assertFalse($instance->isValid());
     }
 
-    public function testCodigoPostalEsDe5Caracteres()
+    public function testModuloEsDeMaximo10Caracteres()
     {
-        $codigo_postal = factory(CodigoPostal::class)->make();
-        $this->assertTrue($codigo_postal->isValid());
+        $instance = factory(Configuracion::class, 'modulolargo')->make();
+        $this->assertFalse($instance->isValid());
     }
 
-    public function testCodigoPostalEsCorrecto()
+    public function testConfiguracionEsValida()
     {
-        $codigo_postal = factory(CodigoPostal::class)->make();
-        $this->assertTrue($codigo_postal->isValid());
+        $instance = factory(Configuracion::class)->make();
+        $this->assertTrue($instance->isValid());
     }
-
 }
