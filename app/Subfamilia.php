@@ -29,13 +29,30 @@ class Subfamilia extends LGGModel
         });
     }
 
+    /**
+     * Get the Familia associated with Subfamilia
+     * @return App\Familia
+     */
     public function familia()
     {
         return $this->belongsTo('App\Familia');
     }
 
+    /**
+     * Get the Margen associated with Subfamilia
+     * @return App\Margen
+     */
     public function margen()
     {
         return $this->belongsTo('App\Margen');
+    }
+
+    /**
+     * Get the Productos associated with Subfamilia
+     * @return array
+     */
+    public function productos()
+    {
+        return $this->hasMany('App\Producto');
     }
 }

@@ -64,4 +64,15 @@ class MarcaTest extends TestCase
         $marca->save();
         $this->assertSame($clave, $marca->clave);
     }
+
+    /**
+     * @covers Marca::Productos()
+     */
+    public function testProductos()
+    {
+        $marca = factory(App\Marca::class)->create();
+        $producto = factory(App\Producto::class)->create(['marca_id' => $marca->id]);
+        $testProducto = $marca->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
 }

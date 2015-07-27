@@ -65,4 +65,15 @@ class UnidadTest extends TestCase
         $this->assertTrue($unidad->save());
         $this->assertSame($clave, $unidad->clave);
     }
+
+    /**
+     * @covers Unidad::productos()
+     */
+    public function testProductos()
+    {
+        $unidad = factory(App\Unidad::class)->create();
+        $producto = factory(App\Producto::class)->create(['unidad_id' => $unidad->id]);
+        $testProducto = $unidad->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
 }

@@ -32,4 +32,8 @@ class TipoGarantia extends LGGModel
         });
     }
 
+    public function productos()
+    {
+        return $this->hasMany('App\Producto', 'tipo_garantia_id');
+    }
 }

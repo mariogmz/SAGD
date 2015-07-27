@@ -30,4 +30,12 @@ class Unidad extends LGGModel
         });
     }
 
+    /**
+     * Get the associated productos with unidad
+     * @return array
+     */
+    public function productos()
+    {
+        return $this->hasMany('App\Producto');
+    }
 }

@@ -115,4 +115,15 @@ class SubfamiliaTest extends TestCase
         $margen = $subfamilia->margen;
         $this->assertInstanceOf(App\Margen::class, $margen);
     }
+
+    /**
+     * @covers Subfamilia::Productos()
+     */
+    public function testProductos()
+    {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $producto = factory(App\Producto::class)->create(['subfamilia_id' => $subfamilia->id]);
+        $testProducto = $subfamilia->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
 }

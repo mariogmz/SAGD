@@ -31,4 +31,13 @@ class Marca extends LGGModel
         });
     }
 
+    /**
+     * Return the products associated with Marca
+     *
+     * @return array
+     */
+    public function productos()
+    {
+        return $this->hasMany('App\Producto', 'marca_id');
+    }
 }

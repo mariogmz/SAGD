@@ -75,4 +75,17 @@ class TipoGarantiaTest extends TestCase
         $tg = factory(App\TipoGarantia::class)->make(['dias' => -1]);
         $this->assertFalse($tg->isValid());
     }
+
+    /**
+     * @covers TipoGarantia::productos()
+     */
+    public function testProductos()
+    {
+        $tg = factory(App\TipoGarantia::class)->create();
+        $producto = factory(App\Producto::class)->create([
+            'tipo_garantia_id' => $tg->id
+        ]);
+        $testProducto = $tg->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
 }

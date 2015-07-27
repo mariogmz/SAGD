@@ -36,4 +36,48 @@ class Producto extends LGGModel
         });
     }
 
+    /**
+     * Gets the Tipo Garantia associated with Producto
+     * @return App\TipoGarantia
+     */
+    public function tipoGarantia()
+    {
+        return $this->belongsTo('App\TipoGarantia', 'tipo_garantia_id');
+    }
+
+    /**
+     * Gets the Marca associated with Producto
+     * @return App\Marca
+     */
+    public function marca()
+    {
+        return $this->belongsTo('App\Marca', 'marca_id');
+    }
+
+    /**
+     * Gets the Marge associated with Producto
+     * @return App\Margen
+     */
+    public function margen()
+    {
+        return $this->belongsTo('App\Margen', 'margen_id');
+    }
+
+    /**
+     * Get the Unidad associated with Producto
+     * @return App\Unidad
+     */
+    public function unidad()
+    {
+        return $this->belongsTo('App\Unidad');
+    }
+
+    /**
+     * Get the Subfamilia associated with Producto
+     * @return App\Subfamilia
+     */
+    public function subfamilia()
+    {
+        return $this->belongsTo('App\Subfamilia');
+    }
 }

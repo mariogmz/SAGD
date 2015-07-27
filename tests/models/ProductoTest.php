@@ -228,7 +228,9 @@ class ProductoTest extends TestCase
      */
     public function testTipoGarantia()
     {
-        $this->markTestIncomplete('Not yet implemented');
+        $producto = factory(App\Producto::class)->make();
+        $tipoGarantia = $producto->tipoGarantia;
+        $this->assertInstanceOf(App\TipoGarantia::class, $tipoGarantia);
     }
 
     /**
@@ -236,7 +238,9 @@ class ProductoTest extends TestCase
      */
     public function testMarca()
     {
-        $this->markTestIncomplete('Not yet implemented');
+        $producto = factory(App\Producto::class)->make();
+        $marca = $producto->marca;
+        $this->assertInstanceOf(App\Marca::class, $marca);
     }
 
     /**
@@ -244,7 +248,9 @@ class ProductoTest extends TestCase
      */
     public function testMargen()
     {
-        $this->markTestIncomplete('Not yet implemented');
+        $producto = factory(App\Producto::class, 'withmargen')->make();
+        $margen = $producto->margen;
+        $this->assertInstanceOf(App\Margen::class, $margen);
     }
 
     /**
@@ -252,7 +258,9 @@ class ProductoTest extends TestCase
      */
     public function testUnidad()
     {
-        $this->markTestIncomplete('Not yet implemented');
+        $producto = factory(App\Producto::class)->make();
+        $unidad = $producto->unidad;
+        $this->assertInstanceOf(App\Unidad::class, $unidad);
     }
 
     /**
@@ -260,6 +268,8 @@ class ProductoTest extends TestCase
      */
     public function testSubfamilia()
     {
-        $this->markTestIncomplete('Not yet implemented');
+        $producto = factory(App\Producto::class)->make();
+        $subfamilia = $producto->subfamilia;
+        $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
     }
 }

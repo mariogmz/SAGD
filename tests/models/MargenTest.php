@@ -67,4 +67,27 @@ class MargenTest extends TestCase
         $this->assertFalse($margen->isValid());
         $this->assertFalse($margen->save());
     }
+
+
+    /**
+     * @covers Margen::subfamilias()
+     */
+    public function testSubfamilias()
+    {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $margen = $subfamilia->margen;
+        $subfamilia = $margen->subfamilias[0];
+        $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
+    }
+
+    /**
+     * @covers Margen::productos()
+     */
+    public function testProductos()
+    {
+        $margen = factory(App\Margen::class)->create();
+        $producto = factory(App\Producto::class)->create(['margen_id' => $margen->id]);
+        $testProducto = $margen->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
 }
