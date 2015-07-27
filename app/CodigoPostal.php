@@ -17,6 +17,7 @@ class CodigoPostal extends LGGModel {
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot()
     {

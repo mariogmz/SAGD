@@ -20,6 +20,7 @@ class TipoGarantia extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot(){
         TipoGarantia::creating(function($tipogarantia){
@@ -32,4 +33,8 @@ class TipoGarantia extends LGGModel
         });
     }
 
+    public function productos()
+    {
+        return $this->hasMany('App\Producto', 'tipo_garantia_id');
+    }
 }

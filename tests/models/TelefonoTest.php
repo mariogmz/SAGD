@@ -4,12 +4,18 @@ use App\Telefono;
 
 class TelefonoTest extends TestCase {
 
+    /**
+     * @coversNothing
+     */
     public function testTelefonoValido()
     {
         $telefono = factory(Telefono::class)->make();
         $this->assertTrue($telefono->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testNumeroEsRequerido()
     {
         $telefono = factory(Telefono::class)->make([
@@ -18,6 +24,9 @@ class TelefonoTest extends TestCase {
         $this->assertFalse($telefono->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testTipoEsRequerido()
     {
         $telefono = factory(Telefono::class)->make([
@@ -26,6 +35,9 @@ class TelefonoTest extends TestCase {
         $this->assertFalse($telefono->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testTelefonoUnico()
     {
         $telefono1 = factory(Telefono::class)->create();

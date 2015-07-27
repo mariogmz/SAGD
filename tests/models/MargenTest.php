@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Margen
+ */
 class MargenTest extends TestCase
 {
     protected $margen;
 
     /**
-     * @covers Margen::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,7 +18,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::NombreNoPuedeSerNulo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerNulo()
     {
@@ -26,7 +28,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::NombreNoPuedeSerMuyLargo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerMuyLargo()
     {
@@ -36,7 +38,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::ValoresDecimalesHaenDefaultACero()
+     * @coversNothing
      */
     public function testValoresDecimalesHaenDefaultACero()
     {
@@ -49,7 +51,7 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::DecimalesNoPuedenSerNegativos()
+     * @coversNothing
      */
     public function testDecimalesNoPuedenSerNegativos()
     {
@@ -59,12 +61,35 @@ class MargenTest extends TestCase
     }
 
     /**
-     * @covers Margen::DecimalesNoPuedenSerMayorAUno()
+     * @coversNothing
      */
     public function testDecimalesNoPuedenSerMayorAUno()
     {
         $margen = factory(App\Margen::class, 'overonedecimal')->make();
         $this->assertFalse($margen->isValid());
         $this->assertFalse($margen->save());
+    }
+
+
+    /**
+     * @covers ::subfamilias
+     */
+    public function testSubfamilias()
+    {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $margen = $subfamilia->margen;
+        $subfamilia = $margen->subfamilias[0];
+        $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
+    }
+
+    /**
+     * @covers ::productos
+     */
+    public function testProductos()
+    {
+        $margen = factory(App\Margen::class)->create();
+        $producto = factory(App\Producto::class)->create(['margen_id' => $margen->id]);
+        $testProducto = $margen->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
     }
 }

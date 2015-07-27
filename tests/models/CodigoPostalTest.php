@@ -4,6 +4,9 @@ use App\CodigoPostal;
 
 class CodigoPostalTest extends TestCase {
 
+    /**
+     * @coversNothing
+     */
     public function testEstadoEsRequerido()
     {
         $codigo_postal = factory(CodigoPostal::class)->make([
@@ -12,6 +15,9 @@ class CodigoPostalTest extends TestCase {
         $this->assertFalse($codigo_postal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testMunicipioEsRequerido()
     {
         $codigo_postal = factory(CodigoPostal::class)->make([
@@ -20,6 +26,9 @@ class CodigoPostalTest extends TestCase {
         $this->assertFalse($codigo_postal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testCodigoPostalEsRequerido()
     {
         $codigo_postal = factory(CodigoPostal::class)->make([
@@ -28,6 +37,9 @@ class CodigoPostalTest extends TestCase {
         $this->assertFalse($codigo_postal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testCodigoPostalNoContieneLetras()
     {
         $codigo_postal = factory(CodigoPostal::class)->make([
@@ -39,6 +51,9 @@ class CodigoPostalTest extends TestCase {
     }
 
 
+    /**
+     * @coversNothing
+     */
     public function testCodigoPostalEsUnico()
     {
         $codigo_postal1 = factory(CodigoPostal::class)->create();
@@ -48,12 +63,18 @@ class CodigoPostalTest extends TestCase {
         $this->assertFalse($codigo_postal2->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testCodigoPostalEsDe5Caracteres()
     {
         $codigo_postal = factory(CodigoPostal::class)->make();
         $this->assertTrue($codigo_postal->isValid());
     }
 
+    /**
+     * @coversNothing
+     */
     public function testCodigoPostalEsCorrecto()
     {
         $codigo_postal = factory(CodigoPostal::class)->make();

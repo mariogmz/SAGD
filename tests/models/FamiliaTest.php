@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Familia
+ */
 class FamiliaTest extends TestCase
 {
     protected $familia;
 
     /**
-     * @covers Margen::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,7 +18,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::ClaveNoPuedeSerNula()
+     * @coversNothing
      */
     public function testClaveNoPuedeSerNula()
     {
@@ -26,7 +28,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::ClaveSoloEsDeCuatroCaracteres()
+     * @coversNothing
      */
     public function testClaveEsMenorDeCuatroCaracteres()
     {
@@ -36,7 +38,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::ClaveEsSoloMayusculas()
+     * @coversNothing
      */
     public function testClaveEsSoloMayusculas()
     {
@@ -48,7 +50,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::NombreNoPuedeSerNulo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerNulo()
     {
@@ -58,7 +60,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::NombreNoPuedeSerMuyLargo()
+     * @coversNothing
      */
     public function testNombreNoPuedeSerMuyLargo()
     {
@@ -68,7 +70,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::DescripcionPuedeSerNulo()
+     * @coversNothing
      */
     public function testDescripcionPuedeSerNulo()
     {
@@ -77,7 +79,7 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::DescripcionNoPuedeSerMuyLargo()
+     * @coversNothing
      */
     public function testDescripcionNoPuedeSerMuyLargo()
     {
@@ -86,8 +88,8 @@ class FamiliaTest extends TestCase
     }
 
     /**
-     * @covers Familia::subfamilias()
-     */
+     * @covers ::subfamilias
+    */
     public function testSubfamilias()
     {
         $subfamilia = factory(App\Subfamilia::class)->create();

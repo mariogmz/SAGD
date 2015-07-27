@@ -20,6 +20,7 @@ class Marca extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Marca::creating(function($marca){
@@ -31,4 +32,13 @@ class Marca extends LGGModel
         });
     }
 
+    /**
+     * Return the products associated with Marca
+     *
+     * @return array
+     */
+    public function productos()
+    {
+        return $this->hasMany('App\Producto', 'marca_id');
+    }
 }

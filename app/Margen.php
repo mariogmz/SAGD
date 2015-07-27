@@ -18,6 +18,7 @@ class Margen extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Margen::creating(function($margen){
@@ -31,19 +32,21 @@ class Margen extends LGGModel
         });
     }
 
+    /**
+     * Get the associated subfamilias with margen
+     * @return array
+     */
     public function subfamilias()
     {
         return $this->hasMany('App\Subfamilia');
     }
 
     /**
-     * @covers Margen::subfamilias()
+     * Get the associated productos with margen
+     * @return array
      */
-    public function testSubfamilias()
+    public function productos()
     {
-        $subfamilia = factory(App\Subfamilia::class)->create();
-        $margen = $subfamilia->margen;
-        $subfamilia = $margen->subfamilias[0];
-        $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
+        return $this->hasMany('App\Producto');
     }
 }

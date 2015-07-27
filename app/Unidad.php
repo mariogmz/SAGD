@@ -19,6 +19,7 @@ class Unidad extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Unidad::creating(function($unidad){
@@ -30,4 +31,12 @@ class Unidad extends LGGModel
         });
     }
 
+    /**
+     * Get the associated productos with unidad
+     * @return array
+     */
+    public function productos()
+    {
+        return $this->hasMany('App\Producto');
+    }
 }

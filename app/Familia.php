@@ -17,6 +17,7 @@ class Familia extends LGGModel
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot() {
         Familia::creating(function($familia){

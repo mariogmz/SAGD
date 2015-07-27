@@ -10,7 +10,7 @@ class LGGModel extends Model
 
     /**
      * This method is responsible for validating the model
-     *
+     * @codeCoverageIgnore
      * @return bool
      */
     public function isValid()
@@ -21,6 +21,9 @@ class LGGModel extends Model
         return false;
     }
 
+    /**
+     * @codeCoverageIgnore
+     */
     public static function scopeLast($query)
     {
         return $query->orderBy('id', 'desc')->first();

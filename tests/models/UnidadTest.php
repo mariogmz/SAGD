@@ -1,12 +1,14 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Unidad
+ */
 class UnidadTest extends TestCase
 {
     protected $unidad;
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testModeloEsValido()
     {
@@ -16,7 +18,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testClaveVaciaNoEsValido()
     {
@@ -26,7 +28,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testNombreVacioNoEsValido()
     {
@@ -36,7 +38,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testClaveNoPuedeTenerMasDeCuatroDigitos()
     {
@@ -46,7 +48,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testNombreNoPuedeTenerMasDe45Digitos()
     {
@@ -56,7 +58,7 @@ class UnidadTest extends TestCase
     }
 
     /**
-     * @covers Unidad::()
+     * @coversNothing
      */
     public function testClaveDebeSerGuardadaEnMayusculas()
     {
@@ -64,5 +66,16 @@ class UnidadTest extends TestCase
         $clave = strtoupper($unidad->clave);
         $this->assertTrue($unidad->save());
         $this->assertSame($clave, $unidad->clave);
+    }
+
+    /**
+     * @covers ::productos
+     */
+    public function testProductos()
+    {
+        $unidad = factory(App\Unidad::class)->create();
+        $producto = factory(App\Producto::class)->create(['unidad_id' => $unidad->id]);
+        $testProducto = $unidad->productos[0];
+        $this->assertInstanceOf(App\Producto::class, $testProducto);
     }
 }
