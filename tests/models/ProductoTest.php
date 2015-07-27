@@ -270,4 +270,15 @@ class ProductoTest extends TestCase
         $subfamilia = $producto->subfamilia;
         $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
     }
+
+    /**
+     * @covers class::dimension()
+     */
+    public function testDimension()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $dimension = factory(App\Dimension::class)->create(['producto_id' => $producto->id]);
+        $testDimension = $producto->dimension;
+        $this->assertInstanceOf(App\Dimension::class, $testDimension);
+    }
 }

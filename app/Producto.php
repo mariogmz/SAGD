@@ -81,4 +81,13 @@ class Producto extends LGGModel
     {
         return $this->belongsTo('App\Subfamilia');
     }
+
+    /**
+     * Obtiene la Dimension de Producto
+     * @return App\Dimension
+     */
+    public function dimension()
+    {
+        return $this->hasOne('App\Dimension');
+    }
 }
