@@ -90,4 +90,13 @@ class Producto extends LGGModel
     {
         return $this->hasOne('App\Dimension');
     }
+
+    /**
+     * Obtiene los productos_movimientos relacionados con el Producto
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function productoMovimientos()
+    {
+        return $this->hasMany('App\ProductoMovimiento');
+    }
 }

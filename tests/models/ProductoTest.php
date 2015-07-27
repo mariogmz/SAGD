@@ -281,4 +281,18 @@ class ProductoTest extends TestCase
         $testDimension = $producto->dimension;
         $this->assertInstanceOf(App\Dimension::class, $testDimension);
     }
+
+    /**
+     * @covers ::productoMovimientos
+     */
+    public function testProductoMovimientos()
+    {
+        $producto = factory(App\Producto::class)->create();
+        factory(App\ProductoMovimiento::class, 'withproduct')->create([
+            'producto_id' => $producto->id
+        ]);
+        $pms = $producto->productoMovimientos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+    }
 }
