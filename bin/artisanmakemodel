@@ -1,0 +1,49 @@
+#!/bin/bash
+
+FILENAME=$1
+
+function createModel {
+	php artisan make:model $FILENAME
+}
+
+function createFactory {
+	echo "<?php"																		>> database/factories/${FILENAME}Factory.php
+	echo ""																				>> database/factories/${FILENAME}Factory.php
+	echo "/*"																			>> database/factories/${FILENAME}Factory.php
+	echo "|--------------------------------------------------------------------------"	>> database/factories/${FILENAME}Factory.php
+	echo "| Model Factories"															>> database/factories/${FILENAME}Factory.php
+	echo "|--------------------------------------------------------------------------"	>> database/factories/${FILENAME}Factory.php
+	echo "|"																			>> database/factories/${FILENAME}Factory.php
+	echo "| Here you may define all of your model factories. Model factories give"		>> database/factories/${FILENAME}Factory.php
+	echo "| you a convenient way to create models for testing and seeding your"			>> database/factories/${FILENAME}Factory.php
+	echo "| database. Just tell the factory how a default model should look."			>> database/factories/${FILENAME}Factory.php
+	echo "|"																			>> database/factories/${FILENAME}Factory.php
+	echo "*/"																			>> database/factories/${FILENAME}Factory.php
+	echo ""																				>> database/factories/${FILENAME}Factory.php
+	echo "\$factory->define(App\\${FILENAME}::class, function (\$faker)"				>> database/factories/${FILENAME}Factory.php
+	echo "{"																			>> database/factories/${FILENAME}Factory.php
+	echo "    return ["																	>> database/factories/${FILENAME}Factory.php
+	echo "    ];"																		>> database/factories/${FILENAME}Factory.php
+	echo "});"																			>> database/factories/${FILENAME}Factory.php
+
+}
+
+function createTest {
+	echo "<?php" 																>> tests/models/${FILENAME}Test.php
+	echo "" 																	>> tests/models/${FILENAME}Test.php
+	echo "/**" 																	>> tests/models/${FILENAME}Test.php
+	echo " * @coversDefaultClass \App\\${FILENAME}" 								>> tests/models/${FILENAME}Test.php
+	echo " */" 																	>> tests/models/${FILENAME}Test.php
+	echo "class ${FILENAME}Test extends TestCase {" 										>> tests/models/${FILENAME}Test.php
+	echo "	" 																	>> tests/models/${FILENAME}Test.php
+	echo "}" 																	>> tests/models/${FILENAME}Test.php
+}
+
+
+function main {
+	createModel
+	createFactory
+	createTest
+}
+
+main
