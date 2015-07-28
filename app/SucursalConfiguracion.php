@@ -3,8 +3,10 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
 
-class SucursalConfiguracion extends Model
+
+class SucursalConfiguracion extends LGGModel
 {
     //
 }

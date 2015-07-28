@@ -85,14 +85,16 @@ class CodigoPostalTest extends TestCase {
     /**
      * @covers ::domicilios
      */
-    public function testDomicilios(){
+    public function testDomicilios()
+    {
         $codigo_postal = factory(App\CodigoPostal::class)->create();
         $domicilios = factory(App\Domicilio::class, 5)->create([
-           'codigo_postal_id' => $codigo_postal->id
+            'codigo_postal_id' => $codigo_postal->id
         ]);
         $domicilios_resultado = $codigo_postal->domicilios;
-        for($i = 0; $i < 5; $i++){
-            $this->assertEquals($domicilios[$i],$domicilios_resultado[$i]);
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertEquals($domicilios[$i], $domicilios_resultado[$i]);
         }
     }
 

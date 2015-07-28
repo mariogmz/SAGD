@@ -94,13 +94,12 @@ class EmpleadoTest extends TestCase {
      */
     public function testDatoContacto()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-
         $empleado = factory(App\Empleado::class)->create();
         $dato_contacto = factory(App\DatoContacto::class)->create([
             'empleado_id' => $empleado->id
         ]);
-        $this->assertEquals($empleado->dato_contacto, $dato_contacto);
+        $dato_contacto_resultado = $empleado->datoContacto;
+        $this->assertEquals($dato_contacto->id, $dato_contacto_resultado->id);
     }
 
     /**

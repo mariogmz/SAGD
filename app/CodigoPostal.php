@@ -12,7 +12,7 @@ class CodigoPostal extends LGGModel {
     public static $rules = [
         'estado'        => 'required|string|max:45|alpha',
         'municipio'     => 'required|string|max:45|alpha',
-        'codigo_postal' => ['required', 'unique:codigos_postales', 'Regex:/[0-9]{5}/']
+        'codigo_postal' => ['required','string','unique:codigos_postales','regex:/(\d{5})/']
     ];
 
     /**
@@ -21,7 +21,7 @@ class CodigoPostal extends LGGModel {
      */
     public static function boot()
     {
-        DatoContacto::creating(function ($codigo_postal)
+        CodigoPostal::creating(function ($codigo_postal)
         {
             $codigo_postal->estado = strtoupper($codigo_postal->estado);
             $codigo_postal->municipio = strtoupper($codigo_postal->municipio);

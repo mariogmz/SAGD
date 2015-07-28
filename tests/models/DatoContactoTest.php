@@ -50,7 +50,6 @@ class DatoContactoTest extends TestCase {
      */
     public function testEmpleado()
     {
-        $this->markTestIncomplete('wiu');
         $empleado = factory(App\Empleado::class)->create();
         $dato_contacto = factory(App\DatoContacto::class)->create([
             'empleado_id' => $empleado->id

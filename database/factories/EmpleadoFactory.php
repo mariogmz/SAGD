@@ -6,7 +6,7 @@ $factory->define(App\Empleado::class, function ($faker)
         'nombre'                => $faker->name,
         'usuario'               => $faker->unique()->username,
         'password'              => $faker->password,
-        'activo'                => $faker->boolean(),
+        'activo'                => $faker->numberBetween(0,1),
         'puesto'                => $faker->optional()->text(45),
         'fecha_cambio_password' => $faker->dateTime(),
         'access_token'          => $faker->regexify('[a-zA-Z0-9_%+-]{20}'),
@@ -21,7 +21,7 @@ $factory->defineAs(App\Empleado::class, 'inactivo', function ($faker) use ($fact
         'usuario'               => $faker->unique()->username,
         'password'              => $faker->password,
         'activo'                => $faker->boolean(),
-        'puesto'                => false,
+        'puesto'                => 0,
         'fecha_cambio_password' => $faker->dateTime(),
         'access_token'          => $faker->regexify('[a-zA-Z0-9_%+-]{20}'),
         'sucursal_id'           => factory(App\Sucursal::class)->create()->id
