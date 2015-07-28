@@ -76,8 +76,6 @@ class EmpleadoTest extends TestCase {
      */
     public function testLogsAccesos()
     {
-        $this->markTestIncomplete('Not implemented yet.');
-
         $empleado = factory(App\Empleado::class)->create();
         $logs_accesos = factory(App\LogAcceso::class, 5)->create([
             'empleado_id' => $empleado->id

@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Validator;
 class LogAcceso extends LGGModel {
 
     protected $table = 'log_acceso';
-    public $timestamps = false;
+    public $timestamps = true;
 
+    protected $fillable = ['empleado_id', 'exitoso'];
     public static $rules = [
         'empleado_id' => 'required|numeric',
         'exitoso'     => 'required|boolean'
