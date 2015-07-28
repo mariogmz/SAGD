@@ -31,9 +31,13 @@ class Telefono extends LGGModel {
         });
     }
 
+    /**
+     * Obtiene los domicilios asociados con el teléfono
+     * @return array
+     */
     public function domicilios()
     {
-        return $this->belongsTo('App\Domicilio');
+        return $this->hasMany('App\Domicilio');
     }
 
 }

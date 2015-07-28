@@ -3,9 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
 class Sucursal extends LGGModel {
 
     protected $table = 'sucursales';
@@ -39,14 +36,30 @@ class Sucursal extends LGGModel {
         });
     }
 
+    /**
+     * Obtiene el proveedor asociado a la sucursal
+     * @return App\Proveedor
+     */
     public function proveedor()
     {
         return $this->belongsTo('App\Proveedor');
     }
 
+    /**
+     * Obtiene el domicilio asociado a la sucursal
+     * @return App\Domicilio
+     */
     public function domicilio()
     {
         return $this->belongsTo('App\Domicilio');
     }
 
+    /**
+     * Obtiene los empleados asociados a la sucursal
+     * @return array
+     */
+    public function empleados()
+    {
+        return $this->hasMany('App\Empleado');
+    }
 }

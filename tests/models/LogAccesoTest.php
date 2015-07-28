@@ -13,13 +13,4 @@ class LogAccesoTest extends TestCase {
         $la = new LogAcceso();
         $this->assertInstanceOf(LogAcceso::class, $la);
     }
-
-    /**
-     * @coversNothing
-     */
-    public function testLogAccesoTieneTablaLog_Acceso()
-    {
-        $la = new LogAcceso();
-        $this->assertAttributeEquals('log_acceso', 'table', $la);
-    }
 }

@@ -17,6 +17,7 @@ class Configuracion extends LGGModel {
 
     /**
      * Define the model hooks
+     * @codeCoverageIgnore
      */
     public static function boot()
     {
@@ -32,6 +33,25 @@ class Configuracion extends LGGModel {
 
             return true;
         });
+    }
+
+    /**
+     * Obtiene el los valores de la configuración para todas las sucursales
+     * @return array
+     */
+    public function sucursalesConfiguraciones()
+    {
+        return $this->hasMany('App\SucursalConfiguracion');
+    }
+
+
+    /**
+     * Obtiene las sucursales asociadas a la configuracion
+     * @return array
+     */
+    public function sucursales()
+    {
+        return $this->hasManyThrough('App\Sucursal', 'App\SucursalConfiguracion');
     }
 
 

@@ -10,15 +10,17 @@ class DatoContacto extends LGGModel {
      *
      * @var string
      */
-    protected $table = 'datos_contacto';
-    protected $primaryKey = 'empleado_id';
+    protected $table = 'datos_contactos';
 
     public $timestamps = false;
-    protected $fillable = ['direccion', 'telefono', 'email', 'skype', 'fotografia_url'];
+    protected $fillable = ['direccion', 'telefono', 'email', 'skype', 'fotografia_url', 'empleado_id'];
     public static $rules = [
-        'telefono'       => 'numeric|max:11',
+        'direccion'      => 'string|max:100',
+        'telefono'       => 'string|max:20',
         'email'          => 'email|unique:datos_contactos',
-        'fotografia_url' => 'active_url'
+        'skype'          => 'string',
+        'fotografia_url' => 'url',
+        'empleado_id'    => 'required|integer'
     ];
 
     /**
@@ -29,7 +31,7 @@ class DatoContacto extends LGGModel {
     {
         DatoContacto::creating(function ($dato_contacto)
         {
-            $dato_contacto->email = strtoupper($dato_contacto->email);
+//            $dato_contacto->email = strtoupper($dato_contacto->email);
             if (!$dato_contacto->isValid())
             {
                 return false;
@@ -39,9 +41,13 @@ class DatoContacto extends LGGModel {
         });
     }
 
-    public function empleados()
+    /**
+     * Obtiene el empleado asociado al dato de contacto
+     * @return App\Empleado
+     */
+    public function empleado()
     {
-        return $this->belongsTo('App\Empleados');
+        return $this->belongsTo('App\Empleado');
     }
 
 }

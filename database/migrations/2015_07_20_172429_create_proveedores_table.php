@@ -18,7 +18,7 @@ class CreateProveedoresTable extends Migration {
             $table->string('clave', 4);
             $table->string('razon_social', 200);
             $table->boolean('externo')->default(false);
-            $table->string('pagina_web', 45)->nullable();
+            $table->string('pagina_web', 200)->nullable();
             $table->unique('clave');
         });
     }

@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateDatosContactosTable extends Migration {
 
@@ -14,9 +14,9 @@ class CreateDatosContactosTable extends Migration {
     {
         Schema::create('datos_contactos', function (Blueprint $table)
         {
-            $table->increments('id');
+            $table->integer('empleado_id')->unsigned()->nullable();
             $table->string('direccion', 100)->nullable();
-            $table->string('telefono', 11)->nullable();
+            $table->string('telefono', 20)->nullable();
             $table->string('email', 45);
             $table->string('skype', 45)->nullable();
             $table->string('fotografia_url', 45)->nullable();

@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Proveedor
+ */
 class ProveedorTest extends TestCase {
 
     /**
@@ -47,5 +49,42 @@ class ProveedorTest extends TestCase {
         $this->assertFalse($proveedor->isValid());
         $proveedor->externo = '';
         $this->assertFalse($proveedor->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClaveDebeSerUnica(){
+        $proveedor1 = factory(App\Proveedor::class)->create();
+        $proveedor2 = factory(App\Proveedor::class)->make([
+            'clave' => $proveedor1->clave
+        ]);
+        $this->assertFalse($proveedor2->isValid());
+
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testProveedorValido()
+    {
+        $proveedor = factory(App\Proveedor::class)->make();
+        $this->assertTrue($proveedor->isValid());
+    }
+
+    /**
+     * @covers ::sucursales
+     */
+    public function testSucursales()
+    {
+        $proveedor = factory(App\Proveedor::class)->create();
+        $sucursales = factory(App\Sucursal::class, 5)->create([
+            'proveedor_id' => $proveedor->id
+        ]);
+        $sucursales_resultado = $proveedor->sucursales;
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertEquals($sucursales[$i], $sucursales_resultado[$i]);
+        }
     }
 }

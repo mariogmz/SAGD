@@ -33,6 +33,10 @@ class LogAcceso extends LGGModel {
         });
     }
 
+    /**
+     * Obtiene el empleado al que está asociado el registro del log
+     * @return App\Empleado
+     */
     public function empleado()
     {
         return $this->belongsTo('App\Empleado');

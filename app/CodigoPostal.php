@@ -34,8 +34,12 @@ class CodigoPostal extends LGGModel {
         });
     }
 
-    public function domicilio()
+    /**
+     * Obtiene los domicilios asociados al código postal
+     * @return array
+     */
+    public function domicilios()
     {
-        return $this->belongsTo('App\Domicilio');
+        return $this->hasMany('App\Domicilio');
     }
 }

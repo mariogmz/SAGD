@@ -17,19 +17,11 @@ class SucursalTest extends TestCase {
      */
     public function testClaveDebeSerUnica()
     {
-        $sucursales_validas = factory(App\Sucursal::class, 5)->make();
-        $sucursales_invalidas = factory(App\Sucursal::class, 'mismaclave', 5)->make();
-        for ($i = 0; $i < 5; $i ++)
-        {
-            $this->assertTrue($sucursales_validas[$i]->save());
-            if (!$i)
-            {
-                $sucursales_invalidas[$i]->save();
-            } else
-            {
-                $this->assertFalse($sucursales_invalidas[$i]->save());
-            }
-        }
+        $sucursal1 = factory(App\Sucursal::class)->create();
+        $sucursal2 = factory(App\Sucursal::class)->make([
+            'clave' => $sucursal1->clave
+        ]);
+        $this->assertFalse($sucursal2->isValid());
     }
 
     /**
@@ -57,24 +49,37 @@ class SucursalTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testProveedorAsociadoDebeExistir()
+    public function testSucursalValida()
     {
-        $sucursal = factory(App\Sucursal::class)->make([
-            'proveedor_id' => null
-        ]);
-        $this->assertFalse($sucursal->isValid());
+        $sucursal = $sucursal = factory(App\Sucursal::class)->make();
+        $this->assertTrue($sucursal->isValid());
     }
 
     /**
-     * @coversNothing
+     * @covers ::proveedor
      */
-    public function testDomicilioAsociadoDebeExistir()
+    public function testProveedor()
     {
+        $proveedor = factory(App\Proveedor::class)->create();
         $sucursal = factory(App\Sucursal::class)->make([
-            'domicilio_id' => null
+            'proveedor_id' => $proveedor->id
         ]);
-        $this->assertFalse($sucursal->isValid());
+        $this->assertEquals($proveedor, $sucursal->proveedor);
     }
+
+    /**
+     * @covers ::domicilio
+     */
+    public function testDomicilio()
+    {
+        $domicilio = factory(App\Domicilio::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create([
+            'domicilio_id' => $domicilio->id
+        ]);
+        $this->assertEquals($domicilio, $sucursal->domicilio);
+    }
+
+
 
 
 }

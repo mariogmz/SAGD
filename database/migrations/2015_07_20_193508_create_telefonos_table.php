@@ -15,7 +15,7 @@ class CreateTelefonosTable extends Migration
         //
         Schema::create('telefonos', function($table){
             $table->increments('id');
-            $table->string('numero', 11);
+            $table->string('numero', 17);
             $table->string('tipo', 45);
         });
     }

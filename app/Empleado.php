@@ -3,10 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
-
 class Empleado extends LGGModel {
 
     protected $table = 'empleados';
@@ -15,12 +11,12 @@ class Empleado extends LGGModel {
 
     protected $fillable = ['nombre', 'usuario', 'password', 'activo', 'puesto', 'access_token'];
     public static $rules = [
-        'nombre'                => 'required|max:100|alpha',
-        'usuario'               => 'required|max:20|alpha_dash|unique:empleados',
+        'nombre'                => ['required', 'max:100'],
+        'usuario'               => 'required|max:20|unique:empleados',
         'password'              => 'required|max:64|different:usuario',
         'activo'                => 'required|boolean',
-        'puesto'                => 'alpha_dash',
-        'fecha_cambio_password' => 'date',
+        'puesto'                => 'string|max:45',
+        'fecha_cambio_password' => 'required|date',
         'fecha_ultimo_ingreso'  => 'date',
         'access_token'          => 'max:20|unique:empleados'
     ];
@@ -42,16 +38,28 @@ class Empleado extends LGGModel {
         });
     }
 
-    public function logAcceso()
+    /**
+     * Obtiene todos los logs de acceso asociados al empleado
+     * @return array
+     */
+    public function logsAccesos()
     {
         return $this->hasMany('App\LogAcceso');
     }
 
+    /**
+     * Obtiene los datos de contacto asociados al empleado
+     * @return App\DatoContacto
+     */
     public function datoContacto()
     {
-        return $this->hasMany('App\DatoContacto');
+        return $this->hasOne('App\DatoContacto');
     }
 
+    /**
+     * Obtiene la sucursal a la que pertenece el empleado
+     * @return App\Sucursal
+     */
     public function sucursal()
     {
         return $this->belongsTo('App\Sucursal');

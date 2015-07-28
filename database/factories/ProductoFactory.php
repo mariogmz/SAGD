@@ -17,7 +17,7 @@ $factory->define(App\Producto::class, function ($faker) {
         'clave' => $faker->text(60),
         'descripcion' => $faker->text(300),
         'fecha_entrada' => $faker->dateTime,
-        'numero_parte' => $faker->text(30),
+        'numero_parte' => $faker->unique()->text(30),
         'remate' => $faker->boolean,
         'spiff' => $faker->randomFloat(2, 0.0, 999999.9),
         'subclave' => $faker->text(45),

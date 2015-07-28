@@ -3,9 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
 class Domicilio extends LGGModel {
 
     protected $table = 'domicilios';
@@ -36,21 +33,31 @@ class Domicilio extends LGGModel {
         });
     }
 
+    /**
+     * Obtiene el código postal asociado al domicilio
+     * @return App\CodigoPostal
+     */
     public function codigoPostal()
     {
-        return $this->hasMany('App\CodigoPostal');
+        return $this->belongsTo('App\CodigoPostal');
     }
 
+    /**
+     * Obtiene el teléfono asociado al domicilio
+     * @return App\Telefono
+     */
     public function telefono()
     {
-        return $this->hasMany('App\Telefono');
+        return $this->belongsTo('App\Telefono');
     }
 
-    public function sucursal()
+    /**
+     * Obtiene las sucursales asociadas al domicilio
+     * @return array
+     */
+    public function sucursales()
     {
         return $this->hasMany('App\Sucursal');
     }
-
-
 
 }

@@ -3,9 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
 class Proveedor extends LGGModel {
 
     protected $table = 'proveedores';
@@ -37,7 +34,11 @@ class Proveedor extends LGGModel {
         });
     }
 
-    public function sucursal()
+    /**
+     * Obtiene las sucursales asociadas al proveedor
+     * @return array
+     */
+    public function sucursales()
     {
         return $this->hasMany('App\Sucursal');
     }

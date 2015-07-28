@@ -16,7 +16,7 @@ $factory->define(App\Proveedor::class, function ($faker)
     return [
         'clave'        => $faker->regexify('[a-z]{4}'),
         'razon_social' => $faker->text(),
-        'externo'      => $faker->boolean(),
+        'externo'      => $faker->numberBetween(0,1),
         'pagina_web'   => $faker->url()
     ];
 });

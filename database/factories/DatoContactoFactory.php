@@ -3,9 +3,11 @@
 $factory->define(App\DatoContacto::class, function ($faker)
 {
     return [
-        'empleado_id'    => factory(\App\Empleado::class)->create()->id,
-        'telefono'       => $faker->phoneNumber,
-        'email'          => $faker->email,
-        'fotografia_url' => $faker->imageUrl()
+        'direccion'      => $faker->optional()->text(100),
+        'telefono'       => $faker->optional()->regexify('/[0-9]{20}/'),
+        'email'          => $faker->unique()->email,
+        'skype'          => $faker->optional()->userName,
+        'fotografia_url' => $faker->optional()->imageUrl(),
+        'empleado_id'    => factory(App\Empleado::class)->create()->id
     ];
 });

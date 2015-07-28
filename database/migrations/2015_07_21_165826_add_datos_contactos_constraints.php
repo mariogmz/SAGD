@@ -14,7 +14,6 @@ class AddDatosContactosConstraints extends Migration
     {
         //
         Schema::table('datos_contactos', function($table){
-            $table->integer('empleado_id')->unsigned();
             $table->foreign('empleado_id')->references('id')->on('empleados')->onDelete('cascade');
         });
     }
@@ -29,7 +28,6 @@ class AddDatosContactosConstraints extends Migration
         //
         Schema::table('datos_contactos', function($table){
             $table->dropForeign('datos_contactos_empleado_id_foreign');
-            $table->dropColumn('empleado_id');
         });
     }
 }
