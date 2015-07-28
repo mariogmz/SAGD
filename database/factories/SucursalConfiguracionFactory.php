@@ -25,7 +25,7 @@ $factory->defineAs(App\SucursalConfiguracion::class, 'valornumero', function ($f
     $sucursal_configuracion = $factory->raw(App\SucursalConfiguracion::class);
 
     return array_merge($sucursal_configuracion, [
-        'valor_numero' => $faker->randomFloat(),
+        'valor_numero' => $faker->randomFloat(2,0,99999999)
     ]);
 });
 
@@ -43,7 +43,7 @@ $factory->defineAs(App\SucursalConfiguracion::class, 'ambosvalores', function ($
     $sucursal_configuracion = $factory->raw(App\SucursalConfiguracion::class);
 
     return array_merge($sucursal_configuracion, [
-        'valor_numero' => $faker->randomFloat(),
+        'valor_numero' => $faker->randomFloat(2,0,99999999),
         'valor_texto'  => $faker->text()
     ]);
 });

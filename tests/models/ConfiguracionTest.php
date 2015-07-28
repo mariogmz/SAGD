@@ -79,9 +79,8 @@ class ConfiguracionTest extends TestCase {
      */
     public function testSucursalesConfiguraciones()
     {
-        $this->markTestIncomplete('Not implemented yet.');
         $configuracion = factory(App\Configuracion::class)->create();
-        $sucursales_configuraciones = factory(App\SucursalConfiguracion::class, 5)->create([
+        $sucursales_configuraciones = factory(App\SucursalConfiguracion::class, 'valornumero', 5)->create([
             'configuracion_id' => $configuracion->id
         ]);
         $sucursales_configuraciones_resultado = $configuracion->sucursalesConfiguraciones;
@@ -89,13 +88,5 @@ class ConfiguracionTest extends TestCase {
         {
             $this->assertEquals($sucursales_configuraciones[$i], $sucursales_configuraciones_resultado[$i]);
         }
-    }
-
-    /**
-     * @covers ::sucursales
-     */
-    public function testSucursales()
-    {
-        $this->markTestIncomplete('Not implemented yet.');
     }
 }

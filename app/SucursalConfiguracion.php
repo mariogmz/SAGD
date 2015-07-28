@@ -22,7 +22,7 @@ class SucursalConfiguracion extends LGGModel {
     {
         SucursalConfiguracion::creating(function ($sucursal_configuracion)
         {
-            if (!$sucursal_configuracion->isValid() || !(empty($sucursal_configuracion->valor_numero) && empty($sucursal_configuracion->valor_texto)))
+            if (!$sucursal_configuracion->isValid() || !(empty($sucursal_configuracion->valor_numero) xor empty($sucursal_configuracion->valor_texto)))
             {
                 return false;
             }
