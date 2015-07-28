@@ -2,6 +2,9 @@
 
 use App\Domicilio;
 
+/**
+ * @coversDefaultClass \App\Domicilio
+ */
 class DomicilioTest extends TestCase {
 
     /**

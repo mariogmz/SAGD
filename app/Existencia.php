@@ -38,4 +38,13 @@ class Existencia extends LGGModel
             return true;
         });
     }
+
+    /**
+     * Obitene el registro de Producto Sucursal correspondiente a la entrada de Existencia
+     * @return App\ProductoSucursal
+     */
+    public function productoSucursal()
+    {
+        return $this->belongsTo('App\ProductoSucursal', 'productos_sucursales_id');
+    }
 }

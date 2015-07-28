@@ -38,6 +38,29 @@ class Producto extends LGGModel
     }
 
     /**
+     * Agrega una sucursal para un producto
+     * @param App\Sucursal
+     * @return void
+     */
+    public function addSucursal($sucursal)
+    {
+        $this->sucursales()->attach($sucursal->id, ['proveedor_id' => $sucursal->proveedor->id]);
+    }
+
+    /**
+     * Agrega el proveedor y sucursales para un producto
+     * @param App\Proveedor
+     * @return void
+     */
+    public function addProveedor($proveedor)
+    {
+        $sucursales = $proveedor->sucursales;
+        foreach ($sucursales as $sucursal) {
+            $this->proveedores()->attach($proveedor->id, ['sucursal_id' => $sucursal->id]);
+        }
+    }
+
+    /**
      * Gets the Tipo Garantia associated with Producto
      * @return App\TipoGarantia
      */
@@ -98,5 +121,62 @@ class Producto extends LGGModel
     public function productoMovimientos()
     {
         return $this->hasMany('App\ProductoMovimiento');
+    }
+
+    /**
+     * Obtiene los productos_sucursales relacionados con el Producto
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function productosSucursales()
+    {
+        return $this->hasMany('App\ProductoSucursal');
+    }
+
+    /**
+     * Obtiene las sucursales relacionadas con el Producto
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function sucursales()
+    {
+        return $this->belongsToMany('App\Sucursal', 'productos_sucursales',
+            'producto_id', 'sucursal_id');
+    }
+
+    /**
+     * Obtiene los proveedores relacionados con el Producto
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function proveedores()
+    {
+        return $this->belongsToMany('App\Proveedor', 'productos_sucursales',
+            'producto_id', 'proveedor_id');
+    }
+
+    /**
+     * Obtiene las existencias relacionadas con el Producto
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function existencias($sucursal_id=null)
+    {
+        if (is_null($sucursal_id))
+        {
+            return $this->hasManyThrough('App\Existencia', 'App\ProductoSucursal',
+                'producto_id', 'productos_sucursales_id');
+        } else {
+            $ps = $this->productosSucursales->where('sucursal_id', $sucursal_id)->last();
+            return $ps->existencias;
+        }
+    }
+
+    public function precios($proveedor_id=null)
+    {
+        if (is_null($proveedor_id))
+        {
+            return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
+                'producto_id', 'producto_sucursal_id');
+        } else {
+            $ps = $this->productosSucursales->where('proveedor_id', $proveedor_id)->first();
+            return $ps->precios;
+        }
     }
 }

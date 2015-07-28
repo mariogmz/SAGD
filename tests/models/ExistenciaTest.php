@@ -30,8 +30,27 @@ class ExistenciaTest extends TestCase
      */
     public function testCantidadesTienenDefaultACero()
     {
-        $existencia = factory(App\Existencia::class, 'nullamount')->make();
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $ps = $producto->productosSucursales[0];
+        $existencia = factory(App\Existencia::class, 'nullamount')->make([
+            'productos_sucursales_id' => $ps->id]);
         $this->assertTrue($existencia->isValid());
-        $this->markTestIncomplete('We need the productos_sucursales keys');
+        $existencia->save();
+        $this->assertSame(0, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::productoSucursal
+     */
+    public function testProductoSucursal()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $ps = $producto->productosSucursales[0];
+        $existencia = factory(App\Existencia::class)->create([
+            'productos_sucursales_id' => $ps->id]);
+        $pss = $existencia->productoSucursal;
+        $this->assertInstanceOf(App\ProductoSucursal::class, $pss);
     }
 }

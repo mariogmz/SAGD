@@ -12,7 +12,7 @@
 */
 
 $factory->define(App\Marca::class, function ($faker) {
-    $clave = $faker->regexify('[A-Z]{3}');
+    $clave = $faker->unique()->regexify('[A-Z]{3}');
     return [
         'clave' => $clave,
         'nombre' => $clave . $faker->word(),
@@ -20,7 +20,7 @@ $factory->define(App\Marca::class, function ($faker) {
 });
 
 $factory->defineAs(App\Marca::class, 'longname', function ($faker) use ($factory) {
-    $clave = $faker->regexify('[A-Z]{3}');
+    $clave = $faker->unique()->regexify('[A-Z]{3}');
     return [
         'clave' => $clave,
         'nombre' => $clave . $faker->text(),
@@ -28,7 +28,7 @@ $factory->defineAs(App\Marca::class, 'longname', function ($faker) use ($factory
 });
 
 $factory->defineAs(App\Marca::class, 'lowercase', function ($faker) use ($factory) {
-    $clave = $faker->regexify('[a-z]{3}');
+    $clave = $faker->unique()->regexify('[a-z]{3}');
     return [
         'clave' => $clave,
         'nombre' => $clave . $faker->word(),

@@ -87,4 +87,18 @@ class ProveedorTest extends TestCase {
             $this->assertEquals($sucursales[$i], $sucursales_resultado[$i]);
         }
     }
+
+    /**
+     * @covers ::productos()
+     */
+    public function testProductos()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $proveedor = $sucursal->proveedor;
+        $producto->addProveedor($proveedor);
+        $productos = $proveedor->productos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $productos);
+        $this->assertInstanceOf(App\Producto::class, $productos[0]);
+    }
 }

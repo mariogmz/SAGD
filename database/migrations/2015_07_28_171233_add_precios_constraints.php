@@ -3,8 +3,8 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProductosSucursalesTable extends Migration {
-
+class AddPreciosConstraints extends Migration
+{
     /**
      * Run the migrations.
      *
@@ -13,9 +13,8 @@ class CreateProductosSucursalesTable extends Migration {
     public function up()
     {
         //
-        Schema::create('productos_sucursales', function ($table)
-        {
-            $table->increments('id');
+        Schema::table('precios', function($table){
+            $table->integer('producto_sucursal_id')->unsigned();
         });
     }
 
@@ -27,6 +26,8 @@ class CreateProductosSucursalesTable extends Migration {
     public function down()
     {
         //
-        Schema::drop('productos_sucursales');
+        Schema::table('precios', function($table){
+            $table->dropColumn('producto_sucursal_id');
+        });
     }
 }

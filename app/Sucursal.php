@@ -3,6 +3,9 @@
 namespace App;
 
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+
 class Sucursal extends LGGModel {
 
     protected $table = 'sucursales';
@@ -52,6 +55,16 @@ class Sucursal extends LGGModel {
     public function domicilio()
     {
         return $this->belongsTo('App\Domicilio');
+    }
+
+    /**
+     * Obtener los Productos relacionados con la Sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function productos()
+    {
+        return $this->belongsToMany('App\Producto', 'productos_sucursales',
+            'sucursal_id', 'producto_id');
     }
 
     /**

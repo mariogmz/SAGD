@@ -79,7 +79,16 @@ class SucursalTest extends TestCase {
         $this->assertEquals($domicilio, $sucursal->domicilio);
     }
 
-
-
-
+    /**
+     * @covers ::productos
+     */
+    public function testProductos()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal($sucursal);
+        $testProductos = $sucursal->productos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $testProductos);
+        $this->assertInstanceOf(App\Producto::class, $testProductos[0]);
+    }
 }

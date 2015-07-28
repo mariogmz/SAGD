@@ -16,9 +16,11 @@ class AddProductosSucursalesConstraints extends Migration
         Schema::table('productos_sucursales', function($table){
             $table->integer('producto_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
+            $table->integer('proveedor_id')->unsigned();
 
             $table->foreign('producto_id')->references('id')->on('productos');
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
+            $table->foreign('proveedor_id')->references('id')->on('proveedores');
         });
     }
 
@@ -33,8 +35,9 @@ class AddProductosSucursalesConstraints extends Migration
         Schema::table('productos_sucursales', function($table){
             $table->dropForeign('productos_sucursales_producto_id_foreign');
             $table->dropForeign('productos_sucursales_sucursal_id_foreign');
+            $table->dropForeign('productos_sucursales_proveedor_id_foreign');
 
-            $table->dropColumn(['producto_id', 'sucursal_id']);
+            $table->dropColumn(['producto_id', 'sucursal_id', 'proveedor_id']);
         });
     }
 }

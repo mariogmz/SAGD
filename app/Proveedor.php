@@ -3,6 +3,9 @@
 namespace App;
 
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Validator;
+
 class Proveedor extends LGGModel {
 
     protected $table = 'proveedores';
@@ -43,5 +46,13 @@ class Proveedor extends LGGModel {
         return $this->hasMany('App\Sucursal');
     }
 
-
+    /**
+     * Obtiene los productos asociados con el proveedor
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function productos()
+    {
+        return $this->belongsToMany('App\Producto', 'productos_sucursales',
+            'proveedor_id', 'producto_id');
+    }
 }

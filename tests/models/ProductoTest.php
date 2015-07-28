@@ -272,7 +272,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers class::dimension()
+     * @covers class::dimension
      */
     public function testDimension()
     {
@@ -294,5 +294,141 @@ class ProductoTest extends TestCase
         $pms = $producto->productoMovimientos;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+    }
+
+    /**
+     * @covers ::addSucursal
+     */
+    public function testAddSucursal()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+        $this->assertInstanceOf(App\Sucursal::class, $producto->sucursales[0]);
+    }
+
+    /**
+     * @covers ::addProveedor
+     */
+    public function testAddProveedor()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create(['proveedor_id' => $sucursal->proveedor->id]);
+        $producto->addProveedor($sucursal->proveedor);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->proveedores);
+        $this->assertInstanceOf(App\Proveedor::class, $producto->proveedores[0]);
+    }
+
+    /**
+     * @covers ::sucursales
+     */
+    public function testSucursales()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $sucursales = $producto->sucursales;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sucursales);
+        $this->assertInstanceOf(App\Sucursal::class, $sucursales[0]);
+    }
+
+    /**
+     * @covers ::proveedores
+     */
+    public function testProveedores()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $proveedores = $producto->proveedores;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $proveedores);
+        $this->assertInstanceOf(App\Proveedor::class, $proveedores[0]);
+    }
+
+    /**
+     * @covers ::productoSucursal
+     */
+    public function testProductosSucursales()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $ps = $producto->productosSucursales;
+        $this->assertInstanceOf(App\ProductoSucursal::class, $ps[0]);
+    }
+
+    /**
+     * @covers ::existencias
+     */
+    public function testExistencias()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $ps = $producto->productosSucursales[0];
+        $existencia = factory(App\Existencia::class)->make();
+        $existencia->productoSucursal()->associate($ps)->save();
+        $existencias = $producto->existencias;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $existencias);
+        $this->assertInstanceOf(App\Existencia::class, $existencias[0]);
+    }
+
+    /**
+     * @covers ::existencias
+     */
+    public function testExistenciasConSucursal()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal1 = factory(App\Sucursal::class)->create();
+        $sucursal2 = factory(App\Sucursal::class)->create();
+        $producto->addSucursal( $sucursal1 );
+        $producto->addSucursal( $sucursal2 );
+
+        $ps = $producto->productosSucursales[0];
+        factory(App\Existencia::class)->make()->productoSucursal()->associate($ps)->save();
+        $ps = $producto->productosSucursales[1];
+        factory(App\Existencia::class)->make()->productoSucursal()->associate($ps)->save();
+        factory(App\Existencia::class)->make()->productoSucursal()->associate($ps)->save();
+
+        $existencias = $producto->existencias($sucursal2->id);
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $existencias);
+        $this->assertInstanceOf(App\Existencia::class, $existencias[0]);
+    }
+
+    /**
+     * @covers ::precios
+     */
+    public function testPrecios()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addProveedor( $sucursal->proveedor );
+        $ps = $producto->productosSucursales[0];
+        $precio = factory(App\Precio::class)->make();
+        $precio->productoSucursal()->associate($producto->productosSucursales[0])->save();
+        $precios = $producto->precios;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $precios);
+        $this->assertInstanceOf(App\Precio::class, $precios[0]);
+    }
+
+    /**
+     * @covers ::precios
+     */
+    public function testPreciosConProveedor()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $proveedor1 = factory(App\Sucursal::class)->create()->proveedor;
+        $proveedor2 = factory(App\Sucursal::class)->create()->proveedor;
+        $producto->addProveedor($proveedor1);
+        $producto->addProveedor($proveedor2);
+
+        $ps1 = $producto->productosSucursales->first();
+        $ps2 = $producto->productosSucursales->last();
+        $precio1 = factory(App\Precio::class)->make();
+        $precio2 = factory(App\Precio::class)->make();
+        $precio1->productoSucursal()->associate($ps1)->save();
+        $precio2->productoSucursal()->associate($ps2)->save();
+
+        $precios = $producto->precios($proveedor1->id);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $precios);
+        $this->assertInstanceOf(App\Precio::class, $precios[0]);
     }
 }

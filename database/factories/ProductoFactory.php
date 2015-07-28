@@ -14,14 +14,14 @@
 $factory->define(App\Producto::class, function ($faker) {
     return [
         'activo' => $faker->boolean,
-        'clave' => $faker->text(60),
+        'clave' => $faker->unique()->text(60),
         'descripcion' => $faker->text(300),
         'fecha_entrada' => $faker->dateTime,
         'numero_parte' => $faker->unique()->text(30),
         'remate' => $faker->boolean,
         'spiff' => $faker->randomFloat(2, 0.0, 999999.9),
         'subclave' => $faker->text(45),
-        'upc' => $faker->randomNumber,
+        'upc' => $faker->unique()->randomNumber,
         'tipo_garantia_id' => factory(App\TipoGarantia::class)->create()->id,
         'marca_id' => factory(App\Marca::class)->create()->id,
         'unidad_id' => factory(App\Unidad::class)->create()->id,
