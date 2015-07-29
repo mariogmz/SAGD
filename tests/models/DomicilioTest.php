@@ -101,4 +101,17 @@ class DomicilioTest extends TestCase {
             $this->assertEquals($sucursales_resultado[$i], $sucursales[$i]);
         }
     }
+
+    /**
+     * @covers ::clientes
+     */
+    public function testClientes()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $domicilio = factory(App\Domicilio::class)->create();
+        $domicilio->clientes()->attach($cliente);
+        $clientes = $domicilio->clientes;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
+        $this->assertInstanceOf(App\Cliente::class, $clientes[0]);
+    }
 }

@@ -75,6 +75,9 @@ class PaginaWebDistribuidorTest extends TestCase {
      */
     public function testCliente()
     {
-        $this->markTestIncomplete('Relacion con cliente');
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $pwd = factory(App\PaginaWebDistribuidor::class)->create(['cliente_id' => $cliente->id]);
+        $cliente = $pwd->cliente;
+        $this->assertInstanceOf(App\Cliente::class, $cliente);
     }
 }

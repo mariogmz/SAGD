@@ -46,7 +46,10 @@ class ClienteTest extends TestCase {
      */
     public function testEmailEsUnico()
     {
-        $this->markTestIncomplete('Hacer las relaciones primero');
+        $cliente = factory(App\Cliente::class, 'full')->make();
+        $dup = clone $cliente;
+        $cliente->save();
+        $this->assertFalse($dup->save());
     }
 
     /**
@@ -233,9 +236,32 @@ class ClienteTest extends TestCase {
      */
     public function testComentarios()
     {
-        $cliente = factory(App\Cliente::class)->make();
+        $cliente = factory(App\Cliente::class, 'full')->create();
         $empleado = factory(App\Empleado::class)->create();
-        $this->markTestIncomplete('Guess what? We cant save a Cliente');
+        $cliente->empleados()->attach($empleado, ['comentario' => "Balalalala"]);
+        $comentarios = $cliente->comentarios;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $comentarios);
+        $this->assertInstanceOf(App\ClienteComentario::class, $comentarios[0]);
+    }
+
+    /**
+     * @covers ::autoriza
+     */
+    public function testAutorizaConCliente()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $autorizado = factory(App\Cliente::class, 'full')->create();
+        $this->assertTrue($cliente->autoriza($autorizado));
+    }
+
+    /**
+     * @covers ::autoriza
+     */
+    public function testAutorizaConNombre()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $autorizado = "Neil deGrasse Tyson";
+        $this->assertTrue($cliente->autoriza($autorizado));
     }
 
     /**
@@ -243,7 +269,16 @@ class ClienteTest extends TestCase {
      */
     public function testAutorizaciones()
     {
-        $this->markTestIncomplete("Arggghhh");
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $autorizado = factory(App\Cliente::class, 'full')->create();
+
+        factory(App\ClienteAutorizacion::class)->create([
+            'cliente_id' => $cliente->id,
+            'cliente_autorizado_id' => $autorizado->id,
+            'nombre_autorizado' => null]);
+        $autorizaciones = $cliente->autorizaciones;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $autorizaciones);
+        $this->assertInstanceOf(App\ClienteAutorizacion::class, $autorizaciones[0]);
     }
 
     /**
@@ -277,5 +312,31 @@ class ClienteTest extends TestCase {
         $sucursal = factory(App\Sucursal::class)->create();
         $cliente->sucursal()->associate($sucursal);
         $this->assertInstanceOf(App\Sucursal::class, $cliente->sucursal);
+    }
+
+    /**
+     * @covers ::paginasWebDistribuidores
+     */
+    public function testPaginasWebDistribuidores()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $pwd = factory(App\PaginaWebDistribuidor::class)->make();
+        $cliente->paginasWebDistribuidores()->save($pwd);
+        $pwds = $cliente->paginasWebDistribuidores;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pwds);
+        $this->assertInstanceOf(App\PaginaWebDistribuidor::class, $pwds[0]);
+    }
+
+    /**
+     * @covers ::domicilios
+     */
+    public function testDomicilios()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $domicilio = factory(App\Domicilio::class)->create();
+        $cliente->domicilios()->attach($domicilio);
+        $domicilios = $cliente->domicilios;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $domicilios);
+        $this->assertInstanceOf(App\Domicilio::class, $domicilios[0]);
     }
 }

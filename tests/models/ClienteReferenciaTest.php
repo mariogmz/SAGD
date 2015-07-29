@@ -37,6 +37,11 @@ class ClienteReferenciaTest extends TestCase {
      */
     public function testClientes()
     {
-        $this->markTestIncomplete('We need to save a Cliente to do this');
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $cr = factory(App\ClienteReferencia::class)->create();
+        $cr->clientes()->save($cliente);
+        $clientes = $cr->clientes;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
+        $this->assertInstanceOf(App\Cliente::class, $clientes[0]);
     }
 }

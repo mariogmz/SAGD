@@ -40,4 +40,16 @@ class ClienteAutorizacionTest extends TestCase {
         $ca = factory(App\ClienteAutorizacion::class, 'both')->make();
         $this->assertFalse($ca->isValid());
     }
+
+    /**
+     * @covers ::clientes
+     */
+    public function testClientes()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $ca = factory(App\ClienteAutorizacion::class)->make();
+        $ca->cliente()->associate($cliente);
+        $cliente = $ca->cliente;
+        $this->assertInstanceOf(App\Cliente::class, $cliente);
+    }
 }

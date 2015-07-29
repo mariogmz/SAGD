@@ -25,4 +25,14 @@ class ClienteReferencia extends LGGModel
             return true;
         });
     }
+
+
+    /**
+    * Obtiene los Clientes asociado con la Referencia
+    * @return Illuminate\Database\Eloquent\Collection::class
+    */
+    public function clientes()
+    {
+        return $this->hasMany('App\Cliente', 'cliente_referencia_id');
+    }
 }

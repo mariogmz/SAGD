@@ -12,6 +12,7 @@ class ClienteEstatusTest extends TestCase {
     {
         $clienteE = factory(App\ClienteEstatus::class)->make();
         $this->assertTrue($clienteE->isValid());
+        $this->assertTrue($clienteE->save());
     }
 
     /**
@@ -38,7 +39,10 @@ class ClienteEstatusTest extends TestCase {
     public function testClientes()
     {
         $estatus = factory(App\ClienteEstatus::class)->create();
-        $cliente = factory(App\Cliente::class)->make();
-        $this->markTestIncomplete('As long as we cant save a client we cant do this');
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $estatus->clientes()->save($cliente);
+        $clientes = $estatus->clientes;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
+        $this->assertInstanceOf(App\Cliente::class, $clientes[0]);
     }
 }

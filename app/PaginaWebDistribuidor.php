@@ -27,4 +27,14 @@ class PaginaWebDistribuidor extends LGGModel
             return true;
         });
     }
+
+
+    /**
+    * Obtiene el Cliente asociado con la PaginaWebDistribuidor
+    * @return App\Cliente
+    */
+    public function cliente()
+    {
+        return $this->belongsTo('App\Cliente', 'cliente_id');
+    }
 }

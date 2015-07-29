@@ -14,8 +14,7 @@ class CreateRolesPermisosTable extends Migration
     {
         //
         Schema::create('roles_permisos', function($table){
-            $table->integer('rol_id');
-            $table->primary('rol_id');
+            $table->increments('id');
         });
     }
 

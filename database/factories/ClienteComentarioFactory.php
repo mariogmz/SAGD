@@ -23,3 +23,12 @@ $factory->defineAs(App\ClienteComentario::class, 'longcomment', function($faker)
     $cc['comentario'] = $faker->regexify('[a]{201}');
     return $cc;
 });
+
+$factory->defineAs(App\ClienteComentario::class, 'full', function($faker) use ($factory){
+    $cc = $factory->raw(App\ClienteComentario::class);
+    $cc = array_merge($cc, [
+        'cliente_id' => factory(App\Cliente::class, 'full')->create()->id,
+        'empleado_id' => factory(App\Empleado::class)->create()->id,
+    ]);
+    return $cc;
+});

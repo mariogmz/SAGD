@@ -32,4 +32,14 @@ class ClienteAutorizacion extends LGGModel
         return ( empty($this['cliente_autorizado_id']) xor empty($this['nombre_autorizado']) ) &&
             parent::isValid();
     }
+
+
+    /**
+    * Obtiene el Cliente asociado con la Autorizacion
+    * @return Illuminate\Database\Eloquent\Collection::class
+    */
+    public function cliente()
+    {
+        return $this->belongsTo('App\Cliente', 'cliente_id');
+    }
 }

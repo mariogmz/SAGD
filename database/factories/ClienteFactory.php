@@ -24,6 +24,7 @@ $factory->define(App\Cliente::class, function ($faker)
         'fecha_verificacion_correo' => $faker->dateTime,
         'fecha_expira_club_zegucom' => $faker->dateTime,
         'referencia_otro' => $faker->text(50),
+        'rol_id' => factory(App\Rol::class)->create()->id,
         'access_token' => $faker->regexify('[a-fA-F0-9]{20}')
     ];
 });
@@ -72,11 +73,10 @@ $factory->defineAs(App\Cliente::class, 'longref', function($faker) use ($factory
 
 $factory->defineAs(App\Cliente::class, 'full', function($faker) use ($factory){
     $cliente = $factory->raw(App\Cliente::class);
-    array_merge($cliente, [
+    $cliente = array_merge($cliente, [
         'cliente_estatus_id' => factory(App\ClienteEstatus::class)->create()->id,
         'cliente_referencia_id' => factory(App\ClienteReferencia::class)->create()->id,
         'sucursal_id' => factory(App\Sucursal::class)->create()->id,
-        'rol_id' => factory(App\Rol::class)->create()->id
     ]);
     return $cliente;
 });

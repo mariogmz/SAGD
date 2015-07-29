@@ -60,4 +60,14 @@ class Domicilio extends LGGModel {
         return $this->hasMany('App\Sucursal');
     }
 
+
+    /**
+    * Obtiene los Clientes asociados con el Domicilio
+    * @return Illuminate\Database\Eloquent\Collection::class
+    */
+    public function clientes()
+    {
+        return $this->belongsToMany('App\Cliente', 'domicilios_clientes',
+            'domicilio_id', 'cliente_id');
+    }
 }

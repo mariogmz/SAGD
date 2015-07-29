@@ -25,4 +25,14 @@ class ClienteEstatus extends LGGModel
             return true;
         });
     }
+
+
+    /**
+    * Obtiene los Clientes asociado con el Estatus
+    * @return Illuminate\Database\Eloquent\Collection::class
+    */
+    public function clientes()
+    {
+        return $this->hasMany('App\Cliente', 'cliente_estatus_id');
+    }
 }

@@ -31,4 +31,24 @@ class ClienteComentarioTest extends TestCase {
         $cc = factory(App\ClienteComentario::class, 'longcomment')->make();
         $this->assertFalse($cc->isValid());
     }
+
+    /**
+     * @covers ::cliente
+     */
+    public function testCliente()
+    {
+        $cc = factory(App\ClienteComentario::class,'full')->create();
+        $cliente = $cc->cliente;
+        $this->assertInstanceOf(App\Cliente::class, $cliente);
+    }
+
+    /**
+     * @covers ::empleado
+     */
+    public function testEmpleado()
+    {
+        $cc = factory(App\ClienteComentario::class, 'full')->create();
+        $empleado = $cc->empleado;
+        $this->assertInstanceOf(App\Empleado::class, $empleado);
+    }
 }

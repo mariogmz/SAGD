@@ -25,4 +25,24 @@ class ClienteComentario extends LGGModel
             return true;
         });
     }
+
+
+    /**
+    * Obtiene el Cliente asociado con el Comentario
+    * @return App\Cliente
+    */
+    public function cliente()
+    {
+        return $this->belongsTo('App\Cliente', 'cliente_id');
+    }
+
+
+    /**
+    * Obtiene el Empleado asociado con el Comentario
+    * @return App\Empleado
+    */
+    public function empleado()
+    {
+        return $this->belongsTo('App\Empleado', 'empleado_id');
+    }
 }
