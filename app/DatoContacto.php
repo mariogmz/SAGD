@@ -31,7 +31,6 @@ class DatoContacto extends LGGModel {
     {
         DatoContacto::creating(function ($dato_contacto)
         {
-//            $dato_contacto->email = strtoupper($dato_contacto->email);
             if (!$dato_contacto->isValid())
             {
                 return false;

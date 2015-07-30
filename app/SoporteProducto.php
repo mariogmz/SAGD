@@ -10,7 +10,12 @@ class SoporteProducto extends LGGModel {
     public $timestamps = false;
     protected $fillable = ['cantidad', 'precio', 'soporte_id', 'producto_id'];
 
-    public static $rules = [];
+    public static $rules = [
+        'cantidad'    => 'required|integer',
+        'precio'      => 'required|numeric',
+        'soporte_id'  => 'required|integer',
+        'producto_id' => 'required|integer'
+    ];
 
     /**
      * Define the model hooks
@@ -30,7 +35,15 @@ class SoporteProducto extends LGGModel {
      * Obtiene el soporte asociado a este soporte de producto
      * @returns App\ServicioSoporte
      */
-    public function servicioSoporte(){
+    public function servicioSoporte() {
         return $this->belongsTo('App\ServicioSoporte');
+    }
+
+    /**
+     * Obtiene el producto asociado a este soporte de producto
+     * @returns App\Producto
+     */
+    public function producto() {
+        return $this->belongsTo('App\Producto');
     }
 }

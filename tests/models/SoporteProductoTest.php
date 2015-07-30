@@ -56,14 +56,14 @@ class SoporteProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::soporte
+     * @covers ::servicioSoporte
      */
-    public function testSoporte() {
+    public function testServicioSoporte() {
         $soporte = factory(App\ServicioSoporte::class)->create();
         $soporte_producto = factory(App\SoporteProducto::class)->create([
             'servicio_soporte_id' => $soporte->id
         ]);
-        $this->assertEquals(App\ServicioSoporte::find($soporte->id), $soporte_producto->soporte);
+        $this->assertEquals(App\ServicioSoporte::find($soporte->id), $soporte_producto->servicioSoporte);
     }
 
     /**
