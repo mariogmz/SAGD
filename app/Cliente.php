@@ -149,7 +149,7 @@ class Cliente extends LGGModel {
 
     /**
     * Obtiene las paginas web distribuidor asociado con el Cliente
-    * @return Illuminate\Database\Eloquent\Collection::class
+    * @return Illuminate\Database\Eloquent\Collection
     */
     public function paginasWebDistribuidores()
     {
@@ -159,7 +159,7 @@ class Cliente extends LGGModel {
 
     /**
     * Obtiene los Domicilios asociado con el Cliente
-    * @return Illuminate\Database\Eloquent\Collection::class
+    * @return Illuminate\Database\Eloquent\Collection
     */
     public function domicilios()
     {

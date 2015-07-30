@@ -19,6 +19,28 @@ class FamiliaTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $familia = factory(App\Familia::class)->create();
+        $familia->nombre = 'MC Hammer';
+        $this->assertTrue($familia->isValid('update'));
+        $this->assertTrue($familia->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClaveNoPuedeSerDuplicada()
+    {
+        $familia = factory(App\Familia::class)->create();
+        $dup = clone $familia;
+        $this->assertFalse($dup->isValid());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveNoPuedeSerNula()
     {

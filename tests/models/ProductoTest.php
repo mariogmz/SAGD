@@ -19,6 +19,18 @@ class ProductoTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->descripcion_corta = 'MC Hammer';
+        $this->assertTrue($producto->isValid('update'));
+        $this->assertTrue($producto->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testActivoEsRequerido()
     {

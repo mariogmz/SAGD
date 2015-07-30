@@ -23,6 +23,8 @@ class DatoContacto extends LGGModel {
         'empleado_id'    => 'required|integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -37,6 +39,11 @@ class DatoContacto extends LGGModel {
             }
 
             return true;
+        });
+        DatoContacto::updating(function($dato_contacto){
+            $dato_contacto->updateRules = self::$rules;
+            $dato_contacto->updateRules['email'] .= ',email,'.$dato_contacto->id;
+            return $dato_contacto->isValid('update');
         });
     }
 

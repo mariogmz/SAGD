@@ -19,6 +19,28 @@ class MarcaTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $marca = factory(App\Marca::class)->create();
+        $marca->nombre = 'MC Hammer';
+        $this->assertTrue($marca->isValid('update'));
+        $this->assertTrue($marca->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClaveNoPuedeSerDuplicada()
+    {
+        $marca = factory(App\Marca::class)->create();
+        $dup = clone $marca;
+        $this->assertFalse($dup->isValid());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveVaciaNoEsValido() {
         $marca = factory(App\Marca::class)->make(['clave' => '']);

@@ -14,6 +14,7 @@ class CreateDatosContactosTable extends Migration {
     {
         Schema::create('datos_contactos', function (Blueprint $table)
         {
+            $table->increments('id');
             $table->integer('empleado_id')->unsigned()->nullable();
             $table->string('direccion', 100)->nullable();
             $table->string('telefono', 20)->nullable();

@@ -7,6 +7,18 @@ class RmaTiempoTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $rmat = factory(App\RmaTiempo::class)->create();
+        $rmat->nombre = 'MCHammer';
+        $this->assertTrue($rmat->isValid('update'));
+        $this->assertTrue($rmat->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testNombreEsRequerido()
     {

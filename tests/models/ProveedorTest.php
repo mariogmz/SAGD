@@ -7,6 +7,18 @@ class ProveedorTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $proveedor = factory(App\Proveedor::class)->create();
+        $proveedor->razon_social = 'MC Hammer';
+        $this->assertTrue($proveedor->isValid('update'));
+        $this->assertTrue($proveedor->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveNoDebeTenerMasDe4Digitos()
     {

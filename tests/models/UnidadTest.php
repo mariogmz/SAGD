@@ -19,6 +19,28 @@ class UnidadTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $unidad = factory(App\Unidad::class)->create();
+        $unidad->nombre = 'MC Hammer';
+        $this->assertTrue($unidad->isValid('update'));
+        $this->assertTrue($unidad->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClaveNoPuedeDuplicarse()
+    {
+        $unidad = factory(App\Unidad::class)->create();
+        $dup = clone $unidad;
+        $this->assertFalse($dup->isValid());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveVaciaNoEsValido()
     {

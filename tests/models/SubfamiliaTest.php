@@ -21,6 +21,28 @@ class SubfamiliaTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $subfamilia->nombre = 'MC Hammer';
+        $this->assertTrue($subfamilia->isValid('update'));
+        $this->assertTrue($subfamilia->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testClaveNoPuedeSerDuplicada()
+    {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $dup = clone $subfamilia;
+        $this->assertFalse($dup->isValid());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveNoPuedeSerNula()
     {

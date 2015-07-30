@@ -13,6 +13,8 @@ class EstadoRma extends LGGModel {
         'nombre' => 'required|string|max:45|unique:estados_rmas'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -27,6 +29,11 @@ class EstadoRma extends LGGModel {
             }
 
             return true;
+        });
+        EstadoRma::updating(function($estado_rma){
+            $estado_rma->updateRules = self::$rules;
+            $estado_rma->updateRules['nombre'] .= ',nombre,'.$estado_rma->id;
+            return $estado_rma->isValid('update');
         });
     }
 

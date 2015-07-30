@@ -21,6 +21,8 @@ class Sucursal extends LGGModel {
         'domicilio_id' => 'required|integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -36,6 +38,11 @@ class Sucursal extends LGGModel {
             }
 
             return true;
+        });
+        Sucursal::updating(function($sucursal){
+            $sucursal->updateRules = self::$rules;
+            $sucursal->updateRules['clave'] .= ',clave,'.$sucursal->id;
+            return $sucursal->isValid('update');
         });
     }
 

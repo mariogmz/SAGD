@@ -10,10 +10,12 @@ class Familia extends LGGModel
     protected $fillable = ['clave', 'nombre', 'descripcion'];
 
     public static $rules = [
-        'clave' => 'required|max:4',
+        'clave' => 'required|max:4|unique:familias',
         'nombre' => 'required|max:45',
         'descripcion' => 'max:100'
     ];
+
+    public $updateRules = [];
 
     /**
      * Define the model hooks
@@ -26,6 +28,11 @@ class Familia extends LGGModel
                 return false;
             }
             return true;
+        });
+        Familia::updating(function($familia){
+            $familia->updateRules = self::$rules;
+            $familia->updateRules['clave'] .= ',clave,'.$familia->id;
+            return $familia->isValid('update');
         });
     }
 

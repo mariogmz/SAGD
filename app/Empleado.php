@@ -21,6 +21,8 @@ class Empleado extends LGGModel {
         'access_token'          => 'max:20|unique:empleados'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -35,6 +37,12 @@ class Empleado extends LGGModel {
             }
 
             return true;
+        });
+        Empleado::updating(function($empleado){
+            $empleado->updateRules = self::$rules;
+            $empleado->updateRules['usuario'] .= ',usuario,'.$empleado->id;
+            $empleado->updateRules['access_token'] .= ',access_token,'.$empleado->id;
+            return $empleado->isValid('update');
         });
     }
 

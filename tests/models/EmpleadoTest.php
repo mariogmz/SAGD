@@ -17,6 +17,18 @@ class EmpleadoTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $empleado->nombre = 'MC Hammer';
+        $this->assertTrue($empleado->isValid('update'));
+        $this->assertTrue($empleado->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testModeloEmpleadosAsociadoTablaEmpleados()
     {

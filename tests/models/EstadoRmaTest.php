@@ -18,6 +18,18 @@ class EstadoRmaTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $estado_rma = factory(App\EstadoRma::class)->create();
+        $estado_rma->nombre = 'MCHammer';
+        $this->assertTrue($estado_rma->isValid('update'));
+        $this->assertTrue($estado_rma->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testNombreEsMaximo45Caracteres()
     {

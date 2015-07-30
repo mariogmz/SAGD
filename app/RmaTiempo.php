@@ -13,6 +13,8 @@ class RmaTiempo extends LGGModel {
         'nombre' => 'required|string|max:45|unique:rmas_tiempos'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -27,6 +29,11 @@ class RmaTiempo extends LGGModel {
             }
 
             return true;
+        });
+        RmaTiempo::updating(function($rmat){
+            $rmat->updateRules = self::$rules;
+            $rmat->updateRules['nombre'] .= ',nombre,'.$rmat->id;
+            return $rmat->isValid('update');
         });
     }
 

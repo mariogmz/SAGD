@@ -12,7 +12,7 @@ class Producto extends LGGModel
 
     public static $rules = [
         'activo' => 'required|boolean',
-        'clave' => 'required|unique:productos|max:60',
+        'clave' => 'required|max:60|unique:productos',
         'descripcion' => 'required|max:300',
         'descripcion_corta' => 'max:50',
         'fecha_entrada' => 'required|date',
@@ -20,8 +20,10 @@ class Producto extends LGGModel
         'remate' => 'required|boolean',
         'spiff' => 'required|numeric',
         'subclave' => 'required',
-        'upc' => 'required|unique:productos|integer'
+        'upc' => 'required|integer|unique:productos'
     ];
+
+    public $updateRules = [];
 
     /**
      * Define the model hooks
@@ -34,6 +36,13 @@ class Producto extends LGGModel
                 return false;
             }
             return true;
+        });
+        Producto::updating(function($producto){
+            $producto->updateRules = self::$rules;
+            $producto->updateRules['clave'] .= ',clave,'.$producto->id;
+            $producto->updateRules['numero_parte'] .= ',numero_parte,'.$producto->id;
+            $producto->updateRules['upc'] .= ',upc,'.$producto->id;
+            return $producto->isValid('update');
         });
     }
 
