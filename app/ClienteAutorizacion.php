@@ -27,10 +27,10 @@ class ClienteAutorizacion extends LGGModel
         });
     }
 
-    public function isValid()
+    public function isValid($method=null)
     {
         return ( empty($this['cliente_autorizado_id']) xor empty($this['nombre_autorizado']) ) &&
-            parent::isValid();
+            parent::isValid($method);
     }
 
 

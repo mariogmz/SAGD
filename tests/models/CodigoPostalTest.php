@@ -18,6 +18,18 @@ class CodigoPostalTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $codigo_postal = factory(App\CodigoPostal::class)->create();
+        $codigo_postal->estado = "Zeguland";
+        $this->assertTrue($codigo_postal->isValid('update'));
+        $this->assertTrue($codigo_postal->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testMunicipioEsRequerido()
     {

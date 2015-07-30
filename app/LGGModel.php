@@ -13,9 +13,10 @@ class LGGModel extends Model
      * @codeCoverageIgnore
      * @return bool
      */
-    public function isValid()
+    public function isValid($method=null)
     {
-        $validation = Validator::make($this->attributes, static ::$rules);
+        $rules = is_null($method) ? static ::$rules : $this->updateRules;
+        $validation = Validator::make($this->attributes, $rules);
         if ($validation->passes()) return true;
         $this->errors = $validation->messages();
         return false;

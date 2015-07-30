@@ -16,6 +16,18 @@ class ClienteTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $cliente->nombre = 'MC Hammer';
+        $this->assertTrue($cliente->isValid('update'));
+        $this->assertTrue($cliente->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testEmailEsObligatorio()
     {

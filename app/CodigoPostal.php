@@ -15,6 +15,8 @@ class CodigoPostal extends LGGModel {
         'codigo_postal' => ['required','string','unique:codigos_postales','regex:/(\d{5})/']
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -31,6 +33,20 @@ class CodigoPostal extends LGGModel {
             }
 
             return true;
+        });
+
+        CodigoPostal::updating(function($codigo_postal){
+            $codigo_postal->updateRules = self::$rules;
+            $codigo_postal->updateRules['codigo_postal'] = [
+                'required',
+                'string',
+                'unique:codigos_postales,codigo_postal,'.$codigo_postal->id,
+                'regex:/(\d{5})/'
+            ];
+            if (!$codigo_postal->isValid('update'))
+            {
+                return false;
+            }
         });
     }
 
