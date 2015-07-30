@@ -2,12 +2,13 @@
 
 namespace App;
 
-class SoporteProducto extends LGGModel
-{
+
+class SoporteProducto extends LGGModel {
+
     //
-    protected $table = "";
+    protected $table = "soportes_productos";
     public $timestamps = false;
-    protected $fillable = [];
+    protected $fillable = ['cantidad', 'precio', 'soporte_id', 'producto_id'];
 
     public static $rules = [];
 
@@ -15,12 +16,21 @@ class SoporteProducto extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        SoporteProducto::creating(function($model){
-            if ( !$model->isValid() ){
+    public static function boot() {
+        SoporteProducto::creating(function ($model) {
+            if (!$model->isValid()) {
                 return false;
             }
+
             return true;
         });
+    }
+
+    /**
+     * Obtiene el soporte asociado a este soporte de producto
+     * @returns App\ServicioSoporte
+     */
+    public function servicioSoporte(){
+        return $this->belongsTo('App\ServicioSoporte');
     }
 }

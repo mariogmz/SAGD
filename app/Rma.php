@@ -60,6 +60,14 @@ class Rma extends LGGModel {
     }
 
     /**
+     * Obtiene el detalle del rma
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function rmaDetalles(){
+        return $this->hasMany('App\RmaDetalle');
+    }
+
+    /**
      * Obtiene el estado del rma asociado
      * @return App\RmaTiempo
      */

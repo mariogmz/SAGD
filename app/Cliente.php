@@ -169,7 +169,7 @@ class Cliente extends LGGModel {
 
     /**
      * Obtiene los soportes que ha solicitado el cliente
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function serviciosSoportes()
     {
@@ -178,7 +178,7 @@ class Cliente extends LGGModel {
 
     /**
      * Obtiene los RMAs que ha solicitado el cliente
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function rmas()
     {

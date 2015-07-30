@@ -33,7 +33,7 @@ class Unidad extends LGGModel
 
     /**
      * Get the associated productos with unidad
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos()
     {

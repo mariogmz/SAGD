@@ -33,7 +33,7 @@ class Telefono extends LGGModel {
 
     /**
      * Obtiene los domicilios asociados con el teléfono
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function domicilios()
     {

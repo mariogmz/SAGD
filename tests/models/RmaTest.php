@@ -118,6 +118,21 @@ class RmaTest extends TestCase {
     }
 
     /**
+     * @covers ::rmaDetalles
+     */
+    public function testRmaDetalles(){
+        $rma = factory(App\Rma::class)->create();
+        factory(App\RmaDetalle::class, 5)->create([
+            'rma_id' => $rma->id
+        ]);
+        $rmas_detalles = Rma::find($rma->id)->rmaDetalles;
+        foreach($rmas_detalles as $rd){
+            $this->assertInstanceOf('App\RmaDetalle', $rd);
+            $this->assertEquals($rma->id, $rd->rma_id);
+        }
+    }
+
+    /**
      * @covers ::sucursal
      */
     public function testSucursal()

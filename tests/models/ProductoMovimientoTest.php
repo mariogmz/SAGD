@@ -87,4 +87,19 @@ class ProductoMovimientoTest extends TestCase
         $testProducto = $pm->producto;
         $this->assertInstanceOf(App\Producto::class, $testProducto);
     }
+
+    /**
+     * @covers ::rmaDetalles
+     */
+    public function testRmaDetalles(){
+        $producto_movimiento = factory(App\ProductoMovimiento::class)->create();
+        factory(App\RmaDetalle::class, 5)->create([
+            'rma_id' => $producto_movimiento->id
+        ]);
+        $rmas_detalles = \App\ProductoMovimiento::find($producto_movimiento->id)->rmaDetalles;
+        foreach($rmas_detalles as $rd){
+            $this->assertInstanceOf('App\RmaDetalle', $rd);
+            $this->assertEquals($producto_movimiento->id, $rd->rma_id);
+        }
+    }
 }

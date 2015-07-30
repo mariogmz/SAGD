@@ -39,7 +39,7 @@ class Proveedor extends LGGModel {
 
     /**
      * Obtiene las sucursales asociadas al proveedor
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function sucursales()
     {
@@ -48,7 +48,7 @@ class Proveedor extends LGGModel {
 
     /**
      * Obtiene los productos asociados con el proveedor
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos()
     {

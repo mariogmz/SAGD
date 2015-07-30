@@ -52,7 +52,7 @@ class CodigoPostal extends LGGModel {
 
     /**
      * Obtiene los domicilios asociados al código postal
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function domicilios()
     {

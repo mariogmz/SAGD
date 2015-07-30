@@ -40,7 +40,7 @@ class Empleado extends LGGModel {
 
     /**
      * Obtiene todos los logs de acceso asociados al empleado
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function logsAccesos()
     {
@@ -67,7 +67,7 @@ class Empleado extends LGGModel {
 
     /**
      * Obtiene los soportes que ha atendido el empleado
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function serviciosSoportes()
     {
@@ -76,7 +76,7 @@ class Empleado extends LGGModel {
 
     /**
      * Obtiene los RMAs que ha solicitado el cliente
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function rmas()
     {

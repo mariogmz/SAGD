@@ -43,4 +43,12 @@ class ProductoMovimiento extends LGGModel
     {
         return $this->belongsTo('App\Producto');
     }
+
+    /**
+     * Obtiene el detalle del rma
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function rmaDetalles(){
+        return $this->hasMany('App\RmaDetalle');
+    }
 }

@@ -37,7 +37,7 @@ class Configuracion extends LGGModel {
 
     /**
      * Obtiene los valores de la configuración para todas las sucursales
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function sucursalesConfiguraciones()
     {

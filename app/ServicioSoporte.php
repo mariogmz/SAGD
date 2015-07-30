@@ -66,4 +66,12 @@ class ServicioSoporte extends LGGModel {
     {
         return $this->belongsTo('App\Cliente');
     }
+
+    /**
+     * Obtiene los soportes de producto que se asociaron con este soporte
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function soportesProductos(){
+        return $this->hasMany('App\SoporteProducto');
+    }
 }

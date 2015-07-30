@@ -202,4 +202,17 @@ class ServicioSoporteTest extends TestCase {
         $this->assertInstanceOf(get_class($cliente), $servicio_soporte->cliente);
     }
 
+    /**
+     * @covers ::soportesProductos
+     */
+    public function testSoportesProductos(){
+        $servicio_soporte = factory(App\ServicioSoporte::class)->create();
+        factory(App\SoporteProducto::class, 5)->create([
+            'soporte_id' => $servicio_soporte->id
+        ]);
+        foreach($servicio_soporte->soportesProductos as $sp){
+            $this->assertInstanceOf('App\SoporteProducto', $sp);
+        }
+    }
+
 }

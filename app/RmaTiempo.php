@@ -32,7 +32,7 @@ class RmaTiempo extends LGGModel {
 
     /**
      * Obtiene todos los rmas con el tiempo asociado
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function rmas(){
         return $this->hasMany('App\Rma');

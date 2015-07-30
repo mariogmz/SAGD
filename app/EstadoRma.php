@@ -32,7 +32,7 @@ class EstadoRma extends LGGModel {
 
     /**
      * Obtiene todos los rmas que tienen asociado el estado_rma
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function rmas(){
         return $this->hasMany('App\Rma');

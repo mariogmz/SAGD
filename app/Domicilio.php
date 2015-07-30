@@ -53,7 +53,7 @@ class Domicilio extends LGGModel {
 
     /**
      * Obtiene las sucursales asociadas al domicilio
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function sucursales()
     {

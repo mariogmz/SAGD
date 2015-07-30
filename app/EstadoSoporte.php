@@ -34,7 +34,7 @@ class EstadoSoporte extends LGGModel {
 
     /**
      * Obtiene los soportes asociados al estatus de soporte
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function serviciosSoportes(){
         return $this->hasMany('App\ServicioSoporte');
