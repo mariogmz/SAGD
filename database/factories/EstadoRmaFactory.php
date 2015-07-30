@@ -11,12 +11,17 @@
 |
 */
 
-$factory->define(App\Domicilio::class, function ($faker)
+$factory->define(App\EstadoRma::class, function ($faker)
 {
     return [
-        'calle'            => $faker->text(45),
-        'localidad'        => $faker->word,
-        'codigo_postal_id' => factory(App\CodigoPostal::class)->create()->id || 1,
-        'telefono_id'      => factory(App\Telefono::class)->create()->id
+        'nombre' => $faker->unique()->text(45)
     ];
 });
+
+$factory->defineAs(App\EstadoRma::class, 'nombrelargo', function ($faker) use ($factory)
+{
+    return [
+        'nombre' => $faker->unique()->text(100)
+    ];
+});
+

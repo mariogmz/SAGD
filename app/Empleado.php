@@ -65,5 +65,21 @@ class Empleado extends LGGModel {
         return $this->belongsTo('App\Sucursal');
     }
 
+    /**
+     * Obtiene los soportes que ha atendido el empleado
+     * @return array
+     */
+    public function serviciosSoportes()
+    {
+        return $this->hasMany('App\ServicioSoporte');
+    }
 
+    /**
+     * Obtiene los RMAs que ha solicitado el cliente
+     * @return array
+     */
+    public function rmas()
+    {
+        return $this->hasMany('App\Rma');
+    }
 }

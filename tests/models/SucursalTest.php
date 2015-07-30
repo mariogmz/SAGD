@@ -91,4 +91,21 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $testProductos);
         $this->assertInstanceOf(App\Producto::class, $testProductos[0]);
     }
+
+    /**
+     * @covers ::rmas
+     */
+    public function testRmas()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Rma::class)->create([
+            'sucursal_id' => $sucursal->id
+        ]);
+        $rmas_resultados = $sucursal->rmas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rmas_resultados);
+        foreach ($rmas_resultados as $rr)
+        {
+            $this->assertInstanceOf(App\Rma::class, $rr);
+        }
+    }
 }

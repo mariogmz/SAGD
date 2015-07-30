@@ -35,7 +35,7 @@ $factory->defineAs(App\ClienteAutorizacion::class, 'onlyname', function($faker) 
 
 $factory->defineAs(App\ClienteAutorizacion::class, 'both', function($faker) use ($factory){
     $ca = $factory->raw(App\ClienteAutorizacion::class);
-    $ca['cliente_autorizado_id'] = $faker->randomDigit;
+    $ca['cliente_autorizado_id'] = $faker->randomDigitNotNull;
     $ca['nombre_autorizado'] = $faker->name;
     return $ca;
 });

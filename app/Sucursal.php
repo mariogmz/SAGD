@@ -75,4 +75,12 @@ class Sucursal extends LGGModel {
     {
         return $this->hasMany('App\Empleado');
     }
+
+    /**
+     * Obtener los RMAs generados en la sucursal
+     * @return array
+     */
+    public function rmas(){
+        return $this->hasMany('App\Rma');
+    }
 }

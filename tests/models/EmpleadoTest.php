@@ -112,4 +112,35 @@ class EmpleadoTest extends TestCase {
         $sucursal_resultado = $empleado->sucursal;
         $this->assertEquals($sucursal, $sucursal_resultado);
     }
+
+    /**
+     * @covers ::serviciosSoportes
+     */
+    public function testServiciosSoportes()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $servicios_soportes = factory(App\ServicioSoporte::class, 5)->create([
+            'empleado_id' => $empleado->id
+        ]);
+        $servicios_soportes_resultado = $empleado->serviciosSoportes;
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertEquals($servicios_soportes[$i]->id, $servicios_soportes_resultado[$i]->id);
+        }
+    }
+
+    /**
+     * @covers ::rmas
+     */
+    public function testRmas(){
+        $empleado = factory(App\Empleado::class)->create();
+        $rmas = factory(App\Rma::class, 5)->create([
+            'empleado_id' => $empleado->id
+        ]);
+        $rmas_resultado = $empleado->rmas;
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertEquals($rmas[$i], $rmas_resultado[$i]);
+        }
+    }
 }

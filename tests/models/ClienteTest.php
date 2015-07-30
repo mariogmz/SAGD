@@ -339,4 +339,35 @@ class ClienteTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $domicilios);
         $this->assertInstanceOf(App\Domicilio::class, $domicilios[0]);
     }
+
+    /**
+     * @covers ::serviciosSoportes
+     */
+    public function testServiciosSoportes()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $servicios_soportes = factory(App\ServicioSoporte::class, 5)->create([
+            'cliente_id' => $cliente->id
+        ]);
+        $servicios_soportes_resultado = $cliente->serviciosSoportes;
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertEquals($servicios_soportes[$i]->id, $servicios_soportes_resultado[$i]->id);
+        }
+    }
+
+    /**
+     * @covers ::rmas
+     */
+    public function testRmas(){
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $rmas = factory(App\Rma::class, 5)->create([
+            'cliente_id' => $cliente->id
+        ]);
+        $rmas_resultado = $cliente->rmas;
+        for ($i = 0; $i < 5; $i ++)
+        {
+            $this->assertEquals($rmas[$i], $rmas_resultado[$i]);
+        }
+    }
 }

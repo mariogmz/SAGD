@@ -15,7 +15,7 @@ $factory->define(App\Cliente::class, function ($faker)
 {
     return [
         'email' => $faker->email,
-        'usuario' => $faker->userName,
+        'usuario' => $faker->unique()->userName,
         'password' => $faker->regexify('[a-fA-F0-9]{64}'),
         'nombre' => $faker->name,
         'fecha_nacimiento' => $faker->dateTime,
@@ -37,7 +37,7 @@ $factory->defineAs(App\Cliente::class, 'longemail', function($faker) use ($facto
 
 $factory->defineAs(App\Cliente::class, 'longusername', function($faker) use ($factory){
     $cliente = $factory->raw(App\Cliente::class);
-    $cliente['usuario'] = $faker->regexify('[a]{21}');
+    $cliente['usuario'] = $faker->unique()->regexify('[a]{21}');
     return $cliente;
 });
 
