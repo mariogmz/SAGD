@@ -90,4 +90,24 @@ class Sucursal extends LGGModel {
     public function rmas(){
         return $this->hasMany('App\Rma');
     }
+
+
+    /**
+    * Obtiene las Salidas asociadas con la Sucursal
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function salidas()
+    {
+        return $this->hasMany('App\Salida', 'sucursal_id');
+    }
+
+
+    /**
+    * Obtiene la Razon Social Emisora asociada con la Sucursal
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function razonesSocialesEmisores()
+    {
+        return $this->hasMany('App\RazonSocialEmisor', 'sucursal_id');
+    }
 }

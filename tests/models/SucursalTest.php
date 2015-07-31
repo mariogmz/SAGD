@@ -120,4 +120,32 @@ class SucursalTest extends TestCase {
             $this->assertInstanceOf(App\Rma::class, $rr);
         }
     }
+
+    /**
+     * @covers ::salidas
+     * @group relaciones
+     */
+    public function testSalidas()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $salida = factory(App\Salida::class, 'full')->create(['sucursal_id' => $sucursal->id]);
+        $salidas = $sucursal->salidas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $salidas);
+        $this->assertInstanceOf(App\Salida::class, $salidas[0]);
+        $this->assertCount(1, $salidas);
+    }
+
+    /**
+     * @covers ::razonesSocialesEmisores
+     * @group relaciones
+     */
+    public function testRazonesSocialesEmisores()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $rse = factory(App\RazonSocialEmisor::class, 'full')->create(['sucursal_id' => $sucursal->id]);
+        $rses = $sucursal->razonesSocialesEmisores;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rses);
+        $this->assertInstanceOf(App\RazonSocialEmisor::class, $rses[0]);
+        $this->assertCount(1, $rses);
+    }
 }
