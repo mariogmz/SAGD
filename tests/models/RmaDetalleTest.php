@@ -60,6 +60,8 @@ class RmaDetalleTest extends TestCase {
      */
     public function testModeloEsActualizable()
     {
+        $this->markTestIncomplete('Garantia class not implemented yet.');
+
         $model = factory(App\RmaDetalle::class)->create();
         $model->descripcion_falla = "You shall not pass!!!";
         $this->assertTrue($model->isValid('update'));

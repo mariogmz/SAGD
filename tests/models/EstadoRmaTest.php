@@ -23,7 +23,7 @@ class EstadoRmaTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $estado_rma = factory(App\EstadoRma::class)->create();
-        $estado_rma->nombre = 'Mary Poopings';
+        $estado_rma->nombre = 'Mary Poopings' . rand();
         $this->assertTrue($estado_rma->isValid('update'));
         $this->assertTrue($estado_rma->save());
     }

@@ -62,7 +62,7 @@ class SoporteProductoTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $model = factory(App\SoporteProducto::class)->create();
-        $model->precio = 20.50;
+        $model->precio = 20.50 + rand(1,1000);
         $this->assertTrue($model->isValid('update'));
         $this->assertTrue($model->save());
     }

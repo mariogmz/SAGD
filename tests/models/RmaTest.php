@@ -8,8 +8,7 @@ class RmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testEstadoRmaRequerido()
-    {
+    public function testEstadoRmaRequerido() {
         $rma = factory(App\Rma::class)->make([
             'cliente_id' => null
         ]);
@@ -19,8 +18,7 @@ class RmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testClienteRequerido()
-    {
+    public function testClienteRequerido() {
         $rma = factory(App\Rma::class)->make([
             'cliente_id' => null
         ]);
@@ -30,8 +28,7 @@ class RmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testEmpleadoRequerido()
-    {
+    public function testEmpleadoRequerido() {
         $rma = factory(App\Rma::class)->make([
             'empleado_id' => null
         ]);
@@ -41,8 +38,7 @@ class RmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testTiempoRmaRequerido()
-    {
+    public function testTiempoRmaRequerido() {
         $rma = factory(App\Rma::class)->make([
             'rma_tiempo_id' => null
         ]);
@@ -52,8 +48,7 @@ class RmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testSucursalRequerido()
-    {
+    public function testSucursalRequerido() {
         $rma = factory(App\Rma::class)->make([
             'sucursal_id' => null
         ]);
@@ -63,8 +58,7 @@ class RmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNotaCreditoNoRequerido()
-    {
+    public function testNotaCreditoNoRequerido() {
         $rma = factory(App\Rma::class, 'sinnotacredito')->make();
         $this->assertTrue($rma->isValid());
     }
@@ -73,19 +67,19 @@ class RmaTest extends TestCase {
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $model = factory(App\Rma::class)->create();
-        $model->fecha = new DateTime('+ 5 days');
+        $id = factory(App\EstadoRma::class)->create()->id;
+        $model->estado_rma_id = $id;
         $this->assertTrue($model->isValid('update'));
         $this->assertTrue($model->save());
+        $this->assertSame($id, $model->estado_rma_id);
     }
 
     /**
      * @covers ::estadoRma
      */
-    public function testEstadoRma()
-    {
+    public function testEstadoRma() {
         $estado_rma = factory(App\EstadoRma::class)->create();
         $rma = factory(App\Rma::class)->create([
             'estado_rma_id' => $estado_rma->id
@@ -96,8 +90,7 @@ class RmaTest extends TestCase {
     /**
      * @covers ::cliente
      */
-    public function testCliente()
-    {
+    public function testCliente() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $rma = factory(App\Rma::class)->create([
             'cliente_id' => $cliente->id
@@ -108,8 +101,7 @@ class RmaTest extends TestCase {
     /**
      * @covers ::empleado
      */
-    public function testEmpleado()
-    {
+    public function testEmpleado() {
         $empleado = factory(App\Empleado::class)->create();
         $rma = factory(App\Rma::class)->create([
             'empleado_id' => $empleado->id
@@ -120,8 +112,7 @@ class RmaTest extends TestCase {
     /**
      * @covers ::rmaTiempo
      */
-    public function testRmaTiempo()
-    {
+    public function testRmaTiempo() {
         $tiempo_rma = factory(App\RmaTiempo::class)->create();
         $rma = factory(App\Rma::class)->create([
             'rma_tiempo_id' => $tiempo_rma->id
@@ -132,13 +123,13 @@ class RmaTest extends TestCase {
     /**
      * @covers ::rmaDetalles
      */
-    public function testRmaDetalles(){
+    public function testRmaDetalles() {
         $rma = factory(App\Rma::class)->create();
         factory(App\RmaDetalle::class, 5)->create([
             'rma_id' => $rma->id
         ]);
         $rmas_detalles = App\Rma::find($rma->id)->rmaDetalles;
-        foreach($rmas_detalles as $rd){
+        foreach ($rmas_detalles as $rd) {
             $this->assertInstanceOf('App\RmaDetalle', $rd);
             $this->assertEquals($rma->id, $rd->rma_id);
         }
@@ -147,8 +138,7 @@ class RmaTest extends TestCase {
     /**
      * @covers ::sucursal
      */
-    public function testSucursal()
-    {
+    public function testSucursal() {
         $sucursal = factory(App\Sucursal::class)->create();
         $rma = factory(App\Rma::class)->create([
             'sucursal_id' => $sucursal->id
@@ -159,8 +149,7 @@ class RmaTest extends TestCase {
     /**
      * @covers ::notaCredito
      */
-    public function testNotaCredito()
-    {
+    public function testNotaCredito() {
         $this->markTestIncomplete('NotaCredito Class not implemented yet.');
         $nota_credito = factory(App\NotaCredito::class)->create();
         $rma = factory(App\NotaCredito::class)->create([

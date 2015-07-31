@@ -25,14 +25,15 @@ class SucursalEnvio extends LGGModel {
     public static function boot() {
         SucursalEnvio::creating(function ($sucursal_envio) {
             if (!$sucursal_envio->isValid()) {
+                print_r($sucursal_envio->errors);
                 return false;
             }
 
             return true;
         });
-        SucursalEnvio::updating(function ($model)
-        {
+        SucursalEnvio::updating(function ($model) {
             $model->updateRules = self::$rules;
+
             return $model->isValid();
         });
     }
