@@ -71,6 +71,7 @@ class EstadoSoporteTest extends TestCase {
 
     /**
      * @covers ::serviciosSoportes
+     * @group relaciones
      */
     public function testServiciosSoportes()
     {

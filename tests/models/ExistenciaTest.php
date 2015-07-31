@@ -59,6 +59,7 @@ class ExistenciaTest extends TestCase
 
     /**
      * @covers ::productoSucursal
+     * @group relaciones
      */
     public function testProductoSucursal()
     {

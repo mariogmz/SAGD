@@ -51,6 +51,7 @@ class EstadoRmaTest extends TestCase {
 
     /**
      * @covers ::rmas
+     * @group relaciones
      */
     public function testRmas()
     {

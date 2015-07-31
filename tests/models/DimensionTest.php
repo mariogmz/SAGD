@@ -50,6 +50,7 @@ class DimensionTest extends TestCase
 
     /**
      * @covers ::producto
+     * @group relaciones
      */
     public function testProducto()
     {

@@ -78,6 +78,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::estadoRma
+     * @group relaciones
      */
     public function testEstadoRma() {
         $estado_rma = factory(App\EstadoRma::class)->create();
@@ -89,6 +90,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::cliente
+     * @group relaciones
      */
     public function testCliente() {
         $cliente = factory(App\Cliente::class, 'full')->create();
@@ -100,6 +102,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::empleado
+     * @group relaciones
      */
     public function testEmpleado() {
         $empleado = factory(App\Empleado::class)->create();
@@ -111,6 +114,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::rmaTiempo
+     * @group relaciones
      */
     public function testRmaTiempo() {
         $tiempo_rma = factory(App\RmaTiempo::class)->create();
@@ -122,6 +126,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::rmaDetalles
+     * @group relaciones
      */
     public function testRmaDetalles() {
         $this->markTestIncomplete('Garantia class not implemented yet.');
@@ -139,6 +144,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::sucursal
+     * @group relaciones
      */
     public function testSucursal() {
         $sucursal = factory(App\Sucursal::class)->create();
@@ -150,6 +156,7 @@ class RmaTest extends TestCase {
 
     /**
      * @covers ::notaCredito
+     * @group relaciones
      */
     public function testNotaCredito() {
         $this->markTestIncomplete('NotaCredito Class not implemented yet.');

@@ -93,6 +93,7 @@ class ProductoMovimientoTest extends TestCase
 
     /**
      * @covers ::producto
+     * @group relaciones
      */
     public function testProducto()
     {
@@ -104,6 +105,7 @@ class ProductoMovimientoTest extends TestCase
 
     /**
      * @covers ::rmaDetalles
+     * @group relaciones
      */
     public function testRmaDetalles(){
         $this->markTestIncomplete('Garantia Class not implemented yet.');

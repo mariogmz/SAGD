@@ -47,6 +47,7 @@ class ClienteComentarioTest extends TestCase {
 
     /**
      * @covers ::cliente
+     * @group relaciones
      */
     public function testCliente()
     {
@@ -57,6 +58,7 @@ class ClienteComentarioTest extends TestCase {
 
     /**
      * @covers ::empleado
+     * @group relaciones
      */
     public function testEmpleado()
     {

@@ -48,6 +48,7 @@ class ClienteEstatusTest extends TestCase {
 
     /**
      * @covers ::clientes
+     * @group relaciones
      */
     public function testClientes()
     {

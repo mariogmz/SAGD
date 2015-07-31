@@ -59,6 +59,7 @@ class DatoContactoTest extends TestCase {
 
     /**
      * @covers ::empleado
+     * @group relaciones
      */
     public function testEmpleado()
     {

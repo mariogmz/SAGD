@@ -112,6 +112,7 @@ class FamiliaTest extends TestCase
 
     /**
      * @covers ::subfamilias
+     * @group relaciones
     */
     public function testSubfamilias()
     {

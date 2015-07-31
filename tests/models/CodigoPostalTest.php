@@ -96,6 +96,7 @@ class CodigoPostalTest extends TestCase {
 
     /**
      * @covers ::domicilios
+     * @group relaciones
      */
     public function testDomicilios()
     {

@@ -235,6 +235,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::tipoGarantia
+     * @group relaciones
      */
     public function testTipoGarantia()
     {
@@ -245,6 +246,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::marca
+     * @group relaciones
      */
     public function testMarca()
     {
@@ -255,6 +257,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::margen
+     * @group relaciones
      */
     public function testMargen()
     {
@@ -265,6 +268,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::unidad
+     * @group relaciones
      */
     public function testUnidad()
     {
@@ -275,6 +279,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::subfamilia
+     * @group relaciones
      */
     public function testSubfamilia()
     {
@@ -285,6 +290,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers class::dimension
+     * @group relaciones
      */
     public function testDimension()
     {
@@ -296,6 +302,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::productoMovimientos
+     * @group relaciones
      */
     public function testProductoMovimientos()
     {
@@ -310,6 +317,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::addSucursal
+     * @group relaciones
      */
     public function testAddSucursal()
     {
@@ -321,6 +329,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::addProveedor
+     * @group relaciones
      */
     public function testAddProveedor()
     {
@@ -334,6 +343,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::sucursales
+     * @group relaciones
      */
     public function testSucursales()
     {
@@ -346,6 +356,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::proveedores
+     * @group relaciones
      */
     public function testProveedores()
     {
@@ -358,6 +369,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::productoSucursal
+     * @group relaciones
      */
     public function testProductosSucursales()
     {
@@ -369,6 +381,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::existencias
+     * @group relaciones
      */
     public function testExistencias()
     {
@@ -384,6 +397,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::existencias
+     * @group relaciones
      */
     public function testExistenciasConSucursal()
     {
@@ -407,6 +421,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::precios
+     * @group relaciones
      */
     public function testPrecios()
     {
@@ -423,6 +438,7 @@ class ProductoTest extends TestCase
 
     /**
      * @covers ::precios
+     * @group relaciones
      */
     public function testPreciosConProveedor()
     {

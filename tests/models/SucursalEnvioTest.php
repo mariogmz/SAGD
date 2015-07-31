@@ -80,6 +80,7 @@ class SucursalEnvioTest extends TestCase {
 
     /**
      * @covers ::sucursalOrigen
+     * @group relaciones
      */
     public function testSucursalOrigen() {
         $sucursal = factory(App\Sucursal::class)->create();
@@ -92,6 +93,7 @@ class SucursalEnvioTest extends TestCase {
 
     /**
      * @covers ::sucursalDestino
+     * @group relaciones
      */
     public function testSucursalDestino() {
         $sucursal = factory(App\Sucursal::class)->create();

@@ -59,6 +59,7 @@ class ClienteAutorizacionTest extends TestCase {
 
     /**
      * @covers ::clientes
+     * @group relaciones
      */
     public function testClientes()
     {

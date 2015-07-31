@@ -180,6 +180,7 @@ class ServicioSoporteTest extends TestCase {
 
     /**
      * @covers ::estadoSoporte
+     * @group relaciones
      */
     public function testEstadoSoporte()
     {
@@ -192,6 +193,7 @@ class ServicioSoporteTest extends TestCase {
 
     /**
      * @covers ::empleado
+     * @group relaciones
      */
     public function testEmpleado()
     {
@@ -204,6 +206,7 @@ class ServicioSoporteTest extends TestCase {
 
     /**
      * @covers ::cliente
+     * @group relaciones
      */
     public function testCliente()
     {
@@ -216,6 +219,7 @@ class ServicioSoporteTest extends TestCase {
 
     /**
      * @covers ::soportesProductos
+     * @group relaciones
      */
     public function testSoportesProductos(){
         $servicio_soporte = factory(App\ServicioSoporte::class)->create();

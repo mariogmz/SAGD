@@ -74,6 +74,7 @@ class DomicilioTest extends TestCase {
 
     /**
      * @covers ::codigoPostal
+     * @group relaciones
      */
     public function testCodigoPostal()
     {
@@ -87,6 +88,7 @@ class DomicilioTest extends TestCase {
 
     /**
      * @covers ::telefono
+     * @group relaciones
      */
     public function testTelefono()
     {
@@ -100,6 +102,7 @@ class DomicilioTest extends TestCase {
 
     /**
      * @covers ::sucursales
+     * @group relaciones
      */
     public function testSucursales()
     {
@@ -116,6 +119,7 @@ class DomicilioTest extends TestCase {
 
     /**
      * @covers ::clientes
+     * @group relaciones
      */
     public function testClientes()
     {

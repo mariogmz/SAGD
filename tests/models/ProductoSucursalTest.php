@@ -43,6 +43,7 @@ class ProductoSucursal extends TestCase
 
     /**
      * @covers ::existencias
+     * @group relaciones
      */
     public function testExistencias()
     {
@@ -59,7 +60,8 @@ class ProductoSucursal extends TestCase
     }
 
     /**
-     * @covers ::sucursal()
+     * @covers ::sucursal
+     * @group relaciones
      */
     public function testSucursal()
     {
@@ -71,7 +73,8 @@ class ProductoSucursal extends TestCase
     }
 
     /**
-     * @covers ::precios()
+     * @covers ::precios
+     * @group relaciones
      */
     public function testPrecios()
     {
@@ -87,6 +90,7 @@ class ProductoSucursal extends TestCase
 
     /**
      * @covers ::producto
+     * @group relaciones
      */
     public function testProducto()
     {

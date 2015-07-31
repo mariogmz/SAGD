@@ -69,6 +69,7 @@ class SucursalTest extends TestCase {
 
     /**
      * @covers ::proveedor
+     * @group relaciones
      */
     public function testProveedor()
     {
@@ -81,6 +82,7 @@ class SucursalTest extends TestCase {
 
     /**
      * @covers ::domicilio
+     * @group relaciones
      */
     public function testDomicilio()
     {
@@ -93,6 +95,7 @@ class SucursalTest extends TestCase {
 
     /**
      * @covers ::productos
+     * @group relaciones
      */
     public function testProductos()
     {
@@ -106,6 +109,7 @@ class SucursalTest extends TestCase {
 
     /**
      * @covers ::rmas
+     * @group relaciones
      */
     public function testRmas()
     {

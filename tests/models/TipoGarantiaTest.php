@@ -93,6 +93,7 @@ class TipoGarantiaTest extends TestCase
 
     /**
      * @covers ::productos
+     * @group relaciones
      */
     public function testProductos()
     {

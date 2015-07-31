@@ -86,6 +86,7 @@ class MargenTest extends TestCase
 
     /**
      * @covers ::subfamilias
+     * @group relaciones
      */
     public function testSubfamilias()
     {
@@ -97,6 +98,7 @@ class MargenTest extends TestCase
 
     /**
      * @covers ::productos
+     * @group relaciones
      */
     public function testProductos()
     {

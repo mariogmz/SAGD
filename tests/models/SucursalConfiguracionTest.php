@@ -114,6 +114,7 @@ class SucursalConfiguracionTest extends TestCase {
 
     /**
      * @covers ::sucursal
+     * @group relaciones
      */
     public function testSucursal()
     {
@@ -127,6 +128,7 @@ class SucursalConfiguracionTest extends TestCase {
 
     /**
      * @covers ::configuracion
+     * @group relaciones
      */
     public function testConfiguracion()
     {

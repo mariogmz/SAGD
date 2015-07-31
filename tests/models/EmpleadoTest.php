@@ -78,6 +78,7 @@ class EmpleadoTest extends TestCase {
 
     /**
      * @covers ::logsAccesos
+     * @group relaciones
      */
     public function testLogsAccesos() {
         $empleado = factory(App\Empleado::class)->create();
@@ -92,6 +93,7 @@ class EmpleadoTest extends TestCase {
 
     /**
      * @covers ::datoContacto
+     * @group relaciones
      */
     public function testDatoContacto() {
         $empleado = factory(App\Empleado::class)->create();
@@ -104,6 +106,7 @@ class EmpleadoTest extends TestCase {
 
     /**
      * @covers ::sucursal
+     * @group relaciones
      */
     public function testSucursal() {
         $sucursal = factory(App\Sucursal::class)->create();
@@ -116,6 +119,7 @@ class EmpleadoTest extends TestCase {
 
     /**
      * @covers ::serviciosSoportes
+     * @group relaciones
      */
     public function testServiciosSoportes() {
         $empleado = factory(App\Empleado::class)->create();
@@ -130,6 +134,7 @@ class EmpleadoTest extends TestCase {
 
     /**
      * @covers ::rmas
+     * @group relaciones
      */
     public function testRmas() {
         $empleado = factory(App\Empleado::class)->create();

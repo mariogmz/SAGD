@@ -46,7 +46,8 @@ class ClienteReferenciaTest extends TestCase {
     }
 
     /**
-     * @covers ::clientes()
+     * @covers ::clientes
+     * @group relaciones
      */
     public function testClientes()
     {

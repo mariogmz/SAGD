@@ -176,6 +176,7 @@ class MetodoPagoRangoTest extends TestCase {
 
     /**
      * @covers ::metodoPago
+     * @group relaciones
      */
     public function testMetodoPago() {
         $this->markTestIncomplete('MetodoPago Class is not implemented yet.');

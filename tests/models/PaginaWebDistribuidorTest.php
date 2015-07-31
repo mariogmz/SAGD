@@ -86,6 +86,7 @@ class PaginaWebDistribuidorTest extends TestCase {
 
     /**
      * @covers ::cliente
+     * @group relaciones
      */
     public function testCliente()
     {

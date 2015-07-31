@@ -88,6 +88,7 @@ class ConfiguracionTest extends TestCase {
 
     /**
      * @covers ::sucursalesConfiguraciones
+     * @group relaciones
      */
     public function testSucursalesConfiguraciones()
     {

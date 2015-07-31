@@ -86,6 +86,7 @@ class ProveedorTest extends TestCase {
 
     /**
      * @covers ::sucursales
+     * @group relaciones
      */
     public function testSucursales()
     {
@@ -102,6 +103,7 @@ class ProveedorTest extends TestCase {
 
     /**
      * @covers ::productos
+     * @group relaciones
      */
     public function testProductos()
     {

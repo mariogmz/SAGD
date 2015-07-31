@@ -71,6 +71,7 @@ class PrecioTest extends TestCase
 
     /**
      * @covers ::productoSucursal
+     * @group relaciones
      */
     public function testProductoSucursal()
     {
@@ -85,6 +86,7 @@ class PrecioTest extends TestCase
 
     /**
      * @covers ::producto
+     * @group relaciones
      */
     public function testProducto()
     {

@@ -118,6 +118,7 @@ class SubfamiliaTest extends TestCase
 
     /**
      * @covers ::familia
+     * @group relaciones
      */
     public function testFamilia()
     {
@@ -128,6 +129,7 @@ class SubfamiliaTest extends TestCase
 
     /**
      * @covers ::margen
+     * @group relaciones
      */
     public function testMargen()
     {
@@ -138,6 +140,7 @@ class SubfamiliaTest extends TestCase
 
     /**
      * @covers ::productos
+     * @group relaciones
      */
     public function testProductos()
     {

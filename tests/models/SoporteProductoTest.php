@@ -69,6 +69,7 @@ class SoporteProductoTest extends TestCase {
 
     /**
      * @covers ::servicioSoporte
+     * @group relaciones
      */
     public function testServicioSoporte() {
         $soporte = factory(App\ServicioSoporte::class)->create();
@@ -80,6 +81,7 @@ class SoporteProductoTest extends TestCase {
 
     /**
      * @covers ::producto
+     * @group relaciones
      */
     public function testProducto() {
         $producto = factory(App\Producto::class)->create();

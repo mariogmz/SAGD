@@ -224,6 +224,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::estatus
+     * @group relaciones
      */
     public function testEstatus()
     {
@@ -235,6 +236,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::referencia
+     * @group relaciones
      */
     public function testReferencia()
     {
@@ -246,6 +248,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::comentarios
+     * @group relaciones
      */
     public function testComentarios()
     {
@@ -259,6 +262,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::autoriza
+     * @group relaciones
      */
     public function testAutorizaConCliente()
     {
@@ -269,6 +273,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::autoriza
+     * @group relaciones
      */
     public function testAutorizaConNombre()
     {
@@ -279,6 +284,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::autorizaciones
+     * @group relaciones
      */
     public function testAutorizaciones()
     {
@@ -296,6 +302,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::empleado
+     * @group relaciones
      */
     public function testEmpleado()
     {
@@ -307,6 +314,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::vendedor
+     * @group relaciones
      */
     public function testVendedor()
     {
@@ -318,6 +326,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::sucursal
+     * @group relaciones
      */
     public function testSucursal()
     {
@@ -329,6 +338,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::paginasWebDistribuidores
+     * @group relaciones
      */
     public function testPaginasWebDistribuidores()
     {
@@ -342,6 +352,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::domicilios
+     * @group relaciones
      */
     public function testDomicilios()
     {
@@ -355,6 +366,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::serviciosSoportes
+     * @group relaciones
      */
     public function testServiciosSoportes()
     {
@@ -371,6 +383,7 @@ class ClienteTest extends TestCase {
 
     /**
      * @covers ::rmas
+     * @group relaciones
      */
     public function testRmas(){
         $cliente = factory(App\Cliente::class, 'full')->create();
