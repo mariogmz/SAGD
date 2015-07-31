@@ -14,8 +14,8 @@ class AddMetodosPagosRangosConstraints extends Migration
     {
         //
         Schema::table('metodos_pagos_rangos', function($table){
-            $table->integer('metodos_pagos_id')->unsigned();
-            $table->foreign('metodos_pagos_id')->references('id')->on('metodos_pagos');
+            $table->integer('metodo_pago_id')->unsigned();
+            $table->foreign('metodo_pago_id')->references('id')->on('metodos_pagos');
         });
     }
 
@@ -28,8 +28,8 @@ class AddMetodosPagosRangosConstraints extends Migration
     {
         //
         Schema::table('metodos_pagos_rangos', function($table){
-            $table->dropForeign('metodos_pagos_rangos_metodos_pagos_id_foreign');
-            $table->dropColumn('metodos_pagos_id');
+            $table->dropForeign('metodos_pagos_rangos_metodo_pago_id_foreign');
+            $table->dropColumn('metodo_pago_id');
         });
     }
 }
