@@ -19,6 +19,19 @@ class TipoGarantiaTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $tg = factory(App\TipoGarantia::class)->create();
+        $tg->descripcion = 'MC Hammer';
+        $this->assertTrue($tg->isValid('update'));
+        $this->assertTrue($tg->save());
+        $this->assertSame('MC Hammer', $tg->descripcion);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testSeriadoSoloPuedeSerBooleano()
     {

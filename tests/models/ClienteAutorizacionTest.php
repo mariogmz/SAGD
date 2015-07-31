@@ -16,6 +16,22 @@ class ClienteAutorizacionTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $ca = factory(App\ClienteAutorizacion::class)->make();
+        $ca->cliente()->associate($cliente);
+        $ca->nombre_autorizado = 'MC Hammer';
+        $ca->cliente_autorizado_id = null;
+        $this->assertTrue($ca->isValid('update'));
+        $this->assertTrue($ca->save());
+        $this->assertSame('MC Hammer', $ca->nombre_autorizado);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClienteAutorizadoIdEsOpcional()
     {

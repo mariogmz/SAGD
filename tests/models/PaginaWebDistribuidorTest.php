@@ -18,6 +18,20 @@ class PaginaWebDistribuidorTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $pwd = factory(App\PaginaWebDistribuidor::class)->create(['cliente_id' => $cliente->id]);
+        $pwd->url = 'MC Hammer';
+        $this->assertTrue($pwd->isValid('update'));
+        $this->assertTrue($pwd->save());
+        $this->assertSame('MC Hammer', $pwd->url);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testActivoEsRequerido()
     {

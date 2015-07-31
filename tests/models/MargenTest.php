@@ -19,6 +19,19 @@ class MargenTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $margen = factory(App\Margen::class)->create();
+        $margen->nombre = 'MC Hammer';
+        $this->assertTrue($margen->isValid('update'));
+        $this->assertTrue($margen->save());
+        $this->assertSame('MC Hammer', $margen->nombre);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testNombreNoPuedeSerNulo()
     {

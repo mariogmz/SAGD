@@ -17,6 +17,19 @@ class ClienteEstatusTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $ce = factory(App\ClienteEstatus::class)->create();
+        $ce->nombre = 'MC Hammer';
+        $this->assertTrue($ce->isValid('update'));
+        $this->assertTrue($ce->save());
+        $this->assertSame('MC Hammer', $ce->nombre);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testNombreEsRequerido()
     {

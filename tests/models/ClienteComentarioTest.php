@@ -16,6 +16,19 @@ class ClienteComentarioTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $cc = factory(App\ClienteComentario::class, 'full')->create();
+        $cc->comentario = 'MC Hammer';
+        $this->assertTrue($cc->isValid('update'));
+        $this->assertTrue($cc->save());
+        $this->assertSame('MC Hammer', $cc->comentario);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testComentarioEsRequerido()
     {

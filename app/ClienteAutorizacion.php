@@ -14,6 +14,8 @@ class ClienteAutorizacion extends LGGModel
         'nombre_autorizado' => 'max:200'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -24,6 +26,10 @@ class ClienteAutorizacion extends LGGModel
                 return false;
             }
             return true;
+        });
+        ClienteAutorizacion::updating(function($ca){
+            $ca->updateRules = self::$rules;
+            return $ca->isValid('update');
         });
     }
 

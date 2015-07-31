@@ -14,6 +14,8 @@ class Rol extends LGGModel
         'nombre' => 'required|max:45'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -25,6 +27,11 @@ class Rol extends LGGModel
                 return false;
             }
             return true;
+        });
+        Rol::updating(function($rol){
+            $rol->clave = strtoupper($rol->clave);
+            $rol->updateRules = self::$rules;
+            return $rol->isValid('update');
         });
     }
 }

@@ -16,6 +16,19 @@ class RolTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $rol = factory(App\Rol::class)->create();
+        $rol->nombre = 'MC Hammer';
+        $this->assertTrue($rol->isValid('update'));
+        $this->assertTrue($rol->save());
+        $this->assertSame('MC Hammer', $rol->nombre);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveEsObligatoria()
     {

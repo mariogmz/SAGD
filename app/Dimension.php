@@ -16,6 +16,8 @@ class Dimension extends LGGModel
         'peso' => 'required|numeric|min:0.0',
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -26,6 +28,10 @@ class Dimension extends LGGModel
                 return false;
             }
             return true;
+        });
+        Dimension::updating(function($dimension){
+            $dimension->updateRules = self::$rules;
+            return $dimension->isValid('update');
         });
     }
 

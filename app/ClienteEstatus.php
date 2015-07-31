@@ -13,6 +13,8 @@ class ClienteEstatus extends LGGModel
         'nombre' => 'required|max:45'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -23,6 +25,10 @@ class ClienteEstatus extends LGGModel
                 return false;
             }
             return true;
+        });
+        ClienteEstatus::updating(function($ce){
+            $ce->updateRules = self::$rules;
+            return $ce->isValid('update');
         });
     }
 

@@ -20,6 +20,20 @@ class ProductoMovimientoTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $pm = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id]);
+        $pm->movimiento = 'MC Hammer';
+        $this->assertTrue($pm->isValid('update'));
+        $this->assertTrue($pm->save());
+        $this->assertSame('MC Hammer', $pm->movimiento);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testMovimientoEsRequerido()
     {
@@ -92,7 +106,8 @@ class ProductoMovimientoTest extends TestCase
      * @covers ::rmaDetalles
      */
     public function testRmaDetalles(){
-        $producto_movimiento = factory(App\ProductoMovimiento::class)->create();
+        $producto = factory(App\Producto::class)->create();
+        $producto_movimiento = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id]);
         factory(App\RmaDetalle::class, 5)->create([
             'rma_id' => $producto_movimiento->id
         ]);

@@ -15,6 +15,8 @@ class PaginaWebDistribuidor extends LGGModel
         'url' => 'max:100'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -25,6 +27,10 @@ class PaginaWebDistribuidor extends LGGModel
                 return false;
             }
             return true;
+        });
+        PaginaWebDistribuidor::updating(function($pwd){
+            $pwd->updateRules = self::$rules;
+            return $pwd->isValid('update');
         });
     }
 

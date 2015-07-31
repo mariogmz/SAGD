@@ -18,6 +18,8 @@ class ProductoMovimiento extends LGGModel
         'existencias_despues' => 'integer|min:0',
     ];
 
+    public $updateRules= [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -32,6 +34,14 @@ class ProductoMovimiento extends LGGModel
                 return false;
             }
             return true;
+        });
+        ProductoMovimiento::updating(function($pm){
+            $pm->updateRules = self::$rules;
+            $pm->entraron || $pm->entraron = 0;
+            $pm->salieron || $pm->salieron = 0;
+            $pm->existencias_antes || $pm->existencias_antes = 0;
+            $pm->existencias_despues || $pm->existencias_despues = 0;
+            return $pm->isValid('update');
         });
     }
 

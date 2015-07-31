@@ -27,6 +27,7 @@ class FamiliaTest extends TestCase
         $familia->nombre = 'MC Hammer';
         $this->assertTrue($familia->isValid('update'));
         $this->assertTrue($familia->save());
+        $this->assertSame('MC Hammer', $familia->nombre);
     }
 
     /**
