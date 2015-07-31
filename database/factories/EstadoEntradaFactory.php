@@ -14,7 +14,7 @@
 $factory->define(App\EstadoEntrada::class, function ($faker)
 {
     return [
-        'nombre' => $faker->unique->word
+        'nombre' => $faker->unique()->text(45)
     ];
 });
 

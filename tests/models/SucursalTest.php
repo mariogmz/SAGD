@@ -148,4 +148,18 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(App\RazonSocialEmisor::class, $rses[0]);
         $this->assertCount(1, $rses);
     }
+
+    /**
+     * @covers ::entradasDetalles
+     * @group relaciones
+     */
+    public function testEntradasDetalles()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $ed = factory(App\EntradaDetalle::class, 'full')->create(['sucursal_id' => $sucursal->id]);
+        $eds = $sucursal->entradasDetalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $eds);
+        $this->assertInstanceOf(App\EntradaDetalle::class, $eds[0]);
+        $this->assertCount(1, $eds);
+    }
 }

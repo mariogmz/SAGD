@@ -116,4 +116,18 @@ class ProductoMovimientoTest extends TestCase
             $this->assertEquals($producto_movimiento->id, $rd->rma_id);
         }
     }
+
+    /**
+     * @covers ::entradasDetalles
+     * @group relaciones
+     */
+    public function testEntradasDetalles()
+    {
+        $pm = factory(App\ProductoMovimiento::class, 'withproduct')->create();
+        $ed = factory(App\EntradaDetalle::class, 'full')->create(['producto_movimiento_id' => $pm->id]);
+        $eds = $pm->entradasDetalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $eds);
+        $this->assertInstanceOf(App\EntradaDetalle::class, $eds[0]);
+        $this->assertCount(1, $eds);
+    }
 }

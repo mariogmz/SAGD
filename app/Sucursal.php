@@ -110,4 +110,14 @@ class Sucursal extends LGGModel {
     {
         return $this->hasMany('App\RazonSocialEmisor', 'sucursal_id');
     }
+
+
+    /**
+    * Obtiene las Entradas Detalles asociadas con la Sucursal
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function entradasDetalles()
+    {
+        return $this->hasMany('App\EntradaDetalle', 'sucursal_id');
+    }
 }

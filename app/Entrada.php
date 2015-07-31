@@ -70,4 +70,14 @@ class Entrada extends LGGModel
     {
         return $this->belongsTo('App\Empleado', 'empleado_id');
     }
+
+
+    /**
+    * Obtiene los Detalles asociados con la Entrada
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function detalles()
+    {
+        return $this->hasMany('App\EntradaDetalle', 'entrada_id');
+    }
 }

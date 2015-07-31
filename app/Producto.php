@@ -188,4 +188,14 @@ class Producto extends LGGModel
             return $ps->precios;
         }
     }
+
+
+    /**
+    * Obtiene las Entradas Detalles asociadas con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function entradasDetalles()
+    {
+        return $this->hasMany('App\EntradaDetalle', 'producto_id');
+    }
 }

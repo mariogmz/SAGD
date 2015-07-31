@@ -61,4 +61,14 @@ class ProductoMovimiento extends LGGModel
     public function rmaDetalles(){
         return $this->hasMany('App\RmaDetalle');
     }
+
+
+    /**
+    * Obtiene las Entradas Detalles asociadas con el Producto Movimiento
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function entradasDetalles()
+    {
+        return $this->hasMany('App\EntradaDetalle', 'producto_movimiento_id');
+    }
 }

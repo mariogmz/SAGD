@@ -198,4 +198,18 @@ class EntradaTest extends TestCase {
         $this->assertInstanceOf(App\Empleado::class, $entrada->empleado);
         $this->assertSame(1, count($entrada->empleado));
     }
+
+    /**
+     * @covers ::detalles
+     * @group relaciones
+     */
+    public function testDetalles()
+    {
+        $entrada = factory(App\Entrada::class, 'full')->create();
+        $ed = factory(App\EntradaDetalle::class, 'full')->create(['entrada_id' => $entrada->id]);
+        $detalles = $entrada->detalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $detalles);
+        $this->assertInstanceOf(App\EntradaDetalle::class, $detalles[0]);
+        $this->assertCount(1, $detalles);
+    }
 }
