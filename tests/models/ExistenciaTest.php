@@ -18,6 +18,23 @@ class ExistenciaTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $ps = $producto->productosSucursales[0];
+        $existencia = factory(App\Existencia::class)->create([
+            'productos_sucursales_id' => $ps->id]);
+        $existencia->cantidad = 1991.0;
+        $this->assertTrue($existencia->isValid('update'));
+        $this->assertTrue($existencia->save());
+        $this->assertSame(1991.0, $existencia->cantidad);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testCantidadesNoPuedenSerNegativas()
     {

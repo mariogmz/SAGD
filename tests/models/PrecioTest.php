@@ -18,6 +18,23 @@ class PrecioTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+        $precio = factory(App\Precio::class)->make();
+        $precio->productoSucursal()->associate($producto->productosSucursales[0])->save();
+        $precio->costo = 1991.0;
+        $this->assertTrue($precio->isValid('update'));
+        $this->assertTrue($precio->save());
+        $this->assertSame(1991.0, $precio->costo);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testCostoEsRequerido()
     {

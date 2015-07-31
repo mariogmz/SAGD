@@ -19,6 +19,19 @@ class DimensionTest extends TestCase
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $dimension = factory(App\Dimension::class)->create();
+        $dimension->largo = 1991.0;
+        $this->assertTrue($dimension->isValid('update'));
+        $this->assertTrue($dimension->save());
+        $this->assertSame(1991.0, $dimension->largo);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testAtributosDeDimensionesSonRequeridos()
     {

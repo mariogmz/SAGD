@@ -13,6 +13,8 @@ class ClienteReferencia extends LGGModel
         'nombre' => 'required|max:50'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -23,6 +25,10 @@ class ClienteReferencia extends LGGModel
                 return false;
             }
             return true;
+        });
+        ClienteReferencia::updating(function($cr){
+            $cr->updateRules = self::$rules;
+            return $cr->isValid('update');
         });
     }
 

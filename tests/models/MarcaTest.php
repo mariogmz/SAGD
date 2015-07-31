@@ -27,6 +27,7 @@ class MarcaTest extends TestCase
         $marca->nombre = 'MC Hammer';
         $this->assertTrue($marca->isValid('update'));
         $this->assertTrue($marca->save());
+        $this->assertSame('MC Hammer', $marca->nombre);
     }
 
     /**

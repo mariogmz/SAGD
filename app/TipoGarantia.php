@@ -18,6 +18,8 @@ class TipoGarantia extends LGGModel
         'dias' => 'integer|min:0'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -30,6 +32,12 @@ class TipoGarantia extends LGGModel
                 return false;
             }
             return true;
+        });
+        TipoGarantia::updating(function($tipogarantia){
+            $tipogarantia->updateRules = self::$rules;
+            $tipogarantia->seriado = (empty($tipogarantia->seriado) ? true : $tipogarantia->seriado);
+            $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->seriado);
+            return $tipogarantia->isValid('update');
         });
     }
 

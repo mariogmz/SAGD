@@ -25,6 +25,8 @@ class Precio extends LGGModel
         'precio_10' => 'required|numeric|min:0.0',
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -35,6 +37,10 @@ class Precio extends LGGModel
                 return false;
             }
             return true;
+        });
+        Precio::updating(function($precio){
+            $precio->updateRules = self::$rules;
+            return $precio->isValid('update');
         });
     }
 

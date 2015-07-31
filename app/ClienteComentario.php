@@ -13,6 +13,8 @@ class ClienteComentario extends LGGModel
         'comentario' => 'required|max:200',
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -23,6 +25,10 @@ class ClienteComentario extends LGGModel
                 return false;
             }
             return true;
+        });
+        ClienteComentario::updating(function($cc){
+            $cc->updateRules = self::$rules;
+            return $cc->isValid('update');
         });
     }
 

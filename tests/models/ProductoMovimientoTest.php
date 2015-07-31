@@ -18,6 +18,20 @@ class ProductoMovimientoTest extends TestCase
         $this->assertFalse($pm->save());
     }
 
+   /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $pm = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id]);
+        $pm->movimiento = 'MC Hammer';
+        $this->assertTrue($pm->isValid('update'));
+        $this->assertTrue($pm->save());
+        $this->assertSame('MC Hammer', $pm->movimiento);
+    }
+
     /**
      * @coversNothing
      */

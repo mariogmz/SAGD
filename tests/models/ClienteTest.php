@@ -24,6 +24,7 @@ class ClienteTest extends TestCase {
         $cliente->nombre = 'MC Hammer';
         $this->assertTrue($cliente->isValid('update'));
         $this->assertTrue($cliente->save());
+        $this->assertSame('MC Hammer', $cliente->nombre);
     }
 
     /**

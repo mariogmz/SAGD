@@ -16,6 +16,19 @@ class ClienteReferenciaTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $cr = factory(App\ClienteReferencia::class)->create();
+        $cr->nombre = 'MC Hammer';
+        $this->assertTrue($cr->isValid('update'));
+        $this->assertTrue($cr->save());
+        $this->assertSame('MC Hammer', $cr->nombre);
+    }
+
+    /**
+     * @coversNothing
      */
     public function testNombreEsRequerido()
     {

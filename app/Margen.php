@@ -16,6 +16,8 @@ class Margen extends LGGModel
         'valor_webservice_p8' => 'numeric|min:0.0|max:1.0'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -29,6 +31,13 @@ class Margen extends LGGModel
                 return false;
             }
             return true;
+        });
+        Margen::updating(function($margen){
+            $margen->updateRules = self::$rules;
+            $margen->valor || $margen->valor = 0.0;
+            $margen['valor_webservice_p1'] || $margen['valor_webservice_p1'] = 0.0;
+            $margen['valor_webservice_p8'] || $margen['valor_webservice_p8'] = 0.0;
+            return $margen->isValid('update');
         });
     }
 

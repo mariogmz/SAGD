@@ -20,6 +20,8 @@ class Existencia extends LGGModel
         'cantidad_garantia_zegucom' =>  'integer|min:0',
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -36,6 +38,16 @@ class Existencia extends LGGModel
                 return false;
             }
             return true;
+        });
+        Existencia::updating(function($e){
+            $e->updateRules = self::$rules;
+            $e->cantidad || $e->cantidad = 0;
+            $e->cantidad_apartado || $e->cantidad_apartado = 0;
+            $e->cantidad_pretransferencia || $e->cantidad_pretransferencia = 0;
+            $e->cantidad_transferencia || $e->cantidad_transferencia = 0;
+            $e->cantidad_garantia_cliente || $e->cantidad_garantia_cliente = 0;
+            $e->cantidad_garantia_zegucom || $e->cantidad_garantia_zegucom = 0;
+            return $e->isValid('update');
         });
     }
 
