@@ -9,8 +9,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testModeloEmpleadoExiste()
-    {
+    public function testModeloEmpleadoExiste() {
         $empleado = new App\Empleado();
         $this->assertInstanceOf(App\Empleado::class, $empleado);
     }
@@ -19,8 +18,7 @@ class EmpleadoTest extends TestCase {
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $empleado = factory(App\Empleado::class)->create();
         $empleado->nombre = 'Dr. Cod';
         $this->assertTrue($empleado->isValid('update'));
@@ -30,8 +28,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testModeloEmpleadosAsociadoTablaEmpleados()
-    {
+    public function testModeloEmpleadosAsociadoTablaEmpleados() {
         $empleado = new App\Empleado();
         $this->assertAttributeEquals('empleados', 'table', $empleado);
     }
@@ -39,8 +36,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testModeloEmpleadosTieneValoresNecesarios()
-    {
+    public function testModeloEmpleadosTieneValoresNecesarios() {
         $empleado = factory(App\Empleado::class)->make([
             'nombre'   => '',
             'usuario'  => '',
@@ -53,8 +49,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testModeloEmpleadosTienePasswordDiferenteDeUsuario()
-    {
+    public function testModeloEmpleadosTienePasswordDiferenteDeUsuario() {
         $empleado = factory(App\Empleado::class)->make([
             'usuario'  => 'prueba',
             'password' => 'prueba'
@@ -65,8 +60,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testCadaEmpleadoTieneUsuarioUnico()
-    {
+    public function testCadaEmpleadoTieneUsuarioUnico() {
         $empleado1 = factory(App\Empleado::class)->create();
         $empleado2 = factory(App\Empleado::class)->make([
             'usuario' => $empleado1->usuario
@@ -77,8 +71,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testEmpleadoEsValido()
-    {
+    public function testEmpleadoEsValido() {
         $empleado = factory(App\Empleado::class)->make();
         $this->assertTrue($empleado->isValid());
     }
@@ -86,15 +79,13 @@ class EmpleadoTest extends TestCase {
     /**
      * @covers ::logsAccesos
      */
-    public function testLogsAccesos()
-    {
+    public function testLogsAccesos() {
         $empleado = factory(App\Empleado::class)->create();
         $logs_accesos = factory(App\LogAcceso::class, 5)->create([
             'empleado_id' => $empleado->id
         ]);
         $logs_accesos_resultado = $empleado->logsAccesos;
-        for ($i = 0; $i < 5; $i ++)
-        {
+        for ($i = 0; $i < 5; $i ++) {
             $this->assertEquals($logs_accesos[$i], $logs_accesos_resultado[$i]);
         }
     }
@@ -102,8 +93,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @covers ::datoContacto
      */
-    public function testDatoContacto()
-    {
+    public function testDatoContacto() {
         $empleado = factory(App\Empleado::class)->create();
         $dato_contacto = factory(App\DatoContacto::class)->create([
             'empleado_id' => $empleado->id
@@ -115,8 +105,7 @@ class EmpleadoTest extends TestCase {
     /**
      * @covers ::sucursal
      */
-    public function testSucursal()
-    {
+    public function testSucursal() {
         $sucursal = factory(App\Sucursal::class)->create();
         $empleado = factory(App\Empleado::class)->create([
             'sucursal_id' => $sucursal->id
@@ -128,15 +117,13 @@ class EmpleadoTest extends TestCase {
     /**
      * @covers ::serviciosSoportes
      */
-    public function testServiciosSoportes()
-    {
+    public function testServiciosSoportes() {
         $empleado = factory(App\Empleado::class)->create();
         $servicios_soportes = factory(App\ServicioSoporte::class, 5)->create([
             'empleado_id' => $empleado->id
         ]);
         $servicios_soportes_resultado = $empleado->serviciosSoportes;
-        for ($i = 0; $i < 5; $i ++)
-        {
+        for ($i = 0; $i < 5; $i ++) {
             $this->assertEquals($servicios_soportes[$i]->id, $servicios_soportes_resultado[$i]->id);
         }
     }
@@ -144,15 +131,14 @@ class EmpleadoTest extends TestCase {
     /**
      * @covers ::rmas
      */
-    public function testRmas(){
+    public function testRmas() {
         $empleado = factory(App\Empleado::class)->create();
         $rmas = factory(App\Rma::class, 5)->create([
             'empleado_id' => $empleado->id
         ]);
         $rmas_resultado = $empleado->rmas;
-        for ($i = 0; $i < 5; $i ++)
-        {
-            $this->assertEquals($rmas[$i], $rmas_resultado[$i]);
+        for ($i = 0; $i < 5; $i ++) {
+            $this->assertInstanceOf('App\Rma', $rmas_resultado[$i]);
         }
     }
 
@@ -160,8 +146,7 @@ class EmpleadoTest extends TestCase {
      * @covers ::salidas
      * @group relaciones
      */
-    public function testSalidas()
-    {
+    public function testSalidas() {
         $empleado = factory(App\Empleado::class)->create();
         $salida = factory(App\Salida::class, 'full')->create(['empleado_id' => $empleado->id]);
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->salidas);
@@ -173,8 +158,7 @@ class EmpleadoTest extends TestCase {
      * @covers ::entradas
      * @group relaciones
      */
-    public function testEntradas()
-    {
+    public function testEntradas() {
         $empleado = factory(App\Empleado::class)->create();
         $entrada = factory(App\Entrada::class, 'full')->create(['empleado_id' => $empleado->id]);
         $entradas = $empleado->entradas;

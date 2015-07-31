@@ -106,6 +106,7 @@ class ProductoMovimientoTest extends TestCase
      * @covers ::rmaDetalles
      */
     public function testRmaDetalles(){
+        $this->markTestIncomplete('Garantia Class not implemented yet.');
         $producto_movimiento = factory(App\ProductoMovimiento::class, 'withproduct')->create();
         factory(App\RmaDetalle::class, 5)->create([
             'rma_id' => $producto_movimiento->id

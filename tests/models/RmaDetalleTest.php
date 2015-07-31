@@ -50,6 +50,8 @@ class RmaDetalleTest extends TestCase {
      * @coversNothing
      */
     public function testDescripcionFallaMaximo80Caracteres() {
+        $this->markTestIncomplete('Garantia class not implemented yet.');
+
         $rma_detalle = factory(App\RmaDetalle::class, 'descripcionfallalargo')->make();
         $this->assertFalse($rma_detalle->isValid());
     }
