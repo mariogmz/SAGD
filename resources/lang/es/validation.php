@@ -12,7 +12,8 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
-
+    'greater_than'         => ':attribute debe ser mayor que :field',
+    'less_than'            => ':attribute debe ser mayor que :field',
     'accepted'             => ':attribute debe ser aceptado.',
     'active_url'           => ':attribute no es una URL valida.',
     'after'                => ':attribute debe ser una fecha despues de :date.',
