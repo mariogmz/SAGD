@@ -168,4 +168,18 @@ class EmpleadoTest extends TestCase {
         $this->assertInstanceOf(App\Salida::class, $empleado->salidas[0]);
         $this->assertCount(1, $empleado->salidas);
     }
+
+    /**
+     * @covers ::entradas
+     * @group relaciones
+     */
+    public function testEntradas()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $entrada = factory(App\Entrada::class, 'full')->create(['empleado_id' => $empleado->id]);
+        $entradas = $empleado->entradas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $entradas);
+        $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
+        $this->assertCount(1, $entradas);
+    }
 }

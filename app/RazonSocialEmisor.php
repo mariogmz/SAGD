@@ -54,4 +54,14 @@ class RazonSocialEmisor extends LGGModel
     {
         return $this->belongsTo('App\Domicilio', 'domicilio_id');
     }
+
+
+    /**
+    * Obtiene las Entradas asociadas con la Razon Social Emisora
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function entradas()
+    {
+        return $this->hasMany('App\Entrada', 'razon_social_id');
+    }
 }

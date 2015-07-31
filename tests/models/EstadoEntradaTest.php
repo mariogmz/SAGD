@@ -45,4 +45,18 @@ class EstadoEntradaTest extends TestCase {
         $ee = factory(App\EstadoEntrada::class,'longnombre')->make();
         $this->assertFalse($ee->isValid());
     }
+
+    /**
+     * @covers ::entradas
+     * @group relaciones
+     */
+    public function testEntradas()
+    {
+        $estado = factory(App\EstadoEntrada::class)->create();
+        $entrada = factory(App\Entrada::class, 'full')->create(['estado_entrada_id' => $estado->id]);
+        $entradas = $estado->entradas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $entradas);
+        $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
+        $this->assertCount(1, $entradas);
+    }
 }

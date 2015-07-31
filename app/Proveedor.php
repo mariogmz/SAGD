@@ -62,4 +62,14 @@ class Proveedor extends LGGModel {
         return $this->belongsToMany('App\Producto', 'productos_sucursales',
             'proveedor_id', 'producto_id');
     }
+
+
+    /**
+    * Obtiene las Entradas asociadas con el Proveedor
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function entradas()
+    {
+        return $this->hasMany('App\Entrada', 'proveedor_id');
+    }
 }

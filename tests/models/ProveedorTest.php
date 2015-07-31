@@ -101,7 +101,7 @@ class ProveedorTest extends TestCase {
     }
 
     /**
-     * @covers ::productos()
+     * @covers ::productos
      */
     public function testProductos()
     {
@@ -112,5 +112,19 @@ class ProveedorTest extends TestCase {
         $productos = $proveedor->productos;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $productos);
         $this->assertInstanceOf(App\Producto::class, $productos[0]);
+    }
+
+    /**
+     * @covers ::entradas
+     * @group relaciones
+     */
+    public function testEntradas()
+    {
+        $proveedor = factory(App\Proveedor::class)->create();
+        $entrada = factory(App\Entrada::class, 'full')->create(['proveedor_id' => $proveedor->id]);
+        $entradas = $proveedor->entradas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $entradas);
+        $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
+        $this->assertCount(1, $entradas);
     }
 }

@@ -28,4 +28,14 @@ class EstadoEntrada extends LGGModel
             return $ee->isValid('update');
         });
     }
+
+
+    /**
+    * Obtiene las Entradas asociadas con el Estatus
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function entradas()
+    {
+        return $this->hasMany('App\Entrada', 'estado_entrada_id');
+    }
 }

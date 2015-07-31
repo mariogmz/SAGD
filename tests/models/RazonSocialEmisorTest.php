@@ -167,4 +167,18 @@ class RazonSocialEmisorTest extends TestCase {
         $domicilio = $rse->domicilio;
         $this->assertInstanceOf(App\Domicilio::class, $domicilio);
     }
+
+    /**
+     * @covers ::entradas
+     * @group relaciones
+     */
+    public function testEntradas()
+    {
+        $rse = factory(App\RazonSocialEmisor::class, 'full')->create();
+        $entrada = factory(App\Entrada::class, 'full')->create(['razon_social_id' => $rse->id]);
+        $entradas = $rse->entradas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $entradas);
+        $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
+        $this->assertCount(1, $entradas);
+    }
 }
