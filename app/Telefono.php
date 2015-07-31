@@ -14,6 +14,8 @@ class Telefono extends LGGModel {
         'tipo'   => 'required|max:45'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -28,6 +30,15 @@ class Telefono extends LGGModel {
             }
 
             return true;
+        });
+        Telefono::updating(function($telefono){
+            $telefono->updateRules = self::$rules;
+            $telefono->updateRules['numero'] = [
+                'required',
+                'unique:telefonos,numero,'.$telefono->id,
+                'regex:/[0-9]{7,11}/'
+            ];
+            return $telefono->isValid('update');
         });
     }
 

@@ -17,6 +17,18 @@ class DatoContactoTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $dc = factory(App\DatoContacto::class)->create();
+        $dc->skype = 'SKYPE';
+        $this->assertTrue($dc->isValid('update'));
+        $this->assertTrue($dc->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testEmailTieneFormatoValido()
     {

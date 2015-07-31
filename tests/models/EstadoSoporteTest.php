@@ -18,6 +18,18 @@ class EstadoSoporteTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $estado_soporte = factory(App\EstadoSoporte::class)->create();
+        $estado_soporte->nombre = 'MC Hammer';
+        $this->assertTrue($estado_soporte->isValid('update'));
+        $this->assertTrue($estado_soporte->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testNombreEsRequerido()
     {

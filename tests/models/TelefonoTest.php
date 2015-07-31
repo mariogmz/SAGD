@@ -6,6 +6,18 @@ class TelefonoTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $telefono = factory(App\Telefono::class)->create();
+        $telefono->tipo = 'MC Hammer';
+        $this->assertTrue($telefono->isValid('update'));
+        $this->assertTrue($telefono->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testTelefonoValido()
     {

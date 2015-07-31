@@ -13,9 +13,11 @@ class Unidad extends LGGModel
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave' => ['required','max:4','alpha','regex:/[A-Z]{4}/'],
+        'clave' => ['required','max:4','alpha','regex:/[A-Z]{4}/', 'unique:unidades'],
         'nombre' => 'required|max:45'
     ];
+
+    public $updateRules = [];
 
     /**
      * Define the model hooks
@@ -28,6 +30,13 @@ class Unidad extends LGGModel
                 return false;
             }
             return true;
+        });
+        Unidad::updating(function($unidad){
+            $unidad->updateRules = self::$rules;
+            $unidad->updateRules['clave'] = [
+                'required','max:4','alpha',
+                'regex:/[A-Z]{4}/', 'unique:unidades,clave,'.$unidad->id];
+            return $unidad->isValid('update');
         });
     }
 

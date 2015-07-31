@@ -13,11 +13,13 @@ class Proveedor extends LGGModel {
 
     protected $fillable = ['clave', 'razon_social', 'externo', 'pagina_web'];
     public static $rules = [
-        'clave'        => 'required|size:4|unique:proveedores|alpha',
+        'clave'        => 'required|size:4|alpha|unique:proveedores',
         'razon_social' => 'required',
         'externo'      => 'required|boolean',
         'pagina_web'   => 'url'
     ];
+
+    public $updateRules = [];
 
     /**
      * Define the model hooks
@@ -34,6 +36,11 @@ class Proveedor extends LGGModel {
             }
 
             return true;
+        });
+        Proveedor::updating(function($proveedor){
+            $proveedor->updateRules = self::$rules;
+            $proveedor->updateRules['clave'] .= ',clave,'.$proveedor->id;
+            return $proveedor->isValid('update');
         });
     }
 

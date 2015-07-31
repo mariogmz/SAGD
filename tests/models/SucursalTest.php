@@ -5,6 +5,18 @@ class SucursalTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $sucursal->nombre = 'MCHammer';
+        $this->assertTrue($sucursal->isValid('update'));
+        $this->assertTrue($sucursal->save());
+    }
+
+    /**
+     * @coversNothing
      */
     public function testClaveDebeSerDe8CaracteresAlfa()
     {

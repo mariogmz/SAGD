@@ -377,9 +377,7 @@ class ClienteTest extends TestCase {
             'cliente_id' => $cliente->id
         ]);
         $rmas_resultado = $cliente->rmas;
-        for ($i = 0; $i < 5; $i ++)
-        {
-            $this->assertEquals($rmas[$i], $rmas_resultado[$i]);
-        }
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rmas_resultado);
+        $this->assertInstanceOf(App\Rma::class, $rmas_resultado[0]);
     }
 }

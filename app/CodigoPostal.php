@@ -27,12 +27,7 @@ class CodigoPostal extends LGGModel {
         {
             $codigo_postal->estado = strtoupper($codigo_postal->estado);
             $codigo_postal->municipio = strtoupper($codigo_postal->municipio);
-            if (!$codigo_postal->isValid())
-            {
-                return false;
-            }
-
-            return true;
+            return $codigo_postal->isValid();
         });
 
         CodigoPostal::updating(function($codigo_postal){
@@ -43,10 +38,7 @@ class CodigoPostal extends LGGModel {
                 'unique:codigos_postales,codigo_postal,'.$codigo_postal->id,
                 'regex:/(\d{5})/'
             ];
-            if (!$codigo_postal->isValid('update'))
-            {
-                return false;
-            }
+            return $codigo_postal->isValid('update');
         });
     }
 

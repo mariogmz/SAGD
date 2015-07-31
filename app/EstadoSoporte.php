@@ -15,6 +15,8 @@ class EstadoSoporte extends LGGModel {
         'nombre' => 'required|string|max:50'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -29,6 +31,11 @@ class EstadoSoporte extends LGGModel {
             }
 
             return true;
+        });
+        EstadoSoporte::updating(function($estado_soporte){
+            $estado_soporte->updateRules = self::$rules;
+            $estado_soporte->updateRules['clave'] .= ',clave,'.$estado_soporte->id;
+            return $estado_soporte->isValid('update');
         });
     }
 
