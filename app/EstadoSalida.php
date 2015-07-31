@@ -28,4 +28,14 @@ class EstadoSalida extends LGGModel
             return $es->isValid('update');
         });
     }
+
+
+    /**
+    * Obtiene las Salidas asociadas con el Estado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function salidas()
+    {
+        return $this->hasMany('App\Salida', 'estado_salida_id');
+    }
 }

@@ -90,4 +90,14 @@ class Empleado extends LGGModel {
     {
         return $this->hasMany('App\Rma');
     }
+
+
+    /**
+    * Obtiene las Salidas asociadas con el Empleado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function salidas()
+    {
+        return $this->hasMany('App\Salida', 'empleado_id');
+    }
 }

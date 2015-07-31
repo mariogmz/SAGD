@@ -155,4 +155,17 @@ class EmpleadoTest extends TestCase {
             $this->assertEquals($rmas[$i], $rmas_resultado[$i]);
         }
     }
+
+    /**
+     * @covers ::salidas
+     * @group relaciones
+     */
+    public function testSalidas()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $salida = factory(App\Salida::class, 'full')->create(['empleado_id' => $empleado->id]);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->salidas);
+        $this->assertInstanceOf(App\Salida::class, $empleado->salidas[0]);
+        $this->assertCount(1, $empleado->salidas);
+    }
 }
