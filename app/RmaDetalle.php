@@ -17,6 +17,8 @@ class RmaDetalle extends LGGModel {
         'producto_movimiento_id' => 'required|integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -28,6 +30,10 @@ class RmaDetalle extends LGGModel {
             }
 
             return true;
+        });
+        RmaDetalle::updating(function ($rma_detalle) {
+            $rma_detalle->updateRules = self::$rules;
+            return $rma_detalle->isValid();
         });
     }
 

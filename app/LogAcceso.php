@@ -3,9 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
 class LogAcceso extends LGGModel {
 
     protected $table = 'log_acceso';
@@ -17,20 +14,23 @@ class LogAcceso extends LGGModel {
         'exitoso'     => 'required|boolean'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        LogAcceso::creating(function ($log_entry)
-        {
-            if (!$log_entry->isValid())
-            {
+    public static function boot() {
+        LogAcceso::creating(function ($log_entry) {
+            if (!$log_entry->isValid()) {
                 return false;
             }
 
             return true;
+        });
+        LogAcceso::updating(function ($log_entry) {
+            $log_entry->updateRules = self::$rules;
+            return $log_entry->isValid();
         });
     }
 
@@ -38,8 +38,7 @@ class LogAcceso extends LGGModel {
      * Obtiene el empleado al que está asociado el registro del log
      * @return App\Empleado
      */
-    public function empleado()
-    {
+    public function empleado() {
         return $this->belongsTo('App\Empleado');
     }
 

@@ -55,6 +55,18 @@ class RmaDetalleTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\RmaDetalle::class)->create();
+        $model->descripcion_falla = "You shall not pass!!!";
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::rma
      */
     public function testRma() {

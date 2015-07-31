@@ -72,6 +72,20 @@ class SucursalEnvioTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\SucursalEnvio::class)->create();
+        $model->genera_costo = true;
+        $model->dias_max_envio = 10;
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+
+    /**
      * @covers ::sucursalOrigen
      */
     public function testSucursalOrigen()

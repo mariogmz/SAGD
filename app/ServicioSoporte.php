@@ -21,20 +21,24 @@ class ServicioSoporte extends LGGModel {
         'cliente_id'         => 'required|integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        ServicioSoporte::creating(function ($model)
-        {
-            if (!$model->isValid())
-            {
+    public static function boot() {
+        ServicioSoporte::creating(function ($model) {
+            if (!$model->isValid()) {
                 return false;
             }
 
             return true;
+        });
+        ServicioSoporte::updating(function ($model) {
+            $model->updateRules = self::$rules;
+
+            return $model->isValid();
         });
 
 
@@ -44,8 +48,7 @@ class ServicioSoporte extends LGGModel {
      * Obtiene el estado del soporte
      * @return App\EstadoSoporte
      */
-    public function estadoSoporte()
-    {
+    public function estadoSoporte() {
         return $this->belongsTo('App\EstadoSoporte');
     }
 
@@ -53,8 +56,7 @@ class ServicioSoporte extends LGGModel {
      * Obtiene el empleado que tiene asignado el soporte
      * @return App\Empleado
      */
-    public function empleado()
-    {
+    public function empleado() {
         return $this->belongsTo('App\Empleado');
     }
 
@@ -62,8 +64,7 @@ class ServicioSoporte extends LGGModel {
      * Obtiene el cliente al cual se le está dando el soporte
      * @return App\Cliente
      */
-    public function cliente()
-    {
+    public function cliente() {
         return $this->belongsTo('App\Cliente');
     }
 
@@ -71,7 +72,7 @@ class ServicioSoporte extends LGGModel {
      * Obtiene los soportes de producto que se asociaron con este soporte
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function soportesProductos(){
+    public function soportesProductos() {
         return $this->hasMany('App\SoporteProducto');
     }
 }

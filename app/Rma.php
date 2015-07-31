@@ -18,20 +18,24 @@ class Rma extends LGGModel {
         'nota_credito_id' => 'integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        Rma::creating(function ($model)
-        {
-            if (!$model->isValid())
-            {
+    public static function boot() {
+        Rma::creating(function ($model) {
+            if (!$model->isValid()) {
                 return false;
             }
 
             return true;
+        });
+        Rma::updating(function ($model) {
+            $model->updateRules = self::$rules;
+
+            return $model->isValid();
         });
     }
 
@@ -39,7 +43,7 @@ class Rma extends LGGModel {
      * Obtiene el cliente al que se le está aplicando el RMA
      * @return App\Cliente
      */
-    public function cliente(){
+    public function cliente() {
         return $this->belongsTo('App\Cliente');
     }
 
@@ -47,7 +51,7 @@ class Rma extends LGGModel {
      * Obtiene el empleado que está aplicando el RMA
      * @return App\Empleado
      */
-    public function empleado(){
+    public function empleado() {
         return $this->belongsTo('App\Empleado');
     }
 
@@ -55,7 +59,7 @@ class Rma extends LGGModel {
      * Obtiene el estado del rma asociado
      * @return App\EstadoRma
      */
-    public function estadoRma(){
+    public function estadoRma() {
         return $this->belongsTo('App\EstadoRma');
     }
 
@@ -63,7 +67,7 @@ class Rma extends LGGModel {
      * Obtiene el detalle del rma
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function rmaDetalles(){
+    public function rmaDetalles() {
         return $this->hasMany('App\RmaDetalle');
     }
 
@@ -71,7 +75,7 @@ class Rma extends LGGModel {
      * Obtiene el estado del rma asociado
      * @return App\RmaTiempo
      */
-    public function rmaTiempo(){
+    public function rmaTiempo() {
         return $this->belongsTo('App\RmaTiempo');
     }
 
@@ -79,7 +83,7 @@ class Rma extends LGGModel {
      * Obtiene el estado del rma asociado
      * @return App\Sucursal
      */
-    public function sucursal(){
+    public function sucursal() {
         return $this->belongsTo('App\Sucursal');
     }
 }

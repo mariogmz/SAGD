@@ -56,6 +56,18 @@ class SoporteProductoTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\SoporteProducto::class)->create();
+        $model->precio = 20.50;
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::servicioSoporte
      */
     public function testServicioSoporte() {

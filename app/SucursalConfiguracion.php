@@ -14,20 +14,24 @@ class SucursalConfiguracion extends LGGModel {
         'valor_texto'  => 'string|required_without:valor_numero'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        SucursalConfiguracion::creating(function ($sucursal_configuracion)
-        {
-            if (!$sucursal_configuracion->isValid() || !(empty($sucursal_configuracion->valor_numero) xor empty($sucursal_configuracion->valor_texto)))
-            {
+    public static function boot() {
+        SucursalConfiguracion::creating(function ($sucursal_configuracion) {
+            if (!$sucursal_configuracion->isValid() || !(empty($sucursal_configuracion->valor_numero) xor empty($sucursal_configuracion->valor_texto))) {
                 return false;
             }
 
             return true;
+        });
+        SucursalConfiguracion::updating(function ($model)
+        {
+            $model->updateRules = self::$rules;
+            return $model->isValid();
         });
     }
 
@@ -35,8 +39,7 @@ class SucursalConfiguracion extends LGGModel {
      * Obtiene la sucursal asociada al valor de la configuracion
      * @returns App\Sucursal
      */
-    public function sucursal()
-    {
+    public function sucursal() {
         return $this->belongsTo('App\Sucursal');
     }
 
@@ -44,8 +47,7 @@ class SucursalConfiguracion extends LGGModel {
      * Obtiene la sucursal asociada al valor de la configuracion
      * @returns App\Configuracion
      */
-    public function configuracion()
-    {
+    public function configuracion() {
         return $this->belongsTo('App\Configuracion');
     }
 }

@@ -100,6 +100,19 @@ class SucursalConfiguracionTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\SucursalConfiguracion::class, 'valornumero')->create();
+        $model->valor_numero = null;
+        $model->valor_texto = 'Thank you Mario! But our Princess is in another castle!';
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::sucursal
      */
     public function testSucursal()

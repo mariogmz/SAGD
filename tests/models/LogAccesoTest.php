@@ -49,6 +49,18 @@ class LogAccesoTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\LogAcceso::class)->create();
+        $model->exitoso = false;
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::empleado
      */
     public function testEmpleado()

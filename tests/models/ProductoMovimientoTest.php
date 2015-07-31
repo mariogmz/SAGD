@@ -92,11 +92,11 @@ class ProductoMovimientoTest extends TestCase
      * @covers ::rmaDetalles
      */
     public function testRmaDetalles(){
-        $producto_movimiento = factory(App\ProductoMovimiento::class)->create();
+        $producto_movimiento = factory(App\ProductoMovimiento::class, 'withproduct')->create();
         factory(App\RmaDetalle::class, 5)->create([
             'rma_id' => $producto_movimiento->id
         ]);
-        $rmas_detalles = \App\ProductoMovimiento::find($producto_movimiento->id)->rmaDetalles;
+        $rmas_detalles = App\ProductoMovimiento::find($producto_movimiento->id)->rmaDetalles;
         foreach($rmas_detalles as $rd){
             $this->assertInstanceOf('App\RmaDetalle', $rd);
             $this->assertEquals($producto_movimiento->id, $rd->rma_id);

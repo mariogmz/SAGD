@@ -16,20 +16,23 @@ class Domicilio extends LGGModel {
         'telefono_id'      => 'required|integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        DatoContacto::creating(function ($domicilio)
-        {
-            if (!$domicilio->isValid())
-            {
+    public static function boot() {
+        Domicilio::creating(function ($domicilio) {
+            if (!$domicilio->isValid()) {
                 return false;
             }
 
             return true;
+        });
+        Domicilio::updating(function ($domicilio) {
+            $domicilio->updateRules = self::$rules;
+            return $domicilio->isValid();
         });
     }
 
@@ -37,8 +40,7 @@ class Domicilio extends LGGModel {
      * Obtiene el código postal asociado al domicilio
      * @return App\CodigoPostal
      */
-    public function codigoPostal()
-    {
+    public function codigoPostal() {
         return $this->belongsTo('App\CodigoPostal');
     }
 
@@ -46,8 +48,7 @@ class Domicilio extends LGGModel {
      * Obtiene el teléfono asociado al domicilio
      * @return App\Telefono
      */
-    public function telefono()
-    {
+    public function telefono() {
         return $this->belongsTo('App\Telefono');
     }
 
@@ -55,18 +56,16 @@ class Domicilio extends LGGModel {
      * Obtiene las sucursales asociadas al domicilio
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function sucursales()
-    {
+    public function sucursales() {
         return $this->hasMany('App\Sucursal');
     }
 
 
     /**
-    * Obtiene los Clientes asociados con el Domicilio
-    * @return Illuminate\Database\Eloquent\Collection::class
-    */
-    public function clientes()
-    {
+     * Obtiene los Clientes asociados con el Domicilio
+     * @return Illuminate\Database\Eloquent\Collection::class
+     */
+    public function clientes() {
         return $this->belongsToMany('App\Cliente', 'domicilios_clientes',
             'domicilio_id', 'cliente_id');
     }

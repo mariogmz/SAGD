@@ -12,7 +12,7 @@ class ProveedorTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $proveedor = factory(App\Proveedor::class)->create();
-        $proveedor->razon_social = 'MC Hammer';
+        $proveedor->razon_social = "McLaren's Pub";
         $this->assertTrue($proveedor->isValid('update'));
         $this->assertTrue($proveedor->save());
     }

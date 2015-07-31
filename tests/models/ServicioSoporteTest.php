@@ -167,6 +167,18 @@ class ServicioSoporteTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\ServicioSoporte::class)->create();
+        $model->solucion = "I used to be a programmer like you, then I took an arrow in the knee";
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::estadoSoporte
      */
     public function testEstadoSoporte()

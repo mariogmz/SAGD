@@ -15,23 +15,27 @@ class Configuracion extends LGGModel {
         'modulo' => 'required|string|max:10'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        Configuracion::creating(function ($config)
-        {
+    public static function boot() {
+        Configuracion::creating(function ($config) {
             $config->nombre = strtoupper($config->nombre);
             $config->tipo = strtoupper($config->tipo);
             $config->modulo = strtoupper($config->modulo);
-            if (!$config->isValid())
-            {
+            if (!$config->isValid()) {
                 return false;
             }
 
             return true;
+        });
+        Configuracion::updating(function ($config) {
+            $config->updateRules = self::$rules;
+
+            return $config->isValid('update');
         });
     }
 
@@ -39,8 +43,7 @@ class Configuracion extends LGGModel {
      * Obtiene los valores de la configuración para todas las sucursales
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function sucursalesConfiguraciones()
-    {
+    public function sucursalesConfiguraciones() {
         return $this->hasMany('App\SucursalConfiguracion');
     }
 

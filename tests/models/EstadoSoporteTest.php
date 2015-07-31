@@ -23,7 +23,7 @@ class EstadoSoporteTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $estado_soporte = factory(App\EstadoSoporte::class)->create();
-        $estado_soporte->nombre = 'MC Hammer';
+        $estado_soporte->nombre = 'Morgan Freeman';
         $this->assertTrue($estado_soporte->isValid('update'));
         $this->assertTrue($estado_soporte->save());
     }

@@ -70,6 +70,18 @@ class RmaTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\Rma::class)->create();
+        $model->fecha = new DateTime('+ 5 days');
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::estadoRma
      */
     public function testEstadoRma()

@@ -75,6 +75,18 @@ class ConfiguracionTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\Configuracion::class)->create();
+        $model->nombre = "CookieCat";
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::sucursalesConfiguraciones
      */
     public function testSucursalesConfiguraciones()

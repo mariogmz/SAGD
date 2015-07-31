@@ -22,7 +22,7 @@ class EmpleadoTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $empleado = factory(App\Empleado::class)->create();
-        $empleado->nombre = 'MC Hammer';
+        $empleado->nombre = 'Dr. Cod';
         $this->assertTrue($empleado->isValid('update'));
         $this->assertTrue($empleado->save());
     }

@@ -61,6 +61,18 @@ class DomicilioTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group modelo_actualizable
+     */
+    public function testModeloEsActualizable()
+    {
+        $model = factory(App\Domicilio::class)->create();
+        $model->calle = "Boulevard of Broken Dreams";
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+    }
+
+    /**
      * @covers ::codigoPostal
      */
     public function testCodigoPostal()

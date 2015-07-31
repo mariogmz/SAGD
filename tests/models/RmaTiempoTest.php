@@ -12,7 +12,7 @@ class RmaTiempoTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $rmat = factory(App\RmaTiempo::class)->create();
-        $rmat->nombre = 'MCHammer';
+        $rmat->nombre = 'Tony Stark';
         $this->assertTrue($rmat->isValid('update'));
         $this->assertTrue($rmat->save());
     }

@@ -17,6 +17,8 @@ class SoporteProducto extends LGGModel {
         'producto_id' => 'required|integer'
     ];
 
+    public $updateRules = [];
+
     /**
      * Define the model hooks
      * @codeCoverageIgnore
@@ -28,6 +30,11 @@ class SoporteProducto extends LGGModel {
             }
 
             return true;
+        });
+        SoporteProducto::updating(function ($model)
+        {
+            $model->updateRules = self::$rules;
+            return $model->isValid();
         });
     }
 

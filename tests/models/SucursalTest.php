@@ -10,7 +10,7 @@ class SucursalTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $sucursal = factory(App\Sucursal::class)->create();
-        $sucursal->nombre = 'MCHammer';
+        $sucursal->nombre = 'Arcadia';
         $this->assertTrue($sucursal->isValid('update'));
         $this->assertTrue($sucursal->save());
     }
