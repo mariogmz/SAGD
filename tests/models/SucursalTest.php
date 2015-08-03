@@ -7,8 +7,7 @@ class SucursalTest extends TestCase {
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $sucursal = factory(App\Sucursal::class)->create();
         $sucursal->nombre = 'Arcadia';
         $this->assertTrue($sucursal->isValid('update'));
@@ -18,8 +17,7 @@ class SucursalTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testClaveDebeSerDe8CaracteresAlfa()
-    {
+    public function testClaveDebeSerDe8CaracteresAlfa() {
         $sucursal = factory(App\Sucursal::class)->make();
         $this->assertTrue($sucursal->isValid());
     }
@@ -27,8 +25,7 @@ class SucursalTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testClaveDebeSerUnica()
-    {
+    public function testClaveDebeSerUnica() {
         $sucursal1 = factory(App\Sucursal::class)->create();
         $sucursal2 = factory(App\Sucursal::class)->make([
             'clave' => $sucursal1->clave
@@ -39,8 +36,7 @@ class SucursalTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreDebeExistir()
-    {
+    public function testNombreDebeExistir() {
         $sucursal = factory(App\Sucursal::class)->make([
             'nombre' => ''
         ]);
@@ -50,8 +46,7 @@ class SucursalTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testHorariosDebeExistir()
-    {
+    public function testHorariosDebeExistir() {
         $sucursal = factory(App\Sucursal::class)->make([
             'horarios' => ''
         ]);
@@ -61,8 +56,7 @@ class SucursalTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testSucursalValida()
-    {
+    public function testSucursalValida() {
         $sucursal = $sucursal = factory(App\Sucursal::class)->make();
         $this->assertTrue($sucursal->isValid());
     }
@@ -71,8 +65,7 @@ class SucursalTest extends TestCase {
      * @covers ::proveedor
      * @group relaciones
      */
-    public function testProveedor()
-    {
+    public function testProveedor() {
         $proveedor = factory(App\Proveedor::class)->create();
         $sucursal = factory(App\Sucursal::class)->make([
             'proveedor_id' => $proveedor->id
@@ -84,8 +77,7 @@ class SucursalTest extends TestCase {
      * @covers ::domicilio
      * @group relaciones
      */
-    public function testDomicilio()
-    {
+    public function testDomicilio() {
         $domicilio = factory(App\Domicilio::class)->create();
         $sucursal = factory(App\Sucursal::class)->create([
             'domicilio_id' => $domicilio->id
@@ -97,8 +89,7 @@ class SucursalTest extends TestCase {
      * @covers ::productos
      * @group relaciones
      */
-    public function testProductos()
-    {
+    public function testProductos() {
         $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
         $producto->addSucursal($sucursal);
@@ -111,16 +102,14 @@ class SucursalTest extends TestCase {
      * @covers ::rmas
      * @group relaciones
      */
-    public function testRmas()
-    {
+    public function testRmas() {
         $sucursal = factory(App\Sucursal::class)->create();
         factory(App\Rma::class)->create([
             'sucursal_id' => $sucursal->id
         ]);
         $rmas_resultados = $sucursal->rmas;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rmas_resultados);
-        foreach ($rmas_resultados as $rr)
-        {
+        foreach ($rmas_resultados as $rr) {
             $this->assertInstanceOf(App\Rma::class, $rr);
         }
     }
@@ -129,8 +118,7 @@ class SucursalTest extends TestCase {
      * @covers ::salidas
      * @group relaciones
      */
-    public function testSalidas()
-    {
+    public function testSalidas() {
         $sucursal = factory(App\Sucursal::class)->create();
         $salida = factory(App\Salida::class, 'full')->create(['sucursal_id' => $sucursal->id]);
         $salidas = $sucursal->salidas;
@@ -143,8 +131,7 @@ class SucursalTest extends TestCase {
      * @covers ::razonesSocialesEmisores
      * @group relaciones
      */
-    public function testRazonesSocialesEmisores()
-    {
+    public function testRazonesSocialesEmisores() {
         $sucursal = factory(App\Sucursal::class)->create();
         $rse = factory(App\RazonSocialEmisor::class, 'full')->create(['sucursal_id' => $sucursal->id]);
         $rses = $sucursal->razonesSocialesEmisores;
@@ -157,8 +144,7 @@ class SucursalTest extends TestCase {
      * @covers ::entradasDetalles
      * @group relaciones
      */
-    public function testEntradasDetalles()
-    {
+    public function testEntradasDetalles() {
         $sucursal = factory(App\Sucursal::class)->create();
         $ed = factory(App\EntradaDetalle::class, 'full')->create(['sucursal_id' => $sucursal->id]);
         $eds = $sucursal->entradasDetalles;
@@ -171,8 +157,7 @@ class SucursalTest extends TestCase {
      * @covers ::transferenciasOrigen
      * @group relaciones
      */
-    public function testTransferenciasOrigen()
-    {
+    public function testTransferenciasOrigen() {
         $sucursal = factory(App\Sucursal::class)->create();
         $transfer = factory(App\Transferencia::class, 'full')->create(['sucursal_origen_id' => $sucursal->id]);
         $tso = $sucursal->transferenciasOrigen;
@@ -185,8 +170,7 @@ class SucursalTest extends TestCase {
      * @covers ::transferenciasDestino
      * @group relaciones
      */
-    public function testTransferenciasDestino()
-    {
+    public function testTransferenciasDestino() {
         $sucursal = factory(App\Sucursal::class)->create();
         $transfer = factory(App\Transferencia::class, 'full')->create(['sucursal_destino_id' => $sucursal->id]);
         $tsd = $sucursal->transferenciasDestino;
@@ -199,13 +183,27 @@ class SucursalTest extends TestCase {
      * @covers ::apartados
      * @group relaciones
      */
-    public function testApartados()
-    {
+    public function testApartados() {
         $sucursal = factory(App\Sucursal::class)->create();
         $apartado = factory(App\Apartado::class, 'full')->create(['sucursal_id' => $sucursal->id]);
         $apartados = $sucursal->apartados;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $apartados);
         $this->assertInstanceOf(App\Apartado::class, $apartados[0]);
         $this->assertCount(1, $apartados);
+    }
+
+    /**
+     * @covers ::cajas
+     * @group relaciones
+     */
+    public function testCajas() {
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Caja::class)->create([
+            'sucursal_id' => $sucursal->id
+        ]);
+        $cajas = $sucursal->cajas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $cajas);
+        $this->assertInstanceOf(App\Caja::class, $cajas[0]);
+        $this->assertCount(1, $cajas);
     }
 }
