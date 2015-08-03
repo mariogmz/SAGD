@@ -231,4 +231,19 @@ class TransferenciaTest extends TestCase {
         $transferencia->empleadoRevision()->associate($empleado);
         $this->assertInstanceOf(App\Empleado::class, $transferencia->empleadoRevision);
     }
+
+    /**
+     * @covers ::detalles
+     * @group relaciones
+     */
+    public function testDetalles()
+    {
+        $transferencia = factory(App\Transferencia::class, 'full')->create();
+        $td = factory(App\TransferenciaDetalle::class, 'full')->create([
+            'transferencia_id' => $transferencia->id]);
+        $tds = $transferencia->detalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tds);
+        $this->assertInstanceOf(App\TransferenciaDetalle::class, $tds[0]);
+        $this->assertCount(1, $tds);
+    }
 }

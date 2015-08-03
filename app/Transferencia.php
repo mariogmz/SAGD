@@ -82,4 +82,14 @@ class Transferencia extends LGGModel
     {
         return $this->belongsTo('App\Empleado', 'empleado_revision_id');
     }
+
+
+    /**
+    * Obtiene las Transferencias Detalles asociado con la Transferencia
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function detalles()
+    {
+        return $this->hasMany('App\TransferenciaDetalle', 'transferencia_id');
+    }
 }

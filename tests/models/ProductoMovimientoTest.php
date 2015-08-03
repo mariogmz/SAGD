@@ -147,4 +147,19 @@ class ProductoMovimientoTest extends TestCase
         $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
         $this->assertCount(1, $sds);
     }
+
+    /**
+     * @covers ::transferenciasDetalles
+     * @group relaciones
+     */
+    public function testTransferenciasDetalles()
+    {
+        $pm = factory(App\ProductoMovimiento::class, 'withproduct')->create();
+        $td = factory(App\TransferenciaDetalle::class, 'full')->create([
+            'producto_movimiento_id' => $pm->id]);
+        $tds = $pm->transferenciasDetalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tds);
+        $this->assertInstanceOf(App\TransferenciaDetalle::class, $tds[0]);
+        $this->assertCount(1, $tds);
+    }
 }
