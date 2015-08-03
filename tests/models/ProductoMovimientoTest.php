@@ -133,4 +133,18 @@ class ProductoMovimientoTest extends TestCase
         $this->assertInstanceOf(App\EntradaDetalle::class, $eds[0]);
         $this->assertCount(1, $eds);
     }
+
+    /**
+     * @covers ::salidasDetalles
+     * @group relaciones
+     */
+    public function testSalidasDetalles()
+    {
+        $pm = factory(App\ProductoMovimiento::class, 'withproduct')->create();
+        $sd = factory(App\SalidaDetalle::class, 'full')->create(['producto_movimiento_id' => $pm->id]);
+        $sds = $pm->salidasDetalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sds);
+        $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
+        $this->assertCount(1, $sds);
+    }
 }

@@ -128,4 +128,18 @@ class SalidaTest extends TestCase {
         $salida->estado()->associate($es);
         $this->assertSame(1, count($salida->estado));
     }
+
+    /**
+     * @covers ::detalles
+     * @group relaciones
+     */
+    public function testDetalles()
+    {
+        $salida = factory(App\Salida::class, 'full')->create();
+        $sd = factory(App\SalidaDetalle::class, 'full')->create(['salida_id' => $salida->id]);
+        $sds = $salida->detalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sds);
+        $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
+        $this->assertCount(1, $sds);
+    }
 }

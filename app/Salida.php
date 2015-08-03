@@ -58,4 +58,14 @@ class Salida extends LGGModel
     {
         return $this->belongsTo('App\EstadoSalida', 'estado_salida_id');
     }
+
+
+    /**
+    * Obtiene las Salidas Detalles asociadas con la Salida
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function detalles()
+    {
+        return $this->hasMany('App\SalidaDetalle', 'salida_id');
+    }
 }

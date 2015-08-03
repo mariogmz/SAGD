@@ -473,4 +473,18 @@ class ProductoTest extends TestCase
         $this->assertInstanceOf(App\EntradaDetalle::class, $eds[0]);
         $this->assertCount(1, $eds);
     }
+
+    /**
+     * @covers ::salidasDetalles
+     * @group relaciones
+     */
+    public function testSalidasDetalles()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sd = factory(App\SalidaDetalle::class, 'full')->create(['producto_id' => $producto->id]);
+        $sds = $producto->salidasDetalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sds);
+        $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
+        $this->assertCount(1, $sds);
+    }
 }

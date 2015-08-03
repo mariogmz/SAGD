@@ -198,4 +198,14 @@ class Producto extends LGGModel
     {
         return $this->hasMany('App\EntradaDetalle', 'producto_id');
     }
+
+
+    /**
+    * Obtiene las Salidas Detalles asociadas con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function salidasDetalles()
+    {
+        return $this->hasMany('App\SalidaDetalle', 'producto_id');
+    }
 }

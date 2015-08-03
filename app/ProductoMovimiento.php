@@ -71,4 +71,14 @@ class ProductoMovimiento extends LGGModel
     {
         return $this->hasMany('App\EntradaDetalle', 'producto_movimiento_id');
     }
+
+
+    /**
+    * Obtiene las Salidas Detalles asociadas con el Producto Movimiento
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function salidasDetalles()
+    {
+        return $this->hasMany('App\SalidaDetalle', 'producto_movimiento_id');
+    }
 }
