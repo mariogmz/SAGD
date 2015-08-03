@@ -213,4 +213,34 @@ class EmpleadoTest extends TestCase {
         $this->assertInstanceOf(App\Transferencia::class, $transferencias[0]);
         $this->assertCount(1, $transferencias);
     }
+
+    /**
+     * @covers ::apartados
+     * @group relaciones
+     */
+    public function testApartados()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $apartado = factory(App\Apartado::class, 'full')->create([
+            'empleado_apartado_id' => $empleado->id]);
+        $apartados = $empleado->apartados;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $apartados);
+        $this->assertInstanceOf(App\Apartado::class, $apartados[0]);
+        $this->assertCount(1, $apartados);
+    }
+
+    /**
+     * @covers ::desapartados
+     * @group relaciones
+     */
+    public function testDesapartados()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $apartado = factory(App\Apartado::class, 'full')->create([
+            'empleado_desapartado_id' => $empleado->id]);
+        $apartados = $empleado->desapartados;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $apartados);
+        $this->assertInstanceOf(App\Apartado::class, $apartados[0]);
+        $this->assertCount(1, $apartados);
+    }
 }

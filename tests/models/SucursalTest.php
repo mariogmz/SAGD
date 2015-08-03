@@ -194,4 +194,18 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(App\Transferencia::class, $tsd[0]);
         $this->assertCount(1, $tsd);
     }
+
+    /**
+     * @covers ::apartados
+     * @group relaciones
+     */
+    public function testApartados()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $apartado = factory(App\Apartado::class, 'full')->create(['sucursal_id' => $sucursal->id]);
+        $apartados = $sucursal->apartados;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $apartados);
+        $this->assertInstanceOf(App\Apartado::class, $apartados[0]);
+        $this->assertCount(1, $apartados);
+    }
 }

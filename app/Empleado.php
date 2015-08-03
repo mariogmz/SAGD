@@ -140,4 +140,24 @@ class Empleado extends LGGModel {
     {
         return $this->hasMany('App\Transferencia', 'empleado_revision_id');
     }
+
+
+    /**
+    * Obtiene los Apartados asociados con el Empleado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function apartados()
+    {
+        return $this->hasMany('App\Apartado', 'empleado_apartado_id');
+    }
+
+
+    /**
+    * Obtiene los Desapartados asociados con el Empleado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function desapartados()
+    {
+        return $this->hasMany('App\Apartado', 'empleado_desapartado_id');
+    }
 }

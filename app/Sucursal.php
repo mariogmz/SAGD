@@ -140,4 +140,14 @@ class Sucursal extends LGGModel {
     {
         return $this->hasMany('App\Transferencia', 'sucursal_destino_id');
     }
+
+
+    /**
+    * Obtiene los Apartados asociados con la Sucursal
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function apartados()
+    {
+        return $this->hasMany('App\Apartado', 'sucursal_id');
+    }
 }
