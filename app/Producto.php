@@ -208,4 +208,14 @@ class Producto extends LGGModel
     {
         return $this->hasMany('App\SalidaDetalle', 'producto_id');
     }
+
+
+    /**
+    * Obtiene las Transferencias Detalles asociadas con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferenciasDetalles()
+    {
+        return $this->hasMany('App\TransferenciaDetalle', 'producto_id');
+    }
 }
