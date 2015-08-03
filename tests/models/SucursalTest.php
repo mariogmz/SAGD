@@ -166,4 +166,32 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(App\EntradaDetalle::class, $eds[0]);
         $this->assertCount(1, $eds);
     }
+
+    /**
+     * @covers ::transferenciasOrigen
+     * @group relaciones
+     */
+    public function testTransferenciasOrigen()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $transfer = factory(App\Transferencia::class, 'full')->create(['sucursal_origen_id' => $sucursal->id]);
+        $tso = $sucursal->transferenciasOrigen;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tso);
+        $this->assertInstanceOf(App\Transferencia::class, $tso[0]);
+        $this->assertCount(1, $tso);
+    }
+
+    /**
+     * @covers ::transferenciasDestino
+     * @group relaciones
+     */
+    public function testTransferenciasDestino()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $transfer = factory(App\Transferencia::class, 'full')->create(['sucursal_destino_id' => $sucursal->id]);
+        $tsd = $sucursal->transferenciasDestino;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tsd);
+        $this->assertInstanceOf(App\Transferencia::class, $tsd[0]);
+        $this->assertCount(1, $tsd);
+    }
 }

@@ -110,4 +110,34 @@ class Empleado extends LGGModel {
     {
         return $this->hasMany('App\Entrada', 'empleado_id');
     }
+
+
+    /**
+    * Obtiene las Transferencias asociadas con el Empleado como Origen
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferenciasOrigen()
+    {
+        return $this->hasMany('App\Transferencia', 'empleado_origen_id');
+    }
+
+
+    /**
+    * Obtiene las Transferencias asociadas con el Empleado como Destino
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferenciasDestino()
+    {
+        return $this->hasMany('App\Transferencia', 'empleado_destino_id');
+    }
+
+
+    /**
+    * Obtiene las Transferencias asociadas con el Empleado como Revision
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferenciasRevision()
+    {
+        return $this->hasMany('App\Transferencia', 'empleado_revision_id');
+    }
 }

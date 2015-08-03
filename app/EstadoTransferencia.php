@@ -27,4 +27,14 @@ class EstadoTransferencia extends LGGModel
             return $model->isValid('update');
         });
     }
+
+
+    /**
+    * Obtiene las Transferencias asociadas con el Estado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferencias()
+    {
+        return $this->hasMany('App\Transferencia', 'estado_transferencia_id');
+    }
 }

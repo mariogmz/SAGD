@@ -171,4 +171,46 @@ class EmpleadoTest extends TestCase {
         $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
         $this->assertCount(1, $entradas);
     }
+
+    /**
+     * @covers ::transferenciasOrigen
+     * @group relaciones
+     */
+    public function testTransferenciasOrigen()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_origen_id' => $empleado->id]);
+        $transferencias = $empleado->transferenciasOrigen;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $transferencias);
+        $this->assertInstanceOf(App\Transferencia::class, $transferencias[0]);
+        $this->assertCount(1, $transferencias);
+    }
+
+    /**
+     * @covers ::transferenciasDestino
+     * @group relaciones
+     */
+    public function testTransferenciasDestino()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_destino_id' => $empleado->id]);
+        $transferencias = $empleado->transferenciasDestino;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $transferencias);
+        $this->assertInstanceOf(App\Transferencia::class, $transferencias[0]);
+        $this->assertCount(1, $transferencias);
+    }
+
+    /**
+     * @covers ::transferenciasRevision
+     * @group relaciones
+     */
+    public function testTransferenciasRevision()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_revision_id' => $empleado->id]);
+        $transferencias = $empleado->transferenciasRevision;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $transferencias);
+        $this->assertInstanceOf(App\Transferencia::class, $transferencias[0]);
+        $this->assertCount(1, $transferencias);
+    }
 }

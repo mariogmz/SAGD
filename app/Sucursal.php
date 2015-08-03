@@ -120,4 +120,24 @@ class Sucursal extends LGGModel {
     {
         return $this->hasMany('App\EntradaDetalle', 'sucursal_id');
     }
+
+
+    /**
+    * Obtiene las Transferencias asociadas con la Sucursal como origen
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferenciasOrigen()
+    {
+        return $this->hasMany('App\Transferencia', 'sucursal_origen_id');
+    }
+
+
+    /**
+    * Obtiene las Transferencias asociadas con la Sucursal como destino
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function transferenciasDestino()
+    {
+        return $this->hasMany('App\Transferencia', 'sucursal_destino_id');
+    }
 }

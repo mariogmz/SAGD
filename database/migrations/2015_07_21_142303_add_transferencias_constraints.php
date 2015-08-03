@@ -18,9 +18,9 @@ class AddTransferenciasConstraints extends Migration {
             $table->integer('sucursal_origen_id')->unsigned();
             $table->integer('sucursal_destino_id')->unsigned();
             $table->integer('empleado_origen_id')->unsigned();
-            $table->integer('empleado_destino_id')->unsigned();
-            $table->integer('empleado_revision_id')->unsigned();
-            $table->integer('estado_transferencia_id')->unsigned();
+            $table->integer('empleado_destino_id')->unsigned()->nullable();
+            $table->integer('empleado_revision_id')->unsigned()->nullable();
+            $table->integer('estado_transferencia_id')->unsigned()->nullable();
             // Constraints
             $table->foreign('sucursal_origen_id')->references('id')->on('sucursales');
             $table->foreign('sucursal_destino_id')->references('id')->on('sucursales');

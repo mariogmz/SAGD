@@ -45,4 +45,19 @@ class EstadoTransferenciaTest extends TestCase {
         $et = factory(App\EstadoTransferencia::class, 'longname')->make();
         $this->assertFalse($et->isValid());
     }
+
+    /**
+     * @covers ::transferencias
+     * @group relaciones
+     */
+    public function testTransferencias()
+    {
+        $et = factory(App\EstadoTransferencia::class)->create();
+        $transferencia = factory(App\Transferencia::class, 'full')->create([
+            'estado_transferencia_id' => $et->id]);
+        $transferencias = $et->transferencias;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $transferencias);
+        $this->assertInstanceOf(App\Transferencia::class, $transferencias[0]);
+        $this->assertCount(1, $transferencias);
+    }
 }
