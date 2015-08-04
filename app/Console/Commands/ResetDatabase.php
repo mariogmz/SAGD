@@ -13,7 +13,8 @@ class ResetDatabase extends Command
     * @var string
     */
     protected $signature = 'reset:db
-        { db_connection=mysql_testing : The database connection you want to run this command against. }';
+        { db_connection=mysql_testing : The database connection you want to run this command against. }
+        { --force : Force the reset }';
 
     /**
      * The console command description.
@@ -30,11 +31,18 @@ class ResetDatabase extends Command
     public function handle()
     {
         $dbConnection = $this->argument('db_connection');
+        $force = $this->option('force') ? true : false;
+
+        if ($force) {
+            $this->resetDb($dbConnection);
+            return;
+        }
+
         $this->info('You are about to reset and migrate the database: ' . $dbConnection);
         $this->info('This action is destructive.');
+
         if ($this->confirm('Do you wish to continue? [y|N]')) {
-            $this->call('migrate:reset', ['--database' => $dbConnection]);
-            $this->call('migrate', ['--database' => $dbConnection]);
+            $this->resetDb($dbConnection);
         }
     }
 
@@ -47,5 +55,11 @@ class ResetDatabase extends Command
     {
         //
         parent::__construct();
+    }
+
+    private function resetDb($dbConnection)
+    {
+        $this->call('migrate:reset', ['--database' => $dbConnection]);
+        $this->call('migrate', ['--database' => $dbConnection]);
     }
 }
