@@ -138,13 +138,12 @@ class EmpleadoTest extends TestCase {
      */
     public function testRmas() {
         $empleado = factory(App\Empleado::class)->create();
-        $rmas = factory(App\Rma::class, 5)->create([
+        factory(App\Rma::class)->create([
             'empleado_id' => $empleado->id
         ]);
-        $rmas_resultado = $empleado->rmas;
-        for ($i = 0; $i < 5; $i ++) {
-            $this->assertInstanceOf('App\Rma', $rmas_resultado[$i]);
-        }
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->rmas);
+        $this->assertInstanceOf(App\Rma::class, $empleado->rmas[0]);
+        $this->assertCount(1, $empleado->rmas);
     }
 
     /**
@@ -153,7 +152,7 @@ class EmpleadoTest extends TestCase {
      */
     public function testSalidas() {
         $empleado = factory(App\Empleado::class)->create();
-        $salida = factory(App\Salida::class, 'full')->create(['empleado_id' => $empleado->id]);
+        factory(App\Salida::class, 'full')->create(['empleado_id' => $empleado->id]);
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->salidas);
         $this->assertInstanceOf(App\Salida::class, $empleado->salidas[0]);
         $this->assertCount(1, $empleado->salidas);
@@ -176,8 +175,7 @@ class EmpleadoTest extends TestCase {
      * @covers ::transferenciasOrigen
      * @group relaciones
      */
-    public function testTransferenciasOrigen()
-    {
+    public function testTransferenciasOrigen() {
         $empleado = factory(App\Empleado::class)->create();
         $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_origen_id' => $empleado->id]);
         $transferencias = $empleado->transferenciasOrigen;
@@ -190,8 +188,7 @@ class EmpleadoTest extends TestCase {
      * @covers ::transferenciasDestino
      * @group relaciones
      */
-    public function testTransferenciasDestino()
-    {
+    public function testTransferenciasDestino() {
         $empleado = factory(App\Empleado::class)->create();
         $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_destino_id' => $empleado->id]);
         $transferencias = $empleado->transferenciasDestino;
@@ -204,8 +201,7 @@ class EmpleadoTest extends TestCase {
      * @covers ::transferenciasRevision
      * @group relaciones
      */
-    public function testTransferenciasRevision()
-    {
+    public function testTransferenciasRevision() {
         $empleado = factory(App\Empleado::class)->create();
         $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_revision_id' => $empleado->id]);
         $transferencias = $empleado->transferenciasRevision;
@@ -218,8 +214,7 @@ class EmpleadoTest extends TestCase {
      * @covers ::apartados
      * @group relaciones
      */
-    public function testApartados()
-    {
+    public function testApartados() {
         $empleado = factory(App\Empleado::class)->create();
         $apartado = factory(App\Apartado::class, 'full')->create([
             'empleado_apartado_id' => $empleado->id]);
@@ -233,14 +228,28 @@ class EmpleadoTest extends TestCase {
      * @covers ::desapartados
      * @group relaciones
      */
-    public function testDesapartados()
-    {
+    public function testDesapartados() {
         $empleado = factory(App\Empleado::class)->create();
-        $apartado = factory(App\Apartado::class, 'full')->create([
+        factory(App\Apartado::class, 'full')->create([
             'empleado_desapartado_id' => $empleado->id]);
         $apartados = $empleado->desapartados;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $apartados);
         $this->assertInstanceOf(App\Apartado::class, $apartados[0]);
         $this->assertCount(1, $apartados);
+    }
+
+    /**
+     * @covers ::cortes
+     * @group relaciones
+     */
+    public function testCortes() {
+        $empleado = factory(App\Empleado::class)->create();
+        factory(App\Corte::class)->create([
+            'empleado_id' => $empleado->id
+        ]);
+        $cortes = $empleado->cortes;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $cortes);
+        $this->assertInstanceOf(App\Corte::class, $cortes[0]);
+        $this->assertCount(1, $cortes);
     }
 }

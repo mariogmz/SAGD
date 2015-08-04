@@ -40,4 +40,12 @@ class Caja extends LGGModel {
     public function sucursal() {
         return $this->belongsTo('App\Sucursal');
     }
+
+    /**
+     * Obtiene los cortes asociados a esta caja
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function cortes(){
+        return $this->hasMany('App\Corte');
+    }
 }

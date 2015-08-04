@@ -74,6 +74,7 @@ class CajaTest extends TestCase {
 
     /**
      * @covers ::sucursal
+     * @group relaciones
      */
     public function testSucursal() {
         $sucursal = factory(App\Sucursal::class)->create();
@@ -82,6 +83,22 @@ class CajaTest extends TestCase {
         ]);
         $sucursal_resultado = $caja->sucursal;
         $this->assertEquals($sucursal, $sucursal_resultado);
+    }
+
+    /**
+     * @covers ::cortes
+     * @group relaciones
+     */
+    public function testCortes() {
+        $caja = factory(App\Caja::class)->create();
+        factory(App\Corte::class)->create([
+            'caja_id' => $caja->id
+        ]);
+        $cortes = $caja->cortes;
+        $this->assertCount(1, $cortes);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $cortes);
+        $this->assertInstanceOf('App\Corte', $cortes[0]);
+        $this->assertSame($caja->id, $cortes[0]->caja_id);
     }
 
 }

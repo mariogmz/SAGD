@@ -27,21 +27,19 @@ class Empleado extends LGGModel {
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        Empleado::creating(function ($empleado)
-        {
-            if (!$empleado->isValid())
-            {
+    public static function boot() {
+        Empleado::creating(function ($empleado) {
+            if (!$empleado->isValid()) {
                 return false;
             }
 
             return true;
         });
-        Empleado::updating(function($empleado){
+        Empleado::updating(function ($empleado) {
             $empleado->updateRules = self::$rules;
-            $empleado->updateRules['usuario'] .= ',usuario,'.$empleado->id;
-            $empleado->updateRules['access_token'] .= ',access_token,'.$empleado->id;
+            $empleado->updateRules['usuario'] .= ',usuario,' . $empleado->id;
+            $empleado->updateRules['access_token'] .= ',access_token,' . $empleado->id;
+
             return $empleado->isValid('update');
         });
     }
@@ -50,8 +48,7 @@ class Empleado extends LGGModel {
      * Obtiene todos los logs de acceso asociados al empleado
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function logsAccesos()
-    {
+    public function logsAccesos() {
         return $this->hasMany('App\LogAcceso');
     }
 
@@ -59,8 +56,7 @@ class Empleado extends LGGModel {
      * Obtiene los datos de contacto asociados al empleado
      * @return App\DatoContacto
      */
-    public function datoContacto()
-    {
+    public function datoContacto() {
         return $this->hasOne('App\DatoContacto');
     }
 
@@ -68,8 +64,7 @@ class Empleado extends LGGModel {
      * Obtiene la sucursal a la que pertenece el empleado
      * @return App\Sucursal
      */
-    public function sucursal()
-    {
+    public function sucursal() {
         return $this->belongsTo('App\Sucursal');
     }
 
@@ -77,8 +72,7 @@ class Empleado extends LGGModel {
      * Obtiene los soportes que ha atendido el empleado
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function serviciosSoportes()
-    {
+    public function serviciosSoportes() {
         return $this->hasMany('App\ServicioSoporte');
     }
 
@@ -86,78 +80,78 @@ class Empleado extends LGGModel {
      * Obtiene los RMAs que ha solicitado el cliente
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function rmas()
-    {
+    public function rmas() {
         return $this->hasMany('App\Rma');
     }
 
 
     /**
-    * Obtiene las Salidas asociadas con el Empleado
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function salidas()
-    {
+     * Obtiene las Salidas asociadas con el Empleado
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function salidas() {
         return $this->hasMany('App\Salida', 'empleado_id');
     }
 
 
     /**
-    * Obtiene las Entradas asociadas con el Empleado
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function entradas()
-    {
+     * Obtiene las Entradas asociadas con el Empleado
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function entradas() {
         return $this->hasMany('App\Entrada', 'empleado_id');
     }
 
 
     /**
-    * Obtiene las Transferencias asociadas con el Empleado como Origen
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function transferenciasOrigen()
-    {
+     * Obtiene las Transferencias asociadas con el Empleado como Origen
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function transferenciasOrigen() {
         return $this->hasMany('App\Transferencia', 'empleado_origen_id');
     }
 
 
     /**
-    * Obtiene las Transferencias asociadas con el Empleado como Destino
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function transferenciasDestino()
-    {
+     * Obtiene las Transferencias asociadas con el Empleado como Destino
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function transferenciasDestino() {
         return $this->hasMany('App\Transferencia', 'empleado_destino_id');
     }
 
 
     /**
-    * Obtiene las Transferencias asociadas con el Empleado como Revision
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function transferenciasRevision()
-    {
+     * Obtiene las Transferencias asociadas con el Empleado como Revision
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function transferenciasRevision() {
         return $this->hasMany('App\Transferencia', 'empleado_revision_id');
     }
 
 
     /**
-    * Obtiene los Apartados asociados con el Empleado
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function apartados()
-    {
+     * Obtiene los Apartados asociados con el Empleado
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function apartados() {
         return $this->hasMany('App\Apartado', 'empleado_apartado_id');
     }
 
 
     /**
-    * Obtiene los Desapartados asociados con el Empleado
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function desapartados()
-    {
+     * Obtiene los Desapartados asociados con el Empleado
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function desapartados() {
         return $this->hasMany('App\Apartado', 'empleado_desapartado_id');
+    }
+
+    /**
+     * Obtiene los cortes que realizó el empleado
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function cortes() {
+        return $this->hasMany('App\Corte');
     }
 }
