@@ -7,12 +7,13 @@ class PaginaWebDistribuidor extends LGGModel
     //
     protected $table = "paginas_web_distribuidores";
     public $timestamps = false;
-    protected $fillable = ['activo', 'fecha_vencimiento', 'url'];
+    protected $fillable = ['activo', 'fecha_vencimiento', 'url', 'cliente_id'];
 
     public static $rules = [
         'activo' => 'required|boolean',
         'fecha_vencimiento' => 'required|date',
-        'url' => 'max:100'
+        'url' => 'max:100',
+        'cliente_id' => 'required|integer'
     ];
 
     public $updateRules = [];

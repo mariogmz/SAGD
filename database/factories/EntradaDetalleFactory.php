@@ -19,6 +19,10 @@ $factory->define(App\EntradaDetalle::class, function ($faker)
         'costo' => $costo,
         'cantidad' => $cantidad,
         'importe' => $costo * $cantidad,
+        'entrada_id' => $faker->randomDigit,
+        'producto_id' => $faker->randomDigit,
+        'sucursal_id' => $faker->randomDigit,
+        'producto_movimiento_id' => $faker->randomDigit,
     ];
 });
 

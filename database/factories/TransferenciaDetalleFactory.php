@@ -19,6 +19,9 @@ $factory->define(App\TransferenciaDetalle::class, function ($faker)
         'existencia_origen_despues' => $faker->randomNumber,
         'existencia_destino_antes' => $faker->randomNumber,
         'existencia_destino_despues' => $faker->randomNumber,
+        'transferencia_id' => $faker->randomDigit,
+        'producto_id' => $faker->randomDigit,
+        'producto_movimiento_id' => $faker->randomDigit,
     ];
 });
 

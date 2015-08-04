@@ -77,14 +77,14 @@
 </td>
       <td class="success small"><div align="right">100.00%</div></td>
       <td class="success small"><div align="right">2&nbsp;/&nbsp;2</div></td>
-      <td class="success small">3</td>
+      <td class="success small">4</td>
       <td class="None big">&nbsp;</td>
       <td class="None small"><div align="right"></div></td>
       <td class="None small"><div align="right">&nbsp;</div></td>
      </tr>
 
      <tr>
-      <td class="success" colspan="4">&nbsp;<a href="#16"><abbr title="isValid()">isValid</abbr></a></td>
+      <td class="success" colspan="4">&nbsp;<a href="#16"><abbr title="isValid($method=null)">isValid</abbr></a></td>
       <td class="success big">       <div class="progress">
          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100.00" aria-valuemin="0" aria-valuemax="100" style="width: 100.00%">
            <span class="sr-only">100.00% covered (success)</span>
@@ -93,14 +93,14 @@
 </td>
       <td class="success small"><div align="right">100.00%</div></td>
       <td class="success small"><div align="right">1&nbsp;/&nbsp;1</div></td>
-      <td class="success small">2</td>
+      <td class="success small">3</td>
       <td class="None big">&nbsp;</td>
       <td class="None small"><div align="right"></div></td>
       <td class="None small"><div align="right">&nbsp;</div></td>
      </tr>
 
      <tr>
-      <td class="success" colspan="4">&nbsp;<a href="#27"><abbr title="scopeLast($query)">scopeLast</abbr></a></td>
+      <td class="success" colspan="4">&nbsp;<a href="#28"><abbr title="scopeLast($query)">scopeLast</abbr></a></td>
       <td class="success big">       <div class="progress">
          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="100.00" aria-valuemin="0" aria-valuemax="100" style="width: 100.00%">
            <span class="sr-only">100.00% covered (success)</span>
@@ -135,22 +135,23 @@
      <tr><td><div align="right"><a name="13"></a><a href="#13">13</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@codeCoverageIgnore</span></td></tr>
      <tr><td><div align="right"><a name="14"></a><a href="#14">14</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@return&nbsp;bool</span></td></tr>
      <tr><td><div align="right"><a name="15"></a><a href="#15">15</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
-     <tr><td><div align="right"><a name="16"></a><a href="#16">16</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">isValid</span><span class="keyword">(</span><span class="keyword">)</span></td></tr>
+     <tr><td><div align="right"><a name="16"></a><a href="#16">16</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">isValid</span><span class="keyword">(</span><span class="default">$method</span><span class="keyword">=</span><span class="default">null</span><span class="keyword">)</span></td></tr>
      <tr><td><div align="right"><a name="17"></a><a href="#17">17</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
-     <tr><td><div align="right"><a name="18"></a><a href="#18">18</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$validation</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">Validator</span><span class="default">::</span><span class="default">make</span><span class="keyword">(</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">attributes</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="default">::</span><span class="default">$rules</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
-     <tr><td><div align="right"><a name="19"></a><a href="#19">19</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$validation</span><span class="default">-&gt;</span><span class="default">passes</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">true</span><span class="keyword">;</span></td></tr>
-     <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">errors</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$validation</span><span class="default">-&gt;</span><span class="default">messages</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
-     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">false</span><span class="keyword">;</span></td></tr>
-     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
-     <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine"></td></tr>
-     <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
-     <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@codeCoverageIgnore</span></td></tr>
-     <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
-     <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">scopeLast</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">)</span></td></tr>
-     <tr><td><div align="right"><a name="28"></a><a href="#28">28</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
-     <tr><td><div align="right"><a name="29"></a><a href="#29">29</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">$query</span><span class="default">-&gt;</span><span class="default">orderBy</span><span class="keyword">(</span><span class="default">'id'</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">'desc'</span><span class="keyword">)</span><span class="default">-&gt;</span><span class="default">first</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
-     <tr><td><div align="right"><a name="30"></a><a href="#30">30</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
-     <tr><td><div align="right"><a name="31"></a><a href="#31">31</a></div></td><td class="codeLine"><span class="keyword">}</span></td></tr>
+     <tr><td><div align="right"><a name="18"></a><a href="#18">18</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$rules</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">is_null</span><span class="keyword">(</span><span class="default">$method</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">?</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="default">::</span><span class="default">$rules</span><span class="default">&nbsp;</span><span class="keyword">:</span><span class="default">&nbsp;</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">updateRules</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="19"></a><a href="#19">19</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$validation</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">Validator</span><span class="default">::</span><span class="default">make</span><span class="keyword">(</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">attributes</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">$rules</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="20"></a><a href="#20">20</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">if</span><span class="default">&nbsp;</span><span class="keyword">(</span><span class="default">$validation</span><span class="default">-&gt;</span><span class="default">passes</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">)</span><span class="default">&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">true</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="21"></a><a href="#21">21</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="default">$this</span><span class="default">-&gt;</span><span class="default">errors</span><span class="default">&nbsp;</span><span class="keyword">=</span><span class="default">&nbsp;</span><span class="default">$validation</span><span class="default">-&gt;</span><span class="default">messages</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="22"></a><a href="#22">22</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">false</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="23"></a><a href="#23">23</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td><div align="right"><a name="24"></a><a href="#24">24</a></div></td><td class="codeLine"></td></tr>
+     <tr><td><div align="right"><a name="25"></a><a href="#25">25</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="comment">/**</span></td></tr>
+     <tr><td><div align="right"><a name="26"></a><a href="#26">26</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*&nbsp;@codeCoverageIgnore</span></td></tr>
+     <tr><td><div align="right"><a name="27"></a><a href="#27">27</a></div></td><td class="codeLine"><span class="comment">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*/</span></td></tr>
+     <tr><td><div align="right"><a name="28"></a><a href="#28">28</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">public</span><span class="default">&nbsp;</span><span class="keyword">static</span><span class="default">&nbsp;</span><span class="keyword">function</span><span class="default">&nbsp;</span><span class="default">scopeLast</span><span class="keyword">(</span><span class="default">$query</span><span class="keyword">)</span></td></tr>
+     <tr><td><div align="right"><a name="29"></a><a href="#29">29</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">{</span></td></tr>
+     <tr><td><div align="right"><a name="30"></a><a href="#30">30</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">return</span><span class="default">&nbsp;</span><span class="default">$query</span><span class="default">-&gt;</span><span class="default">orderBy</span><span class="keyword">(</span><span class="default">'id'</span><span class="keyword">,</span><span class="default">&nbsp;</span><span class="default">'desc'</span><span class="keyword">)</span><span class="default">-&gt;</span><span class="default">first</span><span class="keyword">(</span><span class="keyword">)</span><span class="keyword">;</span></td></tr>
+     <tr><td><div align="right"><a name="31"></a><a href="#31">31</a></div></td><td class="codeLine"><span class="default">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="keyword">}</span></td></tr>
+     <tr><td><div align="right"><a name="32"></a><a href="#32">32</a></div></td><td class="codeLine"><span class="keyword">}</span></td></tr>
 
     </tbody>
    </table>
@@ -163,7 +164,7 @@
      <span class="warning"><strong>Dead Code</strong></span>
     </p>
     <p>
-     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 2.1.8</a> using <a href="http://php.net/" target="_top">PHP 5.6.7-1+deb.sury.org~utopic+1</a> and <a href="http://phpunit.de/">PHPUnit 4.7.7</a> at Mon Jul 27 16:14:57 UTC 2015.</small>
+     <small>Generated by <a href="http://github.com/sebastianbergmann/php-code-coverage" target="_top">PHP_CodeCoverage 2.1.9</a> using <a href="http://php.net/" target="_top">PHP 5.6.7-1+deb.sury.org~utopic+1</a> and <a href="http://phpunit.de/">PHPUnit 4.7.7</a> at Tue Aug 4 16:38:30 UTC 2015.</small>
     </p>
     <a title="Back to the top" id="toplink" href="#"><span class="glyphicon glyphicon-arrow-up"></span></a>
    </footer>

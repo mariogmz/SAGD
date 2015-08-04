@@ -91,4 +91,14 @@ class ProductoMovimiento extends LGGModel
     {
         return $this->hasMany('App\TransferenciaDetalle', 'producto_movimiento_id');
     }
+
+
+    /**
+    * Obtiene los Apartados Detalles asociados con el Producto Movimiento
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function apartadosDetalles()
+    {
+        return $this->hasMany('App\ApartadoDetalle', 'producto_movimiento_id');
+    }
 }

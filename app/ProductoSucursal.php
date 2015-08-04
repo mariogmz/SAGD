@@ -7,7 +7,7 @@ class ProductoSucursal extends LGGModel
     //
     protected $table = "productos_sucursales";
     public $timestamps = false;
-    protected $fillable = [];
+    protected $fillable = ['producto_id', 'sucursal_id', 'proveedor_id'];
 
     public static $rules = [];
 

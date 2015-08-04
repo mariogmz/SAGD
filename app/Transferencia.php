@@ -7,11 +7,19 @@ class Transferencia extends LGGModel
     //
     protected $table = "transferencias";
     public $timestamps = true;
-    protected $fillable = ['fecha_transferencia', 'fecha_recepcion'];
+    protected $fillable = ['fecha_transferencia', 'fecha_recepcion',
+        'estado_transferencia_id', 'sucursal_origen_id', 'sucursal_destino_id',
+        'empleado_origen_id', 'empleado_destino_id', 'empleado_revision_id'];
 
     public static $rules = [
         'fecha_transferencia' => 'date',
-        'fecha_recepcion' => 'date'
+        'fecha_recepcion' => 'date',
+        'estado_transferencia_id' => 'integer',
+        'sucursal_origen_id' => 'required|integer',
+        'sucursal_destino_id' => 'required|integer',
+        'empleado_origen_id' => 'required|integer',
+        'empleado_destino_id' => 'integer',
+        'empleado_revision_id' => 'integer',
     ];
     public $updateRules = [];
 

@@ -8,7 +8,8 @@ class Producto extends LGGModel
     protected $table = "productos";
     public $timestamps = true;
     protected $fillable = ['activo', 'clave', 'descripcion', 'descripcion_corta',
-        'fecha_entrada', 'numero_parte', 'remate', 'spiff', 'subclave', 'upc'];
+        'fecha_entrada', 'numero_parte', 'remate', 'spiff', 'subclave', 'upc',
+        'tipo_garantia_id', 'marca_id', 'margen_id', 'unidad_id', 'subfamilia_id'];
 
     public static $rules = [
         'activo' => 'required|boolean',
@@ -20,7 +21,12 @@ class Producto extends LGGModel
         'remate' => 'required|boolean',
         'spiff' => 'required|numeric',
         'subclave' => 'required',
-        'upc' => 'required|integer|unique:productos'
+        'upc' => 'required|integer|unique:productos',
+        'tipo_garantia_id' => 'required|integer',
+        'marca_id' => 'required|integer',
+        'margen_id' => 'integer',
+        'unidad_id' => 'required|integer',
+        'subfamilia_id' => 'required|integer',
     ];
 
     public $updateRules = [];
@@ -217,5 +223,15 @@ class Producto extends LGGModel
     public function transferenciasDetalles()
     {
         return $this->hasMany('App\TransferenciaDetalle', 'producto_id');
+    }
+
+
+    /**
+    * Obtiene los Apartados Detalles asociados con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function apartadosDetalles()
+    {
+        return $this->hasMany('App\ApartadoDetalle', 'producto_id');
     }
 }

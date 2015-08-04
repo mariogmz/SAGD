@@ -7,10 +7,12 @@ class ClienteComentario extends LGGModel
     //
     protected $table = "clientes_comentarios";
     public $timestamps = false;
-    protected $fillable = ['comentario'];
+    protected $fillable = ['comentario', 'cliente_id', 'empleado_id'];
 
     public static $rules = [
         'comentario' => 'required|max:200',
+        'cliente_id' => 'required|integer',
+        'empleado_id' => 'required|integer',
     ];
 
     public $updateRules = [];

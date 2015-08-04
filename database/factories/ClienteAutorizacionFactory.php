@@ -15,7 +15,8 @@ $factory->define(App\ClienteAutorizacion::class, function ($faker)
 {
     return [
         'cliente_autorizado_id' => null,
-        'nombre_autorizado' => $faker->name
+        'nombre_autorizado' => $faker->name,
+        'cliente_id' => $faker->randomDigit
     ];
 });
 

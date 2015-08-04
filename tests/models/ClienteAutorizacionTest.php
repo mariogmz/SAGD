@@ -58,10 +58,10 @@ class ClienteAutorizacionTest extends TestCase {
     }
 
     /**
-     * @covers ::clientes
+     * @covers ::cliente
      * @group relaciones
      */
-    public function testClientes()
+    public function testCliente()
     {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $ca = factory(App\ClienteAutorizacion::class)->make();

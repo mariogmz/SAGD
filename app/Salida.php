@@ -7,11 +7,15 @@ class Salida extends LGGModel
     //
     protected $table = "salidas";
     public $timestamps = false;
-    protected $fillable = ['fecha_salida', 'motivo'];
+    protected $fillable = ['fecha_salida', 'motivo',
+        'empleado_id', 'sucursal_id', 'estado_salida_id'];
 
     public static $rules = [
         'fecha_salida' => 'date',
-        'motivo' => 'required|max:255'
+        'motivo' => 'required|max:255',
+        'empleado_id' => 'required|integer',
+        'sucursal_id' => 'required|integer',
+        'estado_salida_id' => 'required|integer',
     ];
     public $updateRules = [];
 
