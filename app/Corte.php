@@ -64,4 +64,12 @@ class Corte extends LGGModel {
     public function caja() {
         return $this->belongsTo('App\Caja');
     }
+
+    /**
+     * Obtiene los gastos extras asociados al corte
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function gastosExtras(){
+        return $this->hasMany('App\GastoExtra');
+    }
 }

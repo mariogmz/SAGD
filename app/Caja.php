@@ -48,4 +48,12 @@ class Caja extends LGGModel {
     public function cortes(){
         return $this->hasMany('App\Corte');
     }
+
+    /**
+     * Obtiene los gastos extras asociados a la caja
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function gastosExtras(){
+        return $this->hasMany('App\GastoExtra');
+    }
 }

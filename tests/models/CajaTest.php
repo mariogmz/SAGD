@@ -101,4 +101,20 @@ class CajaTest extends TestCase {
         $this->assertSame($caja->id, $cortes[0]->caja_id);
     }
 
+    /**
+     * @covers ::gastosExtras
+     * @group relaciones
+     */
+    public function testGastosExtras(){
+        $caja = factory(App\Caja::class)->create();
+        factory(App\GastoExtra::class)->create([
+            'caja_id' => $caja->id
+        ]);
+        $gastos_extras = $caja->gastosExtras;
+        $this->assertCount(1, $gastos_extras);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $gastos_extras);
+        $this->assertInstanceOf('App\GastoExtra', $gastos_extras[0]);
+        $this->assertSame($caja->id, $gastos_extras[0]->caja_id);
+    }
+
 }

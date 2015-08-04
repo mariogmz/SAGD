@@ -142,4 +142,20 @@ class CorteTest extends TestCase {
         $this->assertSame($corte_global->id, $cortes[0]->corte_global_id);
     }
 
+    /**
+     * @covers ::gastosExtras
+     * @group relaciones
+     */
+    public function testGastosExtras() {
+        $corte = factory(App\Corte::class)->create();
+        factory(App\GastoExtra::class)->create([
+            'corte_id' => $corte->id
+        ]);
+        $gastos_extras = $corte->gastosExtras;
+        $this->assertCount(1, $gastos_extras);
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $gastos_extras);
+        $this->assertInstanceOf('App\GastoExtra', $gastos_extras[0]);
+        $this->assertSame($corte->id, $gastos_extras[0]->corte_id);
+    }
+
 }
