@@ -3,9 +3,6 @@
 namespace App;
 
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
-
 class Sucursal extends LGGModel {
 
     protected $table = 'sucursales';
@@ -27,21 +24,19 @@ class Sucursal extends LGGModel {
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        Sucursal::creating(function ($sucursal)
-        {
+    public static function boot() {
+        Sucursal::creating(function ($sucursal) {
             $sucursal->clave = strtoupper($sucursal->clave);
-            if (!$sucursal->isValid())
-            {
+            if (!$sucursal->isValid()) {
                 return false;
             }
 
             return true;
         });
-        Sucursal::updating(function($sucursal){
+        Sucursal::updating(function ($sucursal) {
             $sucursal->updateRules = self::$rules;
-            $sucursal->updateRules['clave'] .= ',clave,'.$sucursal->id;
+            $sucursal->updateRules['clave'] .= ',clave,' . $sucursal->id;
+
             return $sucursal->isValid('update');
         });
     }
@@ -50,8 +45,7 @@ class Sucursal extends LGGModel {
      * Obtiene el proveedor asociado a la sucursal
      * @return App\Proveedor
      */
-    public function proveedor()
-    {
+    public function proveedor() {
         return $this->belongsTo('App\Proveedor');
     }
 
@@ -59,8 +53,7 @@ class Sucursal extends LGGModel {
      * Obtiene el domicilio asociado a la sucursal
      * @return App\Domicilio
      */
-    public function domicilio()
-    {
+    public function domicilio() {
         return $this->belongsTo('App\Domicilio');
     }
 
@@ -68,8 +61,7 @@ class Sucursal extends LGGModel {
      * Obtener los Productos relacionados con la Sucursal
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function productos()
-    {
+    public function productos() {
         return $this->belongsToMany('App\Producto', 'productos_sucursales',
             'sucursal_id', 'producto_id');
     }
@@ -78,8 +70,7 @@ class Sucursal extends LGGModel {
      * Obtiene los empleados asociados a la sucursal
      * @return array
      */
-    public function empleados()
-    {
+    public function empleados() {
         return $this->hasMany('App\Empleado');
     }
 
@@ -87,67 +78,69 @@ class Sucursal extends LGGModel {
      * Obtener los RMAs generados en la sucursal
      * @return array
      */
-    public function rmas(){
+    public function rmas() {
         return $this->hasMany('App\Rma');
     }
 
 
     /**
-    * Obtiene las Salidas asociadas con la Sucursal
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function salidas()
-    {
+     * Obtiene las Salidas asociadas con la Sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function salidas() {
         return $this->hasMany('App\Salida', 'sucursal_id');
     }
 
 
     /**
-    * Obtiene la Razon Social Emisora asociada con la Sucursal
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function razonesSocialesEmisores()
-    {
+     * Obtiene la Razon Social Emisora asociada con la Sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function razonesSocialesEmisores() {
         return $this->hasMany('App\RazonSocialEmisor', 'sucursal_id');
     }
 
 
     /**
-    * Obtiene las Entradas Detalles asociadas con la Sucursal
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function entradasDetalles()
-    {
+     * Obtiene las Entradas Detalles asociadas con la Sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function entradasDetalles() {
         return $this->hasMany('App\EntradaDetalle', 'sucursal_id');
     }
 
 
     /**
-    * Obtiene las Transferencias asociadas con la Sucursal como origen
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function transferenciasOrigen()
-    {
+     * Obtiene las Transferencias asociadas con la Sucursal como origen
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function transferenciasOrigen() {
         return $this->hasMany('App\Transferencia', 'sucursal_origen_id');
     }
 
 
     /**
-    * Obtiene las Transferencias asociadas con la Sucursal como destino
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function transferenciasDestino()
-    {
+     * Obtiene las Transferencias asociadas con la Sucursal como destino
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function transferenciasDestino() {
         return $this->hasMany('App\Transferencia', 'sucursal_destino_id');
     }
 
 
     /**
-    * Obtiene los Apartados asociados con la Sucursal
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function apartados()
-    {
+     * Obtiene los Apartados asociados con la Sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function apartados() {
         return $this->hasMany('App\Apartado', 'sucursal_id');
+    }
+
+    /**
+     * Obtiene las cajas asociadas a la sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function cajas() {
+        return $this->hasMany('App\Caja');
     }
 }
