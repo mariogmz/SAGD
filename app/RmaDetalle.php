@@ -41,15 +41,15 @@ class RmaDetalle extends LGGModel {
      * Obtiene el rma al que pertenece este detalle
      * @return App\Rma
      */
-    public function testRma() {
+    public function rma() {
         return $this->belongsTo('App\Rma');
     }
 
     /**
      * Obtiene la garantia de venta asociada a este detalle
-     * @return App\Rma
+     * @return App\Garantia
      */
-    public function testGarantia() {
+    public function garantia() {
         return $this->belongsTo('App\Garantia');
     }
 
@@ -57,7 +57,7 @@ class RmaDetalle extends LGGModel {
      * Obtiene el movimiento de producto asociado a este detalle
      * @return App\ProductoMovimiento
      */
-    public function testProductoMovimiento() {
+    public function productoMovimiento() {
         return $this->belongsTo('App\ProductoMovimiento');
     }
 

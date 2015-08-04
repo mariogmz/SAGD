@@ -140,6 +140,7 @@ class MetodoPagoTest extends TestCase {
 
     /**
      * @covers ::estatusActivo
+     * @group relaciones
      */
     public function testEstatusActivo() {
         $estatus_activo = factory(App\EstatusActivo::class)->create();

@@ -12,7 +12,7 @@
 */
 
 $factory->define(App\Sucursal::class, function ($faker) {
-	return [
+    return [
 		'clave' => $faker->unique()->regexify('[A-Z]{8}'),
 		'nombre' => $faker->word,
 		'horarios' => $faker->text(100),

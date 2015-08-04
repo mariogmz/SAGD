@@ -8,8 +8,7 @@ class TelefonoTest extends TestCase {
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $telefono = factory(App\Telefono::class)->create();
         $telefono->tipo = 'MC Hammer';
         $this->assertTrue($telefono->isValid('update'));
@@ -19,8 +18,7 @@ class TelefonoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testTelefonoValido()
-    {
+    public function testTelefonoValido() {
         $telefono = factory(Telefono::class)->make();
         $this->assertTrue($telefono->isValid());
     }
@@ -28,8 +26,7 @@ class TelefonoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNumeroEsRequerido()
-    {
+    public function testNumeroEsRequerido() {
         $telefono = factory(Telefono::class)->make([
             'numero' => ''
         ]);
@@ -39,8 +36,7 @@ class TelefonoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testTipoEsRequerido()
-    {
+    public function testTipoEsRequerido() {
         $telefono = factory(Telefono::class)->make([
             'tipo' => ''
         ]);
@@ -50,13 +46,27 @@ class TelefonoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testTelefonoUnico()
-    {
+    public function testTelefonoUnico() {
         $telefono1 = factory(Telefono::class)->create();
         $telefono2 = factory(Telefono::class)->make([
             'numero' => $telefono1->numero
         ]);
         $this->assertFalse($telefono2->isValid());
+    }
+
+    /**
+     * @covers ::domicilios
+     * @group relaciones
+     */
+    public function testDomicilios() {
+        $telefono = factory(App\Telefono::class)->create();
+        factory(App\Domicilio::class)->create([
+            'telefono_id' => $telefono->id
+        ]);
+        $domicilios = $telefono->domicilios;
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $domicilios);
+        $this->assertInstanceOf('App\Domicilio', $domicilios[0]);
+        $this->assertCount(1, $domicilios);
     }
 
 }
