@@ -7,10 +7,14 @@ class SalidaDetalle extends LGGModel
     //
     protected $table = "salidas_detalles";
     public $timestamps = true;
-    protected $fillable = ['cantidad'];
+    protected $fillable = ['cantidad', 'producto_id', 'producto_movimiento_id',
+        'salida_id'];
 
     public static $rules = [
-        'cantidad' => 'required|integer'
+        'cantidad' => 'required|integer',
+        'producto_id' => 'required|integer',
+        'producto_movimiento_id' => 'required|integer',
+        'salida_id' => 'required|integer',
     ];
     public $updateRules = [];
 

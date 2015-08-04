@@ -16,6 +16,9 @@ $factory->define(App\Salida::class, function ($faker)
     return [
         'fecha_salida' => $faker->dateTime,
         'motivo' => $faker->text(255),
+        'empleado_id' => $faker->randomDigit,
+        'sucursal_id' => $faker->randomDigit,
+        'estado_salida_id' => $faker->randomDigit,
     ];
 });
 

@@ -7,12 +7,16 @@ class ApartadoDetalle extends LGGModel
     //
     protected $table = "apartados_detalles";
     public $timestamps = true;
-    protected $fillable = ['cantidad', 'existencia_antes', 'existencia_despues'];
+    protected $fillable = ['cantidad', 'existencia_antes', 'existencia_despues',
+        'apartado_id', 'producto_id', 'producto_movimiento_id'];
 
     public static $rules = [
         'cantidad' => 'required|integer|min:0',
         'existencia_antes' => 'required|integer|min:0',
         'existencia_despues' => 'required|integer|min:0',
+        'apartado_id' => 'required|integer',
+        'producto_id' => 'required|integer',
+        'producto_movimiento_id' => 'required|integer',
     ];
     public $updateRules = [];
 

@@ -7,13 +7,18 @@ class Entrada extends LGGModel
     //
     protected $table = "entradas";
     public $timestamps = true;
-    protected $fillable = ['factura_externa_numero', 'factura_fecha', 'moneda', 'tipo_cambio'];
+    protected $fillable = ['factura_externa_numero', 'factura_fecha', 'moneda', 'tipo_cambio',
+        'estado_entrada_id', 'proveedor_id', 'razon_social_id', 'empleado_id'];
 
     public static $rules = [
         'factura_externa_numero' => 'required|max:45',
         'factura_fecha' => 'date',
         'moneda' => 'required|max:45',
         'tipo_cambio' => 'required|numeric',
+        'estado_entrada_id' => 'required|integer',
+        'proveedor_id' => 'required|integer',
+        'razon_social_id' => 'required|integer',
+        'empleado_id' => 'required|integer',
     ];
     public $updateRules = [];
 

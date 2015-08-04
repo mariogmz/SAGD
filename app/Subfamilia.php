@@ -7,13 +7,13 @@ class Subfamilia extends LGGModel
     //
     protected $table = "subfamilias";
     public $timestamps = false;
-    protected $fillable = ['clave', 'nombre'];
+    protected $fillable = ['clave', 'nombre', 'familia_id', 'margen_id'];
 
     public static $rules = [
         'clave' => 'required|max:4|unique:subfamilias',
         'nombre' => 'required|max:45',
-        'familia_id' => 'required',
-        'margen_id' => 'required'
+        'familia_id' => 'required|integer',
+        'margen_id' => 'required|integer'
     ];
 
     public $updateRules = [];

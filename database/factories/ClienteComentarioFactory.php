@@ -14,7 +14,9 @@
 $factory->define(App\ClienteComentario::class, function ($faker)
 {
     return [
-        'comentario' => $faker->text(200)
+        'comentario' => $faker->text(200),
+        'cliente_id' => $faker->randomDigit,
+        'empleado_id' => $faker->randomDigit,
     ];
 });
 

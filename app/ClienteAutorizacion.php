@@ -7,11 +7,12 @@ class ClienteAutorizacion extends LGGModel
     //
     protected $table = "clientes_autorizaciones";
     public $timestamps = false;
-    protected $fillable = ['nombre_autorizado'];
+    protected $fillable = ['nombre_autorizado', 'cliente_id', 'cliente_autorizado_id'];
 
     public static $rules = [
         'cliente_autorizado_id' => '',
-        'nombre_autorizado' => 'max:200'
+        'nombre_autorizado' => 'max:200',
+        'cliente_id' => 'required|integer'
     ];
 
     public $updateRules = [];

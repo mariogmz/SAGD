@@ -9,7 +9,8 @@ class Existencia extends LGGModel
     public $timestamps = false;
     protected $fillable = ['cantidad', 'cantidad_apartado',
         'cantidad_pretransferencia', 'cantidad_transferencia',
-        'cantidad_garantia_cliente', 'cantidad_garantia_zegucom'];
+        'cantidad_garantia_cliente', 'cantidad_garantia_zegucom',
+        'productos_sucursales_id'];
 
     public static $rules = [
         'cantidad' =>  'integer|min:0',
@@ -18,6 +19,7 @@ class Existencia extends LGGModel
         'cantidad_transferencia' =>  'integer|min:0',
         'cantidad_garantia_cliente' =>  'integer|min:0',
         'cantidad_garantia_zegucom' =>  'integer|min:0',
+        'productos_sucursales_id' => 'required|integer'
     ];
 
     public $updateRules = [];

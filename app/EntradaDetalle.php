@@ -7,12 +7,17 @@ class EntradaDetalle extends LGGModel
     //
     protected $table = "entradas_detalles";
     public $timestamps = true;
-    protected $fillable = ['costo', 'cantidad', 'importe'];
+    protected $fillable = ['costo', 'cantidad', 'importe',
+        'entrada_id', 'producto_id', 'sucursal_id', 'producto_movimiento_id'];
 
     public static $rules = [
         'costo' => 'required|numeric|min:0.0',
         'cantidad' => 'required|integer|min:0',
         'importe' => 'required|numeric|min:0.0',
+        'entrada_id' => 'required|integer',
+        'producto_id' => 'required|integer',
+        'sucursal_id' => 'required|integer',
+        'producto_movimiento_id' => 'required|integer',
     ];
     public $updateRules = [];
 

@@ -24,7 +24,7 @@ $factory->define(App\Precio::class, function ($faker) {
         'precio_8' => $faker->randomFloat(2, 0.0, 9999.99),
         'precio_9' => $faker->randomFloat(2, 0.0, 9999.99),
         'precio_10' => $faker->randomFloat(2, 0.0, 9999.99),
-
+        'producto_sucursal_id' => $faker->randomDigit
     ];
 });
 

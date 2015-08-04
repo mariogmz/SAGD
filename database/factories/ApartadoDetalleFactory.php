@@ -16,7 +16,10 @@ $factory->define(App\ApartadoDetalle::class, function ($faker)
     return [
         'cantidad' => $faker->randomNumber(6),
         'existencia_antes' => $faker->randomNumber(3),
-        'existencia_despues' => $faker->randomNumber(3)
+        'existencia_despues' => $faker->randomNumber(3),
+        'apartado_id' => $faker->randomDigit,
+        'producto_id' => $faker->randomDigit,
+        'producto_movimiento_id' => $faker->randomDigit,
     ];
 });
 

@@ -15,6 +15,9 @@ $factory->define(App\SalidaDetalle::class, function ($faker)
 {
     return [
         'cantidad' => $faker->randomNumber(8),
+        'producto_id' => $faker->randomDigit,
+        'producto_movimiento_id' => $faker->randomDigit,
+        'salida_id' => $faker->randomDigit,
     ];
 });
 

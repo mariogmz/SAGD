@@ -16,7 +16,8 @@ $factory->define(App\PaginaWebDistribuidor::class, function ($faker)
     return [
         'activo' => $faker->boolean,
         'fecha_vencimiento' => $faker->dateTime,
-        'url' => $faker->url
+        'url' => $faker->url,
+        'cliente_id' => $faker->randomDigit
     ];
 });
 

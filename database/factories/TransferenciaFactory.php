@@ -15,7 +15,13 @@ $factory->define(App\Transferencia::class, function ($faker)
 {
     return [
         'fecha_transferencia' => $faker->dateTime,
-        'fecha_recepcion' => $faker->dateTime
+        'fecha_recepcion' => $faker->dateTime,
+        'estado_transferencia_id' => $faker->randomDigit,
+        'sucursal_origen_id' => $faker->randomDigit,
+        'sucursal_destino_id' => $faker->randomDigit,
+        'empleado_origen_id' => $faker->randomDigit,
+        'empleado_destino_id' => $faker->randomDigit,
+        'empleado_revision_id' => $faker->randomDigit,
     ];
 });
 

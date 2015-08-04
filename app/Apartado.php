@@ -7,12 +7,17 @@ class Apartado extends LGGModel
     //
     protected $table = "apartados";
     public $timestamps = true;
-    protected $fillable = ['fecha_apartado', 'fecha_desapartado', 'concepto'];
+    protected $fillable = ['fecha_apartado', 'fecha_desapartado', 'concepto',
+        'estado_apartado_id', 'sucursal_id', 'empleado_apartado_id', 'empleado_desapartado_id'];
 
     public static $rules = [
         'concepto' => 'required|max:255',
         'fecha_apartado' => 'date',
-        'fecha_desapartado' => 'date'
+        'fecha_desapartado' => 'date',
+        'estado_apartado_id' => 'required|integer',
+        'sucursal_id' => 'required|integer',
+        'empleado_apartado_id' => 'required|integer',
+        'empleado_desapartado_id' => 'integer'
     ];
     public $updateRules = [];
 

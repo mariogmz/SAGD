@@ -11,7 +11,9 @@ class Cliente extends LGGModel {
     public $timestamps = true;
     protected $fillable = ['email', 'usuario', 'nombre', 'fecha_nacimiento',
         'sexo', 'ocupacion', 'fecha_verificacion_correo',
-        'fecha_expira_club_zegucom', 'referencia_otro'];
+        'fecha_expira_club_zegucom', 'referencia_otro',
+        'cliente_estatus_id', 'rol_id', 'sucursal_id', 'cliente_referencia_id',
+        'empleado_id', 'vendedor_id'];
 
     public static $rules = [
         'email' => 'required|email|max:45|unique:clientes,email',
@@ -24,6 +26,12 @@ class Cliente extends LGGModel {
         'fecha_verificacion_correo' => 'date',
         'fecha_expira_club_zegucom' => 'date',
         'referencia_otro' => 'max:50',
+        'cliente_estatus_id' => 'required|integer',
+        'rol_id' => 'required|integer',
+        'sucursal_id' => 'required|integer',
+        'cliente_referencia_id' => 'required|integer',
+        'empleado_id' => 'integer',
+        'vendedor_id' => 'integer',
     ];
 
     public $updateRules = [];

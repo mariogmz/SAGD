@@ -19,6 +19,7 @@ $factory->define(App\Existencia::class, function ($faker) {
         'cantidad_transferencia' => $faker->randomDigit,
         'cantidad_garantia_cliente' => $faker->randomDigit,
         'cantidad_garantia_zegucom' => $faker->randomDigit,
+        'productos_sucursales_id' => $faker->randomDigit
     ];
 });
 

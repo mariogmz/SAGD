@@ -16,7 +16,10 @@ $factory->define(App\Apartado::class, function ($faker)
     return [
         'fecha_apartado' => $faker->dateTime,
         'fecha_desapartado' => $faker->dateTime,
-        'concepto' => $faker->text(255)
+        'concepto' => $faker->text(255),
+        'estado_apartado_id' => $faker->randomDigit,
+        'sucursal_id' => $faker->randomDigit,
+        'empleado_apartado_id' => $faker->randomDigit,
     ];
 });
 
