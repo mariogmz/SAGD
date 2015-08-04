@@ -1,6 +1,8 @@
 <?php
 
-
+/**
+ * @coversDefaultClass \App\Sucursal
+ */
 class SucursalTest extends TestCase {
 
     /**

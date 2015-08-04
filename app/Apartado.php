@@ -69,4 +69,14 @@ class Apartado extends LGGModel
     {
         return $this->belongsTo('App\Empleado', 'empleado_desapartado_id');
     }
+
+
+    /**
+    * Obtiene el Apartado Detalle asociado con el Apartado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function detalles()
+    {
+        return $this->hasMany('App\ApartadoDetalle', 'apartado_id');
+    }
 }

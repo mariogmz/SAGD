@@ -289,7 +289,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers class::dimension
+     * @covers ::dimension
      * @group relaciones
      */
     public function testDimension()
@@ -368,7 +368,7 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @covers ::productoSucursal
+     * @covers ::productosSucursales
      * @group relaciones
      */
     public function testProductosSucursales()
@@ -501,5 +501,19 @@ class ProductoTest extends TestCase
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tds);
         $this->assertInstanceOf(App\TransferenciaDetalle::class, $tds[0]);
         $this->assertCount(1, $tds);
+    }
+
+    /**
+     * @covers ::apartadosDetalles
+     * @group relaciones
+     */
+    public function testApartadosDetalles()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $ad = factory(App\ApartadoDetalle::class, 'full')->create(['producto_id' => $producto->id]);
+        $ads = $producto->apartadosDetalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $ads);
+        $this->assertInstanceOf(App\ApartadoDetalle::class, $ads[0]);
+        $this->assertCount(1, $ads);
     }
 }

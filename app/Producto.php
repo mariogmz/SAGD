@@ -218,4 +218,14 @@ class Producto extends LGGModel
     {
         return $this->hasMany('App\TransferenciaDetalle', 'producto_id');
     }
+
+
+    /**
+    * Obtiene los Apartados Detalles asociados con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function apartadosDetalles()
+    {
+        return $this->hasMany('App\ApartadoDetalle', 'producto_id');
+    }
 }

@@ -172,4 +172,18 @@ class ApartadoTest extends TestCase {
         $apartado->empleadoDesapartado()->associate($empleado);
         $this->assertInstanceOf(App\Empleado::class, $apartado->empleadoDesapartado);
     }
+
+    /**
+     * @covers ::detalles
+     * @group relaciones
+     */
+    public function testDetalles()
+    {
+        $apartado = factory(App\Apartado::class, 'full')->create();
+        $ad = factory(App\ApartadoDetalle::class, 'full')->create(['apartado_id' => $apartado->id]);
+        $ads = $apartado->detalles;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $ads);
+        $this->assertInstanceOf(App\ApartadoDetalle::class, $ads[0]);
+        $this->assertCount(1, $ads);
+    }
 }
