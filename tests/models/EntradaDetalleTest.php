@@ -114,8 +114,7 @@ class EntradaDetalleTest extends TestCase {
     public function testImporteEsCostoPorCantidad()
     {
         $ed = factory(App\EntradaDetalle::class)->make(['importe' => 1.0]);
-        // $this->assertFalse($ed->isValid());
-        $this->markTestIncomplete("Esperar al codigo de Mario para la validacion");
+        $this->assertFalse($ed->isValid());
     }
 
     /**

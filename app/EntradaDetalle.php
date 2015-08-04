@@ -13,7 +13,7 @@ class EntradaDetalle extends LGGModel
     public static $rules = [
         'costo' => 'required|numeric|min:0.0',
         'cantidad' => 'required|integer|min:0',
-        'importe' => 'required|numeric|min:0.0',
+        'importe' => 'required|numeric|min:0.0|mult:costo,cantidad',
         'entrada_id' => 'required|integer',
         'producto_id' => 'required|integer',
         'sucursal_id' => 'required|integer',
