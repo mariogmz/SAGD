@@ -27,4 +27,14 @@ class EstadoFactura extends LGGModel
             return $model->isValid('update');
         });
     }
+
+
+    /**
+    * Obtiene las Facturas asociadas con el Estado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function facturas()
+    {
+        return $this->hasMany('App\Factura', 'factura_status_id');
+    }
 }

@@ -50,4 +50,14 @@ class RazonSocialReceptor extends LGGModel
     {
         return $this->belongsTo('App\Cliente', 'cliente_id');
     }
+
+
+    /**
+    * Obtiene las Facturas asociadas con la Razon Social Receptora
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function facturas()
+    {
+        return $this->hasMany('App\Factura', 'razon_social_receptor_id');
+    }
 }

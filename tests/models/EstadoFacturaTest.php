@@ -44,4 +44,18 @@ class EstadoFacturaTest extends TestCase {
         $estado = factory(App\EstadoFactura::class, 'longname')->make();
         $this->assertFalse($estado->isValid());
     }
+
+    /**
+     * @covers ::facturas
+     * @group relaciones
+     */
+    public function testFacturas()
+    {
+        $estado = factory(App\EstadoFactura::class)->create();
+        $factura = factory(App\Factura::class, 'full')->create(['factura_status_id' => $estado->id]);
+        $facturas = $estado->facturas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $facturas);
+        $this->assertInstanceOf(App\Factura::class, $facturas[0]);
+        $this->assertCount(1, $facturas);
+    }
 }

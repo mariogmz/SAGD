@@ -117,4 +117,19 @@ class RazonSocialReceptorTest extends TestCase {
         $rsr->cliente()->associate($cliente);
         $this->assertInstanceOf(App\Cliente::class, $rsr->cliente);
     }
+
+    /**
+     * @covers ::facturas
+     * @group relaciones
+     */
+    public function testFacturas()
+    {
+        $rsr = factory(App\RazonSocialReceptor::class, 'full')->create();
+        $factura = factory(App\Factura::class, 'full')->create([
+            'razon_social_receptor_id' => $rsr->id]);
+        $facturas = $rsr->facturas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $facturas);
+        $this->assertInstanceOf(App\Factura::class, $facturas[0]);
+        $this->assertCount(1, $facturas);
+    }
 }

@@ -181,4 +181,19 @@ class RazonSocialEmisorTest extends TestCase {
         $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
         $this->assertCount(1, $entradas);
     }
+
+    /**
+     * @covers ::facturas
+     * @group relaciones
+     */
+    public function testFacturas()
+    {
+        $rse = factory(App\RazonSocialEmisor::class, 'full')->create();
+        $factura = factory(App\Factura::class, 'full')->create([
+            'razon_social_emisor_id' => $rse->id]);
+        $facturas = $rse->facturas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $facturas);
+        $this->assertInstanceOf(App\Factura::class, $facturas[0]);
+        $this->assertCount(1, $facturas);
+    }
 }
