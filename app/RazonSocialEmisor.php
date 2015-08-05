@@ -74,4 +74,14 @@ class RazonSocialEmisor extends LGGModel
     {
         return $this->hasMany('App\Factura', 'razon_social_emisor_id');
     }
+
+
+    /**
+    * Obtiene las Notas de Credito asociadas con la Razon Social Emisora
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function notasCreditos()
+    {
+        return $this->hasMany('App\NotaCredito', 'razon_social_emisor_id');
+    }
 }

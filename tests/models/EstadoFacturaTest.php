@@ -58,4 +58,18 @@ class EstadoFacturaTest extends TestCase {
         $this->assertInstanceOf(App\Factura::class, $facturas[0]);
         $this->assertCount(1, $facturas);
     }
+
+    /**
+     * @covers ::notasCreditos
+     * @group relaciones
+     */
+    public function testNotasCreditos()
+    {
+        $estado = factory(App\EstadoFactura::class)->create();
+        $nc = factory(App\NotaCredito::class, 'full')->create(['factura_status_id' => $estado->id]);
+        $ncs = $estado->notasCreditos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $ncs);
+        $this->assertInstanceOf(App\NotaCredito::class, $ncs[0]);
+        $this->assertCount(1, $ncs);
+    }
 }

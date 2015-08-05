@@ -37,4 +37,14 @@ class EstadoFactura extends LGGModel
     {
         return $this->hasMany('App\Factura', 'factura_status_id');
     }
+
+
+    /**
+    * Obtiene las Notas de Credito asociadas con el Estado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function notasCreditos()
+    {
+        return $this->hasMany('App\NotaCredito', 'factura_status_id');
+    }
 }

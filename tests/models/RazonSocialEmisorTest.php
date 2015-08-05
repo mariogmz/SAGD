@@ -196,4 +196,19 @@ class RazonSocialEmisorTest extends TestCase {
         $this->assertInstanceOf(App\Factura::class, $facturas[0]);
         $this->assertCount(1, $facturas);
     }
+
+    /**
+     * @covers ::notasCreditos
+     * @group relaciones
+     */
+    public function testNotasCreditos()
+    {
+        $rse = factory(App\RazonSocialEmisor::class, 'full')->create();
+        $nc = factory(App\NotaCredito::class, 'full')->create([
+            'razon_social_emisor_id' => $rse->id]);
+        $ncs = $rse->notasCreditos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $ncs);
+        $this->assertInstanceOf(App\NotaCredito::class, $ncs[0]);
+        $this->assertCount(1, $ncs);
+    }
 }
