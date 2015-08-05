@@ -34,9 +34,9 @@ class AddNotasCreditosConstraints extends Migration {
     {
         Schema::table('notas_creditos', function ($table)
         {
-            $table->dropForeign('facturas_razon_social_emisor_id_foreign');
-            $table->dropForeign('facturas_razon_social_receptor_id_foreign');
-            $table->dropForeign('facturas_factura_status_id_foreign');
+            $table->dropForeign('notas_creditos_razon_social_emisor_id_foreign');
+            $table->dropForeign('notas_creditos_razon_social_receptor_id_foreign');
+            $table->dropForeign('notas_creditos_factura_status_id_foreign');
             $table->dropColumn(['razon_social_emisor_id', 'razon_social_receptor_id', 'factura_status_id']);
         });
     }
