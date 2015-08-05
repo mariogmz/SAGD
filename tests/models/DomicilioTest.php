@@ -138,10 +138,26 @@ class DomicilioTest extends TestCase {
     public function testRazonesSocialesEmisores()
     {
         $domicilio = factory(App\Domicilio::class)->create();
-        $rse = factory(App\RazonSocialEmisor::class, 'full')->create(['domicilio_id' => $domicilio->id]);
+        $rse = factory(App\RazonSocialEmisor::class, 'full')->create([
+            'domicilio_id' => $domicilio->id]);
         $rses = $domicilio->razonesSocialesEmisores;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rses);
         $this->assertInstanceOf(App\RazonSocialEmisor::class, $rses[0]);
         $this->assertCount(1, $rses);
+    }
+
+    /**
+     * @covers ::razonesSocialesReceptores
+     * @group relaciones
+     */
+    public function testRazonesSocialesReceptores()
+    {
+        $domicilio = factory(App\Domicilio::class)->create();
+        $rsr = factory(App\RazonSocialReceptor::class, 'full')->create([
+            'domicilio_id' => $domicilio->id]);
+        $rsrs = $domicilio->razonesSocialesReceptores;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rsrs);
+        $this->assertInstanceOf(App\RazonSocialReceptor::class, $rsrs[0]);
+        $this->assertCount(1, $rsrs);
     }
 }

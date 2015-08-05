@@ -394,4 +394,19 @@ class ClienteTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rmas_resultado);
         $this->assertInstanceOf(App\Rma::class, $rmas_resultado[0]);
     }
+
+    /**
+     * @covers ::razonesSociales
+     * @group relaciones
+     */
+    public function testRazonesSociales()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $rsr = factory(App\RazonSocialReceptor::class, 'full')->create([
+            'cliente_id' => $cliente->id]);
+        $rsrs = $cliente->razonesSociales;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rsrs);
+        $this->assertInstanceOf(App\RazonSocialReceptor::class, $rsrs[0]);
+        $this->assertCount(1, $rsrs);
+    }
 }

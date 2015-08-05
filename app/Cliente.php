@@ -202,4 +202,14 @@ class Cliente extends LGGModel {
         $this->fecha_verificacion_correo = Carbon::now();
         return true;
     }
+
+
+    /**
+    * Obtiene las Razones Sociales asociadas con el Cliente
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function razonesSociales()
+    {
+        return $this->hasMany('App\RazonSocialReceptor', 'cliente_id');
+    }
 }
