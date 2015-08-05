@@ -38,5 +38,13 @@ class CorteConcepto extends LGGModel {
         return $this->belongsTo('App\TipoCorteConcepto');
     }
 
+    /**
+     * Obtiene los detalles asociados a este tipo de concepto
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function cortesDetalles(){
+        return $this->hasMany('App\CorteDetalle');
+    }
+
 
 }

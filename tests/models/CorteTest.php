@@ -158,4 +158,20 @@ class CorteTest extends TestCase {
         $this->assertSame($corte->id, $gastos_extras[0]->corte_id);
     }
 
+    /**
+     * @covers ::cortesDetalles
+     * @group relaciones
+     */
+    public function testCortesDetalles() {
+        $parent = factory(App\Corte::class)->create();
+        factory(App\CorteDetalle::class)->create([
+            'corte_id' => $parent->id
+        ]);
+        $children = $parent->cortesDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\CorteDetalle', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
+
 }

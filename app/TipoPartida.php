@@ -36,4 +36,12 @@ class TipoPartida extends LGGModel {
             return $model->isValid('update');
         });
     }
+
+    /**
+     * Obtiene la relacion de los conceptos de corte para este tipo de partida
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function tiposPartidasCortesConceptos() {
+        return $this->hasMany('App\TipoPartidaCorteConcepto');
+    }
 }

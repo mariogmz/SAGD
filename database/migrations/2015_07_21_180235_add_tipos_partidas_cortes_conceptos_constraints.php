@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddTiposPartidasCortesConceptosConstraints extends Migration {
@@ -10,16 +9,14 @@ class AddTiposPartidasCortesConceptosConstraints extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('tipos_partidas_cortes_conceptos', function ($table)
-        {
+    public function up() {
+        Schema::table('tipos_partidas_cortes_conceptos', function ($table) {
             // Foreign Key Fields
-            $table->integer('caja_id')->unsigned();
-            $table->integer('corte_id')->unsigned();
+            $table->integer('tipo_partida_id')->unsigned();
+            $table->integer('corte_concepto_id')->unsigned();
             // Constraints
-            $table->foreign('caja_id')->references('id')->on('cajas');
-            $table->foreign('corte_id')->references('id')->on('cortes');
+            $table->foreign('tipo_partida_id')->references('id')->on('tipos_partidas');
+            $table->foreign('corte_concepto_id')->references('id')->on('cortes_conceptos');
         });
     }
 
@@ -28,13 +25,11 @@ class AddTiposPartidasCortesConceptosConstraints extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('tipos_partidas_cortes_conceptos', function ($table)
-        {
-            $table->dropForeign('tipos_partidas_cortes_conceptos_caja_id_foreign');
-            $table->dropForeign('tipos_partidas_cortes_conceptos_corte_id_foreign');
-            $table->dropColumn(['caja_id', 'corte_id']);
+    public function down() {
+        Schema::table('tipos_partidas_cortes_conceptos', function ($table) {
+            $table->dropForeign('tipos_partidas_cortes_conceptos_tipo_partida_id_foreign');
+            $table->dropForeign('tipos_partidas_cortes_conceptos_corte_concepto_id_foreign');
+            $table->dropColumn(['tipo_partida_id', 'corte_concepto_id']);
         });
     }
 }

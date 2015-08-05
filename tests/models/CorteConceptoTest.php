@@ -35,6 +35,7 @@ class CorteConceptoTest extends TestCase {
 
     /**
      * @covers ::tipoCorteConcepto
+     * @group relaciones
      */
     public function testTipoCorteConcepto() {
         $tipo_corte_concepto = factory(App\TipoCorteConcepto::class)->create();
@@ -44,6 +45,21 @@ class CorteConceptoTest extends TestCase {
         $tipo_corte_concepto_resultado = $corte_concepto->tipoCorteConcepto;
         $this->assertInstanceOf('App\TipoCorteConcepto', $tipo_corte_concepto_resultado);
         $this->assertSame($tipo_corte_concepto->id, $tipo_corte_concepto_resultado->id);
+    }
+
+    /**
+     * @covers ::cortesDetalles
+     * @group relaciones
+     */
+    public function testCortesDetalles() {
+        $parent = factory(App\CorteConcepto::class)->create();
+        factory(App\CorteDetalle::class)->create([
+            'corte_concepto_id' => $parent->id
+        ]);
+        $children = $parent->cortesDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\CorteDetalle', $children[0]);
+        $this->assertCount(1, $children);
     }
 
 }

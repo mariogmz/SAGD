@@ -72,4 +72,13 @@ class Corte extends LGGModel {
     public function gastosExtras(){
         return $this->hasMany('App\GastoExtra');
     }
+
+    /**
+     * Obtiene los detalles para el corte
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function cortesDetalles(){
+        return $this->hasMany('App\CorteDetalle');
+    }
+
 }

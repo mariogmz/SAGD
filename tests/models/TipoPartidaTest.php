@@ -111,4 +111,18 @@ class TipoPartidaTest extends TestCase {
         ]);
         $this->assertFalse($tipo_partida->isValid());
     }
+
+    /**
+     * @covers ::tiposPartidasCortesConceptos
+     */
+    public function testTiposPartidasCortesConceptos(){
+        $parent = factory(App\TipoPartida::class)->create();
+        factory(App\TipoPartidaCorteConcepto::class)->create([
+            'tipo_partida_id' => $parent->id
+        ]);
+        $children = $parent->tiposPartidasCortesConceptos;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\TipoPartidaCorteConcepto',$children[0]);
+        $this->assertCount(1, $children);
+    }
 }
