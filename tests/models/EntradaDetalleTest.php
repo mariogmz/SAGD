@@ -22,6 +22,7 @@ class EntradaDetalleTest extends TestCase {
     {
         $ed = factory(App\EntradaDetalle::class, 'full')->create();
         $ed->costo = 1991.0;
+        $ed->importe = $ed->costo * $ed->cantidad;
         $this->assertTrue($ed->isValid('update'));
         $this->assertTrue($ed->save());
         $this->assertSame(1991.0, $ed->costo);
