@@ -79,4 +79,14 @@ class Domicilio extends LGGModel {
     {
         return $this->hasMany('App\RazonSocialEmisor', 'domicilio_id');
     }
+
+
+    /**
+    * Obtiene las Razones Sociales Receptores asociadas con el Domicilio
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function razonesSocialesReceptores()
+    {
+        return $this->hasMany('App\RazonSocialReceptor', 'domicilio_id');
+    }
 }
