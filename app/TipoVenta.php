@@ -2,33 +2,33 @@
 
 namespace App;
 
-class EstatusVenta extends LGGModel
-{
-    protected $table = "estatus_ventas";
+
+class TipoVenta extends LGGModel {
+
+    protected $table = "tipos_ventas";
     public $timestamps = false;
     protected $fillable = ['nombre'];
 
-    public static $rules = [
-        'nombre' => 'required|string|max:60'
-    ];
+    public static $rules = ['nombre' => 'required|string|max:60'];
     public $updateRules = [];
 
     /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        EstatusVenta::creating(function($model){
+    public static function boot() {
+        TipoVenta::creating(function ($model) {
             return $model->isValid();
         });
-        EstatusVenta::updating(function($model){
+        TipoVenta::updating(function ($model) {
             $model->updateRules = self::$rules;
+
             return $model->isValid('update');
         });
     }
 
     /**
-     * Obtiene las ventas asociadas a este estatus
+     * Obtiene las ventas con este tipo
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function ventas() {

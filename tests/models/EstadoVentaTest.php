@@ -65,4 +65,21 @@ class EstadoVentaTest extends TestCase {
         $this->assertTrue($estado_venta->save());
         $this->assertSame('Gollum', $estado_venta->nombre);
     }
+
+    /**
+     * @covers ::ventas
+     * @group relaciones
+     */
+    public function testVentas() {
+        $parent = factory(App\EstadoVenta::class)->create();
+        factory(App\Venta::class)->create([
+            'estado_venta_id' => $parent->id
+        ]);
+        $children = $parent->ventas;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Ventas', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
+
 }

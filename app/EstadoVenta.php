@@ -31,4 +31,14 @@ class EstadoVenta extends LGGModel {
             return $model->isValid('update');
         });
     }
+
+
+    /**
+     * Obtiene las ventas con el estado relacionado
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventas() {
+        return $this->hasMany('App\Venta','estatus_venta_id');
+    }
 }
+
