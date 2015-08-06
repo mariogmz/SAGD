@@ -183,4 +183,33 @@ class PaqueteriaTest extends TestCase {
         $this->assertCount(1, $rangos);
     }
 
+    /**
+     * @covers ::paqueteriaCoberturas
+     * @group relaciones
+     */
+    public function testPaqueteriaCoberturas()
+    {
+        $paqueteria = factory(App\Paqueteria::class)->create();
+        $pc = factory(App\PaqueteriaCobertura::class, 'full')->create([
+            'paqueteria_id' => $paqueteria->id]);
+        $pcs = $paqueteria->paqueteriaCoberturas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pcs);
+        $this->assertInstanceOf(App\PaqueteriaCobertura::class, $pcs[0]);
+        $this->assertCount(1, $pcs);
+    }
+
+    /**
+     * @covers ::coberturas
+     * @group relaciones
+     */
+    public function testCoberturas()
+    {
+        $paqueteria = factory(App\Paqueteria::class)->create();
+        $codigo_postal = factory(App\CodigoPostal::class)->create();
+        $paqueteria->coberturas()->attach($codigo_postal, ['ocurre' => 10.0]);
+        $coberturas = $paqueteria->coberturas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $coberturas);
+        $this->assertInstanceOf(App\CodigoPostal::class, $coberturas[0]);
+        $this->assertCount(1, $coberturas);
+    }
 }

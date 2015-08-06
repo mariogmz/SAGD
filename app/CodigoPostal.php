@@ -50,4 +50,25 @@ class CodigoPostal extends LGGModel {
     {
         return $this->hasMany('App\Domicilio');
     }
+
+
+    /**
+    * Obtiene las Paqueterias Coberturas asociadas con el Codigo Postal
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function paqueteriaCoberturas()
+    {
+        return $this->hasMany('App\PaqueteriaCobertura', 'codigo_postal_id');
+    }
+
+
+    /**
+    * Obtiene las Paqueterias asociadas con el Codigo Postal
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function paqueterias()
+    {
+        return $this->belongsToMany('App\Paqueteria', 'paqueterias_coberturas',
+            'codigo_postal_id', 'paqueteria_id');
+    }
 }

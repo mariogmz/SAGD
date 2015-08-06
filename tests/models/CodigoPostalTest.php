@@ -111,4 +111,33 @@ class CodigoPostalTest extends TestCase {
         }
     }
 
+    /**
+     * @covers ::paqueteriaCoberturas
+     * @group relaciones
+     */
+    public function testPaqueteriaCoberturas()
+    {
+        $codigo_postal = factory(App\CodigoPostal::class)->create();
+        $pc = factory(App\PaqueteriaCobertura::class, 'full')->create([
+            'codigo_postal_id' => $codigo_postal->id]);
+        $pcs = $codigo_postal->paqueteriaCoberturas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pcs);
+        $this->assertInstanceOf(App\PaqueteriaCobertura::class, $pcs[0]);
+        $this->assertCount(1, $pcs);
+    }
+
+    /**
+     * @covers ::paqueterias
+     * @group relaciones
+     */
+    public function testPaqueterias()
+    {
+        $codigo_postal = factory(App\CodigoPostal::class)->create();
+        $paqueteria = factory(App\Paqueteria::class)->create();
+        $codigo_postal->paqueterias()->attach($paqueteria, ['ocurre' => 10.0]);
+        $paqueterias = $codigo_postal->paqueterias;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $paqueterias);
+        $this->assertInstanceOf(App\Paqueteria::class, $paqueterias[0]);
+        $this->assertCount(1, $paqueterias);
+    }
 }
