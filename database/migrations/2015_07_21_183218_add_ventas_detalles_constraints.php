@@ -19,7 +19,7 @@ class AddVentasDetallesConstraints extends Migration
             $table->integer('producto_id')->unsigned()->nullable();
             $table->integer('metodo_pago_id')->unsigned()->nullable();
             $table->integer('factura_id')->unsigned()->nullable();
-            $table->integer('nota_credito_id')->unsigned();
+            $table->integer('nota_credito_id')->unsigned()->nullable();
 
             $table->foreign('venta_id')->references('id')->on('ventas');
             $table->foreign('tipo_partida_id')->references('id')->on('tipos_partidas');

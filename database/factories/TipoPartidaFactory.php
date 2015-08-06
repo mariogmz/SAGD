@@ -36,3 +36,25 @@ $factory->defineAs(App\TipoPartida::class, 'nombrelargo', function ($faker) use 
         'nombre' => $faker->text(100),
     ]);
 });
+
+$factory->defineAs(App\TipoPartida::class, 'producto', function ($faker) use ($factory) {
+    $tipo_partida = $factory->raw(App\TipoPartida::class);
+
+    return array_merge($tipo_partida, [
+        'nombre'      => 'Producto',
+        'ticket'      => 1,
+        'ticket_suma' => 1,
+        'pago'        => 0,
+    ]);
+});
+
+$factory->defineAs(App\TipoPartida::class, 'pago', function ($faker) use ($factory) {
+    $tipo_partida = $factory->raw(App\TipoPartida::class);
+
+    return array_merge($tipo_partida, [
+        'nombre'      => 'Pago',
+        'ticket'      => 1,
+        'ticket_suma' => 0,
+        'pago'        => 1
+    ]);
+});
