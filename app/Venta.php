@@ -72,4 +72,21 @@ class Venta extends LGGModel {
     public function tipoVenta() {
         return $this->belongsTo('App\TipoVenta');
     }
+
+    /**
+     * Obtiene los anticipos asociados a la venta
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function anticipos() {
+        return $this->hasMany('App\Anticipo');
+    }
+
+    /**
+     * Obtiene los anticipos asociados a la venta de entrega
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function anticiposEntrega() {
+        return $this->hasMany('App\Anticipo', 'venta_entrega_id');
+    }
+
 }

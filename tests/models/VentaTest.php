@@ -252,4 +252,34 @@ class VentaTest extends TestCase {
         $this->assertSame($parent->id, $parent_result->id);
     }
 
+    /**
+     * @covers ::anticipos
+     * @group relaciones
+     */
+    public function testAnticipos() {
+        $parent = factory(App\Venta::class, 'cobrada')->create();
+        factory(App\Anticipo::class)->create([
+            'venta_id' => $parent->id
+        ]);
+        $children = $parent->anticipos;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Anticipo', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
+    /**
+     * @covers ::anticiposEntrega
+     * @group relaciones
+     */
+    public function testAnticiposEntrega() {
+        $parent = factory(App\Venta::class, 'cobrada')->create();
+        factory(App\Anticipo::class)->create([
+            'venta_entrega_id' => $parent->id
+        ]);
+        $children = $parent->anticiposEntrega;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Anticipo', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

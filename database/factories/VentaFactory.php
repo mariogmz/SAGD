@@ -33,7 +33,7 @@ $factory->define(App\Venta::class, function ($faker) {
 });
 
 $factory->defineAs(App\Venta::class, 'conempleado', function ($faker) use ($factory) {
-    $empleado = App\Empleado::find(1) || factory(App\Empleado::class)->create();
+    $empleado = factory(App\Empleado::class)->create();
     $venta = $factory->raw(App\Venta::class);
 
     return array_merge($venta, [
@@ -43,9 +43,9 @@ $factory->defineAs(App\Venta::class, 'conempleado', function ($faker) use ($fact
 
 $factory->defineAs(App\Venta::class, 'cobrada', function ($faker) use ($factory) {
     $venta = $factory->raw(App\Venta::class);
-    $empleado = App\Empleado::find(1) || factory(App\Empleado::class)->create();
+    $empleado = factory(App\Empleado::class)->create();
     $total = $faker->randomFloat(2, 10.00, 10000.99);
-    $pago = $faker->randomFloar(2, 10001.00, 20000.99);
+    $pago = $faker->randomFloat(2, 10001.00, 20000.99);
 
     return array_merge($venta, [
         'total'       => $total,
@@ -57,7 +57,7 @@ $factory->defineAs(App\Venta::class, 'cobrada', function ($faker) use ($factory)
 
 $factory->defineAs(App\Venta::class, 'encorte', function ($faker) use ($factory) {
     $venta = $factory->rawOf(App\Venta::class, 'cobrada');
-    $corte = App\Corte::find(1) || factory(App\Corte::class)->create();
+    $corte = factory(App\Corte::class)->create();
 
     return array_merge($venta, [
         'corte_id' => $corte->id
