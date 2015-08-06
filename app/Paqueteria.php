@@ -35,4 +35,13 @@ class Paqueteria extends LGGModel
             return $paqueteria->isValid('update');
         });
     }
+
+    /**
+     * Obtiene los Rangos asociados con la Paqueteria
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function rangos()
+    {
+        return $this->hasMany('App\PaqueteriaRango', 'paqueteria_id');
+    }
 }

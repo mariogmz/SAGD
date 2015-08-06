@@ -168,4 +168,19 @@ class PaqueteriaTest extends TestCase {
         $paq = factory(App\Paqueteria::class)->make(['seguro' => 'a']);
         $this->assertFalse($paq->isValid());
     }
+
+    /**
+     * @covers ::rangos
+     * @group relaciones
+     */
+    public function testRangos()
+    {
+        $paqueteria = factory(App\Paqueteria::class)->create();
+        $rango = factory(App\PaqueteriaRango::class)->create(['paqueteria_id' => $paqueteria->id]);
+        $rangos = $paqueteria->rangos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rangos);
+        $this->assertInstanceOf(App\PaqueteriaRango::class, $rangos[0]);
+        $this->assertCount(1, $rangos);
+    }
+
 }
