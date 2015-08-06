@@ -51,4 +51,24 @@ class Guia extends LGGModel
     {
         return $this->belongsTo('App\EstatusActivo', 'estatus_activo_id');
     }
+
+
+    /**
+    * Obtiene las Guias Zonas asociadas con la Guia
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function guiasZonas()
+    {
+        return $this->hasMany('App\GuiaZona', 'guia_id');
+    }
+
+
+    /**
+    * Obtiene las Zonas a traves de Guias Zonas asociadas con la Guia
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function zonas()
+    {
+        return $this->belongsToMany('App\Zona', 'guias_zonas', 'guia_id', 'zona_id');
+    }
 }

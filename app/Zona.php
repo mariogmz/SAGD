@@ -31,4 +31,24 @@ class Zona extends LGGModel
             return $model->isValid('update');
         });
     }
+
+
+    /**
+    * Obtiene las Guias Zonas asociadas con la Zona
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function guiasZonas()
+    {
+        return $this->hasMany('App\GuiaZona', 'zona_id');
+    }
+
+
+    /**
+    * Obtiene las Guias asociadas con la Zona
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function guias()
+    {
+        return $this->belongsToMany('App\Guia', 'guias_zonas', 'zona_id', 'guia_id');
+    }
 }

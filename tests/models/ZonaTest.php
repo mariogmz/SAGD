@@ -96,5 +96,31 @@ class ZonaTest extends TestCase {
         $this->assertFalse($zona->isValid());
     }
 
+    /**
+     * @covers ::guiasZonas
+     * @group relaciones
+     */
+    public function testGuiasZonas()
+    {
+        $zona = factory(App\Zona::class)->create();
+        factory(App\GuiaZona::class, 'full')->create(['zona_id' => $zona->id]);
+        $gzs = $zona->guiasZonas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $gzs);
+        $this->assertInstanceOf(App\GuiaZona::class, $gzs[0]);
+        $this->assertCount(1, $gzs);
+    }
 
+    /**
+     * @covers ::guias
+     * @group relaciones
+     */
+    public function testGuias()
+    {
+        $zona = factory(App\Zona::class)->create();
+        factory(App\GuiaZona::class, 'full')->create(['zona_id' => $zona->id]);
+        $guias = $zona->guias;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $guias);
+        $this->assertInstanceOf(App\Guia::class, $guias[0]);
+        $this->assertCount(1, $guias);
+    }
 }

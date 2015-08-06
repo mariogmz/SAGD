@@ -120,4 +120,56 @@ class GuiaTest extends TestCase {
         $estatus = $guia->estatus;
         $this->assertInstanceOf(App\EstatusActivo::class, $estatus);
     }
+
+    /**
+     * @covers ::guiasZonas
+     * @group relaciones
+     */
+    public function testGuiasZonas()
+    {
+        $guia = factory(App\Guia::class, 'full')->create();
+        $guia_zona = factory(App\GuiaZona::class, 'full')->create(['guia_id' => $guia->id]);
+        $guias_zonas = $guia->guiasZonas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $guias_zonas);
+        $this->assertInstanceOf(App\GuiaZona::class, $guias_zonas[0]);
+        $this->assertCount(1, $guias_zonas);
+    }
+
+    /**
+     * @covers ::zonas
+     * @group relaciones
+     */
+    public function testZonas()
+    {
+        $guia = factory(App\Guia::class, 'full')->create();
+        $zona = factory(App\Zona::class)->create();
+        $guia->zonas()->attach($zona);
+        $zonas = $guia->zonas;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $zonas);
+        $this->assertInstanceOf(App\Zona::class, $zonas[0]);
+        $this->assertCount(1, $zonas);
+    }
+
+    /**
+     * @covers ::zonas
+     * @group relaciones
+     */
+    public function testUnaGuiaTieneVariasGuiasZonasQuePertenecenAUnaZona()
+    {
+        $guia = factory(App\Guia::class, 'full')->create();
+        $zona = factory(App\Zona::class)->create();
+
+        for ($i=0; $i < 5; $i++) {
+            $gz = new App\GuiaZona(['costo' => 0.0, 'costo_sobrepeso' => 0.0]);
+            $gz->guia()->associate($guia);
+            $gz->zona()->associate($zona);
+            $gz->save();
+        }
+
+        $guias_zonas = $guia->guiasZonas;
+        $zonas = $guia->zonas;
+
+        $this->assertCount(5, $guias_zonas);
+        $this->assertCount(5, $zonas); // Should be 1 IRL
+    }
 }
