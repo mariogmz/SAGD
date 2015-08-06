@@ -17,9 +17,10 @@ class CreatePaqueteriasTable extends Migration {
             $table->increments('id');
             $table->string('clave', 6);
             $table->string('nombre', 45);
-            $table->string('url', 60)->nullable();
+            $table->string('url', 100)->nullable();
             $table->string('horario', 60)->nullable();
             $table->string('condicion_entrega', 100)->nullable();
+            $table->decimal('seguro', 3, 2)->default(0.0)->unsigned();
             $table->unique('clave');
         });
     }
