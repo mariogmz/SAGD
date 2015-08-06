@@ -20,7 +20,6 @@ class CreateVentasTable extends Migration
             $table->decimal('utilidad', 10, 2)->default(0.0)->nullable();
             $table->timestamp('fecha_cobro')->nullable();
             $table->integer('tabulador')->unsigned();
-            $table->integer('empleado_id');
             $table->timestamps();
         });
     }

@@ -22,6 +22,7 @@ class AddVentasConstraints extends Migration
             $table->integer('estado_venta_id')->unsigned();
             $table->integer('tipo_venta_id')->unsigned();
             $table->integer('sucursal_entrega_id')->unsigned();
+            $table->integer('empleado_id')->unsigned()->nullable();
 
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
             $table->foreign('cliente_id')->references('id')->on('clientes');
@@ -31,6 +32,7 @@ class AddVentasConstraints extends Migration
             $table->foreign('estado_venta_id')->references('id')->on('estados_ventas');
             $table->foreign('tipo_venta_id')->references('id')->on('tipos_ventas');
             $table->foreign('sucursal_entrega_id')->references('id')->on('sucursales');
+            $table->foreign('empleado_id')->references('id')->on('empleados');
         });
     }
 
@@ -51,8 +53,9 @@ class AddVentasConstraints extends Migration
             $table->dropForeign('ventas_estado_venta_id_foreign');
             $table->dropForeign('ventas_tipo_venta_id_foreign');
             $table->dropForeign('ventas_sucursal_entrega_id_foreign');
+            $table->dropForeign('ventas_empleado_id_foreign');
 
-            $table->dropColumn(['sucursal_entrega_id', 'tipo_venta_id', 'estado_venta_id', 'estatus_venta_id', 'corte_id', 'caja_id', 'cliente_id', 'sucursal_id']);
+            $table->dropColumn(['sucursal_entrega_id', 'tipo_venta_id', 'estado_venta_id', 'estatus_venta_id', 'corte_id', 'caja_id', 'cliente_id', 'sucursal_id','empleado_id']);
         });
     }
 }
