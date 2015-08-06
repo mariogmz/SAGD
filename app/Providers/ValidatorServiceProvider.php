@@ -19,7 +19,9 @@ class ValidatorServiceProvider extends ServiceProvider {
          */
         Validator::extend('greater_than', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            return $value > $data[$parameters[0]];
+            // Gets value for comparison, based on if it's another field or a value
+            $field = is_numeric($parameters[0]) ? $parameters[0] : $data[$parameters[0]];
+            return $value >= $field || is_null($value) || is_null($field);
         });
         Validator::replacer('greater_than', function ($message, $attribute, $rule, $parameters) {
             return str_replace(':field', $parameters[0], $message);
@@ -30,17 +32,21 @@ class ValidatorServiceProvider extends ServiceProvider {
          */
         Validator::extend('less_than', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-            return $value < $data[$parameters[0]];
+            // Gets value for comparison, based on if it's another field or a value
+            $field = is_numeric($parameters[0]) ? $parameters[0] : $data[$parameters[0]];
+            return $value <= $field || is_null($value) || is_null($field);
         });
         Validator::replacer('less_than', function ($message, $attribute, $rule, $parameters) {
             return str_replace(':field', $parameters[0], $message);
         });
+
 
         /**
          * Verifica que el campo ($value) sea igual a la multiplicacion de los dos parametros
          */
         Validator::extend('mult', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
+
             return $value === $data[$parameters[0]] * $data[$parameters[1]];
         });
         Validator::replacer('mult', function ($message, $attribute, $rule, $parameters) {
