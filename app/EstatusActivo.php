@@ -37,4 +37,14 @@ class EstatusActivo extends LGGModel {
     public function metodosPagos() {
         return $this->hasMany('App\MetodoPago', 'estatus_activo_id');
     }
+
+
+    /**
+    * Obtiene las Guias asociadas con el Estatus Activo
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function guias()
+    {
+        return $this->hasMany('App\Guia', 'estatus_activo_id');
+    }
 }

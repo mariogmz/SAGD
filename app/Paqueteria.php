@@ -65,4 +65,14 @@ class Paqueteria extends LGGModel
         return $this->belongsToMany('App\CodigoPostal', 'paqueterias_coberturas',
             'paqueteria_id', 'codigo_postal_id');
     }
+
+
+    /**
+    * Obtiene las Guias asociadas con la Paqueteria
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function guias()
+    {
+        return $this->hasMany('App\Guia', 'paqueteria_id');
+    }
 }

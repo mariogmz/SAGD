@@ -212,4 +212,18 @@ class PaqueteriaTest extends TestCase {
         $this->assertInstanceOf(App\CodigoPostal::class, $coberturas[0]);
         $this->assertCount(1, $coberturas);
     }
+
+    /**
+     * @covers ::guias
+     * @group relaciones
+     */
+    public function testGuias()
+    {
+        $paqueteria = factory(App\Paqueteria::class)->create();
+        $guia = factory(App\Guia::class, 'full')->create(['paqueteria_id' => $paqueteria->id]);
+        $guias = $paqueteria->guias;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $guias);
+        $this->assertInstanceOf(App\Guia::class, $guias[0]);
+        $this->assertCount(1, $guias);
+    }
 }
