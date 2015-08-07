@@ -154,4 +154,13 @@ class Empleado extends LGGModel {
     public function cortes() {
         return $this->hasMany('App\Corte');
     }
+
+    /**
+     * Obtiene todos los movimientos de ventas realizados por el empleado
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasMovimientos() {
+        return $this->hasMany('App\VentaMovimiento');
+    }
+
 }

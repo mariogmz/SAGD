@@ -11,20 +11,18 @@
 |
 */
 
-$factory->define(App\Rma::class, function ($faker)
-{
+$factory->define(App\Rma::class, function ($faker) {
     return [
         'estado_rma_id'   => factory(App\EstadoRma::class)->create()->id,
         'cliente_id'      => factory(App\Cliente::class, 'full')->create()->id,
         'empleado_id'     => factory(App\Empleado::class)->create()->id,
         'rma_tiempo_id'   => factory(App\RmaTiempo::class)->create()->id,
         'sucursal_id'     => factory(App\Sucursal::class)->create()->id,
-        'nota_credito_id' => null
+        'nota_credito_id' => factory(App\NotaCredito::class, 'full')->create()->id
     ];
 });
 
-$factory->defineAs(App\Rma::class, 'sinnotacredito', function ($faker) use ($factory)
-{
+$factory->defineAs(App\Rma::class, 'sinnotacredito', function ($faker) use ($factory) {
     return [
         'estado_rma_id'   => factory(App\EstadoRma::class)->create()->id || 1,
         'cliente_id'      => factory(App\Cliente::class, 'full')->create()->id || 1,

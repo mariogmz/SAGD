@@ -129,4 +129,20 @@ class ProveedorTest extends TestCase {
         $this->assertInstanceOf(App\Entrada::class, $entradas[0]);
         $this->assertCount(1, $entradas);
     }
+
+    /**
+     * @covers ::reposiciones
+     * @group relaciones
+     */
+    public function testReposiciones() {
+        $parent = factory(App\Proveedor::class)->create();
+        factory(App\Reposicion::class)->create([
+            'proveedor_id' => $parent->id
+        ]);
+        $children = $parent->reposiciones;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Reposicion', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

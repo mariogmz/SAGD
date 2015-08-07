@@ -284,4 +284,35 @@ class NotaCreditoTest extends TestCase {
         $nc->estado()->associate($estado);
         $this->assertInstanceOf(App\EstadoFactura::class, $nc->estado);
     }
+
+    /**
+     * @covers ::ventasDetalles
+     * @group relaciones
+     */
+    public function testVentasDetalles() {
+        $parent = factory(App\NotaCredito::class, 'full')->create();
+        factory(App\VentaDetalle::class, 'producto')->create([
+            'nota_credito_id' => $parent->id
+        ]);
+        $children = $parent->ventasDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\VentaDetalle', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
+    /**
+     * @covers ::rmas
+     * @group relaciones
+     */
+    public function testRmas() {
+        $parent = factory(App\NotaCredito::class, 'full')->create();
+        factory(App\Rma::class)->create([
+            'nota_credito_id' => $parent->id
+        ]);
+        $children = $parent->rmas;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Rma', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

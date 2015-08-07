@@ -68,12 +68,12 @@ class RmaTest extends TestCase {
      * @group modelo_actualizable
      */
     public function testModeloEsActualizable() {
-        $model = factory(App\Rma::class)->create();
-        $id = factory(App\EstadoRma::class)->create()->id;
-        $model->estado_rma_id = $id;
-        $this->assertTrue($model->isValid('update'));
+        $model = factory(App\Rma::class)->make();
+        if(!$model->isValid()) print_r($model);
         $this->assertTrue($model->save());
-        $this->assertSame($id, $model->estado_rma_id);
+        $model->estado_rma_id = factory(App\EstadoRma::class)->create()->id;
+        $this->assertTrue($model->isValid());
+        $this->assertTrue($model->save());
     }
 
     /**
@@ -117,30 +117,30 @@ class RmaTest extends TestCase {
      * @group relaciones
      */
     public function testRmaTiempo() {
-        $tiempo_rma = factory(App\RmaTiempo::class)->create();
-        $rma = factory(App\Rma::class)->create([
-            'rma_tiempo_id' => $tiempo_rma->id
+        $parent = factory(App\RmaTiempo::class)->create();
+        $child = factory(App\Rma::class)->create([
+            'rma_tiempo_id' => $parent->id
         ]);
-        $this->assertEquals(App\RmaTiempo::find($tiempo_rma->id), $rma->rmaTiempo);
+        $parent_result = $child->rmaTiempo;
+        $this->assertInstanceOf('App\RmaTiempo', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
 
     /**
-     * @covers ::rmaDetalles
+     * @covers ::rmasDetalles
      * @group relaciones
      */
-    public function testRmaDetalles() {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-
-        $rma = factory(App\Rma::class)->create();
-        factory(App\RmaDetalle::class, 5)->create([
-            'rma_id' => $rma->id
+    public function testRmasDetalles() {
+        $parent = factory(App\Rma::class)->create();
+        factory(App\RmaDetalle::class)->create([
+            'rma_id' => $parent->id
         ]);
-        $rmas_detalles = App\Rma::find($rma->id)->rmaDetalles;
-        foreach ($rmas_detalles as $rd) {
-            $this->assertInstanceOf('App\RmaDetalle', $rd);
-            $this->assertEquals($rma->id, $rd->rma_id);
-        }
+        $children = $parent->rmasDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\RmaDetalle', $children[0]);
+        $this->assertCount(1, $children);
     }
+
 
     /**
      * @covers ::sucursal
@@ -159,11 +159,10 @@ class RmaTest extends TestCase {
      * @group relaciones
      */
     public function testNotaCredito() {
-        $this->markTestIncomplete('NotaCredito Class not implemented yet.');
-        $nota_credito = factory(App\NotaCredito::class)->create();
-        $rma = factory(App\NotaCredito::class)->create([
+        $nota_credito = factory(App\NotaCredito::class, 'full')->create();
+        $rma = factory(App\Rma::class)->create([
             'nota_credito_id' => $nota_credito->id
         ]);
-        $this->assertEquals($rma->sucursal, $nota_credito);
+        $this->assertEquals(App\NotaCredito::find($nota_credito->id), $rma->notaCredito);
     }
 }

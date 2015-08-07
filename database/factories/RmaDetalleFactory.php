@@ -14,17 +14,17 @@
 $factory->define(App\RmaDetalle::class, function ($faker) {
     return [
         'descripcion_falla'      => $faker->text(80),
-        'rma_id'                 => factory(App\Rma::class)->create() || 1,
-        'garantia_id'            => 1,
+        'rma_id'                 => factory(App\Rma::class)->create()->id,
+        'garantia_id'            => factory(App\Garantia::class)->create()->id,
         'producto_movimiento_id' => factory(App\ProductoMovimiento::class, 'withproduct')->create()->id
     ];
 });
 
-$factory->defineAs(App\RmaDetalle::class, 'descripcionfallalargo', function ($faker) use ($factory) {
-    return [
-        'descripcion_falla'      => $faker->text(160),
-        'rma_id'                 => factory(App\Rma::class)->create() || 1,
-        'garantia_id'            => 1,
-        'producto_movimiento_id' => factory(App\ProductoMovimiento::class, 'withproduct')->create()->id
-    ];
+$factory->defineAs(App\RmaDetalle::class, 'descripcionfallalarga', function ($faker) use ($factory) {
+    $rma_detalle = $factory->raw(App\RmaDetalle::class);
+
+    return array_merge($rma_detalle, [
+        'descripcion_falla' => $faker->text(200),
+    ]);
 });
+

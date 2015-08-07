@@ -226,4 +226,103 @@ class VentaDetalleTest extends TestCase {
         $this->assertTrue($model->isValid());
     }
 
+    /**
+     * @covers ::producto
+     * @group relaciones
+     */
+    public function testProducto() {
+        $parent = factory(App\Producto::class)->create();
+        $child = factory(App\VentaDetalle::class)->create([
+            'producto_id' => $parent->id
+        ]);
+        $parent_result = $child->producto;
+        $this->assertInstanceOf('App\Producto', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
+    }
+
+    /**
+     * @covers ::tipoPartida
+     * @group relaciones
+     */
+    public function testTipoPartida() {
+        $parent = factory(App\TipoPartida::class)->create();
+        $child = factory(App\VentaDetalle::class)->create([
+            'tipo_partida_id' => $parent->id
+        ]);
+        $parent_result = $child->tipoPartida;
+        $this->assertInstanceOf('App\TipoPartida', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
+    }
+
+    /**
+     * @covers ::venta
+     * @group relaciones
+     */
+    public function testVenta() {
+        $parent = factory(App\Venta::class)->create();
+        $child = factory(App\VentaDetalle::class)->create([
+            'venta_id' => $parent->id
+        ]);
+        $parent_result = $child->venta;
+        $this->assertInstanceOf('App\Venta', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
+    }
+
+    /**
+     * @covers ::metodoPago
+     * @group relaciones
+     */
+    public function testMetodoPago() {
+        $parent = factory(App\MetodoPago::class)->create();
+        $child = factory(App\VentaDetalle::class)->create([
+            'metodo_pago_id' => $parent->id
+        ]);
+        $parent_result = $child->metodoPago;
+        $this->assertInstanceOf('App\MetodoPago', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
+    }
+
+    /**
+     * @covers ::factura
+     * @group relaciones
+     */
+    public function testFactura() {
+        $parent = factory(App\Factura::class, 'full')->create();
+        $child = factory(App\VentaDetalle::class)->create([
+            'factura_id' => $parent->id
+        ]);
+        $parent_result = $child->factura;
+        $this->assertInstanceOf('App\Factura', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
+    }
+
+    /**
+     * @covers ::notaCredito
+     * @group relaciones
+     */
+    public function testNotaCredito() {
+        $parent = factory(App\NotaCredito::class, 'full')->create();
+        $child = factory(App\VentaDetalle::class)->create([
+            'nota_credito_id' => $parent->id
+        ]);
+        $parent_result = $child->notaCredito;
+        $this->assertInstanceOf('App\NotaCredito', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
+    }
+
+    /**
+     * @covers ::garantias
+     * @group relaciones
+     */
+    public function testGarantias() {
+        $parent = factory(App\VentaDetalle::class, 'producto')->create();
+        factory(App\Garantia::class)->create([
+            'venta_detalle_id' => $parent->id
+        ]);
+        $children = $parent->garantias;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Garantia', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

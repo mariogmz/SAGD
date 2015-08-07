@@ -5,65 +5,58 @@
  */
 class RmaTiempoTest extends TestCase {
 
-    /**
-     * @coversNothing
-     * @group modelo_actualizable
-     */
-    public function testModeloEsActualizable()
-    {
-        $rmat = factory(App\RmaTiempo::class)->create();
-        $rmat->nombre = 'Tony Stark' .  rand(1, 10000);
-        $this->assertTrue($rmat->isValid('update'));
-        $this->assertTrue($rmat->save());
-    }
 
     /**
      * @coversNothing
      */
-    public function testNombreEsRequerido()
-    {
-        $rmatiempo = factory(App\RmaTiempo::class)->make([
+    public function testNombreEsRequerido() {
+        $model = factory(App\RmaTiempo::class)->make([
             'nombre' => ''
         ]);
-        $this->assertFalse($rmatiempo->isValid());
+        $this->assertFalse($model->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testNombreEsMaximo45Caracteres()
-    {
-        $rmatiempo = factory(App\RmaTiempo::class, 'nombrelargo')->make();
-        $this->assertFalse($rmatiempo->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testNombreEsUnico()
-    {
-        $rmatiempo1 = factory(App\RmaTiempo::class)->create();
-        $rmatiempo2 = factory(App\RmaTiempo::class)->make([
-            'nombre' => $rmatiempo1->nombre
+    public function testNombreEsUnico() {
+        $model1 = factory(App\RmaTiempo::class)->create();
+        $model2 = factory(App\RmaTiempo::class)->make([
+            'nombre' => $model1->nombre
         ]);
-        $this->assertFalse($rmatiempo2->isValid());
+        $this->assertFalse($model2->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testRmaEsMaximoDe45Caracteres() {
+        $model = factory(App\RmaTiempo::class, 'nombrelargo')->make();
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testModeloEsActualizable() {
+        $model = factory(App\RmaTiempo::class)->create();
+        $model->nombre = 'JohnPetrucci' . rand(); // When I play guitar... people die
+        $this->assertTrue($model->save());
     }
 
     /**
      * @covers ::rmas
      * @group relaciones
      */
-    public function testRmas()
-    {
-        $rma_tiempo = factory(App\RmaTiempo::class)->create();
-        $rmas = factory(App\Rma::class, 5)->create([
-            'rma_tiempo_id' => $rma_tiempo->id
+    public function testRmas() {
+        $parent = factory(App\RmaTiempo::class)->create();
+        factory(App\Rma::class)->create([
+            'rma_tiempo_id' => $parent->id
         ]);
-        $rmas_resultado = $rma_tiempo->rmas;
-        foreach ($rmas_resultado as $rr)
-        {
-            $this->assertInstanceOf('App\Rma', $rr);
-        }
+        $children = $parent->rmas;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Rma', $children[0]);
+        $this->assertCount(1, $children);
     }
 
 }

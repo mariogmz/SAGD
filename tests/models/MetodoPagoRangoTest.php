@@ -39,11 +39,12 @@ class MetodoPagoRangoTest extends TestCase {
      * @coversNothing
      */
     public function testDesdeEsPorcentaje() {
-        $metodo_pago_rango = factory(App\MetodoPagoRango::class)->make([
+        $metodo_pago_rango = factory(App\MetodoPagoRango::class, 'truncate')->make([
             'desde' => 'desde'
         ]);
         $this->assertFalse($metodo_pago_rango->isValid());
         $metodo_pago_rango->desde = 0.50;
+        if (!$metodo_pago_rango->isValid()) print_r($metodo_pago_rango);
         $this->assertTrue($metodo_pago_rango->isValid());
     }
 
@@ -98,7 +99,6 @@ class MetodoPagoRangoTest extends TestCase {
      * @coversNothing
      */
     public function testDesdeDebeSerUnico() {
-        $this->markTestIncomplete('MetodoPago Class is not implemented yet.');
 
         $rango1 = factory(App\MetodoPagoRango::class)->create([
             'desde' => 0.10,
@@ -115,7 +115,6 @@ class MetodoPagoRangoTest extends TestCase {
      * @coversNothing
      */
     public function testHastaDebeSerUnico() {
-        $this->markTestIncomplete('MetodoPago Class is not implemented yet.');
 
         $rango1 = factory(App\MetodoPagoRango::class)->create([
             'desde' => 0.10,
@@ -131,15 +130,10 @@ class MetodoPagoRangoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testRangoDebeSerValido(){
-        $this->markTestIncomplete('MetodoPago Class is not implemented yet, hard logic has not been planned');
-        // Truncate table
-        DB::statement("SET foreign_key_checks=0");
-        DB::table('metodos_pagos_rangos')->truncate();
-        DB::statement("SET foreign_key_checks=1");
-
+    public function testRangoDebeSerValido() {
+        $this->markTestIncomplete('Lógica de los rangos no implementada');
         // Test ranges
-        factory(App\MetodoPagoRango::class)->create([
+        factory(App\MetodoPagoRango::class, 'truncate')->create([
             'desde' => 0.00,
             'hasta' => 0.25
         ]);
@@ -147,7 +141,6 @@ class MetodoPagoRangoTest extends TestCase {
             'desde' => 0.76,
             'hasta' => 1.00
         ]);
-
         $rango_invalido = factory(App\MetodoPagoRango::class)->make([
             'desde' => 0.20,
             'hasta' => 0.80
@@ -157,8 +150,8 @@ class MetodoPagoRangoTest extends TestCase {
             'hasta' => 0.75
         ]);
 
-        $this->assertFalse($rango_invalido->isValid());
-        $this->assertTrue($rango_valido->save());
+        $this->assertFalse($rango_invalido->isValid(), 'El rango de 0.20 a 0.80 debe ser inválido');
+        $this->assertTrue($rango_valido->save(), 'El rango de 0.56 a 0.75 debe ser válido');
     }
 
     /**
@@ -166,9 +159,7 @@ class MetodoPagoRangoTest extends TestCase {
      * @group modelo_actualizable
      */
     public function testModeloEsActualizable() {
-        $this->markTestIncomplete('MetodoPago Class is not implemented yet.');
-
-        $metodo_pago_rango = factory(App\MetodoPagoRango::class)->create();
+        $metodo_pago_rango = factory(App\MetodoPagoRango::class, 'truncate')->create();
         $metodo_pago_rango->valor = rand(0.01, 1.00);
         $this->assertTrue($metodo_pago_rango->isValid('update'));
         $this->assertTrue($metodo_pago_rango->save());
@@ -179,11 +170,13 @@ class MetodoPagoRangoTest extends TestCase {
      * @group relaciones
      */
     public function testMetodoPago() {
-        $this->markTestIncomplete('MetodoPago Class is not implemented yet.');
-        $metodo_pago = factory(App\MetodoPago::class)->create();
-        $metodo_pago_rango = factory(App\MetodoPagoRango::class)->create([
-            'metodo_pago_rango_id' => $metodo_pago->id
+        $parent = factory(App\MetodoPago::class)->create();
+        $child = factory(App\MetodoPagoRango::class)->create([
+            'metodo_pago_id' => $parent->id
         ]);
-        $this->assertEquals($metodo_pago, $metodo_pago_rango->metodoPago);
+        $parent_result = $child->metodoPago;
+        $this->assertInstanceOf('App\MetodoPago', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
+
 }

@@ -24,8 +24,8 @@ $factory->define(App\Venta::class, function ($faker) {
         'cliente_id'          => factory(App\Cliente::class, 'full')->create()->id,
         'caja_id'             => factory(App\Caja::class)->create()->id,
         'corte_id'            => null,
-        'estatus_venta_id'    => factory(App\EstatusVenta::class)->create()->id || 1,
-        'estado_venta_id'     => factory(App\EstadoVenta::class)->create()->id || 1,
+        'estatus_venta_id'    => factory(App\EstatusVenta::class)->create()->id,
+        'estado_venta_id'     => factory(App\EstadoVenta::class)->create()->id,
         'tipo_venta_id'       => factory(App\TipoVenta::class)->create()->id,
         'sucursal_entrega_id' => $sucursal,
         'empleado_id'         => null

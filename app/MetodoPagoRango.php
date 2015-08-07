@@ -11,8 +11,8 @@ class MetodoPagoRango extends LGGModel {
     protected $fillable = ['hasta', 'desde', 'valor', 'metodo_pago_id'];
 
     public static $rules = [
-        'desde'          => 'required|numeric|between:0.00,1.00',
-        'hasta'          => 'required|numeric|between:0.00,1.00|greater_than:desde',
+        'desde'          => 'required|numeric|between:0.00,1.00|unique:metodos_pagos_rangos',
+        'hasta'          => 'required|numeric|between:0.00,1.00|greater_than:desde|unique:metodos_pagos_rangos',
         'valor'          => 'required|numeric|between:0.00,1.00',
         'metodo_pago_id' => 'required|integer',
     ];
@@ -24,13 +24,37 @@ class MetodoPagoRango extends LGGModel {
      */
     public static function boot() {
         MetodoPagoRango::creating(function ($model) {
-            return $model->isValid();
+            return $model->isValid() && self::revisarRango($model);
         });
         MetodoPagoRango::updating(function ($model) {
             $model->updateRules = self::$rules;
+            $model->updateRules['desde'] .= ',desde,' . $model->id;
+            $model->updateRules['hasta'] .= ',hasta,' . $model->id;
 
-            return $model->isValid('update');
+            return $model->isValid('update') && self::revisarRango($model);
         });
+    }
+
+    /**
+     * Obtiene el método de pago asociado a este rango de método de pago
+     * @return App\MetodoPago
+     */
+    public function metodoPago() {
+        return $this->belongsTo('App\MetodoPago');
+    }
+
+    public static function revisarRango($model) {
+        $rangos = self::all(['desde', 'hasta']);
+        foreach ($rangos as $rango) {
+            if ($model->hasta >= $rango->hasta ||
+                $model->hasta <= $rango->desde ||
+                $model->desde >= $rango->hasta ||
+                $model->desde <= $rango->desde
+            )
+                return false;
+        }
+
+        return true;
     }
 
 }

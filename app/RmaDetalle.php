@@ -5,7 +5,6 @@ namespace App;
 
 class RmaDetalle extends LGGModel {
 
-    //
     protected $table = "rmas_detalles";
     public $timestamps = false;
     protected $fillable = ['descripcion_falla', 'rma_id', 'garantia_id', 'producto_movimiento_id'];
@@ -13,7 +12,7 @@ class RmaDetalle extends LGGModel {
     public static $rules = [
         'descripcion_falla'      => 'required|string|max:80',
         'rma_id'                 => 'required|integer',
-        'garantia_id'            => 'integer',
+        'garantia_id'            => 'required|integer',
         'producto_movimiento_id' => 'required|integer'
     ];
 
@@ -25,20 +24,17 @@ class RmaDetalle extends LGGModel {
      */
     public static function boot() {
         RmaDetalle::creating(function ($model) {
-            if (!$model->isValid()) {
-                return false;
-            }
-
-            return true;
+            return $model->isValid();
         });
-        RmaDetalle::updating(function ($rma_detalle) {
-            $rma_detalle->updateRules = self::$rules;
-            return $rma_detalle->isValid();
+        RmaDetalle::updating(function ($model) {
+            $model->updateRules = self::$rules;
+
+            return $model->isValid();
         });
     }
 
     /**
-     * Obtiene el rma al que pertenece este detalle
+     * Obtiene el RMA al que pertenece este detalle
      * @return App\Rma
      */
     public function rma() {
@@ -46,7 +42,7 @@ class RmaDetalle extends LGGModel {
     }
 
     /**
-     * Obtiene la garantia de venta asociada a este detalle
+     * Obtiene la garantia asociada al detalle de rma
      * @return App\Garantia
      */
     public function garantia() {
@@ -54,7 +50,7 @@ class RmaDetalle extends LGGModel {
     }
 
     /**
-     * Obtiene el movimiento de producto asociado a este detalle
+     * Obtiene el movimiento de producto asociado al detalle del rma
      * @return App\ProductoMovimiento
      */
     public function productoMovimiento() {

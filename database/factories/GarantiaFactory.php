@@ -11,15 +11,18 @@
 |
 */
 
-$factory->define(App\EstatusActivo::class, function ($faker)
+$factory->define(App\Garantia::class, function ($faker)
 {
     return [
-        'estatus' => $faker->unique()->regexify('[a-zA-Z0-9\s]{0,45}')
+        'serie' => $faker->text(45),
+        'venta_detalle_id' => factory(App\VentaDetalle::class, 'producto')->create()->id
     ];
 });
 
-$factory->defineAs(App\EstatusActivo::class, 'estatuslargo', function ($faker) use ($factory){
-    return [
-        'estatus' => $faker->unique()->text(100)
-    ];
+$factory->defineAs(App\Garantia::class, 'serielargo', function ($faker) use ($factory) {
+    $garantia = $factory->raw(App\Garantia::class);
+
+    return array_merge($garantia, [
+        'serie' => $faker->text(100),
+    ]);
 });

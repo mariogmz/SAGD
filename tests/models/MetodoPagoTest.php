@@ -151,4 +151,35 @@ class MetodoPagoTest extends TestCase {
         $this->assertEquals($estatus_activo, $estatus_activo_resultado);
     }
 
+    /**
+     * @covers ::metodosPagosRangos
+     * @group relaciones
+     */
+    public function testMetodosPagosRangos() {
+        $parent = factory(App\MetodoPago::class)->create();
+        factory(App\MetodoPagoRango::class, 'truncate')->create([
+            'metodo_pago_id' => $parent->id
+        ]);
+        $children = $parent->metodosPagosRangos;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\MetodoPagoRango', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
+
+    /**
+     * @covers ::ventasDetalles
+     * @group relaciones
+     */
+    public function testVentasDetalles() {
+        $parent = factory(App\MetodoPago::class)->create();
+        factory(App\VentaDetalle::class, 'producto')->create([
+            'metodo_pago_id' => $parent->id
+        ]);
+        $children = $parent->ventasDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\VentaDetalle', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

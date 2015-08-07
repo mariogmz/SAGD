@@ -29,13 +29,27 @@ class EstatusVentaTest extends TestCase {
      */
     public function testVentas() {
         $parent = factory(App\EstatusVenta::class)->create();
-        print_r($parent);
         factory(App\Venta::class)->create([
             'estatus_venta_id' => $parent->id
         ]);
         $children = $parent->ventas;
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
         $this->assertInstanceOf('App\Venta', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
+    /**
+     * @covers ::ventasMovimientos
+     * @group relaciones
+     */
+    public function testVentasMovimientos() {
+        $parent = factory(App\EstatusVenta::class)->create();
+        factory(App\VentaMovimiento::class)->create([
+            'estatus_venta_id' => $parent->id
+        ]);
+        $children = $parent->ventasMovimientos;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\VentaMovimiento', $children[0]);
         $this->assertCount(1, $children);
     }
 

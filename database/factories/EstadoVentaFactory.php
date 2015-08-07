@@ -12,15 +12,37 @@
 */
 
 $factory->define(App\EstadoVenta::class, function ($faker) {
+    DB::statement("SET foreign_key_checks=0");
+    App\EstadoVenta::truncate();
+    DB::statement("SET foreign_key_checks=1");
+
     return [
-        'clave'  => $faker->unique()->lexify('?'),
+        'clave'  => $faker->unique()->randomLetter,
         'nombre' => $faker->text(50)
     ];
 });
 
-$factory->defineAs(App\EstadoVenta::class, 'nombrelargo', function ($faker) use ($factory) {
+$factory->defineAs(App\EstadoVenta::class, 'withouttruncate', function ($faker) use ($factory) {
     return [
-        'clave'  => $faker->unique()->lexify('?'),
-        'nombre' => $faker->text(100)
+        'clave'  => $faker->unique()->randomLetter,
+        'nombre' => $faker->text(50)
     ];
 });
+
+
+$factory->defineAs(App\EstadoVenta::class, 'nombrelargo', function ($faker) use ($factory) {
+    $estado_venta = $factory->rawOf(App\EstadoVenta::class, 'withouttruncate');
+
+    return array_merge($estado_venta, [
+        'nombre' => $faker->text(100)
+    ]);
+});
+
+$factory->defineAs(App\EstadoVenta::class, 'clavenumero', function ($faker) use ($factory) {
+    $estado_venta = $factory->rawOf(App\EstadoVenta::class, 'withouttruncate');
+
+    return array_merge($estado_venta, [
+        'clave' => $faker->unique()->randomDigitNotNull
+    ]);
+});
+

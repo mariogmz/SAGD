@@ -11,15 +11,13 @@
 |
 */
 
-$factory->define(App\RmaTiempo::class, function ($faker)
-{
+$factory->define(App\RmaTiempo::class, function ($faker) {
     return [
-        'nombre' => $faker->unique()->word
+        'nombre' => $faker->unique()->regexify('/[a-zA-Z0-9]{45}/')
     ];
 });
 
-$factory->defineAs(App\RmaTiempo::class, 'nombrelargo', function ($faker) use ($factory)
-{
+$factory->defineAs(App\RmaTiempo::class, 'nombrelargo', function ($faker) use ($factory) {
     return [
         'nombre' => $faker->unique()->text(100)
     ];

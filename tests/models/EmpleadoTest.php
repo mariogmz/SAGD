@@ -252,4 +252,20 @@ class EmpleadoTest extends TestCase {
         $this->assertInstanceOf(App\Corte::class, $cortes[0]);
         $this->assertCount(1, $cortes);
     }
+
+    /**
+     * @covers ::ventasMovimientos
+     * @group relaciones
+     */
+    public function testVentasMovimientos() {
+        $parent = factory(App\Empleado::class)->create();
+        factory(App\VentaMovimiento::class)->create([
+            'empleado_id' => $parent->id
+        ]);
+        $children = $parent->ventasMovimientos;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\VentaMovimiento', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

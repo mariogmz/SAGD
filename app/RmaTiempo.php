@@ -19,29 +19,22 @@ class RmaTiempo extends LGGModel {
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        RmaTiempo::creating(function ($model)
-        {
-            if (!$model->isValid())
-            {
-                return false;
-            }
-
-            return true;
+    public static function boot() {
+        RmaTiempo::creating(function ($model) {
+            return $model->isValid();
         });
-        RmaTiempo::updating(function($rmat){
+        RmaTiempo::updating(function ($rmat) {
             $rmat->updateRules = self::$rules;
-            $rmat->updateRules['nombre'] .= ',nombre,'.$rmat->id;
+            $rmat->updateRules['nombre'] .= ',nombre,' . $rmat->id;
             return $rmat->isValid('update');
         });
     }
 
     /**
-     * Obtiene todos los rmas con el tiempo asociado
+     * Obtiene los rmas asociados con el tiempo de rma
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function rmas(){
+    public function rmas() {
         return $this->hasMany('App\Rma');
     }
 }

@@ -74,4 +74,13 @@ class Factura extends LGGModel
     {
         return $this->belongsTo('App\EstadoFactura', 'factura_status_id');
     }
+
+    /**
+     * Obtiene los detalles de venta incluidos en esta factura
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasDetalles() {
+        return $this->hasMany('App\VentaDetalle');
+    }
+
 }

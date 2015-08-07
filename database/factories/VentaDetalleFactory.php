@@ -63,7 +63,7 @@ $factory->defineAs(App\VentaDetalle::class, 'facturada', function ($faker) use (
     $venta_detalle = $factory->rawOf(App\VentaDetalle::class, 'producto');
 
     return array_merge($venta_detalle, [
-        'factura_id' => factory(App\Factura::class)->create()->id
+        'factura_id' => factory(App\Factura::class, 'full')->create()->id
     ]);
 });
 
@@ -71,6 +71,6 @@ $factory->defineAs(App\VentaDetalle::class, 'notacredito', function ($faker) use
     $venta_detalle = $factory->raw(App\VentaDetalle::class);
 
     return array_merge($venta_detalle, [
-        'nota_credito_id' => factory(App\NotaCredito::class)->create()->id,
+        'nota_credito_id' => factory(App\NotaCredito::class, 'full')->create()->id,
     ]);
 });

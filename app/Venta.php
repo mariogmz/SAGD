@@ -58,19 +58,83 @@ class Venta extends LGGModel {
     }
 
     /**
-     * Obtiene el estatus asociado a esta venta
-     * @return App\EstatusVenta
+     * Obtiene la sucursal en la cual fue realizada la venta
+     * @return App\Sucursal
      */
-    public function estatusVenta() {
-        return $this->belongsTo('App\EstatusVenta', 'estatus_venta_id');
+    public function sucursal() {
+        return $this->belongsTo('App\Sucursal');
     }
 
     /**
-     * Obtiene el tipo de venta asociado a la venta
+     * Obtiene el cliente de la venta
+     * @return App\Cliente
+     */
+    public function cliente() {
+        return $this->belongsTo('App\Cliente');
+    }
+
+    /**
+     * Obtiene la caja en la cual se realizó la venta
+     * @return App\Caja
+     */
+    public function caja() {
+        return $this->belongsTo('App\Caja');
+    }
+
+    /**
+     * Obtiene el corte en el cual fué incluido esta venta
+     * @return App\Corte
+     */
+    public function corte() {
+        return $this->belongsTo('App\Corte');
+    }
+
+    /**
+     * Obtiene el estatus de la venta
+     * @return App\EstatusVenta
+     */
+    public function estatusVenta() {
+        return $this->belongsTo('App\EstatusVenta');
+    }
+
+    /**
+     * Obtiene el estado de la venta
+     * @return App\EstadoVenta
+     */
+    public function estadoVenta() {
+        return $this->belongsTo('App\EstadoVenta');
+    }
+
+    /**
+     * Obtiene el tipo de la venta
      * @return App\TipoVenta
      */
     public function tipoVenta() {
         return $this->belongsTo('App\TipoVenta');
+    }
+
+    /**
+     * Obtiene la sucursal en la cual fué entregada la mercancía de la venta
+     * @return App\Sucursal
+     */
+    public function sucursalEntrega() {
+        return $this->belongsTo('App\Sucursal');
+    }
+
+    /**
+     * Obtiene el empleado que realizó la venta / o quién le dió seguimiento
+     * @return App\Empleado
+     */
+    public function empleado() {
+        return $this->belongsTo('App\Empleado');
+    }
+
+    /**
+     * Obtiene los detalles de la venta
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasDetalles() {
+        return $this->hasMany('App\VentaDetalle');
     }
 
     /**
@@ -87,6 +151,14 @@ class Venta extends LGGModel {
      */
     public function anticiposEntrega() {
         return $this->hasMany('App\Anticipo', 'venta_entrega_id');
+    }
+
+    /**
+     * Obtiene todos los movimientos asociados a la venta
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasMovimientos() {
+        return $this->hasMany('App\VentaMovimiento');
     }
 
 }

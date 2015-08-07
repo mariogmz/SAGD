@@ -11,15 +11,11 @@
 |
 */
 
-$factory->define(App\EstatusActivo::class, function ($faker)
-{
+$factory->define(App\VentaMovimiento::class, function ($faker) {
     return [
-        'estatus' => $faker->unique()->regexify('[a-zA-Z0-9\s]{0,45}')
-    ];
-});
-
-$factory->defineAs(App\EstatusActivo::class, 'estatuslargo', function ($faker) use ($factory){
-    return [
-        'estatus' => $faker->unique()->text(100)
+        'venta_id'         => factory(App\Venta::class)->create()->id,
+        'empleado_id'      => factory(App\Empleado::class)->create()->id,
+        'estatus_venta_id' => factory(App\EstatusVenta::class)->create()->id,
+        'estado_venta_id'  => factory(App\EstadoVenta::class)->create()->id,
     ];
 });

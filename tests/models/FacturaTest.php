@@ -284,4 +284,20 @@ class FacturaTest extends TestCase {
         $factura->estado()->associate($estado);
         $this->assertInstanceOf(App\EstadoFactura::class, $factura->estado);
     }
+
+    /**
+     * @covers ::ventasDetalles
+     * @group relaciones
+     */
+    public function testVentasDetalles() {
+        $parent = factory(App\Factura::class, 'full')->create();
+        factory(App\VentaDetalle::class, 'producto')->create([
+            'factura_id' => $parent->id
+        ]);
+        $children = $parent->ventasDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\VentaDetalle', $children[0]);
+        $this->assertCount(1, $children);
+    }
+
 }

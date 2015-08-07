@@ -47,4 +47,61 @@ class VentaDetalle extends LGGModel {
             && $model->total == $model->cantidad * $model->precio;
         });
     }
+
+    /**
+     * Obtiene la venta asociada con esta partida
+     * @return App\Venta
+     */
+    public function venta() {
+        return $this->belongsTo('App\Venta');
+    }
+
+    /**
+     * Obtiene el producto que se vendió en esta partida
+     * @return App\Producto
+     */
+    public function producto() {
+        return $this->belongsTo('App\Producto');
+    }
+
+    /**
+     * Obtiene el tipo de la partida asociado
+     * @return App\TipoPartida
+     */
+    public function tipoPartida() {
+        return $this->belongsTo('App\TipoPartida');
+    }
+
+    /**
+     * Obtiene el metodo de pago que se utilizó en este detalle
+     * @return App\MetodoPago
+     */
+    public function metodoPago() {
+        return $this->belongsTo('App\MetodoPago');
+    }
+
+    /**
+     * Obtiene la factura donde se encuentra incluido este detalle de venta
+     * @return App\Factura
+     */
+    public function factura() {
+        return $this->belongsTo('App\Factura');
+    }
+
+    /**
+     * Obtiene la nota de credito donde se encuentra incluido este detalle de venta
+     * @return App\NotaCredito
+     */
+    public function notaCredito() {
+        return $this->belongsTo('App\NotaCredito');
+    }
+
+    /**
+     * Obtiene las garantias asociadas al detalle de la venta
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function garantias() {
+        return $this->hasMany('App\Garantia');
+    }
+
 }

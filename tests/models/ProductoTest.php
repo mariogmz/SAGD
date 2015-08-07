@@ -516,4 +516,19 @@ class ProductoTest extends TestCase
         $this->assertInstanceOf(App\ApartadoDetalle::class, $ads[0]);
         $this->assertCount(1, $ads);
     }
+
+    /**
+     * @covers ::reposiciones
+     * @group relaciones
+     */
+    public function testReposiciones() {
+        $parent = factory(App\Producto::class)->create();
+        factory(App\Reposicion::class)->create([
+            'producto_id' => $parent->id
+        ]);
+        $children = $parent->reposiciones;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\Reposicion', $children[0]);
+        $this->assertCount(1, $children);
+    }
 }

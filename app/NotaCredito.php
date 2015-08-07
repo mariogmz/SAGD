@@ -47,7 +47,7 @@ class NotaCredito extends LGGModel
 
 
     /**
-    * Obtiene el Emisor asociado con la Factura
+    * Obtiene el Emisor asociado con la nota de crédito
     * @return App\RazonSocialEmisor
     */
     public function razonSocialEmisor()
@@ -57,7 +57,7 @@ class NotaCredito extends LGGModel
 
 
     /**
-    * Obtiene el Receptor asociado con la Factura
+    * Obtiene el Receptor asociado con la nota de crédito
     * @return App\RazonSocialReceptor
     */
     public function razonSocialReceptor()
@@ -67,11 +67,28 @@ class NotaCredito extends LGGModel
 
 
     /**
-    * Obtiene el Estado asociado con la factura
+    * Obtiene el Estado asociado con la nota de crédito
     * @return App\EstadoFactura
     */
     public function estado()
     {
         return $this->belongsTo('App\EstadoFactura', 'factura_status_id');
     }
+
+    /**
+     * Obtiene los detalles de venta incluidos en la nota de crédito
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasDetalles() {
+        return $this->hasMany('App\VentaDetalle');
+    }
+
+    /**
+     * Obtiene los RMAs asociados con la nota de crédito
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function rmas() {
+        return $this->hasMany('App\Rma');
+    }
+
 }

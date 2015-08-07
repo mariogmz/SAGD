@@ -69,4 +69,13 @@ class Proveedor extends LGGModel {
     {
         return $this->hasMany('App\Entrada', 'proveedor_id');
     }
+
+    /**
+     * Obtiene las reposiciones obtenidas del proveedor
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function reposiciones() {
+        return $this->hasMany('App\Reposicion');
+    }
+
 }

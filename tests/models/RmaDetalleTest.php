@@ -9,78 +9,62 @@ class RmaDetalleTest extends TestCase {
      * @coversNothing
      */
     public function testDescripcionFallaEsRequerido() {
-        $rma_detalle = factory(App\RmaDetalle::class)->make([
+        $model = factory(App\RmaDetalle::class)->make([
             'descripcion_falla' => ''
         ]);
-        $this->assertFalse($rma_detalle->isValid());
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testDescripcionFallaEsMaximo80Caracteres() {
+        $model = factory(App\RmaDetalle::class, 'descripcionfallalarga')->make();
+        $this->assertFalse($model->isValid());
     }
 
     /**
      * @coversNothing
      */
     public function testRmaEsRequerido() {
-        $rma_detalle = factory(App\RmaDetalle::class)->make([
+        $model = factory(App\RmaDetalle::class)->make([
             'rma_id' => null
         ]);
-        $this->assertFalse($rma_detalle->isValid());
+        $this->assertFalse($model->isValid());
     }
 
     /**
      * @coversNothing
      */
     public function testGarantiaEsRequerido() {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-        $rma_detalle = factory(App\RmaDetalle::class)->make([
+        $model = factory(App\RmaDetalle::class)->make([
             'garantia_id' => null
         ]);
-        $this->assertFalse($rma_detalle->isValid());
+        $this->assertFalse($model->isValid());
     }
 
     /**
      * @coversNothing
      */
     public function testProductoMovimientoEsRequerido() {
-        $rma_detalle = factory(App\RmaDetalle::class)->make([
+        $model = factory(App\RmaDetalle::class)->make([
             'producto_movimiento_id' => null
         ]);
-        $this->assertFalse($rma_detalle->isValid());
+        $this->assertFalse($model->isValid());
     }
 
     /**
-     * @coversNothing
-     */
-    public function testDescripcionFallaMaximo80Caracteres() {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-
-        $rma_detalle = factory(App\RmaDetalle::class, 'descripcionfallalargo')->make();
-        $this->assertFalse($rma_detalle->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group modelo_actualizable
-     */
-    public function testModeloEsActualizable()
-    {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-
-        $model = factory(App\RmaDetalle::class)->create();
-        $model->descripcion_falla = "You shall not pass!!!";
-        $this->assertTrue($model->isValid('update'));
-        $this->assertTrue($model->save());
-    }
-
-    /**
-     * @covers ::rma
+     * @covers ::Rma
      * @group relaciones
      */
     public function testRma() {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-        $rma = factory(App\Rma::class)->create();
-        $rma_detalle = factory(App\RmaDetalle::class)->create([
-            'rma_id' => $rma->id
+        $parent = factory(App\Rma::class)->create();
+        $child = factory(App\RmaDetalle::class)->create([
+            'rma_id' => $parent->id
         ]);
-        $this->assertEquals($rma->id, $rma_detalle->rma->id);
+        $parent_result = $child->Rma;
+        $this->assertInstanceOf('App\Rma', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
 
     /**
@@ -88,12 +72,13 @@ class RmaDetalleTest extends TestCase {
      * @group relaciones
      */
     public function testGarantia() {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-        $garantia = factory(App\Garantia::class)->create();
-        $rma_detalle = factory(App\RmaDetalle::class)->create([
-            'garantia_id' => $garantia->id
+        $parent = factory(App\Garantia::class)->create();
+        $child = factory(App\RmaDetalle::class)->create([
+            'garantia_id' => $parent->id
         ]);
-        $this->assertEquals($garantia->id, $rma_detalle->rma->id);
+        $parent_result = $child->garantia;
+        $this->assertInstanceOf('App\Garantia', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
 
     /**
@@ -101,11 +86,13 @@ class RmaDetalleTest extends TestCase {
      * @group relaciones
      */
     public function testProductoMovimiento() {
-        $this->markTestIncomplete('Garantia class not implemented yet.');
-        $producto_movimiento = factory(App\ProductoMovimiento::class, 'withproduct')->create();
-        $rma_detalle = factory(App\RmaDetalle::class)->create([
-            'producto_movimiento_id' => $producto_movimiento->id
+        $parent = factory(App\ProductoMovimiento::class, 'withproduct')->create();
+        $child = factory(App\RmaDetalle::class)->create([
+            'producto_movimiento_id' => $parent->id
         ]);
-        $this->assertEquals($producto_movimiento->id, $rma_detalle->rma->id);
+        $parent_result = $child->productoMovimiento;
+        $this->assertInstanceOf('App\ProductoMovimiento', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
+
 }

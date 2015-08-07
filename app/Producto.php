@@ -234,4 +234,13 @@ class Producto extends LGGModel
     {
         return $this->hasMany('App\ApartadoDetalle', 'producto_id');
     }
+
+    /**
+     * Obtiene las reposiciones del producto
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function reposiciones() {
+        return $this->hasMany('App\Reposicion');
+    }
+
 }

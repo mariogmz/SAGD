@@ -2,8 +2,9 @@
 
 namespace App;
 
-class EstatusVenta extends LGGModel
-{
+
+class EstatusVenta extends LGGModel {
+
     protected $table = "estatus_ventas";
     public $timestamps = false;
     protected $fillable = ['nombre'];
@@ -17,12 +18,13 @@ class EstatusVenta extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        EstatusVenta::creating(function($model){
+    public static function boot() {
+        EstatusVenta::creating(function ($model) {
             return $model->isValid();
         });
-        EstatusVenta::updating(function($model){
+        EstatusVenta::updating(function ($model) {
             $model->updateRules = self::$rules;
+
             return $model->isValid('update');
         });
     }
@@ -34,5 +36,14 @@ class EstatusVenta extends LGGModel
     public function ventas() {
         return $this->hasMany('App\Venta');
     }
+
+    /**
+     * Obtiene los movimientos de venta asociados con el estado de venta
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasMovimientos() {
+        return $this->hasMany('App\VentaMovimiento');
+    }
+
 
 }

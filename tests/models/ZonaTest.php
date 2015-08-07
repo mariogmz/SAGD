@@ -117,7 +117,9 @@ class ZonaTest extends TestCase {
     public function testGuias()
     {
         $zona = factory(App\Zona::class)->create();
-        factory(App\GuiaZona::class, 'full')->create(['zona_id' => $zona->id]);
+        factory(App\GuiaZona::class, 'full')->create([
+                'zona_id' => $zona->id
+        ]);
         $guias = $zona->guias;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $guias);
         $this->assertInstanceOf(App\Guia::class, $guias[0]);

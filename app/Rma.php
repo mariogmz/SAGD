@@ -67,12 +67,12 @@ class Rma extends LGGModel {
      * Obtiene el detalle del rma
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function rmaDetalles() {
+    public function rmasDetalles() {
         return $this->hasMany('App\RmaDetalle');
     }
 
     /**
-     * Obtiene el estado del rma asociado
+     * Obtiene el tiempo de rma asociado
      * @return App\RmaTiempo
      */
     public function rmaTiempo() {
@@ -85,5 +85,13 @@ class Rma extends LGGModel {
      */
     public function sucursal() {
         return $this->belongsTo('App\Sucursal');
+    }
+
+    /**
+     * Obtiene la nota de crédito asociada con el RMA
+     * @return App\NotaCredito
+     */
+    public function notaCredito() {
+        return $this->belongsTo('App\NotaCredito');
     }
 }

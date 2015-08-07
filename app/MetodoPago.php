@@ -29,7 +29,8 @@ class MetodoPago extends LGGModel {
         });
         MetodoPago::updating(function ($model) {
             $model->updateRules = self::$rules;
-            $model->updateRules['clave'] .= ',clave,'.$model->id;
+            $model->updateRules['clave'] .= ',clave,' . $model->id;
+
             return $model->isValid('update');
         });
     }
@@ -41,4 +42,21 @@ class MetodoPago extends LGGModel {
     public function estatusActivo() {
         return $this->belongsTo('App\EstatusActivo', 'estatus_activo_id');
     }
+
+    /**
+     * Obtiene los rangos para este método de pago
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function metodosPagosRangos() {
+        return $this->hasMany('App\MetodoPagoRango');
+    }
+
+    /**
+     * Obtiene los detalles de venta relacionados con el método de pago
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function ventasDetalles() {
+        return $this->hasMany('App\VentaDetalle');
+    }
+
 }
