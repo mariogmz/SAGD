@@ -20,17 +20,14 @@ $factory->define(App\MetodoPagoRango::class, function ($faker) {
     ];
 });
 
-$factory->defineAs(App\MetodoPagoRango::class, 'truncate', function ($faker) use ($factory) {
-    DB::statement("SET foreign_key_checks=0");
-    App\MetodoPagoRango::truncate();
-    DB::statement("SET foreign_key_checks=1");
+$factory->defineAs(App\MetodoPagoRango::class, function ($faker) use ($factory) {
     $metodo_pago_rango = $factory->raw(App\MetodoPagoRango::class);
 
     return $metodo_pago_rango;
 });
 
 $factory->defineAs(App\MetodoPagoRango::class, 'random', function ($faker) use ($factory) {
-    $metodo_pago_rango = $factory->rawOf(App\MetodoPagoRango::class, 'truncate');
+    $metodo_pago_rango = $factory->raw(App\MetodoPagoRango::class);
 
     return array_merge($metodo_pago_rango, [
         'desde' => $faker->randomFloat(2, 0.00, 0.50),

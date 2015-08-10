@@ -30,7 +30,7 @@ class EstadoVentaTest extends TestCase {
      */
     public function testClaveEsUnica() {
         $estado_venta1 = factory(App\EstadoVenta::class)->create();
-        $estado_venta2 = factory(App\EstadoVenta::class, 'withouttruncate')->make([
+        $estado_venta2 = factory(App\EstadoVenta::class)->make([
             'clave' => $estado_venta1->clave
         ]);
         $this->assertFalse($estado_venta2->isValid());
@@ -88,7 +88,7 @@ class EstadoVentaTest extends TestCase {
         $children = $parent->ventas;
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
         $this->assertInstanceOf('App\Venta', $children[0]);
-        $this->assertTrue(count($children) > 0);
+        $this->assertCount(1,$children);
     }
 
     /**
@@ -103,7 +103,7 @@ class EstadoVentaTest extends TestCase {
         $children = $parent->ventasMovimientos;
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
         $this->assertInstanceOf('App\VentaMovimiento', $children[0]);
-        $this->assertTrue(count($children) > 0);
+        $this->assertCount(1,$children);
     }
 
 }
