@@ -45,16 +45,19 @@ class MetodoPagoRango extends LGGModel {
 
     public static function revisarRango($model) {
         $rangos = self::all(['desde', 'hasta']);
+        $conjunto = [];
         foreach ($rangos as $rango) {
-            if ($model->hasta >= $rango->hasta ||
-                $model->hasta <= $rango->desde ||
-                $model->desde >= $rango->hasta ||
-                $model->desde <= $rango->desde
-            )
-                return false;
+            $min = $rango->desde * 100;
+            $max = $rango->hasta * 100;
+            for ($i = $min; $i <= $max; $i ++) {
+                array_push($conjunto, $i);
+            }
         }
-
-        return true;
+        $conjunto_modelo = [];
+        for ($i = $model->desde * 100; $i <= $model->hasta * 100; $i ++) {
+            array_push($conjunto_modelo, $i);
+        }
+        return !count(array_intersect($conjunto_modelo, $conjunto));
     }
 
 }

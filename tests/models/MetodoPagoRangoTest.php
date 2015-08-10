@@ -131,7 +131,7 @@ class MetodoPagoRangoTest extends TestCase {
      * @coversNothing
      */
     public function testRangoDebeSerValido() {
-        $this->markTestIncomplete('Lógica de los rangos no implementada');
+        // $this->markTestIncomplete('Lógica de los rangos no implementada');
         // Test ranges
         factory(App\MetodoPagoRango::class, 'truncate')->create([
             'desde' => 0.00,
@@ -149,8 +149,7 @@ class MetodoPagoRangoTest extends TestCase {
             'desde' => 0.56,
             'hasta' => 0.75
         ]);
-
-        $this->assertFalse($rango_invalido->isValid(), 'El rango de 0.20 a 0.80 debe ser inválido');
+        $this->assertFalse($rango_invalido->save(), 'El rango de 0.20 a 0.80 debe ser inválido');
         $this->assertTrue($rango_valido->save(), 'El rango de 0.56 a 0.75 debe ser válido');
     }
 
