@@ -17,6 +17,7 @@ class CreateZonasTable extends Migration
             $table->increments('id');
             $table->string('clave', 6);
             $table->decimal('km_maximos', 6, 2)->default(0.0);
+            $table->unique('clave');
         });
     }
 

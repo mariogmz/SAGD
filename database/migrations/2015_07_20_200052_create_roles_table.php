@@ -14,10 +14,9 @@ class CreateRolesTable extends Migration
     {
         //
         Schema::create('roles', function($table){
-            $table->integer('id');
+            $table->increments('id');
             $table->char('clave', 6);
             $table->string('nombre', 45);
-            $table->primary('id');
             $table->unique('clave');
         });
     }

@@ -15,13 +15,13 @@ class AddNotasCreditosConstraints extends Migration {
         Schema::table('notas_creditos', function ($table)
         {
             // Foreign Key Fields
-            $table->integer('corte_global_id')->unsigned();
-            $table->integer('caja_id')->unsigned();
-            $table->integer('empleado_id')->unsigned();
+            $table->integer('razon_social_emisor_id')->unsigned();
+            $table->integer('razon_social_receptor_id')->unsigned();
+            $table->integer('factura_status_id')->unsigned();
             // Constraints
-            $table->foreign('corte_global_id')->references('id')->on('cortes');
-            $table->foreign('caja_id')->references('id')->on('cajas');
-            $table->foreign('empleado_id')->references('id')->on('empleados');
+            $table->foreign('razon_social_emisor_id')->references('id')->on('razones_sociales_emisores');
+            $table->foreign('razon_social_receptor_id')->references('id')->on('razones_sociales_receptores');
+            $table->foreign('factura_status_id')->references('id')->on('estados_facturas');
         });
     }
 
@@ -34,10 +34,10 @@ class AddNotasCreditosConstraints extends Migration {
     {
         Schema::table('notas_creditos', function ($table)
         {
-            $table->dropForeign('notas_creditos_corte_global_id_foreign');
-            $table->dropForeign('notas_creditos_caja_id_foreign');
-            $table->dropForeign('notas_creditos_empleado_id_foreign');
-            $table->dropColumn(['corte_global_id', 'caja_id', 'empleado_id']);
+            $table->dropForeign('notas_creditos_razon_social_emisor_id_foreign');
+            $table->dropForeign('notas_creditos_razon_social_receptor_id_foreign');
+            $table->dropForeign('notas_creditos_factura_status_id_foreign');
+            $table->dropColumn(['razon_social_emisor_id', 'razon_social_receptor_id', 'factura_status_id']);
         });
     }
 }

@@ -18,6 +18,7 @@ class CreateApartadosTable extends Migration {
             $table->timestamp('fecha_apartado')->nullable();
             $table->timestamp('fecha_desapartado')->nullable();
             $table->string('concepto', 255);
+            $table->timestamps();
         });
     }
 

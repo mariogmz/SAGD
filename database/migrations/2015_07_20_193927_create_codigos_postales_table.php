@@ -1,10 +1,9 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCodigosPostalesTable extends Migration
-{
+class CreateCodigosPostalesTable extends Migration {
+
     /**
      * Run the migrations.
      *
@@ -13,11 +12,12 @@ class CreateCodigosPostalesTable extends Migration
     public function up()
     {
         //
-        Schema::create('codigos_postales', function($table){
+        Schema::create('codigos_postales', function ($table)
+        {
             $table->increments('id');
             $table->string('estado', 45);
             $table->string('municipio', 45);
-            $table->char('codigo_postal', 6);
+            $table->string('codigo_postal', 5);
             $table->unique('codigo_postal');
         });
     }
@@ -29,7 +29,6 @@ class CreateCodigosPostalesTable extends Migration
      */
     public function down()
     {
-        //
         Schema::drop('codigos_postales');
     }
 }

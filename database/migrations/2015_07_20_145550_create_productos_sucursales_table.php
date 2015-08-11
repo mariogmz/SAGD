@@ -16,7 +16,6 @@ class CreateProductosSucursalesTable extends Migration {
         Schema::create('productos_sucursales', function ($table)
         {
             $table->increments('id');
-            $table->integer('proveedor_id');
         });
     }
 

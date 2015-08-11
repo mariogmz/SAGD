@@ -14,6 +14,7 @@ class CreateEmpleadosRolesTable extends Migration
     {
         //
         Schema::create('empleados_roles', function($table){
+            $table->increments('id');
             $table->timestamp('fecha');
         });
     }

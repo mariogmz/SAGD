@@ -22,7 +22,7 @@ class AddEntradasConstraints extends Migration {
             // Constraints
             $table->foreign('estado_entrada_id')->references('id')->on('estados_entradas');
             $table->foreign('proveedor_id')->references('id')->on('proveedores');
-            $table->foreign('razon_social_id')->references('sucursal_id')->on('razones_sociales_emisores');
+            $table->foreign('razon_social_id')->references('id')->on('razones_sociales_emisores');
             $table->foreign('empleado_id')->references('id')->on('empleados');
         });
     }

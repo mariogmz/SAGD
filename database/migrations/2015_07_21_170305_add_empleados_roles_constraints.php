@@ -15,7 +15,7 @@ class AddEmpleadosRolesConstraints extends Migration
         //
         Schema::table('empleados_roles', function($table){
             $table->integer('empleado_id')->unsigned();
-            $table->integer('rol_id');
+            $table->integer('rol_id')->unsigned();
 
             $table->foreign('empleado_id')->references('id')->on('empleados');
             $table->foreign('rol_id')->references('id')->on('roles');

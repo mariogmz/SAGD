@@ -17,6 +17,7 @@ class CreateSucursalesEnviosTable extends Migration {
             $table->increments('id');
             $table->boolean('genera_costo')->default(false);
             $table->integer('dias_max_envio')->unsigned()->default(0);
+            $table->timestamps();
         });
     }
 
