@@ -13,8 +13,10 @@
 
 $factory->define(App\EstadoVenta::class, function ($faker) {
 
+    $clave = App\Caker::realUnique(App\EstadoVenta::class, 'clave', 'regexify', '[A-Z]{1}');
+
     return [
-        'clave'  => $faker->unique()->randomLetter,
+        'clave'  => $clave,
         'nombre' => $faker->text(50)
     ];
 });
@@ -32,7 +34,7 @@ $factory->defineAs(App\EstadoVenta::class, 'clavenumero', function ($faker) use 
     $estado_venta = $factory->raw(App\EstadoVenta::class);
 
     return array_merge($estado_venta, [
-        'clave' => $faker->unique()->randomDigitNotNull
+        'clave' => App\Caker::realUnique(App\EstadoVenta::class, 'clave', 'regexify', '\d')
     ]);
 });
 

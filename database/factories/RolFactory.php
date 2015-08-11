@@ -14,7 +14,7 @@
 $factory->define(App\Rol::class, function ($faker)
 {
     return [
-        'clave' => $faker->unique()->regexify('[A-Z]{6}'),
+        'clave' => App\Caker::realUnique(App\Rol::class, 'clave', 'regexify', '[A-Z]{6}'),
         'nombre' => $faker->text(45)
     ];
 });
@@ -27,6 +27,6 @@ $factory->defineAs(App\Rol::class, 'longname', function($faker) use ($factory){
 
 $factory->defineAs(App\Rol::class, 'minclave', function($faker) use ($factory){
     $rol = $factory->raw(App\Rol::class);
-    $rol['clave'] = $faker->unique()->regexify('[a-z]{6}');
+    $rol['clave'] = App\Caker::realUnique(App\Rol::class, 'clave', 'regexify', '[a-z]{6}');
     return $rol;
 });

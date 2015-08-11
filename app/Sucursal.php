@@ -12,8 +12,8 @@ class Sucursal extends LGGModel {
     public static $rules = [
         'clave'        => 'required|string|size:8|alpha|unique:sucursales',
         'nombre'       => 'required|string|max:45|alpha',
-        'ubicacion'    => 'max:45',
-        'horarios'     => 'required',
+        'ubicacion'    => 'string|max:45',
+        'horarios'     => 'required|string|max:100',
         'proveedor_id' => 'required|integer',
         'domicilio_id' => 'required|integer'
     ];

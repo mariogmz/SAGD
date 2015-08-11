@@ -225,15 +225,6 @@ class ProductoTest extends TestCase
     }
 
     /**
-     * @coversNothing
-     */
-    public function testUpcEsEntero()
-    {
-        $producto = factory(App\Producto::class)->make(['upc' => 'string']);
-        $this->assertFalse($producto->isValid());
-    }
-
-    /**
      * @covers ::tipoGarantia
      * @group relaciones
      */

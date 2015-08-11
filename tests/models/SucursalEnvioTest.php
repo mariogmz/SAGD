@@ -77,18 +77,18 @@ class SucursalEnvioTest extends TestCase {
         $this->assertTrue($model->save());
     }
 
-
     /**
      * @covers ::sucursalOrigen
      * @group relaciones
      */
     public function testSucursalOrigen() {
-        $sucursal = factory(App\Sucursal::class)->create();
-        $sucursal_envio = factory(App\SucursalEnvio::class)->create([
-            'sucursal_origen_id' => $sucursal->id
+        $parent = factory(App\Sucursal::class)->create();
+        $child = factory(App\SucursalEnvio::class)->create([
+            'sucursal_origen_id' => $parent->id
         ]);
-        $sucursal_resultado = $sucursal_envio->sucursalOrigen;
-        $this->assertEquals($sucursal, $sucursal_resultado);
+        $parent_result = $child->sucursalOrigen;
+        $this->assertInstanceOf('App\Sucursal', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
 
     /**
@@ -96,11 +96,14 @@ class SucursalEnvioTest extends TestCase {
      * @group relaciones
      */
     public function testSucursalDestino() {
-        $sucursal = factory(App\Sucursal::class)->create();
-        $sucursal_envio = factory(App\SucursalEnvio::class)->create([
-            'sucursal_destino_id' => $sucursal->id
+        $parent = factory(App\Sucursal::class)->create();
+        $child = factory(App\SucursalEnvio::class)->create([
+            'sucursal_destino_id' => $parent->id
         ]);
-        $sucursal_resultado = $sucursal_envio->sucursalDestino;
-        $this->assertEquals($sucursal, $sucursal_resultado);
+        $parent_result = $child->sucursalDestino;
+        $this->assertInstanceOf('App\Sucursal', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
+
+
 }

@@ -14,7 +14,7 @@
 $factory->define(App\Paqueteria::class, function ($faker)
 {
     return [
-        'clave' => $faker->unique()->regexify('[A-Z]{6}'),
+        'clave' => App\Caker::realUnique(App\Paqueteria::class, 'clave', 'regexify', '[A-Z]{6}'),
         'nombre' => $faker->text(45),
         'url' => $faker->url,
         'horario' => 'Lun-Vie 9 a 5, Sabado 10 a 3',

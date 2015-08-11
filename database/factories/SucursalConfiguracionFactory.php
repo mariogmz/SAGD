@@ -15,7 +15,7 @@ $factory->define(App\SucursalConfiguracion::class, function ($faker)
     return [
         'valor_numero'     => null,
         'valor_texto'      => null,
-        'sucursal_id'      => factory(App\Sucursal::class)->create()->id,
+        'sucursal_id'      => App\Caker::getSucursal()->id,
         'configuracion_id' => factory(App\Configuracion::class)->create()->id
     ];
 });

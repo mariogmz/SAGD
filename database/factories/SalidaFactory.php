@@ -31,7 +31,7 @@ $factory->defineAs(App\Salida::class, 'longmotivo', function($faker) use ($facto
 $factory->defineAs(App\Salida::class, 'full', function($faker) use ($factory){
     $salida = $factory->raw(App\Salida::class);
     $salida['empleado_id'] = factory(App\Empleado::class)->create()->id;
-    $salida['sucursal_id'] = factory(App\Sucursal::class)->create()->id;
+    $salida['sucursal_id'] = App\Caker::getSucursal()->id;
     $salida['estado_salida_id'] = factory(App\EstadoSalida::class)->create()->id;
     return $salida;
 });

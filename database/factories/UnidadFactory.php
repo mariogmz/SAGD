@@ -12,26 +12,23 @@
 */
 
 $factory->define(App\Unidad::class, function ($faker) {
-  $clave = $faker->unique()->regexify('[A-Z]{4}');
     return [
-        'clave' => $clave,
-        'nombre' => $clave . $faker->word(),
+        'clave' => App\Caker::realUnique(App\Unidad::class, 'clave', 'regexify', '[A-Z]{4}'),
+        'nombre' => $faker->word(),
     ];
 });
 
 $factory->defineAs(App\Unidad::class, 'longname', function ($faker) use ($factory) {
-  $clave = $faker->unique()->regexify('[A-Z]{4}');
     return [
-        'clave' => $clave,
-        'nombre' => $clave . $faker->text(),
+        'clave' => App\Caker::realUnique(App\Unidad::class, 'clave', 'regexify', '[A-Z]{4}'),
+        'nombre' => $faker->regexify('a{100}'),
     ];
 });
 
 $factory->defineAs(App\Unidad::class, 'lowercase', function ($faker) use ($factory) {
-  $clave = $faker->unique()->regexify('[a-z]{4}');
     return [
-        'clave' => $clave,
-        'nombre' => $clave . $faker->word(),
+        'clave' => App\Caker::realUnique(App\Unidad::class, 'clave', 'regexify', '[a-z]{4}'),
+        'nombre' => $faker->word(),
     ];
 });
 

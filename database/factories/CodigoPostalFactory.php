@@ -16,6 +16,6 @@ $factory->define(App\CodigoPostal::class, function ($faker)
     return [
         'estado'        => $faker->word,
         'municipio'     => $faker->word,
-        'codigo_postal' => $faker->unique()->numerify('#####'),
+        'codigo_postal' => App\Caker::realUnique(App\CodigoPostal::class, 'codigo_postal', 'regexify', '\d{5}'),
     ];
 });

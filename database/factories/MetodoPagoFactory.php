@@ -13,7 +13,7 @@
 
 $factory->define(App\MetodoPago::class, function ($faker) {
     return [
-        'clave'                 => $faker->unique()->regexify('/[a-zA-Z0-9]{10}/'),
+        'clave'                 => App\Caker::realUnique(App\MetodoPago::class, 'clave', 'regexify', '[a-zA-Z0-9]{10}'),
         'nombre'                => $faker->optional()->word,
         'comision'              => $faker->randomFloat(2, 0.000, 1.000),
         'monto_minimo'          => $faker->randomFloat(2, 1.00, 99999999.99),
@@ -34,7 +34,7 @@ $factory->defineAs(App\MetodoPago::class, 'clavelarga', function ($faker) use ($
     $metodo_pago = $factory->raw(App\MetodoPago::class);
 
     return array_merge($metodo_pago, [
-        'clave' => $faker->unique()->text(100)
+        'clave' => App\Caker::realUnique(App\MetodoPago::class, 'clave', 'regexify', '\w{100}')
     ]);
 });
 

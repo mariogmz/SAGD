@@ -28,6 +28,7 @@ $factory->defineAs(App\ApartadoDetalle::class, 'full', function($faker) use ($fa
     $ad['apartado_id'] = factory(App\Apartado::class, 'full')->create()->id;
     $ad['producto_id'] = factory(App\Producto::class)->create()->id;
     $ad['producto_movimiento_id'] = factory(App\ProductoMovimiento::class)->create([
-        'producto_id' => $ad['producto_id']])->id;
+        'producto_id' => $ad['producto_id']
+    ])->id;
     return $ad;
 });

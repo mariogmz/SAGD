@@ -107,17 +107,17 @@ class ProductoMovimientoTest extends TestCase
      * @covers ::rmaDetalles
      * @group relaciones
      */
-    public function testRmaDetalles(){
-        $producto_movimiento = factory(App\ProductoMovimiento::class, 'withproduct')->create();
-        factory(App\RmaDetalle::class, 5)->create([
-            'rma_id' => $producto_movimiento->id
+    public function testRmaDetalles() {
+        $parent = factory(App\ProductoMovimiento::class, 'withproduct')->create();
+        factory(App\RmaDetalle::class)->create([
+            'producto_movimiento_id' => $parent->id
         ]);
-        $rmas_detalles = App\ProductoMovimiento::find($producto_movimiento->id)->rmaDetalles;
-        foreach($rmas_detalles as $rd){
-            $this->assertInstanceOf('App\RmaDetalle', $rd);
-            $this->assertEquals($producto_movimiento->id, $rd->rma_id);
-        }
+        $children = $parent->rmaDetalles;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\RmaDetalle', $children[0]);
+        $this->assertCount(1, $children);
     }
+
 
     /**
      * @covers ::entradasDetalles

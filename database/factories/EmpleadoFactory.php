@@ -4,26 +4,20 @@ $factory->define(App\Empleado::class, function ($faker)
 {
     return [
         'nombre'                => $faker->name,
-        'usuario'               => $faker->unique()->username,
+        'usuario'               => App\Caker::realUnique(App\Empleado::class, 'usuario', 'userName'),
         'password'              => $faker->password,
         'activo'                => $faker->numberBetween(0,1),
         'puesto'                => $faker->optional()->text(45),
         'fecha_cambio_password' => $faker->dateTime(),
         'access_token'          => $faker->regexify('[a-zA-Z0-9_%+-]{20}'),
-        'sucursal_id'           => factory(App\Sucursal::class)->create()->id
+        'sucursal_id'           => App\Caker::getSucursal()->id
     ];
 });
 
-$factory->defineAs(App\Empleado::class, 'inactivo', function ($faker) use ($factory)
-{
-    return [
-        'nombre'                => $faker->name,
-        'usuario'               => $faker->unique()->username,
-        'password'              => $faker->password,
-        'activo'                => $faker->boolean(),
-        'puesto'                => 0,
-        'fecha_cambio_password' => $faker->dateTime(),
-        'access_token'          => $faker->regexify('[a-zA-Z0-9_%+-]{20}'),
-        'sucursal_id'           => factory(App\Sucursal::class)->create()->id
-    ];
+$factory->defineAs(App\Empleado::class, 'inactivo', function ($faker) use ($factory) {
+    $empleado = $factory->raw(App\Empleado::class);
+
+    return array_merge($empleado, [
+        'activo' => 0,
+    ]);
 });

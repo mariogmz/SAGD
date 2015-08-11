@@ -156,8 +156,9 @@ class MetodoPagoTest extends TestCase {
      * @group relaciones
      */
     public function testMetodosPagosRangos() {
+        array_map( function($mpr){ App\MetodoPagoRango::find($mpr['id'])->delete(); }, App\MetodoPagoRango::all(['id'])->toArray() );
         $parent = factory(App\MetodoPago::class)->create();
-        factory(App\MetodoPagoRango::class, 'truncate')->create([
+        factory(App\MetodoPagoRango::class)->create([
             'metodo_pago_id' => $parent->id
         ]);
         $children = $parent->metodosPagosRangos;

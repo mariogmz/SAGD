@@ -28,8 +28,8 @@ $factory->define(App\Transferencia::class, function ($faker)
 $factory->defineAs(App\Transferencia::class, 'full', function($faker) use ($factory){
     $transferencia = $factory->raw(App\Transferencia::class);
     $transferencia['estado_transferencia_id'] = factory(App\EstadoTransferencia::class)->create()->id;
-    $transferencia['sucursal_origen_id'] = factory(App\Sucursal::class)->create()->id;
-    $transferencia['sucursal_destino_id'] = factory(App\Sucursal::class)->create()->id;
+    $transferencia['sucursal_origen_id'] = App\Caker::getSucursal()->id;
+    $transferencia['sucursal_destino_id'] = App\Caker::getSucursal()->id;
     $transferencia['empleado_origen_id'] = factory(App\Empleado::class)->create()->id;
     $transferencia['empleado_destino_id'] = factory(App\Empleado::class)->create()->id;
     $transferencia['empleado_revision_id'] = factory(App\Empleado::class)->create()->id;

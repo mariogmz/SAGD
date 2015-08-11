@@ -36,7 +36,7 @@ class ClienteAutorizacion extends LGGModel
 
     public function isValid($method=null)
     {
-        return ( empty($this['cliente_autorizado_id']) xor empty($this['nombre_autorizado']) ) &&
+        return ( is_null($this['cliente_autorizado_id']) xor is_null($this['nombre_autorizado']) ) &&
             parent::isValid($method);
     }
 

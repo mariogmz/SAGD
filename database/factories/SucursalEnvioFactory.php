@@ -13,8 +13,8 @@
 $factory->define(App\SucursalEnvio::class, function ($faker)
 {
     return [
-        'sucursal_origen_id'  => factory(App\Sucursal::class)->create()->id,
-        'sucursal_destino_id' => factory(App\Sucursal::class)->create()->id,
+        'sucursal_origen_id'  => App\Caker::getSucursal()->id,
+        'sucursal_destino_id' => App\Caker::getSucursal()->id,
         'genera_costo'        => $faker->numberBetween(0, 1),
         'dias_max_envio'      => $faker->randomNumber(2)
     ];

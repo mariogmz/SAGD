@@ -14,12 +14,12 @@
 $factory->define(App\EstatusActivo::class, function ($faker)
 {
     return [
-        'estatus' => $faker->unique()->regexify('[a-zA-Z0-9\s]{0,45}')
+        'estatus' => App\Caker::realUnique(App\EstatusActivo::class, 'estatus', 'regexify', '[a-zA-Z0-9\s]{0,45}')
     ];
 });
 
 $factory->defineAs(App\EstatusActivo::class, 'estatuslargo', function ($faker) use ($factory){
     return [
-        'estatus' => $faker->unique()->text(100)
+        'estatus' => App\Caker::realUnique(App\EstatusActivo::class, 'estatus', 'regexify', '\w{100}')
     ];
 });

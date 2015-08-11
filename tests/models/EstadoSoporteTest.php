@@ -73,16 +73,15 @@ class EstadoSoporteTest extends TestCase {
      * @covers ::serviciosSoportes
      * @group relaciones
      */
-    public function testServiciosSoportes()
-    {
-        $estado_soporte = factory(App\EstadoSoporte::class)->create();
-        $servicios_soportes = factory(App\ServicioSoporte::class, 5)->create([
-            'estado_soporte_id' => $estado_soporte->id
+    public function testServiciosSoportes() {
+        $parent = factory(App\EstadoSoporte::class)->create();
+        factory(App\ServicioSoporte::class)->create([
+            'estado_soporte_id' => $parent->id
         ]);
-        $servicios_soportes_resultado = $estado_soporte->serviciosSoportes;
-        for ($i = 0; $i < 5; $i ++)
-        {
-            $this->assertEquals($servicios_soportes[$i]->id, $servicios_soportes_resultado[$i]->id);
-        }
+        $children = $parent->serviciosSoportes;
+        $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
+        $this->assertInstanceOf('App\ServicioSoporte', $children[0]);
+        $this->assertCount(1, $children);
     }
+
 }

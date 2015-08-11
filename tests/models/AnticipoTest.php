@@ -83,6 +83,7 @@ class AnticipoTest extends TestCase {
         ]);
         $this->assertFalse($model->isValid());
         $model->cobrado = 0;
+
         $this->assertTrue($model->isValid());
         $model->cobrado = 1;
         $this->assertTrue($model->isValid());

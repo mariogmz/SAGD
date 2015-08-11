@@ -25,7 +25,7 @@ class CreateProductosTable extends Migration {
             $table->boolean('remate')->default(false)->unsigned();
             $table->decimal('spiff', 14, 2);
             $table->string('subclave', 45);
-            $table->integer('upc')->unsigned();
+            $table->string('upc',20);
             $table->timestamps();
             $table->unique('clave');
             $table->unique('numero_parte');

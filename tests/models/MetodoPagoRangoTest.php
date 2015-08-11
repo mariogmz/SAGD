@@ -5,6 +5,11 @@
  */
 class MetodoPagoRangoTest extends TestCase {
 
+    public function setUp(){
+        parent::setUp();
+        array_map( function($mpr){ App\MetodoPagoRango::find($mpr['id'])->delete(); }, App\MetodoPagoRango::all(['id'])->toArray() );
+    }
+
     /**
      * @coversNothing
      */
@@ -39,12 +44,11 @@ class MetodoPagoRangoTest extends TestCase {
      * @coversNothing
      */
     public function testDesdeEsPorcentaje() {
-        $metodo_pago_rango = factory(App\MetodoPagoRango::class, 'truncate')->make([
+        $metodo_pago_rango = factory(App\MetodoPagoRango::class)->make([
             'desde' => 'desde'
         ]);
         $this->assertFalse($metodo_pago_rango->isValid());
         $metodo_pago_rango->desde = 0.50;
-        if (!$metodo_pago_rango->isValid()) print_r($metodo_pago_rango);
         $this->assertTrue($metodo_pago_rango->isValid());
     }
 
@@ -88,52 +92,21 @@ class MetodoPagoRangoTest extends TestCase {
     public function testHastaDebeSerMayorQueDesde() {
         $metodo_pago_rango = factory(App\MetodoPagoRango::class)->make([
             'desde' => 0.40,
-            'hasta' => 0.30
+            'hasta' => 0.30,
+            'metodo_pago_id' => 1
         ]);
         $this->assertFalse($metodo_pago_rango->isValid());
         $metodo_pago_rango->hasta = 0.50;
         $this->assertTrue($metodo_pago_rango->isValid());
     }
 
-    /**
-     * @coversNothing
-     */
-    public function testDesdeDebeSerUnico() {
-
-        $rango1 = factory(App\MetodoPagoRango::class)->create([
-            'desde' => 0.10,
-            'hasta' => 0.20
-        ]);
-        $rango2 = factory(App\MetodoPagoRango::class)->make([
-            'desde' => $rango1->desde,
-            'hasta' => 1.00
-        ]);
-        $this->assertFalse($rango2->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testHastaDebeSerUnico() {
-
-        $rango1 = factory(App\MetodoPagoRango::class)->create([
-            'desde' => 0.10,
-            'hasta' => 0.20
-        ]);
-        $rango2 = factory(App\MetodoPagoRango::class)->make([
-            'desde' => 0.15,
-            'hasta' => $rango1->hasta
-        ]);
-        $this->assertFalse($rango2->isValid());
-    }
 
     /**
      * @coversNothing
      */
     public function testRangoDebeSerValido() {
-        // $this->markTestIncomplete('Lógica de los rangos no implementada');
         // Test ranges
-        factory(App\MetodoPagoRango::class, 'truncate')->create([
+        factory(App\MetodoPagoRango::class)->create([
             'desde' => 0.00,
             'hasta' => 0.25
         ]);
@@ -158,8 +131,11 @@ class MetodoPagoRangoTest extends TestCase {
      * @group modelo_actualizable
      */
     public function testModeloEsActualizable() {
-        $metodo_pago_rango = factory(App\MetodoPagoRango::class, 'truncate')->create();
-        $metodo_pago_rango->valor = rand(0.01, 1.00);
+        $metodo_pago_rango = factory(App\MetodoPagoRango::class)->create([
+            'desde' => 0.56,
+            'hasta' => 0.75
+        ]);
+        $metodo_pago_rango->valor = 0.50;
         $this->assertTrue($metodo_pago_rango->isValid('update'));
         $this->assertTrue($metodo_pago_rango->save());
     }

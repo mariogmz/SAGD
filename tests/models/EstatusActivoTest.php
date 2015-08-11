@@ -46,8 +46,9 @@ class EstatusActivoTest extends TestCase {
     public function testGuias()
     {
         $estatus_activo = factory(App\EstatusActivo::class)->create();
-        $guia = factory(App\Guia::class, 'full')->create([
-            'estatus_activo_id' => $estatus_activo->id]);
+        factory(App\Guia::class, 'full')->create([
+            'estatus_activo_id' => $estatus_activo->id
+        ]);
         $guias = $estatus_activo->guias;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $guias);
         $this->assertInstanceOf(App\Guia::class, $guias[0]);

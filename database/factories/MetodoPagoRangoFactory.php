@@ -20,12 +20,6 @@ $factory->define(App\MetodoPagoRango::class, function ($faker) {
     ];
 });
 
-$factory->defineAs(App\MetodoPagoRango::class, function ($faker) use ($factory) {
-    $metodo_pago_rango = $factory->raw(App\MetodoPagoRango::class);
-
-    return $metodo_pago_rango;
-});
-
 $factory->defineAs(App\MetodoPagoRango::class, 'random', function ($faker) use ($factory) {
     $metodo_pago_rango = $factory->raw(App\MetodoPagoRango::class);
 

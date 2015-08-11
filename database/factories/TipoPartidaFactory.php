@@ -13,7 +13,7 @@
 
 $factory->define(App\TipoPartida::class, function ($faker) {
     return [
-        'clave'       => $faker->unique()->regexify('/[a-zA-Z0-9]{25}/'),
+        'clave'       => App\Caker::realUnique(App\TipoPartida::class, 'clave', 'regexify', '[a-zA-Z0-9]{25}'),
         'nombre'      => $faker->text(50),
         'ticket'      => $faker->numberBetween(0, 1),
         'ticket_suma' => $faker->numberBetween(0, 1),
@@ -25,7 +25,7 @@ $factory->defineAs(App\TipoPartida::class, 'clavelarga', function ($faker) use (
     $tipo_partida = $factory->raw(App\TipoPartida::class);
 
     return array_merge($tipo_partida, [
-        'clave' => $faker->unique()->regexify('/[a-zA-Z0-9]{50}/'),
+        'clave' => App\Caker::realUnique(App\TipoPartida::class, 'clave', 'regexify', '[a-zA-Z0-9]{50}'),
     ]);
 });
 
@@ -33,7 +33,7 @@ $factory->defineAs(App\TipoPartida::class, 'nombrelargo', function ($faker) use 
     $tipo_partida = $factory->raw(App\TipoPartida::class);
 
     return array_merge($tipo_partida, [
-        'nombre' => $faker->text(100),
+        'nombre' => $faker->regexify('\w{100}'),
     ]);
 });
 

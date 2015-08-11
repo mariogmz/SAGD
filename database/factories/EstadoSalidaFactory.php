@@ -14,7 +14,7 @@
 $factory->define(App\EstadoSalida::class, function ($faker)
 {
     return [
-        'nombre' => $faker->unique()->text(45),
+        'nombre' => App\Caker::realUnique(App\EstadoSalida::class, 'nombre', 'regexify', '\w{1,45}'),
     ];
 });
 

@@ -26,7 +26,7 @@ $factory->define(App\Apartado::class, function ($faker)
 $factory->defineAs(App\Apartado::class, 'full', function($faker) use ($factory){
     $apartado = $factory->raw(App\Apartado::class);
     $apartado['estado_apartado_id'] = factory(App\EstadoApartado::class)->create()->id;
-    $apartado['sucursal_id'] = factory(App\Sucursal::class)->create()->id;
+    $apartado['sucursal_id'] = App\Caker::getSucursal()->id;
     $apartado['empleado_apartado_id'] = factory(App\Empleado::class)->create()->id;
     $apartado['empleado_desapartado_id'] = factory(App\Empleado::class)->create()->id;
     return $apartado;

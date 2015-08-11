@@ -11,8 +11,8 @@ class MetodoPagoRango extends LGGModel {
     protected $fillable = ['hasta', 'desde', 'valor', 'metodo_pago_id'];
 
     public static $rules = [
-        'desde'          => 'required|numeric|between:0.00,1.00|unique:metodos_pagos_rangos',
-        'hasta'          => 'required|numeric|between:0.00,1.00|greater_than:desde|unique:metodos_pagos_rangos',
+        'desde'          => 'required|numeric|between:0.00,1.00',
+        'hasta'          => 'required|numeric|between:0.00,1.00|greater_than:desde',
         'valor'          => 'required|numeric|between:0.00,1.00',
         'metodo_pago_id' => 'required|integer',
     ];
@@ -28,8 +28,6 @@ class MetodoPagoRango extends LGGModel {
         });
         MetodoPagoRango::updating(function ($model) {
             $model->updateRules = self::$rules;
-            $model->updateRules['desde'] .= ',desde,' . $model->id;
-            $model->updateRules['hasta'] .= ',hasta,' . $model->id;
 
             return $model->isValid('update') && self::revisarRango($model);
         });
@@ -44,7 +42,7 @@ class MetodoPagoRango extends LGGModel {
     }
 
     public static function revisarRango($model) {
-        $rangos = self::all(['desde', 'hasta']);
+        $rangos = self::where('id', '<>', is_null($model->id)?'null':$model->id)->get();
         $conjunto = [];
         foreach ($rangos as $rango) {
             $min = $rango->desde * 100;

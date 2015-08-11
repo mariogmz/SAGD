@@ -31,7 +31,7 @@ $factory->defineAs(App\ServicioSoporte::class, 'fallalarga', function ($faker) u
     $servicio_soporte = $factory->raw(App\ServicioSoporte::class);
 
     return array_merge($servicio_soporte, [
-        'solucion' => $faker->text(300)
+        'solucion' => $faker->regexify('\w{300}')
     ]);
 });
 
@@ -40,7 +40,7 @@ $factory->defineAs(App\ServicioSoporte::class, 'solucionlarga', function ($faker
     $servicio_soporte = $factory->raw(App\ServicioSoporte::class);
 
     return array_merge($servicio_soporte, [
-        'solucion' => $faker->text(300)
+        'solucion' => $faker->regexify('\w{300}')
     ]);
 });
 
@@ -49,7 +49,7 @@ $factory->defineAs(App\ServicioSoporte::class, 'descripcionlarga', function ($fa
     $servicio_soporte = $factory->raw(App\ServicioSoporte::class);
 
     return array_merge($servicio_soporte, [
-        'descripcion_equipo' => $faker->text(300)
+        'descripcion_equipo' => $faker->regexify('\w{300}')
     ]);
 });
 

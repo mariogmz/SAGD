@@ -14,7 +14,7 @@
 $factory->define(App\Permiso::class, function ($faker)
 {
     return [
-        'clave' => $faker->unique()->regexify('[A-Z]{10}'),
+        'clave' => App\Caker::realUnique(App\Permiso::class, 'clave', 'regexify', '[A-Z]{10}'),
         'nombre' => $faker->text(45),
     ];
 });

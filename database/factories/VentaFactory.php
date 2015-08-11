@@ -12,7 +12,7 @@
 */
 
 $factory->define(App\Venta::class, function ($faker) {
-    $sucursal = factory(App\Sucursal::class)->create()->id || 1;
+$sucursal = factory(App\Sucursal::class)->create();
 
     return [
         'total'               => 1.00,
@@ -20,14 +20,14 @@ $factory->define(App\Venta::class, function ($faker) {
         'utilidad'            => 0.00,
         'fecha_cobro'         => null,
         'tabulador'           => 1,
-        'sucursal_id'         => $sucursal,
+        'sucursal_id'         => $sucursal->id,
         'cliente_id'          => factory(App\Cliente::class, 'full')->create()->id,
         'caja_id'             => factory(App\Caja::class)->create()->id,
         'corte_id'            => null,
         'estatus_venta_id'    => factory(App\EstatusVenta::class)->create()->id,
-        'estado_venta_id'     => factory(App\EstadoVenta::class)->create()->id,
+        'estado_venta_id'     => App\Caker::getEstadoVenta()->id,
         'tipo_venta_id'       => factory(App\TipoVenta::class)->create()->id,
-        'sucursal_entrega_id' => $sucursal,
+        'sucursal_entrega_id' => $sucursal->id,
         'empleado_id'         => null
     ];
 });

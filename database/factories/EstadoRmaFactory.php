@@ -14,14 +14,14 @@
 $factory->define(App\EstadoRma::class, function ($faker)
 {
     return [
-        'nombre' => $faker->unique()->text(45)
+        'nombre' => App\Caker::realUnique(App\EstadoRma::class, 'nombre', 'regexify', '\w{1,45}')
     ];
 });
 
 $factory->defineAs(App\EstadoRma::class, 'nombrelargo', function ($faker) use ($factory)
 {
     return [
-        'nombre' => $faker->unique()->text(100)
+        'nombre' => App\Caker::realUnique(App\EstadoRma::class, 'nombre', 'regexify', '\w{100}')
     ];
 });
 
