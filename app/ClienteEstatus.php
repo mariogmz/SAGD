@@ -2,6 +2,13 @@
 
 namespace App;
 
+/**
+ * Definicion de estatus:
+ * 1 => Nuevo. Cliente se acaba de registrar pero aun no verifica su cuenta via email.
+ * 2 => Activo. Cliente verifico su cuenta y ya puede realizar operaciones.
+ * 3 => Inactivo. Cliente dado de baja (logicamente).
+ */
+
 class ClienteEstatus extends LGGModel
 {
     //
