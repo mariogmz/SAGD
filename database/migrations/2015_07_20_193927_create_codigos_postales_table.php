@@ -16,7 +16,7 @@ class CreateCodigosPostalesTable extends Migration {
         {
             $table->increments('id');
             $table->string('estado', 45);
-            $table->string('municipio', 45);
+            $table->string('municipio', 50);
             $table->string('codigo_postal', 5);
             $table->unique('codigo_postal');
         });

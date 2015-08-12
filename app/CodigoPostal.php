@@ -10,8 +10,8 @@ class CodigoPostal extends LGGModel {
 
     protected $fillable = ['estado', 'municipio', 'codigo_postal'];
     public static $rules = [
-        'estado'        => 'required|string|max:45|alpha',
-        'municipio'     => 'required|string|max:45|alpha',
+        'estado'        => 'required|string|max:45',
+        'municipio'     => 'required|string|max:50',
         'codigo_postal' => ['required','string','unique:codigos_postales','regex:/(\d{5})/']
     ];
 
@@ -25,8 +25,6 @@ class CodigoPostal extends LGGModel {
     {
         CodigoPostal::creating(function ($codigo_postal)
         {
-            $codigo_postal->estado = strtoupper($codigo_postal->estado);
-            $codigo_postal->municipio = strtoupper($codigo_postal->municipio);
             return $codigo_postal->isValid();
         });
 
