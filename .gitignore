@@ -12,7 +12,7 @@ Homestead.yaml
 laravel-ide-helper.php
 composer.lock
 /vendor
-
+codigos_postales.txt
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
