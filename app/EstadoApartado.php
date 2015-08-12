@@ -2,6 +2,13 @@
 
 namespace App;
 
+/**
+ * Definicion de estados:
+ * 1 => Sin Apartar
+ * 2 => Apartado
+ * 3 => Desapartado
+ */
+
 class EstadoApartado extends LGGModel
 {
     //

@@ -1,10 +1,17 @@
 <?php
 
+use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
 
 class CodigoPostalTableSeeder extends Seeder {
 
+    /**
+     * @var \Illuminate\Console\Command
+     */
+    protected $command;
+
     private $filePath = '\codigos_postales.txt';
+    private $totalCount = 0;
 
     /**
      * Run the database seeds.
@@ -12,7 +19,7 @@ class CodigoPostalTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        echo 'Seeding: CodigoPostal -> ';
+        $current = 1;
         $data = $this->parseFile();
         foreach ($data as $key => $row) {
             $cp = factory(App\CodigoPostal::class)->make($row);
@@ -20,11 +27,15 @@ class CodigoPostalTableSeeder extends Seeder {
                 echo "Error: ";
                 print_r($cp);
             }
+            $current++;
+            $output = sprintf("%01.2f%%", ($current/$this->totalCount)*100);
+            $this->command->getOutput()->write("\r<info>Seeding:</info> CodigoPostal [2/2] <comment>".$output."</comment>");
         }
-        echo "[X]\n";
+        echo "\n";
     }
 
     private function parseFile() {
+        $this->command->getOutput()->writeln("\r<info>Seeding:</info> CodigoPostal [1/2]");
         $data = [];
         $fileHandler = fopen($this->filePath, 'r');
         if ($fileHandler) {
@@ -40,7 +51,7 @@ class CodigoPostalTableSeeder extends Seeder {
         } else {
             throw new \Illuminate\Contracts\Filesystem\FileNotFoundException();
         }
-
+        $this->totalCount = count($data);
         return $data;
     }
 

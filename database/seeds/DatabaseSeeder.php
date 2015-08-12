@@ -14,6 +14,10 @@ class DatabaseSeeder extends Seeder {
         Model::unguard();
 
         $this->call(CodigoPostalTableSeeder::class);
+        $this->call(EstadoApartadoTableSeeder::class);
+        $this->call(EstadoEntradaTableSeeder::class);
+        $this->call(EstadoSalidaTableSeeder::class);
+        $this->call(EstadoTransferenciaTableSeeder::class);
 
         Model::reguard();
     }
