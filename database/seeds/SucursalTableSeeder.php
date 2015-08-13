@@ -5,19 +5,37 @@ use Illuminate\Database\Seeder;
 class SucursalTableSeeder extends Seeder {
 
     /**
+     * @var \Illuminate\Console\Command
+     */
+    protected $command;
+
+    private $totalCount = 0;
+
+    /**
      * Run the database seeds.
      *
      * @return void
      */
     public function run() {
         $sucursales = $this->prepararDatos();
+        $current = 1;
+        $errors = 0;
+        $this->totalCount = count($sucursales);
         foreach ($sucursales as $sucursal) {
             if (!$sucursal->save()) {
-                echo "Error, no se pudo insertar el proveedor en la base de datos: \n";
-                print_r([$sucursal->clave, $sucursal->errors->toArray()]);
-                echo "\n";
+                $errors ++;
+//                echo "Error, no se pudo insertar el proveedor en la base de datos: \n";
+//                print_r([$sucursal->clave, $sucursal->errors->toArray()]);
+//                echo "\n";
+            }
+            $output = sprintf("%01.2f%%", ($current / $this->totalCount) * 100);
+            $current ++;
+            $this->command->getOutput()->write("\r<info>Seeding:</info> Sucursal <comment>" . $output . "</comment>");
+            if ($errors) {
+                $this->command->getOutput()->write("\t<error>Failed: " . $errors . " of " . $this->totalCount . "</error>");
             }
         }
+        echo "\n";
     }
 
     private function prepararDatos() {
@@ -36,10 +54,6 @@ class SucursalTableSeeder extends Seeder {
                 'calle'            => 'Av. de la Convención de 1914 Norte #502, Col. Morelos',
                 'localidad'        => 'Aguascalientes',
                 'codigo_postal_id' => App\CodigoPostal::where('codigo_postal', '20140')->lists('id')->first(),
-                'telefono_id'      => factory(App\Telefono::class)->create([
-                    'numero' => '4499967409',
-                    'tipo'   => 'Trabajo'
-                ])
             ])->id,
             'ubicacion'    => null
         ]));
@@ -53,10 +67,6 @@ class SucursalTableSeeder extends Seeder {
                 'calle'            => 'Blvd. Hilario Medina #4006 Col. Real Providencia',
                 'localidad'        => 'León',
                 'codigo_postal_id' => App\CodigoPostal::where('codigo_postal', '37234')->lists('id')->first(),
-                'telefono_id'      => factory(App\Telefono::class)->create([
-                    'numero' => '4777175152',
-                    'tipo'   => 'Trabajo'
-                ])
             ])->id,
             'ubicacion'    => null
         ]));
@@ -70,10 +80,7 @@ class SucursalTableSeeder extends Seeder {
                 'calle'            => 'Av. Revolución Mexicana #32, San Miguel Del Cortijo',
                 'localidad'        => 'Guadalupe',
                 'codigo_postal_id' => App\CodigoPostal::where('codigo_postal', '98615')->lists('id')->first(),
-                'telefono_id'      => factory(App\Telefono::class)->create([
-                    'numero' => '4499253331',
-                    'tipo'   => 'Trabajo'
-                ])            ])->id,
+            ])->id,
             'ubicacion'    => null
         ]));
         // Zegucom Arboledas
@@ -86,10 +93,6 @@ class SucursalTableSeeder extends Seeder {
                 'calle'            => 'Av. Convención de 1914 norte #1405, Fracc. Las Arboledas',
                 'localidad'        => 'Aguascalientes',
                 'codigo_postal_id' => App\CodigoPostal::where('codigo_postal', '20020')->lists('id')->first(),
-                'telefono_id'      => factory(App\Telefono::class)->create([
-                    'numero' => '4491468780',
-                    'tipo'   => 'Trabajo'
-                ])
             ])->id,
             'ubicacion'    => null
         ]));
@@ -103,10 +106,6 @@ class SucursalTableSeeder extends Seeder {
                 'calle'            => 'Blvd José Ma. Morelos #2812, Col. Prado Hermoso.',
                 'localidad'        => 'León',
                 'codigo_postal_id' => App\CodigoPostal::where('codigo_postal', '37238')->lists('id')->first(),
-                'telefono_id'      => factory(App\Telefono::class)->create([
-                    'numero' => '4777886000',
-                    'tipo'   => 'Trabajo'
-                ])
             ])->id,
             'ubicacion'    => null
         ]));
@@ -120,10 +119,6 @@ class SucursalTableSeeder extends Seeder {
                 'calle'            => 'Av. 16 de Septiembre #225, Col. Barrio de San Martin.',
                 'localidad'        => 'Aguascalientes',
                 'codigo_postal_id' => App\CodigoPostal::where('codigo_postal', '02140')->lists('id')->first(),
-                'telefono_id'      => factory(App\Telefono::class)->create([
-                    'numero' => '5552636500',
-                    'tipo'   => 'Trabajo'
-                ])
             ])->id,
             'ubicacion'    => null
         ]));

@@ -10,8 +10,7 @@ class DomicilioTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testDomicilioEsValido()
-    {
+    public function testDomicilioEsValido() {
         $domicilio = factory(Domicilio::class)->make();
         $this->assertTrue($domicilio->isValid());
     }
@@ -19,8 +18,7 @@ class DomicilioTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testCalleEsRequerida()
-    {
+    public function testCalleEsRequerida() {
         $domicilio = factory(Domicilio::class)->make([
             'calle' => ''
         ]);
@@ -30,8 +28,7 @@ class DomicilioTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testLocalidadEsRequerida()
-    {
+    public function testLocalidadEsRequerida() {
         $domicilio = factory(Domicilio::class)->make([
             'localidad' => ''
         ]);
@@ -41,8 +38,7 @@ class DomicilioTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testCodigoPostalAsociadoEsRequerido()
-    {
+    public function testCodigoPostalAsociadoEsRequerido() {
         $domicilio = factory(Domicilio::class)->make([
             'codigo_postal_id' => null
         ]);
@@ -53,8 +49,7 @@ class DomicilioTest extends TestCase {
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $model = factory(App\Domicilio::class)->create();
         $model->calle = "Boulevard of Broken Dreams";
         $this->assertTrue($model->isValid('update'));
@@ -65,8 +60,7 @@ class DomicilioTest extends TestCase {
      * @covers ::codigoPostal
      * @group relaciones
      */
-    public function testCodigoPostal()
-    {
+    public function testCodigoPostal() {
         $codigo_postal = factory(App\CodigoPostal::class)->create();
         $domicilio = factory(App\Domicilio::class)->create([
             'codigo_postal_id' => $codigo_postal->id
@@ -94,15 +88,13 @@ class DomicilioTest extends TestCase {
      * @covers ::sucursales
      * @group relaciones
      */
-    public function testSucursales()
-    {
+    public function testSucursales() {
         $domicilio = factory(App\Domicilio::class)->create();
         $sucursales = factory(App\Sucursal::class, 5)->create([
             'domicilio_id' => $domicilio->id
         ]);
         $sucursales_resultado = $domicilio->sucursales;
-        for ($i = 0; $i < 5; $i ++)
-        {
+        for ($i = 0; $i < 5; $i ++) {
             $this->assertEquals($sucursales_resultado[$i], $sucursales[$i]);
         }
     }
@@ -111,8 +103,7 @@ class DomicilioTest extends TestCase {
      * @covers ::clientes
      * @group relaciones
      */
-    public function testClientes()
-    {
+    public function testClientes() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $domicilio = factory(App\Domicilio::class)->create();
         $domicilio->clientes()->attach($cliente);
@@ -125,10 +116,9 @@ class DomicilioTest extends TestCase {
      * @covers ::razonesSocialesEmisores
      * @group relaciones
      */
-    public function testRazonesSocialesEmisores()
-    {
+    public function testRazonesSocialesEmisores() {
         $domicilio = factory(App\Domicilio::class)->create();
-        $rse = factory(App\RazonSocialEmisor::class, 'full')->create([
+        factory(App\RazonSocialEmisor::class, 'full')->create([
             'domicilio_id' => $domicilio->id]);
         $rses = $domicilio->razonesSocialesEmisores;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rses);
@@ -140,10 +130,9 @@ class DomicilioTest extends TestCase {
      * @covers ::razonesSocialesReceptores
      * @group relaciones
      */
-    public function testRazonesSocialesReceptores()
-    {
+    public function testRazonesSocialesReceptores() {
         $domicilio = factory(App\Domicilio::class)->create();
-        $rsr = factory(App\RazonSocialReceptor::class, 'full')->create([
+        factory(App\RazonSocialReceptor::class, 'full')->create([
             'domicilio_id' => $domicilio->id]);
         $rsrs = $domicilio->razonesSocialesReceptores;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rsrs);
