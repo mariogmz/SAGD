@@ -22,6 +22,8 @@ class DatabaseSeeder extends Seeder {
         $this->call(EstadoTransferenciaTableSeeder::class);
         $this->call(ClienteEstatusTableSeeder::class);
         $this->call(ClienteReferenciaTableSeeder::class);
+        $this->call(PaqueteriaTableSeeder::class);
+
         Model::reguard();
     }
 }

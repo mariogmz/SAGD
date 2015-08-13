@@ -78,10 +78,10 @@ return [
 
         'mysql_legacy' => [
             'driver'    => 'mysql',
-            'host'      => 'localhost',
-            'database'  => 'sazpruebas',
-            'username'  => 'homestead',
-            'password'  => 'secret',
+            'host'      => env('DB_HOST_LEGACY', 'localhost'),
+            'database'  => env('DB_DATABASE_LEGACY', 'sazpruebas'),
+            'username'  => env('DB_USERNAME_LEGACY', 'homestead'),
+            'password'  => env('DB_PASSWORD_LEGACY', 'secret'),
             'charset'   => 'utf8',
             'collation' => 'utf8_unicode_ci',
             'prefix'    => '',
