@@ -13,7 +13,6 @@ class Domicilio extends LGGModel {
         'calle'            => 'required|string|max:100',
         'localidad'        => 'required|string|max:50',
         'codigo_postal_id' => 'required|integer',
-        'telefono_id'      => 'required|integer'
     ];
 
     public $updateRules = [];

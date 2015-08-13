@@ -51,17 +51,6 @@ class DomicilioTest extends TestCase {
 
     /**
      * @coversNothing
-     */
-    public function testTelefonoAsociadoEsRequerido()
-    {
-        $domicilio = factory(Domicilio::class)->make([
-            'telefono_id' => null
-        ]);
-        $this->assertFalse($domicilio->isValid());
-    }
-
-    /**
-     * @coversNothing
      * @group modelo_actualizable
      */
     public function testModeloEsActualizable()
