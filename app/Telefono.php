@@ -43,12 +43,10 @@ class Telefono extends LGGModel {
     }
 
     /**
-     * Obtiene los domicilios asociados con el teléfono
-     * @return \Illuminate\Database\Eloquent\Collection
+     * Obtiene el domicilio a la que está asociado el teléfono
+     * @return App\Domicilio
      */
-    public function domicilios()
-    {
-        return $this->hasMany('App\Domicilio');
+    public function domicilio() {
+        return $this->belongsTo('App\Domicilio');
     }
-
 }

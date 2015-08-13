@@ -76,6 +76,18 @@ return [
             'strict'    => false,
         ],
 
+        'mysql_legacy' => [
+            'driver'    => 'mysql',
+            'host'      => 'localhost',
+            'database'  => 'sazpruebas',
+            'username'  => 'homestead',
+            'password'  => 'secret',
+            'charset'   => 'utf8',
+            'collation' => 'utf8_unicode_ci',
+            'prefix'    => '',
+            'strict'    => false,
+        ],
+
 
         'pgsql' => [
             'driver'   => 'pgsql',

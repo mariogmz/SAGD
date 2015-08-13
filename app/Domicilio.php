@@ -10,8 +10,8 @@ class Domicilio extends LGGModel {
 
     protected $fillable = ['calle', 'localidad', 'codigo_postal_id', 'telefono_id'];
     public static $rules = [
-        'calle'            => 'required|string|max:45',
-        'localidad'        => 'required|string|max:45',
+        'calle'            => 'required|string|max:100',
+        'localidad'        => 'required|string|max:50',
         'codigo_postal_id' => 'required|integer',
         'telefono_id'      => 'required|integer'
     ];
@@ -46,10 +46,10 @@ class Domicilio extends LGGModel {
 
     /**
      * Obtiene el teléfono asociado al domicilio
-     * @return App\Telefono
+     * @return App\Telefonos
      */
-    public function telefono() {
-        return $this->belongsTo('App\Telefono');
+    public function telefonos() {
+        return $this->hasMany('App\Telefono');
     }
 
     /**

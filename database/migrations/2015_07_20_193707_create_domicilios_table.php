@@ -15,8 +15,8 @@ class CreateDomiciliosTable extends Migration
         //
         Schema::create('domicilios', function($table){
             $table->increments('id');
-            $table->string('calle', 45);
-            $table->string('localidad', 45);
+            $table->string('calle', 100);
+            $table->string('localidad', 50);
         });
     }
 

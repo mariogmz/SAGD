@@ -59,14 +59,12 @@ class TelefonoTest extends TestCase {
      * @group relaciones
      */
     public function testDomicilios() {
-        $telefono = factory(App\Telefono::class)->create();
-        factory(App\Domicilio::class)->create([
-            'telefono_id' => $telefono->id
+        $parent = factory(App\Domicilios::class)->create();
+        $child = factory(App\Telefono::class)->create([
+            'domicilios_id' => $parent->id
         ]);
-        $domicilios = $telefono->domicilios;
-        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $domicilios);
-        $this->assertInstanceOf('App\Domicilio', $domicilios[0]);
-        $this->assertCount(1, $domicilios);
+        $parent_result = $child->domicilios;
+        $this->assertInstanceOf('App\Domicilios', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
-
 }
