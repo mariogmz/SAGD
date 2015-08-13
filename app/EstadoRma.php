@@ -10,7 +10,7 @@ class EstadoRma extends LGGModel {
     protected $fillable = ['nombre'];
 
     public static $rules = [
-        'nombre' => 'required|string|max:45|unique:estados_rmas'
+        'nombre' => 'required|string|max:80|unique:estados_rmas'
     ];
 
     public $updateRules = [];

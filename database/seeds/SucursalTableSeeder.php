@@ -24,9 +24,6 @@ class SucursalTableSeeder extends Seeder {
         foreach ($sucursales as $sucursal) {
             if (!$sucursal->save()) {
                 $errors ++;
-//                echo "Error, no se pudo insertar el proveedor en la base de datos: \n";
-//                print_r([$sucursal->clave, $sucursal->errors->toArray()]);
-//                echo "\n";
             }
             $output = sprintf("%01.2f%%", ($current / $this->totalCount) * 100);
             $current ++;

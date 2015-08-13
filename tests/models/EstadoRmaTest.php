@@ -31,7 +31,7 @@ class EstadoRmaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreEsMaximo45Caracteres()
+    public function testNombreEsMaximo80Caracteres()
     {
         $estado_rma = factory(App\EstadoRma::class, 'nombrelargo')->make();
         $this->assertFalse($estado_rma->isValid());
