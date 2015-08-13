@@ -12,7 +12,7 @@ class ResetDatabase extends Command
     *
     * @var string
     */
-    protected $signature = 'reset:db
+    protected $signature = 'db:reset
         { db_connection=mysql_testing : The database connection you want to run this command against. }
         { --force : Force the reset }';
 
