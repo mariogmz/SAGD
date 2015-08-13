@@ -12,7 +12,7 @@ class EstadoSoporte extends LGGModel {
 
     public static $rules = [
         'clave'  => 'required|string|size:6|unique:estados_soporte',
-        'nombre' => 'required|string|max:50'
+        'nombre' => 'required|string|max:150'
     ];
 
     public $updateRules = [];

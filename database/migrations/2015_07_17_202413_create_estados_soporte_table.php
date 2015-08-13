@@ -16,7 +16,7 @@ class CreateEstadosSoporteTable extends Migration {
         {
             $table->increments('id');
             $table->string('clave', 6);
-            $table->string('nombre', 50);
+            $table->string('nombre', 150);
             $table->unique('clave');
         });
     }
