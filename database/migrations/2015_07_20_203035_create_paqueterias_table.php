@@ -15,7 +15,7 @@ class CreatePaqueteriasTable extends Migration {
         Schema::create('paqueterias', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->string('clave', 6);
+            $table->string('clave', 10);
             $table->string('nombre', 45);
             $table->string('url', 100)->nullable();
             $table->string('horario', 60)->nullable();

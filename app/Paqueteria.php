@@ -10,7 +10,7 @@ class Paqueteria extends LGGModel
     protected $fillable = ['clave', 'nombre', 'url', 'horario', 'condicion_entrega', 'seguro'];
 
     public static $rules = [
-        'clave' => "required|max:6|unique:paqueterias",
+        'clave' => "required|max:10|unique:paqueterias",
         'nombre' => 'required|max:45',
         'url' => 'url|max:100',
         'horario' => 'max:60',
