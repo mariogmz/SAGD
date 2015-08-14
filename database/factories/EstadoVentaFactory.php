@@ -26,7 +26,7 @@ $factory->defineAs(App\EstadoVenta::class, 'nombrelargo', function ($faker) use 
     $estado_venta = $factory->raw(App\EstadoVenta::class);
 
     return array_merge($estado_venta, [
-        'nombre' => $faker->text(100)
+        'nombre' => $faker->text(200)
     ]);
 });
 

@@ -59,7 +59,7 @@ class EstadoVentaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreDeMaximo60Caracteres() {
+    public function testNombreDeMaximo90Caracteres() {
         $estado_venta = factory(App\EstadoVenta::class, 'nombrelargo')->make();
         $this->assertFalse($estado_venta->isValid());
     }

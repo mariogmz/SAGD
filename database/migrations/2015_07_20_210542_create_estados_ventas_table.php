@@ -16,7 +16,7 @@ class CreateEstadosVentasTable extends Migration
         Schema::create('estados_ventas', function($table){
             $table->increments('id');
             $table->char('clave', 1);
-            $table->string('nombre', 60);
+            $table->string('nombre', 90);
             $table->unique('clave');
         });
     }

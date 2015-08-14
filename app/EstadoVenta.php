@@ -11,7 +11,7 @@ class EstadoVenta extends LGGModel {
 
     public static $rules = [
         'clave'  => 'required|string|alpha|size:1|unique:estados_ventas',
-        'nombre' => 'required|string|max:60'
+        'nombre' => 'required|string|max:90'
     ];
     public $updateRules = [];
 

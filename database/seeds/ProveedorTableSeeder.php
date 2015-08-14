@@ -36,7 +36,7 @@ class ProveedorTableSeeder extends Seeder {
         $errors = 0;
         // Crear conexión a la base de datos legacy
         $legacy = DB::connection('mysql_legacy');
-        // Obtener los proveedores desde la base de datos antigüa, en el formato deseado para la nueva base de datos.
+        // Obtener los proveedores desde la base de datos antigua, en el formato deseado para la nueva base de datos.
         $proveedores = $legacy->select("select upper(substr(clave,1,6)) as clave, Razonsocial as razon_social, 1 as externo, if(Pagina='NULL' OR Pagina like 'X%' OR Pagina = '1',null,Pagina) as pagina_web from proveedor;");
         $this->totalCount = count($proveedores);
         foreach ($proveedores as $proveedor) {

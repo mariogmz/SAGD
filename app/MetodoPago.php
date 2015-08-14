@@ -11,7 +11,7 @@ class MetodoPago extends LGGModel {
 
     public static $rules = [
         'clave'                 => 'required|string|max:10|unique:metodos_pagos',
-        'nombre'                => 'string|max:45',
+        'nombre'                => 'string|max:90',
         'comision'              => 'required|numeric',
         'monto_minimo'          => 'required|numeric',
         'informacion_adicional' => 'string|max:100',
