@@ -37,7 +37,7 @@ class MetodoPagoRangoTableSeeder extends Seeder {
             $metodo_pago_id = App\MetodoPago::where('clave', $rango['clave'])->first()->id;
             foreach ($lista_rangos as $valor) {
                 $desde_hasta = explode('_', $valor);
-                $nuevo_rango = factory(App\MetodoPagoRango::class)->make([
+                $nuevo_rango = new App\MetodoPagoRango([
                     'desde'          => $desde_hasta[0]/100,
                     'hasta'          => $desde_hasta[1]/100,
                     'valor'          => $rango[$valor],
