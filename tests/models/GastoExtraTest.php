@@ -77,7 +77,7 @@ class GastoExtraTest extends TestCase {
     }
 
     /**
-     * @covers ::cprte
+     * @covers ::corte
      */
     public function testCorte() {
         $corte = factory(App\Corte::class)->create();
