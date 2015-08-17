@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder {
         $this->call(MetodoPagoRangoTableSeeder::class);
         $this->call(TipoPartidaTableSeeder::class);
         $this->call(TipoVentaTableSeeder::class);
+        $this->call(EstadoFacturaTableSeeder::class);
+        $this->call(RolesTableSeeder::class);
+        $this->call(PermisoTableSeeder::class);
         $this->call(CodigoPostalTableSeeder::class);
         $this->call(ProveedorTableSeeder::class);
         $this->call(SucursalTableSeeder::class);
