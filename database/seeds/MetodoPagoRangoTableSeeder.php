@@ -26,7 +26,7 @@ class MetodoPagoRangoTableSeeder extends Seeder {
         $errors = 0;
         // Crear conexión a la base de datos legacy
         $legacy = DB::connection('mysql_legacy');
-        // Obtener los proveedores desde la base de datos antigua, en el formato deseado para la nueva base de datos.
+        // Obtener los rangos desde la base de datos antigua, en el formato deseado para la nueva base de datos.
         $rangos = $legacy->select("select clave, truncate(rango0_10/100,2) as 0_10, truncate(rango10_15/100,2) as 11_15,
                                     truncate(rango15_20/100,2) as 16_20, truncate(rango20_25/100,2) as 21_25,
                                     truncate(rango25_30/100,2) as 26_30, truncate(rango30/100,2) as 31_100 from tipopago;");
