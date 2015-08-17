@@ -12,6 +12,6 @@ class UnidadTableSeeder extends Seeder
     public function run()
     {
         //
-        DB::table('unidades')->insert('clave' => 'PZA', 'nombre' => 'Pieza');
+        DB::table('unidades')->insert(['clave' => 'PZA', 'nombre' => 'Pieza']);
     }
 }
