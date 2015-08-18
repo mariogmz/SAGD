@@ -149,6 +149,9 @@ return [
          */
         App\Providers\ValidatorServiceProvider::class,
 
+        // Laravel IDE Helper
+        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
+
     ],
 
     /*
