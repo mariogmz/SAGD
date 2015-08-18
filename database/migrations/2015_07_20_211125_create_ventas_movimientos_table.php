@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVentasMovimientosTable extends Migration
-{
+class CreateVentasMovimientosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('ventas_movimientos', function($table){
+        Schema::create('ventas_movimientos', function ($table) {
             $table->increments('id');
             $table->timestamps();
         });
@@ -24,8 +22,7 @@ class CreateVentasMovimientosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('ventas_movimientos');
     }

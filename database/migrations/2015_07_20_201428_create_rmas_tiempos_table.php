@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateRmasTiemposTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateRmasTiemposTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('rmas_tiempos', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('rmas_tiempos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('nombre', 45);
         });
@@ -24,8 +22,7 @@ class CreateRmasTiemposTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('rmas_tiempos');
     }
 }

@@ -3,6 +3,62 @@
 namespace App;
 
 
+/**
+ * App\Producto
+ *
+ * @property integer $id
+ * @property boolean $activo
+ * @property string $clave
+ * @property string $descripcion
+ * @property string $descripcion_corta
+ * @property string $fecha_entrada
+ * @property string $numero_parte
+ * @property boolean $remate
+ * @property float $spiff
+ * @property string $subclave
+ * @property string $upc
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $tipo_garantia_id
+ * @property integer $marca_id
+ * @property integer $margen_id
+ * @property integer $unidad_id
+ * @property integer $subfamilia_id
+ * @property-read \App\TipoGarantia $tipoGarantia
+ * @property-read \App\Marca $marca
+ * @property-read \App\Margen $margen
+ * @property-read \App\Unidad $unidad
+ * @property-read \App\Subfamilia $subfamilia
+ * @property-read \App\Dimension $dimension
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoMovimiento[] $productoMovimientos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoSucursal[] $productosSucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Sucursal[] $sucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Proveedor[] $proveedores
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\EntradaDetalle[] $entradasDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\SalidaDetalle[] $salidasDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\TransferenciaDetalle[] $transferenciasDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ApartadoDetalle[] $apartadosDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reposicion[] $reposiciones
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereActivo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereDescripcion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereDescripcionCorta($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereFechaEntrada($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereNumeroParte($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereRemate($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereSpiff($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereSubclave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereUpc($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereTipoGarantiaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereMarcaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereMargenId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereUnidadId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereSubfamiliaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Producto extends LGGModel {
 
     //

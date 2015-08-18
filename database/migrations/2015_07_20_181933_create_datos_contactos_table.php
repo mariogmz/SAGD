@@ -10,10 +10,8 @@ class CreateDatosContactosTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('datos_contactos', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('datos_contactos', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('empleado_id')->unsigned()->nullable();
             $table->string('direccion', 100)->nullable();
@@ -29,8 +27,7 @@ class CreateDatosContactosTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('datos_contactos');
     }
 }

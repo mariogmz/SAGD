@@ -3,6 +3,16 @@
 namespace App;
 
 
+/**
+ * App\TipoVenta
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Venta[] $ventas
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoVenta whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoVenta whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class TipoVenta extends LGGModel {
 
     protected $table = "tipos_ventas";

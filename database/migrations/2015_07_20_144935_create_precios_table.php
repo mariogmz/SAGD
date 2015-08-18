@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreatePreciosTable extends Migration {
@@ -10,11 +9,9 @@ class CreatePreciosTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('precios', function ($table)
-        {
+        Schema::create('precios', function ($table) {
             $table->increments('id');
             $table->decimal('costo', 14, 4)->default(0.0)->unsigned();
             $table->decimal('precio_1', 14, 4)->default(0.0)->unsigned();
@@ -35,8 +32,7 @@ class CreatePreciosTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('precios');
     }

@@ -3,6 +3,29 @@
 namespace App;
 
 
+/**
+ * App\Anticipo
+ *
+ * @property integer $id
+ * @property string $concepto
+ * @property float $monto
+ * @property boolean $cobrado
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $venta_id
+ * @property integer $venta_entrega_id
+ * @property-read \App\Venta $venta
+ * @property-read \App\Venta $ventaEntrega
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereConcepto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereMonto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereCobrado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereVentaEntregaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Anticipo extends LGGModel {
 
     protected $table = "anticipos";

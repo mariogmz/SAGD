@@ -2,15 +2,14 @@
 
 use Illuminate\Database\Seeder;
 
-class EstadoTransferenciaTableSeeder extends Seeder
-{
+class EstadoTransferenciaTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         /**
          * Definicion de status:
          * 1 => Abierta.                    Puede editarse y cargarse

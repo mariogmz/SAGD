@@ -2,15 +2,14 @@
 
 use Illuminate\Database\Seeder;
 
-class PaqueteriaTableSeeder extends Seeder
-{
+class PaqueteriaTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         // 'clave', 'nombre', 'url', 'horario', 'condicion_entrega', 'seguro'
         $data = [
             ['REDD', 'REDPACK', 'www.redpack.com.mx', '', 'ENTREGA DE 2 A 4 DIAS HABILES EN LAS PRINCIPALES CIUDADES, PUEDE VARIAR PARA POBLADOS LEJANOS.', 2],
@@ -23,12 +22,12 @@ class PaqueteriaTableSeeder extends Seeder
         ];
         foreach ($data as $paqueteria) {
             DB::table('paqueterias')->insert([
-                'clave' => $paqueteria[0],
-                'nombre' => $paqueteria[1],
-                'url' => $paqueteria[2],
-                'horario' => $paqueteria[3],
+                'clave'             => $paqueteria[0],
+                'nombre'            => $paqueteria[1],
+                'url'               => $paqueteria[2],
+                'horario'           => $paqueteria[3],
                 'condicion_entrega' => $paqueteria[4],
-                'seguro' => $paqueteria[5],
+                'seguro'            => $paqueteria[5],
             ]);
         }
     }

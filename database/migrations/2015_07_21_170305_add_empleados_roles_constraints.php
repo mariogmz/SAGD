@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddEmpleadosRolesConstraints extends Migration
-{
+class AddEmpleadosRolesConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('empleados_roles', function($table){
+        Schema::table('empleados_roles', function ($table) {
             $table->integer('empleado_id')->unsigned();
             $table->integer('rol_id')->unsigned();
 
@@ -27,10 +25,9 @@ class AddEmpleadosRolesConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('empleados_roles', function($table){
+        Schema::table('empleados_roles', function ($table) {
             $table->dropForeign('empleados_roles_empleado_id_foreign');
             $table->dropForeign('empleados_roles_rol_id_foreign');
 

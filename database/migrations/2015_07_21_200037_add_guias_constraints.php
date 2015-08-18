@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddGuiasConstraints extends Migration
-{
+class AddGuiasConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('guias', function($table){
+        Schema::table('guias', function ($table) {
             $table->integer('paqueteria_id')->unsigned();
             $table->integer('estatus_activo_id')->unsigned();
 
@@ -27,10 +25,9 @@ class AddGuiasConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('guias', function($table){
+        Schema::table('guias', function ($table) {
             $table->dropForeign('guias_paqueteria_id_foreign');
             $table->dropForeign('guias_estatus_activo_id_foreign');
 

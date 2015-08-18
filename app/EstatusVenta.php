@@ -3,6 +3,17 @@
 namespace App;
 
 
+/**
+ * App\EstatusVenta
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Venta[] $ventas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\VentaMovimiento[] $ventasMovimientos
+ * @method static \Illuminate\Database\Query\Builder|\App\EstatusVenta whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstatusVenta whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class EstatusVenta extends LGGModel {
 
     protected $table = "estatus_ventas";

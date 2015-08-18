@@ -24,7 +24,7 @@ class TelefonoTableSeeder extends Seeder {
             [
                 'numero' => '4777175152',
                 'tipo'   => 'Trabajo'
-            ],[
+            ], [
                 'numero' => '4773901127',
                 'tipo'   => 'Trabajo'
             ]

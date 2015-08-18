@@ -3,6 +3,23 @@
 namespace App;
 
 
+/**
+ * App\SoporteProducto
+ *
+ * @property integer $id
+ * @property integer $cantidad
+ * @property float $precio
+ * @property integer $servicio_soporte_id
+ * @property integer $producto_id
+ * @property-read \App\ServicioSoporte $servicioSoporte
+ * @property-read \App\Producto $producto
+ * @method static \Illuminate\Database\Query\Builder|\App\SoporteProducto whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\SoporteProducto whereCantidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\SoporteProducto wherePrecio($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\SoporteProducto whereServicioSoporteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\SoporteProducto whereProductoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class SoporteProducto extends LGGModel {
 
     //

@@ -3,6 +3,37 @@
 namespace App;
 
 
+/**
+ * App\Sucursal
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property string $horarios
+ * @property string $ubicacion
+ * @property integer $proveedor_id
+ * @property integer $domicilio_id
+ * @property-read \App\Proveedor $proveedor
+ * @property-read \App\Domicilio $domicilio
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Empleado[] $empleados
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rma[] $rmas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Salida[] $salidas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RazonSocialEmisor[] $razonesSocialesEmisores
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\EntradaDetalle[] $entradasDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transferencia[] $transferenciasOrigen
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transferencia[] $transferenciasDestino
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Apartado[] $apartados
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Caja[] $cajas
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereHorarios($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereUbicacion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereProveedorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereDomicilioId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Sucursal extends LGGModel {
 
     protected $table = 'sucursales';

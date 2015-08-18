@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Console\Command;
 use Illuminate\Database\Seeder;
 
 class CodigoPostalTableSeeder extends Seeder {
@@ -24,10 +23,10 @@ class CodigoPostalTableSeeder extends Seeder {
         $current = 1;
         $data = $this->parseFile();
         foreach ($data as $key => $row) {
-            $current++;
+            $current ++;
             $this->appendQuery($row, $current);
-            $output = sprintf("%01.2f%%", ($current/$this->totalCount)*100);
-            $this->command->getOutput()->write("\r<info>Seeding:</info> CodigoPostal [2/2] <comment>".$output."</comment>");
+            $output = sprintf("%01.2f%%", ($current / $this->totalCount) * 100);
+            $this->command->getOutput()->write("\r<info>Seeding:</info> CodigoPostal [2/2] <comment>" . $output . "</comment>");
         }
         $this->executeQuery();
         echo "\n";
@@ -51,17 +50,16 @@ class CodigoPostalTableSeeder extends Seeder {
             throw new \Illuminate\Contracts\Filesystem\FileNotFoundException();
         }
         $this->totalCount = count($data);
+
         return $data;
     }
 
-    private function appendQuery($row, $count)
-    {
-        $string = "('".$row['estado']."','".$row['municipio']."','".$row['codigo_postal']."')";
+    private function appendQuery($row, $count) {
+        $string = "('" . $row['estado'] . "','" . $row['municipio'] . "','" . $row['codigo_postal'] . "')";
         array_push($this->values, $string);
     }
 
-    private function executeQuery()
-    {
+    private function executeQuery() {
         $this->stmt .= implode(',', $this->values);
         DB::connection()->getPdo()->exec($this->stmt);
     }

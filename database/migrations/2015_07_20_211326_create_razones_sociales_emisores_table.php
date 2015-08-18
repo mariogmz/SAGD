@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateRazonesSocialesEmisoresTable extends Migration
-{
+class CreateRazonesSocialesEmisoresTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('razones_sociales_emisores', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('razones_sociales_emisores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('rfc', 13);
             $table->string('regimen', 60);
@@ -30,8 +28,7 @@ class CreateRazonesSocialesEmisoresTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('razones_sociales_emisores');
     }
 }

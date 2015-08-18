@@ -2,18 +2,37 @@
 
 namespace App;
 
-class Subfamilia extends LGGModel
-{
+
+/**
+ * App\Subfamilia
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property integer $familia_id
+ * @property integer $margen_id
+ * @property-read \App\Familia $familia
+ * @property-read \App\Margen $margen
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
+ * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereFamiliaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereMargenId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class Subfamilia extends LGGModel {
+
     //
     protected $table = "subfamilias";
     public $timestamps = false;
     protected $fillable = ['clave', 'nombre', 'familia_id', 'margen_id'];
 
     public static $rules = [
-        'clave' => 'required|max:4|unique:subfamilias',
-        'nombre' => 'required|max:45',
+        'clave'      => 'required|max:4|unique:subfamilias',
+        'nombre'     => 'required|max:45',
         'familia_id' => 'required|integer',
-        'margen_id' => 'required|integer'
+        'margen_id'  => 'required|integer'
     ];
 
     public $updateRules = [];
@@ -22,17 +41,19 @@ class Subfamilia extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        Subfamilia::creating(function($subfamilia){
+    public static function boot() {
+        Subfamilia::creating(function ($subfamilia) {
             $subfamilia->clave = strtoupper($subfamilia->clave);
-            if ( !$subfamilia->isValid() ){
+            if (!$subfamilia->isValid()) {
                 return false;
             }
+
             return true;
         });
-        Subfamilia::updating(function($subfamilia){
+        Subfamilia::updating(function ($subfamilia) {
             $subfamilia->updateRules = self::$rules;
-            $subfamilia->updateRules['clave'] .= ',clave,'.$subfamilia->id;
+            $subfamilia->updateRules['clave'] .= ',clave,' . $subfamilia->id;
+
             return $subfamilia->isValid('update');
         });
     }
@@ -41,8 +62,7 @@ class Subfamilia extends LGGModel
      * Get the Familia associated with Subfamilia
      * @return App\Familia
      */
-    public function familia()
-    {
+    public function familia() {
         return $this->belongsTo('App\Familia');
     }
 
@@ -50,8 +70,7 @@ class Subfamilia extends LGGModel
      * Get the Margen associated with Subfamilia
      * @return App\Margen
      */
-    public function margen()
-    {
+    public function margen() {
         return $this->belongsTo('App\Margen');
     }
 
@@ -59,8 +78,7 @@ class Subfamilia extends LGGModel
      * Get the Productos associated with Subfamilia
      * @return array
      */
-    public function productos()
-    {
+    public function productos() {
         return $this->hasMany('App\Producto');
     }
 }

@@ -3,6 +3,29 @@
 namespace App;
 
 
+/**
+ * App\VentaMovimiento
+ *
+ * @property integer $id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $venta_id
+ * @property integer $empleado_id
+ * @property integer $estatus_venta_id
+ * @property integer $estado_venta_id
+ * @property-read \App\Venta $venta
+ * @property-read \App\Empleado $empleado
+ * @property-read \App\EstatusVenta $estatusVenta
+ * @property-read \App\EstadoVenta $estadoVenta
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereEstatusVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaMovimiento whereEstadoVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class VentaMovimiento extends LGGModel {
 
     protected $table = "ventas_movimientos";

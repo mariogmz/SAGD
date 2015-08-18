@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddGuiasZonasConstraints extends Migration {
@@ -10,11 +9,9 @@ class AddGuiasZonasConstraints extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('guias_zonas', function ($table)
-        {
+        Schema::table('guias_zonas', function ($table) {
             $table->integer('guia_id')->unsigned();
             $table->integer('zona_id')->unsigned();
 
@@ -28,11 +25,9 @@ class AddGuiasZonasConstraints extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('guias_zonas', function ($table)
-        {
+        Schema::table('guias_zonas', function ($table) {
             $table->dropForeign('guias_zonas_guia_id_foreign');
             $table->dropForeign('guias_zonas_zona_id_foreign');
 

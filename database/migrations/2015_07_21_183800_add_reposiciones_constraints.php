@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddReposicionesConstraints extends Migration
-{
+class AddReposicionesConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('reposiciones', function($table){
+        Schema::table('reposiciones', function ($table) {
             $table->integer('producto_id')->unsigned();
             $table->integer('garantia_id')->unsigned();
             $table->integer('proveedor_id')->unsigned();
@@ -29,10 +27,9 @@ class AddReposicionesConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('reposiciones', function($table){
+        Schema::table('reposiciones', function ($table) {
             $table->dropForeign('reposiciones_producto_id_foreign');
             $table->dropForeign('reposiciones_garantia_id_foreign');
             $table->dropForeign('reposiciones_proveedor_id_foreign');

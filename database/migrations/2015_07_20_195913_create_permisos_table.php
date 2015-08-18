@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePermisosTable extends Migration
-{
+class CreatePermisosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('permisos', function($table){
+        Schema::create('permisos', function ($table) {
             $table->increments('id');
             $table->char('clave', 10);
             $table->string('nombre', 45);
@@ -26,8 +24,7 @@ class CreatePermisosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('permisos');
     }

@@ -3,6 +3,24 @@
 namespace App;
 
 
+/**
+ * App\TipoPartida
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property boolean $ticket
+ * @property boolean $ticket_suma
+ * @property boolean $pago
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\TipoPartidaCorteConcepto[] $tiposPartidasCortesConceptos
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartida whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartida whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartida whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartida whereTicket($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartida whereTicketSuma($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartida wherePago($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class TipoPartida extends LGGModel {
 
     protected $table = "tipos_partidas";

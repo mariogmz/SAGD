@@ -3,6 +3,27 @@
 namespace App;
 
 
+/**
+ * App\GastoExtra
+ *
+ * @property integer $id
+ * @property float $monto
+ * @property string $concepto
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $caja_id
+ * @property integer $corte_id
+ * @property-read \App\Caja $caja
+ * @property-read \App\Corte $corte
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereMonto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereConcepto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereCajaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\GastoExtra whereCorteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class GastoExtra extends LGGModel {
 
     protected $table = "gastos_extras";

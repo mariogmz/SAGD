@@ -2,8 +2,29 @@
 
 namespace App;
 
-class ClienteAutorizacion extends LGGModel
-{
+
+/**
+ * App\ClienteAutorizacion
+ *
+ * @property integer $id
+ * @property integer $clientes_autorizado_id
+ * @property string $nombre_autorizado
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $cliente_id
+ * @property integer $cliente_autorizado_id
+ * @property-read \App\Cliente $cliente
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereClientesAutorizadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereNombreAutorizado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereClienteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereClienteAutorizadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class ClienteAutorizacion extends LGGModel {
+
     //
     protected $table = "clientes_autorizaciones";
     public $timestamps = false;
@@ -11,8 +32,8 @@ class ClienteAutorizacion extends LGGModel
 
     public static $rules = [
         'cliente_autorizado_id' => '',
-        'nombre_autorizado' => 'max:200',
-        'cliente_id' => 'required|integer'
+        'nombre_autorizado'     => 'max:200',
+        'cliente_id'            => 'required|integer'
     ];
 
     public $updateRules = [];
@@ -21,32 +42,32 @@ class ClienteAutorizacion extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        ClienteAutorizacion::creating(function($ca){
-            if ( !$ca->isValid() ){
+    public static function boot() {
+        ClienteAutorizacion::creating(function ($ca) {
+            if (!$ca->isValid()) {
                 return false;
             }
+
             return true;
         });
-        ClienteAutorizacion::updating(function($ca){
+        ClienteAutorizacion::updating(function ($ca) {
             $ca->updateRules = self::$rules;
+
             return $ca->isValid('update');
         });
     }
 
-    public function isValid($method=null)
-    {
-        return ( is_null($this['cliente_autorizado_id']) xor is_null($this['nombre_autorizado']) ) &&
-            parent::isValid($method);
+    public function isValid($method = null) {
+        return (is_null($this['cliente_autorizado_id']) xor is_null($this['nombre_autorizado'])) &&
+        parent::isValid($method);
     }
 
 
     /**
-    * Obtiene el Cliente asociado con la Autorizacion
-    * @return Illuminate\Database\Eloquent\Collection::class
-    */
-    public function cliente()
-    {
+     * Obtiene el Cliente asociado con la Autorizacion
+     * @return Illuminate\Database\Eloquent\Collection::class
+     */
+    public function cliente() {
         return $this->belongsTo('App\Cliente', 'cliente_id');
     }
 }

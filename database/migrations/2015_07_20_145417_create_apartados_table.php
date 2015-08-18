@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateApartadosTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateApartadosTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('apartados', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('apartados', function (Blueprint $table) {
             $table->increments('id');
             $table->timestamp('fecha_apartado')->nullable();
             $table->timestamp('fecha_desapartado')->nullable();
@@ -27,8 +25,7 @@ class CreateApartadosTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('apartados');
     }
 }

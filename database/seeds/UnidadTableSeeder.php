@@ -2,15 +2,14 @@
 
 use Illuminate\Database\Seeder;
 
-class UnidadTableSeeder extends Seeder
-{
+class UnidadTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         //
         DB::table('unidades')->insert(['clave' => 'PZA', 'nombre' => 'Pieza']);
     }

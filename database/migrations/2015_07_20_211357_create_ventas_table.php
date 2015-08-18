@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVentasTable extends Migration
-{
+class CreateVentasTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('ventas', function($table){
+        Schema::create('ventas', function ($table) {
             $table->increments('id');
             $table->decimal('total', 10, 2)->default(0.0)->nullable();
             $table->decimal('pago', 10, 2)->default(0.0)->nullable();
@@ -29,8 +27,7 @@ class CreateVentasTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('ventas');
     }

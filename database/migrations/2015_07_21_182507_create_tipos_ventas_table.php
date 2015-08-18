@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTiposVentasTable extends Migration
-{
+class CreateTiposVentasTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('tipos_ventas', function($table){
+        Schema::create('tipos_ventas', function ($table) {
             $table->increments('id');
             $table->string('nombre', 60);
         });
@@ -24,8 +22,7 @@ class CreateTiposVentasTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('tipos_ventas');
     }

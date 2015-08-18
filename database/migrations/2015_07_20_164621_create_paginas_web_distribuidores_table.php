@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreatePaginasWebDistribuidoresTable extends Migration
-{
+class CreatePaginasWebDistribuidoresTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('paginas_web_distribuidores', function($table){
+        Schema::create('paginas_web_distribuidores', function ($table) {
             $table->increments('id');
             $table->boolean('activo')->default(false);
             $table->timestamp('fecha_vencimiento');
@@ -27,8 +25,7 @@ class CreatePaginasWebDistribuidoresTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('paginas_web_distribuidores');
     }

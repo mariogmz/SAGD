@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreatePaqueteriasRangosTable extends Migration
-{
+class CreatePaqueteriasRangosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('paqueterias_rangos', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('paqueterias_rangos', function (Blueprint $table) {
             $table->increments('id');
             $table->decimal('desde', 3, 2)->default(0.0);
             $table->decimal('hasta', 3, 2)->default(0.0);
@@ -27,8 +25,7 @@ class CreatePaqueteriasRangosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('paqueterias_rangos');
     }
 }

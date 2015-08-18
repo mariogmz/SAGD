@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateRazonesSocialesReceptoresTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateRazonesSocialesReceptoresTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('razones_sociales_receptores', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('razones_sociales_receptores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('rfc', 13)->nullable();
             $table->string('regimen', 60)->nullable();
@@ -25,8 +23,7 @@ class CreateRazonesSocialesReceptoresTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('razones_sociales_receptores');
     }
 }

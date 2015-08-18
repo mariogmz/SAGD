@@ -3,6 +3,46 @@
 namespace App;
 
 
+/**
+ * App\VentaDetalle
+ *
+ * @property integer $id
+ * @property integer $cantidad
+ * @property string $descripcion
+ * @property float $precio
+ * @property float $total
+ * @property float $utilidad
+ * @property string $fecha_expiracion_garantia
+ * @property integer $tiempo_garantia
+ * @property integer $venta_id
+ * @property integer $tipo_partida_id
+ * @property integer $producto_id
+ * @property integer $metodo_pago_id
+ * @property integer $factura_id
+ * @property integer $nota_credito_id
+ * @property-read \App\Venta $venta
+ * @property-read \App\Producto $producto
+ * @property-read \App\TipoPartida $tipoPartida
+ * @property-read \App\MetodoPago $metodoPago
+ * @property-read \App\Factura $factura
+ * @property-read \App\NotaCredito $notaCredito
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Garantia[] $garantias
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereCantidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereDescripcion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle wherePrecio($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereTotal($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereUtilidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereFechaExpiracionGarantia($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereTiempoGarantia($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereTipoPartidaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereProductoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereMetodoPagoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereFacturaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\VentaDetalle whereNotaCreditoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class VentaDetalle extends LGGModel {
 
     protected $table = "ventas_detalles";

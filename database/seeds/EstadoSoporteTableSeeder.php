@@ -10,13 +10,13 @@ class EstadoSoporteTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        foreach($this->prepararDatos() as $estado){
+        foreach ($this->prepararDatos() as $estado) {
             App\EstadoSoporte::create($estado);
         }
     }
 
     private function prepararDatos() {
-        return  [
+        return [
             [
                 'clave'  => 'RECIBE',
                 'nombre' => 'Producto o equipo recibido.'

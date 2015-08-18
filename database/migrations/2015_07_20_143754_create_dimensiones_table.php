@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateDimensionesTable extends Migration {
@@ -10,11 +9,9 @@ class CreateDimensionesTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('dimensiones', function ($table)
-        {
+        Schema::create('dimensiones', function ($table) {
             $table->increments('id');
             $table->decimal('largo', 5, 2)->default(0.0)->unsigned();
             $table->decimal('ancho', 5, 2)->default(0.0)->unsigned();
@@ -28,8 +25,7 @@ class CreateDimensionesTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('dimensiones');
     }

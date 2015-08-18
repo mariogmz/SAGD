@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTiposPartidasCortesConceptosTable extends Migration
-{
+class CreateTiposPartidasCortesConceptosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('tipos_partidas_cortes_conceptos', function($table){
+        Schema::create('tipos_partidas_cortes_conceptos', function ($table) {
             $table->increments('id');
         });
     }
@@ -23,8 +21,7 @@ class CreateTiposPartidasCortesConceptosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('tipos_partidas_cortes_conceptos');
     }

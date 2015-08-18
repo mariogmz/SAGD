@@ -3,6 +3,58 @@
 namespace App;
 
 
+/**
+ * App\Venta
+ *
+ * @property integer $id
+ * @property float $total
+ * @property float $pago
+ * @property float $utilidad
+ * @property string $fecha_cobro
+ * @property integer $tabulador
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $sucursal_id
+ * @property integer $cliente_id
+ * @property integer $caja_id
+ * @property integer $corte_id
+ * @property integer $estatus_venta_id
+ * @property integer $estado_venta_id
+ * @property integer $tipo_venta_id
+ * @property integer $sucursal_entrega_id
+ * @property integer $empleado_id
+ * @property-read \App\Sucursal $sucursal
+ * @property-read \App\Cliente $cliente
+ * @property-read \App\Caja $caja
+ * @property-read \App\Corte $corte
+ * @property-read \App\EstatusVenta $estatusVenta
+ * @property-read \App\EstadoVenta $estadoVenta
+ * @property-read \App\TipoVenta $tipoVenta
+ * @property-read \App\Sucursal $sucursalEntrega
+ * @property-read \App\Empleado $empleado
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\VentaDetalle[] $ventasDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Anticipo[] $anticipos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Anticipo[] $anticiposEntrega
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\VentaMovimiento[] $ventasMovimientos
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereTotal($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta wherePago($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereUtilidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereFechaCobro($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereTabulador($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereClienteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereCajaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereCorteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereEstatusVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereEstadoVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereTipoVentaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereSucursalEntregaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Venta extends LGGModel {
 
     protected $table = "ventas";

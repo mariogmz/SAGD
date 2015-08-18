@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateSucursalesTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateSucursalesTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('sucursales', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('sucursales', function (Blueprint $table) {
             $table->increments('id');
             $table->string('clave', 8);
             $table->string('nombre', 45);
@@ -28,8 +26,7 @@ class CreateSucursalesTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('sucursales');
     }
 }

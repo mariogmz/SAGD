@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateExistenciasTable extends Migration {
@@ -10,11 +9,9 @@ class CreateExistenciasTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('existencias', function ($table)
-        {
+        Schema::create('existencias', function ($table) {
             $table->increments('id');
             $table->integer('cantidad')->default(0)->unsigned();
             $table->integer('cantidad_apartado')->default(0)->unsigned();
@@ -30,8 +27,7 @@ class CreateExistenciasTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('existencias');
     }

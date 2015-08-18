@@ -3,6 +3,16 @@
 namespace App;
 
 
+/**
+ * App\RmaTiempo
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rma[] $rmas
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaTiempo whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaTiempo whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class RmaTiempo extends LGGModel {
 
     protected $table = "rmas_tiempos";
@@ -26,6 +36,7 @@ class RmaTiempo extends LGGModel {
         RmaTiempo::updating(function ($rmat) {
             $rmat->updateRules = self::$rules;
             $rmat->updateRules['nombre'] .= ',nombre,' . $rmat->id;
+
             return $rmat->isValid('update');
         });
     }

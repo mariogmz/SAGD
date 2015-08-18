@@ -3,6 +3,22 @@
 namespace App;
 
 
+/**
+ * App\MetodoPagoRango
+ *
+ * @property integer $id
+ * @property float $desde
+ * @property float $hasta
+ * @property float $valor
+ * @property integer $metodo_pago_id
+ * @property-read \App\MetodoPago $metodoPago
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereDesde($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereHasta($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereValor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereMetodoPagoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class MetodoPagoRango extends LGGModel {
 
     //
@@ -42,10 +58,10 @@ class MetodoPagoRango extends LGGModel {
     }
 
     public static function revisarRango($model) {
-        $rangos = self::where('id', '<>', is_null($model->id)?'null':$model->id)
-            ->where('metodo_pago_id',$model->metodo_pago_id)
-            ->where('desde','<>',$model->desde)
-            ->where('hasta','<>',$model->hasta)->get();
+        $rangos = self::where('id', '<>', is_null($model->id) ? 'null' : $model->id)
+            ->where('metodo_pago_id', $model->metodo_pago_id)
+            ->where('desde', '<>', $model->desde)
+            ->where('hasta', '<>', $model->hasta)->get();
         $conjunto = [];
         foreach ($rangos as $rango) {
             $min = $rango->desde * 100;
@@ -58,6 +74,7 @@ class MetodoPagoRango extends LGGModel {
         for ($i = $model->desde * 100; $i <= $model->hasta * 100; $i ++) {
             array_push($conjunto_modelo, $i);
         }
+
         return !count(array_intersect($conjunto_modelo, $conjunto));
     }
 

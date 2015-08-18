@@ -2,17 +2,32 @@
 
 namespace App;
 
-class TipoGarantia extends LGGModel
-{
+
+/**
+ * App\TipoGarantia
+ *
+ * @property integer $id
+ * @property boolean $seriado
+ * @property string $descripcion
+ * @property integer $dias
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereSeriado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereDescripcion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereDias($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class TipoGarantia extends LGGModel {
+
     //
     protected $table = "tipos_garantias";
     public $timestamps = false;
     protected $fillable = ['seriado', 'descripcion', 'dias'];
 
     public static $rules = [
-        'seriado' => 'boolean',
+        'seriado'     => 'boolean',
         'descripcion' => 'required|max:45',
-        'dias' => 'integer|min:0'
+        'dias'        => 'integer|min:0'
     ];
 
     public $updateRules = [];
@@ -21,25 +36,26 @@ class TipoGarantia extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        TipoGarantia::creating(function($tipogarantia){
+    public static function boot() {
+        TipoGarantia::creating(function ($tipogarantia) {
             $tipogarantia->seriado = (empty($tipogarantia->seriado) ? true : $tipogarantia->seriado);
             $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->seriado);
-            if ( ! $tipogarantia->isValid() ){
+            if (!$tipogarantia->isValid()) {
                 return false;
             }
+
             return true;
         });
-        TipoGarantia::updating(function($tipogarantia){
+        TipoGarantia::updating(function ($tipogarantia) {
             $tipogarantia->updateRules = self::$rules;
             $tipogarantia->seriado = (empty($tipogarantia->seriado) ? true : $tipogarantia->seriado);
             $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->seriado);
+
             return $tipogarantia->isValid('update');
         });
     }
 
-    public function productos()
-    {
+    public function productos() {
         return $this->hasMany('App\Producto', 'tipo_garantia_id');
     }
 }

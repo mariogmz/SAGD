@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddVentasConstraints extends Migration
-{
+class AddVentasConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('ventas', function($table){
+        Schema::table('ventas', function ($table) {
             $table->integer('sucursal_id')->unsigned();
             $table->integer('cliente_id')->unsigned();
             $table->integer('caja_id')->unsigned();
@@ -41,10 +39,9 @@ class AddVentasConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('ventas', function($table){
+        Schema::table('ventas', function ($table) {
             $table->dropForeign('ventas_sucursal_id_foreign');
             $table->dropForeign('ventas_cliente_id_foreign');
             $table->dropForeign('ventas_caja_id_foreign');
@@ -55,7 +52,7 @@ class AddVentasConstraints extends Migration
             $table->dropForeign('ventas_sucursal_entrega_id_foreign');
             $table->dropForeign('ventas_empleado_id_foreign');
 
-            $table->dropColumn(['sucursal_entrega_id', 'tipo_venta_id', 'estado_venta_id', 'estatus_venta_id', 'corte_id', 'caja_id', 'cliente_id', 'sucursal_id','empleado_id']);
+            $table->dropColumn(['sucursal_entrega_id', 'tipo_venta_id', 'estado_venta_id', 'estatus_venta_id', 'corte_id', 'caja_id', 'cliente_id', 'sucursal_id', 'empleado_id']);
         });
     }
 }

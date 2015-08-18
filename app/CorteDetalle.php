@@ -3,6 +3,21 @@
 namespace App;
 
 
+/**
+ * App\CorteDetalle
+ *
+ * @property integer $id
+ * @property float $monto
+ * @property integer $corte_id
+ * @property integer $corte_concepto_id
+ * @property-read \App\Corte $corte
+ * @property-read \App\CorteConcepto $corteConcepto
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereMonto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereCorteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereCorteConceptoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class CorteDetalle extends LGGModel {
 
     protected $table = "cortes_detalles";

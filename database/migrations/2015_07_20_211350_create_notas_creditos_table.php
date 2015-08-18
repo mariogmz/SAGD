@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateNotasCreditosTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateNotasCreditosTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('notas_creditos', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('notas_creditos', function (Blueprint $table) {
             $table->increments('id');
             $table->string('folio', 45);
             $table->timestamp('fecha_expedicion')->nullable();
@@ -36,8 +34,7 @@ class CreateNotasCreditosTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('notas_creditos');
     }
 }

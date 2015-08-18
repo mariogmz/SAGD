@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateEstadosSoporteTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateEstadosSoporteTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('estados_soporte', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('estados_soporte', function (Blueprint $table) {
             $table->increments('id');
             $table->string('clave', 6);
             $table->string('nombre', 150);
@@ -26,8 +24,7 @@ class CreateEstadosSoporteTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('estados_soporte');
     }
 }

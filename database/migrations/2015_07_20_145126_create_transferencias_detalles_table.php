@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateTransferenciasDetallesTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateTransferenciasDetallesTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('transferencias_detalles', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('transferencias_detalles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cantidad')->default(0);
             $table->integer('existencia_origen_antes')->default(0)->unsigned();
@@ -29,8 +27,7 @@ class CreateTransferenciasDetallesTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('transferencias_detalles');
     }
 }
