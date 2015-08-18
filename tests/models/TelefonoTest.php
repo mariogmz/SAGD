@@ -2,6 +2,10 @@
 
 use App\Telefono;
 
+/**
+ * @coversDefaultClass \App\Telefono
+ */
+
 class TelefonoTest extends TestCase {
 
     /**
@@ -65,10 +69,10 @@ class TelefonoTest extends TestCase {
     }
 
     /**
-     * @covers ::domicilios
+     * @covers ::domicilio
      * @group relaciones
      */
-    public function testDomicilios() {
+    public function testDomicilio() {
         $parent = factory(App\Domicilio::class)->create();
         $child = factory(App\Telefono::class)->create([
             'domicilio_id' => $parent->id
