@@ -4,17 +4,22 @@ namespace App;
 
 
 use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use Illuminate\Database\Eloquent\Model;
 
 /**
  * App\User
  *
  */
+class User extends Model implements AuthenticatableContract, CanResetPasswordContract {
+
+<<<<<<< Updated upstream
+=======
 class User extends LGGModel implements AuthenticatableContract, CanResetPasswordContract
 {
+>>>>>>> Stashed changes
     use Authenticatable, CanResetPassword;
 
     /**
@@ -60,15 +65,5 @@ class User extends LGGModel implements AuthenticatableContract, CanResetPassword
             $user->updateRules['email'] .= ','.$user->id;
             return $user->isValid('update');
         });
-    }
-
-
-    /**
-    * Obtiene el modelo asociado con el User
-    * @return App\Cliente | App\Empleado
-    */
-    public function morphable()
-    {
-        return $this->morphTo();
     }
 }
