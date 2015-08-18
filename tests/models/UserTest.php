@@ -56,5 +56,22 @@ class UserTest extends TestCase {
             'morphable_id' => $cliente->id,
             'morphable_type' => get_class($cliente)
         ]);
+        $this->assertTrue($user->save());
+        $this->assertInstanceOf(App\Cliente::class, $user->morphable);
+    }
+
+    /**
+     * @covers ::morphable
+     * @group relaciones
+     */
+    public function testMorphableToEmpleado()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $user = factory(App\User::class)->make([
+            'morphable_id' => $empleado->id,
+            'morphable_type' => get_class($empleado)
+        ]);
+        $this->assertTrue($user->save());
+        $this->assertInstanceOf(App\Empleado::class, $user->morphable);
     }
 }
