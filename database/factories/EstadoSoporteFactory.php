@@ -11,16 +11,14 @@
 |
 */
 
-$factory->define(App\EstadoSoporte::class, function ($faker)
-{
+$factory->define(App\EstadoSoporte::class, function ($faker) {
     return [
         'clave'  => App\Caker::realUnique(App\EstadoSoporte::class, 'clave', 'regexify', '[A-Z0-9]{6}'),
         'nombre' => $faker->text(50)
     ];
 });
 
-$factory->defineAs(App\EstadoSoporte::class, 'clavelarga', function ($faker) use ($factory)
-{
+$factory->defineAs(App\EstadoSoporte::class, 'clavelarga', function ($faker) use ($factory) {
     $estado_soporte = $factory->raw(App\EstadoSoporte::class);
 
     return array_merge($estado_soporte, [
@@ -28,11 +26,10 @@ $factory->defineAs(App\EstadoSoporte::class, 'clavelarga', function ($faker) use
     ]);
 });
 
-$factory->defineAs(App\EstadoSoporte::class, 'nombrelargo', function ($faker) use ($factory)
-{
+$factory->defineAs(App\EstadoSoporte::class, 'nombrelargo', function ($faker) use ($factory) {
     $estado_soporte = $factory->raw(App\EstadoSoporte::class);
 
     return array_merge($estado_soporte, [
-        'nombre' => $faker->text(100)
+        'nombre' => $faker->text(300)
     ]);
 });

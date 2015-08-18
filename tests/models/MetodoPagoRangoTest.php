@@ -106,24 +106,34 @@ class MetodoPagoRangoTest extends TestCase {
      */
     public function testRangoDebeSerValido() {
         // Test ranges
-        factory(App\MetodoPagoRango::class)->create([
+        $mpr = factory(App\MetodoPagoRango::class)->create([
             'desde' => 0.00,
             'hasta' => 0.25
         ]);
         factory(App\MetodoPagoRango::class)->create([
             'desde' => 0.76,
-            'hasta' => 1.00
+            'hasta' => 1.00,
+            'metodo_pago_id' => $mpr->id
         ]);
         $rango_invalido = factory(App\MetodoPagoRango::class)->make([
             'desde' => 0.20,
-            'hasta' => 0.80
+            'hasta' => 0.80,
+            'metodo_pago_id' => $mpr->id
         ]);
         $rango_valido = factory(App\MetodoPagoRango::class)->make([
             'desde' => 0.56,
-            'hasta' => 0.75
+            'hasta' => 0.75,
+            'metodo_pago_id' => $mpr->id
         ]);
+
+        $rango_valido_otro_metodo = factory(App\MetodoPagoRango::class)->make([
+            'desde' => 0.76,
+            'hasta' => 1.00,
+        ]);
+
         $this->assertFalse($rango_invalido->save(), 'El rango de 0.20 a 0.80 debe ser inválido');
         $this->assertTrue($rango_valido->save(), 'El rango de 0.56 a 0.75 debe ser válido');
+        $this->assertTrue($rango_valido_otro_metodo->save());
     }
 
     /**
@@ -153,5 +163,4 @@ class MetodoPagoRangoTest extends TestCase {
         $this->assertInstanceOf('App\MetodoPago', $parent_result);
         $this->assertSame($parent->id, $parent_result->id);
     }
-
 }

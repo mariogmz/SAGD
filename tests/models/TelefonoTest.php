@@ -36,6 +36,16 @@ class TelefonoTest extends TestCase {
     /**
      * @coversNothing
      */
+    public function testDomicilioEsRequerido() {
+        $model = factory(App\Telefono::class)->make([
+            'domicilio_id' => null
+        ]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
     public function testTipoEsRequerido() {
         $telefono = factory(Telefono::class)->make([
             'tipo' => ''
@@ -59,14 +69,12 @@ class TelefonoTest extends TestCase {
      * @group relaciones
      */
     public function testDomicilios() {
-        $telefono = factory(App\Telefono::class)->create();
-        factory(App\Domicilio::class)->create([
-            'telefono_id' => $telefono->id
+        $parent = factory(App\Domicilio::class)->create();
+        $child = factory(App\Telefono::class)->create([
+            'domicilio_id' => $parent->id
         ]);
-        $domicilios = $telefono->domicilios;
-        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $domicilios);
-        $this->assertInstanceOf('App\Domicilio', $domicilios[0]);
-        $this->assertCount(1, $domicilios);
+        $parent_result = $child->domicilio;
+        $this->assertInstanceOf('App\Domicilio', $parent_result);
+        $this->assertSame($parent->id, $parent_result->id);
     }
-
 }

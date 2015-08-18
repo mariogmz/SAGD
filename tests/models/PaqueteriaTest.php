@@ -51,9 +51,9 @@ class PaqueteriaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testClaveNoPuedeSerMasDe6Caracteres()
+    public function testClaveNoPuedeSerMasDe10Caracteres()
     {
-        $paq = factory(App\Paqueteria::class)->make(['clave' => 'ABCABCD']);
+        $paq = factory(App\Paqueteria::class)->make(['clave' => 'ABCABCABCAB']);
         $this->assertFalse($paq->isValid());
     }
 

@@ -42,7 +42,10 @@ class MetodoPagoRango extends LGGModel {
     }
 
     public static function revisarRango($model) {
-        $rangos = self::where('id', '<>', is_null($model->id)?'null':$model->id)->get();
+        $rangos = self::where('id', '<>', is_null($model->id)?'null':$model->id)
+            ->where('metodo_pago_id',$model->metodo_pago_id)
+            ->where('desde','<>',$model->desde)
+            ->where('hasta','<>',$model->hasta)->get();
         $conjunto = [];
         foreach ($rangos as $rango) {
             $min = $rango->desde * 100;

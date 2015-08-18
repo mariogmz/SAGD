@@ -51,7 +51,7 @@ class EstadoSoporteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreEsMaximo50Caracteres()
+    public function testNombreEsMaximo150Caracteres()
     {
         $estado_soporte = factory(App\EstadoSoporte::class, 'nombrelargo')->make();
         $this->assertFalse($estado_soporte->isValid());

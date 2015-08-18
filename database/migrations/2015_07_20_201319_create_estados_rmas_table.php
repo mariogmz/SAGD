@@ -15,7 +15,7 @@ class CreateEstadosRmasTable extends Migration {
         Schema::create('estados_rmas', function (Blueprint $table)
         {
             $table->increments('id');
-            $table->string('nombre', 45);
+            $table->string('nombre', 80);
         });
     }
 

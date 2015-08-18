@@ -18,7 +18,7 @@ class CreateSucursalesTable extends Migration {
             $table->string('clave', 8);
             $table->string('nombre', 45);
             $table->string('horarios', 100);
-            $table->string('ubicacion', 45);
+            $table->string('ubicacion', 45)->nullable();
             $table->unique('clave');
         });
     }

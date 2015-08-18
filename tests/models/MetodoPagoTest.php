@@ -47,7 +47,7 @@ class MetodoPagoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreNoMayorA45Caracteres() {
+    public function testNombreNoMayorA90Caracteres() {
         $metodo_pago = factory(App\MetodoPago::class, 'nombrelargo')->make();
         $this->assertFalse($metodo_pago->isValid());
     }
