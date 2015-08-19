@@ -52,12 +52,10 @@ class Empleado extends LGGModel {
     public static $rules = [
         'nombre'                => ['required', 'max:100'],
         'usuario'               => 'required|max:20|unique:empleados',
-        'password'              => 'required|max:64|different:usuario',
         'activo'                => 'required|boolean',
         'puesto'                => 'string|max:45',
         'fecha_cambio_password' => 'required|date',
         'fecha_ultimo_ingreso'  => 'date',
-        'access_token'          => 'max:20|unique:empleados'
     ];
 
     public $updateRules = [];
@@ -77,7 +75,6 @@ class Empleado extends LGGModel {
         Empleado::updating(function ($empleado) {
             $empleado->updateRules = self::$rules;
             $empleado->updateRules['usuario'] .= ',usuario,' . $empleado->id;
-            $empleado->updateRules['access_token'] .= ',access_token,' . $empleado->id;
 
             return $empleado->isValid('update');
         });
@@ -202,4 +199,13 @@ class Empleado extends LGGModel {
         return $this->hasMany('App\VentaMovimiento');
     }
 
+
+    /**
+    * Obtiene el User morphable con el Empleado
+    * @return App\User
+    */
+    public function user()
+    {
+        return $this->morphOne('App\User', 'morphable');
+    }
 }
