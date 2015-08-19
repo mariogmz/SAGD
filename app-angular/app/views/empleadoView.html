@@ -1,0 +1,18 @@
+<!-- views/empleadoView.html -->
+
+<div class="col-sm-6 col-sm-offset-3">
+	<div class="well">
+		<h3>Users</h3>
+		<button class="btn btn-primary" style="margin-bottom: 10px" ng-click="empleado.getUsers()">Get Users!</button>
+		<ul class="list-group" ng-if="empleado.users">
+			<li class="list-group-item" ng-repeat="empleado in empleado.users">
+				<h4>{{empleado.name}}</h4>
+				<h5>{{empleado.email}}</h5>
+			</li>
+		</ul>
+		<div class="alert alert-danger" ng-if="empleado.errores">
+			<strong>There was an error: </strong> {{empleado.errores.error}}
+			<br>Please go back and login again
+		</div>
+	</div>
+</div>

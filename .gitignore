@@ -18,6 +18,10 @@ _ide_helper.php
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
+
+### FrontEnd ###
+app-angular/app/scripts/node_modules
+
 *.iml
 
 ## Directory-based project format:
