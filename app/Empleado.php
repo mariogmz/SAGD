@@ -48,7 +48,7 @@ class Empleado extends LGGModel {
 
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'usuario', 'password', 'activo', 'puesto', 'access_token'];
+    protected $fillable = ['nombre', 'usuario', 'activo', 'puesto', 'fecha_cambio_password', 'fecha_ultimo_ingreso', 'sucursal_id'];
     public static $rules = [
         'nombre'                => ['required', 'max:100'],
         'usuario'               => 'required|max:20|unique:empleados',
@@ -56,6 +56,7 @@ class Empleado extends LGGModel {
         'puesto'                => 'string|max:45',
         'fecha_cambio_password' => 'required|date',
         'fecha_ultimo_ingreso'  => 'date',
+        'sucursal_id'           => 'required|integer'
     ];
 
     public $updateRules = [];
