@@ -2,17 +2,17 @@
 
 <div class="col-sm-6 col-sm-offset-3">
 	<div class="well">
-		<h3>Users</h3>
-		<button class="btn btn-primary" style="margin-bottom: 10px" ng-click="empleado.getUsers()">Get Users!</button>
-		<ul class="list-group" ng-if="empleado.users">
-			<li class="list-group-item" ng-repeat="empleado in empleado.users">
-				<h4>{{empleado.name}}</h4>
-				<h5>{{empleado.email}}</h5>
+		<h3>Empleados</h3>
+		<button class="btn btn-primary" style="margin-bottom: 10px" ng-click="empleado.getEmpleados()">Obtener empleados!</button>
+		<ul class="list-group" ng-if="empleado.empleados">
+			<li class="list-group-item" ng-repeat="empleado in empleado.empleados">
+				<h4>{{empleado.nombre}}</h4>
+				<h5>{{empleado.puesto}}</h5>
 			</li>
 		</ul>
 		<div class="alert alert-danger" ng-if="empleado.errores">
-			<strong>There was an error: </strong> {{empleado.errores.error}}
-			<br>Please go back and login again
+			<strong>Hubo un error: </strong> {{empleado.errores.error}}
+			<br>Por favor accede de nuevo
 		</div>
 	</div>
 </div>

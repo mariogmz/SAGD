@@ -15,11 +15,11 @@
     vm.empleados;
     vm.errores;
 
-    vm.getUsers = function () {
+    vm.getEmpleados = function () {
 
       // This request will hit the index method in the AuthenticateController
       // on the Laravel side and will return the list of users
-      $http.get('api/authenticate').success(function (empleados) {
+      $http.get('http://sagd.api/api/v1/empleado').success(function (empleados) {
         vm.empleados = empleados;
       }).error(function (error) {
         vm.errores = error;
