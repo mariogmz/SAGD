@@ -39,6 +39,9 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
+            return response()->json(['error' => 'method_not_allowed'], 405);
+        }
         return parent::render($request, $e);
     }
 }
