@@ -13,9 +13,7 @@
 
 $factory->define(App\Cliente::class, function ($faker) {
     return [
-        'email'                     => $faker->email,
         'usuario'                   => App\Caker::realUnique(App\Cliente::class, 'usuario', 'userName'),
-        'password'                  => $faker->regexify('[a-fA-F0-9]{64}'),
         'nombre'                    => $faker->name,
         'fecha_nacimiento'          => $faker->dateTime,
         'sexo'                      => $faker->regexify('(HOMBRE|MUJER)'),
@@ -24,37 +22,15 @@ $factory->define(App\Cliente::class, function ($faker) {
         'fecha_expira_club_zegucom' => $faker->dateTime,
         'referencia_otro'           => $faker->text(50),
         'rol_id'                    => factory(App\Rol::class)->create()->id,
-        'access_token'              => $faker->regexify('[a-fA-F0-9]{20}'),
         'cliente_estatus_id'        => $faker->randomDigit,
         'sucursal_id'               => $faker->randomDigit,
         'cliente_referencia_id'     => $faker->randomDigit,
     ];
 });
 
-$factory->defineAs(App\Cliente::class, 'longemail', function ($faker) use ($factory) {
-    $cliente = $factory->raw(App\Cliente::class);
-    $cliente['email'] = $faker->regexify('[a]{40}\@gmail\.com');
-
-    return $cliente;
-});
-
 $factory->defineAs(App\Cliente::class, 'longusername', function ($faker) use ($factory) {
     $cliente = $factory->raw(App\Cliente::class);
     $cliente['usuario'] = App\Caker::realUnique(App\Cliente::class, 'usuario', 'regexify', '[a]{21}');
-
-    return $cliente;
-});
-
-$factory->defineAs(App\Cliente::class, 'longpassword', function ($faker) use ($factory) {
-    $cliente = $factory->raw(App\Cliente::class);
-    $cliente['password'] = $faker->regexify('[a]{61}');
-
-    return $cliente;
-});
-
-$factory->defineAs(App\Cliente::class, 'shortpassword', function ($faker) use ($factory) {
-    $cliente = $factory->raw(App\Cliente::class);
-    $cliente['password'] = $faker->regexify('[a]{1}');
 
     return $cliente;
 });

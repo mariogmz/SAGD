@@ -75,9 +75,7 @@ class Cliente extends LGGModel {
         'empleado_id', 'vendedor_id'];
 
     public static $rules = [
-        'email'                     => 'required|email|max:45|unique:clientes,email',
-        'usuario'                   => 'required|max:20',
-        'password'                  => 'min:64|max:64',
+        'usuario'                   => 'required|max:20|unique:clientes,usuario',
         'nombre'                    => 'required|max:200',
         'fecha_nacimiento'          => 'date',
         'sexo'                      => 'required|in:HOMBRE,MUJER',
@@ -105,7 +103,7 @@ class Cliente extends LGGModel {
         });
         Cliente::updating(function ($cliente) {
             $cliente->updateRules = self::$rules;
-            $cliente->updateRules['email'] .= ',' . $cliente->id;
+            $cliente->updateRules['usuario'] .= ',' . $cliente->id;
 
             return $cliente->isValid('update');
         });
@@ -256,5 +254,15 @@ class Cliente extends LGGModel {
      */
     public function razonesSociales() {
         return $this->hasMany('App\RazonSocialReceptor', 'cliente_id');
+    }
+
+
+    /**
+    * Obtiene el User morphable con el Cliente
+    * @return App\User
+    */
+    public function user()
+    {
+        return $this->morphOne('App\User', 'morphable');
     }
 }
