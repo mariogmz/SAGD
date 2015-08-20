@@ -1,4 +1,4 @@
-// scripts/app.js
+// app.js
 
 (function () {
 
@@ -8,7 +8,7 @@
     .module('sagdApp',['ui.router','satellizer'])
     .config(function($stateProvider, $urlRouterProvider, $authProvider) {
 
-      var baseUrl = 'http://sagd.api/api/v1/';
+      var baseUrl = 'http://api.sagd.app/api/v1/';
       // Satellizer configuration that specifies which API
       // route the JWT should be retrieved from
       $authProvider.loginUrl = baseUrl + 'authenticate';
@@ -21,12 +21,12 @@
       $stateProvider
         .state('login', {
           url: '/login',
-          templateUrl: 'views/loginView.html',
+          templateUrl: 'app/authentication/loginView.html',
           controller: 'AuthenticateController as auth'
         })
         .state('empleado', {
           url: '/empleado',
-          templateUrl: 'views/empleadoView.html',
+          templateUrl: 'app/empleados/empleadoView.html',
           controller: 'EmpleadoController as empleado'
         });
     });

@@ -1,0 +1,22 @@
+{
+  "name": "app-angular",
+  "version": "0.0.0",
+  "description": "Frontend para SAGD",
+  "main": [
+    "app/app.js",
+    "app/assets/stylesheets/application.sass"
+  ],
+  "moduleType": [
+    "node"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "angular-ui-router": "~0.2.15",
+    "angular": "~1.4.4",
+    "satellizer": "~0.12.2",
+    "bootstrap": "v4-dev"
+  },
+  "resolutions": {
+    "bootstrap": "v4-dev"
+  }
+}

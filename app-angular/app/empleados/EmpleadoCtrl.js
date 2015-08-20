@@ -19,7 +19,7 @@
 
       // This request will hit the index method in the AuthenticateController
       // on the Laravel side and will return the list of users
-      $http.get('http://sagd.api/api/v1/empleado').success(function (empleados) {
+      $http.get('http://api.sagd.app/api/v1/empleado').success(function (empleados) {
         vm.empleados = empleados;
       }).error(function (error) {
         vm.errores = error;
