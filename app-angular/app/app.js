@@ -27,6 +27,10 @@
           templateUrl: 'app/empleados/empleadoView.html',
           controller: 'EmpleadoController as empleado'
         });
+
+      if(window.history && window.history.pushState){
+        $locationProvider.html5Mode(true).hashPrefix('!');
+      }
     })
     .run(['$state', angular.noop]);
 

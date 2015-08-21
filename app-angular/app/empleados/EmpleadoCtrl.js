@@ -8,12 +8,22 @@
     .module('sagdApp')
     .controller('EmpleadoController', EmpleadoController);
 
-  function EmpleadoController($http) {
+  EmpleadoController.$inject = ['$http', '$auth', '$state'];
+
+  function EmpleadoController($http, $auth, $state) {
+
+    if(! $auth.isAuthenticated()){
+      $state.go('login', {});
+    }
 
     var vm = this;
 
     vm.empleados;
     vm.errores;
+
+    vm.isAuthenticated = function () {
+      return $auth.isAuthenticated();
+    }
 
     vm.getEmpleados = function () {
 
