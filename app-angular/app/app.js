@@ -14,8 +14,6 @@
       $authProvider.loginUrl = baseUrl + 'authenticate';
       $authProvider.withCredentials = true;
 
-      // Redirect to the auth state if any other states
-      // are requested other than empleado
       $urlRouterProvider.otherwise('/login');
 
       $stateProvider
@@ -29,8 +27,6 @@
           templateUrl: 'app/empleados/empleadoView.html',
           controller: 'EmpleadoController as empleado'
         });
-
-      $locationProvider.html5Mode(true);
     })
     .run(['$state', angular.noop]);
 
