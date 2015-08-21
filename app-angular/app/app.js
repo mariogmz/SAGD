@@ -5,8 +5,8 @@
   'use strict';
 
   angular
-    .module('sagdApp',['ui.router','satellizer'])
-    .config(function($stateProvider, $urlRouterProvider, $authProvider) {
+    .module('sagdApp', ['ui.router', 'satellizer'])
+    .config(function ($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
 
       var baseUrl = 'http://api.sagd.app/api/v1/';
       // Satellizer configuration that specifies which API
@@ -15,7 +15,7 @@
       $authProvider.withCredentials = true;
 
       // Redirect to the auth state if any other states
-      // are requested other than users
+      // are requested other than empleado
       $urlRouterProvider.otherwise('/login');
 
       $stateProvider
@@ -29,6 +29,9 @@
           templateUrl: 'app/empleados/empleadoView.html',
           controller: 'EmpleadoController as empleado'
         });
-    });
+
+      $locationProvider.html5Mode(true);
+    })
+    .run(['$state', angular.noop]);
 
 })();
