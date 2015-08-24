@@ -9,12 +9,13 @@ class EmpleadoControllerTest extends TestCase
 {
 
     protected $endpoint = '/api/v1/empleado';
+    protected $authEndpoint = '/api/v1/authenticate';
     protected $client;
 
     public function setUp()
     {
         $this->client = new Client([
-            'base_uri' => 'http://sagd.app'
+            'base_uri' => 'http://api.sagd.app'
         ]);
         parent::setUp();
     }
@@ -27,7 +28,8 @@ class EmpleadoControllerTest extends TestCase
         $response = $this->client->get($this->endpoint, ['http_errors' => false]);
 
         $this->assertEquals(400, $response->getStatusCode());
-        $this->assertEquals(['error' => 'token_not_provided'], $response->json());
+        $response = (array)json_decode($response->getBody()->getContents());
+        $this->assertEquals(['error' => 'token_not_provided'], $response);
     }
 
     /**
@@ -40,8 +42,9 @@ class EmpleadoControllerTest extends TestCase
             'http_errors' => false
         ]);
 
-        $this->assertEquals(403, $response->getStatusCode());
-        $this->assertEquals(['error' => 'method_not_allowed'], $response->json());
+        $this->assertEquals(405, $response->getStatusCode());
+        $response = (array)json_decode($response->getBody()->getContents());
+        $this->assertEquals(['error' => 'method_not_allowed'], $response);
     }
 
     /**
@@ -50,12 +53,13 @@ class EmpleadoControllerTest extends TestCase
     public function test_GET_with_invalid_token()
     {
         $response = $this->client->get($this->endpoint, [
-            'query' => ['token' => 'allahu akbar'],
+            'query' => ['token' => 'allahu.akbar.boom'],
             'http_errors' => false
         ]);
 
         $this->assertEquals(400, $response->getStatusCode());
-        $this->assertEquals(['error' => 'token_invalid'], $response->json());
+        $response = (array)json_decode($response->getBody()->getContents());
+        $this->assertEquals(['error' => 'token_invalid'], $response);
     }
 
     /**
@@ -65,19 +69,20 @@ class EmpleadoControllerTest extends TestCase
     {
         $token = $this->getTokenFor('sistemas@zegucom.com.mx', 'test123');
         $response = $this->client->get($this->endpoint, [
-            'query' => $token,
+            'query' => ['token' => $token],
             'http_errors' => false
         ]);
-
         $this->assertEquals(200, $response->getStatusCode());
     }
 
     private function getTokenFor($email, $password)
     {
-        $json = $this->client->post($this->endpoint, [
+        $res = $this->client->post($this->authEndpoint, [
             'query' => ['email' => $email, 'password' => $password],
             'http_errors' => false
-        ])->json();
-        return json_decode($json);
+        ]);
+        $json = json_decode( $res->getBody()->getContents() );
+        $json = (array)$json;
+        return $json['token'];
     }
 }

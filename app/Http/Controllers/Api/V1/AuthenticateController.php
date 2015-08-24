@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\v1;
+namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
@@ -28,7 +28,30 @@ class AuthenticateController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
+        $user = JWTAuth::toUser($token);
+        $this->setLastLoginToEmployee($user);
 
         return response()->json(compact('token'));
+    }
+
+    public function logout(Request $request)
+    {
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['user_not_found'], 404);
+        }
+        if ( $user ) {
+            JWTAuth::invalidate();
+            return response()->json(['success' =>  'user logged out successfuly'], 200);
+        }
+    }
+
+    private function setLastLoginToEmployee($user)
+    {
+        if( get_class($user->morphable) === "App\Empleado" ) {
+            $user->morphable->fecha_ultimo_ingreso = \Carbon\Carbon::now('America/Mexico_City');
+            if(! $user->morphable->save() ) {
+                return response()->json(['error' => 'Could not set last login time for employee'], 500);
+            }
+        }
     }
 }
