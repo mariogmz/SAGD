@@ -1,4 +1,4 @@
-// scripts/empleadoController.js
+// app/empleado/empleadoController.js
 
 (function () {
 

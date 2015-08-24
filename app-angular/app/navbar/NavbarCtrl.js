@@ -1,0 +1,68 @@
+// app/navbar/Navbar.js
+
+(function () {
+
+  'use strict';
+
+  angular
+    .module('sagdApp')
+    .controller('NavbarController', NavbarController)
+    .directive('navBar', function () {
+      return {
+        templateUrl: 'app/navbar/navbar.html'
+      };
+    });
+
+  NavbarController.$inject = ['$auth'];
+
+  function NavbarController($auth) {
+    var vm = this;
+    vm.modules = [
+      {
+        nombre: 'Inicio',
+        state: 'home',
+        active: true
+      }, {
+        nombre: 'Productos',
+        state: 'producto',
+        active: false
+      }, {
+        nombre: 'Clientes',
+        state: 'cliente',
+        active: false
+      }, {
+        nombre: 'Facturación',
+        state: 'facturacion',
+        active: false
+      }, {
+        nombre: 'Ventas',
+        state: 'venta',
+        active: false
+      }, {
+        nombre: 'Gastos',
+        state: 'gasto',
+        active: false
+      }, {
+        nombre: 'Garantías',
+        state: 'garantia',
+        active: false
+      }, {
+        nombre: 'Paquetes',
+        state: 'paquete',
+        active: false
+      }, {
+        nombre: 'Web',
+        state: 'web',
+        active: false
+      }, {
+        nombre: 'Sistema',
+        state: 'sistema',
+        active: false
+      }
+    ];
+    vm.isAuthenticated = function () {
+      return $auth.isAuthenticated();
+    }
+  }
+
+})();
