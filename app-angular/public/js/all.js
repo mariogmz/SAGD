@@ -162,11 +162,10 @@
 
   function LogoutController($auth, $state) {
 
-    if(! $auth.isAuthenticated()){
-      $state.go('login', {});
+    if($auth.isAuthenticated()){
+      $auth.removeToken();
     }
-
-
+    $state.go('login', {});
   }
 })();
 

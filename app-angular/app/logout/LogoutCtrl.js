@@ -13,7 +13,7 @@
   function LogoutController($auth, $state) {
 
     if($auth.isAuthenticated()){
-      // Logout
+      $auth.removeToken();
     }
     $state.go('login', {});
   }
