@@ -2695,12 +2695,12 @@ fieldset[disabled] a.btn {
   border-radius: 0.2rem;
 }
 
-.btn-block {
+.btn-block, .login-card .login-card-block button[type="submit"] {
   display: block;
   width: 100%;
 }
 
-.btn-block + .btn-block {
+.btn-block + .btn-block, .login-card .login-card-block button[type="submit"] + .btn-block, .login-card .login-card-block .btn-block + button[type="submit"], .login-card .login-card-block button[type="submit"] + button[type="submit"] {
   margin-top: 5px;
 }
 
@@ -4894,7 +4894,7 @@ button.close {
 .modal-footer .btn-group .btn + .btn, .modal-footer .btn-group .login-card .login-card-block button[type="submit"] + .btn, .login-card .login-card-block .modal-footer .btn-group button[type="submit"] + .btn, .modal-footer .btn-group .login-card .login-card-block .btn + button[type="submit"], .login-card .login-card-block .modal-footer .btn-group .btn + button[type="submit"], .modal-footer .btn-group .login-card .login-card-block button[type="submit"] + button[type="submit"], .login-card .login-card-block .modal-footer .btn-group button[type="submit"] + button[type="submit"] {
   margin-left: -1px;
 }
-.modal-footer .btn-block + .btn-block {
+.modal-footer .btn-block + .btn-block, .modal-footer .login-card .login-card-block button[type="submit"] + .btn-block, .login-card .login-card-block .modal-footer button[type="submit"] + .btn-block, .modal-footer .login-card .login-card-block .btn-block + button[type="submit"], .login-card .login-card-block .modal-footer .btn-block + button[type="submit"], .modal-footer .login-card .login-card-block button[type="submit"] + button[type="submit"], .login-card .login-card-block .modal-footer button[type="submit"] + button[type="submit"] {
   margin-left: 0;
 }
 
@@ -5951,7 +5951,7 @@ body {
   -moz-box-shadow: 0 10px 6px -6px #777;
   box-shadow: 0 10px 6px -6px #777;
   background-color: white;
-  margin-top: 70px;
+  margin-top: 8%;
   width: 33%;
   max-width: 420px;
 }
