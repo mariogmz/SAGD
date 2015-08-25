@@ -1,17 +1,25 @@
 <!-- views/loginView.html -->
+<div class="signin-screen">
+  <div class="login-card">
+    <div class="login-card-logo">
+      <img src="../public/img/sagd.svg" alt="Sistema Administrativo de Grupo Dicotech">
+    </div>
 
-<div class="col-sm-4 col-sm-offset-4">
-	<div class="well">
-		<h3>Acceso</h3>
+    <div class="login-card-block">
+      <h4>Acceso</h4>
+      <h6>Sistema Administrativo de Grupo Dicotech</h6>
 
-		<form>
-			<div class="form-group">
-				<input type="email" class="form-control" placeholder="Email" ng-model="auth.email">
-			</div>
-			<div class="form-group">
-				<input type="password" class="form-control" placeholder="Contraseña" ng-model="auth.password">
-			</div>
-			<button class="btn btn-primary" ng-click="auth.login()">Acceder</button>
-		</form>
-	</div>
+      <form>
+        <fieldset>
+          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="auth.email">
+        </fieldset>
+        <fieldset>
+          <input type="password" placeholder="Contraseña" required ng-model="auth.password">
+        </fieldset>
+        <button type="submit" ng-click="auth.login()">Acceder</button>
+      </form>
+      <hr>
+      <a ui-sref="forgot">¿Olvidaste tu contraseña?</a>
+    </div>
+  </div>
 </div>

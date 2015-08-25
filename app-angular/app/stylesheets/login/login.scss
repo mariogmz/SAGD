@@ -1,0 +1,56 @@
+.signin-screen {
+  background-image: url('../../public/img/cross_scratches.png');
+  background-repeat: repeat;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.login-card {
+  @extend .card;
+  @extend .container;
+  @include box-shadow(#777);
+
+  background-color: $white;
+  margin-top: 70px;
+  width: 33%;
+  max-width: 420px;
+
+
+  .login-card-logo {
+    @extend .container;
+    text-align: center;
+    margin: 30px 30px 5px 30px;
+    img {
+      @extend .card-img-top;
+      width: 70%;
+    }
+  }
+
+  .login-card-block {
+    @extend .card-block;
+    h4 {
+      @extend .card-title;
+    }
+    h6 {
+      @extend .card-subtitle;
+      @extend .text-muted;
+      margin-bottom: 10px;
+    }
+
+    fieldset {
+      @extend .form-group;
+    }
+
+    input {
+      @extend .form-control;
+    }
+
+    button[type="submit"] {
+      @extend .btn;
+      @extend .btn-primary;
+    }
+  }
+}

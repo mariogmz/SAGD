@@ -2,17 +2,15 @@
 <html>
   <head>
     <meta charset="utf-8" name="viewport" content="width=device-width, initial-scale=1">
-    <title>Angular-Laravel Authentication</title>
+    <title>Sistema Administrativo de Grupo Dicotech</title>
     <link rel="stylesheet" href="public/css/application.css">
     <base href="/">
   </head>
   <body ng-app="sagdApp">
-    <div class="container-fluid">
-      <div ng-controller="NavbarController as nav">
-        <div nav-bar ng-if="nav.isAuthenticated()"></div>
-      </div>
-      <div ui-view></div>
+    <div ng-controller="NavbarController as nav">
+      <div nav-bar ng-if="nav.isAuthenticated()"></div>
     </div>
+    <div ui-view></div>
   </body>
   <!-- Application Dependencies -->
   <script src="public/libs/frontend.min.js"></script>

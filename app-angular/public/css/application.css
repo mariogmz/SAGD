@@ -272,8 +272,9 @@ th {
     display: none;
   }
 
-  .btn > .caret,
-  .dropup > .btn > .caret {
+  .btn > .caret, .login-card .login-card-block button[type="submit"] > .caret,
+  .dropup > .btn > .caret,
+  .login-card .login-card-block .dropup > button[type="submit"] > .caret {
     border-top-color: #000 !important;
   }
 
@@ -320,7 +321,7 @@ html {
   width: device-width;
 }
 html {
-  font-size: 10px;
+  font-size: 16px;
   -webkit-tap-highlight-color: transparent;
 }
 
@@ -714,36 +715,36 @@ pre code {
   overflow-y: scroll;
 }
 
-.container {
+.container, .login-card, .login-card .login-card-logo {
   margin-right: auto;
   margin-left: auto;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
 }
-.container:before, .container:after {
+.container:before, .login-card:before, .login-card .login-card-logo:before, .container:after, .login-card:after, .login-card .login-card-logo:after {
   content: " ";
   display: table;
 }
-.container:after {
+.container:after, .login-card:after, .login-card .login-card-logo:after {
   clear: both;
 }
 @media (min-width: 34em) {
-  .container {
+  .container, .login-card, .login-card .login-card-logo {
     max-width: 34rem;
   }
 }
 @media (min-width: 48em) {
-  .container {
+  .container, .login-card, .login-card .login-card-logo {
     max-width: 45rem;
   }
 }
 @media (min-width: 62em) {
-  .container {
+  .container, .login-card, .login-card .login-card-logo {
     max-width: 60rem;
   }
 }
 @media (min-width: 75em) {
-  .container {
+  .container, .login-card, .login-card .login-card-logo {
     max-width: 72.25rem;
   }
 }
@@ -2005,7 +2006,7 @@ pre code {
   border: 1px solid #eceeef;
 }
 
-.form-control {
+.form-control, .login-card .login-card-block input {
   display: block;
   width: 100%;
   padding: 0.375rem 0.75rem;
@@ -2017,23 +2018,23 @@ pre code {
   border: 0.0625rem solid #ccc;
   border-radius: 0.25rem;
 }
-.form-control::-ms-expand {
+.form-control::-ms-expand, .login-card .login-card-block input::-ms-expand {
   background-color: transparent;
   border: 0;
 }
-.form-control:focus {
+.form-control:focus, .login-card .login-card-block input:focus {
   border-color: #66afe9;
   outline: none;
 }
-.form-control::placeholder {
+.form-control::placeholder, .login-card .login-card-block input::placeholder {
   color: #999;
   opacity: 1;
 }
-.form-control:disabled, .form-control[readonly], fieldset[disabled] .form-control {
+.form-control:disabled, .login-card .login-card-block input:disabled, .form-control[readonly], .login-card .login-card-block input[readonly], fieldset[disabled] .form-control, fieldset[disabled] .login-card .login-card-block input, .login-card .login-card-block fieldset[disabled] input {
   background-color: #eceeef;
   opacity: 1;
 }
-.form-control[disabled], fieldset[disabled] .form-control {
+.form-control[disabled], .login-card .login-card-block input[disabled], fieldset[disabled] .form-control, fieldset[disabled] .login-card .login-card-block input, .login-card .login-card-block fieldset[disabled] input {
   cursor: not-allowed;
 }
 
@@ -2048,28 +2049,31 @@ pre code {
 }
 
 @media screen and (-webkit-min-device-pixel-ratio: 0) {
-  input[type="date"].form-control,
+  input[type="date"].form-control, .login-card .login-card-block input[type="date"],
   input[type="time"].form-control,
+  .login-card .login-card-block input[type="time"],
   input[type="datetime-local"].form-control,
-  input[type="month"].form-control {
+  .login-card .login-card-block input[type="datetime-local"],
+  input[type="month"].form-control,
+  .login-card .login-card-block input[type="month"] {
     line-height: 2.375rem;
   }
-  input[type="date"].input-sm, .input-group-sm input[type="date"].form-control,
+  input[type="date"].input-sm, .input-group-sm input[type="date"].form-control, .input-group-sm .login-card .login-card-block input[type="date"], .login-card .login-card-block .input-group-sm input[type="date"],
   input[type="time"].input-sm, .input-group-sm
-  input[type="time"].form-control,
+  input[type="time"].form-control, .input-group-sm .login-card .login-card-block input[type="time"], .login-card .login-card-block .input-group-sm input[type="time"],
   input[type="datetime-local"].input-sm, .input-group-sm
-  input[type="datetime-local"].form-control,
+  input[type="datetime-local"].form-control, .input-group-sm .login-card .login-card-block input[type="datetime-local"], .login-card .login-card-block .input-group-sm input[type="datetime-local"],
   input[type="month"].input-sm, .input-group-sm
-  input[type="month"].form-control {
+  input[type="month"].form-control, .input-group-sm .login-card .login-card-block input[type="month"], .login-card .login-card-block .input-group-sm input[type="month"] {
     line-height: 1.95rem;
   }
-  input[type="date"].input-lg, .input-group-lg input[type="date"].form-control,
+  input[type="date"].input-lg, .input-group-lg input[type="date"].form-control, .input-group-lg .login-card .login-card-block input[type="date"], .login-card .login-card-block .input-group-lg input[type="date"],
   input[type="time"].input-lg, .input-group-lg
-  input[type="time"].form-control,
+  input[type="time"].form-control, .input-group-lg .login-card .login-card-block input[type="time"], .login-card .login-card-block .input-group-lg input[type="time"],
   input[type="datetime-local"].input-lg, .input-group-lg
-  input[type="datetime-local"].form-control,
+  input[type="datetime-local"].form-control, .input-group-lg .login-card .login-card-block input[type="datetime-local"], .login-card .login-card-block .input-group-lg input[type="datetime-local"],
   input[type="month"].input-lg, .input-group-lg
-  input[type="month"].form-control {
+  input[type="month"].form-control, .input-group-lg .login-card .login-card-block input[type="month"], .login-card .login-card-block .input-group-lg input[type="month"] {
     line-height: 3.29167rem;
   }
 }
@@ -2079,34 +2083,38 @@ pre code {
   padding-bottom: 0.4375rem;
   margin-bottom: 0;
 }
-.form-control-static.form-control-sm, .input-group-sm > .form-control-static.form-control,
+.form-control-static.form-control-sm, .input-group-sm > .form-control-static.form-control, .login-card .login-card-block .input-group-sm > input.form-control-static,
 .input-group-sm > .form-control-static.input-group-addon,
-.input-group-sm > .input-group-btn > .form-control-static.btn, .form-control-static.form-control-lg, .input-group-lg > .form-control-static.form-control,
+.input-group-sm > .input-group-btn > .form-control-static.btn,
+.login-card .login-card-block .input-group-sm > .input-group-btn > button.form-control-static[type="submit"], .form-control-static.form-control-lg, .input-group-lg > .form-control-static.form-control, .login-card .login-card-block .input-group-lg > input.form-control-static,
 .input-group-lg > .form-control-static.input-group-addon,
-.input-group-lg > .input-group-btn > .form-control-static.btn {
+.input-group-lg > .input-group-btn > .form-control-static.btn,
+.login-card .login-card-block .input-group-lg > .input-group-btn > button.form-control-static[type="submit"] {
   padding-right: 0;
   padding-left: 0;
 }
 
-.form-control-sm, .input-group-sm > .form-control,
+.form-control-sm, .input-group-sm > .form-control, .login-card .login-card-block .input-group-sm > input,
 .input-group-sm > .input-group-addon,
-.input-group-sm > .input-group-btn > .btn {
+.input-group-sm > .input-group-btn > .btn,
+.login-card .login-card-block .input-group-sm > .input-group-btn > button[type="submit"] {
   padding: 0.275rem 0.75rem;
   font-size: 0.85rem;
   line-height: 1.5;
   border-radius: 0.2rem;
 }
 
-.form-control-lg, .input-group-lg > .form-control,
+.form-control-lg, .input-group-lg > .form-control, .login-card .login-card-block .input-group-lg > input,
 .input-group-lg > .input-group-addon,
-.input-group-lg > .input-group-btn > .btn {
+.input-group-lg > .input-group-btn > .btn,
+.login-card .login-card-block .input-group-lg > .input-group-btn > button[type="submit"] {
   padding: 0.75rem 1.25rem;
   font-size: 1.25rem;
   line-height: 1.33333;
   border-radius: 0.3rem;
 }
 
-.form-group {
+.form-group, .login-card .login-card-block fieldset {
   margin-bottom: 15px;
 }
 
@@ -2195,7 +2203,7 @@ input[type="checkbox"] {
 .has-success .checkbox-inline, .has-success.radio label, .has-success.checkbox label, .has-success.radio-inline label, .has-success.checkbox-inline label {
   color: #5cb85c;
 }
-.has-success .form-control {
+.has-success .form-control, .has-success .login-card .login-card-block input, .login-card .login-card-block .has-success input {
   border-color: #5cb85c;
 }
 .has-success .input-group-addon {
@@ -2218,7 +2226,7 @@ input[type="checkbox"] {
 .has-warning .checkbox-inline, .has-warning.radio label, .has-warning.checkbox label, .has-warning.radio-inline label, .has-warning.checkbox-inline label {
   color: #f0ad4e;
 }
-.has-warning .form-control {
+.has-warning .form-control, .has-warning .login-card .login-card-block input, .login-card .login-card-block .has-warning input {
   border-color: #f0ad4e;
 }
 .has-warning .input-group-addon {
@@ -2241,7 +2249,7 @@ input[type="checkbox"] {
 .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label {
   color: #d9534f;
 }
-.has-error .form-control {
+.has-error .form-control, .has-error .login-card .login-card-block input, .login-card .login-card-block .has-error input {
   border-color: #d9534f;
 }
 .has-error .input-group-addon {
@@ -2257,12 +2265,12 @@ input[type="checkbox"] {
 }
 
 @media (min-width: 34em) {
-  .form-inline .form-group {
+  .form-inline .form-group, .form-inline .login-card .login-card-block fieldset, .login-card .login-card-block .form-inline fieldset {
     display: inline-block;
     margin-bottom: 0;
     vertical-align: middle;
   }
-  .form-inline .form-control {
+  .form-inline .form-control, .form-inline .login-card .login-card-block input, .login-card .login-card-block .form-inline input {
     display: inline-block;
     width: auto;
     vertical-align: middle;
@@ -2276,10 +2284,12 @@ input[type="checkbox"] {
   }
   .form-inline .input-group .input-group-addon,
   .form-inline .input-group .input-group-btn,
-  .form-inline .input-group .form-control {
+  .form-inline .input-group .form-control,
+  .form-inline .input-group .login-card .login-card-block input,
+  .login-card .login-card-block .form-inline .input-group input {
     width: auto;
   }
-  .form-inline .input-group > .form-control {
+  .form-inline .input-group > .form-control, .form-inline .login-card .login-card-block .input-group > input, .login-card .login-card-block .form-inline .input-group > input {
     width: 100%;
   }
   .form-inline .control-label {
@@ -2307,7 +2317,7 @@ input[type="checkbox"] {
   }
 }
 
-.btn {
+.btn, .login-card .login-card-block button[type="submit"] {
   display: inline-block;
   font-weight: normal;
   text-align: center;
@@ -2322,22 +2332,22 @@ input[type="checkbox"] {
   line-height: 1.5;
   border-radius: 0.25rem;
 }
-.btn:focus, .btn.focus, .btn:active:focus, .btn:active.focus, .btn.active:focus, .modules-navbar .btn.module-navbar:focus:hover, .btn.active.focus, .modules-navbar .btn.focus.module-navbar:hover {
+.btn:focus, .login-card .login-card-block button[type="submit"]:focus, .btn.focus, .login-card .login-card-block button.focus[type="submit"], .btn:active:focus, .login-card .login-card-block button[type="submit"]:active:focus, .btn:active.focus, .login-card .login-card-block button[type="submit"]:active.focus, .btn.active:focus, .login-card .login-card-block button.active[type="submit"]:focus, .login-card .login-card-block .modules-navbar button[type="submit"].module-navbar:focus:hover, .modules-navbar .login-card .login-card-block button[type="submit"].module-navbar:focus:hover, .modules-navbar .btn.module-navbar:focus:hover, .btn.active.focus, .login-card .login-card-block button.active.focus[type="submit"], .login-card .login-card-block .modules-navbar button.focus[type="submit"].module-navbar:hover, .modules-navbar .login-card .login-card-block button.focus[type="submit"].module-navbar:hover, .modules-navbar .btn.focus.module-navbar:hover {
   outline: thin dotted;
   outline: 5px auto -webkit-focus-ring-color;
   outline-offset: -2px;
 }
-.btn:focus, .btn:hover {
+.btn:focus, .login-card .login-card-block button[type="submit"]:focus, .btn:hover, .login-card .login-card-block button[type="submit"]:hover {
   text-decoration: none;
 }
-.btn.focus {
+.btn.focus, .login-card .login-card-block button.focus[type="submit"] {
   text-decoration: none;
 }
-.btn:active, .btn.active, .modules-navbar .btn.module-navbar:hover {
+.btn:active, .login-card .login-card-block button[type="submit"]:active, .btn.active, .login-card .login-card-block button.active[type="submit"], .login-card .login-card-block .modules-navbar button[type="submit"].module-navbar:hover, .modules-navbar .login-card .login-card-block button[type="submit"].module-navbar:hover, .modules-navbar .btn.module-navbar:hover {
   background-image: none;
   outline: 0;
 }
-.btn.disabled, .btn:disabled, fieldset[disabled] .btn {
+.btn.disabled, .login-card .login-card-block button.disabled[type="submit"], .btn:disabled, .login-card .login-card-block button[type="submit"]:disabled, fieldset[disabled] .btn, fieldset[disabled] .login-card .login-card-block button[type="submit"], .login-card .login-card-block fieldset[disabled] button[type="submit"] {
   cursor: not-allowed;
   opacity: .65;
 }
@@ -2347,29 +2357,29 @@ fieldset[disabled] a.btn {
   pointer-events: none;
 }
 
-.btn-primary {
+.btn-primary, .login-card .login-card-block button[type="submit"] {
   color: #fff;
   background-color: #0275d8;
   border-color: #0275d8;
 }
-.btn-primary:focus, .btn-primary.focus, .btn-primary:active, .btn-primary.active, .modules-navbar .btn-primary.module-navbar:hover, .open > .btn-primary.dropdown-toggle {
+.btn-primary:focus, .login-card .login-card-block button[type="submit"]:focus, .btn-primary.focus, .login-card .login-card-block button.focus[type="submit"], .btn-primary:active, .login-card .login-card-block button[type="submit"]:active, .btn-primary.active, .login-card .login-card-block button.active[type="submit"], .login-card .login-card-block .modules-navbar button[type="submit"].module-navbar:hover, .modules-navbar .login-card .login-card-block button[type="submit"].module-navbar:hover, .modules-navbar .btn-primary.module-navbar:hover, .open > .btn-primary.dropdown-toggle, .login-card .login-card-block .open > button.dropdown-toggle[type="submit"] {
   color: #fff;
   background-color: #025aa5;
   border-color: #01549b;
 }
-.btn-primary:hover {
+.btn-primary:hover, .login-card .login-card-block button[type="submit"]:hover {
   color: #fff;
   background-color: #025aa5;
   border-color: #01549b;
 }
-.btn-primary:active, .btn-primary.active, .modules-navbar .btn-primary.module-navbar:hover, .open > .btn-primary.dropdown-toggle {
+.btn-primary:active, .login-card .login-card-block button[type="submit"]:active, .btn-primary.active, .login-card .login-card-block button.active[type="submit"], .login-card .login-card-block .modules-navbar button[type="submit"].module-navbar:hover, .modules-navbar .login-card .login-card-block button[type="submit"].module-navbar:hover, .modules-navbar .btn-primary.module-navbar:hover, .open > .btn-primary.dropdown-toggle, .login-card .login-card-block .open > button.dropdown-toggle[type="submit"] {
   background-image: none;
 }
-.btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary:disabled:focus, .btn-primary:disabled.focus, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .btn-primary.focus {
+.btn-primary.disabled:focus, .login-card .login-card-block button.disabled[type="submit"]:focus, .btn-primary.disabled.focus, .login-card .login-card-block button.disabled.focus[type="submit"], .btn-primary:disabled:focus, .login-card .login-card-block button[type="submit"]:disabled:focus, .btn-primary:disabled.focus, .login-card .login-card-block button[type="submit"]:disabled.focus, fieldset[disabled] .btn-primary:focus, fieldset[disabled] .login-card .login-card-block button[type="submit"]:focus, .login-card .login-card-block fieldset[disabled] button[type="submit"]:focus, fieldset[disabled] .btn-primary.focus, fieldset[disabled] .login-card .login-card-block button.focus[type="submit"], .login-card .login-card-block fieldset[disabled] button.focus[type="submit"] {
   background-color: #0275d8;
   border-color: #0275d8;
 }
-.btn-primary.disabled:hover, .btn-primary:disabled:hover, fieldset[disabled] .btn-primary:hover {
+.btn-primary.disabled:hover, .login-card .login-card-block button.disabled[type="submit"]:hover, .btn-primary:disabled:hover, .login-card .login-card-block button[type="submit"]:disabled:hover, fieldset[disabled] .btn-primary:hover, fieldset[disabled] .login-card .login-card-block button[type="submit"]:hover, .login-card .login-card-block fieldset[disabled] button[type="submit"]:hover {
   background-color: #0275d8;
   border-color: #0275d8;
 }
@@ -2671,14 +2681,14 @@ fieldset[disabled] a.btn {
   text-decoration: none;
 }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg, .btn-group-lg > .btn, .login-card .login-card-block .btn-group-lg > button[type="submit"] {
   padding: 0.75rem 1.25rem;
   font-size: 1.25rem;
   line-height: 1.33333;
   border-radius: 0.3rem;
 }
 
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm, .btn-group-sm > .btn, .login-card .login-card-block .btn-group-sm > button[type="submit"] {
   padding: 0.25rem 0.75rem;
   font-size: 0.85rem;
   line-height: 1.5;
@@ -2864,26 +2874,37 @@ input[type="button"].btn-block {
   display: inline-block;
   vertical-align: middle;
 }
-.btn-group > .btn,
-.btn-group-vertical > .btn {
+.btn-group > .btn, .login-card .login-card-block .btn-group > button[type="submit"],
+.btn-group-vertical > .btn,
+.login-card .login-card-block .btn-group-vertical > button[type="submit"] {
   position: relative;
   float: left;
 }
-.btn-group > .btn:focus, .btn-group > .btn:active, .btn-group > .btn.active, .modules-navbar .btn-group > .btn.module-navbar:hover,
+.btn-group > .btn:focus, .login-card .login-card-block .btn-group > button[type="submit"]:focus, .btn-group > .btn:active, .login-card .login-card-block .btn-group > button[type="submit"]:active, .btn-group > .btn.active, .login-card .login-card-block .btn-group > button.active[type="submit"], .login-card .login-card-block .modules-navbar .btn-group > button[type="submit"].module-navbar:hover, .modules-navbar .login-card .login-card-block .btn-group > button[type="submit"].module-navbar:hover, .modules-navbar .btn-group > .btn.module-navbar:hover,
 .btn-group-vertical > .btn:focus,
+.login-card .login-card-block .btn-group-vertical > button[type="submit"]:focus,
 .btn-group-vertical > .btn:active,
+.login-card .login-card-block .btn-group-vertical > button[type="submit"]:active,
 .btn-group-vertical > .btn.active,
+.login-card .login-card-block .btn-group-vertical > button.active[type="submit"],
+.login-card .login-card-block .modules-navbar .btn-group-vertical > button[type="submit"].module-navbar:hover,
+.modules-navbar .login-card .login-card-block .btn-group-vertical > button[type="submit"].module-navbar:hover,
 .modules-navbar .btn-group-vertical > .btn.module-navbar:hover {
   z-index: 2;
 }
-.btn-group > .btn:hover,
-.btn-group-vertical > .btn:hover {
+.btn-group > .btn:hover, .login-card .login-card-block .btn-group > button[type="submit"]:hover,
+.btn-group-vertical > .btn:hover,
+.login-card .login-card-block .btn-group-vertical > button[type="submit"]:hover {
   z-index: 2;
 }
 
-.btn-group .btn + .btn,
+.btn-group .btn + .btn, .btn-group .login-card .login-card-block button[type="submit"] + .btn, .login-card .login-card-block .btn-group button[type="submit"] + .btn, .btn-group .login-card .login-card-block .btn + button[type="submit"], .login-card .login-card-block .btn-group .btn + button[type="submit"], .btn-group .login-card .login-card-block button[type="submit"] + button[type="submit"], .login-card .login-card-block .btn-group button[type="submit"] + button[type="submit"],
 .btn-group .btn + .btn-group,
+.btn-group .login-card .login-card-block button[type="submit"] + .btn-group,
+.login-card .login-card-block .btn-group button[type="submit"] + .btn-group,
 .btn-group .btn-group + .btn,
+.btn-group .login-card .login-card-block .btn-group + button[type="submit"],
+.login-card .login-card-block .btn-group .btn-group + button[type="submit"],
 .btn-group .btn-group + .btn-group {
   margin-left: -1px;
 }
@@ -2902,25 +2923,25 @@ input[type="button"].btn-block {
 .btn-toolbar .input-group {
   float: left;
 }
-.btn-toolbar > .btn,
+.btn-toolbar > .btn, .login-card .login-card-block .btn-toolbar > button[type="submit"],
 .btn-toolbar > .btn-group,
 .btn-toolbar > .input-group {
   margin-left: 5px;
 }
 
-.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle) {
+.btn-group > .btn:not(:first-child):not(:last-child):not(.dropdown-toggle), .login-card .login-card-block .btn-group > button[type="submit"]:not(:first-child):not(:last-child):not(.dropdown-toggle) {
   border-radius: 0;
 }
 
-.btn-group > .btn:first-child {
+.btn-group > .btn:first-child, .login-card .login-card-block .btn-group > button[type="submit"]:first-child {
   margin-left: 0;
 }
-.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle), .login-card .login-card-block .btn-group > button[type="submit"]:first-child:not(:last-child):not(.dropdown-toggle) {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.btn-group > .btn:last-child:not(:first-child),
+.btn-group > .btn:last-child:not(:first-child), .login-card .login-card-block .btn-group > button[type="submit"]:last-child:not(:first-child),
 .btn-group > .dropdown-toggle:not(:first-child) {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
@@ -2930,17 +2951,17 @@ input[type="button"].btn-block {
   float: left;
 }
 
-.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn {
+.btn-group > .btn-group:not(:first-child):not(:last-child) > .btn, .login-card .login-card-block .btn-group > .btn-group:not(:first-child):not(:last-child) > button[type="submit"] {
   border-radius: 0;
 }
 
-.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group > .btn-group:first-child:not(:last-child) > .btn:last-child, .login-card .login-card-block .btn-group > .btn-group:first-child:not(:last-child) > button[type="submit"]:last-child,
 .btn-group > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
 
-.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
+.btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child, .login-card .login-card-block .btn-group > .btn-group:last-child:not(:first-child) > button[type="submit"]:first-child {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
@@ -2950,32 +2971,33 @@ input[type="button"].btn-block {
   outline: 0;
 }
 
-.btn-group > .btn + .dropdown-toggle {
+.btn-group > .btn + .dropdown-toggle, .login-card .login-card-block .btn-group > button[type="submit"] + .dropdown-toggle {
   padding-right: 8px;
   padding-left: 8px;
 }
 
-.btn-group > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle {
+.btn-group > .btn-lg + .dropdown-toggle, .btn-group-lg.btn-group > .btn + .dropdown-toggle, .login-card .login-card-block .btn-group-lg.btn-group > button[type="submit"] + .dropdown-toggle {
   padding-right: 12px;
   padding-left: 12px;
 }
 
-.btn .caret {
+.btn .caret, .login-card .login-card-block button[type="submit"] .caret {
   margin-left: 0;
 }
 
-.btn-lg .caret, .btn-group-lg > .btn .caret {
+.btn-lg .caret, .btn-group-lg > .btn .caret, .login-card .login-card-block .btn-group-lg > button[type="submit"] .caret {
   border-width: 0.3em 0.3em 0;
   border-bottom-width: 0;
 }
 
-.dropup .btn-lg .caret, .dropup .btn-group-lg > .btn .caret {
+.dropup .btn-lg .caret, .dropup .btn-group-lg > .btn .caret, .dropup .login-card .login-card-block .btn-group-lg > button[type="submit"] .caret, .login-card .login-card-block .dropup .btn-group-lg > button[type="submit"] .caret {
   border-width: 0 0.3em 0.3em;
 }
 
-.btn-group-vertical > .btn,
+.btn-group-vertical > .btn, .login-card .login-card-block .btn-group-vertical > button[type="submit"],
 .btn-group-vertical > .btn-group,
-.btn-group-vertical > .btn-group > .btn {
+.btn-group-vertical > .btn-group > .btn,
+.login-card .login-card-block .btn-group-vertical > .btn-group > button[type="submit"] {
   display: block;
   float: none;
   width: 100%;
@@ -2988,50 +3010,55 @@ input[type="button"].btn-block {
 .btn-group-vertical > .btn-group:after {
   clear: both;
 }
-.btn-group-vertical > .btn-group > .btn {
+.btn-group-vertical > .btn-group > .btn, .login-card .login-card-block .btn-group-vertical > .btn-group > button[type="submit"] {
   float: none;
 }
-.btn-group-vertical > .btn + .btn,
+.btn-group-vertical > .btn + .btn, .login-card .login-card-block .btn-group-vertical > button[type="submit"] + .btn, .login-card .login-card-block .btn-group-vertical > .btn + button[type="submit"], .login-card .login-card-block .btn-group-vertical > button[type="submit"] + button[type="submit"],
 .btn-group-vertical > .btn + .btn-group,
+.login-card .login-card-block .btn-group-vertical > button[type="submit"] + .btn-group,
 .btn-group-vertical > .btn-group + .btn,
+.login-card .login-card-block .btn-group-vertical > .btn-group + button[type="submit"],
 .btn-group-vertical > .btn-group + .btn-group {
   margin-top: -1px;
   margin-left: 0;
 }
 
-.btn-group-vertical > .btn:not(:first-child):not(:last-child) {
+.btn-group-vertical > .btn:not(:first-child):not(:last-child), .login-card .login-card-block .btn-group-vertical > button[type="submit"]:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
-.btn-group-vertical > .btn:first-child:not(:last-child) {
+.btn-group-vertical > .btn:first-child:not(:last-child), .login-card .login-card-block .btn-group-vertical > button[type="submit"]:first-child:not(:last-child) {
   border-top-right-radius: 0.25rem;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-group-vertical > .btn:last-child:not(:first-child) {
+.btn-group-vertical > .btn:last-child:not(:first-child), .login-card .login-card-block .btn-group-vertical > button[type="submit"]:last-child:not(:first-child) {
   border-bottom-left-radius: 0.25rem;
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
 
-.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {
+.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn, .login-card .login-card-block .btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > button[type="submit"] {
   border-radius: 0;
 }
 
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child, .login-card .login-card-block .btn-group-vertical > .btn-group:first-child:not(:last-child) > button[type="submit"]:last-child,
 .btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
 
-.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {
+.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child, .login-card .login-card-block .btn-group-vertical > .btn-group:last-child:not(:first-child) > button[type="submit"]:first-child {
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
 
-[data-toggle="buttons"] > .btn input[type="radio"],
+[data-toggle="buttons"] > .btn input[type="radio"], .login-card .login-card-block [data-toggle="buttons"] > button[type="submit"] input[type="radio"],
 [data-toggle="buttons"] > .btn input[type="checkbox"],
+.login-card .login-card-block [data-toggle="buttons"] > button[type="submit"] input[type="checkbox"],
 [data-toggle="buttons"] > .btn-group > .btn input[type="radio"],
-[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"] {
+.login-card .login-card-block [data-toggle="buttons"] > .btn-group > button[type="submit"] input[type="radio"],
+[data-toggle="buttons"] > .btn-group > .btn input[type="checkbox"],
+.login-card .login-card-block [data-toggle="buttons"] > .btn-group > button[type="submit"] input[type="checkbox"] {
   position: absolute;
   clip: rect(0, 0, 0, 0);
   pointer-events: none;
@@ -3042,7 +3069,7 @@ input[type="button"].btn-block {
   display: table;
   border-collapse: separate;
 }
-.input-group .form-control {
+.input-group .form-control, .input-group .login-card .login-card-block input, .login-card .login-card-block .input-group input {
   position: relative;
   z-index: 2;
   float: left;
@@ -3052,12 +3079,16 @@ input[type="button"].btn-block {
 
 .input-group-addon,
 .input-group-btn,
-.input-group .form-control {
+.input-group .form-control,
+.input-group .login-card .login-card-block input,
+.login-card .login-card-block .input-group input {
   display: table-cell;
 }
 .input-group-addon:not(:first-child):not(:last-child),
 .input-group-btn:not(:first-child):not(:last-child),
-.input-group .form-control:not(:first-child):not(:last-child) {
+.input-group .form-control:not(:first-child):not(:last-child),
+.input-group .login-card .login-card-block input:not(:first-child):not(:last-child),
+.login-card .login-card-block .input-group input:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
 
@@ -3079,16 +3110,18 @@ input[type="button"].btn-block {
   border: 1px solid #ccc;
   border-radius: 0.25rem;
 }
-.input-group-addon.form-control-sm,
+.input-group-addon.form-control-sm, .login-card .login-card-block .input-group-sm > input.input-group-addon,
 .input-group-sm > .input-group-addon,
-.input-group-sm > .input-group-btn > .input-group-addon.btn {
+.input-group-sm > .input-group-btn > .input-group-addon.btn,
+.login-card .login-card-block .input-group-sm > .input-group-btn > button.input-group-addon[type="submit"] {
   padding: 0.275rem 0.75rem;
   font-size: 0.85rem;
   border-radius: 0.2rem;
 }
-.input-group-addon.form-control-lg,
+.input-group-addon.form-control-lg, .login-card .login-card-block .input-group-lg > input.input-group-addon,
 .input-group-lg > .input-group-addon,
-.input-group-lg > .input-group-btn > .input-group-addon.btn {
+.input-group-lg > .input-group-btn > .input-group-addon.btn,
+.login-card .login-card-block .input-group-lg > .input-group-btn > button.input-group-addon[type="submit"] {
   padding: 1.25rem 1.25rem;
   font-size: 1.25rem;
   border-radius: 0.3rem;
@@ -3098,13 +3131,17 @@ input[type="button"].btn-block {
   margin-top: 0;
 }
 
-.input-group .form-control:first-child,
+.input-group .form-control:first-child, .input-group .login-card .login-card-block input:first-child, .login-card .login-card-block .input-group input:first-child,
 .input-group-addon:first-child,
 .input-group-btn:first-child > .btn,
+.login-card .login-card-block .input-group-btn:first-child > button[type="submit"],
 .input-group-btn:first-child > .btn-group > .btn,
+.login-card .login-card-block .input-group-btn:first-child > .btn-group > button[type="submit"],
 .input-group-btn:first-child > .dropdown-toggle,
 .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle),
-.input-group-btn:last-child > .btn-group:not(:last-child) > .btn {
+.login-card .login-card-block .input-group-btn:last-child > button[type="submit"]:not(:last-child):not(.dropdown-toggle),
+.input-group-btn:last-child > .btn-group:not(:last-child) > .btn,
+.login-card .login-card-block .input-group-btn:last-child > .btn-group:not(:last-child) > button[type="submit"] {
   border-bottom-right-radius: 0;
   border-top-right-radius: 0;
 }
@@ -3113,13 +3150,17 @@ input[type="button"].btn-block {
   border-right: 0;
 }
 
-.input-group .form-control:last-child,
+.input-group .form-control:last-child, .input-group .login-card .login-card-block input:last-child, .login-card .login-card-block .input-group input:last-child,
 .input-group-addon:last-child,
 .input-group-btn:last-child > .btn,
+.login-card .login-card-block .input-group-btn:last-child > button[type="submit"],
 .input-group-btn:last-child > .btn-group > .btn,
+.login-card .login-card-block .input-group-btn:last-child > .btn-group > button[type="submit"],
 .input-group-btn:last-child > .dropdown-toggle,
 .input-group-btn:first-child > .btn:not(:first-child),
-.input-group-btn:first-child > .btn-group:not(:first-child) > .btn {
+.login-card .login-card-block .input-group-btn:first-child > button[type="submit"]:not(:first-child),
+.input-group-btn:first-child > .btn-group:not(:first-child) > .btn,
+.login-card .login-card-block .input-group-btn:first-child > .btn-group:not(:first-child) > button[type="submit"] {
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }
@@ -3133,20 +3174,20 @@ input[type="button"].btn-block {
   font-size: 0;
   white-space: nowrap;
 }
-.input-group-btn > .btn {
+.input-group-btn > .btn, .login-card .login-card-block .input-group-btn > button[type="submit"] {
   position: relative;
 }
-.input-group-btn > .btn + .btn {
+.input-group-btn > .btn + .btn, .login-card .login-card-block .input-group-btn > button[type="submit"] + .btn, .login-card .login-card-block .input-group-btn > .btn + button[type="submit"], .login-card .login-card-block .input-group-btn > button[type="submit"] + button[type="submit"] {
   margin-left: -1px;
 }
-.input-group-btn > .btn:focus, .input-group-btn > .btn:active, .input-group-btn > .btn:hover {
+.input-group-btn > .btn:focus, .login-card .login-card-block .input-group-btn > button[type="submit"]:focus, .input-group-btn > .btn:active, .login-card .login-card-block .input-group-btn > button[type="submit"]:active, .input-group-btn > .btn:hover, .login-card .login-card-block .input-group-btn > button[type="submit"]:hover {
   z-index: 2;
 }
-.input-group-btn:first-child > .btn,
+.input-group-btn:first-child > .btn, .login-card .login-card-block .input-group-btn:first-child > button[type="submit"],
 .input-group-btn:first-child > .btn-group {
   margin-right: -1px;
 }
-.input-group-btn:last-child > .btn,
+.input-group-btn:last-child > .btn, .login-card .login-card-block .input-group-btn:last-child > button[type="submit"],
 .input-group-btn:last-child > .btn-group {
   z-index: 2;
   margin-left: -1px;
@@ -3740,23 +3781,23 @@ input[type="button"].btn-block {
   background-color: rgba(255, 255, 255, 0.075);
 }
 
-.card {
+.card, .login-card {
   position: relative;
   margin-bottom: 0.75rem;
   border: 0.0625rem solid #e5e5e5;
   border-radius: 0.25rem;
 }
 
-.card-block {
+.card-block, .login-card .login-card-block {
   padding: 1.25rem;
 }
 
-.card-title {
+.card-title, .login-card .login-card-block h4 {
   margin-top: 0;
   margin-bottom: 0.75rem;
 }
 
-.card-subtitle {
+.card-subtitle, .login-card .login-card-block h6 {
   margin-top: -0.375rem;
   margin-bottom: 0;
 }
@@ -3772,10 +3813,10 @@ input[type="button"].btn-block {
   margin-left: 1.25rem;
 }
 
-.card > .list-group:first-child .list-group-item:first-child {
+.card > .list-group:first-child .list-group-item:first-child, .login-card > .list-group:first-child .list-group-item:first-child {
   border-radius: 0.25rem 0.25rem 0 0;
 }
-.card > .list-group:last-child .list-group-item:last-child {
+.card > .list-group:last-child .list-group-item:last-child, .login-card > .list-group:last-child .list-group-item:last-child {
   border-radius: 0 0 0.25rem 0.25rem;
 }
 
@@ -3829,6 +3870,8 @@ input[type="button"].btn-block {
 .card-inverse .card-header,
 .card-inverse .card-footer,
 .card-inverse .card-title,
+.card-inverse .login-card .login-card-block h4,
+.login-card .login-card-block .card-inverse h4,
 .card-inverse .card-blockquote {
   color: #fff;
 }
@@ -3860,7 +3903,7 @@ input[type="button"].btn-block {
   padding: 1.25rem;
 }
 
-.card-img-top {
+.card-img-top, .login-card .login-card-logo img {
   border-radius: 0.25rem 0.25rem 0 0;
 }
 
@@ -3873,7 +3916,7 @@ input[type="button"].btn-block {
   table-layout: fixed;
   border-spacing: 1.25rem 0;
 }
-.card-deck .card {
+.card-deck .card, .card-deck .login-card {
   display: table-cell;
   width: 1%;
   vertical-align: top;
@@ -3889,31 +3932,32 @@ input[type="button"].btn-block {
   width: 100%;
   table-layout: fixed;
 }
-.card-group .card {
+.card-group .card, .card-group .login-card {
   display: table-cell;
   vertical-align: top;
 }
-.card-group .card + .card {
+.card-group .card + .card, .card-group .login-card + .card, .card-group .card + .login-card, .card-group .login-card + .login-card {
   margin-left: 0;
   border-left: 0;
 }
-.card-group .card:first-child .card-img-top {
+.card-group .card:first-child .card-img-top, .card-group .login-card:first-child .card-img-top, .card-group .card:first-child .login-card .login-card-logo img, .login-card .login-card-logo .card-group .card:first-child img, .card-group .login-card:first-child .login-card-logo img {
   border-top-right-radius: 0;
 }
-.card-group .card:first-child .card-img-bottom {
+.card-group .card:first-child .card-img-bottom, .card-group .login-card:first-child .card-img-bottom {
   border-bottom-right-radius: 0;
 }
-.card-group .card:last-child .card-img-top {
+.card-group .card:last-child .card-img-top, .card-group .login-card:last-child .card-img-top, .card-group .card:last-child .login-card .login-card-logo img, .login-card .login-card-logo .card-group .card:last-child img, .card-group .login-card:last-child .login-card-logo img {
   border-top-left-radius: 0;
 }
-.card-group .card:last-child .card-img-bottom {
+.card-group .card:last-child .card-img-bottom, .card-group .login-card:last-child .card-img-bottom {
   border-bottom-left-radius: 0;
 }
-.card-group .card:not(:first-child):not(:last-child) {
+.card-group .card:not(:first-child):not(:last-child), .card-group .login-card:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
-.card-group .card:not(:first-child):not(:last-child) .card-img-top,
-.card-group .card:not(:first-child):not(:last-child) .card-img-bottom {
+.card-group .card:not(:first-child):not(:last-child) .card-img-top, .card-group .login-card:not(:first-child):not(:last-child) .card-img-top, .card-group .card:not(:first-child):not(:last-child) .login-card .login-card-logo img, .login-card .login-card-logo .card-group .card:not(:first-child):not(:last-child) img, .card-group .login-card:not(:first-child):not(:last-child) .login-card-logo img,
+.card-group .card:not(:first-child):not(:last-child) .card-img-bottom,
+.card-group .login-card:not(:first-child):not(:last-child) .card-img-bottom {
   border-radius: 0;
 }
 
@@ -3921,7 +3965,7 @@ input[type="button"].btn-block {
   column-count: 3;
   column-gap: 1.25rem;
 }
-.card-columns .card {
+.card-columns .card, .card-columns .login-card {
   display: inline-block;
   width: 100%;
 }
@@ -4108,7 +4152,7 @@ input[type="button"].btn-block {
 .label:empty {
   display: none;
 }
-.btn .label {
+.btn .label, .login-card .login-card-block button[type="submit"] .label {
   position: relative;
   top: -1px;
 }
@@ -4843,11 +4887,11 @@ button.close {
 .modal-footer:after {
   clear: both;
 }
-.modal-footer .btn + .btn {
+.modal-footer .btn + .btn, .modal-footer .login-card .login-card-block button[type="submit"] + .btn, .login-card .login-card-block .modal-footer button[type="submit"] + .btn, .modal-footer .login-card .login-card-block .btn + button[type="submit"], .login-card .login-card-block .modal-footer .btn + button[type="submit"], .modal-footer .login-card .login-card-block button[type="submit"] + button[type="submit"], .login-card .login-card-block .modal-footer button[type="submit"] + button[type="submit"] {
   margin-bottom: 0;
   margin-left: 5px;
 }
-.modal-footer .btn-group .btn + .btn {
+.modal-footer .btn-group .btn + .btn, .modal-footer .btn-group .login-card .login-card-block button[type="submit"] + .btn, .login-card .login-card-block .modal-footer .btn-group button[type="submit"] + .btn, .modal-footer .btn-group .login-card .login-card-block .btn + button[type="submit"], .login-card .login-card-block .modal-footer .btn-group .btn + button[type="submit"], .modal-footer .btn-group .login-card .login-card-block button[type="submit"] + button[type="submit"], .login-card .login-card-block .modal-footer .btn-group button[type="submit"] + button[type="submit"] {
   margin-left: -1px;
 }
 .modal-footer .btn-block + .btn-block {
@@ -5259,7 +5303,7 @@ button.close {
   text-align: center;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.6);
 }
-.carousel-caption .btn {
+.carousel-caption .btn, .carousel-caption .login-card .login-card-block button[type="submit"], .login-card .login-card-block .carousel-caption button[type="submit"] {
   text-shadow: none;
 }
 
@@ -5448,7 +5492,7 @@ button.close {
   text-transform: capitalize;
 }
 
-.text-muted {
+.text-muted, .login-card .login-card-block h6 {
   color: #818a91;
 }
 
@@ -5888,13 +5932,44 @@ a.bg-danger:focus, a.bg-danger:hover {
   }
 }
 
+body {
+  padding-top: 60px;
+}
+
+.signin-screen {
+  background-image: url("../../public/img/cross_scratches.png");
+  background-repeat: repeat;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.login-card {
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+  -moz-box-shadow: 0 10px 6px -6px #777;
+  box-shadow: 0 10px 6px -6px #777;
+  background-color: white;
+  margin-top: 70px;
+  width: 33%;
+  max-width: 420px;
+}
+.login-card .login-card-logo {
+  text-align: center;
+  margin: 30px 30px 5px 30px;
+}
+.login-card .login-card-logo img {
+  width: 70%;
+}
+.login-card .login-card-block h6 {
+  margin-bottom: 10px;
+}
+
 .top-navbar {
   background-color: #414141;
   height: 50px;
   padding-right: 0;
-}
-.top-navbar img {
-  padding-top: 5px;
 }
 .top-navbar a {
   margin-right: 20px;
@@ -5903,14 +5978,14 @@ a.bg-danger:focus, a.bg-danger:hover {
   background-color: #d22d32;
   float: right;
   height: 50px;
-  line-height: 4rem;
-  margin-top: -5px;
+  line-height: 2.25rem;
+  margin-top: -8px;
   padding: 0 15px;
   text-align: center;
 }
 .top-navbar .logout a {
   color: #d2d2d2;
-  font-size: 2rem;
+  font-size: 1.25rem;
   margin-right: 0;
 }
 .top-navbar .logout a:hover {
@@ -5918,14 +5993,14 @@ a.bg-danger:focus, a.bg-danger:hover {
 }
 
 .modules-navbar .module-navbar {
-  line-height: 4rem;
+  line-height: 2.25rem;
   margin-left: 0 !important;
-  margin-top: -4px;
+  margin-top: -8px;
   padding: 0 15px;
 }
 .modules-navbar .module-navbar a {
   color: #d2d2d2;
-  font-size: 2rem;
+  font-size: 1.25rem;
   font-style: italic;
   font-weight: 300;
   margin-right: 0;

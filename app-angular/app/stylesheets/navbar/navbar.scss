@@ -6,10 +6,6 @@
   height: 50px;
   padding-right: 0;
 
-  img {
-    padding-top: 5px;
-  }
-
   a {
     @extend .navbar-brand;
     margin-right: 20px;
@@ -19,13 +15,13 @@
     background-color: $persian-red;
     float: right;
     height: 50px;
-    line-height: 4rem;
-    margin-top: -5px;
+    line-height: 2.25rem;
+    margin-top: -8px;
     padding: 0 15px;
     text-align: center;
     a {
       color: $alto;
-      font-size: 2rem;
+      font-size: 1.25rem;
       margin-right: 0;
 
       &:hover {
@@ -41,15 +37,15 @@
 
   .module-navbar {
     @extend .nav-item;
-    line-height: 4rem;
+    line-height: 2.25rem;
     margin-left: 0 !important;
-    margin-top: -4px;
+    margin-top: -8px;
     padding: 0 15px;
 
     a {
       @extend .nav-link;
       color: $alto;
-      font-size: 2rem;
+      font-size: 1.25rem;
       font-style: italic;
       font-weight: 300;
       margin-right: 0;

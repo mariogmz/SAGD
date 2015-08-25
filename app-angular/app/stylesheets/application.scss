@@ -4,6 +4,10 @@
 
 @import "../../bower_components/bootstrap/scss/bootstrap";
 
+@import "base/mixins";
+@import "base/base";
+
+@import "login/login";
 @import "navbar/navbar";
 @import "empleados/empleados";
 
