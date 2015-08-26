@@ -11,6 +11,7 @@
         /*
          * Our reusable cross app code modules
          */
+        'blocks.session',
 
         /*
          * 3rd party app modules
