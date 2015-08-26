@@ -11,12 +11,12 @@
 
       <form>
         <fieldset>
-          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="auth.email">
+          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email">
         </fieldset>
         <fieldset>
-          <input type="password" placeholder="Contraseña" required ng-model="auth.password">
+          <input type="password" placeholder="Contraseña" required ng-model="vm.password">
         </fieldset>
-        <button type="submit" ng-click="auth.login()">Acceder</button>
+        <button type="submit" ng-click="vm.login()">Acceder</button>
       </form>
       <hr>
       <a ui-sref="forgot">¿Olvidaste tu contraseña?</a>

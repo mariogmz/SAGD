@@ -1,0 +1,21 @@
+// app/core/core.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.core', [
+        /*
+         * Angular modules
+         */
+
+        /*
+         * Our reusable cross app code modules
+         */
+
+        /*
+         * 3rd party app modules
+         */
+        'ui.router',
+        'satellizer'
+    ]);
+})();

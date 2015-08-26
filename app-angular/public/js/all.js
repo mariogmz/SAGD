@@ -1,3 +1,66 @@
+// app/core/core.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.core', [
+        /*
+         * Angular modules
+         */
+
+        /*
+         * Our reusable cross app code modules
+         */
+
+        /*
+         * 3rd party app modules
+         */
+        'ui.router',
+        'satellizer'
+    ]);
+})();
+
+// app/dashboard/dashboard.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.dashboard', [
+      'sagdApp.core',
+      'satellizer'
+    ]);
+})();
+
+// app/empleado/empleado.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.empleado', [
+      'sagdApp.core'
+    ]);
+})();
+
+// app/navbar/navbar.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.navbar', [
+      'sagdApp.core'
+    ]);
+})();
+
+// app/session/session.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.session', [
+      'sagdApp.core'
+    ]);
+})();
+
 // app.js
 
 (function () {
@@ -5,116 +68,113 @@
   'use strict';
 
   angular
-    .module('sagdApp', ['ui.router', 'satellizer'])
-    .config(['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider', function ($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
+    .module('sagdApp', [
+      'sagdApp.core',
 
-      var baseUrl = 'http://api.sagd.app/api/v1/';
-      // Satellizer configuration that specifies which API
-      // route the JWT should be retrieved from
-      $authProvider.loginUrl = baseUrl + 'authenticate';
+      'sagdApp.dashboard',
+      'sagdApp.session',
+      'sagdApp.empleado',
+      'sagdApp.navbar'
+  ]);
+})();
+
+// app/core/config.js
+
+(function() {
+    'use strict';
+
+    var core = angular.module('sagdApp.core');
+
+    core.config(configure);
+
+    configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
+
+    function configure ($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
+      var baseUrl = 'http://api.sagd.app/api/v1';
+      $authProvider.loginUrl = baseUrl + '/authenticate';
       $authProvider.withCredentials = true;
 
       $urlRouterProvider.otherwise('/login');
 
-      $stateProvider
-        .state('home', {
-          url: '/',
-          templateUrl: 'app/dashboard/dashboardView.html',
-          controller: 'DashboardController as dash'
-        })
-        .state('login', {
-          url: '/login',
-          templateUrl: 'app/authentication/loginView.html',
-          controller: 'AuthenticateController as auth'
-        })
-        .state('logout', {
-          url: '/logout',
-          templateUrl: 'app/logout/logoutView.html',
-          controller: 'LogoutController as logout'
-        })
-        .state('empleado', {
-          url: '/empleado',
-          templateUrl: 'app/empleado/empleadoView.html',
-          controller: 'EmpleadoController as empleado'
-        });
-
       if (window.history && window.history.pushState) {
         $locationProvider.html5Mode(true).hashPrefix('!');
       }
-    }])
-    .run(['$state', angular.noop]);
-
-})();
-
-// public/scripts/AuthCtrl.js
-
-(function () {
-
-  'use strict';
-
-  angular
-    .module('sagdApp')
-    .controller('AuthenticateController', AuthenticateController);
-
-  AuthenticateController.$inject = ['$auth', '$state'];
-
-  function AuthenticateController($auth, $state) {
-
-    if($auth.isAuthenticated()){
-      $state.go('home', {});
     }
 
-    var self = this;
-
-    self.login = function () {
-
-      var credentials = {
-        email: self.email,
-        password: self.password
-      };
-
-      // Use Satellizer's $auth service to login
-      $auth.login(credentials).then(function (data) {
-
-        // If login is successful, redirect to the users state
-        $state.go('home', {});
-      });
-    };
-
-    self.state = $state.$current.name;
-
-  }
-
+    core.run(['$state', angular.noop]);
 })();
 
-// app/dashboard/DashboardCtrl.js
+// app/dashboard/config.route.js
+
+(function() {
+    'use strict';
+
+    angular
+        .module('sagdApp.dashboard')
+        .config(configureRoutes);
+
+    configureRoutes.$inject = ['$stateProvider'];
+
+    function configureRoutes($stateProvider) {
+      $stateProvider
+          .state('home', {
+              url: '/',
+              templateUrl: 'app/dashboard/dashboard.html',
+              controller: 'DashboardController',
+              controllerAs: 'vm'
+          });
+    }
+})();
+
+// app/dashboard/dashboard.controller.js
 
 (function (){
 
   'use strict';
 
   angular
-    .module('sagdApp')
+    .module('sagdApp.dashboard')
     .controller('DashboardController', DashboardController);
 
   DashboardController.$inject = ['$auth', '$state'];
 
   function DashboardController($auth, $state) {
-
     if(! $auth.isAuthenticated()){
       $state.go('login', {});
     }
   }
 })();
 
-// app/empleado/empleadoController.js
+// app/empleado/config.route.js
+
+(function() {
+    'use strict';
+
+    angular
+        .module('sagdApp.empleado')
+        .config(configureRoutes);
+
+    configureRoutes.$inject = ['$stateProvider'];
+
+    function configureRoutes($stateProvider) {
+        $stateProvider
+            .state('empleado', {
+                url: '/empleado',
+                templateUrl: 'app/empleado/empleado.html',
+                controller: 'EmpleadoController',
+                controllerAs: 'vm'
+            });
+    }
+})();
+
+// app/empleado/empleado.controller.js
 
 (function () {
 
   'use strict';
 
   angular
-    .module('sagdApp')
+    .module('sagdApp.empleado')
     .controller('EmpleadoController', EmpleadoController);
 
   EmpleadoController.$inject = ['$http', '$auth', '$state'];
@@ -148,35 +208,29 @@
 
 })();
 
-// app/dashboard/LogoutCtrl.js
-
-(function (){
-
-  'use strict';
-
-  angular
-    .module('sagdApp')
-    .controller('LogoutController', LogoutController);
-
-  LogoutController.$inject = ['$auth', '$state'];
-
-  function LogoutController($auth, $state) {
-
-    if($auth.isAuthenticated()){
-      $auth.removeToken();
-    }
-    $state.go('login', {});
-  }
-})();
-
-// app/navbar/Navbar.js
+// app/navbar/navbar.controller.js
 
 (function () {
 
   'use strict';
 
   angular
-    .module('sagdApp')
+    .module('sagdApp.navbar')
+    .directive('logout', function () {
+      return {
+        templateUrl: 'app/session/logout.html'
+      };
+    });
+})();
+
+// app/navbar/navbar.controller.js
+
+(function () {
+
+  'use strict';
+
+  angular
+    .module('sagdApp.navbar')
     .controller('NavbarController', NavbarController)
     .directive('navBar', function () {
       return {
@@ -238,43 +292,79 @@
 
 })();
 
-// app/dashboard/StateSrv.js
+// app/session/config.route.js
 
-(function () {
+(function() {
+    'use strict';
 
-  'use strict';
+    angular
+        .module('sagdApp.session')
+        .config(configureRoutes);
 
-  angular
-    .module('sagdApp')
-    .service('stateService', StateService);
+    configureRoutes.$inject = ['$stateProvider'];
 
-  function StateService() {
-    var vm = this;
-    vm.state = '';
-  }
+    function configureRoutes($stateProvider) {
+        $stateProvider
+            .state('login', {
+                url: '/login',
+                templateUrl: 'app/session/login.html',
+                controller: 'SessionController',
+                controllerAs: 'vm'
+            })
+            .state('logout', {
+                url: '/logout',
+                templateUrl: 'app/session/logout.html',
+                controller: 'SessionController',
+                controllerAs: 'vm'
+            });
+    }
 })();
 
-// app/whereami/WhereAmICtrl.js
+// app/session/session.controller.js
 
 (function () {
 
   'use strict';
 
   angular
-    .module('sagdApp')
-    .controller('WhereAmIController', WhereAmIController)
-    .directive('waiBar', function () {
-      return {
-        templateUrl: 'app/whereami/waibar.html'
-      };
-    });
+    .module('sagdApp.session')
+    .controller('SessionController', SessionController);
 
-  WhereAmIController.$inject = ['$auth','stateService'];
+  SessionController.$inject = ['$auth', '$state'];
 
-  function WhereAmIController($auth, stateService) {
+  function SessionController($auth, $state) {
     var vm = this;
-    vm.isAuthenticated = $auth.isAuthenticated;
-    vm.state = stateService.state;
+    var auth = $auth;
+    var state = $state;
+
+    var redirectToHomeIfAuthenticated = function () {
+      if(auth.isAuthenticated()){
+        state.go('home', {});
+      }
+    }
+
+    var logoutUserIfAuthenticated = function () {
+      if($auth.isAuthenticated()){
+        $auth.removeToken();
+      }
+    }
+
+    vm.login = function () {
+      redirectToHomeIfAuthenticated();
+      var credentials = {
+        email: vm.email,
+        password: vm.password
+      };
+
+      $auth.login(credentials).then(function (data) {
+        $state.go('home', {});
+      });
+    };
+
+    vm.logout = function () {
+      logoutUserIfAuthenticated();
+      state.go('login', {});
+    }
   }
 
 })();

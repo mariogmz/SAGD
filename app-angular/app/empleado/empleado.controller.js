@@ -1,11 +1,11 @@
-// app/empleado/empleadoController.js
+// app/empleado/empleado.controller.js
 
 (function () {
 
   'use strict';
 
   angular
-    .module('sagdApp')
+    .module('sagdApp.empleado')
     .controller('EmpleadoController', EmpleadoController);
 
   EmpleadoController.$inject = ['$http', '$auth', '$state'];

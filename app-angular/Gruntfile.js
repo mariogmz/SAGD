@@ -16,7 +16,10 @@ module.exports = function(grunt) {
         dest: './public/libs/frontend.js'
       },
       js: {
-        src: ['./app/**/*.js'],
+        src: [
+          './app/**/*module*.js',
+          './app/**/*.js'
+        ],
         dest: './public/js/all.js'
       }
     },

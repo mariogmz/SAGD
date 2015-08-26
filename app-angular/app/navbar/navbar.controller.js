@@ -1,11 +1,11 @@
-// app/navbar/Navbar.js
+// app/navbar/navbar.controller.js
 
 (function () {
 
   'use strict';
 
   angular
-    .module('sagdApp')
+    .module('sagdApp.navbar')
     .controller('NavbarController', NavbarController)
     .directive('navBar', function () {
       return {

@@ -149,6 +149,7 @@ return [
          */
         App\Providers\ValidatorServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
 
         // Laravel IDE Helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
