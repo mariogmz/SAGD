@@ -1,0 +1,11 @@
+<nav class="top-navbar" ng-controller="NavbarController as nav">
+  <a ui-sref="home"><img src="../public/img/sagd.svg"></a>
+  <ul class="modules-navbar">
+    <li class="module-navbar" ng-repeat="module in nav.modules" ng-class="{'active': module.active}">
+      <a ui-sref="{{module.state}}">{{module.nombre}}</a>
+    </li>
+  </ul>
+  <div class="logout">
+    <a href="#" ng-click="vm.logout()">{{nav.empleado.usuario}}</a>
+  </div>
+</nav>

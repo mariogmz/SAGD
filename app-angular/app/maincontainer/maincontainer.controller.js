@@ -1,4 +1,4 @@
-// app/navbar/navbar.controller.js
+// app/navbar/maincontainer.controller.js
 
 (function () {
 
@@ -66,8 +66,8 @@
         nombre: 'Configuración',
         state: 'configuracion',
         active: false
-      }];
-
+      }
+    ];
 
     vm.isAuthenticated = session.isAuthenticated;
     vm.logout = session.logout;
