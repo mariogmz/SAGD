@@ -263,7 +263,7 @@ class EmpleadoTest extends TestCase {
     public function testUser()
     {
         $empleado = factory(App\Empleado::class)->create();
-        $user = factory(App\User::class)->create([
+        factory(App\User::class)->create([
             'morphable_id' => $empleado->id,
             'morphable_type' => get_class($empleado)
         ]);
