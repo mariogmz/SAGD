@@ -27,51 +27,43 @@
         state: 'producto',
         active: false
       }, {
-        nombre: 'Inventario',
-        state: 'inventario',
-        active: false
-      }, {
-        nombre: 'Ventas',
-        state: 'venta',
-        active: false
-      }, {
         nombre: 'Clientes',
         state: 'cliente',
-        active: false
-      }, {
-        nombre: 'Proveedores',
-        state: 'proveedor',
-        active: false
-      }, {
-        nombre: 'Soporte',
-        state: 'soporte',
-        active: false
-      }, {
-        nombre: 'Empleados',
-        state: 'empleado',
-        active: false
-      }, {
-        nombre: 'Cajas y Cortes',
-        state: 'caja_corte',
-        active: false
-      }, {
-        nombre: 'Paqueterías',
-        state: 'paqueteria',
         active: false
       }, {
         nombre: 'Facturación',
         state: 'facturacion',
         active: false
       }, {
-        nombre: 'Configuración',
-        state: 'configuracion',
+        nombre: 'Ventas',
+        state: 'venta',
         active: false
-      }];
-
+      }, {
+        nombre: 'Gastos',
+        state: 'gasto',
+        active: false
+      }, {
+        nombre: 'Garantías',
+        state: 'garantia',
+        active: false
+      }, {
+        nombre: 'Paquetes',
+        state: 'paquete',
+        active: false
+      }, {
+        nombre: 'Web',
+        state: 'web',
+        active: false
+      }, {
+        nombre: 'Sistema',
+        state: 'sistema',
+        active: false
+      }
+    ];
 
     vm.isAuthenticated = session.isAuthenticated;
     vm.logout = session.logout;
-    vm.empleado = session.getEmpleado();
+    vm.empleado = JSON.parse(localStorage.empleado);
   }
 
 })();

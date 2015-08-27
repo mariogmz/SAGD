@@ -49,16 +49,6 @@
     ]);
 })();
 
-// app/navbar/maincontainer.module.js
-
-(function() {
-    'use strict';
-
-    angular.module('sagdApp.navbar', [
-      'sagdApp.core'
-    ]);
-})();
-
 // app/navbar/navbar.module.js
 
 (function() {
@@ -98,84 +88,80 @@
 
 // app/blocks/session/session.module.js
 
-(function () {
-  'use strict';
+(function() {
+    'use strict';
 
-  angular
-    .module('blocks.session')
-    .factory('session', session);
+    angular
+        .module('blocks.session')
+        .factory('session', session);
 
-  session.$inject = ['$auth', '$state', '$http'];
+    session.$inject = ['$auth', '$state', '$http'];
 
-  function session($auth, $state, $http) {
+    function session($auth, $state, $http) {
 
-    return function () {
-      var auth = $auth;
-      var state = $state;
+      return function(){
+        var auth = $auth;
+        var state = $state;
+        var loginError;
+        var loginErrorText;
 
-      var empleado;
-      var loginError;
-      var loginErrorText;
+        var isAuthenticated = auth.isAuthenticated;
 
-      var isAuthenticated = auth.isAuthenticated;
+        var redirectToHomeIfAuthenticated = function () {
+          if(isAuthenticated()){
+            state.go('home', {});
+          }
+        };
 
-      var redirectToHomeIfAuthenticated = function () {
-        if (isAuthenticated()) {
+        var logoutUserIfAuthenticated = function () {
+          if(isAuthenticated()){
+            auth.removeToken();
+            localStorage.removeItem('empleado');
+          }
+        };
+
+        var getEmpleado = function() {
+          return $http.get('http://api.sagd.app/api/v1/authenticate/empleado');
+        };
+
+        var setEmpleadoToLocalStorage = function(response) {
+          var empleado = JSON.stringify(response.data.empleado);
+          localStorage.setItem('empleado', empleado);
           state.go('home', {});
-        }
-      };
+        };
 
-      var logoutUserIfAuthenticated = function () {
-        if (isAuthenticated()) {
-          auth.removeToken();
-          localStorage.removeItem('empleado');
-        }
-      };
+        var loginWithCredentials = function (credentials) {
+          auth.login(credentials).then(getEmpleado, function(error){
+            loginError = true;
+            loginErrorText = error.data.error;
+          }).then(setEmpleadoToLocalStorage);
+        };
 
-      var getEmpleado = function () {
-        return $http.get('http://api.sagd.app/api/v1/authenticate/empleado');
-      };
 
-      var setEmpleadoToLocalStorage = function (response) {
-        empleado = JSON.stringify(response.data.empleado);
-        localStorage.setItem('empleado', empleado);
-        state.go('home', {});
-      };
+        var login = function (email, password) {
+          redirectToHomeIfAuthenticated();
+          var credentials = {
+            email: email,
+            password: password
+          }
+          loginWithCredentials(credentials);
+        };
 
-      var loginWithCredentials = function (credentials) {
-        auth.login(credentials).then(getEmpleado, function (error) {
-          loginError = true;
-          loginErrorText = error.data.error;
-        }).then(setEmpleadoToLocalStorage);
-      };
+        var logout = function () {
+          logoutUserIfAuthenticated();
+          state.go('login', {});
+        };
 
-      var login = function (email, password) {
-        redirectToHomeIfAuthenticated();
-        var credentials = {
-          email: email,
-          password: password
-        }
-        loginWithCredentials(credentials);
-      };
+        return {
+          isAuthenticated : isAuthenticated,
+          login : login,
+          loginError : loginError,
+          loginErrorText : loginErrorText,
+          logout : logout,
+        };
+      }();
 
-      var logout = function () {
-        logoutUserIfAuthenticated();
-        state.go('login', {});
-      };
-
-      return {
-        isAuthenticated: isAuthenticated,
-        getEmpleado: function () {
-          return empleado || {};
-        },
-        login: login,
-        loginError: loginError,
-        loginErrorText: loginErrorText,
-        logout: logout,
-      };
-    }();
-
-  }
+    }
 }());
 
 // app/core/config.js
@@ -308,84 +294,6 @@
 
 })();
 
-// app/navbar/maincontainer.controller.js
-
-(function () {
-
-  'use strict';
-
-  angular
-    .module('sagdApp.navbar')
-    .controller('NavbarController', NavbarController)
-    .directive('navBar', function () {
-      return {
-        templateUrl: 'app/navbar/navbar.html'
-      };
-    });
-
-  NavbarController.$inject = ['$auth', 'session'];
-
-  function NavbarController($auth, session) {
-    var vm = this;
-    vm.modules = [
-      {
-        nombre: 'Inicio',
-        state: 'home',
-        active: true
-      }, {
-        nombre: 'Productos',
-        state: 'producto',
-        active: false
-      }, {
-        nombre: 'Inventario',
-        state: 'inventario',
-        active: false
-      }, {
-        nombre: 'Ventas',
-        state: 'venta',
-        active: false
-      }, {
-        nombre: 'Clientes',
-        state: 'cliente',
-        active: false
-      }, {
-        nombre: 'Proveedores',
-        state: 'proveedor',
-        active: false
-      }, {
-        nombre: 'Soporte',
-        state: 'soporte',
-        active: false
-      }, {
-        nombre: 'Empleados',
-        state: 'empleado',
-        active: false
-      }, {
-        nombre: 'Cajas y Cortes',
-        state: 'caja_corte',
-        active: false
-      }, {
-        nombre: 'Paqueterías',
-        state: 'paqueteria',
-        active: false
-      }, {
-        nombre: 'Facturación',
-        state: 'facturacion',
-        active: false
-      }, {
-        nombre: 'Configuración',
-        state: 'configuracion',
-        active: false
-      }
-    ];
-
-    vm.isAuthenticated = session.isAuthenticated;
-    vm.logout = session.logout;
-    vm.empleado = session.getEmpleado();
-  }
-
-})();
-
 // app/navbar/navbar.controller.js
 
 (function () {
@@ -430,51 +338,43 @@
         state: 'producto',
         active: false
       }, {
-        nombre: 'Inventario',
-        state: 'inventario',
-        active: false
-      }, {
-        nombre: 'Ventas',
-        state: 'venta',
-        active: false
-      }, {
         nombre: 'Clientes',
         state: 'cliente',
-        active: false
-      }, {
-        nombre: 'Proveedores',
-        state: 'proveedor',
-        active: false
-      }, {
-        nombre: 'Soporte',
-        state: 'soporte',
-        active: false
-      }, {
-        nombre: 'Empleados',
-        state: 'empleado',
-        active: false
-      }, {
-        nombre: 'Cajas y Cortes',
-        state: 'caja_corte',
-        active: false
-      }, {
-        nombre: 'Paqueterías',
-        state: 'paqueteria',
         active: false
       }, {
         nombre: 'Facturación',
         state: 'facturacion',
         active: false
       }, {
-        nombre: 'Configuración',
-        state: 'configuracion',
+        nombre: 'Ventas',
+        state: 'venta',
         active: false
-      }];
-
+      }, {
+        nombre: 'Gastos',
+        state: 'gasto',
+        active: false
+      }, {
+        nombre: 'Garantías',
+        state: 'garantia',
+        active: false
+      }, {
+        nombre: 'Paquetes',
+        state: 'paquete',
+        active: false
+      }, {
+        nombre: 'Web',
+        state: 'web',
+        active: false
+      }, {
+        nombre: 'Sistema',
+        state: 'sistema',
+        active: false
+      }
+    ];
 
     vm.isAuthenticated = session.isAuthenticated;
     vm.logout = session.logout;
-    vm.empleado = session.getEmpleado();
+    vm.empleado = JSON.parse(localStorage.empleado);
   }
 
 })();
