@@ -7,9 +7,7 @@
     <base href="/">
   </head>
   <body ng-app="sagdApp">
-    <div ng-controller="NavbarController as nav">
-      <div nav-bar ng-if="nav.isAuthenticated()"></div>
-    </div>
+    <div ng-controller="NavbarController as vm" nav-bar></div>
     <div class="main-container">
       <div class="view">
         <div class="left-view" ui-view></div>

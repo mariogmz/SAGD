@@ -11,6 +11,11 @@
       return {
         templateUrl: 'app/navbar/navbar.html'
       };
+    })
+    .filter('capitalize', function(){
+      return function(input){
+        return input.charAt(0).toUpperCase() + input.substr(1).toLowerCase();
+      }
     });
 
   NavbarController.$inject = ['$auth', 'session'];
@@ -63,7 +68,7 @@
 
     vm.isAuthenticated = session.isAuthenticated;
     vm.logout = session.logout;
-    vm.empleado = JSON.parse(localStorage.empleado);
+    vm.empleado = session.getEmpleado();
   }
 
 })();

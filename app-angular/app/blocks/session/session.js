@@ -14,6 +14,8 @@
       return function(){
         var auth = $auth;
         var state = $state;
+
+        var empleado;
         var loginError;
         var loginErrorText;
 
@@ -37,8 +39,8 @@
         };
 
         var setEmpleadoToLocalStorage = function(response) {
-          var empleado = JSON.stringify(response.data.empleado);
-          localStorage.setItem('empleado', empleado);
+          localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
+          empleado = response.data.empleado;
           state.go('home', {});
         };
 
@@ -66,6 +68,10 @@
 
         return {
           isAuthenticated : isAuthenticated,
+          getEmpleado : function(){
+            empleado = empleado || JSON.parse(localStorage.getItem('empleado')) || {};
+            return empleado;
+          },
           login : login,
           loginError : loginError,
           loginErrorText : loginErrorText,
