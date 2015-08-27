@@ -1,8 +1,8 @@
-<nav class="top-navbar" ng-controller="NavbarController as nav">
-  <a class="brand" ui-sref="home"><img src="../public/img/sagd.svg"></a>
+<nav class="top-navbar" ng-if="vm.isAuthenticated()">
+  <a class="brand" href="home"><img src="../public/img/sagd.svg"></a>
   <ul class="modules-navbar">
     <li class="module-navbar"
-        ng-repeat="module in nav.modules"
+        ng-repeat="module in vm.modules"
         ng-class="{'active': module.active, 'display-menu': active}"
         ng-mouseenter="active=true"
         ng-mouseleave="active=false">
@@ -20,7 +20,7 @@
         ng-mouseenter="logoutActive=true"
         ng-mouseleave="logoutActive=false">
         <a class="module-category empleado" href="#" aria-haspopup="true" aria-expanded="false">
-          {{nav.empleado.usuario}}
+          {{vm.empleado.usuario}}
         </a>
         <div class="menu empleado">
           <a class="item empleado"><span>Cambiar contraseña</span></a>

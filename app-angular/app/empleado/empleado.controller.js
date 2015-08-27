@@ -11,7 +11,6 @@
   EmpleadoController.$inject = ['$http', '$auth', '$state'];
 
   function EmpleadoController($http, $auth, $state) {
-
     if(! $auth.isAuthenticated()){
       $state.go('login', {});
     }

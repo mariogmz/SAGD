@@ -29,17 +29,6 @@
     ]);
 })();
 
-// app/dashboard/dashboard.module.js
-
-(function() {
-    'use strict';
-
-    angular.module('sagdApp.dashboard', [
-      'sagdApp.core',
-      'satellizer'
-    ]);
-})();
-
 // app/empleado/empleado.module.js
 
 (function() {
@@ -50,12 +39,44 @@
     ]);
 })();
 
+// app/home/home.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.home', [
+      'sagdApp.core',
+      'satellizer'
+    ]);
+})();
+
+// app/home/home.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.layout', [
+      'sagdApp.core',
+      'satellizer'
+    ]);
+})();
+
 // app/navbar/navbar.module.js
 
 (function() {
     'use strict';
 
     angular.module('sagdApp.navbar', [
+      'sagdApp.core'
+    ]);
+})();
+
+// app/producto/producto.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.producto', [
       'sagdApp.core'
     ]);
 })();
@@ -80,178 +101,147 @@
     .module('sagdApp', [
       'sagdApp.core',
 
-      'sagdApp.dashboard',
+      'sagdApp.layout',
+      'sagdApp.home',
       'sagdApp.session',
       'sagdApp.empleado',
+      'sagdApp.producto',
       'sagdApp.navbar'
   ]);
 })();
 
 // app/blocks/session/session.module.js
 
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    angular
-        .module('blocks.session')
-        .factory('session', session);
+  angular
+    .module('blocks.session')
+    .factory('session', session);
 
-    session.$inject = ['$auth', '$state', '$http'];
+  session.$inject = ['$auth', '$state', '$http'];
 
-    function session($auth, $state, $http) {
+  function session($auth, $state, $http) {
 
-      return function(){
-        var auth = $auth;
-        var state = $state;
-        var loginError;
-        var loginErrorText;
+    return function () {
+      var auth = $auth;
+      var state = $state;
 
-        var isAuthenticated = auth.isAuthenticated;
+      var loginError;
+      var loginErrorText;
 
-        var redirectToHomeIfAuthenticated = function () {
-          if(isAuthenticated()){
-            state.go('home', {});
-          }
-        };
+      var isAuthenticated = auth.isAuthenticated;
 
-        var logoutUserIfAuthenticated = function () {
-          if(isAuthenticated()){
-            auth.removeToken();
-            localStorage.removeItem('empleado');
-          }
-        };
-
-        var getEmpleado = function() {
-          return $http.get('http://api.sagd.app/api/v1/authenticate/empleado');
-        };
-
-        var setEmpleadoToLocalStorage = function(response) {
-          var empleado = JSON.stringify(response.data.empleado);
-          localStorage.setItem('empleado', empleado);
+      var redirectToHomeIfAuthenticated = function () {
+        if (isAuthenticated()) {
           state.go('home', {});
+        }
+      };
+
+      var logoutUserIfAuthenticated = function () {
+        if (isAuthenticated()) {
+          auth.removeToken();
+          localStorage.removeItem('empleado');
+        }
+      }
+
+      var getEmpleado = function () {
+        return $http.get('http://api.sagd.app/api/v1/authenticate/empleado');
+      };
+
+      var setEmpleadoToLocalStorage = function (response) {
+        localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
+        state.go('home', {});
+      };
+
+      var loginWithCredentials = function (credentials) {
+        auth.login(credentials).then(getEmpleado, function (error) {
+          loginError = true;
+          loginErrorText = error.data.error;
+        }).then(setEmpleadoToLocalStorage);
+      };
+
+
+      var login = function (email, password) {
+        redirectToHomeIfAuthenticated();
+        var credentials = {
+          email: email,
+          password: password
         };
+        loginWithCredentials(credentials);
+      };
 
-        var loginWithCredentials = function (credentials) {
-          auth.login(credentials).then(getEmpleado, function(error){
-            loginError = true;
-            loginErrorText = error.data.error;
-          }).then(setEmpleadoToLocalStorage);
-        };
+      var logout = function () {
+        logoutUserIfAuthenticated();
+        state.go('login', {});
+      };
 
+      return {
+        isAuthenticated: isAuthenticated,
+        'obtenerEmpleado': function () {
+          return JSON.parse(localStorage.getItem('empleado'));
+        },
+        login: login,
+        'getloginError': function () {
+          return loginError;
+        },
+        'getloginErrorText': function () {
+          return loginErrorText;
+        },
+        logout: logout
+      };
+    }();
 
-        var login = function (email, password) {
-          redirectToHomeIfAuthenticated();
-          var credentials = {
-            email: email,
-            password: password
-          }
-          loginWithCredentials(credentials);
-        };
-
-        var logout = function () {
-          logoutUserIfAuthenticated();
-          state.go('login', {});
-        };
-
-        return {
-          isAuthenticated : isAuthenticated,
-          login : login,
-          loginError : loginError,
-          loginErrorText : loginErrorText,
-          logout : logout,
-        };
-      }();
-
-    }
+  }
 }());
 
 // app/core/config.js
 
-(function() {
-    'use strict';
-
-    var core = angular.module('sagdApp.core');
-
-    core.config(configure);
-
-    configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
-
-    function configure ($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
-      var baseUrl = 'http://api.sagd.app/api/v1';
-      $authProvider.loginUrl = baseUrl + '/authenticate';
-      $authProvider.withCredentials = true;
-
-      $urlRouterProvider.otherwise('/login');
-
-      if (window.history && window.history.pushState) {
-        $locationProvider.html5Mode(true).hashPrefix('!');
-      }
-    }
-
-    core.run(['$state', angular.noop]);
-})();
-
-// app/dashboard/config.route.js
-
-(function() {
-    'use strict';
-
-    angular
-        .module('sagdApp.dashboard')
-        .config(configureRoutes);
-
-    configureRoutes.$inject = ['$stateProvider'];
-
-    function configureRoutes($stateProvider) {
-      $stateProvider
-          .state('home', {
-              url: '/',
-              templateUrl: 'app/dashboard/dashboard.html',
-              controller: 'DashboardController',
-              controllerAs: 'vm'
-          });
-    }
-})();
-
-// app/dashboard/dashboard.controller.js
-
-(function (){
-
+(function () {
   'use strict';
 
-  angular
-    .module('sagdApp.dashboard')
-    .controller('DashboardController', DashboardController);
+  var core = angular.module('sagdApp.core');
 
-  DashboardController.$inject = ['$auth', '$state'];
+  core.config(configure);
 
-  function DashboardController($auth, $state) {
-    if(! $auth.isAuthenticated()){
-      $state.go('login', {});
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider'];
+
+  function configure($urlRouterProvider, $authProvider, $locationProvider) {
+    var baseUrl = 'http://api.sagd.app/api/v1';
+    $authProvider.loginUrl = baseUrl + '/authenticate';
+    $authProvider.withCredentials = true;
+
+    $urlRouterProvider.otherwise('/');
+
+    if (window.history && window.history.pushState) {
+      $locationProvider.html5Mode(true).hashPrefix('!');
     }
   }
+  core.run(['$state', angular.noop]);
+
 })();
 
 // app/empleado/config.route.js
 
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    angular
-        .module('sagdApp.empleado')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.empleado')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('empleado', {
-                url: '/empleado',
-                templateUrl: 'app/empleado/empleado.html',
-                controller: 'EmpleadoController',
-                controllerAs: 'vm'
-            });
-    }
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('empleado', {
+        url: 'empleado',
+        parent: 'layout',
+        templateUrl: 'app/empleado/empleado.html',
+        controller: 'EmpleadoController',
+        controllerAs: 'vm'
+      });
+  }
 })();
 
 // app/empleado/empleado.controller.js
@@ -267,7 +257,6 @@
   EmpleadoController.$inject = ['$http', '$auth', '$state'];
 
   function EmpleadoController($http, $auth, $state) {
-
     if(! $auth.isAuthenticated()){
       $state.go('login', {});
     }
@@ -293,6 +282,88 @@
     }
   }
 
+})();
+
+// app/home/config.route.js
+
+(function() {
+    'use strict';
+
+    angular
+        .module('sagdApp.home')
+        .config(configureRoutes);
+
+    configureRoutes.$inject = ['$stateProvider'];
+
+    function configureRoutes($stateProvider) {
+      $stateProvider
+          .state('home', {
+              url: '',
+              parent: 'layout',
+              templateUrl: 'app/home/home.html',
+              controller: 'HomeController',
+              controllerAs: 'vm'
+          });
+    }
+})();
+
+// app/home/home.controller.js
+
+(function (){
+
+  'use strict';
+
+  angular
+    .module('sagdApp.home')
+    .controller('HomeController', HomeController);
+
+  HomeController.$inject = ['$auth', '$state'];
+
+  function HomeController($auth, $state) {
+    if(! $auth.isAuthenticated()){
+      $state.go('login', {});
+    }
+  }
+})();
+
+// app/layout/config.route.js
+
+(function () {
+  'use strict';
+
+  angular
+    .module('sagdApp.layout')
+    .config(configureRoutes);
+
+  configureRoutes.$inject = ['$stateProvider'];
+
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('layout', {
+        url: '/',
+        templateUrl: 'app/layout/layout.html',
+        abstract: true,
+        controller: 'layoutController',
+        controllerAs: 'vm'
+      });
+  }
+})();
+
+// app/home/home.controller.js
+
+(function () {
+
+  'use strict';
+
+  angular
+    .module('sagdApp.layout')
+    .controller('layoutController', LayoutController);
+
+  LayoutController.$inject = ['$auth', '$state'];
+
+  function LayoutController($auth, $state) {
+
+  }
 })();
 
 // app/navbar/navbar.controller.js
@@ -357,9 +428,9 @@
       };
     });
 
-  NavbarController.$inject = ['$auth', 'session'];
+  NavbarController.$inject = ['session'];
 
-  function NavbarController($auth, session) {
+  function NavbarController(session) {
     var vm = this;
     vm.modules = [
       {
@@ -531,8 +602,51 @@
     ];
 
     vm.isAuthenticated = session.isAuthenticated;
+    vm.empleado = session.obtenerEmpleado();
     vm.logout = session.logout;
-    vm.empleado = JSON.parse(localStorage.empleado || "{}");
+  }
+
+})();
+
+// app/producto/config.route.js
+
+(function() {
+    'use strict';
+
+    angular
+        .module('sagdApp.producto')
+        .config(configureRoutes);
+
+    configureRoutes.$inject = ['$stateProvider'];
+
+    function configureRoutes($stateProvider) {
+        $stateProvider
+            .state('producto', {
+                url: 'producto',
+                parent: 'layout',
+                templateUrl: 'app/producto/producto.html',
+                controller: 'productoController',
+                controllerAs: 'vm'
+            });
+    }
+})();
+
+// app/producto/producto.controller.js
+
+(function () {
+
+  'use strict';
+
+  angular
+    .module('sagdApp.producto')
+    .controller('productoController', ProductoController);
+
+  ProductoController.$inject = ['$auth', '$state'];
+
+  function ProductoController($auth, $state) {
+    if(! $auth.isAuthenticated()){
+      $state.go('login',{});
+    }
   }
 
 })();

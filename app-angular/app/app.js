@@ -8,9 +8,11 @@
     .module('sagdApp', [
       'sagdApp.core',
 
-      'sagdApp.dashboard',
+      'sagdApp.layout',
+      'sagdApp.home',
       'sagdApp.session',
       'sagdApp.empleado',
+      'sagdApp.producto',
       'sagdApp.navbar'
   ]);
 })();

@@ -1,0 +1,17 @@
+<!-- app/layout/layout.html-->
+
+<!-- Navigation Bar-->
+<div ng-controller="NavbarController as vm" nav-bar></div>
+<!-- Main Container -->
+<div class="main-container">
+  <div class="view">
+    <!-- Module view -->
+    <div class="module-container">
+      <div ui-view></div>
+    </div>
+    <!-- Notification Panel view -->
+    <div class="notification-bar">
+      <h2>Notification Bar</h2>
+    </div>
+  </div>
+</div>
