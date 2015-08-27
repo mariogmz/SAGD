@@ -749,17 +749,17 @@ pre code {
   }
 }
 
-.container-fluid {
+.container-fluid, .main-container {
   margin-right: auto;
   margin-left: auto;
   padding-left: 0.9375rem;
   padding-right: 0.9375rem;
 }
-.container-fluid:before, .container-fluid:after {
+.container-fluid:before, .main-container:before, .container-fluid:after, .main-container:after {
   content: " ";
   display: table;
 }
-.container-fluid:after {
+.container-fluid:after, .main-container:after {
   clear: both;
 }
 
@@ -5934,6 +5934,35 @@ a.bg-danger:focus, a.bg-danger:hover {
 
 body {
   padding-top: 60px;
+}
+
+.main-container .view {
+  margin-left: -0.9375rem;
+  margin-right: -0.9375rem;
+}
+.main-container .view:before, .main-container .view:after {
+  content: " ";
+  display: table;
+}
+.main-container .view:after {
+  clear: both;
+}
+
+.view .left-view {
+  position: relative;
+  float: left;
+  min-height: 1px;
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  width: 75%;
+}
+.view .right-view {
+  position: relative;
+  float: left;
+  min-height: 1px;
+  padding-left: 0.9375rem;
+  padding-right: 0.9375rem;
+  width: 25%;
 }
 
 .signin-screen {
