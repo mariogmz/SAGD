@@ -3,3 +3,30 @@
   -moz-box-shadow: 0 10px 6px -6px $color;
   box-shadow: 0 10px 6px -6px $color;
 }
+
+@mixin word-wrap($wordBreak: break-all, $whiteSpace: pre) {
+  overflow-wrap: break-word;
+  word-break: $wordBreak;
+  word-wrap: break-word;
+  white-space: $whiteSpace;
+}
+
+@mixin ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin transform($values) {
+  -moz-transform: $values;
+  -o-transform: $values;
+  -webkit-transform: $values;
+  transform: $values;
+}
+
+@mixin transition($values) {
+  -moz-transition: $values;
+  -o-transition: $values;
+  -webkit-transition: $values;
+  transition: $values;
+}

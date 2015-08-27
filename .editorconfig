@@ -18,8 +18,8 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-# Tabs in less
-[**.sass]
+# 2 spaces in scss
+[**.scss]
 indent_style = space
 indent_size = 2
 

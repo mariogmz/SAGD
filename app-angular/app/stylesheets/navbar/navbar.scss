@@ -6,62 +6,106 @@
   height: 50px;
   padding-right: 0;
 
-  a {
+  .brand {
+
     @extend .navbar-brand;
     margin-right: 20px;
-  }
-
-  .logout {
-    background-color: $persian-red;
-    float: right;
-    height: 50px;
-    line-height: 2.25rem;
-    margin-top: -8px;
-    padding: 0 15px;
-    text-align: center;
-    a {
-      color: $alto;
-      font-size: 1.25rem;
-      margin-right: 0;
-
-      &:hover {
-        color: $white;
-      }
-    }
   }
 }
 
 .modules-navbar {
+
   @extend .nav;
   @extend .navbar-nav;
+}
 
-  .module-navbar {
-    @extend .nav-item;
-    line-height: 2.25rem;
-    margin-left: 0 !important;
-    margin-top: -8px;
-    padding: 0 15px;
+.module-navbar {
 
-    a {
-      @extend .nav-link;
-      color: $alto;
-      font-size: 1.25rem;
+  @extend .nav-item;
+  @extend .dropdown;
+
+  background-color: $gray-suit;
+  height: 50px;
+  margin-left: 0 !important;
+  margin-top: -8px;
+  padding: 0 15px;
+
+  .menu {
+
+    @extend .dropdown-menu;
+
+    @include transition(all 0.2s ease-in-out);
+
+    border-radius: 0;
+    border-top: 0;
+    border: 1px solid $alto;
+    display: block;
+    margin-top: 0px;
+    max-width: 185px;
+    min-width: 140px;
+    opacity: 0;
+    transform: translateY(-100%);
+    width: auto;
+    z-index: -2;
+
+    .item {
+
+      @extend .dropdown-item;
+
+      color: $gray-suit;
+      font-size: 20px;
       font-style: italic;
       font-weight: 300;
-      margin-right: 0;
-    }
+      min-height: 35px;
+      padding: 7.5px 15px;
 
-    &.active {
-      background-color: $mine-shaft;
-      a {
-        color: $white;
-        font-weight: 700;
+      span {
+        @include word-wrap();
+      }
+
+      &:hover {
+        color: $gray-suit;
+        background-color: $alto;
       }
     }
 
-    &:hover {
-      @extend .active;
+    &.active {
+      @include transform(translateY(0%));
+      opacity: 1;
     }
-
   }
+
+  &.active {
+    background-color: $mine-shaft;
+
+    a {
+      background-color: $mine-shaft;
+      color: $white;
+      font-weight: 700;
+    }
+  }
+
+  &:hover {
+    @extend .active;
+  }
+
+  .dropdown-toggle {
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.module-category {
+
+  @extend .nav-link;
+  @extend .dropdown-toggle;
+
+  background-color: $gray-suit;
+  color: $alto;
+  font-size: 20px;
+  font-style: italic;
+  font-weight: 300;
+  margin-right: 0;
+  padding: 10px 0 !important;
 }

@@ -23,6 +23,7 @@ _ide_helper.php
 app-angular/.sass-cache
 app-angular/node_modules
 app-angular/bower_components
+app-angular/npm-debug.log
 
 *.iml
 
