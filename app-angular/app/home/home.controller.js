@@ -11,5 +11,8 @@
   HomeController.$inject = ['$auth', '$state'];
 
   function HomeController($auth, $state) {
+    if(! $auth.isAuthenticated()){
+      $state.go('login', {});
+    }
   }
 })();
