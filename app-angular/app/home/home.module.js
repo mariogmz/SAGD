@@ -1,9 +1,9 @@
-// app/dashboard/dashboard.module.js
+// app/home/home.module.js
 
 (function() {
     'use strict';
 
-    angular.module('sagdApp.dashboard', [
+    angular.module('sagdApp.home', [
       'sagdApp.core',
       'satellizer'
     ]);

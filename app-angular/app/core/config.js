@@ -7,9 +7,9 @@
 
   core.config(configure);
 
-  configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider'];
 
-  function configure($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
+  function configure($urlRouterProvider, $authProvider, $locationProvider) {
     var baseUrl = 'http://api.sagd.app/api/v1';
     $authProvider.loginUrl = baseUrl + '/authenticate';
     $authProvider.withCredentials = true;
@@ -20,6 +20,6 @@
       $locationProvider.html5Mode(true).hashPrefix('!');
     }
   }
-
   core.run(['$state', angular.noop]);
+
 })();

@@ -1,21 +1,21 @@
-// app/dashboard/config.route.js
+// app/home/config.route.js
 
 (function() {
     'use strict';
 
     angular
-        .module('sagdApp.dashboard')
+        .module('sagdApp.home')
         .config(configureRoutes);
 
     configureRoutes.$inject = ['$stateProvider'];
 
     function configureRoutes($stateProvider) {
       $stateProvider
-          .state('dashboard', {
-              url: 'dashboard',
+          .state('home', {
+              url: '',
               parent: 'layout',
-              templateUrl: 'app/dashboard/dashboard.html',
-              controller: 'DashboardController',
+              templateUrl: 'app/home/home.html',
+              controller: 'HomeController',
               controllerAs: 'vm'
           });
     }

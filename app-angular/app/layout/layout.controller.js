@@ -1,6 +1,6 @@
 // app/home/home.controller.js
 
-(function (){
+(function () {
 
   'use strict';
 
@@ -11,10 +11,6 @@
   LayoutController.$inject = ['$auth', '$state'];
 
   function LayoutController($auth, $state) {
-    if(! $auth.isAuthenticated()){
-      $state.go('login', {});
-    }else{
-      $state.go('dashboard',{})
-    }
+
   }
 })();

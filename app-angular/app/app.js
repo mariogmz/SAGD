@@ -9,9 +9,10 @@
       'sagdApp.core',
 
       'sagdApp.layout',
-      'sagdApp.dashboard',
+      'sagdApp.home',
       'sagdApp.session',
       'sagdApp.empleado',
+      'sagdApp.producto',
       'sagdApp.navbar'
   ]);
 })();
