@@ -5,7 +5,5 @@
       <a ui-sref="{{module.state}}">{{module.nombre}}</a>
     </li>
   </ul>
-  <div class="logout">
-    <a href="#" ng-click="vm.logout()">{{nav.empleado.usuario}}</a>
-  </div>
+  <div class="logout" logout ng-controller="SessionController as vm"></div>
 </nav>

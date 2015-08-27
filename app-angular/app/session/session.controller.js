@@ -8,17 +8,40 @@
     .module('sagdApp.session')
     .controller('SessionController', SessionController);
 
-  SessionController.$inject = ['session'];
+  SessionController.$inject = ['$auth', '$state'];
 
-  function SessionController(session) {
+  function SessionController($auth, $state) {
     var vm = this;
+    var auth = $auth;
+    var state = $state;
+
+    var redirectToHomeIfAuthenticated = function () {
+      if(auth.isAuthenticated()){
+        state.go('home', {});
+      }
+    }
+
+    var logoutUserIfAuthenticated = function () {
+      if($auth.isAuthenticated()){
+        $auth.removeToken();
+      }
+    }
 
     vm.login = function () {
-      session.login(vm.email, vm.password);
+      redirectToHomeIfAuthenticated();
+      var credentials = {
+        email: vm.email,
+        password: vm.password
+      };
+
+      $auth.login(credentials).then(function (data) {
+        $state.go('home', {});
+      });
     };
 
     vm.logout = function () {
-      session.logout();
+      logoutUserIfAuthenticated();
+      state.go('login', {});
     }
   }
 

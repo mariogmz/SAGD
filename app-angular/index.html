@@ -10,12 +10,7 @@
     <div ng-controller="NavbarController as nav">
       <div nav-bar ng-if="nav.isAuthenticated()"></div>
     </div>
-    <div class="main-container">
-      <div class="view">
-        <div class="left-view" ui-view></div>
-        <div class="right-view">Chousen juan</div>
-      </div>
-    </div>
+    <div ui-view></div>
   </body>
   <!-- Application Dependencies -->
   <script src="public/libs/frontend.min.js"></script>

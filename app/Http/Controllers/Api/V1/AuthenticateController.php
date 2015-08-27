@@ -12,8 +12,6 @@ use Tymon\JWTAuth\Exceptions\JWTException;
 class AuthenticateController extends Controller
 {
 
-    protected $user;
-
     public function __construct()
     {
         $this->middleware('jwt.auth', ['except' => ['authenticate']]);
@@ -30,49 +28,30 @@ class AuthenticateController extends Controller
         } catch (JWTException $e) {
             return response()->json(['error' => 'could_not_create_token'], 500);
         }
-        $this->user = JWTAuth::toUser($token);
-        $this->setLastLoginToEmployee();
+        $user = JWTAuth::toUser($token);
+        $this->setLastLoginToEmployee($user);
 
         return response()->json(compact('token'));
     }
 
-    public function getAuthenticatedEmpleado()
-    {
-        $this->user = $this->getUser();
-        $empleado = $this->getEmpleado();
-        return response()->json(compact('empleado'));
-    }
-
     public function logout(Request $request)
     {
-        $this->user = $this->getUser();
-        if ( $this->user ) {
+        if (! $user = JWTAuth::parseToken()->authenticate()) {
+            return response()->json(['user_not_found'], 404);
+        }
+        if ( $user ) {
             JWTAuth::invalidate();
             return response()->json(['success' =>  'user logged out successfuly'], 200);
         }
     }
 
-    private function getUser()
+    private function setLastLoginToEmployee($user)
     {
-        if (! $user = JWTAuth::parseToken()->authenticate()) {
-            return response()->json(['user_not_found'], 404);
-        }
-        return $user;
-    }
-
-    private function getEmpleado()
-    {
-        if( get_class($this->user->morphable) === 'App\Empleado' ) {
-            return $this->user->morphable;
-        }
-    }
-
-    private function setLastLoginToEmployee()
-    {
-        $empleado = $this->getEmpleado();
-        $empleado->fecha_ultimo_ingreso = \Carbon\Carbon::now('America/Mexico_City');
-        if(! $empleado->save() ) {
-            return response()->json(['error' => 'Could not set last login time for employee'], 500);
+        if( get_class($user->morphable) === 'App\Empleado' ) {
+            $user->morphable->fecha_ultimo_ingreso = \Carbon\Carbon::now('America/Mexico_City');
+            if(! $user->morphable->save() ) {
+                return response()->json(['error' => 'Could not set last login time for employee'], 500);
+            }
         }
     }
 }

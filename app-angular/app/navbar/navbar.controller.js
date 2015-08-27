@@ -13,9 +13,9 @@
       };
     });
 
-  NavbarController.$inject = ['$auth', 'session'];
+  NavbarController.$inject = ['$auth'];
 
-  function NavbarController($auth, session) {
+  function NavbarController($auth) {
     var vm = this;
     vm.modules = [
       {
@@ -60,10 +60,9 @@
         active: false
       }
     ];
-
-    vm.isAuthenticated = session.isAuthenticated;
-    vm.logout = session.logout;
-    vm.empleado = JSON.parse(localStorage.empleado);
+    vm.isAuthenticated = function () {
+      return $auth.isAuthenticated();
+    }
   }
 
 })();

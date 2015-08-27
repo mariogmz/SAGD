@@ -1,5 +1,7 @@
 <?php
 
+use GuzzleHttp\Client;
+
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\AuthenticateController
  */
@@ -8,6 +10,15 @@ class AuthenticateControllerTest extends TestCase
 
     protected $endpoint = '/api/v1/authenticate';
     protected $logoutEndpoint = 'api/v1/logout';
+    protected $client;
+
+    public function setUp()
+    {
+        $this->client = new Client([
+            'base_uri' => 'http://api.sagd.app'
+        ]);
+        parent::setUp();
+    }
 
     /**
      * @covers ::authenticate
@@ -73,38 +84,24 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_successful_logout()
     {
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
-        $response = $this->call('GET', $this->logoutEndpoint, [
-            'token' => $token
+        $token = $this->getTokenFor('sistemas@zegucom.com.mx', 'test123');
+        $response = $this->client->get($this->logoutEndpoint, [
+            'query' => ['token' => $token],
+            'http_errors' => false
         ]);
 
-        $this->assertEquals(200, $response->status());
-        $decoded_response = $response->content();
-        $this->assertEquals(json_encode(['success' => 'user logged out successfuly']), $decoded_response);
+        $this->assertEquals(200, $response->getStatusCode());
+        $decoded_response = (array)json_decode($response->getBody()->getContents());
+        $this->assertEquals(['success' => 'user logged out successfuly'], $decoded_response);
     }
 
-    /**
-     * @covers ::getAuthenticatedEmpleado
-     */
-    public function test_GET_to_empleado_returns_a_valid_empleado()
+    private function getTokenFor($email, $password)
     {
-        // Loguearse
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
-        // Llamar a endpoint de esta prueba
-        $response = $this->call('GET', $this->endpoint . '/empleado',[
-            'token' => $token
+        $res = $this->client->post($this->endpoint, [
+            'query' => ['email' => $email, 'password' => $password],
+            'http_errors' => false
         ]);
-        $empleado_json = $response->content();
-        $empleado_db = json_encode(['empleado' => App\Empleado::where('usuario','admin')->first()]);
-        $this->assertEquals($empleado_db, $empleado_json);
-    }
-
-    private function authenticate($email, $password)
-    {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => $email,
-            'password' => $password
-        ]);
-        return json_decode($response->content())->token;
+        $json = $res->getBody()->getContents();
+        return json_decode($json)->token;
     }
 }

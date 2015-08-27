@@ -1,10 +1,3 @@
-// app/blocks/session/session.module.js
-
-(function() {
-    'use strict';
-
-    angular.module('blocks.session', []);
-})();
 // app/core/core.module.js
 
 (function() {
@@ -18,7 +11,6 @@
         /*
          * Our reusable cross app code modules
          */
-        'blocks.session',
 
         /*
          * 3rd party app modules
@@ -85,84 +77,6 @@
       'sagdApp.navbar'
   ]);
 })();
-
-// app/blocks/session/session.module.js
-
-(function() {
-    'use strict';
-
-    angular
-        .module('blocks.session')
-        .factory('session', session);
-
-    session.$inject = ['$auth', '$state', '$http'];
-
-    function session($auth, $state, $http) {
-
-      return function(){
-        var auth = $auth;
-        var state = $state;
-        var loginError;
-        var loginErrorText;
-
-        var isAuthenticated = auth.isAuthenticated;
-
-        var redirectToHomeIfAuthenticated = function () {
-          if(isAuthenticated()){
-            state.go('home', {});
-          }
-        };
-
-        var logoutUserIfAuthenticated = function () {
-          if(isAuthenticated()){
-            auth.removeToken();
-            localStorage.removeItem('empleado');
-          }
-        };
-
-        var getEmpleado = function() {
-          return $http.get('http://api.sagd.app/api/v1/authenticate/empleado');
-        };
-
-        var setEmpleadoToLocalStorage = function(response) {
-          var empleado = JSON.stringify(response.data.empleado);
-          localStorage.setItem('empleado', empleado);
-          state.go('home', {});
-        };
-
-        var loginWithCredentials = function (credentials) {
-          auth.login(credentials).then(getEmpleado, function(error){
-            loginError = true;
-            loginErrorText = error.data.error;
-          }).then(setEmpleadoToLocalStorage);
-        };
-
-
-        var login = function (email, password) {
-          redirectToHomeIfAuthenticated();
-          var credentials = {
-            email: email,
-            password: password
-          }
-          loginWithCredentials(credentials);
-        };
-
-        var logout = function () {
-          logoutUserIfAuthenticated();
-          state.go('login', {});
-        };
-
-        return {
-          isAuthenticated : isAuthenticated,
-          login : login,
-          loginError : loginError,
-          loginErrorText : loginErrorText,
-          logout : logout,
-        };
-      }();
-
-    }
-}());
 
 // app/core/config.js
 
@@ -324,9 +238,9 @@
       };
     });
 
-  NavbarController.$inject = ['$auth', 'session'];
+  NavbarController.$inject = ['$auth'];
 
-  function NavbarController($auth, session) {
+  function NavbarController($auth) {
     var vm = this;
     vm.modules = [
       {
@@ -371,10 +285,9 @@
         active: false
       }
     ];
-
-    vm.isAuthenticated = session.isAuthenticated;
-    vm.logout = session.logout;
-    vm.empleado = JSON.parse(localStorage.empleado);
+    vm.isAuthenticated = function () {
+      return $auth.isAuthenticated();
+    }
   }
 
 })();
@@ -417,17 +330,40 @@
     .module('sagdApp.session')
     .controller('SessionController', SessionController);
 
-  SessionController.$inject = ['session'];
+  SessionController.$inject = ['$auth', '$state'];
 
-  function SessionController(session) {
+  function SessionController($auth, $state) {
     var vm = this;
+    var auth = $auth;
+    var state = $state;
+
+    var redirectToHomeIfAuthenticated = function () {
+      if(auth.isAuthenticated()){
+        state.go('home', {});
+      }
+    }
+
+    var logoutUserIfAuthenticated = function () {
+      if($auth.isAuthenticated()){
+        $auth.removeToken();
+      }
+    }
 
     vm.login = function () {
-      session.login(vm.email, vm.password);
+      redirectToHomeIfAuthenticated();
+      var credentials = {
+        email: vm.email,
+        password: vm.password
+      };
+
+      $auth.login(credentials).then(function (data) {
+        $state.go('home', {});
+      });
     };
 
     vm.logout = function () {
-      session.logout();
+      logoutUserIfAuthenticated();
+      state.go('login', {});
     }
   }
 
