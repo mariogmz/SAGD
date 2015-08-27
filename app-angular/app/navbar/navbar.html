@@ -1,5 +1,5 @@
 <nav class="top-navbar" ng-if="vm.isAuthenticated()">
-  <a ui-sref="home"><img src="../public/img/sagd.svg"></a>
+  <a href="dashboard"><img src="../public/img/sagd.svg"></a>
   <ul class="modules-navbar">
     <li class="module-navbar" ng-repeat="module in vm.modules" ng-class="{'active': module.active}">
       <a ui-sref="{{module.state}}">{{module.nombre}}</a>

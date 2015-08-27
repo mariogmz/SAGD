@@ -49,6 +49,17 @@
     ]);
 })();
 
+// app/home/home.module.js
+
+(function() {
+    'use strict';
+
+    angular.module('sagdApp.layout', [
+      'sagdApp.core',
+      'satellizer'
+    ]);
+})();
+
 // app/navbar/navbar.module.js
 
 (function() {
@@ -79,6 +90,7 @@
     .module('sagdApp', [
       'sagdApp.core',
 
+      'sagdApp.layout',
       'sagdApp.dashboard',
       'sagdApp.session',
       'sagdApp.empleado',
@@ -110,7 +122,7 @@
 
       var redirectToHomeIfAuthenticated = function () {
         if (isAuthenticated()) {
-          state.go('home', {});
+          state.go('dashboard', {});
         }
       };
 
@@ -127,7 +139,7 @@
 
       var setEmpleadoToLocalStorage = function (response) {
         localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
-        state.go('home', {});
+        state.go('dashboard', {});
       };
 
       var loginWithCredentials = function (credentials) {
@@ -173,28 +185,28 @@
 
 // app/core/config.js
 
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    var core = angular.module('sagdApp.core');
+  var core = angular.module('sagdApp.core');
 
-    core.config(configure);
+  core.config(configure);
 
-    configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
+  configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
 
-    function configure ($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
-      var baseUrl = 'http://api.sagd.app/api/v1';
-      $authProvider.loginUrl = baseUrl + '/authenticate';
-      $authProvider.withCredentials = true;
+  function configure($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
+    var baseUrl = 'http://api.sagd.app/api/v1';
+    $authProvider.loginUrl = baseUrl + '/authenticate';
+    $authProvider.withCredentials = true;
 
-      $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/');
 
-      if (window.history && window.history.pushState) {
-        $locationProvider.html5Mode(true).hashPrefix('!');
-      }
+    if (window.history && window.history.pushState) {
+      $locationProvider.html5Mode(true).hashPrefix('!');
     }
+  }
 
-    core.run(['$state', angular.noop]);
+  core.run(['$state', angular.noop]);
 })();
 
 // app/dashboard/config.route.js
@@ -210,8 +222,9 @@
 
     function configureRoutes($stateProvider) {
       $stateProvider
-          .state('home', {
-              url: '/',
+          .state('dashboard', {
+              url: 'dashboard',
+              parent: 'layout',
               templateUrl: 'app/dashboard/dashboard.html',
               controller: 'DashboardController',
               controllerAs: 'vm'
@@ -252,7 +265,8 @@
     function configureRoutes($stateProvider) {
         $stateProvider
             .state('empleado', {
-                url: '/empleado',
+                url: 'empleado',
+                parent: 'layout',
                 templateUrl: 'app/empleado/empleado.html',
                 controller: 'EmpleadoController',
                 controllerAs: 'vm'
@@ -301,6 +315,49 @@
 
 })();
 
+// app/layout/config.route.js
+
+(function() {
+    'use strict';
+
+    angular
+        .module('sagdApp.layout')
+        .config(configureRoutes);
+
+    configureRoutes.$inject = ['$stateProvider'];
+
+    function configureRoutes($stateProvider) {
+      $stateProvider
+          .state('layout', {
+              url: '/',
+              templateUrl: 'app/layout/layout.html',
+              controller: 'layoutController',
+              controllerAs: 'vm'
+          });
+    }
+})();
+
+// app/home/home.controller.js
+
+(function (){
+
+  'use strict';
+
+  angular
+    .module('sagdApp.layout')
+    .controller('layoutController', LayoutController);
+
+  LayoutController.$inject = ['$auth', '$state'];
+
+  function LayoutController($auth, $state) {
+    if(! $auth.isAuthenticated()){
+      $state.go('login', {});
+    }else{
+      $state.go('dashboard',{})
+    }
+  }
+})();
+
 // app/navbar/navbar.controller.js
 
 (function () {
@@ -343,7 +400,7 @@
     vm.modules = [
       {
         nombre: 'Inicio',
-        state: 'home',
+        state: 'dashboard',
         active: true
       }, {
         nombre: 'Productos',
@@ -370,8 +427,8 @@
         state: 'garantia',
         active: false
       }, {
-        nombre: 'Paquetes',
-        state: 'paquete',
+        nombre: 'Empleados',
+        state: 'empleado',
         active: false
       }, {
         nombre: 'Web',

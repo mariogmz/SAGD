@@ -22,7 +22,7 @@
 
       var redirectToHomeIfAuthenticated = function () {
         if (isAuthenticated()) {
-          state.go('home', {});
+          state.go('dashboard', {});
         }
       };
 
@@ -39,7 +39,7 @@
 
       var setEmpleadoToLocalStorage = function (response) {
         localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
-        state.go('home', {});
+        state.go('dashboard', {});
       };
 
       var loginWithCredentials = function (credentials) {

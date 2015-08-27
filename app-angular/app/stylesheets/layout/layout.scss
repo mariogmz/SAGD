@@ -7,12 +7,11 @@
 }
 
 .view {
-	.left-view {
+	.module-container {
 		@include make-col();
 		@include make-col-span(9);
 	}
-
-	.right-view {
+	.notification-bar {
 		@include make-col();
 		@include make-col-span(3);
 	}

@@ -11,8 +11,9 @@
 
     function configureRoutes($stateProvider) {
       $stateProvider
-          .state('home', {
-              url: '/',
+          .state('dashboard', {
+              url: 'dashboard',
+              parent: 'layout',
               templateUrl: 'app/dashboard/dashboard.html',
               controller: 'DashboardController',
               controllerAs: 'vm'

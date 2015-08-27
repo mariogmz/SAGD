@@ -25,7 +25,7 @@
     vm.modules = [
       {
         nombre: 'Inicio',
-        state: 'home',
+        state: 'dashboard',
         active: true
       }, {
         nombre: 'Productos',
@@ -52,8 +52,8 @@
         state: 'garantia',
         active: false
       }, {
-        nombre: 'Paquetes',
-        state: 'paquete',
+        nombre: 'Empleados',
+        state: 'empleado',
         active: false
       }, {
         nombre: 'Web',

@@ -8,6 +8,7 @@
     .module('sagdApp', [
       'sagdApp.core',
 
+      'sagdApp.layout',
       'sagdApp.dashboard',
       'sagdApp.session',
       'sagdApp.empleado',

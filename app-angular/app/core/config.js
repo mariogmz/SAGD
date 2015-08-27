@@ -1,25 +1,25 @@
 // app/core/config.js
 
-(function() {
-    'use strict';
+(function () {
+  'use strict';
 
-    var core = angular.module('sagdApp.core');
+  var core = angular.module('sagdApp.core');
 
-    core.config(configure);
+  core.config(configure);
 
-    configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
+  configure.$inject = ['$stateProvider', '$urlRouterProvider', '$authProvider', '$locationProvider'];
 
-    function configure ($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
-      var baseUrl = 'http://api.sagd.app/api/v1';
-      $authProvider.loginUrl = baseUrl + '/authenticate';
-      $authProvider.withCredentials = true;
+  function configure($stateProvider, $urlRouterProvider, $authProvider, $locationProvider) {
+    var baseUrl = 'http://api.sagd.app/api/v1';
+    $authProvider.loginUrl = baseUrl + '/authenticate';
+    $authProvider.withCredentials = true;
 
-      $urlRouterProvider.otherwise('/login');
+    $urlRouterProvider.otherwise('/');
 
-      if (window.history && window.history.pushState) {
-        $locationProvider.html5Mode(true).hashPrefix('!');
-      }
+    if (window.history && window.history.pushState) {
+      $locationProvider.html5Mode(true).hashPrefix('!');
     }
+  }
 
-    core.run(['$state', angular.noop]);
+  core.run(['$state', angular.noop]);
 })();

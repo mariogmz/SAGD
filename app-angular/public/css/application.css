@@ -5948,7 +5948,7 @@ body {
   clear: both;
 }
 
-.view .left-view {
+.view .module-container {
   position: relative;
   float: left;
   min-height: 1px;
@@ -5956,7 +5956,7 @@ body {
   padding-right: 0.9375rem;
   width: 75%;
 }
-.view .right-view {
+.view .notification-bar {
   position: relative;
   float: left;
   min-height: 1px;
