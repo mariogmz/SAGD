@@ -1,18 +1,19 @@
 <!-- views/empleadoView.html -->
+<h1>Empleados</h1>
+<hr>
 <div class="col-sm-6 col-sm-offset-3">
 	<div>
-		<h3>Empleados</h3>
-		<button class="btn btn-primary obtener-empleados" ng-click="empleado.getEmpleados()">Obtener empleados!</button>
-		<section ng-if="empleado.empleados">
+		<button class="btn btn-primary obtener-empleados" ng-click="vm.getEmpleados()">Obtener empleados!</button>
+		<section ng-if="vm.empleados">
 
-			<article class="card card-block" ng-repeat="empleado in empleado.empleados">
+			<article class="card card-block" ng-repeat="empleado in vm.empleados">
 					<h4 class="card-title">{{empleado.nombre}}</h4>
 					<p class="card-text">{{empleado.puesto}}</p>
 			</article>
 
 		</section>
-		<div class="alert alert-danger" ng-if="empleado.errores">
-			<strong>Hubo un error: </strong> {{empleado.errores.error}}
+		<div class="alert alert-danger" ng-if="vm.errores">
+			<strong>Hubo un error: </strong> {{vm.errores.error}}
 			<br>Por favor accede de nuevo
 		</div>
 	</div>
