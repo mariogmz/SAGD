@@ -5993,6 +5993,7 @@ body {
   padding-right: 0;
 }
 .top-navbar .brand {
+  cursor: default;
   margin-right: 20px;
 }
 

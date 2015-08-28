@@ -1,11 +1,12 @@
 <nav class="top-navbar" ng-if="vm.isAuthenticated()">
-  <a class="brand" href="home"><img src="../public/img/sagd.svg"></a>
+  <a class="brand" href="#"><img src="../public/img/sagd.svg"></a>
   <ul class="modules-navbar">
     <li class="module-navbar"
         ng-repeat="module in vm.modules"
         ng-class="{'active': module.active, 'display-menu': active}"
         ng-mouseenter="active=true"
-        ng-mouseleave="active=false">
+        ng-mouseleave="active=false"
+        ng-click="vm.clicked($event)">
       <a class="module-category" ui-sref="{{module.state}}" aria-haspopup="true" aria-expanded="false">
         {{module.nombre}}
       </a>

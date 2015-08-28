@@ -12,18 +12,33 @@
 
   function NavbarAnimation() {
 
-    var showSubmenu = function(element, className, done) {
-        var menu = $(element).children('.menu');
-        $(menu).addClass('active');
-    }
+    var showSubmenu = function (element, className, done) {
+      var menu = $(element).children('.menu');
+      $(menu).addClass('active');
+    };
 
-    var hideSubmenu = function(element, className, done) {
-        var menu = $(element).children('.menu');
-        $(menu).removeClass('active');
-    }
+    var hideSubmenu = function (element, className, done) {
+      var menu = $(element).children('.menu');
+      $(menu).removeClass('active');
+    };
+
+    var setActive = function (element, className, done) {
+      $('li.module-navbar').each(function () {
+        $(this).removeClass('active');
+      });
+      $(element).addClass('active');
+    };
+
+    var addClass = function(element, className, done) {
+      if (className === 'active') {
+        setActive(element, className, done);
+      } else {
+        showSubmenu(element, className, done);
+      }
+    };
 
     return {
-      addClass: showSubmenu,
+      addClass: addClass,
       removeClass: hideSubmenu
     };
   }

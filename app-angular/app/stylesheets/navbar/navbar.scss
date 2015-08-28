@@ -9,6 +9,8 @@
   .brand {
 
     @extend .navbar-brand;
+
+    cursor: default;
     margin-right: 20px;
   }
 }

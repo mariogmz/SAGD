@@ -20,6 +20,15 @@
       $locationProvider.html5Mode(true).hashPrefix('!');
     }
   }
-  core.run(['$state', angular.noop]);
+
+  core.run(updateState);
+
+  updateState.$inject = ['$rootScope', '$state', 'state'];
+
+  function updateState($rootScope, $state, state) {
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+      state.setNewState(fromState.name, toState.name);
+    });
+  }
 
 })();

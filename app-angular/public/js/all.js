@@ -5,6 +5,22 @@
 
     angular.module('blocks.session', []);
 })();
+// app/blocks/state/state.module.js
+
+(function() {
+  'use strict';
+
+  angular.module('blocks.state', []);
+})();
+
+// app/blocks/utils/utils.module.js
+
+(function() {
+  'use strict';
+
+  angular.module('blocks.utils', []);
+})();
+
 // app/core/core.module.js
 
 (function() {
@@ -19,7 +35,7 @@
         /*
          * Our reusable cross app code modules
          */
-        'blocks.session',
+        'blocks.session', 'blocks.state', 'blocks.utils',
 
         /*
          * 3rd party app modules
@@ -195,6 +211,76 @@
   }
 }());
 
+// app/blocks/state/state.module.js
+
+(function () {
+  'use strict';
+
+  angular
+    .module('blocks.state')
+    .factory('state', state);
+
+  state.$inject = [];
+
+  function state() {
+    return function () {
+      var fromState;
+      var toState;
+
+      var setNewState = function (from, to) {
+        fromState = from;
+        toState = to;
+      };
+
+      var getPreviousState = function () {
+        return fromState || "home";
+      };
+
+      var getCurrentState = function () {
+        return toState;
+      };
+
+      return {
+        setNewState: setNewState,
+        current_state: getCurrentState,
+        previous_state: getPreviousState
+      };
+    }();
+
+  }
+}());
+
+// app/blocks/utils/utils.module.js
+
+(function () {
+  'use strict';
+
+  angular
+    .module('blocks.utils')
+    .factory('utils', utils);
+
+  utils.$inject = [];
+
+  function utils() {
+    return function () {
+
+      function pluck(collection, key) {
+        var result = angular.isArray(collection) ? [] : {};
+
+        angular.forEach(collection, function(val, i) {
+          result[i] = angular.isFunction(key) ? key(val) : val[key];
+        });
+        return result;
+      }
+
+      return {
+        pluck : pluck
+      };
+    }();
+
+  }
+}());
+
 // app/core/config.js
 
 (function () {
@@ -217,7 +303,16 @@
       $locationProvider.html5Mode(true).hashPrefix('!');
     }
   }
-  core.run(['$state', angular.noop]);
+
+  core.run(updateState);
+
+  updateState.$inject = ['$rootScope', '$state', 'state'];
+
+  function updateState($rootScope, $state, state) {
+    $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
+      state.setNewState(fromState.name, toState.name);
+    });
+  }
 
 })();
 
@@ -366,7 +461,7 @@
   }
 })();
 
-// app/navbar/navbar.controller.js
+// app/navbar/navbar.directive.js
 
 (function () {
 
@@ -395,18 +490,33 @@
 
   function NavbarAnimation() {
 
-    var showSubmenu = function(element, className, done) {
-        var menu = $(element).children('.menu');
-        $(menu).addClass('active');
-    }
+    var showSubmenu = function (element, className, done) {
+      var menu = $(element).children('.menu');
+      $(menu).addClass('active');
+    };
 
-    var hideSubmenu = function(element, className, done) {
-        var menu = $(element).children('.menu');
-        $(menu).removeClass('active');
-    }
+    var hideSubmenu = function (element, className, done) {
+      var menu = $(element).children('.menu');
+      $(menu).removeClass('active');
+    };
+
+    var setActive = function (element, className, done) {
+      $('li.module-navbar').each(function () {
+        $(this).removeClass('active');
+      });
+      $(element).addClass('active');
+    };
+
+    var addClass = function(element, className, done) {
+      if (className === 'active') {
+        setActive(element, className, done);
+      } else {
+        showSubmenu(element, className, done);
+      }
+    };
 
     return {
-      addClass: showSubmenu,
+      addClass: addClass,
       removeClass: hideSubmenu
     };
   }
@@ -428,15 +538,15 @@
       };
     });
 
-  NavbarController.$inject = ['session'];
+  NavbarController.$inject = ['session', 'state', 'utils'];
 
-  function NavbarController(session) {
+  function NavbarController(session, state, utils) {
     var vm = this;
     vm.modules = [
       {
         nombre: 'Inicio',
         state: 'home',
-        active: true,
+        active: false,
         submodules: [
           {
             nombre: 'Inicio',
@@ -601,6 +711,20 @@
       }
     ];
 
+    vm.setActiveState = function () {
+      var current_state = state.current_state();
+      var states = utils.pluck(vm.modules, "state");
+      var index = states.indexOf(current_state);
+      vm.modules[index].active = true;
+    }
+    vm.setActiveState();
+
+    vm.clicked = function($event) {
+      $('li.module-navbar').each(function () {
+        $(this).removeClass('active');
+      });
+      $($event.currentTarget).addClass('active');
+    }
     vm.isAuthenticated = session.isAuthenticated;
     vm.empleado = session.obtenerEmpleado();
     vm.logout = session.logout;

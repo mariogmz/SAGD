@@ -1,4 +1,4 @@
-// app/navbar/navbar.controller.js
+// app/navbar/navbar.directive.js
 
 (function () {
 

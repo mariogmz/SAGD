@@ -13,15 +13,15 @@
       };
     });
 
-  NavbarController.$inject = ['session'];
+  NavbarController.$inject = ['session', 'state', 'utils'];
 
-  function NavbarController(session) {
+  function NavbarController(session, state, utils) {
     var vm = this;
     vm.modules = [
       {
         nombre: 'Inicio',
         state: 'home',
-        active: true,
+        active: false,
         submodules: [
           {
             nombre: 'Inicio',
@@ -186,6 +186,20 @@
       }
     ];
 
+    vm.setActiveState = function () {
+      var current_state = state.current_state();
+      var states = utils.pluck(vm.modules, "state");
+      var index = states.indexOf(current_state);
+      vm.modules[index].active = true;
+    }
+    vm.setActiveState();
+
+    vm.clicked = function($event) {
+      $('li.module-navbar').each(function () {
+        $(this).removeClass('active');
+      });
+      $($event.currentTarget).addClass('active');
+    }
     vm.isAuthenticated = session.isAuthenticated;
     vm.empleado = session.obtenerEmpleado();
     vm.logout = session.logout;
