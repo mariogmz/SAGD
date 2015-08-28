@@ -10,6 +10,7 @@
       <a class="module-category" ui-sref="{{module.state}}" aria-haspopup="true" aria-expanded="false">
         {{module.nombre}}
       </a>
+
       <div class="menu">
         <a class="item" ng-repeat="submodule in module.submodules">
           <span>{{submodule.nombre}}</span>
@@ -20,13 +21,14 @@
         ng-class="{'display-menu': logoutActive}"
         ng-mouseenter="logoutActive=true"
         ng-mouseleave="logoutActive=false">
-        <a class="module-category empleado" href="#" aria-haspopup="true" aria-expanded="false">
-          {{vm.empleado.usuario}}
-        </a>
-        <div class="menu empleado">
-          <a class="item empleado"><span>Cambiar contraseña</span></a>
-          <a class="item empleado" href="#" ng-click="vm.logout()"><span>Salir</span></a>
-        </div>
+      <a class="module-category empleado" href="#" aria-haspopup="true" aria-expanded="false">
+        {{vm.empleado.usuario}}
+      </a>
+
+      <div class="menu empleado">
+        <a class="item empleado"><span>Cambiar contraseña</span></a>
+        <a class="item empleado" href="#" ng-click="vm.logout()"><span>Salir</span></a>
+      </div>
     </li>
   </ul>
 </nav>

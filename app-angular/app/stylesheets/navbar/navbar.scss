@@ -26,11 +26,15 @@
   @extend .nav-item;
   @extend .dropdown;
 
+  @media (min-width: 106.2rem) {
+    padding: 0 15px;
+  }
+
   background-color: $gray-suit;
   height: 50px;
   margin-left: 0 !important;
   margin-top: -8px;
-  padding: 0 15px;
+  padding: 0 10px;
 
   .menu {
 
@@ -38,12 +42,15 @@
 
     @include transition(all 0.2s ease-in-out);
 
+    @media (min-width: 106.2rem) {
+      max-width: 180px;
+    }
     border-radius: 0;
     border-top: 0;
     border: 1px solid $alto;
     display: block;
-    margin-top: 0px;
-    max-width: 185px;
+    margin-top: 0;
+    max-width: 155px;
     min-width: 140px;
     opacity: 0;
     transform: translateY(-100%);
@@ -55,7 +62,6 @@
       @extend .dropdown-item;
 
       color: $gray-suit;
-      font-size: 20px;
       font-style: italic;
       font-weight: 300;
       min-height: 35px;
@@ -103,11 +109,16 @@
   @extend .nav-link;
   @extend .dropdown-toggle;
 
+  @media (min-width: 106.2rem) {
+    font-size: 20px;
+    padding: 10px 0 !important;
+  }
+
   background-color: $gray-suit;
   color: $alto;
-  font-size: 20px;
+  font-size: 16px;
   font-style: italic;
   font-weight: 300;
   margin-right: 0;
-  padding: 10px 0 !important;
+  padding: 13px 0 !important;
 }
