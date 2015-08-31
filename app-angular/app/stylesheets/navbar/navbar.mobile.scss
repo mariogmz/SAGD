@@ -2,6 +2,11 @@
 
   @include transition(all 0.3s ease-in-out);
 
+  @media (min-width: 83.75rem) {
+    display: none !important;
+    transform: translateX(-100%) !important;
+  }
+
   background-color: $gray-suit;
   display: none;
   height: 720px;
