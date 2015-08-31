@@ -30,3 +30,13 @@
   -webkit-transition: $values;
   transition: $values;
 }
+
+@mixin normalize_link($color) {
+  color: $color;
+  text-decoration: none;
+  &:hover,
+  &:visited {
+    color: $color;
+    text-decoration: none;
+  }
+}

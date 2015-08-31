@@ -725,10 +725,96 @@
       });
       $($event.currentTarget).addClass('active');
     }
+
+    vm.expandMenu = function($event) {
+      MobileNavbarAnimations.animate($event);
+    }
+
+    vm.toggleMenu = function($event) {
+      MobileNavbarAnimations.toggleMenu($event);
+    }
+
     vm.isAuthenticated = session.isAuthenticated;
     vm.empleado = session.obtenerEmpleado();
     vm.logout = session.logout;
   }
+
+  var MobileNavbarAnimations = (function() {
+    var currentTarget;
+    var currentTargetHeight;
+    var target;
+    var targetHeight;
+    var mobileModuleBaseHeight = 65;
+    var mobileNavbarHidden;
+
+    var animateMenu = function($event) {
+      currentTarget = $event.currentTarget;
+      target = $(currentTarget).children('.mobile-menu');
+      calculateHeights();
+      applyAnimation();
+    }
+
+    var calculateHeights = function() {
+      currentTargetHeight = $(currentTarget).outerHeight();
+      targetHeight = $(target).outerHeight();
+    }
+
+    var applyAnimation = function() {
+      if( currentTargetHeight > mobileModuleBaseHeight ){
+        collapseMenu();
+      } else {
+        expandMenu();
+      }
+    }
+
+    var collapseMenu = function() {
+      animate(mobileModuleBaseHeight, false, 0, -100);
+    }
+
+    var expandMenu = function() {
+      var newMobileMenuHeight = currentTargetHeight + targetHeight;
+      animate(newMobileMenuHeight, true, 1, 0);
+    }
+
+    var animate = function(newMobileMenuHeight, display, opacityValue, translateValue) {
+      $(currentTarget).css({
+        'max-height': newMobileMenuHeight
+      })
+      $(target).css({
+        'opacity': opacityValue,
+        'transform': 'translateY('+ translateValue +'%)'
+      });
+      $(target).css({
+        'display': display ? 'block' : 'none'
+      });
+    }
+
+    var toggleMenu = function($event) {
+      currentTarget = $event.currentTarget;
+      mobileNavbarHidden = $('.hamburguer').data('hidden');
+      slideMenu();
+      rotateHamburguer();
+      $('.hamburguer').data('hidden', !mobileNavbarHidden);
+    }
+
+    var slideMenu = function() {
+      $('.mobile-navbar').css({
+        'display': mobileNavbarHidden ? 'block' : 'none',
+        'transform': 'translateX('+ (mobileNavbarHidden ? '0':'-100') +'%)'
+      });
+    }
+
+    var rotateHamburguer = function() {
+      $('.hamburguer').css({
+        'transform': 'rotateZ('+ (mobileNavbarHidden ? '90':'0') +'deg)'
+      });
+    }
+
+    return {
+      animate : animateMenu,
+      toggleMenu : toggleMenu
+    }
+  })();
 
 })();
 
