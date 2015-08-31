@@ -26,7 +26,11 @@
 
   .scrollable {
 
-    height: 690px;
+    @media screen and (min-height: 652px) {
+      height: 680px;
+    }
+
+    height: 557px;
     overflow: scroll;
   }
 }
