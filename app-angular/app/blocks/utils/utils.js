@@ -10,21 +10,19 @@
   utils.$inject = [];
 
   function utils() {
-    return function () {
 
-      function pluck(collection, key) {
-        var result = angular.isArray(collection) ? [] : {};
+    function pluck(collection, key) {
+      var result = angular.isArray(collection) ? [] : {};
 
-        angular.forEach(collection, function(val, i) {
-          result[i] = angular.isFunction(key) ? key(val) : val[key];
-        });
-        return result;
-      }
+      angular.forEach(collection, function (val, i) {
+        result[i] = angular.isFunction(key) ? key(val) : val[key];
+      });
+      return result;
+    }
 
-      return {
-        pluck : pluck
-      };
-    }();
+    return {
+      pluck: pluck
+    };
 
   }
 }());

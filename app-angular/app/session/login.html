@@ -9,13 +9,15 @@
       <h4>Acceso</h4>
       <h6>Sistema Administrativo de Grupo Dicotech</h6>
 
-      <form>
+      <form ng-class="{'error': vm.loginError}">
         <fieldset>
-          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email">
+          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email" ng-change="vm.cleanLoginError()">
         </fieldset>
         <fieldset>
-          <input type="password" placeholder="Contraseña" required ng-model="vm.password">
+          <input type="password" placeholder="Contraseña" required ng-model="vm.password" ng-change="vm.cleanLoginError()">
+          <p ng-show="vm.loginError">Credenciales de acceso incorrectas.</p>
         </fieldset>
+
         <button type="submit" ng-click="vm.login()">Acceder</button>
       </form>
       <hr>

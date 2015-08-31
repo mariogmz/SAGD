@@ -49,6 +49,23 @@
 
     }
 
+    form.error {
+      fieldset {
+        @extend .form-group;
+        @extend .has-error;
+      }
+
+      input {
+        @extend .form-control;
+        @extend .form-control-error;
+      }
+
+      p {
+        @extend .help-block;
+      }
+    }
+
+
     button[type="submit"] {
       @extend .btn;
       @extend .btn-primary;

@@ -14,12 +14,20 @@
     var vm = this;
 
     vm.login = function () {
-      session.login(vm.email, vm.password);
+      session.login(vm.email, vm.password).then(function(){
+        vm.loginError = session.getLoginError();
+      });
     };
 
     vm.logout = function () {
       session.logout();
-    }
+    };
+
+    vm.cleanLoginError = function(evt){
+      session.cleanLoginError();
+      vm.loginError = session.getLoginError();
+    };
+
   }
 
 })();

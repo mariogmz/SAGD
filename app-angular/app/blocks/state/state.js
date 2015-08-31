@@ -10,29 +10,26 @@
   state.$inject = [];
 
   function state() {
-    return function () {
-      var fromState;
-      var toState;
+    var fromState;
+    var toState;
 
-      var setNewState = function (from, to) {
-        fromState = from;
-        toState = to;
-      };
+    var setNewState = function (from, to) {
+      fromState = from;
+      toState = to;
+    };
 
-      var getPreviousState = function () {
-        return fromState || "home";
-      };
+    var getPreviousState = function () {
+      return fromState || "home";
+    };
 
-      var getCurrentState = function () {
-        return toState;
-      };
+    var getCurrentState = function () {
+      return toState;
+    };
 
-      return {
-        setNewState: setNewState,
-        current_state: getCurrentState,
-        previous_state: getPreviousState
-      };
-    }();
-
+    return {
+      setNewState: setNewState,
+      current_state: getCurrentState,
+      previous_state: getPreviousState
+    };
   }
 }());
