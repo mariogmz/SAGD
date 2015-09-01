@@ -15,10 +15,12 @@
         </fieldset>
         <fieldset>
           <input type="password" placeholder="Contraseña" required ng-model="vm.password" ng-change="vm.cleanLoginError()">
-          <p ng-show="vm.loginError">Credenciales de acceso incorrectas.</p>
+          <p  id="flash-error"
+              ng-show="vm.loginError"
+              ng-class="{'active': vm.loginError}">Credenciales de acceso incorrectas.</p>
         </fieldset>
 
-        <button type="submit" ng-click="vm.login()">Acceder</button>
+        <button id="acceder" type="submit" ng-click="vm.login()">Acceder</button>
       </form>
       <hr>
       <a ui-sref="forgot">¿Olvidaste tu contraseña?</a>

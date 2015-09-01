@@ -1,23 +1,23 @@
 module.exports = function() {
-    var Given = When = Then = And = this.defineStep;
+    var Dado = Dada = Dados = Dadas = Cuando = Entonces = Y = Pero = this.defineStep;
     var world = require("../support/world.js").World;
 
-    Given(/^I visit the login page$/, function(callback){
-      world.visit('http://sagd.app/#/login', callback);
+    Cuando(/^Visito la pagina principal$/, function (callback) {
+      world.visit('http://sagd.app/login', callback);
     });
 
-    Then(/^I should see the text "([^"]*)" on "([^*]*)"$/, function(text, selector, callback){
-        var expected = text;
-        var actual = world.browser.text(selector);
-        if(expected === actual) {
-          callback();
-        } else {
-          callback.fail(new Error("Expected " + expected));
-        }
+    Entonces(/^Pongo "([^"]*)" en el campo de "([^"]*)"$/, function (text, type, callback) {
+      world.browser.fill('input[type='+type+']', text);
+      callback();
     });
 
-    Then(/^I should see the button "([^"]*)"$/, function (expected, callback) {
-      var actual = world.browser.text('form > button');
+    Cuando(/^Presiono el boton "([^"]*)"$/, function (selector, callback) {
+      return world.browser.pressButton(selector);
+    });
+
+    Entonces(/^Se debe de ver el texto "([^"]*)" en "([^"]*)"$/, function (text, selector, callback) {
+      var expected = text;
+      var actual = world.browser.text(selector);
       if(expected === actual) {
         callback();
       } else {
@@ -25,12 +25,8 @@ module.exports = function() {
       }
     });
 
-    Then(/^I put "([^"]*)" on the "([^"]*)" input$/, function (text, type, callback) {
-      world.browser.fill('input[type='+type+']', text);
-      callback();
+    Y(/^El elemento "([^"]*)" debe tener clase "([^"]*)"$/, function (selector, clase, callback){
+      world.browser.assert.className(selector, clase);
     });
 
-    Then(/^I click the "([^"]*)" button$/, function (arg1, callback) {
-      return world.browser.pressButton('form > button');
-    });
 }
