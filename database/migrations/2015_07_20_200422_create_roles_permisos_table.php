@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesPermisosTable extends Migration
-{
+class CreateRolesPermisosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('roles_permisos', function($table){
+        Schema::create('roles_permisos', function ($table) {
             $table->increments('id');
         });
     }
@@ -23,8 +21,7 @@ class CreateRolesPermisosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('roles_permisos');
     }

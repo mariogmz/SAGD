@@ -39,6 +39,16 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        $headers = ['Access-Control-Allow-Origin' => '*'];
+        if ($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
+            return response()->json(['error' => 'method_not_allowed'], 405, $headers);
+        } else if  ($e instanceof Tymon\JWTAuth\Exceptions\TokenExpiredException) {
+            return response()->json(['token_expired'], $e->getStatusCode(), $headers);
+        } else if ($e instanceof Tymon\JWTAuth\Exceptions\TokenInvalidException) {
+            return response()->json(['token_invalid'], $e->getStatusCode(), $headers);
+        } else if ($e instanceof Tymon\JWTAuth\Exceptions\JWTException) {
+            return response()->json(['token_absent'], $e->getStatusCode(), $headers);
+        }
         return parent::render($request, $e);
     }
 }

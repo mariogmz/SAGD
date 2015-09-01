@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesReferenciasTable extends Migration
-{
+class CreateClientesReferenciasTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('clientes_referencias', function($table){
+        Schema::create('clientes_referencias', function ($table) {
             $table->increments('id');
             $table->string('nombre', 50);
         });
@@ -24,8 +22,7 @@ class CreateClientesReferenciasTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('clientes_referencias');
     }

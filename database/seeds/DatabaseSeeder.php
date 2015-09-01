@@ -48,6 +48,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(MargenTableSeeder::class);
         $this->call(FamiliaTableSeeder::class);
         $this->call(SubfamiliaTableSeeder::class);
+        $this->call(EmpleadoTableSeeder::class);
 
         Model::reguard();
     }

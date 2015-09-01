@@ -1,0 +1,67 @@
+<nav class="top-navbar" ng-if="vm.isAuthenticated()">
+  <button class="hamburguer" type="button" ng-click="vm.toggleMenu($event)" data-hidden="true">
+    &#9776;
+  </button>
+  <a class="brand" href="#"><img src="../public/img/sagd.svg"></a>
+  <ul class="modules-navbar">
+    <li class="module-navbar"
+        ng-repeat="module in vm.modules"
+        ng-class="{'active': module.active, 'display-menu': active}"
+        ng-mouseenter="active=true"
+        ng-mouseleave="active=false"
+        ng-click="vm.clicked($event)">
+      <a class="module-category" ui-sref="{{module.state}}" aria-haspopup="true" aria-expanded="false">
+        {{module.nombre}}
+      </a>
+
+      <div class="menu">
+        <a class="item" ng-repeat="submodule in module.submodules">
+          <span>{{submodule.nombre}}</span>
+        </a>
+      </div>
+    </li>
+    <li class="module-navbar empleado"
+        ng-class="{'display-menu': logoutActive}"
+        ng-mouseenter="logoutActive=true"
+        ng-mouseleave="logoutActive=false">
+      <a class="module-category empleado" href="#" aria-haspopup="true" aria-expanded="false">
+        {{vm.empleado.usuario}}
+      </a>
+
+      <div class="menu empleado">
+        <a class="item empleado"><span>Cambiar contraseña</span></a>
+        <a class="item empleado" href="#" ng-click="vm.logout()"><span>Salir</span></a>
+      </div>
+    </li>
+  </ul>
+</nav>
+<nav class="mobile-navbar" id="mobile-navbar" ng-if="vm.isAuthenticated()">
+  <a class="brand" href="#"><img src="../public/img/sagd.svg"></a>
+  <div class="scrollable">
+    <ul class="mobile-modules">
+      <li class="mobile-module"
+          ng-click="vm.expandMenu($event)"
+          ng-repeat="module in vm.modules">
+        <a  class="mobile-category" ui-sref="{{module.state}}">
+          {{module.nombre}}
+        </a>
+        <div class="mobile-menu">
+          <a  class="mobile-item" href="#"
+              ng-repeat="submodule in module.submodules">
+            <span>{{submodule.nombre}}</span>
+          </a>
+        </div>
+      </li>
+      <li class="mobile-module empleado"
+          ng-click="vm.expandMenu($event)">
+        <a class="mobile-category empleado">
+          {{vm.empleado.usuario}}
+        </a>
+        <div class="mobile-menu empleado">
+          <a class="mobile-item empleado" href="#"><span>Cambiar contraseña</span></a>
+          <a class="mobile-item empleado" href="#" ng-click="vm.logout()"><span>Salir</span></a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

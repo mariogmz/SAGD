@@ -3,6 +3,17 @@
 namespace App;
 
 
+/**
+ * App\EstatusActivo
+ *
+ * @property integer $id
+ * @property string $estatus
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\MetodoPago[] $metodosPagos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Guia[] $guias
+ * @method static \Illuminate\Database\Query\Builder|\App\EstatusActivo whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstatusActivo whereEstatus($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class EstatusActivo extends LGGModel {
 
     //
@@ -40,11 +51,10 @@ class EstatusActivo extends LGGModel {
 
 
     /**
-    * Obtiene las Guias asociadas con el Estatus Activo
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function guias()
-    {
+     * Obtiene las Guias asociadas con el Estatus Activo
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function guias() {
         return $this->hasMany('App\Guia', 'estatus_activo_id');
     }
 }

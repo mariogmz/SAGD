@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRmasConstraints extends Migration
-{
+class AddRmasConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('rmas', function($table){
+        Schema::table('rmas', function ($table) {
             $table->integer('estado_rma_id')->unsigned();
             $table->integer('cliente_id')->unsigned();
             $table->integer('empleado_id')->unsigned();
@@ -35,10 +33,9 @@ class AddRmasConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('rmas', function($table){
+        Schema::table('rmas', function ($table) {
             $table->dropForeign('rmas_nota_credito_id_foreign');
             $table->dropForeign('rmas_sucursal_id_foreign');
             $table->dropForeign('rmas_rma_tiempo_id_foreign');

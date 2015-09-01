@@ -3,6 +3,33 @@
 namespace App;
 
 
+/**
+ * App\Corte
+ *
+ * @property integer $id
+ * @property float $fondo
+ * @property float $fondo_reportado
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $empleado_id
+ * @property integer $caja_id
+ * @property integer $corte_global_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Corte[] $cortes
+ * @property-read \App\Corte $corteGlobal
+ * @property-read \App\Empleado $empleado
+ * @property-read \App\Caja $caja
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\GastoExtra[] $gastosExtras
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CorteDetalle[] $cortesDetalles
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereFondo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereFondoReportado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereCajaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereCorteGlobalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Corte extends LGGModel {
 
     protected $table = "cortes";
@@ -22,8 +49,9 @@ class Corte extends LGGModel {
      */
     public static function boot() {
         Corte::creating(function ($model) {
-            if(!empty($model->corte_global_id) && !is_numeric($model->corte_global_id)) return false;
-            if(!empty($model->caja_id) && !is_numeric($model->caja_id)) return false;
+            if (!empty($model->corte_global_id) && !is_numeric($model->corte_global_id)) return false;
+            if (!empty($model->caja_id) && !is_numeric($model->caja_id)) return false;
+
             return $model->isValid();
         });
         Corte::updating(function ($model) {
@@ -38,7 +66,7 @@ class Corte extends LGGModel {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function cortes() {
-        return $this->hasMany('App\Corte','corte_global_id');
+        return $this->hasMany('App\Corte', 'corte_global_id');
     }
 
     /**
@@ -46,7 +74,7 @@ class Corte extends LGGModel {
      * @return App\Corte
      */
     public function corteGlobal() {
-        return $this->belongsTo('App\Corte','corte_global_id');
+        return $this->belongsTo('App\Corte', 'corte_global_id');
     }
 
     /**
@@ -69,7 +97,7 @@ class Corte extends LGGModel {
      * Obtiene los gastos extras asociados al corte
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function gastosExtras(){
+    public function gastosExtras() {
         return $this->hasMany('App\GastoExtra');
     }
 
@@ -77,7 +105,7 @@ class Corte extends LGGModel {
      * Obtiene los detalles para el corte
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function cortesDetalles(){
+    public function cortesDetalles() {
         return $this->hasMany('App\CorteDetalle');
     }
 

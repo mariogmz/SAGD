@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateEntradasTable extends Migration {
 
@@ -10,10 +10,8 @@ class CreateEntradasTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('entradas', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('entradas', function (Blueprint $table) {
             $table->increments('id');
             $table->string('factura_externa_numero', 45);
             $table->timestamp('factura_fecha')->nullable();
@@ -29,8 +27,7 @@ class CreateEntradasTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('entradas');
     }
 }

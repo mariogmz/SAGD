@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEstadosVentasTable extends Migration
-{
+class CreateEstadosVentasTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('estados_ventas', function($table){
+        Schema::create('estados_ventas', function ($table) {
             $table->increments('id');
             $table->char('clave', 1);
             $table->string('nombre', 90);
@@ -26,8 +24,7 @@ class CreateEstadosVentasTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('estados_ventas');
     }

@@ -2,15 +2,14 @@
 
 use Illuminate\Database\Seeder;
 
-class ZonaTableSeeder extends Seeder
-{
+class ZonaTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         //
         DB::table('zonas')->insert(['clave' => 'ZONA1', 'km_maximos' => 0.0]);
         DB::table('zonas')->insert(['clave' => 'ZONA2', 'km_maximos' => 0.0]);

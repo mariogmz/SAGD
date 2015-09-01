@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRmasDetallesConstraints extends Migration
-{
+class AddRmasDetallesConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('rmas_detalles', function($table){
+        Schema::table('rmas_detalles', function ($table) {
             $table->integer('rma_id')->unsigned();
             $table->integer('garantia_id')->unsigned();
             $table->integer('producto_movimiento_id')->unsigned();
@@ -29,10 +27,9 @@ class AddRmasDetallesConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('rmas_detalles', function($table){
+        Schema::table('rmas_detalles', function ($table) {
             $table->dropForeign('rmas_detalles_rma_id_foreign');
             $table->dropForeign('rmas_detalles_garantia_id_foreign');
             $table->dropForeign('rmas_detalles_producto_movimiento_id_foreign');

@@ -1,0 +1,144 @@
+.top-navbar {
+
+  @extend .navbar;
+  @extend .navbar-fixed-top;
+  background-color: $gray-suit;
+  height: 50px;
+  padding-right: 0;
+
+  .brand {
+
+    @extend .navbar-brand;
+
+    @media (max-width: 83.75rem) {
+      display: none;
+    }
+
+    cursor: default;
+    margin-right: 20px;
+  }
+
+  .hamburguer {
+    @extend .navbar-toggler;
+
+    @media (min-width: 83.75rem) {
+      display: none;
+    }
+
+    color: $alto;
+    display: block;
+    float: left;
+  }
+}
+
+.modules-navbar {
+
+  @extend .nav;
+  @extend .navbar-nav;
+
+  @media (max-width: 83.75rem) {
+    display: none;
+  }
+}
+
+.module-navbar {
+
+  @extend .nav-item;
+  @extend .dropdown;
+
+  @media (min-width: 106.2rem) {
+    padding: 0 15px;
+  }
+
+  background-color: $gray-suit;
+  height: 50px;
+  margin-left: 0 !important;
+  margin-top: -8px;
+  padding: 0 10px;
+
+  .menu {
+
+    @extend .dropdown-menu;
+
+    @include transition(all 0.2s ease-in-out);
+
+    @media (min-width: 106.2rem) {
+      max-width: 180px;
+    }
+    border-radius: 0;
+    border-top: 0;
+    border: 1px solid $alto;
+    display: block;
+    margin-top: 0;
+    max-width: 155px;
+    min-width: 140px;
+    opacity: 0;
+    transform: translateY(-100%);
+    width: auto;
+    z-index: -2;
+
+    .item {
+
+      @extend .dropdown-item;
+
+      color: $gray-suit;
+      font-style: italic;
+      font-weight: 300;
+      min-height: 35px;
+      padding: 7.5px 15px;
+
+      span {
+        @include word-wrap();
+      }
+
+      &:hover {
+        color: $gray-suit;
+        background-color: $alto;
+      }
+    }
+
+    &.active {
+      @include transform(translateY(0%));
+      opacity: 1;
+    }
+  }
+
+  &.active {
+    background-color: $mine-shaft;
+
+    a {
+      background-color: $mine-shaft;
+      color: $white;
+      font-weight: 700;
+    }
+  }
+
+  &:hover {
+    @extend .active;
+  }
+
+  .dropdown-toggle {
+    &:after {
+      display: none;
+    }
+  }
+}
+
+.module-category {
+
+  @extend .nav-link;
+  @extend .dropdown-toggle;
+
+  @media (min-width: 106.2rem) {
+    font-size: 20px;
+    padding: 10px 0 !important;
+  }
+
+  background-color: $gray-suit;
+  color: $alto;
+  font-size: 16px;
+  font-style: italic;
+  font-weight: 300;
+  margin-right: 0;
+  padding: 13px 0 !important;
+}

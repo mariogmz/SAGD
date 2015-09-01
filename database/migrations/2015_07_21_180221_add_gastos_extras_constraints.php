@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddGastosExtrasConstraints extends Migration {
@@ -10,10 +9,8 @@ class AddGastosExtrasConstraints extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('gastos_extras', function ($table)
-        {
+    public function up() {
+        Schema::table('gastos_extras', function ($table) {
             // Foreign Key Fields
             $table->integer('caja_id')->unsigned();
             $table->integer('corte_id')->unsigned();
@@ -28,12 +25,11 @@ class AddGastosExtrasConstraints extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('gastos_extras', function ($table){
+    public function down() {
+        Schema::table('gastos_extras', function ($table) {
             $table->dropForeign('gastos_extras_caja_id_foreign');
             $table->dropForeign('gastos_extras_corte_id_foreign');
-            $table->dropColumn(['caja_id','corte_id']);
+            $table->dropColumn(['caja_id', 'corte_id']);
         });
     }
 }

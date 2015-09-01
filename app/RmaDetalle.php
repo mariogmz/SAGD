@@ -3,6 +3,24 @@
 namespace App;
 
 
+/**
+ * App\RmaDetalle
+ *
+ * @property integer $id
+ * @property string $descripcion_falla
+ * @property integer $rma_id
+ * @property integer $garantia_id
+ * @property integer $producto_movimiento_id
+ * @property-read \App\Rma $rma
+ * @property-read \App\Garantia $garantia
+ * @property-read \App\ProductoMovimiento $productoMovimiento
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaDetalle whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaDetalle whereDescripcionFalla($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaDetalle whereRmaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaDetalle whereGarantiaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\RmaDetalle whereProductoMovimientoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class RmaDetalle extends LGGModel {
 
     protected $table = "rmas_detalles";

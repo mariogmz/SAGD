@@ -40,19 +40,7 @@ class EmpleadoTest extends TestCase {
         $empleado = factory(App\Empleado::class)->make([
             'nombre'   => '',
             'usuario'  => '',
-            'password' => '',
             'activo'   => null,
-        ]);
-        $this->assertFalse($empleado->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testModeloEmpleadosTienePasswordDiferenteDeUsuario() {
-        $empleado = factory(App\Empleado::class)->make([
-            'usuario'  => 'prueba',
-            'password' => 'prueba'
         ]);
         $this->assertFalse($empleado->isValid());
     }
@@ -86,9 +74,9 @@ class EmpleadoTest extends TestCase {
             'empleado_id' => $empleado->id
         ]);
         $logs_accesos_resultado = $empleado->logsAccesos;
-        for ($i = 0; $i < 5; $i ++) {
-            $this->assertEquals($logs_accesos[$i], $logs_accesos_resultado[$i]);
-        }
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $logs_accesos_resultado);
+        $this->assertInstanceOf(App\LogAcceso::class, $logs_accesos_resultado[0]);
+        $this->assertCount(5, $logs_accesos_resultado);
     }
 
     /**
@@ -114,7 +102,7 @@ class EmpleadoTest extends TestCase {
             'sucursal_id' => $sucursal->id
         ]);
         $sucursal_resultado = $empleado->sucursal;
-        $this->assertEquals($sucursal, $sucursal_resultado);
+        $this->assertInstanceOf(App\Sucursal::class, $sucursal_resultado);
     }
 
     /**
@@ -266,6 +254,20 @@ class EmpleadoTest extends TestCase {
         $this->assertInstanceOf('Illuminate\Database\Eloquent\Collection', $children);
         $this->assertInstanceOf('App\VentaMovimiento', $children[0]);
         $this->assertCount(1, $children);
+    }
+
+    /**
+     * @covers ::user
+     * @group relaciones
+     */
+    public function testUser()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        factory(App\User::class)->create([
+            'morphable_id' => $empleado->id,
+            'morphable_type' => get_class($empleado)
+        ]);
+        $this->assertInstanceOf(App\User::class, $empleado->user);
     }
 
 }

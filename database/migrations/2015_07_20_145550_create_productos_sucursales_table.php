@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateProductosSucursalesTable extends Migration {
@@ -10,11 +9,9 @@ class CreateProductosSucursalesTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('productos_sucursales', function ($table)
-        {
+        Schema::create('productos_sucursales', function ($table) {
             $table->increments('id');
         });
     }
@@ -24,8 +21,7 @@ class CreateProductosSucursalesTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('productos_sucursales');
     }

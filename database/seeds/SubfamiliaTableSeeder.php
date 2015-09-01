@@ -2,8 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class SubfamiliaTableSeeder extends Seeder
-{
+class SubfamiliaTableSeeder extends Seeder {
 
     /**
      * @var \Illuminate\Console\Command
@@ -20,8 +19,7 @@ class SubfamiliaTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         //
         $this->setUpLegacyConnection();
         $this->getTotalData();
@@ -29,57 +27,57 @@ class SubfamiliaTableSeeder extends Seeder
         $this->createSubfamilias();
     }
 
-    private function setUpLegacyConnection()
-    {
+    private function setUpLegacyConnection() {
         $this->legacy = DB::connection('mysql_legacy');
     }
 
-    private function getTotalData()
-    {
+    private function getTotalData() {
         $statement = "SELECT count(s.CLAVESUBFAM) as count FROM subfamilias s LEFT JOIN subfamilias_categoria sc ON sc.subfamilia_clave = s.CLAVESUBFAM JOIN categorias g ON sc.categoria_clave = g.clave;";
         $this->totalData = $this->legacy->selectOne($statement)->count;
     }
 
-    private function getSubfamiliasLegacy()
-    {
+    private function getSubfamiliasLegacy() {
         $statement = "SELECT s.CLAVESUBFAM as clave, s.SUBFAMILIA as nombre, s.famper as clave_familia, g.categoria as categoria FROM subfamilias s LEFT JOIN subfamilias_categoria sc ON sc.subfamilia_clave = s.CLAVESUBFAM JOIN categorias g ON sc.categoria_clave = g.clave;";
         $this->subfamiliasLegacy = $this->legacy->select($statement);
     }
 
-    private function createSubfamilias()
-    {
+    private function createSubfamilias() {
         $this->counter = 0;
         foreach ($this->subfamiliasLegacy as $subfamilia) {
             $familia = App\Familia::where('clave', $subfamilia->clave_familia)->first();
-            if(is_null($familia)){ continue; }
+            if (is_null($familia)) {
+                continue;
+            }
 
             $margen = App\Margen::where('nombre', $subfamilia->categoria)->first();
-            if(is_null($margen)){ continue; }
+            if (is_null($margen)) {
+                continue;
+            }
 
             $data = [
-                'clave' => $subfamilia->clave,
-                'nombre' =>  $subfamilia->nombre,
+                'clave'      => $subfamilia->clave,
+                'nombre'     => $subfamilia->nombre,
                 'familia_id' => $familia->id,
-                'margen_id' => $margen->id
+                'margen_id'  => $margen->id
             ];
             DB::table('subfamilias')->insert($data);
-            $this->counter++;
+            $this->counter ++;
             $this->printProgress();
         }
         echo "\n";
     }
 
-    private function printProgress()
-    {
-        $progress = sprintf("%01.2f%%", ($this->counter/$this->totalData)*100);
-        if($progress <= 0.01){$progress = 0.01;}
-        $this->command->getOutput()->write("\r<info>Seeding:</info> Subfamilia <comment>".$progress."</comment>");
+    private function printProgress() {
+        $progress = sprintf("%01.2f%%", ($this->counter / $this->totalData) * 100);
+        if ($progress <= 0.01) {
+            $progress = 0.01;
+        }
+        $this->command->getOutput()->write("\r<info>Seeding:</info> Subfamilia <comment>" . $progress . "</comment>");
     }
 
-    private function printDebug($what, $params)
-    {
+    private function printDebug($what, $params) {
         foreach ($params as $param) {
-            $this->command->getOutput()->writeln( sprintf("\n<question>%s</question> <info>%s</info>", $what, $param) );
+            $this->command->getOutput()->writeln(sprintf("\n<question>%s</question> <info>%s</info>", $what, $param));
         }
     }
 }

@@ -1,15 +1,24 @@
 {
-  "name": "angular-seed",
-  "description": "A starter project for AngularJS",
+  "name": "app-angular",
   "version": "0.0.0",
-  "homepage": "https://github.com/angular/angular-seed",
+  "description": "Frontend para SAGD",
+  "main": [
+    "app/app.js",
+    "app/assets/stylesheets/application.sass"
+  ],
+  "moduleType": [
+    "node"
+  ],
   "license": "MIT",
-  "private": true,
   "dependencies": {
-    "angular": "~1.4.0",
-    "angular-route": "~1.4.0",
-    "angular-loader": "~1.4.0",
-    "angular-mocks": "~1.4.0",
-    "html5-boilerplate": "~5.2.0"
+    "angular-ui-router": "~0.2.15",
+    "angular": "~1.4.4",
+    "satellizer": "~0.12.2",
+    "bootstrap": "v4-dev",
+    "jquery": "~2.1.4",
+    "angular-animate": "~1.4.4"
+  },
+  "resolutions": {
+    "bootstrap": "v4-dev"
   }
 }

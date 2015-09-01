@@ -3,6 +3,18 @@
 namespace App;
 
 
+/**
+ * App\EstadoSoporte
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServicioSoporte[] $serviciosSoportes
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoSoporte whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoSoporte whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoSoporte whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class EstadoSoporte extends LGGModel {
 
     //
@@ -21,20 +33,18 @@ class EstadoSoporte extends LGGModel {
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        EstadoSoporte::creating(function ($model)
-        {
-            if (!$model->isValid())
-            {
+    public static function boot() {
+        EstadoSoporte::creating(function ($model) {
+            if (!$model->isValid()) {
                 return false;
             }
 
             return true;
         });
-        EstadoSoporte::updating(function($estado_soporte){
+        EstadoSoporte::updating(function ($estado_soporte) {
             $estado_soporte->updateRules = self::$rules;
-            $estado_soporte->updateRules['clave'] .= ',clave,'.$estado_soporte->id;
+            $estado_soporte->updateRules['clave'] .= ',clave,' . $estado_soporte->id;
+
             return $estado_soporte->isValid('update');
         });
     }
@@ -43,7 +53,7 @@ class EstadoSoporte extends LGGModel {
      * Obtiene los soportes asociados al estatus de soporte
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function serviciosSoportes(){
+    public function serviciosSoportes() {
         return $this->hasMany('App\ServicioSoporte');
     }
 }

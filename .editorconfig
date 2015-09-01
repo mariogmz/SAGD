@@ -18,9 +18,9 @@ indent_size = 2
 indent_style = space
 indent_size = 2
 
-# Tabs in less
-[**.less]
-indent_style = tab
+# 2 spaces in scss
+[**.scss]
+indent_style = space
 indent_size = 2
 
 [**.css]
@@ -32,5 +32,9 @@ indent_style = space
 indent_size = 4
 
 [**.html]
-indent_style = tab
+indent_style = space
+indent_size = 2
+
+[**.feature]
+indent_size = space
 indent_size = 2

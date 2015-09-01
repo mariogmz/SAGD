@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPaqueteriasCoberturasConstraints extends Migration
-{
+class AddPaqueteriasCoberturasConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('paqueterias_coberturas', function($table){
+        Schema::table('paqueterias_coberturas', function ($table) {
             $table->integer('paqueteria_id')->unsigned();
             $table->integer('codigo_postal_id')->unsigned();
 
@@ -27,10 +25,9 @@ class AddPaqueteriasCoberturasConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('paqueterias_coberturas', function($table){
+        Schema::table('paqueterias_coberturas', function ($table) {
             $table->dropForeign('paqueterias_coberturas_paqueteria_id_foreign');
             $table->dropForeign('paqueterias_coberturas_codigo_postal_id_foreign');
 

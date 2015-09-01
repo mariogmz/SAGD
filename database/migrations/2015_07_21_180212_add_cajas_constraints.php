@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class AddCajasConstraints extends Migration {
@@ -10,10 +9,8 @@ class AddCajasConstraints extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('cajas', function ($table)
-        {
+    public function up() {
+        Schema::table('cajas', function ($table) {
             $table->integer('sucursal_id')->unsigned();
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
         });
@@ -24,10 +21,8 @@ class AddCajasConstraints extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('cajas', function ($table)
-        {
+    public function down() {
+        Schema::table('cajas', function ($table) {
             $table->dropForeign('cajas_sucursal_id_foreign');
             $table->dropColumn('sucursal_id');
         });

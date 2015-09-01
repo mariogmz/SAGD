@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateSubfamiliasTable extends Migration {
@@ -10,11 +9,9 @@ class CreateSubfamiliasTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('subfamilias', function ($table)
-        {
+        Schema::create('subfamilias', function ($table) {
             $table->increments('id');
             $table->char('clave', 4);
             $table->string('nombre', 45);
@@ -27,8 +24,7 @@ class CreateSubfamiliasTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('subfamilias');
     }

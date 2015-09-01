@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddSubfamiliasConstraints extends Migration
-{
+class AddSubfamiliasConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('subfamilias', function($table){
+        Schema::table('subfamilias', function ($table) {
             $table->integer('familia_id')->unsigned();
             $table->integer('margen_id')->unsigned();
 
@@ -27,10 +25,9 @@ class AddSubfamiliasConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('subfamilias', function($table){
+        Schema::table('subfamilias', function ($table) {
             $table->dropForeign('subfamilias_familia_id_foreign');
             $table->dropForeign('subfamilias_margen_id_foreign');
 

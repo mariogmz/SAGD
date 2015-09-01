@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddVentasDetallesConstraints extends Migration
-{
+class AddVentasDetallesConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('ventas_detalles', function($table){
+        Schema::table('ventas_detalles', function ($table) {
             $table->integer('venta_id')->unsigned();
             $table->integer('tipo_partida_id')->unsigned();
             $table->integer('producto_id')->unsigned()->nullable();
@@ -35,10 +33,9 @@ class AddVentasDetallesConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('ventas_detalles', function($table){
+        Schema::table('ventas_detalles', function ($table) {
             $table->dropForeign('ventas_detalles_venta_id_foreign');
             $table->dropForeign('ventas_detalles_tipo_partida_id_foreign');
             $table->dropForeign('ventas_detalles_producto_id_foreign');

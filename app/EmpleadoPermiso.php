@@ -2,8 +2,16 @@
 
 namespace App;
 
-class EmpleadoPermiso extends LGGModel
-{
+
+/**
+ * App\EmpleadoPermiso
+ *
+ * @property integer $id_empleado
+ * @method static \Illuminate\Database\Query\Builder|\App\EmpleadoPermiso whereIdEmpleado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class EmpleadoPermiso extends LGGModel {
+
     //
     protected $table = "empleados_permisos";
     public $timestamps = false;
@@ -18,12 +26,13 @@ class EmpleadoPermiso extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        EmpleadoPermiso::creating(function($model){
+    public static function boot() {
+        EmpleadoPermiso::creating(function ($model) {
             return $model->isValid();
         });
-        EmpleadoPermiso::updating(function($model){
+        EmpleadoPermiso::updating(function ($model) {
             $model->updateRules = self::$rules;
+
             return $model->isValid('update');
         });
     }

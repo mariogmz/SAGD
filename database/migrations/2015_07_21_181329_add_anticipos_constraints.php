@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddAnticiposConstraints extends Migration
-{
+class AddAnticiposConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('anticipos', function($table){
+        Schema::table('anticipos', function ($table) {
             $table->integer('venta_id')->unsigned();
             $table->integer('venta_entrega_id')->unsigned()->nullable();
 
@@ -27,10 +25,9 @@ class AddAnticiposConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('anticipos', function($table){
+        Schema::table('anticipos', function ($table) {
             $table->dropForeign('anticipos_venta_id_foreign');
             $table->dropForeign('anticipos_venta_entrega_id_foreign');
 

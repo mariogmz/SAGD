@@ -38,8 +38,8 @@ class MetodoPagoRangoTableSeeder extends Seeder {
             foreach ($lista_rangos as $valor) {
                 $desde_hasta = explode('_', $valor);
                 $nuevo_rango = new App\MetodoPagoRango([
-                    'desde'          => $desde_hasta[0]/100,
-                    'hasta'          => $desde_hasta[1]/100,
+                    'desde'          => $desde_hasta[0] / 100,
+                    'hasta'          => $desde_hasta[1] / 100,
                     'valor'          => $rango[$valor],
                     'metodo_pago_id' => $metodo_pago_id
                 ]);

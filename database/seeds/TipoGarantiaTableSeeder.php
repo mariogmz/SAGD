@@ -2,15 +2,14 @@
 
 use Illuminate\Database\Seeder;
 
-class TipoGarantiaTableSeeder extends Seeder
-{
+class TipoGarantiaTableSeeder extends Seeder {
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
-    public function run()
-    {
+    public function run() {
         //
         DB::table('tipos_garantias')->insert(['seriado' => 0, 'dias' => 0, 'descripcion' => 'Sin Garantia']);
         DB::table('tipos_garantias')->insert(['seriado' => 0, 'dias' => 0, 'descripcion' => 'Centro Servicio']);

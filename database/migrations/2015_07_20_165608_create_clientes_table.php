@@ -1,23 +1,19 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateClientesTable extends Migration
-{
+class CreateClientesTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('clientes', function($table){
+        Schema::create('clientes', function ($table) {
             $table->increments('id');
-            $table->string('email', 45);
             $table->string('usuario', 20);
-            $table->char('password', 64);
             $table->string('nombre', 200);
             $table->timestamp('fecha_nacimiento')->nullable();
             $table->string('sexo', 15);
@@ -25,9 +21,7 @@ class CreateClientesTable extends Migration
             $table->timestamp('fecha_verificacion_correo')->nullable();
             $table->timestamp('fecha_expira_club_zegucom')->nullable();
             $table->string('referencia_otro', 50)->nullable();
-            $table->string('access_token', 20)->nullable();
             $table->timestamps();
-            $table->unique('email');
             $table->unique('usuario');
         });
     }
@@ -37,8 +31,7 @@ class CreateClientesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('clientes');
     }

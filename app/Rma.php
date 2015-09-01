@@ -3,6 +3,36 @@
 namespace App;
 
 
+/**
+ * App\Rma
+ *
+ * @property integer $id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $estado_rma_id
+ * @property integer $cliente_id
+ * @property integer $empleado_id
+ * @property integer $rma_tiempo_id
+ * @property integer $sucursal_id
+ * @property integer $nota_credito_id
+ * @property-read \App\Cliente $cliente
+ * @property-read \App\Empleado $empleado
+ * @property-read \App\EstadoRma $estadoRma
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RmaDetalle[] $rmasDetalles
+ * @property-read \App\RmaTiempo $rmaTiempo
+ * @property-read \App\Sucursal $sucursal
+ * @property-read \App\NotaCredito $notaCredito
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereEstadoRmaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereClienteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereRmaTiempoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereNotaCreditoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Rma extends LGGModel {
 
     protected $table = "rmas";

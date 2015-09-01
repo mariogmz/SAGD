@@ -1,0 +1,51 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+
+class CreateUsersTable extends Migration {
+
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+<<<<<<< Updated upstream
+    public function up() {
+        // Schema::create('users', function (Blueprint $table) {
+        //     $table->increments('id');
+        //     $table->string('name');
+        //     $table->string('email')->unique();
+        //     $table->string('password', 60);
+        //     $table->rememberToken();
+        //     $table->timestamps();
+        // });
+=======
+    public function up()
+    {
+        Schema::create('users', function (Blueprint $table) {
+            $table->increments('id');
+            $table->string('email')->unique();
+            $table->string('password', 60);
+            $table->rememberToken();
+            $table->integer('morphable_id');
+            $table->string('morphable_type');
+            $table->timestamps();
+        });
+>>>>>>> Stashed changes
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+<<<<<<< Updated upstream
+    public function down() {
+        // Schema::drop('users');
+=======
+    public function down()
+    {
+        Schema::drop('users');
+>>>>>>> Stashed changes
+    }
+}

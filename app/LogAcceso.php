@@ -3,6 +3,22 @@
 namespace App;
 
 
+/**
+ * App\LogAcceso
+ *
+ * @property integer $id
+ * @property boolean $exitoso
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $empleado_id
+ * @property-read \App\Empleado $empleado
+ * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereExitoso($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class LogAcceso extends LGGModel {
 
     protected $table = 'log_acceso';
@@ -30,6 +46,7 @@ class LogAcceso extends LGGModel {
         });
         LogAcceso::updating(function ($log_entry) {
             $log_entry->updateRules = self::$rules;
+
             return $log_entry->isValid();
         });
     }

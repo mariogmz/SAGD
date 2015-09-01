@@ -2,8 +2,52 @@
 
 namespace App;
 
-class Factura extends LGGModel
-{
+
+/**
+ * App\Factura
+ *
+ * @property integer $id
+ * @property string $folio
+ * @property string $fecha_expedicion
+ * @property string $fecha_timbrado
+ * @property string $cadena_original_emisor
+ * @property string $cadena_original_receptor
+ * @property boolean $error_sat
+ * @property string $forma_pago
+ * @property string $metodo_pago
+ * @property string $numero_cuenta_pago
+ * @property string $sello_digital_emisor
+ * @property string $sello_digital_sat
+ * @property string $xml
+ * @property string $lugar_expedicion
+ * @property integer $razon_social_emisor_id
+ * @property integer $razon_social_receptor_id
+ * @property integer $factura_status_id
+ * @property-read \App\RazonSocialEmisor $razonSocialEmisor
+ * @property-read \App\RazonSocialReceptor $razonSocialReceptor
+ * @property-read \App\EstadoFactura $estado
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\VentaDetalle[] $ventasDetalles
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereFolio($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereFechaExpedicion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereFechaTimbrado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereCadenaOriginalEmisor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereCadenaOriginalReceptor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereErrorSat($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereFormaPago($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereMetodoPago($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereNumeroCuentaPago($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereSelloDigitalEmisor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereSelloDigitalSat($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereXml($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereLugarExpedicion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereRazonSocialEmisorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereRazonSocialReceptorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereFacturaStatusId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class Factura extends LGGModel {
+
     //
     protected $table = "facturas";
     public $timestamps = false;
@@ -15,19 +59,19 @@ class Factura extends LGGModel
     ];
 
     public static $rules = [
-        'folio' => 'required|max:45',
-        'fecha_expedicion' => 'date',
-        'fecha_timbrado' => 'date',
-        'cadena_original_emisor' => 'required',
+        'folio'                    => 'required|max:45',
+        'fecha_expedicion'         => 'date',
+        'fecha_timbrado'           => 'date',
+        'cadena_original_emisor'   => 'required',
         'cadena_original_receptor' => 'required',
-        'error_sat' => 'required|boolean',
-        'forma_pago' => 'required|max:60',
-        'metodo_pago' => 'required|max:60',
-        'numero_cuenta_pago' => 'required|max:60',
-        'lugar_expedicion' => 'required|max:45',
-        'sello_digital_emisor' => 'required',
-        'sello_digital_sat' => 'required',
-        'xml' => 'required',
+        'error_sat'                => 'required|boolean',
+        'forma_pago'               => 'required|max:60',
+        'metodo_pago'              => 'required|max:60',
+        'numero_cuenta_pago'       => 'required|max:60',
+        'lugar_expedicion'         => 'required|max:45',
+        'sello_digital_emisor'     => 'required',
+        'sello_digital_sat'        => 'required',
+        'xml'                      => 'required',
     ];
     public $updateRules = [];
 
@@ -35,43 +79,41 @@ class Factura extends LGGModel
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot(){
-        Factura::creating(function($model){
+    public static function boot() {
+        Factura::creating(function ($model) {
             return $model->isValid();
         });
-        Factura::updating(function($model){
+        Factura::updating(function ($model) {
             $model->updateRules = self::$rules;
+
             return $model->isValid('update');
         });
     }
 
 
     /**
-    * Obtiene el Emisor asociado con la Factura
-    * @return App\RazonSocialEmisor
-    */
-    public function razonSocialEmisor()
-    {
+     * Obtiene el Emisor asociado con la Factura
+     * @return App\RazonSocialEmisor
+     */
+    public function razonSocialEmisor() {
         return $this->belongsTo('App\RazonSocialEmisor', 'razon_social_emisor_id');
     }
 
 
     /**
-    * Obtiene el Receptor asociado con la Factura
-    * @return App\RazonSocialReceptor
-    */
-    public function razonSocialReceptor()
-    {
+     * Obtiene el Receptor asociado con la Factura
+     * @return App\RazonSocialReceptor
+     */
+    public function razonSocialReceptor() {
         return $this->belongsTo('App\RazonSocialReceptor', 'razon_social_receptor_id');
     }
 
 
     /**
-    * Obtiene el Estado asociado con la factura
-    * @return App\EstadoFactura
-    */
-    public function estado()
-    {
+     * Obtiene el Estado asociado con la factura
+     * @return App\EstadoFactura
+     */
+    public function estado() {
         return $this->belongsTo('App\EstadoFactura', 'factura_status_id');
     }
 

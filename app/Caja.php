@@ -3,6 +3,30 @@
 namespace App;
 
 
+/**
+ * App\Caja
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property string $mac_addr
+ * @property string $token
+ * @property integer $iteracion
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $sucursal_id
+ * @property-read \App\Sucursal $sucursal
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Corte[] $cortes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\GastoExtra[] $gastosExtras
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereMacAddr($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereIteracion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Caja extends LGGModel {
 
     protected $table = "cajas";
@@ -45,7 +69,7 @@ class Caja extends LGGModel {
      * Obtiene los cortes asociados a esta caja
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function cortes(){
+    public function cortes() {
         return $this->hasMany('App\Corte');
     }
 
@@ -53,7 +77,7 @@ class Caja extends LGGModel {
      * Obtiene los gastos extras asociados a la caja
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function gastosExtras(){
+    public function gastosExtras() {
         return $this->hasMany('App\GastoExtra');
     }
 }

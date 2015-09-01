@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
 class CreateProductosTable extends Migration {
@@ -10,11 +9,9 @@ class CreateProductosTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('productos', function ($table)
-        {
+        Schema::create('productos', function ($table) {
             $table->increments('id');
             $table->boolean('activo')->default(true)->unsigned();
             $table->string('clave', 60);
@@ -25,7 +22,7 @@ class CreateProductosTable extends Migration {
             $table->boolean('remate')->default(false)->unsigned();
             $table->decimal('spiff', 14, 2);
             $table->string('subclave', 45);
-            $table->string('upc',20);
+            $table->string('upc', 20);
             $table->timestamps();
             $table->unique('clave');
             $table->unique('numero_parte');
@@ -38,8 +35,7 @@ class CreateProductosTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('productos');
     }

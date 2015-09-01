@@ -3,6 +3,20 @@
 namespace App;
 
 
+/**
+ * App\Telefono
+ *
+ * @property integer $id
+ * @property string $numero
+ * @property string $tipo
+ * @property integer $domicilio_id
+ * @property-read \App\Domicilio $domicilio
+ * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereNumero($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereTipo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereDomicilioId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Telefono extends LGGModel {
 
     protected $table = 'telefonos';

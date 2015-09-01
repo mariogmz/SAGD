@@ -3,6 +3,19 @@
 namespace App;
 
 
+/**
+ * App\CorteConcepto
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property integer $tipo_corte_concepto_id
+ * @property-read \App\TipoCorteConcepto $tipoCorteConcepto
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CorteDetalle[] $cortesDetalles
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteConcepto whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteConcepto whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteConcepto whereTipoCorteConceptoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class CorteConcepto extends LGGModel {
 
     protected $table = "cortes_conceptos";
@@ -42,7 +55,7 @@ class CorteConcepto extends LGGModel {
      * Obtiene los detalles asociados a este tipo de concepto
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function cortesDetalles(){
+    public function cortesDetalles() {
         return $this->hasMany('App\CorteDetalle');
     }
 

@@ -3,6 +3,35 @@
 namespace App;
 
 
+/**
+ * App\ServicioSoporte
+ *
+ * @property integer $id
+ * @property string $descripcion_equipo
+ * @property string $falla
+ * @property string $solucion
+ * @property float $costo
+ * @property string $fecha_recepcion
+ * @property string $fecha_entrega
+ * @property integer $estado_soporte_id
+ * @property integer $empleado_id
+ * @property integer $cliente_id
+ * @property-read \App\EstadoSoporte $estadoSoporte
+ * @property-read \App\Empleado $empleado
+ * @property-read \App\Cliente $cliente
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\SoporteProducto[] $soportesProductos
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereDescripcionEquipo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereFalla($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereSolucion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereCosto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereFechaRecepcion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereFechaEntrega($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereEstadoSoporteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereClienteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class ServicioSoporte extends LGGModel {
 
     protected $table = "servicio_soporte";

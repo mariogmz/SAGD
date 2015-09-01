@@ -56,26 +56,25 @@ class Caker {
                     break;
             }
         }
+
         return $value;
     }
 
-    public static function getEstadoVenta()
-    {
+    public static function getEstadoVenta() {
         $ev = EstadoVenta::all()->first();
-        if (is_null($ev))
-        {
+        if (is_null($ev)) {
             return factory(EstadoVenta::class)->create();
         }
+
         return $ev;
     }
 
-    public static function getSucursal()
-    {
+    public static function getSucursal() {
         $s = Sucursal::all()->first();
-        if( is_null($s) )
-        {
+        if (is_null($s)) {
             return factory(Sucursal::class)->create();
         }
+
         return $s;
     }
 
@@ -87,7 +86,7 @@ class Caker {
         }, array());
     }
 
-    private static function refresh(){
+    private static function refresh() {
         echo "Refreshing Faker and running DB reset...\n";
         \Artisan::call('reset:db', ['--force' => true]);
         static::$faker = Factory::create();

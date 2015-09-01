@@ -3,6 +3,20 @@
 namespace App;
 
 
+/**
+ * App\Configuracion
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property string $tipo
+ * @property string $modulo
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\SucursalConfiguracion[] $sucursalesConfiguraciones
+ * @method static \Illuminate\Database\Query\Builder|\App\Configuracion whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Configuracion whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Configuracion whereTipo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Configuracion whereModulo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Configuracion extends LGGModel {
 
     protected $table = 'configuraciones';

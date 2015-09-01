@@ -2,11 +2,21 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
 
-class Marca extends LGGModel
-{
+/**
+ * App\Marca
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
+ * @method static \Illuminate\Database\Query\Builder|\App\Marca whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Marca whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Marca whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class Marca extends LGGModel {
+
     protected $table = 'marcas';
 
     public $timestamps = false;
@@ -14,7 +24,7 @@ class Marca extends LGGModel
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave' => ['required','max:3','alpha','regex:/[A-Z]{3}/', 'unique:marcas'],
+        'clave'  => ['required', 'max:3', 'alpha', 'regex:/[A-Z]{3}/', 'unique:marcas'],
         'nombre' => 'required|max:25'
     ];
 
@@ -25,18 +35,20 @@ class Marca extends LGGModel
      * @codeCoverageIgnore
      */
     public static function boot() {
-        Marca::creating(function($marca){
+        Marca::creating(function ($marca) {
             $marca->clave = strtoupper($marca->clave);
-            if ( !$marca->isValid() ){
+            if (!$marca->isValid()) {
                 return false;
             }
+
             return true;
         });
-        Marca::updating(function($marca){
+        Marca::updating(function ($marca) {
             $marca->updateRules = self::$rules;
             $marca->updateRules['clave'] = [
                 'required', 'max:3', 'alpha', 'regex:/[A-Z]{3}/',
-                'unique:marcas,clave,'.$marca->id];
+                'unique:marcas,clave,' . $marca->id];
+
             return $marca->isValid('update');
         });
     }
@@ -46,8 +58,7 @@ class Marca extends LGGModel
      *
      * @return array
      */
-    public function productos()
-    {
+    public function productos() {
         return $this->hasMany('App\Producto', 'marca_id');
     }
 }

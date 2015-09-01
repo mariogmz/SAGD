@@ -3,6 +3,28 @@
 namespace App;
 
 
+/**
+ * App\MetodoPago
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property float $comision
+ * @property float $monto_minimo
+ * @property string $informacion_adicional
+ * @property integer $estatus_activo_id
+ * @property-read \App\EstatusActivo $estatusActivo
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\MetodoPagoRango[] $metodosPagosRangos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\VentaDetalle[] $ventasDetalles
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereComision($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereMontoMinimo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereInformacionAdicional($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereEstatusActivoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class MetodoPago extends LGGModel {
 
     protected $table = "metodos_pagos";

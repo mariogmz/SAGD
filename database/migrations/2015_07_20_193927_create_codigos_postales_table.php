@@ -9,11 +9,9 @@ class CreateCodigosPostalesTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('codigos_postales', function ($table)
-        {
+        Schema::create('codigos_postales', function ($table) {
             $table->increments('id');
             $table->string('estado', 45);
             $table->string('municipio', 50);
@@ -27,8 +25,7 @@ class CreateCodigosPostalesTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('codigos_postales');
     }
 }

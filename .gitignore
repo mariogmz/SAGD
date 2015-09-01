@@ -9,13 +9,21 @@
 ### Omarcito's Prettyness_###
 /node_modules
 Homestead.yaml
-laravel-ide-helper.php
 composer.lock
 /vendor
 codigos_postales.txt
+_ide_helper.php
+.phpstorm.meta.php
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+
+
+### FrontEnd ###
+app-angular/.sass-cache
+app-angular/node_modules
+app-angular/bower_components
+app-angular/npm-debug.log
 
 *.iml
 

@@ -9,10 +9,8 @@ class AddEmpleadosConstraints extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::table('empleados', function ($table)
-        {
+    public function up() {
+        Schema::table('empleados', function ($table) {
             // Foreign Key Fields
             $table->integer('sucursal_id')->unsigned();
             $table->foreign('sucursal_id')->references('id')->on('sucursales');
@@ -24,10 +22,8 @@ class AddEmpleadosConstraints extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
-        Schema::table('empleados', function ($table)
-        {
+    public function down() {
+        Schema::table('empleados', function ($table) {
             $table->dropForeign('empleados_sucursal_id_foreign');
             $table->dropColumn('sucursal_id');
         });

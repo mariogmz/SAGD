@@ -3,22 +3,60 @@
 namespace App;
 
 
+/**
+ * App\Empleado
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property string $usuario
+ * @property string $password
+ * @property boolean $activo
+ * @property string $puesto
+ * @property string $fecha_cambio_password
+ * @property string $fecha_ultimo_ingreso
+ * @property string $access_token
+ * @property integer $sucursal_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\LogAcceso[] $logsAccesos
+ * @property-read \App\DatoContacto $datoContacto
+ * @property-read \App\Sucursal $sucursal
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServicioSoporte[] $serviciosSoportes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rma[] $rmas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Salida[] $salidas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Entrada[] $entradas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transferencia[] $transferenciasOrigen
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transferencia[] $transferenciasDestino
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Transferencia[] $transferenciasRevision
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Apartado[] $apartados
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Apartado[] $desapartados
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Corte[] $cortes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\VentaMovimiento[] $ventasMovimientos
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereUsuario($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereActivo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado wherePuesto($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereFechaCambioPassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereFechaUltimoIngreso($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereAccessToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Empleado extends LGGModel {
 
     protected $table = 'empleados';
 
     public $timestamps = false;
 
-    protected $fillable = ['nombre', 'usuario', 'password', 'activo', 'puesto', 'access_token'];
+    protected $fillable = ['nombre', 'usuario', 'activo', 'puesto', 'fecha_cambio_password', 'fecha_ultimo_ingreso', 'sucursal_id'];
     public static $rules = [
         'nombre'                => ['required', 'max:100'],
         'usuario'               => 'required|max:20|unique:empleados',
-        'password'              => 'required|max:64|different:usuario',
         'activo'                => 'required|boolean',
         'puesto'                => 'string|max:45',
         'fecha_cambio_password' => 'required|date',
         'fecha_ultimo_ingreso'  => 'date',
-        'access_token'          => 'max:20|unique:empleados'
+        'sucursal_id'           => 'required|integer'
     ];
 
     public $updateRules = [];
@@ -38,7 +76,6 @@ class Empleado extends LGGModel {
         Empleado::updating(function ($empleado) {
             $empleado->updateRules = self::$rules;
             $empleado->updateRules['usuario'] .= ',usuario,' . $empleado->id;
-            $empleado->updateRules['access_token'] .= ',access_token,' . $empleado->id;
 
             return $empleado->isValid('update');
         });
@@ -163,4 +200,13 @@ class Empleado extends LGGModel {
         return $this->hasMany('App\VentaMovimiento');
     }
 
+
+    /**
+    * Obtiene el User morphable con el Empleado
+    * @return App\User
+    */
+    public function user()
+    {
+        return $this->morphOne('App\User', 'morphable');
+    }
 }

@@ -1,0 +1,29 @@
+<!-- views/loginView.html -->
+<div class="signin-screen">
+  <div class="login-card">
+    <div class="login-card-logo">
+      <img src="../public/img/sagd.svg" alt="Sistema Administrativo de Grupo Dicotech">
+    </div>
+
+    <div class="login-card-block">
+      <h4>Acceso</h4>
+      <h6>Sistema Administrativo de Grupo Dicotech</h6>
+
+      <form ng-class="{'error': vm.loginError}">
+        <fieldset>
+          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email" ng-change="vm.cleanLoginError()">
+        </fieldset>
+        <fieldset>
+          <input type="password" placeholder="Contraseña" required ng-model="vm.password" ng-change="vm.cleanLoginError()">
+          <p  id="flash-error"
+              ng-show="vm.loginError"
+              ng-class="{'active': vm.loginError}">Credenciales de acceso incorrectas.</p>
+        </fieldset>
+
+        <button id="acceder" type="submit" ng-click="vm.login()">Acceder</button>
+      </form>
+      <hr>
+      <a ui-sref="forgot">¿Olvidaste tu contraseña?</a>
+    </div>
+  </div>
+</div>

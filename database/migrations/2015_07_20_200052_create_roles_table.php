@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateRolesTable extends Migration
-{
+class CreateRolesTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('roles', function($table){
+        Schema::create('roles', function ($table) {
             $table->increments('id');
             $table->char('clave', 6);
             $table->string('nombre', 45);
@@ -26,8 +24,7 @@ class CreateRolesTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('roles');
     }

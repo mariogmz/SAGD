@@ -3,6 +3,25 @@
 namespace App;
 
 
+/**
+ * App\Domicilio
+ *
+ * @property integer $id
+ * @property string $calle
+ * @property string $localidad
+ * @property integer $codigo_postal_id
+ * @property-read \App\CodigoPostal $codigoPostal
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Telefono[] $telefonos
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Sucursal[] $sucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Cliente[] $clientes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RazonSocialEmisor[] $razonesSocialesEmisores
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RazonSocialReceptor[] $razonesSocialesReceptores
+ * @method static \Illuminate\Database\Query\Builder|\App\Domicilio whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Domicilio whereCalle($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Domicilio whereLocalidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Domicilio whereCodigoPostalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Domicilio extends LGGModel {
 
     protected $table = 'domicilios';
@@ -31,6 +50,7 @@ class Domicilio extends LGGModel {
         });
         Domicilio::updating(function ($domicilio) {
             $domicilio->updateRules = self::$rules;
+
             return $domicilio->isValid();
         });
     }
@@ -71,21 +91,19 @@ class Domicilio extends LGGModel {
 
 
     /**
-    * Obtiene las Razones Sociales Emisores asociadas con el Domicilio
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function razonesSocialesEmisores()
-    {
+     * Obtiene las Razones Sociales Emisores asociadas con el Domicilio
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function razonesSocialesEmisores() {
         return $this->hasMany('App\RazonSocialEmisor', 'domicilio_id');
     }
 
 
     /**
-    * Obtiene las Razones Sociales Receptores asociadas con el Domicilio
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function razonesSocialesReceptores()
-    {
+     * Obtiene las Razones Sociales Receptores asociadas con el Domicilio
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function razonesSocialesReceptores() {
         return $this->hasMany('App\RazonSocialReceptor', 'domicilio_id');
     }
 }

@@ -3,6 +3,28 @@
 namespace App;
 
 
+/**
+ * App\Reposicion
+ *
+ * @property integer $id
+ * @property string $serie
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $producto_id
+ * @property integer $garantia_id
+ * @property integer $proveedor_id
+ * @property-read \App\Producto $producto
+ * @property-read \App\Garantia $garantia
+ * @property-read \App\Proveedor $proveedor
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereSerie($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereProductoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereGarantiaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereProveedorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Reposicion extends LGGModel {
 
     protected $table = "reposiciones";

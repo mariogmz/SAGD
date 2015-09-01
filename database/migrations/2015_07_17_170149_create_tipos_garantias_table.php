@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
 class CreateTiposGarantiasTable extends Migration {
 
@@ -10,11 +10,9 @@ class CreateTiposGarantiasTable extends Migration {
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('tipos_garantias', function (Blueprint $table)
-        {
+        Schema::create('tipos_garantias', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('seriado')->unsigned()->default(1);
             $table->string('descripcion', 45);
@@ -27,8 +25,7 @@ class CreateTiposGarantiasTable extends Migration {
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('tipos_garantias');
     }

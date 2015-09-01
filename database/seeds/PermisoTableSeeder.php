@@ -10,9 +10,9 @@ class PermisoTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        foreach($this->prepararDatos() as $permiso){
+        foreach ($this->prepararDatos() as $permiso) {
             $nuevo_permiso = new App\Permiso($permiso);
-            if(!$nuevo_permiso->save()){
+            if (!$nuevo_permiso->save()) {
                 // Errors
             }
         }

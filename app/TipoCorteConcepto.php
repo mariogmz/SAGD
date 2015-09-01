@@ -3,6 +3,16 @@
 namespace App;
 
 
+/**
+ * App\TipoCorteConcepto
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\CorteConcepto[] $cortesConceptos
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoCorteConcepto whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoCorteConcepto whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class TipoCorteConcepto extends LGGModel {
 
     protected $table = "tipos_cortes_conceptos";

@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddClientesConstraints extends Migration
-{
+class AddClientesConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('clientes', function($table){
+        Schema::table('clientes', function ($table) {
             $table->integer('cliente_estatus_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
             $table->integer('cliente_referencia_id')->unsigned();
@@ -34,10 +32,9 @@ class AddClientesConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('clientes', function($table){
+        Schema::table('clientes', function ($table) {
             $table->dropForeign('clientes_cliente_estatus_id_foreign');
             $table->dropForeign('clientes_sucursal_id_foreign');
             $table->dropForeign('clientes_cliente_referencia_id_foreign');

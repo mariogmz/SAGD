@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddProductosConstraints extends Migration
-{
+class AddProductosConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('productos', function($table){
+        Schema::table('productos', function ($table) {
             $table->integer('tipo_garantia_id')->unsigned();
             $table->integer('marca_id')->unsigned();
             $table->integer('margen_id')->unsigned()->nullable();
@@ -33,10 +31,9 @@ class AddProductosConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('productos', function($table){
+        Schema::table('productos', function ($table) {
             $table->dropForeign('productos_tipo_garantia_id_foreign');
             $table->dropForeign('productos_marca_id_foreign');
             $table->dropForeign('productos_margen_id_foreign');

@@ -14,3 +14,14 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
+    Route::group(['namespace' => 'V1', 'prefix' => 'v1'], function(){
+        Route::resource('authenticate', 'AuthenticateController', ['only' => ['authenticate']]);
+        Route::post('authenticate', 'AuthenticateController@authenticate');
+        Route::get('authenticate/empleado', 'AuthenticateController@getAuthenticatedEmpleado');
+        Route::get('logout', 'AuthenticateController@logout');
+
+        Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
+    });
+});

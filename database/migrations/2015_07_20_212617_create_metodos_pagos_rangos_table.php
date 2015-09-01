@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateMetodosPagosRangosTable extends Migration
-{
+class CreateMetodosPagosRangosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::create('metodos_pagos_rangos', function($table){
+        Schema::create('metodos_pagos_rangos', function ($table) {
             $table->increments('id');
             $table->decimal('desde', 3, 2)->default(0.0);
             $table->decimal('hasta', 3, 2)->default(0.0);
@@ -26,8 +24,7 @@ class CreateMetodosPagosRangosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
         Schema::drop('metodos_pagos_rangos');
     }

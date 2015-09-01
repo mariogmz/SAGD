@@ -3,6 +3,16 @@
 namespace App;
 
 
+/**
+ * App\EstadoRma
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rma[] $rmas
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoRma whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoRma whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class EstadoRma extends LGGModel {
 
     protected $table = "estados_rmas";
@@ -19,20 +29,18 @@ class EstadoRma extends LGGModel {
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot()
-    {
-        EstadoRma::creating(function ($model)
-        {
-            if (!$model->isValid())
-            {
+    public static function boot() {
+        EstadoRma::creating(function ($model) {
+            if (!$model->isValid()) {
                 return false;
             }
 
             return true;
         });
-        EstadoRma::updating(function($estado_rma){
+        EstadoRma::updating(function ($estado_rma) {
             $estado_rma->updateRules = self::$rules;
-            $estado_rma->updateRules['nombre'] .= ',nombre,'.$estado_rma->id;
+            $estado_rma->updateRules['nombre'] .= ',nombre,' . $estado_rma->id;
+
             return $estado_rma->isValid('update');
         });
     }
@@ -41,7 +49,7 @@ class EstadoRma extends LGGModel {
      * Obtiene todos los rmas que tienen asociado el estado_rma
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function rmas(){
+    public function rmas() {
         return $this->hasMany('App\Rma');
     }
 }

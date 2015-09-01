@@ -1,0 +1,45 @@
+.module-navbar {
+
+  &.empleado {
+    float: right;
+    padding-right: 0;
+  }
+
+  .item {
+    &.empleado {
+
+      text-align: right;
+
+      span {
+        @include word-wrap(break-word, pre-wrap);
+      }
+    }
+  }
+}
+
+.module-category {
+
+  &.empleado {
+
+    @media (min-width: 106.2rem) {
+      width: 140px;
+    }
+
+    background-color: $persian-red;
+    color: $alto;
+    max-width: 140px;
+    text-align: center;
+    text-transform: uppercase;
+    width: 120px;
+  }
+}
+
+.menu {
+
+  &.empleado {
+
+    @extend .dropdown-menu-right;
+
+    border: 1px solid $persian-red;
+  }
+}

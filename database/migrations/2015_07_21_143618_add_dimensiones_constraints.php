@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddDimensionesConstraints extends Migration
-{
+class AddDimensionesConstraints extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
+    public function up() {
         //
-        Schema::table('dimensiones', function($table){
+        Schema::table('dimensiones', function ($table) {
             $table->integer('producto_id')->unsigned();
             $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
@@ -24,10 +22,9 @@ class AddDimensionesConstraints extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         //
-        Schema::table('dimensiones', function($table){
+        Schema::table('dimensiones', function ($table) {
             $table->dropForeign('dimensiones_producto_id_foreign');
             $table->dropColumn('producto_id');
         });

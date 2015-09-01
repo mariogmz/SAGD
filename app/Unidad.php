@@ -2,18 +2,28 @@
 
 namespace App;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Validator;
 
-class Unidad extends LGGModel
-{
+/**
+ * App\Unidad
+ *
+ * @property integer $id
+ * @property string $clave
+ * @property string $nombre
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
+ * @method static \Illuminate\Database\Query\Builder|\App\Unidad whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Unidad whereClave($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Unidad whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
+class Unidad extends LGGModel {
+
     //
     protected $table = "unidades";
     public $timestamps = false;
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave' => ['required','max:4','alpha','regex:/[A-Z]{4}/', 'unique:unidades'],
+        'clave'  => ['required', 'max:4', 'alpha', 'regex:/[A-Z]{4}/', 'unique:unidades'],
         'nombre' => 'required|max:45'
     ];
 
@@ -24,18 +34,20 @@ class Unidad extends LGGModel
      * @codeCoverageIgnore
      */
     public static function boot() {
-        Unidad::creating(function($unidad){
+        Unidad::creating(function ($unidad) {
             $unidad->clave = strtoupper($unidad->clave);
-            if ( !$unidad->isValid() ){
+            if (!$unidad->isValid()) {
                 return false;
             }
+
             return true;
         });
-        Unidad::updating(function($unidad){
+        Unidad::updating(function ($unidad) {
             $unidad->updateRules = self::$rules;
             $unidad->updateRules['clave'] = [
-                'required','max:4','alpha',
-                'regex:/[A-Z]{4}/', 'unique:unidades,clave,'.$unidad->id];
+                'required', 'max:4', 'alpha',
+                'regex:/[A-Z]{4}/', 'unique:unidades,clave,' . $unidad->id];
+
             return $unidad->isValid('update');
         });
     }
@@ -44,8 +56,7 @@ class Unidad extends LGGModel
      * Get the associated productos with unidad
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function productos()
-    {
+    public function productos() {
         return $this->hasMany('App\Producto');
     }
 }

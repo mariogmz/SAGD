@@ -3,6 +3,19 @@
 namespace App;
 
 
+/**
+ * App\TipoPartidaCorteConcepto
+ *
+ * @property integer $id
+ * @property integer $tipo_partida_id
+ * @property integer $corte_concepto_id
+ * @property-read \App\TipoPartida $tipoPartida
+ * @property-read \App\CorteConcepto $corteConcepto
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartidaCorteConcepto whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartidaCorteConcepto whereTipoPartidaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoPartidaCorteConcepto whereCorteConceptoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class TipoPartidaCorteConcepto extends LGGModel {
 
     protected $table = "tipos_partidas_cortes_conceptos";

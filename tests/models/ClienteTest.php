@@ -30,44 +30,6 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testEmailEsObligatorio()
-    {
-        $cliente = factory(App\Cliente::class)->make(['email' => null]);
-        $this->assertFalse($cliente->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testEmailEsDeFormatoValido()
-    {
-        $cliente = factory(App\Cliente::class)->make(['email' => 'aaa']);
-        $this->assertFalse($cliente->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testEmailNoEsLargo()
-    {
-        $cliente = factory(App\Cliente::class, 'longemail')->make();
-        $this->assertFalse($cliente->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testEmailEsUnico()
-    {
-        $cliente = factory(App\Cliente::class, 'full')->make();
-        $dup = clone $cliente;
-        $cliente->save();
-        $this->assertFalse($dup->save());
-    }
-
-    /**
-     * @coversNothing
-     */
     public function testUsuarioEsObligatorio()
     {
         $cliente = factory(App\Cliente::class)->make(['usuario' => null]);
@@ -80,19 +42,6 @@ class ClienteTest extends TestCase {
     public function testUsuarioNoEsLargo()
     {
         $cliente = factory(App\Cliente::class, 'longusername')->make();
-        $this->assertFalse($cliente->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testPasswordEsExactamente64Caracteres()
-    {
-        $cliente = factory(App\Cliente::class)->make();
-        $this->assertSame(64, strlen($cliente->password));
-        $cliente = factory(App\Cliente::class, 'longpassword')->make();
-        $this->assertFalse($cliente->isValid());
-        $cliente = factory(App\Cliente::class, 'shortpassword')->make();
         $this->assertFalse($cliente->isValid());
     }
 
@@ -408,5 +357,19 @@ class ClienteTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rsrs);
         $this->assertInstanceOf(App\RazonSocialReceptor::class, $rsrs[0]);
         $this->assertCount(1, $rsrs);
+    }
+
+    /**
+     * @covers ::user
+     * @group relaciones
+     */
+    public function testUser()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $user = factory(App\User::class)->create([
+            'morphable_id' => $cliente->id,
+            'morphable_type' => get_class($cliente)
+        ]);
+        $this->assertInstanceOf(App\User::class, $cliente->user);
     }
 }

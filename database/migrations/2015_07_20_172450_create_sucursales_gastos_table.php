@@ -1,19 +1,17 @@
 <?php
 
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
 
-class CreateSucursalesGastosTable extends Migration
-{
+class CreateSucursalesGastosTable extends Migration {
+
     /**
      * Run the migrations.
      *
      * @return void
      */
-    public function up()
-    {
-        Schema::create('sucursales_gastos', function (Blueprint $table)
-        {
+    public function up() {
+        Schema::create('sucursales_gastos', function (Blueprint $table) {
             $table->increments('id');
             $table->decimal('diario', 14, 2);
             $table->decimal('mensual', 14, 2);
@@ -27,8 +25,7 @@ class CreateSucursalesGastosTable extends Migration
      *
      * @return void
      */
-    public function down()
-    {
+    public function down() {
         Schema::drop('sucursales_gastos');
     }
 }

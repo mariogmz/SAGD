@@ -3,6 +3,20 @@
 namespace App;
 
 
+/**
+ * App\Garantia
+ *
+ * @property integer $id
+ * @property string $serie
+ * @property integer $venta_detalle_id
+ * @property-read \App\VentaDetalle $ventaDetalle
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RmaDetalle[] $rmasDetalles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Reposicion[] $reposiciones
+ * @method static \Illuminate\Database\Query\Builder|\App\Garantia whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Garantia whereSerie($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Garantia whereVentaDetalleId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Garantia extends LGGModel {
 
     protected $table = "garantias";

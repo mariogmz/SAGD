@@ -1,0 +1,18 @@
+.main-container {
+	@extend .container-fluid;
+
+	.view {
+		@include make-row();
+	}
+}
+
+.view {
+	.module-container {
+		@include make-col();
+		@include make-col-span(9);
+	}
+	.notification-bar {
+		@include make-col();
+		@include make-col-span(3);
+	}
+}
