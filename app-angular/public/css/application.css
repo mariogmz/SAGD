@@ -6005,8 +6005,8 @@ body {
   box-shadow: 0 10px 6px -6px #777;
   background-color: white;
   margin-top: 8%;
-  width: 33%;
   max-width: 420px;
+  min-width: 280px;
 }
 .login-card .login-card-logo {
   text-align: center;
@@ -6150,6 +6150,12 @@ body {
   width: 300px;
   z-index: 1000;
 }
+@media (min-width: 83.75rem) {
+  .mobile-navbar {
+    display: none !important;
+    transform: translateX(-100%) !important;
+  }
+}
 .mobile-navbar .brand {
   cursor: default;
   display: block;
@@ -6161,8 +6167,13 @@ body {
   margin: 0 auto;
 }
 .mobile-navbar .scrollable {
-  height: 690px;
+  height: 557px;
   overflow: scroll;
+}
+@media screen and (min-height: 652px) {
+  .mobile-navbar .scrollable {
+    height: 680px;
+  }
 }
 
 .mobile-modules {
