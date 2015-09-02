@@ -30,6 +30,21 @@ nav.top-navbar {
     display: block;
     float: left;
   }
+
+  .caret {
+    @extend .pull-right;
+    position:absolute;
+    font-style: normal;
+    right:4px;
+  }
+
+  li>a{
+    display: block;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
 }
 
 ul.module-list {

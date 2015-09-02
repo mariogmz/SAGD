@@ -23,7 +23,7 @@
               ng-mouseenter="showActionmenu=true"
               ng-mouseleave="showActionmenu=false">
             <a class="submodule-style" ui-sref="{{submodule.state}}">
-              <span>{{submodule.name}}</span>
+              <span>{{submodule.name}}</span><span ng-if="submodule.actions" class="caret">&#9657;</span>
             </a>
             <div  class="action-menu menu"
                   ng-if="submodule.actions"
