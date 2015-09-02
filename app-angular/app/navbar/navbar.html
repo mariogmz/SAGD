@@ -3,38 +3,66 @@
     &#9776;
   </button>
   <a class="brand" href="#"><img src="../public/img/sagd.svg"></a>
-  <ul class="modules-navbar">
-    <li class="module-navbar"
+  <ul class="module-list">
+    <li class="module-list-item list-item"
         ng-repeat="module in vm.modules"
-        ng-class="{'active': module.active, 'display-menu': active}"
-        ng-mouseenter="active=true"
-        ng-mouseleave="active=false"
+        ng-class="{'active': module.active}"
+        ng-mouseenter="showSubmenu=true"
+        ng-mouseleave="showSubmenu=false"
         ng-click="vm.clicked($event)">
-      <a class="module-category" ui-sref="{{module.state}}" aria-haspopup="true" aria-expanded="false">
-        {{module.nombre}}
-      </a>
 
-      <div class="menu">
-        <a class="item" ng-repeat="submodule in module.submodules">
-          <span>{{submodule.nombre}}</span>
-        </a>
+      <a class="module-style" ui-sref="{{module.state}}" aria-haspopup="true" aria-expanded="false">
+        {{module.name}}
+      </a>
+      <div  class="submodule-menu menu"
+            ng-if="module.submodules"
+            ng-class="{show: showSubmenu}">
+        <ul class="submodule-list">
+          <li class="submodule-list-item list-item"
+              ng-repeat="submodule in module.submodules"
+              ng-mouseenter="showActionmenu=true"
+              ng-mouseleave="showActionmenu=false">
+            <a class="submodule-style" ui-sref="{{submodule.state}}">
+              <span>{{submodule.name}}</span>
+            </a>
+            <div  class="action-menu menu"
+                  ng-if="submodule.actions"
+                  ng-class="{show: showActionmenu}">
+              <ul class="action-list">
+                <li class="action-list-item" ng-repeat="action in submodule.actions"
+                    ng-mouseleave="vm.elementHasHover($event)">
+                  <a class="action-style" ui-sref="{{action.state}}">
+                    <span>{{action.name}}</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </li>
+        </ul>
       </div>
     </li>
-    <li class="module-navbar empleado"
-        ng-class="{'display-menu': logoutActive}"
-        ng-mouseenter="logoutActive=true"
-        ng-mouseleave="logoutActive=false">
-      <a class="module-category empleado" href="#" aria-haspopup="true" aria-expanded="false">
+    <li class="module-list-item list-item empleado"
+        ng-mouseenter="showLogoutActions=true"
+        ng-mouseleave="showLogoutActions=false">
+      <a class="empleado-style nav" href="#" aria-haspopup="true" aria-expanded="false">
         {{vm.empleado.usuario}}
       </a>
 
-      <div class="menu empleado">
-        <a class="item empleado"><span>Cambiar contraseña</span></a>
-        <a class="item empleado" href="#" ng-click="vm.logout()"><span>Salir</span></a>
+      <div  class="empleado-menu menu"
+            ng-class="{show: showLogoutActions}">
+        <ul class="empleado-list list-item">
+          <li class="empleado-item">
+            <a class="empleado-style"><span>Cambiar contraseña</span></a>
+          </li>
+          <li class="empleado-item danger">
+            <a class="empleado-style" href="#" ng-click="vm.logout()"><span>Salir</span></a>
+          </li>
+        </ul>
       </div>
     </li>
   </ul>
 </nav>
+
 <nav class="mobile-navbar" id="mobile-navbar" ng-if="vm.isAuthenticated()">
   <a class="brand" href="#"><img src="../public/img/sagd.svg"></a>
   <div class="scrollable">

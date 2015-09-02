@@ -332,7 +332,7 @@
     vm.setActiveState();
 
     vm.clicked = function ($event) {
-      $('li.module-navbar').each(function () {
+      $('li.module-list-item').each(function () {
         $(this).removeClass('active');
       });
       $($event.currentTarget).addClass('active');
