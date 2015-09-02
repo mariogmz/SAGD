@@ -9,7 +9,7 @@ class CodigoPostalTableSeeder extends Seeder {
      */
     protected $command;
 
-    private $filePath = '\codigos_postales.txt';
+    private $filePath = 'codigos_postales.txt';
     private $totalCount = 0;
     private $stmt = "INSERT INTO codigos_postales(estado, municipio, codigo_postal) VALUES ";
     private $values = [];
