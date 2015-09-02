@@ -55,11 +55,12 @@ li.module-list-item {
 
   &.active {
     background-color: $mine-shaft;
-
+    transition: background-color 400ms ease-in-out;
     .module-style {
       background-color: $mine-shaft;
       color: $white;
       font-weight: 700;
+      transition: background-color 400ms ease-in-out;
     }
   }
 
@@ -111,9 +112,9 @@ div.submodule-menu {
 
   @include transition(all 0.2s ease-in-out);
 
+  border: 1px solid $alto;
   border-radius: 0;
   border-top: 0;
-  border: 1px solid $alto;
   display: none;
   margin-top: 0;
   min-width: 140px;
@@ -174,10 +175,12 @@ li.submodule-list-item {
   min-height: 40px;
   padding: 7.5px 15px;
   position: relative;
+  transition: background-color 400ms ease-in-out;
 
   &:hover {
-    color: $gray-suit;
     background-color: $alto;
+    color: $gray-suit;
+    transition: background-color 400ms ease-in-out;
   }
 }
 
