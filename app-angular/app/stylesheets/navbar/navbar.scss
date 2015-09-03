@@ -11,23 +11,17 @@ nav.top-navbar {
 
     @extend .navbar-brand;
 
-    @media (max-width: 83.75rem) {
-      display: none;
-    }
-
     cursor: default;
+    display: block;
     margin-right: 20px;
   }
 
   .hamburguer {
     @extend .navbar-toggler;
 
-    @media (min-width: 83.75rem) {
-      display: none;
-    }
 
     color: $alto;
-    display: block;
+    display: none;
     float: left;
   }
 }

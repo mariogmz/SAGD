@@ -1,7 +1,14 @@
-@media (max-width: 83.75rem) {
+@media screen and (max-width: 1355px) {
 
 nav.top-navbar {
 
+  .brand {
+    display: none;
+  }
+
+  .hamburguer {
+    display: block;
+  }
 }
 
 ul.module-list {
