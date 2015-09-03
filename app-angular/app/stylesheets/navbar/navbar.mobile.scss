@@ -9,6 +9,7 @@ ul.module-list {
   @include make-col();
   @include make-col-span(4);
 
+  display: none;
   height: 100vh;
   left: 0;
   margin-top: 50px;
@@ -25,13 +26,43 @@ div.empleado-menu,
 div.submodule-menu {
 
   @include transform(none);
-  z-index: 1;
+  max-width: 250px;
+  min-width: 200px !important;
   top: 0;
+  z-index: 1;
 
   &.show {
     @include transform(none);
-    position: relative;
   }
+}
+
+a.module-style,
+a.submodule-style,
+a.action-style {
+
+  font-size: 20px;
+}
+
+a.module-style {
+
+  padding: 15px 0 !important;
+}
+
+li.module-list-item.list-item.empleado {
+
+  max-width: 326px !important;
+  width: auto !important;
+}
+
+a.empleado-style {
+
+  font-size: 25px;
+  margin: 0 auto;
+}
+
+div.empleado-menu.show {
+
+  @include transform(translateX(100%));
 }
 
 }
