@@ -24,7 +24,9 @@ app-angular/.sass-cache
 app-angular/node_modules
 app-angular/bower_components
 app-angular/npm-debug.log
-
+app-angular/public/css/application.css
+app-angular/public/css/application.css.map
+app-angular/public/js/all.js
 *.iml
 
 ## Directory-based project format:

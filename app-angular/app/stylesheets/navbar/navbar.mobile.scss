@@ -1,99 +1,75 @@
-.mobile-navbar {
+@media screen and (max-width: 1355px) {
 
-  @include transition(all 0.3s ease-in-out);
-
-  @media (min-width: 83.75rem) {
-    display: none !important;
-    transform: translateX(-100%) !important;
-  }
-
-  background-color: $gray-suit;
-  display: none;
-  height: 720px;
-  position: fixed;
-  top: 50px;
-  transform: translateX(-100%);
-  width: 300px;
-  z-index: 1000;
+nav.top-navbar {
 
   .brand {
+    display: none;
+  }
 
-    cursor: default;
+  .hamburguer {
     display: block;
-    padding: 10px 0;
-
-    img {
-      position: relative;
-      display: block;
-      margin: 0 auto;
-    }
-  }
-
-  .scrollable {
-
-    @media screen and (min-height: 652px) {
-      height: 680px;
-    }
-
-    height: 557px;
-    overflow: scroll;
   }
 }
 
-.mobile-modules {
+ul.module-list {
 
-  padding: 20px 0 0;
-
-  .mobile-module {
-
-    @include transition(all 0.2s ease-in-out);
-
-    list-style-type: none;
-    max-height: 65px;
-    padding: 10px 30px;
-
-    &:nth-last-of-type(1) {
-
-      max-height: 180px !important;
-    }
-  }
-
-  .empleado {
-
-    background-color: $persian-red;
-    text-transform: uppercase;
-  }
-}
-
-.mobile-category {
-
-  @include normalize_link($alto);
-  font-size: 1.8rem;
-}
-
-.mobile-menu {
-
-  @include transition(all 0.2s ease-in-out);
-  @include transform(translateY(-100%));
+  @include make-col();
+  @include make-col-span(4);
 
   display: none;
-  opacity: 0;
-  padding-left: 20px;
+  height: 100vh;
+  left: 0;
+  margin-top: 50px;
+  padding-left: 0;
+  position: fixed;
+}
 
-  .mobile-item {
+li.module-list-item {
 
-    @include normalize_link($alto);
-    font-size: 1.6rem;
+  float: none !important;
+}
+
+div.empleado-menu,
+div.submodule-menu {
+
+  @include transform(none);
+  max-width: 250px;
+  min-width: 200px !important;
+  top: 0;
+  z-index: 1;
+
+  &.show {
+    @include transform(none);
   }
 }
 
-.mobile-menu.empleado {
+a.module-style,
+a.submodule-style,
+a.action-style {
 
-  height: 135px;
+  font-size: 20px;
+}
 
-  .mobile-item.empleado {
+a.module-style {
 
-    display: block;
-    text-transform: initial;
-  }
+  padding: 15px 0 !important;
+}
+
+li.module-list-item.list-item.empleado {
+
+  max-width: 326px !important;
+  width: auto !important;
+}
+
+a.empleado-style {
+
+  font-size: 25px;
+  margin: 0 auto;
+}
+
+div.empleado-menu.show {
+
+  @include transform(translateX(100%));
+}
+
 }
