@@ -27,7 +27,6 @@ var LoginPage = function() {
 
   this.submit = function() {
     submitButton.click();
-
   };
 
   this.getUrl = function() {

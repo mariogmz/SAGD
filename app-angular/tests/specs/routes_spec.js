@@ -45,11 +45,13 @@ describe('las ruta', function () {
     });
 
     it('debe redirigir a home cuando se ingresa una url inválida', function () {
+      expect(loginPage.getUrl()).toBe('http://sagd.app/');
       browser.get('/invalid');
       expect(loginPage.getUrl()).toBe('http://sagd.app/');
     });
 
     it('debe mantener la url cuando se ingresa una url válida', function () {
+      expect(loginPage.getUrl()).toBe('http://sagd.app/');
       browser.get('/empleado');
       expect(loginPage.getUrl()).toBe('http://sagd.app/empleado');
     });

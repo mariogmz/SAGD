@@ -6,7 +6,7 @@ exports.config = {
   baseUrl: "http://sagd.app",
   specs: ['specs/*_spec.js'],
   capabilities: {
-    'browserName': 'firefox'
+    'browserName': 'chrome'
   },
   getPageTimeout : 20000,
   suites : {
