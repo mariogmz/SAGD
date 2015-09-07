@@ -9,9 +9,7 @@ exports.config = {
   },
   onPrepare: function() {
     jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
-      savePath: './tests/reports/',
-      takeScreenshots: true,
-      takeScreenshotsOnlyOnFailures: false
+      savePath: './tests/reports/'
     }));
   }
 };

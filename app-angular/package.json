@@ -6,7 +6,7 @@
   "scripts": {
     "protractor": "protractor",
     "webdriver-manager": "webdriver-manager",
-    "post-install" : "cp scripts/index.js node_modules/protractor-jasmine2-html-reporter/"
+    "test": "protractor tests/conf.js"
   },
   "author": "",
   "license": "ISC",
@@ -18,6 +18,6 @@
     "grunt-contrib-uglify": "^0.9.1",
     "grunt-contrib-watch": "^0.6.1",
     "protractor": "^2.2.0",
-    "protractor-jasmine2-html-reporter": "0.0.5"
+    "protractor-jasmine2-html-reporter": "omarowns/protractor-jasmine2-html-reporter.git"
   }
 }
