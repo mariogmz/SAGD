@@ -6,7 +6,11 @@ exports.config = {
   baseUrl: "http://sagd.app",
   specs: ['specs/*_spec.js'],
   capabilities: {
-    'browserName': 'chrome'
+    'browserName': 'firefox'
+  },
+  getPageTimeout : 20000,
+  suites : {
+    fuck : 'specs/routes_spec.js'
   },
   onPrepare: function() {
     jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({

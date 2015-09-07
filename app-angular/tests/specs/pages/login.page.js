@@ -7,31 +7,32 @@ var LoginPage = function() {
 
   this.get = function() {
     browser.get('/login');
-  }
+  };
 
   this.setEmail = function(email) {
     emailInput.sendKeys(email);
-  }
+  };
 
   this.setPassword = function(password) {
     passwordInput.sendKeys(password);
-  }
+  };
 
   this.getLoginError = function() {
     return loginError.getAttribute('class');
-  }
+  };
 
   this.getTitle = function() {
     return browser.getTitle();
-  }
+  };
 
   this.submit = function() {
     submitButton.click();
-  }
+
+  };
 
   this.getUrl = function() {
     return browser.getCurrentUrl();
-  }
-}
+  };
+};
 
 module.exports = LoginPage;
