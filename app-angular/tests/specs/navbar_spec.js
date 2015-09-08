@@ -14,4 +14,10 @@ describe('la barra de navegación', function () {
     expect(navbarPage.getModuleList().count()).toBe(11);
   });
 
+  it('debe mostrar la lista de submódulos cuando pasa el puntero sobre cada módulo', function(){
+    navbarPage.mouseOverEachModule(function(submenu){
+      expect(submenu.getAttribute('class')).toContain('show');
+    });
+  });
+
 });
