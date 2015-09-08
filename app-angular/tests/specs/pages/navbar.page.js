@@ -12,7 +12,7 @@ var NavbarPage = function (){
   this.mouseOverEachModule = function (callback){
     element.all(by.css('.module-list-item:not(.empleado)')).each(function (module, index){
       if (index > 0) { // Inicio
-        browser.actions().mouseMove(module).perform().then(function(){
+        browser.actions().mouseMove(module).perform().then(function (){
           var submenu = module.element(by.css('.submodule-menu'));
           callback(submenu);
         });
@@ -20,8 +20,24 @@ var NavbarPage = function (){
     });
   };
 
+  this.performLogout = function (callback){
+    var userModule = $('.module-list-item:last-child');
+    var logoutCommand = $('a[ng-click="vm.logout()"]');
+    browser.actions()
+      .mouseMove(userModule)
+      .mouseMove(logoutCommand)
+      .perform().then(function (){
+        logoutCommand.click();
+        callback();
+      });
+  };
+
   this.getModuleList = function (){
     return modulesList;
+  };
+
+  this.getUsername = function (){
+    return element(by.binding('vm.empleado.usuario')).getText();
   };
 
   this.toggleMenu = function (){
