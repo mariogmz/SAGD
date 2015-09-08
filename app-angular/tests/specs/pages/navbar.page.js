@@ -20,6 +20,25 @@ var NavbarPage = function (){
     });
   };
 
+  this.mouseOverEachSubmoduleWithActions = function (callback){
+    element.all(by.css('.module-list-item:not(.empleado)')).each(function (module, index){
+      if (index > 0) { // Inicio
+        browser.actions().mouseMove(module).perform().then(function (){
+          module.all(by.css('.submodule-list-item')).each(function (submodule){
+            browser.actions().mouseMove(submodule).perform().then(function (){
+              var actionMenu = submodule.element(by.css('action-menu'));
+              actionMenu.isPresent().then(function(present){
+                if(present){
+                  callback(actionMenu);
+                }
+              })
+            })
+          });
+        });
+      }
+    });
+  };
+
   this.performLogout = function (callback){
     var userModule = $('.module-list-item:last-child');
     var logoutCommand = $('a[ng-click="vm.logout()"]');

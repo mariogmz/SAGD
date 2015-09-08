@@ -18,8 +18,8 @@ describe('la barra de navegación', function (){
     expect(navbarPage.getUsername()).toBe('ADMIN');
   });
 
-  it('debe realizar un logout al dar click en el comando "Salir" del menú de usuario', function(){
-    navbarPage.performLogout(function(){
+  it('debe realizar un logout al dar click en el comando "Salir" del menú de usuario', function (){
+    navbarPage.performLogout(function (){
       var token = browser.executeScript("return window.localStorage.getItem('satellizer_token');");
       expect(token).toBe(null);
     });
@@ -30,4 +30,11 @@ describe('la barra de navegación', function (){
       expect(submenu.getAttribute('class')).toContain('show');
     });
   });
+
+  it('debe mostrar la lista de acciones cuando pasa el puntero sobre cada submódulo con acciones', function (){
+    navbarPage.mouseOverEachSubmoduleWithActions(function (actionMenu){
+      expect(actionMenu.getAttribute('class').toContain('show'));
+    })
+  });
+
 });

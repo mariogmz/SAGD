@@ -9,9 +9,6 @@ exports.config = {
     'browserName': 'chrome'
   },
   getPageTimeout : 20000,
-  suites : {
-    fuck : 'specs/navbar_spec.js'
-  },
   onPrepare: function() {
     jasmine.getEnv().addReporter(new Jasmine2HtmlReporter({
       savePath: './tests/reports/'
