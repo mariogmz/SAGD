@@ -6,8 +6,8 @@
 class AuthenticateControllerTest extends TestCase
 {
 
-    protected $endpoint = '/api/v1/authenticate';
-    protected $logoutEndpoint = 'api/v1/logout';
+    protected $endpoint = '/v1/authenticate';
+    protected $logoutEndpoint = '/v1/logout';
 
     /**
      * @covers ::authenticate

@@ -1,88 +1,51 @@
 <?php
 
-use GuzzleHttp\Client;
+use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 /**
- * @coversDefaultClass \App\Http\Controllers\Api\V1\AuthenticateController
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\EmpleadoController
  */
 class EmpleadoControllerTest extends TestCase
 {
+    use WithoutMiddleware;
 
-    protected $endpoint = '/api/v1/empleado';
-    protected $authEndpoint = '/api/v1/authenticate';
-    protected $client;
+    protected $endpoint = '/v1/empleado';
 
-    public function setUp()
+    public function __construct()
     {
-        $this->client = new Client([
-            'base_uri' => 'http://api.sagd.app'
-        ]);
-        parent::setUp();
+        $this->mock = Mockery::mock('Empleado');
+    }
+
+    public function tearDown()
+    {
+        Mockery::close();
     }
 
     /**
      * @covers ::index
      */
-    public function test_GET_empleado_with_no_token()
+    public function test_POST_index()
     {
-        $response = $this->client->get($this->endpoint, ['http_errors' => false]);
+        $response = $this->call('POST', $this->endpoint);
+        $content = json_decode($response->getContent());
 
-        $this->assertEquals(400, $response->getStatusCode());
-        $response = (array)json_decode($response->getBody()->getContents());
-        $this->assertEquals(['error' => 'token_not_provided'], $response);
+        $this->assertEquals(405, $response->status());
+        $this->assertEquals('method_not_allowed', $content->error);
     }
 
     /**
      * @covers ::index
      */
-    public function test_POST_to_index()
+    public function test_GET_index()
     {
-        $response = $this->client->post($this->endpoint, [
-            'query' => [],
-            'http_errors' => false
-        ]);
+        $this->mock
+            ->shouldReceive('all')
+            ->once()
+            ->andReturn('{empleados: {}}');
+        $this->app->instance('Empleado', $this->mock);
 
-        $this->assertEquals(405, $response->getStatusCode());
-        $response = (array)json_decode($response->getBody()->getContents());
-        $this->assertEquals(['error' => 'method_not_allowed'], $response);
-    }
+        $response = $this->call('GET', $this->endpoint);
 
-    /**
-     * @covers ::index
-     */
-    public function test_GET_with_invalid_token()
-    {
-        $response = $this->client->get($this->endpoint, [
-            'query' => ['token' => 'allahu.akbar.boom'],
-            'http_errors' => false
-        ]);
-
-        $this->assertEquals(400, $response->getStatusCode());
-        $response = (array)json_decode($response->getBody()->getContents());
-        $this->assertEquals(['error' => 'token_invalid'], $response);
-    }
-
-    /**
-     * @covers ::index
-     */
-    public function test_GET_with_valid_token()
-    {
-        $token = $this->getTokenFor('sistemas@zegucom.com.mx', 'test123');
-        $response = $this->client->get($this->endpoint, [
-            'query' => ['token' => $token],
-            'http_errors' => false
-        ]);
-        $this->assertEquals(200, $response->getStatusCode());
-    }
-
-    private function getTokenFor($email, $password)
-    {
-        $res = $this->client->post($this->authEndpoint, [
-            'query' => ['email' => $email, 'password' => $password],
-            'http_errors' => false
-        ]);
-        $json = json_decode( $res->getBody()->getContents() );
-        $json = (array)$json;
-        return $json['token'];
+        $this->assertEquals(200, $response->status());
     }
 }
