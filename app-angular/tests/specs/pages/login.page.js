@@ -1,36 +1,43 @@
-var LoginPage = function() {
+var LoginPage = function () {
   var emailInput = element(by.model('vm.email'));
   var passwordInput = element(by.model('vm.password'));
   var submitButton = element(by.css('#acceder'));
   var loginError = element(by.css('form'));
 
 
-  this.get = function() {
+  this.get = function () {
     browser.get('/login');
   };
 
-  this.setEmail = function(email) {
+  this.setEmail = function (email) {
     emailInput.sendKeys(email);
   };
 
-  this.setPassword = function(password) {
+  this.setPassword = function (password) {
     passwordInput.sendKeys(password);
   };
 
-  this.getLoginError = function() {
+  this.getLoginError = function () {
     return loginError.getAttribute('class');
   };
 
-  this.getTitle = function() {
+  this.getTitle = function () {
     return browser.getTitle();
   };
 
-  this.submit = function() {
+  this.submit = function () {
     submitButton.click();
   };
 
-  this.getUrl = function() {
+  this.getUrl = function () {
     return browser.getCurrentUrl();
+  };
+
+  this.login = function () {
+    this.get();
+    this.setEmail('sistemas@zegucom.com.mx');
+    this.setPassword('test123');
+    this.submit();
   };
 };
 

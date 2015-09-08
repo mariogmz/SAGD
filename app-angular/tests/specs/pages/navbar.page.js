@@ -1,10 +1,21 @@
 var NavbarPage = function () {
-  "use strict";
+  var LoginPage = require('./login.page');
+  var loginPage = new LoginPage();
+  loginPage.login();
+
   var toggler = $('.hamburguer');
   var brand = $('.brand');
+  var modulesList = element.all(by.exactBinding('module.name'));
+  var submodulesList = element.all(by.exactBinding('submmodule.name'));
+  var actionsList = element.all(by.exactBinding('action.name'));
+
+  this.getModuleList = function () {
+    return modulesList;
+  };
 
   this.toggleMenu = function () {
     toggler.click();
+    return this;
   };
 
   this.performAction = function (moduleName, submoduleName, actionName) {
@@ -42,11 +53,15 @@ var NavbarPage = function () {
     // Build action
     var actionSecuence = new protractor.ActionSecuence(browser.driver);
     // Module
-    if(module){actionSecuence = actionSecuence.mouseMove(module);}
-    if(submodule){actionSecuence = actionSecuence.mouseMove(submodule);}
-    if(action){
+    if (module) {
+      actionSecuence = actionSecuence.mouseMove(module);
+    }
+    if (submodule) {
+      actionSecuence = actionSecuence.mouseMove(submodule);
+    }
+    if (action) {
       // First, move to the top item on actions list
-      action.element(by.xpath('..')).element.all(by.tagName('a')).first().then(function(element){
+      action.element(by.xpath('..')).element.all(by.tagName('a')).first().then(function (element) {
         actionSecuence = actionSecuence.mouseMove(element);
         actionSecuence = actionSecuence.mouseMove(action);
       });
@@ -54,7 +69,6 @@ var NavbarPage = function () {
     // Perform
     actionSecuence.perform();
   };
-
-
-
 };
+
+module.exports = NavbarPage;

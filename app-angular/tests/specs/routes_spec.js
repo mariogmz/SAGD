@@ -39,9 +39,7 @@ describe('las ruta', function () {
   describe('con las credenciales correctas', function () {
 
     beforeEach(function () {
-      loginPage.setEmail('sistemas@zegucom.com.mx');
-      loginPage.setPassword('test123');
-      loginPage.submit();
+      loginPage.login();
     });
 
     it('debe redirigir a home cuando se ingresa una url inválida', function () {
