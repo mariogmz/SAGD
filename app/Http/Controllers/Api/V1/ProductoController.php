@@ -14,6 +14,7 @@ class ProductoController extends Controller
     {
         $this->middleware('jwt.auth');
     }
+
     /**
      * Display a listing of the resource.
      *

@@ -13,7 +13,7 @@ class ProductoControllerTest extends TestCase
 
     public function __construct()
     {
-        $this->mock = Mockery::mock('Producto');
+        $this->mock = Mockery::mock('App\Producto');
     }
 
     public function tearDown()
@@ -30,7 +30,7 @@ class ProductoControllerTest extends TestCase
             ->shouldReceive('all')
             ->andReturn('{productos: {}}');
 
-        $this->app->instance('Producto', $this->mock);
+        $this->app->instance('App\Producto', $this->mock);
 
         $response = $this->call('GET', $this->endpoint);
 

@@ -23,9 +23,10 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('logout', 'AuthenticateController@logout');
 
         Route::resource('producto', 'ProductoController', ['only' => [
-            'index',
-            'store'
+            'index'
         ]]);
+
+        Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
     });

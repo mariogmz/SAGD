@@ -24,7 +24,7 @@ class Marca extends LGGModel {
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave'  => ['required', 'max:3', 'alpha', 'regex:/[A-Z]{3}/', 'unique:marcas'],
+        'clave'  => ['required', 'max:3', 'alpha', 'regex:/[A-Z]{1,3}/', 'unique:marcas'],
         'nombre' => 'required|max:25'
     ];
 
@@ -46,7 +46,7 @@ class Marca extends LGGModel {
         Marca::updating(function ($marca) {
             $marca->updateRules = self::$rules;
             $marca->updateRules['clave'] = [
-                'required', 'max:3', 'alpha', 'regex:/[A-Z]{3}/',
+                'required', 'max:3', 'alpha', 'regex:/[A-Z]{1,3}/',
                 'unique:marcas,clave,' . $marca->id];
 
             return $marca->isValid('update');

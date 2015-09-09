@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Validator;
  */
 class LGGModel extends Model {
 
+    public $errors;
+
     /**
      * This method is responsible for validating the model
      * @codeCoverageIgnore
@@ -32,5 +34,14 @@ class LGGModel extends Model {
      */
     public static function scopeLast($query) {
         return $query->orderBy('id', 'desc')->first();
+    }
+
+    public function self() {
+        return $this;
+    }
+
+    public function getId()
+    {
+        return $this->id;
     }
 }
