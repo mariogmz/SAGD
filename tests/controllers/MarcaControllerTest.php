@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\MarcaController
  */
-class ProductoControllerTest extends TestCase
+class MarcaControllerTest extends TestCase
 {
     use WithoutMiddleware;
 
@@ -109,7 +109,7 @@ class ProductoControllerTest extends TestCase
         $this->get($endpoint)
             ->seeJson([
                 'message' => 'Marca no encontrada o no existente',
-                'error' => 'Not Found'
+                'error' => 'No encontrada'
             ])
             ->assertResponseStatus(404);
 

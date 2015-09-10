@@ -23,7 +23,7 @@ class Unidad extends LGGModel {
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave'  => ['required', 'max:4', 'alpha', 'regex:/[A-Z]{4}/', 'unique:unidades'],
+        'clave'  => ['required', 'max:4', 'alpha', 'regex:/[A-Z]{1,4}/', 'unique:unidades'],
         'nombre' => 'required|max:45'
     ];
 
@@ -46,7 +46,7 @@ class Unidad extends LGGModel {
             $unidad->updateRules = self::$rules;
             $unidad->updateRules['clave'] = [
                 'required', 'max:4', 'alpha',
-                'regex:/[A-Z]{4}/', 'unique:unidades,clave,' . $unidad->id];
+                'regex:/[A-Z]{1,4}/', 'unique:unidades,clave,' . $unidad->id];
 
             return $unidad->isValid('update');
         });

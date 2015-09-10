@@ -27,6 +27,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         ]]);
 
         Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('unidad', 'UnidadController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
     });

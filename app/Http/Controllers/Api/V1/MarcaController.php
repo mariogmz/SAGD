@@ -74,7 +74,7 @@ class MarcaController extends Controller
         } else {
             return response()->json([
                 'message' => 'Marca no encontrada o no existente',
-                'error' => 'Not Found'
+                'error' => 'No encontrada'
             ], 404);
         }
     }
