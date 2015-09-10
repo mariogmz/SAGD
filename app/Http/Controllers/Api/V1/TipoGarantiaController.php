@@ -39,7 +39,8 @@ class TipoGarantiaController extends Controller {
             return response()->json([
                 'message'      => 'TipoGarantia creado exitosamente',
                 'tipoGarantia' => $this->tipoGarantia->self()
-            ], 201);
+            ], 201,
+                ['Location' => route('api.v1.tipo-garantia.show', $this->tipoGarantia->getId())]);
         } else {
             return response()->json([
                 'message' => 'TipoGarantia no creado',

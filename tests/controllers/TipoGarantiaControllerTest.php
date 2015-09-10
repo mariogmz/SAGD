@@ -46,6 +46,7 @@ class TipoGarantiaControllerTest extends TestCase {
                 'fill'  => Mockery::self(),
                 'save'  => true,
                 'self'  => 'self',
+                'getId' => 1
             ])
             ->withAnyArgs();
         $this->app->instance('App\TipoGarantia', $this->mock);

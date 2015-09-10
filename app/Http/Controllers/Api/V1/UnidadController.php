@@ -62,14 +62,12 @@ class UnidadController extends Controller {
             return response()->json([
                 'message' => 'Unidad obtenida exitosamente',
                 'unidad'  => $this->unidad->self()
-            ], 200
-            );
+            ], 200);
         } else {
             return response()->json([
                 'message' => 'Unidad no encontrada o no existente',
                 'error'   => 'No encontrada'
-            ], 404
-            );
+            ], 404);
         }
     }
 

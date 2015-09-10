@@ -39,7 +39,8 @@ class DimensionController extends Controller {
             return response()->json([
                 'message'   => 'Dimension creada exitosamente',
                 'dimension' => $this->dimension->self()
-            ], 201);
+            ], 201,
+                ['Location' => route('api.v1.dimension.show', $this->dimension->getId())]);
         } else {
             return response()->json([
                 'message' => 'Dimension no creada',
