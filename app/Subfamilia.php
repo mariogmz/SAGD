@@ -32,7 +32,7 @@ class Subfamilia extends LGGModel {
         'clave'      => 'required|max:4|unique:subfamilias',
         'nombre'     => 'required|max:45',
         'familia_id' => 'required|integer',
-        'margen_id'  => 'required|integer'
+        'margen_id'  => 'integer'
     ];
 
     public $updateRules = [];

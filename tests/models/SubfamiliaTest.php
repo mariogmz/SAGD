@@ -101,10 +101,10 @@ class SubfamiliaTest extends TestCase
     /**
      * @coversNothing
      */
-    public function testDebeTenerMargen()
+    public function testMargenEsOpcional()
     {
         $subfamilia = factory(App\Subfamilia::class)->make(['margen_id' => null]);
-        $this->assertFalse($subfamilia->isValid());
+        $this->assertTrue($subfamilia->isValid());
     }
 
     /**
