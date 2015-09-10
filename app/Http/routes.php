@@ -22,10 +22,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('authenticate/empleado', 'AuthenticateController@getAuthenticatedEmpleado');
         Route::get('logout', 'AuthenticateController@logout');
 
-        Route::resource('producto', 'ProductoController', ['only' => [
-            'index'
-        ]]);
-
+        Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('unidad', 'UnidadController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('tipo-garantia', 'TipoGarantiaController', ['only' => ['index','store','show','update','destroy']]);
