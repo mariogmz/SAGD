@@ -1,13 +1,13 @@
 // app/navbar/navbar.controller.js
 
-(function () {
+(function (){
 
   'use strict';
 
   angular
     .module('sagdApp.navbar')
     .controller('NavbarController', NavbarController)
-    .directive('navBar', function () {
+    .directive('navBar', function (){
       return {
         templateUrl: 'app/navbar/navbar.html'
       };
@@ -15,7 +15,7 @@
 
   NavbarController.$inject = ['session', 'state', 'utils'];
 
-  function NavbarController(session, state, utils) {
+  function NavbarController(session, state, utils){
     var vm = this;
     vm.modules = [
       {
@@ -53,7 +53,7 @@
             ]
           }, {
             name: 'Márgenes',
-            state: 'producto.margen',
+            state: 'margen',
           }, {
             name: 'Inventario',
             state: 'inventario',
@@ -323,35 +323,65 @@
       }
     ];
 
-    vm.setActiveState = function () {
+    var searchParent = function (currentState){
+      debugger;
+      for (var i = 0; i < vm.modules.length; i++) {
+        if (vm.modules[i].state === currentState) {
+          return i;
+        } else {
+
+          if (vm.modules[i].submodules) {
+            for (var e = 0; e < vm.modules[i].submodules.length; e++) {
+              if (vm.modules[i].submodules[e].state === currentState) {
+                return i;
+              } else {
+
+                if (vm.modules[i].submodules[e].actions) {
+                  for (var x = 0; x < vm.modules[i].submodules[e].actions.length; x++) {
+                    if (vm.modules[i].submodules[e].actions[x].state === currentState) {
+                      return i;
+                    }
+                  }
+                }
+
+              }
+            }
+          }
+
+        }
+      }
+      return null;
+    };
+
+    vm.setActiveState = function (){
       var current_state = state.current_state();
       var states = utils.pluck(vm.modules, "state");
-      var index = states.indexOf(current_state);
+      var index = searchParent(current_state);
       vm.modules[index].active = true;
-    }
+    };
     vm.setActiveState();
 
-    vm.clicked = function ($event) {
-      $('li.module-list-item').each(function () {
+    vm.clicked = function ($event){
+      $('li.module-list-item').each(function (){
         $(this).removeClass('active');
       });
       $($event.currentTarget).addClass('active');
-    }
+    };
 
-    vm.expandMenu = function ($event) {
+    vm.expandMenu = function ($event){
       MobileNavbarAnimations.animate($event);
-    }
+    };
 
-    vm.toggleMenu = function ($event) {
+    vm.toggleMenu = function ($event){
       MobileNavbarAnimations.toggleMenu($event);
-    }
+    };
 
     vm.isAuthenticated = session.isAuthenticated;
     vm.empleado = session.obtenerEmpleado();
     vm.logout = session.logout;
   }
 
-  var MobileNavbarAnimations = (function () {
+  var MobileNavbarAnimations = (function (){
     var currentTarget;
     var currentTargetHeight;
     var target;
@@ -359,19 +389,19 @@
     var mobileModuleBaseHeight = 65;
     var mobileNavbarHidden;
 
-    var animateMenu = function ($event) {
+    var animateMenu = function ($event){
       currentTarget = $event.currentTarget;
       target = $(currentTarget).children('.mobile-menu');
       calculateHeights();
       applyAnimation();
     };
 
-    var calculateHeights = function () {
+    var calculateHeights = function (){
       currentTargetHeight = $(currentTarget).outerHeight();
       targetHeight = $(target).outerHeight();
     };
 
-    var applyAnimation = function () {
+    var applyAnimation = function (){
       if (currentTargetHeight > mobileModuleBaseHeight) {
         collapseMenu();
       } else {
@@ -379,16 +409,16 @@
       }
     };
 
-    var collapseMenu = function () {
+    var collapseMenu = function (){
       animate(mobileModuleBaseHeight, false, 0, -100);
     };
 
-    var expandMenu = function () {
+    var expandMenu = function (){
       var newMobileMenuHeight = currentTargetHeight + targetHeight;
       animate(newMobileMenuHeight, true, 1, 0);
     };
 
-    var animate = function (newMobileMenuHeight, display, opacityValue, translateValue) {
+    var animate = function (newMobileMenuHeight, display, opacityValue, translateValue){
       $(currentTarget).css({
         'max-height': newMobileMenuHeight
       });
@@ -401,7 +431,7 @@
       });
     };
 
-    var toggleMenu = function ($event) {
+    var toggleMenu = function ($event){
       currentTarget = $event.currentTarget;
       mobileNavbarHidden = $('.hamburguer').data('hidden');
       slideMenu();
@@ -409,14 +439,14 @@
       $('.hamburguer').data('hidden', !mobileNavbarHidden);
     };
 
-    var slideMenu = function () {
+    var slideMenu = function (){
       $('.mobile-navbar').css({
         'display': mobileNavbarHidden ? 'block' : 'none',
         'transform': 'translateX(' + (mobileNavbarHidden ? '0' : '-100') + '%)'
       });
     };
 
-    var rotateHamburguer = function () {
+    var rotateHamburguer = function (){
       $('.hamburguer').css({
         'transition': 'all 0.5s ease-in-out',
         'transform': 'rotateZ(' + (mobileNavbarHidden ? '90' : '0') + 'deg)'
