@@ -1,0 +1,67 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/usr/bin/node', '/usr/bin/npm', 'install', '-g', 'phpunit' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.37
+4 verbose node symlink /usr/bin/node
+5 verbose cache add [ 'phpunit', null ]
+6 verbose cache add name=undefined spec="phpunit" args=["phpunit",null]
+7 verbose parsed url { protocol: null,
+7 verbose parsed url   slashes: null,
+7 verbose parsed url   auth: null,
+7 verbose parsed url   host: null,
+7 verbose parsed url   port: null,
+7 verbose parsed url   hostname: null,
+7 verbose parsed url   hash: null,
+7 verbose parsed url   search: null,
+7 verbose parsed url   query: null,
+7 verbose parsed url   pathname: 'phpunit',
+7 verbose parsed url   path: 'phpunit',
+7 verbose parsed url   href: 'phpunit' }
+8 silly lockFile cd00448f-phpunit phpunit
+9 verbose lock phpunit /home/vagrant/.npm/cd00448f-phpunit.lock
+10 silly lockFile cd00448f-phpunit phpunit
+11 silly lockFile cd00448f-phpunit phpunit
+12 verbose addNamed [ 'phpunit', '' ]
+13 verbose addNamed [ null, '*' ]
+14 silly lockFile 72986483-phpunit phpunit@
+15 verbose lock phpunit@ /home/vagrant/.npm/72986483-phpunit.lock
+16 silly addNameRange { name: 'phpunit', range: '*', hasData: false }
+17 verbose request where is /phpunit
+18 verbose request registry https://registry.npmjs.org/
+19 verbose request id 96e92f65ad01b397
+20 verbose url raw /phpunit
+21 verbose url resolving [ 'https://registry.npmjs.org/', './phpunit' ]
+22 verbose url resolved https://registry.npmjs.org/phpunit
+23 verbose request where is https://registry.npmjs.org/phpunit
+24 info trying registry request attempt 1 at 14:27:42
+25 http GET https://registry.npmjs.org/phpunit
+26 http 404 https://registry.npmjs.org/phpunit
+27 silly registry.get cb [ 404,
+27 silly registry.get   { 'content-type': 'application/json',
+27 silly registry.get     'cache-control': 'max-age=0',
+27 silly registry.get     'content-length': '2',
+27 silly registry.get     'accept-ranges': 'bytes',
+27 silly registry.get     date: 'Fri, 11 Sep 2015 14:27:42 GMT',
+27 silly registry.get     via: '1.1 varnish',
+27 silly registry.get     age: '0',
+27 silly registry.get     connection: 'keep-alive',
+27 silly registry.get     'x-served-by': 'cache-dfw1824-DFW',
+27 silly registry.get     'x-cache': 'MISS',
+27 silly registry.get     'x-cache-hits': '0',
+27 silly registry.get     'x-timer': 'S1441981662.531876,VS0,VE68' } ]
+28 silly lockFile 72986483-phpunit phpunit@
+29 silly lockFile 72986483-phpunit phpunit@
+30 error 404 Not Found
+30 error 404
+30 error 404 'phpunit' is not in the npm registry.
+30 error 404 You should bug the author to publish it
+30 error 404
+30 error 404 Note that you can also install from a
+30 error 404 tarball, folder, or http url, or git url.
+31 error System Linux 3.13.0-24-generic
+32 error command "/usr/bin/node" "/usr/bin/npm" "install" "-g" "phpunit"
+33 error cwd /home/vagrant/Code/sagd
+34 error node -v v0.10.37
+35 error npm -v 1.4.28
+36 error code E404
+37 verbose exit [ 1, true ]
