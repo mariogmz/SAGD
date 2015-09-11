@@ -324,7 +324,6 @@
     ];
 
     var searchParent = function (currentState){
-      debugger;
       for (var i = 0; i < vm.modules.length; i++) {
         if (vm.modules[i].state === currentState) {
           return i;

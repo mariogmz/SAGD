@@ -1,0 +1,22 @@
+table {
+  @extend .table;
+}
+
+thead {
+  @extend .thead-inverse;
+}
+
+.action-buttons {
+  @extend .btn-group;
+
+    .edit {
+      @extend .btn;
+      @extend .btn-primary;
+    }
+
+    .delete {
+      @extend .btn;
+      @extend .btn-danger;
+    }
+}
+
