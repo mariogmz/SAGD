@@ -20,12 +20,7 @@
     vm.obtenerProductos = function (){
       $http.get('http://api.sagd.app/api/v1/producto').
         then(function (response){
-          //vm.productos = response.data;
-          vm.productos = [
-            {
-              id:1
-            }
-          ];
+          vm.productos = response.data;
         }, function (response){
           vm.errors = response.data;
         });

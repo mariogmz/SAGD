@@ -13,6 +13,7 @@
       'sagdApp.session',
       'sagdApp.empleado',
       'sagdApp.producto',
+      'sagdApp.margen',
       'sagdApp.navbar'
   ]);
 })();

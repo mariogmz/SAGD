@@ -1,0 +1,24 @@
+table.component{
+  @extend .table;
+
+  thead {
+    @extend .thead-inverse;
+  }
+
+  .action-buttons {
+    @extend .btn-group;
+
+    .edit {
+      @extend .btn;
+      @extend .btn-success;
+    }
+
+    .delete {
+      @extend .btn;
+      @extend .btn-danger;
+    }
+  }
+}
+
+
+
