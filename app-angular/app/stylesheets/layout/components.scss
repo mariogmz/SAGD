@@ -1,4 +1,4 @@
-table.component{
+table.component {
   @extend .table;
   @extend .table-hover;
 
@@ -21,9 +21,43 @@ table.component{
   }
 }
 
-form.show-form{
+.card-component {
+  @extend .card;
 
-  .inline-field{
+  .card-component-header {
+    @extend .card-header;
+  }
+
+  .card-component-block {
+    @extend .card-block;
+
+    h4 {
+      @extend .card-title;
+    }
+
+    p {
+      @extend .card-text;
+    }
+  }
+
+  .button {
+    @extend .btn;
+    &.primary{
+      @extend .btn-primary;
+    }
+    &.secondary{
+      @extend .btn-secondary;
+    }
+  }
+}
+
+form.show-form {
+
+  legend {
+    font-size: 1rem;
+  }
+
+  .inline-field {
     @extend .form-group;
     @extend .row;
 
@@ -40,7 +74,6 @@ form.show-form{
       @extend .form-control;
     }
   }
-
 }
 
 

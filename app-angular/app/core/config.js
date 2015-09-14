@@ -14,7 +14,7 @@
     $authProvider.loginUrl = baseUrl + '/authenticate';
     $authProvider.withCredentials = true;
 
-    $urlRouterProvider.otherwise('/');
+    $urlRouterProvider.otherwise('/')
 
     if (window.history && window.history.pushState) {
       //$locationProvider.html5Mode(true).hashPrefix('!');

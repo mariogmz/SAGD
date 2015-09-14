@@ -1,23 +1,24 @@
 // app/core/core.module.js
 
-(function() {
-    'use strict';
+(function (){
+  'use strict';
 
-    angular.module('sagdApp.core', [
-        /*
-         * Angular modules
-         */
-        'ngAnimate',
+  angular.module('sagdApp.core', [
+    /*
+     * Angular modules
+     */
+    'ngAnimate',
 
-        /*
-         * Our reusable cross app code modules
-         */
-        'blocks.session', 'blocks.state', 'blocks.utils',
+    /*
+     * Our reusable cross app code modules
+     */
+    'blocks.session', 'blocks.state', 'blocks.utils',
 
-        /*
-         * 3rd party app modules
-         */
-        'ui.router',
-        'satellizer'
-    ]);
+    /*
+     * 3rd party app modules
+     */
+    'formly',
+    'ui.router',
+    'satellizer'
+  ]);
 })();
