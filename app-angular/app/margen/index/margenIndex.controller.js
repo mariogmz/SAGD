@@ -6,11 +6,11 @@
 
   angular
     .module('sagdApp.margen')
-    .controller('margenController', MargenController);
+    .controller('margenIndexController', MargenIndexController);
 
-  MargenController.$inject = ['$auth', '$state', '$http'];
+  MargenIndexController.$inject = ['$auth', '$state', '$http'];
 
-  function MargenController($auth, $state, $http){
+  function MargenIndexController($auth, $state, $http){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }

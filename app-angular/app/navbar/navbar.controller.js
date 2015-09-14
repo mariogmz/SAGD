@@ -53,7 +53,7 @@
             ]
           }, {
             name: 'Márgenes',
-            state: 'margen',
+            state: 'margenIndex',
           }, {
             name: 'Inventario',
             state: 'inventario',
@@ -354,9 +354,8 @@
 
     vm.setActiveState = function (){
       var current_state = state.current_state();
-      var states = utils.pluck(vm.modules, "state");
       var index = searchParent(current_state);
-      vm.modules[index].active = true;
+      if(index){vm.modules[index].active = true;}
     };
     vm.setActiveState();
 
