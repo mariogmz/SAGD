@@ -5,7 +5,8 @@
 
   angular
     .module('blocks.utils')
-    .factory('utils', utils);
+    .factory('utils', utils)
+    .filter('percentage', percentage);
 
   utils.$inject = [];
 
@@ -25,4 +26,12 @@
     };
 
   }
+
+  percentage.$inject = ['$filter'];
+
+  function percentage($filter){
+    return function(input, decimals){
+      return $filter('number')(input * 100, decimals) + '%';
+    };
+  };
 }());

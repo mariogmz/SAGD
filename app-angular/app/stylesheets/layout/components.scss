@@ -1,5 +1,6 @@
 table.component{
   @extend .table;
+  @extend .table-hover;
 
   thead {
     @extend .thead-inverse;
@@ -18,6 +19,28 @@ table.component{
       @extend .btn-danger;
     }
   }
+}
+
+form.show-form{
+
+  .inline-field{
+    @extend .form-group;
+    @extend .row;
+
+    label {
+      @extend .col-sm-2;
+      @extend .form-control-label;
+    }
+
+    .field {
+      @extend .col-sm-10;
+    }
+
+    input {
+      @extend .form-control;
+    }
+  }
+
 }
 
 

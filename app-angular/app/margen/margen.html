@@ -1,31 +1,3 @@
 <h1>Márgenes</h1>
 <hr>
-
-<table class="component">
-  <thead>
-  <tr>
-    <th>#</th>
-    <th>Nombre</th>
-    <th>Valor</th>
-    <th>Webservice-P1</th>
-    <th>Webservice-P2</th>
-    <th>Acciones</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr ng-repeat="margen in vm.margenes">
-    <th scope="row">{{margen.id}}</td>
-    <td>{{margen.nombre}}</td>
-    <td>{{margen.valor}}</td>
-    <td>{{margen.valor_webservice_p1}}</td>
-    <td>{{margen.valor_webservice_p8}}</td>
-
-    <td>
-      <div class="action-buttons" role="group" aria-label="Acciones">
-        <button type="button" class="edit">Editar</button>
-        <button type="button" class="delete">Eliminar</button>
-      </div>
-    </td>
-  </tr>
-  </tbody>
-</table>
+<div ui-view></div>

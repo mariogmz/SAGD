@@ -1,0 +1,30 @@
+<div class="table-responsive">
+  <table class="component">
+    <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Valor</th>
+      <th>Webservice-P1</th>
+      <th>Webservice-P8</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="margen in vm.margenes">
+      <th scope="row"><a ui-sref="margenShow({id:margen.id})">{{margen.id}}</a></th>
+      <td>{{margen.nombre}}</td>
+      <td>{{margen.valor}}</td>
+      <td>{{margen.valor_webservice_p1 | percentage:2 }}</td>
+      <td>{{margen.valor_webservice_p8 | percentage:2 }}</td>
+
+      <td>
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit">Editar</button>
+          <button type="button" class="delete">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
