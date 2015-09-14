@@ -1,0 +1,43 @@
+<div class="container-fluid">
+	<h1>Clientes</h1>
+	<hr>
+	<form class="form-inline">
+		<div class="form-group">
+			<input type="text" class="form-control" id="buscar" placeholder="Buscar..." required>
+		</div>
+		<button type="submit" class="btn btn-default">Buscar</button>
+	</form>
+	<br/>
+
+	<table class="component">
+		<thead class="thead-inverse">
+		<tr>
+			<th>#</th>
+			<th>Nombre</th>
+			<th>Usuario</th>
+			<th>Activo</th>
+			<th>Acciones</th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr ng-repeat="cliente in vm.clientes">
+			<td>{{cliente.id}}</td>
+			<td>{{cliente.nombre}}</td>
+			<td>{{cliente.usuario}}</td>
+			<td>{{cliente.estatus_id}}</td>
+			<td>
+				<div class="action-buttons" role="group" aria-label="Acciones">
+					<button type="button" class="edit">Editar</button>
+					<button type="button" class="delete">Eliminar</button>
+				</div>
+			</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<div class="alert alert-danger" ng-if="vm.errores">
+		<strong>Hubo un error: </strong> {{vm.errores.error}}
+		<br>Por favor accede de nuevo
+	</div>
+
+</div>

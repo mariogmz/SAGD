@@ -1,0 +1,22 @@
+// app/cliente/config.route.js
+
+(function () {
+  'use strict';
+
+  angular
+    .module('sagdApp.cliente')
+    .config(configureRoutes);
+
+  configureRoutes.$inject = ['$stateProvider'];
+
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('cliente', {
+        url: 'cliente',
+        parent: 'layout',
+        templateUrl: 'app/cliente/cliente.html',
+        controller: 'clienteController',
+        controllerAs: 'vm'
+      });
+  }
+})();
