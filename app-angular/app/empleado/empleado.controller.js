@@ -8,9 +8,9 @@
     .module('sagdApp.empleado')
     .controller('EmpleadoController', EmpleadoController);
 
-  EmpleadoController.$inject = ['$http', '$auth', '$state'];
+  EmpleadoController.$inject = ['$http', '$auth', '$state', 'api'];
 
-  function EmpleadoController($http, $auth, $state) {
+  function EmpleadoController($http, $auth, $state, api) {
     if(! $auth.isAuthenticated()){
       $state.go('login', {});
     }
@@ -28,7 +28,7 @@
 
       // This request will hit the index method in the AuthenticateController
       // on the Laravel side and will return the list of users
-      $http.get('http://api.sagd.app/api/v1/empleado').success(function (empleados) {
+      $http.get(api.endpoint + '/empleado').success(function (empleados) {
         vm.empleados = empleados;
       }).error(function (error) {
         vm.errores = error;

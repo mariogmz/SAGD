@@ -7,7 +7,7 @@
     .module('blocks.session')
     .factory('session', session);
 
-  session.$inject = ['$auth', '$state', '$http'];
+  session.$inject = ['$auth', '$state', '$http', 'api'];
 
   function session($auth, $state, $http) {
 
@@ -34,7 +34,7 @@
 
     var getEmpleado = function () {
 
-      $http.get('http://api.sagd.app/api/v1/authenticate/empleado').then(setEmpleadoToLocalStorage);
+      $http.get(api.endpoint + '/authenticate/empleado').then(setEmpleadoToLocalStorage);
     };
 
     var setEmpleadoToLocalStorage = function (response) {
