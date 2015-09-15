@@ -26,8 +26,8 @@
     vm.obtenerClientes();
 
     vm.sort = function(keyname){
-        sortKey = keyname;   //set the sortKey to the param passed
-        reverse = !reverse; //if true make it false and vice versa
+        vm.sortKey = keyname;   //set the sortKey to the param passed
+        vm.reverse = !vm.reverse; //if true make it false and vice versa
     }
 
 
