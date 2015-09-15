@@ -6,6 +6,7 @@
   angular
     .module('blocks.utils')
     .factory('utils', utils)
+    .factory('api', api)
     .filter('percentage', percentage);
 
   utils.$inject = [];
@@ -25,6 +26,19 @@
       pluck: pluck
     };
 
+  }
+
+  function api() {
+    var applicationFqdn = "http://api.sagd.app";
+    var apiNamespace = "/api";
+    var version = "/v1"
+
+    return {
+      rootPath: applicationFqdn,
+      namespace: apiNamespace,
+      version: version,
+      endpoint: applicationFqdn + apiNamespace + version
+    }
   }
 
   percentage.$inject = ['$filter'];

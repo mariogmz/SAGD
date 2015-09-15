@@ -4,6 +4,7 @@
     'use strict';
 
     angular.module('sagdApp.margen', [
-      'sagdApp.core'
+      'sagdApp.core',
+      'blocks.utils'
     ]);
 })();
