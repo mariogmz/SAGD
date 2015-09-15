@@ -12,7 +12,7 @@
     /*
      * Our reusable cross app code modules
      */
-    'blocks.session', 'blocks.state', 'blocks.utils',
+    'blocks.session', 'blocks.state', 'blocks.utils', 'blocks.api',
 
     /*
      * 3rd party app modules
