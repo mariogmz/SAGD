@@ -4,6 +4,6 @@
     'use strict';
 
     angular.module('blocks.session', [
-      'blocks.utils'
+      'blocks.api'
     ]);
 })();

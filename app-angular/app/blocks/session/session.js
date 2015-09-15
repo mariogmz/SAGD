@@ -9,7 +9,7 @@
 
   session.$inject = ['$auth', '$state', '$http', 'api'];
 
-  function session($auth, $state, $http) {
+  function session($auth, $state, $http, api) {
 
     var auth = $auth;
     var state = $state;
