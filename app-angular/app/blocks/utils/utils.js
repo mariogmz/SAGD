@@ -1,6 +1,6 @@
 // app/blocks/utils/utils.module.js
 
-(function () {
+(function (){
   'use strict';
 
   angular
@@ -11,12 +11,12 @@
 
   utils.$inject = [];
 
-  function utils() {
+  function utils(){
 
-    function pluck(collection, key) {
+    function pluck(collection, key){
       var result = angular.isArray(collection) ? [] : {};
 
-      angular.forEach(collection, function (val, i) {
+      angular.forEach(collection, function (val, i){
         result[i] = angular.isFunction(key) ? key(val) : val[key];
       });
       return result;
@@ -28,10 +28,10 @@
 
   }
 
-  function api() {
+  function api(){
     var applicationFqdn = "http://api.sagd.app";
     var apiNamespace = "/api";
-    var version = "/v1"
+    var version = "/v1";
 
     return {
       rootPath: applicationFqdn,
@@ -44,7 +44,7 @@
   percentage.$inject = ['$filter'];
 
   function percentage($filter){
-    return function(input, decimals){
+    return function (input, decimals){
       return $filter('number')(input * 100, decimals) + '%';
     };
   };

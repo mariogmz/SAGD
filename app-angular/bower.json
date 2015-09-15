@@ -16,9 +16,7 @@
     "satellizer": "~0.12.2",
     "bootstrap": "v4-dev",
     "jquery": "~2.1.4",
-    "angular-animate": "~1.4.4",
-    "angular-formly": "~7.1.1",
-    "api-check": "~7.5.0"
+    "angular-animate": "~1.4.4"
   },
   "resolutions": {
     "bootstrap": "v4-dev"

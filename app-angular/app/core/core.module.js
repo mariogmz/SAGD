@@ -17,7 +17,6 @@
     /*
      * 3rd party app modules
      */
-    'formly',
     'ui.router',
     'satellizer'
   ]);
