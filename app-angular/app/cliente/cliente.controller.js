@@ -20,7 +20,7 @@
           then(function (response){
             vm.clientes = response.data;
           }, function (response){
-            vm.errors = response.data;
+            vm.errors = response;
           });
     };
 
