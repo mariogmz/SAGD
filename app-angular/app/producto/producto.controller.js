@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoController', ProductoController);
 
-  ProductoController.$inject = ['$auth', '$state', '$http'];
+  ProductoController.$inject = ['$auth', '$state', '$http', 'api'];
 
-  function ProductoController($auth, $state, $http){
+  function ProductoController($auth, $state, $http, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -18,7 +18,7 @@
     var vm = this;
 
     vm.obtenerProductos = function (){
-      $http.get('http://api.sagd.app/api/v1/producto').
+      $http.get(api.endpoint + '/producto').
         then(function (response){
           vm.productos = response.data;
         }, function (response){

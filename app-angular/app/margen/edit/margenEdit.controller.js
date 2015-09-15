@@ -8,47 +8,41 @@
     .module('sagdApp.margen')
     .controller('margenEditController', MargenEditController);
 
-  MargenEditController.$inject = ['$auth', '$state', '$http', '$stateParams'];
+  MargenEditController.$inject = ['$auth', '$state', '$http', '$stateParams', 'api'];
 
-  function MargenEditController($auth, $state, $http, $stateParams){
+  function MargenEditController($auth, $state, $http, $stateParams, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
-    var baseUrl = 'http://api.sagd.app/api/v1/';
+    var baseUrl = api.endpoint + '/';
     var vm = this;
 
-    vm.getMargen = function (){
+    vm.get = function (){
       $http.get(baseUrl + 'margen/' + $stateParams.id).success(function (response){
         vm.margen = response.margen;
         vm.error = false;
       }).error(function (response){
-        vm.message = response.message;
-        vm.error = response.error;
+        vm.error = response;
       })
     };
 
-    vm.save = function(){
-      $http.put(baseUrl + 'margen/' + vm.margen.id, vm.margen).success(function(response){
+    vm.save = function (){
+      $http.put(baseUrl + 'margen/' + vm.margen.id, vm.margen).success(function (response){
         vm.message = response.message;
-        vm.error = response.error;
-      }).error(function(response){
-        vm.message = response.message;
-        vm.error = response.error;
+        vm.error = false;
+      }).error(function (response){
+        debugger;
+        vm.error = response;
       })
     };
 
-    vm.delete = function(){
-      $http.put(baseUrl + 'margen/' + vm.margen.id, vm.margen).success(function(response){
-        vm.message = response.message;
-        vm.error = response.error;
-      }).error(function(response){
-        vm.message = response.message;
-        vm.error = response.error;
-      })
+    vm.clean = function(){
+      vm.message = null;
+      vm.error = null;
     };
 
-    vm.getMargen();
+    vm.get();
   }
 
 })();

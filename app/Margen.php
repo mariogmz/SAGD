@@ -29,9 +29,9 @@ class Margen extends LGGModel {
 
     public static $rules = [
         'nombre'              => 'required|max:45',
-        'valor'               => 'numeric|min:0.0|max:1.0',
-        'valor_webservice_p1' => 'numeric|min:0.0|max:1.0',
-        'valor_webservice_p8' => 'numeric|min:0.0|max:1.0'
+        'valor'               => 'required|numeric|min:0.0|max:1.0',
+        'valor_webservice_p1' => 'required|numeric|min:0.0|max:1.0',
+        'valor_webservice_p8' => 'required|numeric|min:0.0|max:1.0'
     ];
 
     public $updateRules = [];

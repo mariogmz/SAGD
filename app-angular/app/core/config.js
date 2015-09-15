@@ -3,14 +3,15 @@
 (function () {
   'use strict';
 
-  var core = angular.module('sagdApp.core');
-
-  core.config(configure);
+  angular
+    .module('sagdApp.core')
+    .config(configure)
+    .run(updateState);
 
   configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider'];
 
   function configure($urlRouterProvider, $authProvider, $locationProvider) {
-    var baseUrl = 'http://api.sagd.app/api/v1';
+    var baseUrl = "http://api.sagd.app/api/v1";
     $authProvider.loginUrl = baseUrl + '/authenticate';
     $authProvider.withCredentials = true;
 
@@ -20,8 +21,6 @@
       //$locationProvider.html5Mode(true).hashPrefix('!');
     }
   }
-
-  core.run(updateState);
 
   updateState.$inject = ['$rootScope', '$state', 'state'];
 

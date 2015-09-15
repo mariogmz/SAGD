@@ -1,54 +1,59 @@
 <!-- Alerts -->
-<div class="alert alert-success" role="alert" ng-show="!vm.error && vm.message">
-  <strong>Exito</strong> {{vm.message}}
+<div class="alert success" role="alert" ng-show="vm.message && !vm.error">
+  <p><strong>¡Éxito!</strong> {{vm.message}}</p>
 </div>
-<div class="alert alert-danger" role="alert" ng-show="vm.error && vm.message">
-  <strong>Error</strong>
+<div class="alert danger" role="alert" ng-show="vm.error">
+  <p><strong>¡Error!</strong></p>
   <ul>
-     <li ng-repeat="error in vm.error"><strong>{{error}}:</strong> {{vm.error[error]}}</li>
+    <li ng-repeat="(field,messages) in vm.error.error">
+      <strong>{{field}}:</strong>
+      <ul>
+        <li ng-repeat="message in messages">{{message}}</li>
+      </ul>
+    </li>
   </ul>
 </div>
 
-<div class="card-component">
-  <div class="card-component-header">
+<div class="card">
+  <div class="header">
     Detalle
   </div>
-  <div class="card-component-block">
-    <form class="show-form" name="margenForm">
+  <div class="block">
+    <form class="item-form" name="vm.margenForm">
       <fieldset>
         <legend>Márgen #<strong>{{vm.margen.id}}</strong></legend>
         <div class="inline-field">
           <label for="name">Nombre:</label>
 
           <div class="field">
-            <input type="text" id="name" ng-model="vm.margen.nombre">
+            <input type="text" id="name" ng-model="vm.margen.nombre" ng-change="vm.clean()">
           </div>
         </div>
         <div class="inline-field">
           <label for="value">Valor:</label>
 
           <div class="field">
-            <input type="text" id="value" ng-model="vm.margen.valor">
+            <input type="text" id="value" ng-model="vm.margen.valor" ng-change="vm.clean()">
           </div>
         </div>
         <div class="inline-field">
           <label for="ws1">Webservice P1:</label>
 
           <div class="field">
-            <input type="text" id="ws1" ng-model="vm.margen.valor_webservice_p1">
+            <input type="text" id="ws1" ng-model="vm.margen.valor_webservice_p1" ng-change="vm.clean()">
           </div>
         </div>
         <div class="inline-field">
           <label for="ws8">Webservice P8:</label>
 
           <div class="field">
-            <input type="text" id="ws8" ng-model="vm.margen.valor_webservice_p8">
+            <input type="text" id="ws8" ng-model="vm.margen.valor_webservice_p8" ng-change="vm.clean()">
           </div>
         </div>
       </fieldset>
     </form>
     <button type="button" class="button primary" ng-click="vm.save()">Guardar cambios</button>
-    <a ui-sref="margenIndex" class="button secondary">Cancelar</a>
+    <a ui-sref="margenIndex" class="button secondary">Regresar</a>
   </div>
 </div>
 
