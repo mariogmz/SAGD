@@ -15,19 +15,28 @@
       $state.go('login', {});
     }
 
-    var baseUrl = api.endpoint + '/';
     var vm = this;
     vm.id = $stateParams.id;
 
-    vm.getMargen = function (){
-      $http.get(baseUrl + 'margen/' + vm.id).success(function (response){
-        vm.margen = response.margen;
-      }).error(function (response){
-        vm.error = response.data;
-      })
-    };
+    initialize();
 
-    vm.getMargen();
+    function initialize(){
+      return obtenerMargen().then(function(response){
+        console.log(response.message);
+      });
+    }
+
+    function obtenerMargen() {
+      return api.get('/margen/', vm.id)
+        .then(function(response){
+          vm.margen = response.data.margen;
+          return response.data;
+        })
+        .catch(function(response){
+          vm.error = response.data;
+          return response.data;
+        });
+    }
   }
 
 })();

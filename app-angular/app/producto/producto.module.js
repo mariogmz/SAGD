@@ -5,6 +5,6 @@
 
     angular.module('sagdApp.producto', [
       'sagdApp.core',
-      'blocks.utils'
+      'blocks.api'
     ]);
 })();

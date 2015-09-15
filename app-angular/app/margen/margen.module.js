@@ -5,6 +5,6 @@
 
     angular.module('sagdApp.margen', [
       'sagdApp.core',
-      'blocks.utils'
+      'blocks.api'
     ]);
 })();

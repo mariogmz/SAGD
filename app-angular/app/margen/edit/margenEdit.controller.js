@@ -15,34 +15,49 @@
       $state.go('login', {});
     }
 
-    var baseUrl = api.endpoint + '/';
     var vm = this;
+    vm.id = $stateParams.id;
 
-    vm.get = function (){
-      $http.get(baseUrl + 'margen/' + $stateParams.id).success(function (response){
-        vm.margen = response.margen;
-        vm.error = false;
-      }).error(function (response){
-        vm.error = response;
-      })
-    };
+    vm.save = guardarMargen;
+    vm.clean = limpiar;
 
-    vm.save = function (){
-      $http.put(baseUrl + 'margen/' + vm.margen.id, vm.margen).success(function (response){
-        vm.message = response.message;
-        vm.error = false;
-      }).error(function (response){
-        debugger;
-        vm.error = response;
-      })
-    };
+    initialize();
 
-    vm.clean = function(){
+    function initialize() {
+      return obtenerMargen('/margen/', vm.id).then(function(response){
+        console.log(response.message);
+      });
+    }
+
+    function obtenerMargen() {
+      return api.get('/margen/', vm.id)
+        .then(function(response){
+          vm.margen = response.data.margen;
+          return response.data;
+        })
+        .catch(function(response){
+          vm.error = response.data;
+          return response.data;
+        });
+    }
+
+    function guardarMargen() {
+      return api.put('/margen/', vm.id, vm.margen)
+        .then(function(response){
+          vm.message = response.data.message;
+          vm.error = false;
+          return response;
+        })
+        .catch(function(response){
+          vm.error = response;
+          return response;
+        });
+    }
+
+    function limpiar () {
       vm.message = null;
       vm.error = null;
     };
-
-    vm.get();
   }
 
 })();

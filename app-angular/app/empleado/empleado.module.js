@@ -5,6 +5,6 @@
 
     angular.module('sagdApp.empleado', [
       'sagdApp.core',
-      'blocks.utils'
+      'blocks.api'
     ]);
 })();
