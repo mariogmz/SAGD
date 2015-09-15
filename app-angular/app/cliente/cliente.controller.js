@@ -23,9 +23,12 @@
             vm.errors = response;
           });
     };
-
     vm.obtenerClientes();
 
+    vm.sort = function(keyname){
+        sortKey = keyname;   //set the sortKey to the param passed
+        reverse = !reverse; //if true make it false and vice versa
+    }
 
 
   }

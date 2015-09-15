@@ -3,28 +3,31 @@
 	<hr>
 	<form class="form-inline">
 		<div class="form-group">
-			<input type="text" class="form-control" ng-model="vm.search" id="search" placeholder="Buscar..." required>
+			<label for="search">Buscar:</label>
+			<input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
 		</div>
-		<button type="submit" class="btn btn-default">Buscar</button>
 	</form>
 	<br/>
 	<div class="bs-component">
-		<table class="component">
-			<thead class="thead-inverse">
-			<tr>
-				<th>#</th>
-				<th>Nombre</th>
-				<th>Usuario</th>
-				<th>Activo</th>
-				<th>Acciones</th>
-			</tr>
+		<table class="item-table">
+			<thead>
+				<tr>
+					<th ng-click="vm.sort('id')">
+						# <span class="glyphicon sort-icon" ng-show="sortKey=='id'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+					</th>
+					<th ng-click="vm.sort('nombre')">
+						Nombre <span class="glyphicon sort-icon" ng-show="sortKey=='nombre'" ng-class="{'glyphicon-chevron-up':reverse,'glyphicon-chevron-down':!reverse}"></span>
+					</th>
+					<th ng-click="vm.sort('usuario')">Usuario</th>
+					<th>Acciones</th>
+				</tr>
 			</thead>
 			<tbody>
-			<tr ng-repeat="cliente in vm.clientes">
+
+			<tr dir-paginate="cliente in vm.clientes|orderBy:sortKey:reverse|filter:vm.search|itemsPerPage:10">
 				<td>{{cliente.id}}</td>
 				<td>{{cliente.nombre}}</td>
 				<td>{{cliente.usuario}}</td>
-				<td>{{cliente.estatus_id}}</td>
 				<td>
 					<div class="action-buttons" role="group" aria-label="Acciones">
 						<button type="button" class="edit">Editar</button>
@@ -35,10 +38,14 @@
 
 			</tbody>
 		</table>
+		<dir-pagination-controls
+				max-size="5"
+				direction-links="true"
+				boundary-links="true" >
+		</dir-pagination-controls>
 	</div>
-	<div class="alert alert-danger" ng-if="vm.errores">
+	<div class="danger" ng-if="vm.errores">
 		<strong>Hubo un error: </strong> {{vm.errores.error}}
 		<br>Por favor accede de nuevo
 	</div>
-	<script src="lib/dirPagination.js"></script>
 </div>
