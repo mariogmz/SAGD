@@ -37896,7 +37896,7 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');;/**
- * @license AngularJS v1.4.5
+ * @license AngularJS v1.4.4
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -38276,55 +38276,6 @@ function $$BodyProvider() {
   }];
 }
 
-var $$rAFSchedulerFactory = ['$$rAF', function($$rAF) {
-  var queue, cancelFn;
-
-  function scheduler(tasks) {
-    // we make a copy since RAFScheduler mutates the state
-    // of the passed in array variable and this would be difficult
-    // to track down on the outside code
-    queue = queue.concat(tasks);
-    nextTick();
-  }
-
-  queue = scheduler.queue = [];
-
-  /* waitUntilQuiet does two things:
-   * 1. It will run the FINAL `fn` value only when an uncancelled RAF has passed through
-   * 2. It will delay the next wave of tasks from running until the quiet `fn` has run.
-   *
-   * The motivation here is that animation code can request more time from the scheduler
-   * before the next wave runs. This allows for certain DOM properties such as classes to
-   * be resolved in time for the next animation to run.
-   */
-  scheduler.waitUntilQuiet = function(fn) {
-    if (cancelFn) cancelFn();
-
-    cancelFn = $$rAF(function() {
-      cancelFn = null;
-      fn();
-      nextTick();
-    });
-  };
-
-  return scheduler;
-
-  function nextTick() {
-    if (!queue.length) return;
-
-    var items = queue.shift();
-    for (var i = 0; i < items.length; i++) {
-      items[i]();
-    }
-
-    if (!cancelFn) {
-      $$rAF(function() {
-        if (!cancelFn) nextTick();
-      });
-    }
-  }
-}];
-
 var $$AnimateChildrenDirective = [function() {
   return function(scope, element, attrs) {
     var val = attrs.ngAnimateChildren;
@@ -38338,8 +38289,6 @@ var $$AnimateChildrenDirective = [function() {
     }
   };
 }];
-
-var ANIMATE_TIMER_KEY = '$$animateCss';
 
 /**
  * @ngdoc service
@@ -38667,10 +38616,8 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
   var gcsLookup = createLocalCacheLookup();
   var gcsStaggerLookup = createLocalCacheLookup();
 
-  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout',
-               '$$forceReflow', '$sniffer', '$$rAFScheduler', '$animate',
-       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,
-                $$forceReflow,   $sniffer,   $$rAFScheduler, $animate) {
+  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout', '$$forceReflow', '$sniffer', '$$rAF',
+       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,   $$forceReflow,   $sniffer,   $$rAF) {
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
@@ -38730,8 +38677,12 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
     var cancelLastRAFRequest;
     var rafWaitQueue = [];
     function waitUntilQuiet(callback) {
+      if (cancelLastRAFRequest) {
+        cancelLastRAFRequest(); //cancels the request
+      }
       rafWaitQueue.push(callback);
-      $$rAFScheduler.waitUntilQuiet(function() {
+      cancelLastRAFRequest = $$rAF(function() {
+        cancelLastRAFRequest = null;
         gcsLookup.flush();
         gcsStaggerLookup.flush();
 
@@ -38748,6 +38699,8 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       });
     }
 
+    return init;
+
     function computeTimings(node, className, cacheKey) {
       var timings = computeCachedCssStyles(node, className, cacheKey, DETECT_CSS_PROPERTIES);
       var aD = timings.animationDelay;
@@ -38762,11 +38715,9 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       return timings;
     }
 
-    return function init(element, options) {
+    function init(element, options) {
       var node = getDomNode(element);
-      if (!node
-          || !node.parentNode
-          || !$animate.enabled()) {
+      if (!node || !node.parentNode) {
         return closeAndReturnNoopAnimator();
       }
 
@@ -38822,6 +38773,7 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       // there actually is a detected transition or keyframe animation
       if (options.applyClassesEarly && addRemoveClassName.length) {
         applyAnimationClasses(element, options);
+        addRemoveClassName = '';
       }
 
       var preparationClasses = [structuralClassName, addRemoveClassName].join(' ').trim();
@@ -38934,18 +38886,6 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
 
       if (maxDuration === 0 && !flags.recalculateTimingStyles) {
         return closeAndReturnNoopAnimator();
-      }
-
-      if (options.delay != null) {
-        var delayStyle = parseFloat(options.delay);
-
-        if (flags.applyTransitionDelay) {
-          temporaryStyles.push(getCssDelayStyle(delayStyle));
-        }
-
-        if (flags.applyAnimationDelay) {
-          temporaryStyles.push(getCssDelayStyle(delayStyle, true));
-        }
       }
 
       // we need to recalculate the delay value since we used a pre-emptive negative
@@ -39062,8 +39002,6 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           cancel: cancelFn
         });
 
-        // should flush the cache animation
-        waitUntilQuiet(noop);
         close();
 
         return {
@@ -39161,16 +39099,27 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
             flags.hasAnimations = timings.animationDuration > 0;
           }
 
-          if (flags.applyAnimationDelay) {
+          if (flags.applyTransitionDelay || flags.applyAnimationDelay) {
             relativeDelay = typeof options.delay !== "boolean" && truthyTimingValue(options.delay)
                   ? parseFloat(options.delay)
                   : relativeDelay;
 
             maxDelay = Math.max(relativeDelay, 0);
-            timings.animationDelay = relativeDelay;
-            delayStyle = getCssDelayStyle(relativeDelay, true);
-            temporaryStyles.push(delayStyle);
-            node.style[delayStyle[0]] = delayStyle[1];
+
+            var delayStyle;
+            if (flags.applyTransitionDelay) {
+              timings.transitionDelay = relativeDelay;
+              delayStyle = getCssDelayStyle(relativeDelay);
+              temporaryStyles.push(delayStyle);
+              node.style[delayStyle[0]] = delayStyle[1];
+            }
+
+            if (flags.applyAnimationDelay) {
+              timings.animationDelay = relativeDelay;
+              delayStyle = getCssDelayStyle(relativeDelay, true);
+              temporaryStyles.push(delayStyle);
+              node.style[delayStyle[0]] = delayStyle[1];
+            }
           }
 
           maxDelayTime = maxDelay * ONE_SECOND;
@@ -39199,47 +39148,17 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           }
 
           startTime = Date.now();
-          var timerTime = maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime;
-          var endTime = startTime + timerTime;
-
-          var animationsData = element.data(ANIMATE_TIMER_KEY) || [];
-          var setupFallbackTimer = true;
-          if (animationsData.length) {
-            var currentTimerData = animationsData[0];
-            setupFallbackTimer = endTime > currentTimerData.expectedEndTime;
-            if (setupFallbackTimer) {
-              $timeout.cancel(currentTimerData.timer);
-            } else {
-              animationsData.push(close);
-            }
-          }
-
-          if (setupFallbackTimer) {
-            var timer = $timeout(onAnimationExpired, timerTime, false);
-            animationsData[0] = {
-              timer: timer,
-              expectedEndTime: endTime
-            };
-            animationsData.push(close);
-            element.data(ANIMATE_TIMER_KEY, animationsData);
-          }
-
           element.on(events.join(' '), onAnimationProgress);
+          $timeout(onAnimationExpired, maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime, false);
+
           applyAnimationToStyles(element, options);
         }
 
         function onAnimationExpired() {
-          var animationsData = element.data(ANIMATE_TIMER_KEY);
-
-          // this will be false in the event that the element was
-          // removed from the DOM (via a leave animation or something
-          // similar)
-          if (animationsData) {
-            for (var i = 1; i < animationsData.length; i++) {
-              animationsData[i]();
-            }
-            element.removeData(ANIMATE_TIMER_KEY);
-          }
+          // although an expired animation is a failed animation, getting to
+          // this outcome is very easy if the CSS code screws up. Therefore we
+          // should still continue normally as if the animation completed correctly.
+          close();
         }
 
         function onAnimationProgress(event) {
@@ -39266,7 +39185,7 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           }
         }
       }
-    };
+    }
   }];
 }];
 
@@ -39292,13 +39211,13 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
-    return function initDriverFn(animationDetails) {
+    return function initDriverFn(animationDetails, onBeforeClassesAppliedCb) {
       return animationDetails.from && animationDetails.to
           ? prepareFromToAnchorAnimation(animationDetails.from,
                                          animationDetails.to,
                                          animationDetails.classes,
                                          animationDetails.anchors)
-          : prepareRegularAnimation(animationDetails);
+          : prepareRegularAnimation(animationDetails, onBeforeClassesAppliedCb);
     };
 
     function filterCssClasses(classes) {
@@ -39494,14 +39413,21 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
       };
     }
 
-    function prepareRegularAnimation(animationDetails) {
+    function prepareRegularAnimation(animationDetails, onBeforeClassesAppliedCb) {
       var element = animationDetails.element;
       var options = animationDetails.options || {};
 
+      // since the ng-EVENT, class-ADD and class-REMOVE classes are applied inside
+      // of the animateQueue pre and postDigest stages then there is no need to add
+      // then them here as well.
+      options.$$skipPreparationClasses = true;
+
+      // during the pre/post digest stages inside of animateQueue we also performed
+      // the blocking (transition:-9999s) so there is no point in doing that again.
+      options.skipBlocking = true;
+
       if (animationDetails.structural) {
         options.event = animationDetails.event;
-        options.structural = true;
-        options.applyClassesEarly = true;
 
         // we special case the leave animation since we want to ensure that
         // the element is removed as soon as the animation is over. Otherwise
@@ -39510,6 +39436,11 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
           options.onDone = options.domOperation;
         }
       }
+
+      // we apply the classes right away since the pre-digest took care of the
+      // preparation classes.
+      onBeforeClassesAppliedCb(element);
+      applyAnimationClasses(element, options);
 
       // We assign the preparationClasses as the actual animation event since
       // the internals of $animateCss will just suffix the event token values
@@ -39534,8 +39465,8 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
 //  by the time...
 
 var $$AnimateJsProvider = ['$animateProvider', function($animateProvider) {
-  this.$get = ['$injector', '$$AnimateRunner', '$$jqLite',
-       function($injector,   $$AnimateRunner,   $$jqLite) {
+  this.$get = ['$injector', '$$AnimateRunner', '$$rAFMutex', '$$jqLite',
+       function($injector,   $$AnimateRunner,   $$rAFMutex,   $$jqLite) {
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
          // $animateJs(element, 'enter');
@@ -40230,6 +40161,9 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
         return runner;
       }
 
+      applyGeneratedPreparationClasses(element, isStructural ? event : null, options);
+      blockTransitions(node, SAFE_FAST_FORWARD_DURATION_VALUE);
+
       // the counter keeps track of cancelled animations
       var counter = (existingAnimation.counter || 0) + 1;
       newAnimation.counter = counter;
@@ -40288,7 +40222,10 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
             : animationDetails.event;
 
         markElementAnimationState(element, RUNNING_STATE);
-        var realRunner = $$animation(element, event, animationDetails.options);
+        var realRunner = $$animation(element, event, animationDetails.options, function(e) {
+          $$forceReflow();
+          blockTransitions(getDomNode(e), false);
+        });
 
         realRunner.done(function(status) {
           close(!status);
@@ -40433,34 +40370,19 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
   }];
 }];
 
-var $$AnimateAsyncRunFactory = ['$$rAF', function($$rAF) {
-  var waitQueue = [];
-
-  function waitForTick(fn) {
-    waitQueue.push(fn);
-    if (waitQueue.length > 1) return;
-    $$rAF(function() {
-      for (var i = 0; i < waitQueue.length; i++) {
-        waitQueue[i]();
-      }
-      waitQueue = [];
-    });
-  }
-
+var $$rAFMutexFactory = ['$$rAF', function($$rAF) {
   return function() {
     var passed = false;
-    waitForTick(function() {
+    $$rAF(function() {
       passed = true;
     });
-    return function(callback) {
-      passed ? callback() : waitForTick(callback);
+    return function(fn) {
+      passed ? fn() : $$rAF(fn);
     };
   };
 }];
 
-var $$AnimateRunnerFactory = ['$q', '$sniffer', '$$animateAsyncRun',
-                      function($q,   $sniffer,   $$animateAsyncRun) {
-
+var $$AnimateRunnerFactory = ['$q', '$$rAFMutex', function($q, $$rAFMutex) {
   var INITIAL_STATE = 0;
   var DONE_PENDING_STATE = 1;
   var DONE_COMPLETE_STATE = 2;
@@ -40505,7 +40427,7 @@ var $$AnimateRunnerFactory = ['$q', '$sniffer', '$$animateAsyncRun',
     this.setHost(host);
 
     this._doneCallbacks = [];
-    this._runInAnimationFrame = $$animateAsyncRun();
+    this._runInAnimationFrame = $$rAFMutex();
     this._state = 0;
   }
 
@@ -40617,8 +40539,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
     return element.data(RUNNER_STORAGE_KEY);
   }
 
-  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap', '$$rAFScheduler',
-       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap,   $$rAFScheduler) {
+  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap',
+       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap) {
 
     var animationQueue = [];
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
@@ -40686,11 +40608,11 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           if (remainingLevelEntries <= 0) {
             remainingLevelEntries = nextLevelEntries;
             nextLevelEntries = 0;
-            result.push(row);
+            result = result.concat(row);
             row = [];
           }
           row.push(entry.fn);
-          entry.children.forEach(function(childEntry) {
+          forEach(entry.children, function(childEntry) {
             nextLevelEntries++;
             queue.push(childEntry);
           });
@@ -40698,15 +40620,14 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         }
 
         if (row.length) {
-          result.push(row);
+          result = result.concat(row);
         }
-
         return result;
       }
     }
 
     // TODO(matsko): document the signature in a better way
-    return function(element, event, options) {
+    return function(element, event, options, onBeforeClassesAppliedCb) {
       options = prepareAnimationOptions(options);
       var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
 
@@ -40758,7 +40679,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           // the element was destroyed early on which removed the runner
           // form its storage. This means we can't animate this element
           // at all and it already has been closed due to destruction.
-          if (getRunner(entry.element)) {
+          var elm = entry.element;
+          if (getRunner(elm) && getDomNode(elm).parentNode) {
             animations.push(entry);
           } else {
             entry.close();
@@ -40789,7 +40711,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
                   : animationEntry.element;
 
               if (getRunner(targetElement)) {
-                var operation = invokeFirstDriver(animationEntry);
+                var operation = invokeFirstDriver(animationEntry, onBeforeClassesAppliedCb);
                 if (operation) {
                   startAnimationFn = operation.start;
                 }
@@ -40809,9 +40731,11 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         });
 
         // we need to sort each of the animations in order of parent to child
-        // relationships. This ensures that the child classes are applied at the
-        // right time.
-        $$rAFScheduler(sortAnimations(toBeSortedAnimations));
+        // relationships. This ensures that the parent to child classes are
+        // applied at the right time.
+        forEach(sortAnimations(toBeSortedAnimations), function(triggerAnimation) {
+          triggerAnimation();
+        });
       });
 
       return runner;
@@ -40881,7 +40805,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           var lookupKey = from.animationID.toString();
           if (!anchorGroups[lookupKey]) {
             var group = anchorGroups[lookupKey] = {
-              structural: true,
+              // TODO(matsko): double-check this code
               beforeStart: function() {
                 fromAnimation.beforeStart();
                 toAnimation.beforeStart();
@@ -40935,7 +40859,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         return matches.join(' ');
       }
 
-      function invokeFirstDriver(animationDetails) {
+      function invokeFirstDriver(animationDetails, onBeforeClassesAppliedCb) {
         // we loop in reverse order since the more general drivers (like CSS and JS)
         // may attempt more elements, but custom drivers are more particular
         for (var i = drivers.length - 1; i >= 0; i--) {
@@ -40943,7 +40867,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           if (!$injector.has(driverName)) continue; // TODO(matsko): remove this check
 
           var factory = $injector.get(driverName);
-          var driver = factory(animationDetails);
+          var driver = factory(animationDetails, onBeforeClassesAppliedCb);
           if (driver) {
             return driver;
           }
@@ -40999,8 +40923,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
 /* global angularAnimateModule: true,
 
    $$BodyProvider,
-   $$AnimateAsyncRunFactory,
-   $$rAFSchedulerFactory,
+   $$rAFMutexFactory,
    $$AnimateChildrenDirective,
    $$AnimateRunnerFactory,
    $$AnimateQueueProvider,
@@ -41017,7 +40940,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * @description
  *
  * The `ngAnimate` module provides support for CSS-based animations (keyframes and transitions) as well as JavaScript-based animations via
- * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` the animation hooks are enabled for an Angular app.
+ * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` then the animation hooks are enabled for an Angular app.
  *
  * <div doc-module-components="ngAnimate"></div>
  *
@@ -41050,7 +40973,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * CSS-based animations with ngAnimate are unique since they require no JavaScript code at all. By using a CSS class that we reference between our HTML
  * and CSS code we can create an animation that will be picked up by Angular when an the underlying directive performs an operation.
  *
- * The example below shows how an `enter` animation can be made possible on an element using `ng-if`:
+ * The example below shows how an `enter` animation can be made possible on a element using `ng-if`:
  *
  * ```html
  * <div ng-if="bool" class="fade">
@@ -41185,8 +41108,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  *   /&#42; this will have a 100ms delay between each successive leave animation &#42;/
  *   transition-delay: 0.1s;
  *
- *   /&#42; As of 1.4.4, this must always be set: it signals ngAnimate
- *     to not accidentally inherit a delay property from another CSS class &#42;/
+ *   /&#42; in case the stagger doesn't work then the duration value
+ *    must be set to 0 to avoid an accidental CSS inheritance &#42;/
  *   transition-duration: 0s;
  * }
  * .my-animation.ng-enter.ng-enter-active {
@@ -41735,16 +41658,16 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * @description
  * The ngAnimate `$animate` service documentation is the same for the core `$animate` service.
  *
- * Click here {@link ng.$animate to learn more about animations with `$animate`}.
+ * Click here {@link ng.$animate $animate to learn more about animations with `$animate`}.
  */
 angular.module('ngAnimate', [])
   .provider('$$body', $$BodyProvider)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
-  .factory('$$rAFScheduler', $$rAFSchedulerFactory)
+
+  .factory('$$rAFMutex', $$rAFMutexFactory)
 
   .factory('$$AnimateRunner', $$AnimateRunnerFactory)
-  .factory('$$animateAsyncRun', $$AnimateAsyncRunFactory)
 
   .provider('$$animateQueue', $$AnimateQueueProvider)
   .provider('$$animation', $$AnimationProvider)
@@ -46127,7 +46050,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);;/**
- * Satellizer 0.12.5
+ * Satellizer 0.12.2
  * (c) 2015 Sahat Yalkabov
  * License: MIT
  */
@@ -46150,51 +46073,31 @@ angular.module('ui.router.state')
       authToken: 'Bearer',
       storageType: 'localStorage',
       providers: {
-        facebook: {
-          name: 'facebook',
-          url: '/auth/facebook',
-          authorizationEndpoint: 'https://www.facebook.com/v2.3/dialog/oauth',
-          redirectUri: (window.location.origin || window.location.protocol + '//' + window.location.host) + '/',
-          requiredUrlParams: ['display', 'scope'],
-          scope: ['email'],
-          scopeDelimiter: ',',
-          display: 'popup',
-          type: '2.0',
-          popupOptions: { width: 580, height: 400 }
-        },
         google: {
           name: 'google',
           url: '/auth/google',
           authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
           redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          requiredUrlParams: ['scope'],
-          optionalUrlParams: ['display'],
           scope: ['profile', 'email'],
           scopePrefix: 'openid',
           scopeDelimiter: ' ',
+          requiredUrlParams: ['scope'],
+          optionalUrlParams: ['display'],
           display: 'popup',
           type: '2.0',
           popupOptions: { width: 452, height: 633 }
         },
-        github: {
-          name: 'github',
-          url: '/auth/github',
-          authorizationEndpoint: 'https://github.com/login/oauth/authorize',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          optionalUrlParams: ['scope'],
-          scope: ['user:email'],
-          scopeDelimiter: ' ',
+        facebook: {
+          name: 'facebook',
+          url: '/auth/facebook',
+          authorizationEndpoint: 'https://www.facebook.com/v2.3/dialog/oauth',
+          redirectUri: (window.location.origin || window.location.protocol + '//' + window.location.host) + '/',
+          scope: ['email'],
+          scopeDelimiter: ',',
+          requiredUrlParams: ['display', 'scope'],
+          display: 'popup',
           type: '2.0',
-          popupOptions: { width: 1020, height: 618 }
-        },
-        instagram: {
-          name: 'instagram',
-          url: '/auth/instagram',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          requiredUrlParams: ['scope'],
-          scope: ['basic'],
-          scopeDelimiter: '+',
-          authorizationEndpoint: 'https://api.instagram.com/oauth/authorize'
+          popupOptions: { width: 580, height: 400 }
         },
         linkedin: {
           name: 'linkedin',
@@ -46208,37 +46111,16 @@ angular.module('ui.router.state')
           type: '2.0',
           popupOptions: { width: 527, height: 582 }
         },
-        twitter: {
-          name: 'twitter',
-          url: '/auth/twitter',
-          authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
+        github: {
+          name: 'github',
+          url: '/auth/github',
+          authorizationEndpoint: 'https://github.com/login/oauth/authorize',
           redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          type: '1.0',
-          popupOptions: { width: 495, height: 645 }
-        },
-        twitch: {
-          name: 'twitch',
-          url: '/auth/twitch',
-          authorizationEndpoint: 'https://api.twitch.tv/kraken/oauth2/authorize',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          requiredUrlParams: ['scope'],
-          scope: ['user_read'],
+          optionalUrlParams: ['scope'],
+          scope: ['user:email'],
           scopeDelimiter: ' ',
-          display: 'popup',
           type: '2.0',
-          popupOptions: { width: 500, height: 560 }
-        },
-        live: {
-          name: 'live',
-          url: '/auth/live',
-          authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          requiredUrlParams: ['display', 'scope'],
-          scope: ['wl.emails'],
-          scopeDelimiter: ' ',
-          display: 'popup',
-          type: '2.0',
-          popupOptions: { width: 500, height: 560 }
+          popupOptions: { width: 1020, height: 618 }
         },
         yahoo: {
           name: 'yahoo',
@@ -46249,6 +46131,26 @@ angular.module('ui.router.state')
           scopeDelimiter: ',',
           type: '2.0',
           popupOptions: { width: 559, height: 519 }
+        },
+        twitter: {
+          name: 'twitter',
+          url: '/auth/twitter',
+          authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          type: '1.0',
+          popupOptions: { width: 495, height: 645 }
+        },
+        live: {
+          name: 'live',
+          url: '/auth/live',
+          authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          scope: ['wl.emails'],
+          scopeDelimiter: ' ',
+          requiredUrlParams: ['display', 'scope'],
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 500, height: 560 }
         }
       }
     })
@@ -46341,8 +46243,8 @@ angular.module('ui.router.state')
             return local.login(user, opts);
           };
 
-          $auth.signup = function(user, options) {
-            return local.signup(user, options);
+          $auth.signup = function(user) {
+            return local.signup(user);
           };
 
           $auth.logout = function() {
@@ -46407,7 +46309,7 @@ angular.module('ui.router.state')
 
           if (token && token.split('.').length === 3) {
             var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            var base64 = base64Url.replace('-', '+').replace('_', '/');
             return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
           }
         };
@@ -46450,18 +46352,10 @@ angular.module('ui.router.state')
           if (token) {
             if (token.split('.').length === 3) {
               var base64Url = token.split('.')[1];
-              var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+              var base64 = base64Url.replace('-', '+').replace('_', '/');
               var exp = JSON.parse($window.atob(base64)).exp;
-
               if (exp) {
-                var isExpired = Math.round(new Date().getTime() / 1000) >= exp;
-
-                if (isExpired) {
-                  storage.remove(tokenName);
-                  return false;
-                } else {
-                  return true;
-                }
+                return Math.round(new Date().getTime() / 1000) <= exp;
               }
               return true;
             }
@@ -46590,8 +46484,8 @@ angular.module('ui.router.state')
           Oauth2.open = function(options, userData) {
             defaults = utils.merge(options, defaults);
 
-            var url;
             var openPopup;
+            var url = [defaults.authorizationEndpoint, Oauth2.buildQueryString()].join('?');
             var stateName = defaults.name + '_state';
 
             if (angular.isFunction(defaults.state)) {
@@ -46599,8 +46493,6 @@ angular.module('ui.router.state')
             } else if (angular.isString(defaults.state)) {
               storage.set(stateName, defaults.state);
             }
-
-            url = [defaults.authorizationEndpoint, Oauth2.buildQueryString()].join('?');
 
             if (config.cordova) {
               openPopup = popup.open(url, defaults.name, defaults.popupOptions, defaults.redirectUri).eventListener(defaults.redirectUri);
@@ -46998,8 +46890,7 @@ angular.module('ui.router.state')
       $httpProvider.interceptors.push('SatellizerInterceptor');
     }]);
 
-})(window, window.angular);
-;/*!
+})(window, window.angular);;/*!
  * Bootstrap v4.0.0-alpha (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -49059,7 +48950,7 @@ var Modal = (function ($) {
         this._originalBodyPadding = document.body.style.paddingRight || '';
 
         if (this._isBodyOverflowing) {
-          document.body.style.paddingRight = bodyPadding + this._scrollbarWidth + 'px';
+          document.body.style.paddingRight = bodyPadding + (this._scrollbarWidth + 'px');
         }
       }
     }, {
@@ -49767,7 +49658,7 @@ var Tooltip = (function ($) {
   var DefaultType = {
     animation: 'boolean',
     template: 'string',
-    title: '(string|element|function)',
+    title: '(string|function)',
     trigger: 'string',
     delay: '(number|object)',
     html: 'boolean',
@@ -50053,30 +49944,15 @@ var Tooltip = (function ($) {
     }, {
       key: 'setContent',
       value: function setContent() {
-        var $tip = $(this.getTipElement());
+        var tip = this.getTipElement();
+        var title = this.getTitle();
+        var method = this.config.html ? 'innerHTML' : 'innerText';
 
-        this.setElementContent($tip.find(Selector.TOOLTIP_INNER), this.getTitle());
+        $(tip).find(Selector.TOOLTIP_INNER)[0][method] = title;
 
-        $tip.removeClass(ClassName.FADE).removeClass(ClassName.IN);
+        $(tip).removeClass(ClassName.FADE).removeClass(ClassName.IN);
 
         this.cleanupTether();
-      }
-    }, {
-      key: 'setElementContent',
-      value: function setElementContent($element, content) {
-        var html = this.config.html;
-        if (typeof content === 'object' && (content.nodeType || content.jquery)) {
-          // content is a DOM node or a jQuery
-          if (html) {
-            if (!$(content).parent().is($element)) {
-              $element.empty().append(content);
-            }
-          } else {
-            $element.text($(content).text());
-          }
-        } else {
-          $element[html ? 'html' : 'text'](content);
-        }
       }
     }, {
       key: 'getTitle',
@@ -50367,7 +50243,7 @@ var Popover = (function ($) {
   });
 
   var DefaultType = $.extend({}, Tooltip.DefaultType, {
-    content: '(string|element|function)'
+    content: '(string|function)'
   });
 
   var ClassName = {
@@ -50431,13 +50307,19 @@ var Popover = (function ($) {
     }, {
       key: 'setContent',
       value: function setContent() {
-        var $tip = $(this.getTipElement());
+        var tip = this.getTipElement();
+        var title = this.getTitle();
+        var content = this._getContent();
+        var titleElement = $(tip).find(Selector.TITLE)[0];
+
+        if (titleElement) {
+          titleElement[this.config.html ? 'innerHTML' : 'innerText'] = title;
+        }
 
         // we use append for html objects to maintain js events
-        this.setElementContent($tip.find(Selector.TITLE), this.getTitle());
-        this.setElementContent($tip.find(Selector.CONTENT), this._getContent());
+        $(tip).find(Selector.CONTENT).children().detach().end()[this.config.html ? typeof content === 'string' ? 'html' : 'append' : 'text'](content);
 
-        $tip.removeClass(ClassName.FADE).removeClass(ClassName.IN);
+        $(tip).removeClass(ClassName.FADE).removeClass(ClassName.IN);
 
         this.cleanupTether();
       }

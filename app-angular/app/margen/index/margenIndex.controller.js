@@ -16,17 +16,23 @@
     }
 
     var vm = this;
+    vm.margenes = [];
 
-    vm.obtenerMargen = function (){
-      $http.get(api.endpoint + '/margen').
-        then(function (response){
+    initialize();
+
+    function initialize() {
+      return obtenerMargenes().then(function(){
+        console.log("Margenes obtenidos");
+      });
+    }
+
+    function obtenerMargenes() {
+      return api.get('/margen')
+        .then(function(response){
           vm.margenes = response.data;
-        }, function (response){
-          vm.errors = response.data;
+          return vm.margenes;
         });
-    };
-
-    vm.obtenerMargen();
+    }
   }
 
 })();
