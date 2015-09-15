@@ -43,24 +43,41 @@ class MargenTest extends TestCase
     /**
      * @coversNothing
      */
-    public function testNombreNoPuedeSerMuyLargo()
-    {
-        $margen = factory(App\Margen::class, 'longname')->make();
-        $this->assertFalse($margen->isValid());
-        $this->assertFalse($margen->save());
+    public function testValorEsRequerido() {
+        $model = factory(App\Margen::class)->make([
+            'valor' => ''
+        ]);
+        $this->assertFalse($model->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testValoresDecimalesHaenDefaultACero()
+    public function testValorWebserviceP1EsRequerido() {
+        $model = factory(App\Margen::class)->make([
+            'valor_webservice_p1' => ''
+        ]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testValorWebserviceP8EsRequerido() {
+        $model = factory(App\Margen::class)->make([
+            'valor_webservice_p8' => ''
+        ]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testNombreNoPuedeSerMuyLargo()
     {
-        $margen = factory(App\Margen::class, 'nulldecimals')->make();
-        $this->assertTrue($margen->isValid());
-        $this->assertTrue($margen->save());
-        $this->assertSame(0.0, $margen->valor, 'message');
-        $this->assertSame(0.0, $margen['valor_webservice_p1']);
-        $this->assertSame(0.0, $margen['valor_webservice_p8']);
+        $margen = factory(App\Margen::class, 'longname')->make();
+        $this->assertFalse($margen->isValid());
+        $this->assertFalse($margen->save());
     }
 
     /**
