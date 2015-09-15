@@ -1,0 +1,25 @@
+.alert {
+  opacity: 1;
+
+  &.ng-hide-add, &.ng-hide-remove {
+    transition: all 0.5s linear;
+    -moz-transition: all 0.5s linear;
+    -ms-transition: all 0.5s linear;
+    -o-transition: all 0.5s linear;
+    -webkit-transition: all 0.5s linear;
+  }
+
+  &.ng-hide {
+    opacity: 0;
+  }
+}
+.success{
+  @extend .alert;
+  @extend .alert-success;
+}
+
+.danger{
+  @extend .alert;
+  @extend .alert-danger;
+}
+
