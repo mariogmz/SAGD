@@ -5,23 +5,19 @@
 
   angular
     .module('blocks.formly')
-    .factory('formly.sagd', FormlySagd);
+    .decorator('formlyConfig', FormlyConfigDecorator);
 
-  FormlySagd.$inject = [];
+  FormlyConfigDecorator.$inject = ['$delegate'];
 
-  function FormlySagd(formlyConfigProvider){
+  function FormlyConfigDecorator($delegate){
 
-    var formlySagd = {
-      init: init
-    };
+    var formlyConfigWrapper = $delegate;
 
-    return formlySagd;
+    return wrap();
 
-    function init(){
-      formlyConfigProvider.setType({
-        name: 'input',
-        template: 'Hello World!'
-      });
+    function wrap(){
+      
+      return formlyConfigWrapper;
     }
   }
 }());

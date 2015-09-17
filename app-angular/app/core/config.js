@@ -6,8 +6,7 @@
   angular
     .module('sagdApp.core')
     .config(configure)
-    .run(updateState)
-    .run(formlyConfig);
+    .run(updateState);
 
   configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider'];
 
@@ -29,12 +28,6 @@
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams){
       state.setNewState(fromState.name, toState.name);
     });
-  }
-
-  formlyConfig.$inject = ['formly.sagd'];
-
-  function formlyConfig(formlySagd){
-    formlySagd.init();
   }
 
 })();
