@@ -11,7 +11,7 @@
 
       <form ng-class="{'error': vm.loginError}">
         <fieldset>
-          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email" ng-change="vm.cleanLoginError()">
+          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email" ng-change="vm.cleanLoginError()" onfocus>
         </fieldset>
         <fieldset>
           <input type="password" placeholder="Contraseña" required ng-model="vm.password" ng-change="vm.cleanLoginError()">

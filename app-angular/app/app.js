@@ -15,7 +15,7 @@
       'sagdApp.producto',
       'sagdApp.margen',
       'sagdApp.navbar',
-      'sagdApp.proveedor'
+      'sagdApp.proveedor',
       'sagdApp.cliente'
 
   ]);
