@@ -16,7 +16,7 @@
     return wrap();
 
     function wrap(){
-      
+
       return formlyConfigWrapper;
     }
   }
