@@ -6,9 +6,7 @@
             <label for="search">Buscar:</label>
             <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
         </div>
-        <div class="pull-right">
-            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
-        </div>
+
     </form>
     <br/>
 
@@ -24,7 +22,7 @@
         </thead>
         <tbody>
 
-        <tr dir-paginate="proveedor in vm.proveedores | orderBy:vm.sortKey:vm.reverse | filter:vm.search| itemsPerPage:10">
+        <tr dir-paginate="proveedor in proveedores.data | itemsPerPage: vm.itemsPerPage" total-items="totalItems" current-page="pagination.current">
             <td>{{proveedor.clave}}</td>
             <td>{{proveedor.razon_social}}</td>
             <td>{{proveedor.pagina_web}}</td>
@@ -38,9 +36,11 @@
 
         </tbody>
     </table>
+
     <div class="pull-right">
-        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
     </div>
+
     <div class="danger" ng-if="vm.errores">
         <strong>Hubo un error: </strong> {{vm.errores.error}}
         <br>Por favor accede de nuevo

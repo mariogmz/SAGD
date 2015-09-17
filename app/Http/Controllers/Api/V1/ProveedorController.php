@@ -25,8 +25,12 @@ class ProveedorController extends Controller
      */
     public function index()
     {
-        $proveedores = $this->proveedor->all();
-        return $proveedores;
+        //$proveedores = $this->proveedor->all();
+        //return $proveedores;
+
+        $proveedores = Proveedor::paginate(15);
+        return $proveedores->toJson();
+
     }
 
     /**

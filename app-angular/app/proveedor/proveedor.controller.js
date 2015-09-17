@@ -15,8 +15,10 @@
     }
     var vm = this;
 
+    vm.itemsPerPage = 5;
+
     vm.obtenerProveedores = function (){
-      $http.get('http://api.sagd.app/api/v1/proveedor').
+      $http.get('http://api.sagd.app/api/v1/proveedor?page=1').
           then(function (response){
             vm.proveedores = response.data;
           }, function (response){
@@ -25,11 +27,25 @@
     };
     vm.obtenerProveedores();
 
-    vm.sort = function(keyname){
-        vm.sortKey = keyname;   //set the sortKey to the param passed
-        vm.reverse = !vm.reverse; //if true make it false and vice versa
-    }
+    /*
+    function($interpolateProvider) {
+        $interpolateProvider.startSymbol('[[');
+        $interpolateProvider.endSymbol(']]');
+    });
+    */
 
+    vm.pageChanged = function(newPage) {
+        getResultsPage(newPage);
+    };
+
+    function getResultsPage(pageNumber) {
+          // this is just an example, in reality this stuff should be in a service
+          $http.get('http://api.sagd.app/api/v1/proveedor?page=' + pageNumber)
+              .then(function(result) {
+                  vm.proveedores = result.data.Items;
+                  vm.totalItems = result.data.Count
+              });
+    }
 
   }
 
