@@ -1,0 +1,52 @@
+<div class="container-fluid">
+  <h1>Clientes</h1>
+  <hr>
+  <form class="form-inline">
+    <div class="form-group">
+      <label for="search">Buscar:</label>
+      <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
+    </div>
+    <div class="pull-right">
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+  </form>
+  <br/>
+
+
+  <table class="item-table">
+    <thead>
+    <tr>
+      <th class="clickable" ng-click="vm.sort('id')">
+        #
+      </th>
+      <th class="clickable" ng-click="vm.sort('nombre')">
+        Nombre
+      </th>
+      <th class="clickable" ng-click="vm.sort('usuario')">Usuario</th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search| itemsPerPage:10">
+      <td>{{cliente.id}}</td>
+      <td>{{cliente.nombre}}</td>
+      <td>{{cliente.usuario}}</td>
+      <td>
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit">Editar</button>
+          <button type="button" class="delete">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+
+    </tbody>
+  </table>
+  <div class="pull-right">
+    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+  </div>
+  <div class="danger" ng-if="vm.errores">
+    <strong>Hubo un error: </strong> {{vm.errores.error}}
+    <br>Por favor accede de nuevo
+  </div>
+</div>

@@ -18,6 +18,7 @@
      * 3rd party app modules
      */
     'ui.router',
-    'satellizer'
+    'satellizer',
+    'angularUtils.directives.dirPagination'
   ]);
 })();
