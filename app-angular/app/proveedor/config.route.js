@@ -9,13 +9,14 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider){
+  function configureRoutes($stateProvider) {
     $stateProvider
-      .state('proveedor', {
-        abstract: true,
-        url: '',
-        parent: 'layout',
-        templateUrl: 'app/proveedor/proveedor.html'
-      });
+        .state('proveedor', {
+          url: 'sucursales/proveedor',
+          parent: 'layout',
+          templateUrl: 'app/proveedor/proveedor.html',
+          controller: 'proveedorController',
+          controllerAs: 'vm'
+        });
   }
 })();

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Margen;
+use App\Proveedor;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -44,10 +44,10 @@ class ProveedorController extends Controller
             return response()->json(
                 [
                     'message' => 'Proveedor creado exitosamente',
-                    'margen' => $this->proveedor->self()
+                    'proveedor' => $this->proveedor->self()
                 ],
                 201,
-                ['Location' => route('api.v1.proveedor.show', $this->margen->getId())]);
+                ['Location' => route('api.v1.proveedor.show', $this->proveedor->getId())]);
         } else {
             return response()->json([
                 'message' => 'Proveedor no creado',
@@ -69,7 +69,7 @@ class ProveedorController extends Controller
         {
             return response()->json([
                 'message' => 'Proveedor obtenido exitosamente',
-                'margen' => $this->proveedor
+                'proveedor' => $this->proveedor
             ], 200);
         } else {
             return response()->json([
@@ -105,7 +105,7 @@ class ProveedorController extends Controller
         } else {
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del Proveedor',
-                'error' => $this->margen->errors
+                'error' => $this->proveedor->errors
             ], 400);
         }
     }

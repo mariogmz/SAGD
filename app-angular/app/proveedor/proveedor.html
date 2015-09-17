@@ -1,3 +1,48 @@
-<h1>Proveedores</h1>
-<hr>
-<div ui-view></div>
+<div class="container-fluid">
+    <h1>Proveedores</h1>
+    <hr>
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="search">Buscar:</label>
+            <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
+        </div>
+        <div class="pull-right">
+            <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+        </div>
+    </form>
+    <br/>
+
+
+    <table class="item-table table-striped table-hover">
+        <thead>
+        <tr>
+            <th class="clickable" ng-click="vm.sort('clave')">Clave</th>
+            <th class="clickable" ng-click="vm.sort('razon_social')">Razón social</th>
+            <th class="clickable" ng-click="vm.sort('pagina_web')">Página Web</th>
+            <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <tr dir-paginate="proveedor in vm.proveedores | orderBy:vm.sortKey:vm.reverse | filter:vm.search| itemsPerPage:10">
+            <td>{{proveedor.clave}}</td>
+            <td>{{proveedor.razon_social}}</td>
+            <td>{{proveedor.pagina_web}}</td>
+            <td>
+                <div class="action-buttons" role="group" aria-label="Acciones">
+                    <button type="button" class="edit">Editar</button>
+                    <button type="button" class="delete">Eliminar</button>
+                </div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+    <div class="pull-right">
+        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+    <div class="danger" ng-if="vm.errores">
+        <strong>Hubo un error: </strong> {{vm.errores.error}}
+        <br>Por favor accede de nuevo
+    </div>
+</div>
