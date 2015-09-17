@@ -17,6 +17,23 @@
 
     function wrap(){
 
+      /**
+       * Common wrappers
+       */
+      formlyConfigWrapper.setWrapper([
+        {
+          name: 'label',
+          templateUrl: 'app/templates/wrappers/label.html'
+        }
+      ]);
+
+      var commonWrappers = ['label'];
+
+      formlyConfigWrapper.setType({
+        name: 'input',
+        templateUrl: 'app/templates/fields/input.html',
+        wrapper: commonWrappers
+      });
       return formlyConfigWrapper;
     }
   }

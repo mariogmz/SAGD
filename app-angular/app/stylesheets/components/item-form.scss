@@ -9,12 +9,12 @@ form.item-form {
     @extend .row;
 
     label {
-      @extend .col-sm-2;
+      @extend .col-sm-3;
       @extend .form-control-label;
     }
 
     .field {
-      @extend .col-sm-10;
+      @extend .col-sm-9;
     }
 
     input {

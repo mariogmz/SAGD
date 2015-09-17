@@ -22,34 +22,7 @@
     <form class="item-form" name="vm.margenForm">
       <fieldset>
         <legend>Márgen #<strong>{{vm.margen.id}}</strong></legend>
-        <div class="inline-field">
-          <label for="name">Nombre:</label>
 
-          <div class="field">
-            <input type="text" id="name" ng-model="vm.margen.nombre" ng-change="vm.clean()">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="value">Valor:</label>
-
-          <div class="field">
-            <input type="text" id="value" ng-model="vm.margen.valor" ng-change="vm.clean()">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="ws1">Webservice P1:</label>
-
-          <div class="field">
-            <input type="text" id="ws1" ng-model="vm.margen.valor_webservice_p1" ng-change="vm.clean()">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="ws8">Webservice P8:</label>
-
-          <div class="field">
-            <input type="text" id="ws8" ng-model="vm.margen.valor_webservice_p8" ng-change="vm.clean()">
-          </div>
-        </div>
       </fieldset>
     </form>
     <button type="button" class="button primary" ng-click="vm.save()">Guardar cambios</button>
