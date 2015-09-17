@@ -17,6 +17,5 @@
       'sagdApp.navbar',
       'sagdApp.proveedor'
       'sagdApp.cliente'
-
   ]);
 })();
