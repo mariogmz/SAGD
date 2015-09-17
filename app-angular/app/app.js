@@ -14,6 +14,7 @@
       'sagdApp.empleado',
       'sagdApp.producto',
       'sagdApp.margen',
-      'sagdApp.navbar'
+      'sagdApp.navbar',
+      'sagdApp.proveedor'
   ]);
 })();

@@ -32,5 +32,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('margen', 'MargenController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
+
+        Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
     });
 });
