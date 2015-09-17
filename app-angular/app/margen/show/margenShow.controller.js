@@ -8,16 +8,15 @@
     .module('sagdApp.margen')
     .controller('margenShowController', MargenShowController);
 
-  MargenShowController.$inject = ['$auth', '$state', '$stateParams', '$http', 'api'];
+  MargenShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
 
-  function MargenShowController($auth, $state, $stateParams, $http, api){
+  function MargenShowController($auth, $state, $stateParams, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.id = $stateParams.id;
-
     initialize();
 
     function initialize(){

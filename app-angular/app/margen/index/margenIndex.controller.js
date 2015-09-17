@@ -10,7 +10,7 @@
 
   MargenIndexController.$inject = ['$auth', '$state', '$http', 'api'];
 
-  function MargenIndexController($auth, $state, $http, api){
+  function MargenIndexController($auth, $state, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
