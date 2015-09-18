@@ -27,6 +27,8 @@ app-angular/npm-debug.log
 app-angular/public/css/application.css
 app-angular/public/css/application.css.map
 app-angular/public/js/all.js
+app-angular/public/libs/frontend.js
+app-angular/public/libs/frontend.min.js
 app-angular/tests/reports/*.html
 app-angular/tests/reports/screenshots/*.png
 *.iml

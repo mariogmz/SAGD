@@ -17,7 +17,11 @@ module.exports = function(grunt) {
           './bower_components/satellizer/satellizer.js',
           './bower_components/angular-formly/dist/formly.js',
           './bower_components/angularUtils-pagination/dirPagination.js',
-          './bower_components/bootstrap/dist/js/bootstrap.js'
+          './bower_components/bootstrap/dist/js/bootstrap.js',
+          './bower_components/pnotify/src/pnotify.core.js',
+          './bower_components/pnotify/src/pnotify.desktop.js',
+          './bower_components/pnotify/src/pnotify.buttons.js',
+          './bower_components/pnotify/src/pnotify.callbacks.js'
         ],
         dest: './public/libs/frontend.js'
       },
@@ -60,7 +64,11 @@ module.exports = function(grunt) {
           './bower_components/satellizer/satellizer.js',
           './bower_components/angular-formly/dist/formly.js',
           './bower_components/angularUtils-pagination/dirPagination.js',
-          './bower_components/bootstrap/dist/js/bootstrap.js'
+          './bower_components/bootstrap/dist/js/bootstrap.js',
+          './bower_components/pnotify/src/pnotify.core.js',
+          './bower_components/pnotify/src/pnotify.desktop.js',
+          './bower_components/pnotify/src/pnotify.buttons.js',
+          './bower_components/pnotify/src/pnotify.callbacks.js'
         ],
         tasks: ['concat:libs', 'uglify:libs'],
         options: {
