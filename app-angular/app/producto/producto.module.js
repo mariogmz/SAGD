@@ -4,6 +4,7 @@
     'use strict';
 
     angular.module('sagdApp.producto', [
-      'sagdApp.core'
+      'sagdApp.core',
+      'blocks.api'
     ]);
 })();

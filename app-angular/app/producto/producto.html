@@ -1,2 +1,33 @@
 <h1>Productos</h1>
 <hr>
+
+<table class="item-table">
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Clave</th>
+    <th>UPC</th>
+    <th>Descripción corta</th>
+    <th>Número de parte</th>
+    <th>Precio</th>
+    <th>Acciones</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr ng-repeat="producto in vm.productos">
+    <th scope="row">{{producto.id}}</td>
+    <td>{{producto.clave}}</td>
+    <td>{{producto.upc}}</td>
+    <td>{{producto.descripcion_corta}}</td>
+    <td>{{producto.numero_parte}}</td>
+    <td>{{1.00 | currency:"$"}}</td>
+
+    <td>
+      <div class="action-buttons" role="group" aria-label="Acciones">
+        <button type="button" class="edit">Editar</button>
+        <button type="button" class="delete">Eliminar</button>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>

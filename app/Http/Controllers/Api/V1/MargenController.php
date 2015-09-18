@@ -112,7 +112,7 @@ class MargenController extends Controller
 
     /**
      * Remove the specified resource from storage.
-     *
+     *a
      * @param  int  $id
      * @return Response
      */

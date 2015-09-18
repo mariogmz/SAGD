@@ -1,0 +1,22 @@
+table.item-table {
+  @extend .table;
+  @extend .table-hover;
+
+  thead {
+    @extend .thead-inverse;
+  }
+
+  .action-buttons {
+    @extend .btn-group;
+
+    .edit {
+      @extend .btn;
+      @extend .btn-success;
+    }
+
+    .delete {
+      @extend .btn;
+      @extend .btn-danger;
+    }
+  }
+}

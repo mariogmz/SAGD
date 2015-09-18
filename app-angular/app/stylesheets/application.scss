@@ -3,6 +3,9 @@
 @import "base/variables";
 
 @import "../../bower_components/bootstrap/scss/bootstrap";
+@import "../../bower_components/pnotify/src/pnotify.core.css";
+@import "../../bower_components/pnotify/src/pnotify.buttons.css";
+@import "../../bower_components/pnotify/src/pnotify.picon.css";
 
 @import "base/mixins";
 @import "base/base";
@@ -11,10 +14,13 @@
 @import "layout/layout";
 @import "login/login";
 
+@import "components/components";
+
 @import "navbar/navbar";
 @import "navbar/navbar.mobile";
 @import "navbar/logout";
 
 @import "empleados/empleados";
+@import "producto/producto";
 
 

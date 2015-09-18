@@ -44,4 +44,25 @@ class LGGModel extends Model {
     {
         return $this->id;
     }
+
+    /**
+     * This method will try the default delete method but if it throws an
+     * exception will return false instead of the Exception
+     *
+     * @return bool
+     */
+    public function delete()
+    {
+        try
+        {
+            return parent::delete();
+        }
+        catch (\Illuminate\Database\QueryException $queryException)
+        {
+            return false;
+        } catch (Exception $exception)
+        {
+            return false;
+        }
+    }
 }

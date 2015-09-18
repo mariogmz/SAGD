@@ -1,0 +1,29 @@
+.card {
+  @extend .card;
+
+  .header {
+    @extend .card-header;
+  }
+
+  .block {
+    @extend .card-block;
+
+    h4 {
+      @extend .card-title;
+    }
+
+    p {
+      @extend .card-text;
+    }
+  }
+
+  .button {
+    @extend .btn;
+    &.primary {
+      @extend .btn-primary;
+    }
+    &.secondary {
+      @extend .btn-secondary;
+    }
+  }
+}

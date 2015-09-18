@@ -9,12 +9,19 @@ module.exports = function(grunt) {
           separator: ';'
         },
         src: [
+          './bower_components/api-check/dist/api-check.js',
           './bower_components/jquery/dist/jquery.js',
           './bower_components/angular/angular.js',
           './bower_components/angular-animate/angular-animate.js',
           './bower_components/angular-ui-router/release/angular-ui-router.js',
           './bower_components/satellizer/satellizer.js',
-          './bower_components/bootstrap/dist/js/bootstrap.js'
+          './bower_components/angular-formly/dist/formly.js',
+          './bower_components/angularUtils-pagination/dirPagination.js',
+          './bower_components/bootstrap/dist/js/bootstrap.js',
+          './bower_components/pnotify/src/pnotify.core.js',
+          './bower_components/pnotify/src/pnotify.desktop.js',
+          './bower_components/pnotify/src/pnotify.buttons.js',
+          './bower_components/pnotify/src/pnotify.callbacks.js'
         ],
         dest: './public/libs/frontend.js'
       },
@@ -49,12 +56,19 @@ module.exports = function(grunt) {
     watch: {
       libs: {
         files: [
+          './bower_components/api-check/dist/api-check.js',
           './bower_components/jquery/dist/jquery.js',
           './bower_components/angular/angular.js',
           './bower_components/angular-animate/angular-animate.js',
           './bower_components/angular-ui-router/release/angular-ui-router.js',
           './bower_components/satellizer/satellizer.js',
-          './bower_components/bootstrap/dist/js/bootstrap.js'
+          './bower_components/angular-formly/dist/formly.js',
+          './bower_components/angularUtils-pagination/dirPagination.js',
+          './bower_components/bootstrap/dist/js/bootstrap.js',
+          './bower_components/pnotify/src/pnotify.core.js',
+          './bower_components/pnotify/src/pnotify.desktop.js',
+          './bower_components/pnotify/src/pnotify.buttons.js',
+          './bower_components/pnotify/src/pnotify.callbacks.js'
         ],
         tasks: ['concat:libs', 'uglify:libs'],
         options: {

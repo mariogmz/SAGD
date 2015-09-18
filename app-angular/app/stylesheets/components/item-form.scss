@@ -1,0 +1,24 @@
+form.item-form {
+
+  legend {
+    font-size: 1.4rem;
+  }
+
+  .inline-field {
+    @extend .form-group;
+    @extend .row;
+
+    label {
+      @extend .col-sm-3;
+      @extend .form-control-label;
+    }
+
+    .field {
+      @extend .col-sm-9;
+    }
+
+    input {
+      @extend .form-control;
+    }
+  }
+}
