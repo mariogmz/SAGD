@@ -1,7 +1,7 @@
 form.item-form {
 
   legend {
-    font-size: 1rem;
+    font-size: 1.4rem;
   }
 
   .inline-field {
@@ -9,12 +9,12 @@ form.item-form {
     @extend .row;
 
     label {
-      @extend .col-sm-2;
+      @extend .col-sm-3;
       @extend .form-control-label;
     }
 
     .field {
-      @extend .col-sm-10;
+      @extend .col-sm-9;
     }
 
     input {

@@ -12,14 +12,43 @@
   &.ng-hide {
     opacity: 0;
   }
+
+  a{
+    @extend .alert-link;
+  }
+
+  button{
+    @extend .close;
+
+    span.sr{
+      @extend .sr-only;
+    }
+  }
 }
-.success{
+
+.dismissible{
+  @extend .alert-dismissible;
+  @extend .fade;
+  @extend .in;
+}
+
+.success {
   @extend .alert;
   @extend .alert-success;
 }
 
-.danger{
+.danger {
   @extend .alert;
   @extend .alert-danger;
+}
+
+.info {
+  @extend .alert;
+  @extend .alert-info;
+}
+
+.warning {
+  @extend .alert;
+  @extend .alert-warning;
 }
 

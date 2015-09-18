@@ -12,13 +12,14 @@
     /*
      * Our reusable cross app code modules
      */
-    'blocks.session', 'blocks.state', 'blocks.utils', 'blocks.api',
+    'blocks.session', 'blocks.state', 'blocks.utils', 'blocks.api', 'blocks.formly',
 
     /*
      * 3rd party app modules
      */
     'ui.router',
     'satellizer',
-    'angularUtils.directives.dirPagination'
+    'angularUtils.directives.dirPagination',
+    'formly'
   ]);
 })();

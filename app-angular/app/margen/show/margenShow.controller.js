@@ -8,35 +8,66 @@
     .module('sagdApp.margen')
     .controller('margenShowController', MargenShowController);
 
-  MargenShowController.$inject = ['$auth', '$state', '$stateParams', '$http', 'api'];
+  MargenShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
 
-  function MargenShowController($auth, $state, $stateParams, $http, api){
+  function MargenShowController($auth, $state, $stateParams, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.id = $stateParams.id;
-
+    vm.fields = [
+      {
+        type: 'input',
+        key: 'nombre',
+        templateOptions: {
+          type: 'text',
+          label: 'Nombre:'
+        }
+      }, {
+        type: 'input',
+        key: 'valor',
+        templateOptions: {
+          type: 'text',
+          label: 'Valor:'
+        }
+      }, {
+        type: 'input',
+        key: 'valor_webservice_p8',
+        templateOptions: {
+          type: 'text',
+          label: 'Webservice P8:'
+        }
+      }, {
+        type: 'input',
+        key: 'valor_webservice_p1',
+        templateOptions: {
+          type: 'text',
+          label: 'Webservice P1:'
+        }
+      }
+    ];
     initialize();
 
     function initialize(){
-      return obtenerMargen().then(function(response){
+      return obtenerMargen().then(function (response){
         console.log(response.message);
       });
     }
 
-    function obtenerMargen() {
+    function obtenerMargen(){
       return api.get('/margen/', vm.id)
-        .then(function(response){
+        .then(function (response){
           vm.margen = response.data.margen;
           return response.data;
         })
-        .catch(function(response){
+        .catch(function (response){
           vm.error = response.data;
           return response.data;
         });
     }
   }
 
-})();
+})
+();

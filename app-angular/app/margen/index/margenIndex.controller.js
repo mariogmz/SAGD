@@ -8,9 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenIndexController', MargenIndexController);
 
-  MargenIndexController.$inject = ['$auth', '$state', '$http', 'api'];
+  MargenIndexController.$inject = ['$auth', '$state', 'api'];
 
-  function MargenIndexController($auth, $state, $http, api){
+  function MargenIndexController($auth, $state, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
