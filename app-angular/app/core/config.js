@@ -19,6 +19,7 @@
 
     if (window.history && window.history.pushState) {
       //$locationProvider.html5Mode(true).hashPrefix('!');
+      $locationProvider.html5Mode({enabled: true,  requireBase: false});
     }
   }
 
