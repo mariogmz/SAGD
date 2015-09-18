@@ -14,11 +14,11 @@
       $state.go('login', {});
     }
     var vm = this;
-
+    vm.currentPage = 1;
     vm.itemsPerPage = 5;
 
     vm.obtenerProveedores = function (){
-      $http.get('http://api.sagd.app/api/v1/proveedor?page=1').
+      $http.get('http://api.sagd.app/api/v1/proveedor?page='+vm.currentPage).
           then(function (response){
             vm.proveedores = response.data;
           }, function (response){
@@ -34,6 +34,7 @@
     });
     */
 
+      /*
     vm.pageChanged = function(newPage) {
         getResultsPage(newPage);
     };
@@ -46,7 +47,7 @@
                   vm.totalItems = result.data.Count
               });
     }
-
+    */
   }
 
 

@@ -28,7 +28,7 @@ class ProveedorController extends Controller
         //$proveedores = $this->proveedor->all();
         //return $proveedores;
 
-        $proveedores = Proveedor::paginate(15);
+        $proveedores = Proveedor::paginate(5);
         return $proveedores->toJson();
 
     }

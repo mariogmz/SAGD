@@ -6,10 +6,8 @@
             <label for="search">Buscar:</label>
             <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
         </div>
-
     </form>
     <br/>
-
 
     <table class="item-table table-striped table-hover">
         <thead>
@@ -21,8 +19,7 @@
         </tr>
         </thead>
         <tbody>
-
-        <tr dir-paginate="proveedor in proveedores.data | itemsPerPage: vm.itemsPerPage" total-items="totalItems" current-page="pagination.current">
+        <tr dir-paginate="proveedor in vm.proveedores.data | filter:vm.search | itemsPerPage:vm.itemsPerPage">
             <td>{{proveedor.clave}}</td>
             <td>{{proveedor.razon_social}}</td>
             <td>{{proveedor.pagina_web}}</td>
