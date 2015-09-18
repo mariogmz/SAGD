@@ -7,6 +7,7 @@
 }
 
 .view {
+  position: relative;
 	.module-container {
 		@include make-col();
 		@include make-col-span(9);
@@ -14,5 +15,7 @@
 	.notification-bar {
 		@include make-col();
 		@include make-col-span(3);
+    overflow: auto;
+    height: 100%;
 	}
 }

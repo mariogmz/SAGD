@@ -19,6 +19,7 @@
     "api-check": "~7.5.0",
     "bootstrap": "v4-dev",
     "jquery": "~2.1.4",
+    "pnotify": "~2.1.0",
     "satellizer": "~0.12.2"
   },
   "resolutions": {

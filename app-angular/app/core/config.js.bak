@@ -18,9 +18,12 @@
     $urlRouterProvider.otherwise('/');
 
     if (window.history && window.history.pushState) {
-
+<<<<<<< HEAD
+      //$locationProvider.html5Mode(true).hashPrefix('!');
+      $locationProvider.html5Mode({enabled: true,  requireBase: false});
+=======
       $locationProvider.html5Mode(true).hashPrefix('!');
-
+>>>>>>> feature/productos-crud
     }
   }
 

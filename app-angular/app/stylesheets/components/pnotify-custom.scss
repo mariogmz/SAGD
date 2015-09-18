@@ -1,0 +1,7 @@
+.ui-pnotify {
+  @extend .ui-pnotify;
+
+  @media (min-width: 106.2rem) {
+    width: 440px !important;
+  }
+}
