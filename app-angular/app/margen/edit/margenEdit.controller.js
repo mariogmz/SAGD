@@ -8,9 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenEditController', MargenEditController);
 
-  MargenEditController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  MargenEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
-  function MargenEditController($auth, $state, $stateParams, api){
+  function MargenEditController($auth, $state, $stateParams, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -18,7 +18,6 @@
     var vm = this;
     vm.id = $stateParams.id;
     vm.save = guardarMargen;
-    vm.clean = limpiar;
 
     vm.fields = [
       {
@@ -27,8 +26,7 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          required: true,
-          onChange: limpiar
+          required: true
         }
       }, {
         type: 'input',
@@ -36,8 +34,7 @@
         templateOptions: {
           type: 'text',
           label: 'Valor:',
-          required: true,
-          onChange: limpiar
+          required: true
         }
       }, {
         type: 'input',
@@ -45,8 +42,7 @@
         templateOptions: {
           type: 'text',
           label: 'Webservice P1:',
-          required: true,
-          onChange: limpiar
+          required: true
         }
       }, {
         type: 'input',
@@ -54,8 +50,7 @@
         templateOptions: {
           type: 'text',
           label: 'Webservice P8:',
-          required: true,
-          onChange: limpiar
+          required: true
         }
       }
     ];
@@ -75,7 +70,7 @@
           return response.data;
         })
         .catch(function (response){
-          vm.alert.error = response.data;
+          vm.error = response.data;
           return response.data;
         });
     }
@@ -83,19 +78,15 @@
     function guardarMargen(){
       return api.put('/margen/', vm.id, vm.margen)
         .then(function (response){
-          vm.alert.message = response.data.message;
-          vm.alert.error = false;
+          vm.message = response.data.message;
+          pnotify.alert('Exito', vm.message, 'success');
           return response;
         })
         .catch(function (response){
-          vm.alert.error = response.data;
+          vm.error = response.data;
+          pnotify.alertList('No se pudo guardar el margen', vm.error.error, 'error');
           return response;
         });
-    }
-
-    function limpiar(){
-      vm.alert.message = null;
-      vm.alert.error = null;
     }
   }
 

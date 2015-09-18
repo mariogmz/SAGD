@@ -12,7 +12,8 @@
     /*
      * Our reusable cross app code modules
      */
-    'blocks.session', 'blocks.state', 'blocks.utils', 'blocks.api', 'blocks.formly',
+    'blocks.session', 'blocks.state', 'blocks.utils',
+    'blocks.api', 'blocks.formly', 'blocks.pnotify',
 
     /*
      * 3rd party app modules
