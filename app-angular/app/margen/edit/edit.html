@@ -1,6 +1,5 @@
-<!-- Alerts -->
 <div class="alert success" role="alert" ng-show="vm.message && !vm.error">
-  <p><strong>¡Éxito!</strong> {{vm.message}}</p>
+  <p></p><strong>¡Éxito!</strong> {{vm.message}}</p>
 </div>
 <div class="alert danger" role="alert" ng-show="vm.error">
   <p><strong>¡Error!</strong></p>
@@ -19,14 +18,15 @@
     Editar
   </div>
   <div class="block">
-    <form class="item-form" name="vm.margenForm">
+    <form class="item-form" ng-submit="vm.save()">
       <fieldset>
         <legend>Márgen #<strong>{{vm.margen.id}}</strong></legend>
-
+        <formly-form model="vm.margen" fields="vm.fields">
+          <input type="submit" class="button primary" value="Guardar cambios">
+          <a ui-sref="margenIndex" class="button secondary">Regresar</a>
+        </formly-form>
       </fieldset>
     </form>
-    <button type="button" class="button primary" ng-click="vm.save()">Guardar cambios</button>
-    <a ui-sref="margenIndex" class="button secondary">Regresar</a>
   </div>
 </div>
 

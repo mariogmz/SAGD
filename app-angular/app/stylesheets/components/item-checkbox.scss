@@ -1,0 +1,10 @@
+.item-checkbox{
+  label{
+    @extend .c-input;
+    @extend .c-checkbox;
+
+    span {
+      @extend .c-indicator;
+    }
+  }
+}

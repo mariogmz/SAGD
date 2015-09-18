@@ -23,36 +23,31 @@
         key: 'nombre',
         templateOptions: {
           type: 'text',
-          label: 'Nombre:',
-          required: true
+          label: 'Nombre:'
         }
       }, {
         type: 'input',
         key: 'valor',
         templateOptions: {
           type: 'text',
-          label: 'Valor:',
-          required: true
+          label: 'Valor:'
         }
       }, {
         type: 'input',
         key: 'valor_webservice_p8',
         templateOptions: {
           type: 'text',
-          label: 'Webservice P8:',
-          required: true
+          label: 'Webservice P8:'
         }
       }, {
         type: 'input',
         key: 'valor_webservice_p1',
         templateOptions: {
           type: 'text',
-          label: 'Webservice P1:',
-          required: true
+          label: 'Webservice P1:'
         }
       }
-    ]
-    ;
+    ];
     initialize();
 
     function initialize(){
