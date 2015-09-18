@@ -1,4 +1,1332 @@
-/*!
+//! api-check version 7.5.0 built with ♥ by Kent C. Dodds <kent@doddsfamily.us> (http://kent.doddsfamily.us) (ó ì_í)=óò=(ì_í ò)
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define(factory);
+	else if(typeof exports === 'object')
+		exports["apiCheck"] = factory();
+	else
+		root["apiCheck"] = factory();
+})(this, function() {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _apiCheck = __webpack_require__(1);
+
+	var _apiCheck2 = _interopRequireDefault(_apiCheck);
+
+	exports['default'] = _apiCheck2['default'];
+	module.exports = exports['default'];
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var stringify = __webpack_require__(2);
+	var apiCheckUtil = __webpack_require__(3);
+	var each = apiCheckUtil.each;
+	var isError = apiCheckUtil.isError;
+	var t = apiCheckUtil.t;
+	var arrayify = apiCheckUtil.arrayify;
+	var getCheckerDisplay = apiCheckUtil.getCheckerDisplay;
+	var typeOf = apiCheckUtil.typeOf;
+	var getError = apiCheckUtil.getError;
+
+	var checkers = __webpack_require__(4);
+	var apiCheckApis = getApiCheckApis();
+
+	module.exports = getApiCheckInstance;
+	module.exports.VERSION = ("7.5.0");
+	module.exports.utils = apiCheckUtil;
+	module.exports.globalConfig = {
+	  verbose: false,
+	  disabled: false
+	};
+
+	var apiCheckApiCheck = getApiCheckInstance({
+	  output: { prefix: 'apiCheck' }
+	});
+	module.exports.internalChecker = apiCheckApiCheck;
+
+	each(checkers, function (checker, name) {
+	  return module.exports[name] = checker;
+	});
+
+	function getApiCheckInstance() {
+	  var config = arguments[0] === undefined ? {} : arguments[0];
+	  var extraCheckers = arguments[1] === undefined ? {} : arguments[1];
+
+	  /* eslint complexity:[2, 6] */
+	  if (apiCheckApiCheck && arguments.length) {
+	    apiCheckApiCheck['throw'](apiCheckApis.getApiCheckInstanceCheckers, arguments, {
+	      prefix: 'creating an apiCheck instance'
+	    });
+	  }
+
+	  var additionalProperties = {
+	    'throw': getApiCheck(true),
+	    warn: getApiCheck(false),
+	    getErrorMessage: getErrorMessage,
+	    handleErrorMessage: handleErrorMessage,
+	    config: {
+	      output: config.output || {
+	        prefix: '',
+	        suffix: '',
+	        docsBaseUrl: ''
+	      },
+	      verbose: config.verbose || false,
+	      disabled: config.disabled || false
+	    },
+	    utils: apiCheckUtil
+	  };
+
+	  each(additionalProperties, function (wrapper, name) {
+	    return apiCheck[name] = wrapper;
+	  });
+
+	  var disabled = apiCheck.disabled || module.exports.globalConfig.disabled;
+	  each(checkers.getCheckers(disabled), function (checker, name) {
+	    return apiCheck[name] = checker;
+	  });
+	  each(extraCheckers, function (checker, name) {
+	    return apiCheck[name] = checker;
+	  });
+
+	  return apiCheck;
+
+	  /**
+	   * This is the instance function. Other things are attached to this see additional properties above.
+	   * @param api {Array}
+	   * @param args {arguments}
+	   * @param output {Object}
+	   * @returns {Object} - if this has a failed = true property, then it failed
+	   */
+	  function apiCheck(api, args, output) {
+	    /* eslint complexity:[2, 8] */
+	    if (apiCheck.config.disabled || module.exports.globalConfig.disabled) {
+	      return {
+	        apiTypes: {}, argTypes: {},
+	        passed: true, message: '',
+	        failed: false
+	      }; // empty version of what is normally returned
+	    }
+	    checkApiCheckApi(arguments);
+	    if (!Array.isArray(api)) {
+	      api = [api];
+	      args = [args];
+	    } else {
+	      // turn arguments into an array
+	      args = Array.prototype.slice.call(args);
+	    }
+	    var messages = checkEnoughArgs(api, args);
+	    if (!messages.length) {
+	      // this is where we actually go perform the checks.
+	      messages = checkApiWithArgs(api, args);
+	    }
+
+	    var returnObject = getTypes(api, args);
+	    returnObject.args = args;
+	    if (messages.length) {
+	      returnObject.message = apiCheck.getErrorMessage(api, args, messages, output);
+	      returnObject.failed = true;
+	      returnObject.passed = false;
+	    } else {
+	      returnObject.message = '';
+	      returnObject.failed = false;
+	      returnObject.passed = true;
+	    }
+	    return returnObject;
+	  }
+
+	  /**
+	   * checkApiCheckApi, should be read like: check apiCheck api. As in, check the api for apiCheck :-)
+	   * @param checkApiArgs
+	   */
+	  function checkApiCheckApi(checkApiArgs) {
+	    var api = checkApiArgs[0];
+	    var args = checkApiArgs[1];
+	    var isArrayOrArgs = Array.isArray(args) || args && typeof args === 'object' && typeof args.length === 'number';
+
+	    if (Array.isArray(api) && !isArrayOrArgs) {
+	      throw new Error(getErrorMessage(api, [args], ['If an array is provided for the api, an array must be provided for the args as well.'], { prefix: 'apiCheck' }));
+	    }
+	    // dog fooding here
+	    var errors = checkApiWithArgs(apiCheckApis.checkApiCheckApi, checkApiArgs);
+	    if (errors.length) {
+	      var message = apiCheck.getErrorMessage(apiCheckApis.checkApiCheckApi, checkApiArgs, errors, {
+	        prefix: 'apiCheck'
+	      });
+	      apiCheck.handleErrorMessage(message, true);
+	    }
+	  }
+
+	  function getApiCheck(shouldThrow) {
+	    return function apiCheckWrapper(api, args, output) {
+	      var result = apiCheck(api, args, output);
+	      apiCheck.handleErrorMessage(result.message, shouldThrow);
+	      return result; // wont get here if an error is thrown
+	    };
+	  }
+
+	  function handleErrorMessage(message, shouldThrow) {
+	    if (shouldThrow && message) {
+	      throw new Error(message);
+	    } else if (message) {
+	      /* eslint no-console:0 */
+	      console.warn(message);
+	    }
+	  }
+
+	  function getErrorMessage(api, args) {
+	    var messages = arguments[2] === undefined ? [] : arguments[2];
+	    var output = arguments[3] === undefined ? {} : arguments[3];
+
+	    var gOut = apiCheck.config.output || {};
+	    var prefix = getPrefix();
+	    var suffix = getSuffix();
+	    var url = getUrl();
+	    var message = 'apiCheck failed! ' + messages.join(', ');
+	    var passedAndShouldHavePassed = '\n\n' + buildMessageFromApiAndArgs(api, args);
+	    return ('' + prefix + ' ' + message + ' ' + suffix + ' ' + (url || '') + '' + passedAndShouldHavePassed).trim();
+
+	    function getPrefix() {
+	      var p = output.onlyPrefix;
+	      if (!p) {
+	        p = ('' + (gOut.prefix || '') + ' ' + (output.prefix || '')).trim();
+	      }
+	      return p;
+	    }
+
+	    function getSuffix() {
+	      var s = output.onlySuffix;
+	      if (!s) {
+	        s = ('' + (output.suffix || '') + ' ' + (gOut.suffix || '')).trim();
+	      }
+	      return s;
+	    }
+
+	    function getUrl() {
+	      var u = output.url;
+	      if (!u) {
+	        u = gOut.docsBaseUrl && output.urlSuffix && ('' + gOut.docsBaseUrl + '' + output.urlSuffix).trim();
+	      }
+	      return u;
+	    }
+	  }
+
+	  function buildMessageFromApiAndArgs(api, args) {
+	    var _getTypes = getTypes(api, args);
+
+	    var apiTypes = _getTypes.apiTypes;
+	    var argTypes = _getTypes.argTypes;
+
+	    var copy = Array.prototype.slice.call(args || []);
+	    var replacedItems = [];
+	    replaceFunctionWithName(copy);
+	    var passedArgs = getObjectString(copy);
+	    argTypes = getObjectString(argTypes);
+	    apiTypes = getObjectString(apiTypes);
+
+	    return generateMessage();
+
+	    // functions
+
+	    function replaceFunctionWithName(obj) {
+	      each(obj, function (val, name) {
+	        /* eslint complexity:[2, 6] */
+	        if (replacedItems.indexOf(val) === -1) {
+	          // avoid recursive problems
+	          replacedItems.push(val);
+	          if (typeof val === 'object') {
+	            replaceFunctionWithName(obj);
+	          } else if (typeof val === 'function') {
+	            obj[name] = val.displayName || val.name || 'anonymous function';
+	          }
+	        }
+	      });
+	    }
+
+	    function getObjectString(types) {
+	      if (!types || !types.length) {
+	        return 'nothing';
+	      } else if (types && types.length === 1) {
+	        types = types[0];
+	      }
+	      return stringify(types, null, 2);
+	    }
+
+	    function generateMessage() {
+	      var n = '\n';
+	      var useS = true;
+	      if (args && args.length === 1) {
+	        if (typeof args[0] === 'object' && args[0] !== null) {
+	          useS = !!Object.keys(args[0]).length;
+	        } else {
+	          useS = false;
+	        }
+	      }
+	      var types = 'type' + (useS ? 's' : '');
+	      var newLine = n + n;
+	      return 'You passed:' + n + '' + passedArgs + '' + newLine + ('With the ' + types + ':' + n + '' + argTypes + '' + newLine) + ('The API calls for:' + n + '' + apiTypes);
+	    }
+	  }
+
+	  function getTypes(api, args) {
+	    api = arrayify(api);
+	    args = arrayify(args);
+	    var apiTypes = api.map(function (checker, index) {
+	      var specified = module.exports.globalConfig.hasOwnProperty('verbose');
+	      return getCheckerDisplay(checker, {
+	        terse: specified ? !module.exports.globalConfig.verbose : !apiCheck.config.verbose,
+	        obj: args[index],
+	        addHelpers: true
+	      });
+	    });
+	    var argTypes = args.map(function (arg) {
+	      return getArgDisplay(arg, []);
+	    });
+	    return { argTypes: argTypes, apiTypes: apiTypes };
+	  }
+	}
+
+	// STATELESS FUNCTIONS
+
+	/**
+	 * This is where the magic happens for actually checking the arguments with the api.
+	 * @param api {Array} - checkers
+	 * @param args {Array} - and arguments object
+	 * @returns {Array}
+	 */
+	function checkApiWithArgs(api, args) {
+	  /* eslint complexity:[2, 7] */
+	  var messages = [];
+	  var failed = false;
+	  var checkerIndex = 0;
+	  var argIndex = 0;
+	  var arg = undefined,
+	      checker = undefined,
+	      res = undefined,
+	      lastChecker = undefined,
+	      argName = undefined,
+	      argFailed = undefined,
+	      skipPreviousChecker = undefined;
+	  /* jshint -W084 */
+	  while ((checker = api[checkerIndex++]) && argIndex < args.length) {
+	    arg = args[argIndex++];
+	    argName = 'Argument ' + argIndex + (checker.isOptional ? ' (optional)' : '');
+	    res = checker(arg, 'value', argName);
+	    argFailed = isError(res);
+	    lastChecker = checkerIndex >= api.length;
+	    skipPreviousChecker = checkerIndex > 1 && api[checkerIndex - 1].isOptional;
+	    if (argFailed && lastChecker || argFailed && !lastChecker && !checker.isOptional && !skipPreviousChecker) {
+	      failed = true;
+	      messages.push(getCheckerErrorMessage(res, checker, arg));
+	    } else if (argFailed && checker.isOptional) {
+	      argIndex--;
+	    } else {
+	      messages.push('' + t(argName) + ' passed');
+	    }
+	  }
+	  return failed ? messages : [];
+	}
+
+	checkerTypeType.type = 'function with __apiCheckData property and `${function.type}` property';
+	function checkerTypeType(checkerType, name, location) {
+	  var apiCheckDataChecker = checkers.shape({
+	    type: checkers.string,
+	    optional: checkers.bool
+	  });
+	  var asFunc = checkers.func.withProperties({ __apiCheckData: apiCheckDataChecker });
+	  var asShape = checkers.shape({ __apiCheckData: apiCheckDataChecker });
+	  var wrongShape = checkers.oneOfType([asFunc, asShape])(checkerType, name, location);
+	  if (isError(wrongShape)) {
+	    return wrongShape;
+	  }
+	  if (typeof checkerType !== 'function' && !checkerType.hasOwnProperty(checkerType.__apiCheckData.type)) {
+	    return getError(name, location, checkerTypeType.type);
+	  }
+	}
+
+	function getCheckerErrorMessage(res, checker, val) {
+	  var checkerHelp = getCheckerHelp(checker, val);
+	  checkerHelp = checkerHelp ? ' - ' + checkerHelp : '';
+	  return res.message + checkerHelp;
+	}
+
+	function getCheckerHelp(_ref, val) {
+	  var help = _ref.help;
+
+	  if (!help) {
+	    return '';
+	  }
+	  if (typeof help === 'function') {
+	    help = help(val);
+	  }
+	  return help;
+	}
+
+	function checkEnoughArgs(api, args) {
+	  var requiredArgs = api.filter(function (a) {
+	    return !a.isOptional;
+	  });
+	  if (args.length < requiredArgs.length) {
+	    return ['Not enough arguments specified. Requires `' + requiredArgs.length + '`, you passed `' + args.length + '`'];
+	  } else {
+	    return [];
+	  }
+	}
+
+	function getArgDisplay(arg, gottenArgs) {
+	  /* eslint complexity:[2, 7] */
+	  var cName = arg && arg.constructor && arg.constructor.name;
+	  var type = typeOf(arg);
+	  if (type === 'function') {
+	    if (hasKeys()) {
+	      var properties = stringify(getDisplayIfNotGotten());
+	      return cName + ' (with properties: ' + properties + ')';
+	    }
+	    return cName;
+	  }
+
+	  if (arg === null) {
+	    return 'null';
+	  }
+
+	  if (type !== 'array' && type !== 'object') {
+	    return type;
+	  }
+
+	  if (hasKeys()) {
+	    return getDisplayIfNotGotten();
+	  }
+
+	  return cName;
+
+	  // utility functions
+	  function hasKeys() {
+	    return arg && Object.keys(arg).length;
+	  }
+
+	  function getDisplayIfNotGotten() {
+	    if (gottenArgs.indexOf(arg) !== -1) {
+	      return '[Circular]';
+	    }
+	    gottenArgs.push(arg);
+	    return getDisplay(arg, gottenArgs);
+	  }
+	}
+
+	function getDisplay(obj, gottenArgs) {
+	  var argDisplay = {};
+	  each(obj, function (v, k) {
+	    return argDisplay[k] = getArgDisplay(v, gottenArgs);
+	  });
+	  return argDisplay;
+	}
+
+	function getApiCheckApis() {
+	  var os = checkers.string.optional;
+
+	  var checkerFnChecker = checkers.func.withProperties({
+	    type: checkers.oneOfType([checkers.string, checkerTypeType]).optional,
+	    displayName: checkers.string.optional,
+	    shortType: checkers.string.optional,
+	    notOptional: checkers.bool.optional,
+	    notRequired: checkers.bool.optional
+	  });
+
+	  var getApiCheckInstanceCheckers = [checkers.shape({
+	    output: checkers.shape({
+	      prefix: checkers.string.optional,
+	      suffix: checkers.string.optional,
+	      docsBaseUrl: checkers.string.optional
+	    }).strict.optional,
+	    verbose: checkers.bool.optional,
+	    disabled: checkers.bool.optional
+	  }).strict.optional, checkers.objectOf(checkerFnChecker).optional];
+
+	  var checkApiCheckApi = [checkers.typeOrArrayOf(checkerFnChecker), checkers.any.optional, checkers.shape({
+	    prefix: os, suffix: os, urlSuffix: os, // appended case
+	    onlyPrefix: os, onlySuffix: os, url: os // override case
+	  }).strict.optional];
+
+	  return {
+	    checkerFnChecker: checkerFnChecker,
+	    getApiCheckInstanceCheckers: getApiCheckInstanceCheckers,
+	    checkApiCheckApi: checkApiCheckApi
+	  };
+	}
+
+/***/ },
+/* 2 */
+/***/ function(module, exports) {
+
+	module.exports = stringify;
+
+	function getSerialize (fn, decycle) {
+	  var seen = [], keys = [];
+	  decycle = decycle || function(key, value) {
+	    return '[Circular ' + getPath(value, seen, keys) + ']'
+	  };
+	  return function(key, value) {
+	    var ret = value;
+	    if (typeof value === 'object' && value) {
+	      if (seen.indexOf(value) !== -1)
+	        ret = decycle(key, value);
+	      else {
+	        seen.push(value);
+	        keys.push(key);
+	      }
+	    }
+	    if (fn) ret = fn(key, ret);
+	    return ret;
+	  }
+	}
+
+	function getPath (value, seen, keys) {
+	  var index = seen.indexOf(value);
+	  var path = [ keys[index] ];
+	  for (index--; index >= 0; index--) {
+	    if (seen[index][ path[0] ] === value) {
+	      value = seen[index];
+	      path.unshift(keys[index]);
+	    }
+	  }
+	  return '~' + path.join('.');
+	}
+
+	function stringify(obj, fn, spaces, decycle) {
+	  return JSON.stringify(obj, getSerialize(fn, decycle), spaces);
+	}
+
+	stringify.getSerialize = getSerialize;
+
+
+/***/ },
+/* 3 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	function _defineProperty(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); }
+
+	var stringify = __webpack_require__(2);
+	var checkerHelpers = {
+	  addOptional: addOptional, getRequiredVersion: getRequiredVersion, setupChecker: setupChecker, addNullable: addNullable
+	};
+
+	module.exports = {
+	  each: each, copy: copy, typeOf: typeOf, arrayify: arrayify, getCheckerDisplay: getCheckerDisplay,
+	  isError: isError, list: list, getError: getError, nAtL: nAtL, t: t, undef: undef, checkerHelpers: checkerHelpers,
+	  noop: noop
+	};
+
+	function copy(obj) {
+	  var type = typeOf(obj);
+	  var daCopy = undefined;
+	  if (type === 'array') {
+	    daCopy = [];
+	  } else if (type === 'object') {
+	    daCopy = {};
+	  } else {
+	    return obj;
+	  }
+	  each(obj, function (val, key) {
+	    daCopy[key] = val; // cannot single-line this because we don't want to abort the each
+	  });
+	  return daCopy;
+	}
+
+	function typeOf(obj) {
+	  if (Array.isArray(obj)) {
+	    return 'array';
+	  } else if (obj instanceof RegExp) {
+	    return 'object';
+	  } else {
+	    return typeof obj;
+	  }
+	}
+
+	function getCheckerDisplay(checker, options) {
+	  /* eslint complexity:[2, 7] */
+	  var display = undefined;
+	  var short = options && options.short;
+	  if (short && checker.shortType) {
+	    display = checker.shortType;
+	  } else if (!short && typeof checker.type === 'object' || checker.type === 'function') {
+	    display = getCheckerType(checker, options);
+	  } else {
+	    display = getCheckerType(checker, options) || checker.displayName || checker.name;
+	  }
+	  return display;
+	}
+
+	function getCheckerType(_ref, options) {
+	  var type = _ref.type;
+
+	  if (typeof type === 'function') {
+	    var __apiCheckData = type.__apiCheckData;
+	    var typeTypes = type(options);
+	    type = _defineProperty({
+	      __apiCheckData: __apiCheckData
+	    }, __apiCheckData.type, typeTypes);
+	  }
+	  return type;
+	}
+
+	function arrayify(obj) {
+	  if (!obj) {
+	    return [];
+	  } else if (Array.isArray(obj)) {
+	    return obj;
+	  } else {
+	    return [obj];
+	  }
+	}
+
+	function each(obj, iterator, context) {
+	  if (Array.isArray(obj)) {
+	    return eachArry.apply(undefined, arguments);
+	  } else {
+	    return eachObj.apply(undefined, arguments);
+	  }
+	}
+
+	function eachObj(obj, iterator, context) {
+	  var ret;
+	  var hasOwn = Object.prototype.hasOwnProperty;
+	  for (var key in obj) {
+	    if (hasOwn.call(obj, key)) {
+	      ret = iterator.call(context, obj[key], key, obj);
+	      if (ret === false) {
+	        return ret;
+	      }
+	    }
+	  }
+	  return true;
+	}
+
+	function eachArry(obj, iterator, context) {
+	  var ret;
+	  var length = obj.length;
+	  for (var i = 0; i < length; i++) {
+	    ret = iterator.call(context, obj[i], i, obj);
+	    if (ret === false) {
+	      return ret;
+	    }
+	  }
+	  return true;
+	}
+
+	function isError(obj) {
+	  return obj instanceof Error;
+	}
+
+	function list(arry, join, finalJoin) {
+	  arry = arrayify(arry);
+	  var copy = arry.slice();
+	  var last = copy.pop();
+	  if (copy.length === 1) {
+	    join = ' ';
+	  }
+	  return copy.join(join) + ('' + (copy.length ? join + finalJoin : '') + '' + last);
+	}
+
+	function getError(name, location, checkerType) {
+	  if (typeof checkerType === 'function') {
+	    checkerType = checkerType({ short: true });
+	  }
+	  var stringType = typeof checkerType !== 'object' ? checkerType : stringify(checkerType);
+	  return new Error('' + nAtL(name, location) + ' must be ' + t(stringType));
+	}
+
+	function nAtL(name, location) {
+	  var tName = t(name || 'value');
+	  var tLocation = !location ? '' : ' at ' + t(location);
+	  return '' + tName + '' + tLocation;
+	}
+
+	function t(thing) {
+	  return '`' + thing + '`';
+	}
+
+	function undef(thing) {
+	  return typeof thing === 'undefined';
+	}
+
+	/**
+	 * This will set up the checker with all of the defaults that most checkers want like required by default and an
+	 * optional version
+	 * @param checker
+	 * @param properties properties to add to the checker
+	 * @param disabled - when set to true, this will set the checker to a no-op function
+	 */
+	function setupChecker(checker, properties, disabled) {
+	  /* eslint complexity:[2, 9] */
+	  if (disabled) {
+	    // swap out the checker for its own copy of noop
+	    checker = getNoop();
+	    checker.isNoop = true;
+	  }
+
+	  if (typeof checker.type === 'string') {
+	    checker.shortType = checker.type;
+	  }
+
+	  // assign all properties given
+	  each(properties, function (prop, name) {
+	    return checker[name] = prop;
+	  });
+
+	  if (!checker.displayName) {
+	    checker.displayName = 'apiCheck ' + t(checker.shortType || checker.type || checker.name) + ' type checker';
+	  }
+
+	  if (!checker.notRequired) {
+	    checker = getRequiredVersion(checker, disabled);
+	  }
+
+	  if (!checker.notNullable) {
+	    addNullable(checker, disabled);
+	  }
+
+	  if (!checker.notOptional) {
+	    addOptional(checker, disabled);
+	  }
+
+	  return checker;
+	}
+
+	function getRequiredVersion(checker, disabled) {
+	  var requiredChecker = disabled ? getNoop() : function requiredChecker(val, name, location, obj) {
+	    if (undef(val) && !checker.isOptional) {
+	      var tLocation = location ? ' in ' + t(location) : '';
+	      var type = getCheckerDisplay(checker, { short: true });
+	      var stringType = typeof type !== 'object' ? type : stringify(type);
+	      return new Error('Required ' + t(name) + ' not specified' + tLocation + '. Must be ' + t(stringType));
+	    } else {
+	      return checker(val, name, location, obj);
+	    }
+	  };
+	  copyProps(checker, requiredChecker);
+	  requiredChecker.originalChecker = checker;
+	  return requiredChecker;
+	}
+
+	function addOptional(checker, disabled) {
+	  var optionalCheck = disabled ? getNoop() : function optionalCheck(val, name, location, obj) {
+	    if (!undef(val)) {
+	      return checker(val, name, location, obj);
+	    }
+	  };
+	  // inherit all properties on the original checker
+	  copyProps(checker, optionalCheck);
+
+	  optionalCheck.isOptional = true;
+	  optionalCheck.displayName = checker.displayName + ' (optional)';
+	  optionalCheck.originalChecker = checker;
+
+	  // the magic line that allows you to add .optional to the end of the checkers
+	  checker.optional = optionalCheck;
+
+	  fixType(checker, checker.optional);
+	}
+
+	function addNullable(checker, disabled) {
+	  var nullableCheck = disabled ? getNoop() : function nullableCheck(val, name, location, obj) {
+	    if (val !== null) {
+	      return checker(val, name, location, obj);
+	    }
+	  };
+	  // inherit all properties on the original checker
+	  copyProps(checker, nullableCheck);
+
+	  nullableCheck.isNullable = true;
+	  nullableCheck.displayName = checker.displayName + ' (nullable)';
+	  nullableCheck.originalChecker = checker;
+
+	  // the magic line that allows you to add .nullable to the end of the checkers
+	  checker.nullable = nullableCheck;
+
+	  fixType(checker, checker.nullable);
+	  if (!checker.notOptional) {
+	    addOptional(checker.nullable, disabled);
+	  }
+	}
+
+	function fixType(checker, checkerCopy) {
+	  // fix type, because it's not a straight copy...
+	  // the reason is we need to specify type.__apiCheckData.optional as true for the terse/verbose option.
+	  // we also want to add "(optional)" to the types with a string
+	  if (typeof checkerCopy.type === 'object') {
+	    checkerCopy.type = copy(checkerCopy.type); // make our own copy of this
+	  } else if (typeof checkerCopy.type === 'function') {
+	    checkerCopy.type = function () {
+	      return checker.type.apply(checker, arguments);
+	    };
+	  } else {
+	    checkerCopy.type += ' (optional)';
+	    return;
+	  }
+	  checkerCopy.type.__apiCheckData = copy(checker.type.__apiCheckData) || {}; // and this
+	  checkerCopy.type.__apiCheckData.optional = true;
+	}
+
+	// UTILS
+
+	function copyProps(src, dest) {
+	  each(Object.keys(src), function (key) {
+	    return dest[key] = src[key];
+	  });
+	}
+
+	function noop() {}
+
+	function getNoop() {
+	  /* eslint no-shadow:0 */
+	  /* istanbul ignore next */
+	  return function noop() {};
+	}
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var stringify = __webpack_require__(2);
+
+	var _require = __webpack_require__(3);
+
+	var typeOf = _require.typeOf;
+	var each = _require.each;
+	var copy = _require.copy;
+	var getCheckerDisplay = _require.getCheckerDisplay;
+	var isError = _require.isError;
+	var arrayify = _require.arrayify;
+	var list = _require.list;
+	var getError = _require.getError;
+	var nAtL = _require.nAtL;
+	var t = _require.t;
+	var checkerHelpers = _require.checkerHelpers;
+	var undef = _require.undef;
+	var setupChecker = checkerHelpers.setupChecker;
+
+	var checkers = module.exports = getCheckers();
+	module.exports.getCheckers = getCheckers;
+
+	function getCheckers(disabled) {
+	  return {
+	    array: typeOfCheckGetter('Array'),
+	    bool: typeOfCheckGetter('Boolean'),
+	    number: typeOfCheckGetter('Number'),
+	    string: typeOfCheckGetter('String'),
+	    func: funcCheckGetter(),
+	    object: objectCheckGetter(),
+
+	    emptyObject: emptyObjectCheckGetter(),
+
+	    instanceOf: instanceCheckGetter,
+	    oneOf: oneOfCheckGetter,
+	    oneOfType: oneOfTypeCheckGetter,
+
+	    arrayOf: arrayOfCheckGetter,
+	    objectOf: objectOfCheckGetter,
+	    typeOrArrayOf: typeOrArrayOfCheckGetter,
+
+	    range: rangeCheckGetter,
+	    lessThan: lessThanCheckGetter,
+	    greaterThan: greaterThanCheckGetter,
+
+	    shape: getShapeCheckGetter(),
+	    args: argumentsCheckerGetter(),
+
+	    any: anyCheckGetter(),
+	    'null': nullCheckGetter()
+
+	  };
+
+	  function typeOfCheckGetter(type) {
+	    var lType = type.toLowerCase();
+	    return setupChecker(function typeOfCheckerDefinition(val, name, location) {
+	      if (typeOf(val) !== lType) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+
+	  function funcCheckGetter() {
+	    var type = 'Function';
+	    var functionChecker = setupChecker(function functionCheckerDefinition(val, name, location) {
+	      if (typeOf(val) !== 'function') {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+
+	    functionChecker.withProperties = function getWithPropertiesChecker(properties) {
+	      var apiError = checkers.objectOf(checkers.func)(properties, 'properties', 'apiCheck.func.withProperties');
+	      if (isError(apiError)) {
+	        throw apiError;
+	      }
+	      var shapeChecker = checkers.shape(properties, true);
+	      shapeChecker.type.__apiCheckData.type = 'func.withProperties';
+
+	      return setupChecker(function functionWithPropertiesChecker(val, name, location) {
+	        var notFunction = checkers.func(val, name, location);
+	        if (isError(notFunction)) {
+	          return notFunction;
+	        }
+	        return shapeChecker(val, name, location);
+	      }, { type: shapeChecker.type, shortType: 'func.withProperties' }, disabled);
+	    };
+	    return functionChecker;
+	  }
+
+	  function objectCheckGetter() {
+	    var type = 'Object';
+	    var nullType = 'Object (null ok)';
+	    var objectNullOkChecker = setupChecker(function objectNullOkCheckerDefinition(val, name, location) {
+	      if (typeOf(val) !== 'object') {
+	        return getError(name, location, nullType);
+	      }
+	    }, { type: nullType }, disabled);
+
+	    var objectChecker = setupChecker(function objectCheckerDefinition(val, name, location) {
+	      if (val === null || isError(objectNullOkChecker(val, name, location))) {
+	        return getError(name, location, objectChecker.type);
+	      }
+	    }, { type: type, nullOk: objectNullOkChecker }, disabled);
+
+	    return objectChecker;
+	  }
+
+	  function instanceCheckGetter(classToCheck) {
+	    return setupChecker(function instanceCheckerDefinition(val, name, location) {
+	      if (!(val instanceof classToCheck)) {
+	        return getError(name, location, classToCheck.name);
+	      }
+	    }, { type: classToCheck.name }, disabled);
+	  }
+
+	  function oneOfCheckGetter(enums) {
+	    var type = {
+	      __apiCheckData: { optional: false, type: 'enum' },
+	      'enum': enums
+	    };
+	    var shortType = 'oneOf[' + enums.map(function (enm) {
+	      return stringify(enm);
+	    }).join(', ') + ']';
+	    return setupChecker(function oneOfCheckerDefinition(val, name, location) {
+	      if (!enums.some(function (enm) {
+	        return enm === val;
+	      })) {
+	        return getError(name, location, shortType);
+	      }
+	    }, { type: type, shortType: shortType }, disabled);
+	  }
+
+	  function oneOfTypeCheckGetter(typeCheckers) {
+	    var checkersDisplay = typeCheckers.map(function (checker) {
+	      return getCheckerDisplay(checker, { short: true });
+	    });
+	    var shortType = 'oneOfType[' + checkersDisplay.join(', ') + ']';
+	    function type(options) {
+	      if (options && options.short) {
+	        return shortType;
+	      }
+	      return typeCheckers.map(function (checker) {
+	        return getCheckerDisplay(checker, options);
+	      });
+	    }
+	    type.__apiCheckData = { optional: false, type: 'oneOfType' };
+	    return setupChecker(function oneOfTypeCheckerDefinition(val, name, location) {
+	      if (!typeCheckers.some(function (checker) {
+	        return !isError(checker(val, name, location));
+	      })) {
+	        return getError(name, location, shortType);
+	      }
+	    }, { type: type, shortType: shortType }, disabled);
+	  }
+
+	  function arrayOfCheckGetter(checker) {
+	    var shortCheckerDisplay = getCheckerDisplay(checker, { short: true });
+	    var shortType = 'arrayOf[' + shortCheckerDisplay + ']';
+
+	    function type(options) {
+	      if (options && options.short) {
+	        return shortType;
+	      }
+	      return getCheckerDisplay(checker, options);
+	    }
+	    type.__apiCheckData = { optional: false, type: 'arrayOf' };
+
+	    return setupChecker(function arrayOfCheckerDefinition(val, name, location) {
+	      if (isError(checkers.array(val)) || !val.every(function (item) {
+	        return !isError(checker(item));
+	      })) {
+	        return getError(name, location, shortType);
+	      }
+	    }, { type: type, shortType: shortType }, disabled);
+	  }
+
+	  function objectOfCheckGetter(checker) {
+	    var checkerDisplay = getCheckerDisplay(checker, { short: true });
+	    var shortType = 'objectOf[' + checkerDisplay + ']';
+
+	    function type(options) {
+	      if (options && options.short) {
+	        return shortType;
+	      }
+	      return getCheckerDisplay(checker, options);
+	    }
+	    type.__apiCheckData = { optional: false, type: 'objectOf' };
+
+	    return setupChecker(function objectOfCheckerDefinition(val, name, location) {
+	      var notObject = checkers.object(val, name, location);
+	      if (isError(notObject)) {
+	        return notObject;
+	      }
+	      var allTypesSuccess = each(val, function (item, key) {
+	        if (isError(checker(item, key, name))) {
+	          return false;
+	        }
+	      });
+	      if (!allTypesSuccess) {
+	        return getError(name, location, shortType);
+	      }
+	    }, { type: type, shortType: shortType }, disabled);
+	  }
+
+	  function typeOrArrayOfCheckGetter(checker) {
+	    var checkerDisplay = getCheckerDisplay(checker, { short: true });
+	    var shortType = 'typeOrArrayOf[' + checkerDisplay + ']';
+
+	    function type(options) {
+	      if (options && options.short) {
+	        return shortType;
+	      }
+	      return getCheckerDisplay(checker, options);
+	    }
+
+	    type.__apiCheckData = { optional: false, type: 'typeOrArrayOf' };
+	    return setupChecker(function typeOrArrayOfDefinition(val, name, location, obj) {
+	      if (isError(checkers.oneOfType([checker, checkers.arrayOf(checker)])(val, name, location, obj))) {
+	        return getError(name, location, shortType);
+	      }
+	    }, { type: type, shortType: shortType }, disabled);
+	  }
+
+	  function getShapeCheckGetter() {
+	    function shapeCheckGetter(shape, nonObject) {
+	      var shapeTypes = {};
+	      each(shape, function (checker, prop) {
+	        shapeTypes[prop] = getCheckerDisplay(checker);
+	      });
+	      function type() {
+	        var options = arguments[0] === undefined ? {} : arguments[0];
+
+	        var ret = {};
+	        var terse = options.terse;
+	        var obj = options.obj;
+	        var addHelpers = options.addHelpers;
+
+	        var parentRequired = options.required;
+	        each(shape, function (checker, prop) {
+	          /* eslint complexity:[2, 6] */
+	          var specified = obj && obj.hasOwnProperty(prop);
+	          var required = undef(parentRequired) ? !checker.isOptional : parentRequired;
+	          if (!terse || (specified || !checker.isOptional)) {
+	            ret[prop] = getCheckerDisplay(checker, { terse: terse, obj: obj && obj[prop], required: required, addHelpers: addHelpers });
+	          }
+	          if (addHelpers) {
+	            modifyTypeDisplayToHelpOut(ret, prop, specified, checker, required);
+	          }
+	        });
+	        return ret;
+
+	        function modifyTypeDisplayToHelpOut(theRet, prop, specified, checker, required) {
+	          if (!specified && required && !checker.isOptional) {
+	            var item = 'ITEM';
+	            if (checker.type && checker.type.__apiCheckData) {
+	              item = checker.type.__apiCheckData.type.toUpperCase();
+	            }
+	            addHelper('missing', 'MISSING THIS ' + item, ' <-- YOU ARE MISSING THIS');
+	          } else if (specified) {
+	            var error = checker(obj[prop], prop, null, obj);
+	            if (isError(error)) {
+	              addHelper('error', 'THIS IS THE PROBLEM: ' + error.message, ' <-- THIS IS THE PROBLEM: ' + error.message);
+	            }
+	          }
+
+	          function addHelper(property, objectMessage, stringMessage) {
+	            if (typeof theRet[prop] === 'string') {
+	              theRet[prop] += stringMessage;
+	            } else {
+	              theRet[prop].__apiCheckData[property] = objectMessage;
+	            }
+	          }
+	        }
+	      }
+
+	      type.__apiCheckData = { strict: false, optional: false, type: 'shape' };
+	      var shapeChecker = setupChecker(function shapeCheckerDefinition(val, name, location) {
+	        /* eslint complexity:[2, 6] */
+	        var isObject = !nonObject && checkers.object(val, name, location);
+	        if (isError(isObject)) {
+	          return isObject;
+	        }
+	        var shapePropError = undefined;
+	        location = location ? location + (name ? '/' : '') : '';
+	        name = name || '';
+	        each(shape, function (checker, prop) {
+	          if (val.hasOwnProperty(prop) || !checker.isOptional) {
+	            shapePropError = checker(val[prop], prop, '' + location + '' + name, val);
+	            return !isError(shapePropError);
+	          }
+	        });
+	        if (isError(shapePropError)) {
+	          return shapePropError;
+	        }
+	      }, { type: type, shortType: 'shape' }, disabled);
+
+	      function strictType() {
+	        return type.apply(undefined, arguments);
+	      }
+
+	      strictType.__apiCheckData = copy(shapeChecker.type.__apiCheckData);
+	      strictType.__apiCheckData.strict = true;
+	      shapeChecker.strict = setupChecker(function strictShapeCheckerDefinition(val, name, location) {
+	        var shapeError = shapeChecker(val, name, location);
+	        if (isError(shapeError)) {
+	          return shapeError;
+	        }
+	        var allowedProperties = Object.keys(shape);
+	        var extraProps = Object.keys(val).filter(function (prop) {
+	          return allowedProperties.indexOf(prop) === -1;
+	        });
+	        if (extraProps.length) {
+	          return new Error('' + nAtL(name, location) + ' cannot have extra properties: ' + t(extraProps.join('`, `')) + '.' + ('It is limited to ' + t(allowedProperties.join('`, `'))));
+	        }
+	      }, { type: strictType, shortType: 'strict shape' }, disabled);
+
+	      return shapeChecker;
+	    }
+
+	    shapeCheckGetter.ifNot = function ifNot(otherProps, propChecker) {
+	      if (!Array.isArray(otherProps)) {
+	        otherProps = [otherProps];
+	      }
+	      var description = undefined;
+	      if (otherProps.length === 1) {
+	        description = 'specified only if ' + otherProps[0] + ' is not specified';
+	      } else {
+	        description = 'specified only if none of the following are specified: [' + list(otherProps, ', ', 'and ') + ']';
+	      }
+	      var shortType = 'ifNot[' + otherProps.join(', ') + ']';
+	      var type = getTypeForShapeChild(propChecker, description, shortType);
+	      return setupChecker(function ifNotChecker(prop, propName, location, obj) {
+	        var propExists = obj && obj.hasOwnProperty(propName);
+	        var otherPropsExist = otherProps.some(function (otherProp) {
+	          return obj && obj.hasOwnProperty(otherProp);
+	        });
+	        if (propExists === otherPropsExist) {
+	          return getError(propName, location, type);
+	        } else if (propExists) {
+	          return propChecker(prop, propName, location, obj);
+	        }
+	      }, { notRequired: true, type: type, shortType: shortType }, disabled);
+	    };
+
+	    shapeCheckGetter.onlyIf = function onlyIf(otherProps, propChecker) {
+	      otherProps = arrayify(otherProps);
+	      var description = undefined;
+	      if (otherProps.length === 1) {
+	        description = 'specified only if ' + otherProps[0] + ' is also specified';
+	      } else {
+	        description = 'specified only if all of the following are specified: [' + list(otherProps, ', ', 'and ') + ']';
+	      }
+	      var shortType = 'onlyIf[' + otherProps.join(', ') + ']';
+	      var type = getTypeForShapeChild(propChecker, description, shortType);
+	      return setupChecker(function onlyIfCheckerDefinition(prop, propName, location, obj) {
+	        var othersPresent = otherProps.every(function (property) {
+	          return obj.hasOwnProperty(property);
+	        });
+	        if (!othersPresent) {
+	          return getError(propName, location, type);
+	        } else {
+	          return propChecker(prop, propName, location, obj);
+	        }
+	      }, { type: type, shortType: shortType }, disabled);
+	    };
+
+	    shapeCheckGetter.requiredIfNot = function shapeRequiredIfNot(otherProps, propChecker) {
+	      if (!Array.isArray(otherProps)) {
+	        otherProps = [otherProps];
+	      }
+	      return getRequiredIfNotChecker(false, otherProps, propChecker);
+	    };
+
+	    shapeCheckGetter.requiredIfNot.all = function shapeRequiredIfNotAll(otherProps, propChecker) {
+	      if (!Array.isArray(otherProps)) {
+	        throw new Error('requiredIfNot.all must be passed an array');
+	      }
+	      return getRequiredIfNotChecker(true, otherProps, propChecker);
+	    };
+
+	    function getRequiredIfNotChecker(all, otherProps, propChecker) {
+	      var props = t(otherProps.join(', '));
+	      var ifProps = 'if ' + (all ? 'all of' : 'at least one of');
+	      var description = 'specified ' + ifProps + ' these are not specified: ' + props + ' (otherwise it\'s optional)';
+	      var shortType = 'requiredIfNot' + (all ? '.all' : '') + '[' + otherProps.join(', ') + '}]';
+	      var type = getTypeForShapeChild(propChecker, description, shortType);
+	      return setupChecker(function shapeRequiredIfNotDefinition(prop, propName, location, obj) {
+	        var propExists = obj && obj.hasOwnProperty(propName);
+	        var iteration = all ? 'every' : 'some';
+	        var otherPropsExist = otherProps[iteration](function (otherProp) {
+	          return obj && obj.hasOwnProperty(otherProp);
+	        });
+	        if (!otherPropsExist && !propExists) {
+	          return getError(propName, location, type);
+	        } else if (propExists) {
+	          return propChecker(prop, propName, location, obj);
+	        }
+	      }, { type: type, notRequired: true }, disabled);
+	    }
+
+	    return shapeCheckGetter;
+
+	    function getTypeForShapeChild(propChecker, description, shortType) {
+	      function type(options) {
+	        if (options && options.short) {
+	          return shortType;
+	        }
+	        return getCheckerDisplay(propChecker);
+	      }
+	      type.__apiCheckData = { optional: false, type: 'ifNot', description: description };
+	      return type;
+	    }
+	  }
+
+	  function argumentsCheckerGetter() {
+	    var type = 'function arguments';
+	    return setupChecker(function argsCheckerDefinition(val, name, location) {
+	      if (Array.isArray(val) || isError(checkers.object(val)) || isError(checkers.number(val.length))) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+
+	  function anyCheckGetter() {
+	    return setupChecker(function anyCheckerDefinition() {}, { type: 'any' }, disabled);
+	  }
+
+	  function nullCheckGetter() {
+	    var type = 'null';
+	    return setupChecker(function nullChecker(val, name, location) {
+	      if (val !== null) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+
+	  function rangeCheckGetter(min, max) {
+	    var type = 'Range (' + min + ' - ' + max + ')';
+	    return setupChecker(function rangeChecker(val, name, location) {
+	      if (typeof val !== 'number' || val < min || val > max) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+
+	  function lessThanCheckGetter(min) {
+	    var type = 'lessThan[' + min + ']';
+	    return setupChecker(function lessThanChecker(val, name, location) {
+	      if (typeof val !== 'number' || val > min) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+
+	  function greaterThanCheckGetter(max) {
+	    var type = 'greaterThan[' + max + ']';
+	    return setupChecker(function greaterThanChecker(val, name, location) {
+	      if (typeof val !== 'number' || val < max) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+
+	  function emptyObjectCheckGetter() {
+	    var type = 'empty object';
+	    return setupChecker(function emptyObjectChecker(val, name, location) {
+	      if (typeOf(val) !== 'object' || val === null || Object.keys(val).length) {
+	        return getError(name, location, type);
+	      }
+	    }, { type: type }, disabled);
+	  }
+	}
+
+	// don't do anything
+
+/***/ }
+/******/ ])
+});
+;;/*!
  * jQuery JavaScript Library v2.1.4
  * http://jquery.com/
  *
@@ -9209,7 +10537,7 @@ return jQuery;
 
 }));
 ;/**
- * @license AngularJS v1.4.5
+ * @license AngularJS v1.4.6
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -9267,7 +10595,7 @@ function minErr(module, ErrorConstructor) {
       return match;
     });
 
-    message += '\nhttp://errors.angularjs.org/1.4.5/' +
+    message += '\nhttp://errors.angularjs.org/1.4.6/' +
       (module ? module + '/' : '') + code;
 
     for (i = SKIP_INDEXES, paramPrefix = '?'; i < templateArgs.length; i++, paramPrefix = '&') {
@@ -10104,6 +11432,8 @@ function copy(source, destination, stackSource, stackDest) {
       } else if (isRegExp(source)) {
         destination = new RegExp(source.source, source.toString().match(/[^\/]*$/)[0]);
         destination.lastIndex = source.lastIndex;
+      } else if (isFunction(source.cloneNode)) {
+          destination = source.cloneNode(true);
       } else {
         var emptyObject = Object.create(getPrototypeOf(source));
         return copy(source, emptyObject, stackSource, stackDest);
@@ -10254,7 +11584,7 @@ function equals(o1, o2) {
         for (key in o2) {
           if (!(key in keySet) &&
               key.charAt(0) !== '$' &&
-              o2[key] !== undefined &&
+              isDefined(o2[key]) &&
               !isFunction(o2[key])) return false;
         }
         return true;
@@ -10950,10 +12280,9 @@ function bindJQuery() {
 
   // bind to jQuery if present;
   var jqName = jq();
-  jQuery = window.jQuery; // use default jQuery.
-  if (isDefined(jqName)) { // `ngJq` present
-    jQuery = jqName === null ? undefined : window[jqName]; // if empty; use jqLite. if not empty, use jQuery specified by `ngJq`.
-  }
+  jQuery = isUndefined(jqName) ? window.jQuery :   // use jQuery (if present)
+           !jqName             ? undefined     :   // use jqLite
+                                 window[jqName];   // use jQuery specified by `ngJq`
 
   // Use jQuery if it exists with proper functionality, otherwise default to us.
   // Angular 1.2+ requires jQuery 1.7+ for on()/off() support.
@@ -11058,22 +12387,24 @@ function getter(obj, path, bindFnToScope) {
 /**
  * Return the DOM siblings between the first and last node in the given array.
  * @param {Array} array like object
- * @returns {jqLite} jqLite collection containing the nodes
+ * @returns {Array} the inputted object or a jqLite collection containing the nodes
  */
 function getBlockNodes(nodes) {
-  // TODO(perf): just check if all items in `nodes` are siblings and if they are return the original
-  //             collection, otherwise update the original collection.
+  // TODO(perf): update `nodes` instead of creating a new object?
   var node = nodes[0];
   var endNode = nodes[nodes.length - 1];
-  var blockNodes = [node];
+  var blockNodes;
 
-  do {
-    node = node.nextSibling;
-    if (!node) break;
-    blockNodes.push(node);
-  } while (node !== endNode);
+  for (var i = 1; node !== endNode && (node = node.nextSibling); i++) {
+    if (blockNodes || nodes[i] !== node) {
+      if (!blockNodes) {
+        blockNodes = jqLite(slice.call(nodes, 0, i));
+      }
+      blockNodes.push(node);
+    }
+  }
 
-  return jqLite(blockNodes);
+  return blockNodes || nodes;
 }
 
 
@@ -11457,7 +12788,7 @@ function serializeObject(obj) {
     val = toJsonReplacer(key, val);
     if (isObject(val)) {
 
-      if (seen.indexOf(val) >= 0) return '<<already seen>>';
+      if (seen.indexOf(val) >= 0) return '...';
 
       seen.push(val);
     }
@@ -11468,7 +12799,7 @@ function serializeObject(obj) {
 function toDebugString(obj) {
   if (typeof obj === 'function') {
     return obj.toString().replace(/ \{[\s\S]*$/, '');
-  } else if (typeof obj === 'undefined') {
+  } else if (isUndefined(obj)) {
     return 'undefined';
   } else if (typeof obj !== 'string') {
     return serializeObject(obj);
@@ -11574,8 +12905,9 @@ function toDebugString(obj) {
  * @name angular.version
  * @module ng
  * @description
- * An object that contains information about the current AngularJS version. This object has the
- * following properties:
+ * An object that contains information about the current AngularJS version.
+ *
+ * This object has the following properties:
  *
  * - `full` – `{string}` – Full version string, such as "0.9.18".
  * - `major` – `{number}` – Major version number, such as "0".
@@ -11584,11 +12916,11 @@ function toDebugString(obj) {
  * - `codeName` – `{string}` – Code name of the release, such as "jiggling-armfat".
  */
 var version = {
-  full: '1.4.5',    // all of these placeholder strings will be replaced by grunt's
+  full: '1.4.6',    // all of these placeholder strings will be replaced by grunt's
   major: 1,    // package task
   minor: 4,
-  dot: 5,
-  codeName: 'permanent-internship'
+  dot: 6,
+  codeName: 'multiplicative-elevation'
 };
 
 
@@ -12178,7 +13510,7 @@ function jqLiteInheritedData(element, name, value) {
 
   while (element) {
     for (var i = 0, ii = names.length; i < ii; i++) {
-      if ((value = jqLite.data(element, names[i])) !== undefined) return value;
+      if (isDefined(value = jqLite.data(element, names[i]))) return value;
     }
 
     // If dealing with a document fragment node with a host element, and no parent, use the host
@@ -12284,9 +13616,8 @@ function getBooleanAttrName(element, name) {
   return booleanAttr && BOOLEAN_ELEMENTS[nodeName_(element)] && booleanAttr;
 }
 
-function getAliasedAttrName(element, name) {
-  var nodeName = element.nodeName;
-  return (nodeName === 'INPUT' || nodeName === 'TEXTAREA') && ALIASED_ATTR[name];
+function getAliasedAttrName(name) {
+  return ALIASED_ATTR[name];
 }
 
 forEach({
@@ -12423,7 +13754,7 @@ forEach({
     // in a way that survives minification.
     // jqLiteEmpty takes no arguments but is a setter.
     if (fn !== jqLiteEmpty &&
-        (((fn.length == 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2) === undefined)) {
+        (isUndefined((fn.length == 2 && (fn !== jqLiteHasClass && fn !== jqLiteController)) ? arg1 : arg2))) {
       if (isObject(arg1)) {
 
         // we are a write, but the object properties are the key/values
@@ -12444,7 +13775,7 @@ forEach({
         // TODO: do we still need this?
         var value = fn.$dv;
         // Only if we have $dv do we iterate over all, otherwise it is just the first element.
-        var jj = (value === undefined) ? Math.min(nodeCount, 1) : nodeCount;
+        var jj = (isUndefined(value)) ? Math.min(nodeCount, 1) : nodeCount;
         for (var j = 0; j < jj; j++) {
           var nodeValue = fn(this[j], arg1, arg2);
           value = value ? value + nodeValue : nodeValue;
@@ -14083,61 +15414,66 @@ var $$CoreAnimateQueueProvider = function() {
       }
     };
 
-    function addRemoveClassesPostDigest(element, add, remove) {
-      var classVal, data = postDigestQueue.get(element);
 
-      if (!data) {
-        postDigestQueue.put(element, data = {});
-        postDigestElements.push(element);
-      }
-
-      var updateData = function(classes, value) {
-        var changed = false;
-        if (classes) {
-          classes = isString(classes) ? classes.split(' ') :
-                    isArray(classes) ? classes : [];
-          forEach(classes, function(className) {
-            if (className) {
-              changed = true;
-              data[className] = value;
-            }
-          });
-        }
-        return changed;
-      };
-
-      var classesAdded = updateData(add, true);
-      var classesRemoved = updateData(remove, false);
-      if ((!classesAdded && !classesRemoved) || postDigestElements.length > 1) return;
-
-      $rootScope.$$postDigest(function() {
-        forEach(postDigestElements, function(element) {
-          var data = postDigestQueue.get(element);
-          if (data) {
-            var existing = splitClasses(element.attr('class'));
-            var toAdd = '';
-            var toRemove = '';
-            forEach(data, function(status, className) {
-              var hasClass = !!existing[className];
-              if (status !== hasClass) {
-                if (status) {
-                  toAdd += (toAdd.length ? ' ' : '') + className;
-                } else {
-                  toRemove += (toRemove.length ? ' ' : '') + className;
-                }
-              }
-            });
-
-            forEach(element, function(elm) {
-              toAdd    && jqLiteAddClass(elm, toAdd);
-              toRemove && jqLiteRemoveClass(elm, toRemove);
-            });
-            postDigestQueue.remove(element);
+    function updateData(data, classes, value) {
+      var changed = false;
+      if (classes) {
+        classes = isString(classes) ? classes.split(' ') :
+                  isArray(classes) ? classes : [];
+        forEach(classes, function(className) {
+          if (className) {
+            changed = true;
+            data[className] = value;
           }
         });
+      }
+      return changed;
+    }
 
-        postDigestElements.length = 0;
+    function handleCSSClassChanges() {
+      forEach(postDigestElements, function(element) {
+        var data = postDigestQueue.get(element);
+        if (data) {
+          var existing = splitClasses(element.attr('class'));
+          var toAdd = '';
+          var toRemove = '';
+          forEach(data, function(status, className) {
+            var hasClass = !!existing[className];
+            if (status !== hasClass) {
+              if (status) {
+                toAdd += (toAdd.length ? ' ' : '') + className;
+              } else {
+                toRemove += (toRemove.length ? ' ' : '') + className;
+              }
+            }
+          });
+
+          forEach(element, function(elm) {
+            toAdd    && jqLiteAddClass(elm, toAdd);
+            toRemove && jqLiteRemoveClass(elm, toRemove);
+          });
+          postDigestQueue.remove(element);
+        }
       });
+      postDigestElements.length = 0;
+    }
+
+
+    function addRemoveClassesPostDigest(element, add, remove) {
+      var data = postDigestQueue.get(element) || {};
+
+      var classesAdded = updateData(data, add, true);
+      var classesRemoved = updateData(data, remove, false);
+
+      if (classesAdded || classesRemoved) {
+
+        postDigestQueue.put(element, data);
+        postDigestElements.push(element);
+
+        if (postDigestElements.length === 1) {
+          $rootScope.$$postDigest(handleCSSClassChanges);
+        }
+      }
     }
   }];
 };
@@ -14738,7 +16074,7 @@ function Browser(window, document, $log, $sniffer) {
   var cachedState, lastHistoryState,
       lastBrowserUrl = location.href,
       baseElement = document.find('base'),
-      reloadLocation = null;
+      pendingLocation = null;
 
   cacheState();
   lastHistoryState = cachedState;
@@ -14798,8 +16134,8 @@ function Browser(window, document, $log, $sniffer) {
         // Do the assignment again so that those two variables are referentially identical.
         lastHistoryState = cachedState;
       } else {
-        if (!sameBase || reloadLocation) {
-          reloadLocation = url;
+        if (!sameBase || pendingLocation) {
+          pendingLocation = url;
         }
         if (replace) {
           location.replace(url);
@@ -14808,14 +16144,18 @@ function Browser(window, document, $log, $sniffer) {
         } else {
           location.hash = getHash(url);
         }
+        if (location.href !== url) {
+          pendingLocation = url;
+        }
       }
       return self;
     // getter
     } else {
-      // - reloadLocation is needed as browsers don't allow to read out
-      //   the new location.href if a reload happened.
+      // - pendingLocation is needed as browsers don't allow to read out
+      //   the new location.href if a reload happened or if there is a bug like in iOS 9 (see
+      //   https://openradar.appspot.com/22186109).
       // - the replacement is a workaround for https://bugzilla.mozilla.org/show_bug.cgi?id=407172
-      return reloadLocation || location.href.replace(/%27/g,"'");
+      return pendingLocation || location.href.replace(/%27/g,"'");
     }
   };
 
@@ -14837,6 +16177,7 @@ function Browser(window, document, $log, $sniffer) {
       urlChangeInit = false;
 
   function cacheStateAndFireUrlChange() {
+    pendingLocation = null;
     cacheState();
     fireUrlChange();
   }
@@ -15072,10 +16413,10 @@ function $BrowserProvider() {
            $scope.keys = [];
            $scope.cache = $cacheFactory('cacheId');
            $scope.put = function(key, value) {
-             if ($scope.cache.get(key) === undefined) {
+             if (isUndefined($scope.cache.get(key))) {
                $scope.keys.push(key);
              }
-             $scope.cache.put(key, value === undefined ? null : value);
+             $scope.cache.put(key, isUndefined(value) ? null : value);
            };
          }]);
      </file>
@@ -15551,18 +16892,24 @@ function $TemplateCacheProvider() {
  * and other directives used in the directive's template will also be excluded from execution.
  *
  * #### `scope`
- * **If set to `true`,** then a new scope will be created for this directive. If multiple directives on the
- * same element request a new scope, only one new scope is created. The new scope rule does not
- * apply for the root of the template since the root of the template always gets a new scope.
+ * The scope property can be `true`, an object or a falsy value:
  *
- * **If set to `{}` (object hash),** then a new "isolate" scope is created. The 'isolate' scope differs from
- * normal scope in that it does not prototypically inherit from the parent scope. This is useful
- * when creating reusable components, which should not accidentally read or modify data in the
- * parent scope.
+ * * **falsy:** No scope will be created for the directive. The directive will use its parent's scope.
  *
- * The 'isolate' scope takes an object hash which defines a set of local scope properties
- * derived from the parent scope. These local properties are useful for aliasing values for
- * templates. Locals definition is a hash of local scope property to its source:
+ * * **`true`:** A new child scope that prototypically inherits from its parent will be created for
+ * the directive's element. If multiple directives on the same element request a new scope,
+ * only one new scope is created. The new scope rule does not apply for the root of the template
+ * since the root of the template always gets a new scope.
+ *
+ * * **`{...}` (an object hash):** A new "isolate" scope is created for the directive's element. The
+ * 'isolate' scope differs from normal scope in that it does not prototypically inherit from its parent
+ * scope. This is useful when creating reusable components, which should not accidentally read or modify
+ * data in the parent scope.
+ *
+ * The 'isolate' scope object hash defines a set of local scope properties derived from attributes on the
+ * directive's element. These local properties are useful for aliasing values for templates. The keys in
+ * the object hash map to the name of the property on the isolate scope; the values define how the property
+ * is bound to the parent scope, via matching attributes on the directive's element:
  *
  * * `@` or `@attr` - bind a local scope property to the value of DOM attribute. The result is
  *   always a string since DOM attributes are strings. If no `attr` name is specified  then the
@@ -15595,6 +16942,20 @@ function $TemplateCacheProvider() {
  *   For example, if the expression is `increment(amount)` then we can specify the amount value
  *   by calling the `localFn` as `localFn({amount: 22})`.
  *
+ * In general it's possible to apply more than one directive to one element, but there might be limitations
+ * depending on the type of scope required by the directives. The following points will help explain these limitations.
+ * For simplicity only two directives are taken into account, but it is also applicable for several directives:
+ *
+ * * **no scope** + **no scope** => Two directives which don't require their own scope will use their parent's scope
+ * * **child scope** + **no scope** =>  Both directives will share one single child scope
+ * * **child scope** + **child scope** =>  Both directives will share one single child scope
+ * * **isolated scope** + **no scope** =>  The isolated directive will use it's own created isolated scope. The other directive will use
+ * its parent's scope
+ * * **isolated scope** + **child scope** =>  **Won't work!** Only one scope can be related to one element. Therefore these directives cannot
+ * be applied to the same element.
+ * * **isolated scope** + **isolated scope**  =>  **Won't work!** Only one scope can be related to one element. Therefore these directives
+ * cannot be applied to the same element.
+ *
  *
  * #### `bindToController`
  * When an isolate scope is used for a component (see above), and `controllerAs` is used, `bindToController: true` will
@@ -15603,7 +16964,7 @@ function $TemplateCacheProvider() {
  *
  * #### `controller`
  * Controller constructor function. The controller is instantiated before the
- * pre-linking phase and it is shared with other directives (see
+ * pre-linking phase and can be accessed by other directives (see
  * `require` attribute). This allows the directives to communicate with each other and augment
  * each other's behavior. The controller is injectable (and supports bracket notation) with the following locals:
  *
@@ -15643,9 +17004,10 @@ function $TemplateCacheProvider() {
  *
  * #### `controllerAs`
  * Identifier name for a reference to the controller in the directive's scope.
- * This allows the controller to be referenced from the directive template. The directive
- * needs to define a scope for this configuration to be used. Useful in the case when
- * directive is used as component.
+ * This allows the controller to be referenced from the directive template. This is especially
+ * useful when a directive is used as component, i.e. with an `isolate` scope. It's also possible
+ * to use it in a directive without an `isolate` / `new` scope, but you need to be aware that the
+ * `controllerAs` reference might overwrite a property that already exists on the parent scope.
  *
  *
  * #### `restrict`
@@ -16482,7 +17844,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
 
         var node = this.$$element[0],
             booleanKey = getBooleanAttrName(node, key),
-            aliasedKey = getAliasedAttrName(node, key),
+            aliasedKey = getAliasedAttrName(key),
             observer = key,
             nodeName;
 
@@ -16549,7 +17911,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
         }
 
         if (writeAttr !== false) {
-          if (value === null || value === undefined) {
+          if (value === null || isUndefined(value)) {
             this.$$element.removeAttr(attrName);
           } else {
             this.$$element.attr(attrName, value);
@@ -17515,7 +18877,7 @@ function $CompileProvider($provide, $$sanitizeUriProvider) {
             i = 0, ii = directives.length; i < ii; i++) {
           try {
             directive = directives[i];
-            if ((maxPriority === undefined || maxPriority > directive.priority) &&
+            if ((isUndefined(maxPriority) || maxPriority > directive.priority) &&
                  directive.restrict.indexOf(location) != -1) {
               if (startAttrName) {
                 directive = inherit(directive, {$$start: startAttrName, $$end: endAttrName});
@@ -19727,8 +21089,8 @@ function $HttpProvider() {
        * Resolves the raw $http promise.
        */
       function resolvePromise(response, status, headers, statusText) {
-        // normalize internal statuses to 0
-        status = Math.max(status, 0);
+        //status: HTTP response status code, 0, -1 (aborted by timeout / promise)
+        status = status >= -1 ? status : 0;
 
         (isSuccess(status) ? deferred.resolve : deferred.reject)({
           data: response,
@@ -19868,7 +21230,7 @@ function createHttpBackend($browser, createXhr, $browserDefer, callbacks, rawDoc
         }
       }
 
-      xhr.send(post);
+      xhr.send(isUndefined(post) ? null : post);
     }
 
     if (timeout > 0) {
@@ -19885,7 +21247,7 @@ function createHttpBackend($browser, createXhr, $browserDefer, callbacks, rawDoc
 
     function completeRequest(callback, status, response, headersString, statusText) {
       // cancel timeout and subsequent timeout promise resolution
-      if (timeoutId !== undefined) {
+      if (isDefined(timeoutId)) {
         $browserDefer.cancel(timeoutId);
       }
       jsonpDone = xhr = null;
@@ -20071,7 +21433,7 @@ function $InterpolateProvider() {
      * ```js
      *   var $interpolate = ...; // injected
      *   var exp = $interpolate('Hello {{name | uppercase}}!');
-     *   expect(exp({name:'Angular'}).toEqual('Hello ANGULAR!');
+     *   expect(exp({name:'Angular'})).toEqual('Hello ANGULAR!');
      * ```
      *
      * `$interpolate` takes an optional fourth argument, `allOrNothing`. If `allOrNothing` is
@@ -20624,14 +21986,14 @@ function LocationHtml5Url(appBase, appBaseNoFile, basePrefix) {
     var appUrl, prevAppUrl;
     var rewrittenUrl;
 
-    if ((appUrl = beginsWith(appBase, url)) !== undefined) {
+    if (isDefined(appUrl = beginsWith(appBase, url))) {
       prevAppUrl = appUrl;
-      if ((appUrl = beginsWith(basePrefix, appUrl)) !== undefined) {
+      if (isDefined(appUrl = beginsWith(basePrefix, appUrl))) {
         rewrittenUrl = appBaseNoFile + (beginsWith('/', appUrl) || appUrl);
       } else {
         rewrittenUrl = appBase + prevAppUrl;
       }
-    } else if ((appUrl = beginsWith(appBaseNoFile, url)) !== undefined) {
+    } else if (isDefined(appUrl = beginsWith(appBaseNoFile, url))) {
       rewrittenUrl = appBaseNoFile + appUrl;
     } else if (appBaseNoFile == url + '/') {
       rewrittenUrl = appBaseNoFile;
@@ -21674,6 +23036,15 @@ var $parseMinErr = minErr('$parse');
 
 
 function ensureSafeMemberName(name, fullExpression) {
+  // From the JavaScript docs:
+  // Property names must be strings. This means that non-string objects cannot be used
+  // as keys in an object. Any non-string object, including a number, is typecasted
+  // into a string via the toString method.
+  //
+  // So, to ensure that we are checking the same `name` that JavaScript would use,
+  // we cast it to a string, if possible
+  name =  (isObject(name) && name.toString) ? name.toString() : name;
+
   if (name === "__defineGetter__" || name === "__defineSetter__"
       || name === "__lookupGetter__" || name === "__lookupSetter__"
       || name === "__proto__") {
@@ -22410,6 +23781,7 @@ ASTCompiler.prototype = {
       this.state.computing = 'assign';
       var result = this.nextId();
       this.recurse(assignable, result);
+      this.return_(result);
       extra = 'fn.assign=' + this.generateFunction('assign', 's,v,l');
     }
     var toWatch = getInputs(ast.body);
@@ -24400,10 +25772,10 @@ function $RootScopeProvider() {
        * Registers a `listener` callback to be executed whenever the `watchExpression` changes.
        *
        * - The `watchExpression` is called on every call to {@link ng.$rootScope.Scope#$digest
-       *   $digest()} and should return the value that will be watched. (Since
-       *   {@link ng.$rootScope.Scope#$digest $digest()} reruns when it detects changes the
-       *   `watchExpression` can execute multiple times per
-       *   {@link ng.$rootScope.Scope#$digest $digest()} and should be idempotent.)
+       *   $digest()} and should return the value that will be watched. (`watchExpression` should not change
+       *   its value when executed multiple times with the same input because it may be executed multiple
+       *   times by {@link ng.$rootScope.Scope#$digest $digest()}. That is, `watchExpression` should be
+       *   [idempotent](http://en.wikipedia.org/wiki/Idempotence).
        * - The `listener` is called only when the value from the current `watchExpression` and the
        *   previous call to `watchExpression` are not equal (with the exception of the initial run,
        *   see below). Inequality is determined according to reference inequality,
@@ -24752,7 +26124,7 @@ function $RootScopeProvider() {
             // copy the items to oldValue and look for changes.
             newLength = 0;
             for (key in newValue) {
-              if (newValue.hasOwnProperty(key)) {
+              if (hasOwnProperty.call(newValue, key)) {
                 newLength++;
                 newItem = newValue[key];
                 oldItem = oldValue[key];
@@ -24774,7 +26146,7 @@ function $RootScopeProvider() {
               // we used to have more keys, need to find them and destroy them.
               changeDetected++;
               for (key in oldValue) {
-                if (!newValue.hasOwnProperty(key)) {
+                if (!hasOwnProperty.call(newValue, key)) {
                   oldLength--;
                   delete oldValue[key];
                 }
@@ -25859,7 +27231,7 @@ function $SceDelegateProvider() {
             'Attempted to trust a value in invalid context. Context: {0}; Value: {1}',
             type, trustedValue);
       }
-      if (trustedValue === null || trustedValue === undefined || trustedValue === '') {
+      if (trustedValue === null || isUndefined(trustedValue) || trustedValue === '') {
         return trustedValue;
       }
       // All the current contexts in SCE_CONTEXTS happen to be strings.  In order to avoid trusting
@@ -25914,7 +27286,7 @@ function $SceDelegateProvider() {
      *     `$sceDelegate.trustAs`} if valid in this context.  Otherwise, throws an exception.
      */
     function getTrusted(type, maybeTrusted) {
-      if (maybeTrusted === null || maybeTrusted === undefined || maybeTrusted === '') {
+      if (maybeTrusted === null || isUndefined(maybeTrusted) || maybeTrusted === '') {
         return maybeTrusted;
       }
       var constructor = (byType.hasOwnProperty(type) ? byType[type] : null);
@@ -27175,7 +28547,7 @@ function $$CookieReader($document) {
           // the first value that is seen for a cookie is the most
           // specific one.  values for the same cookie name that
           // follow are for less specific paths.
-          if (lastCookies[name] === undefined) {
+          if (isUndefined(lastCookies[name])) {
             lastCookies[name] = safeDecodeURIComponent(cookie.substring(index + 1));
           }
         }
@@ -29121,6 +30493,7 @@ function nullFormRenameControl(control, name) {
  * @property {boolean} $dirty True if user has already interacted with the form.
  * @property {boolean} $valid True if all of the containing forms and controls are valid.
  * @property {boolean} $invalid True if at least one containing control or form is invalid.
+ * @property {boolean} $pending True if at least one containing control or form is pending.
  * @property {boolean} $submitted True if user has submitted the form even if its invalid.
  *
  * @property {Object} $error Is an object hash, containing references to controls or
@@ -29160,8 +30533,6 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
   var form = this,
       controls = [];
 
-  var parentForm = form.$$parentForm = element.parent().controller('form') || nullFormCtrl;
-
   // init state
   form.$error = {};
   form.$$success = {};
@@ -29172,8 +30543,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
   form.$valid = true;
   form.$invalid = false;
   form.$submitted = false;
-
-  parentForm.$addControl(form);
+  form.$$parentForm = nullFormCtrl;
 
   /**
    * @ngdoc method
@@ -29212,11 +30582,23 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
   /**
    * @ngdoc method
    * @name form.FormController#$addControl
+   * @param {object} control control object, either a {@link form.FormController} or an
+   * {@link ngModel.NgModelController}
    *
    * @description
-   * Register a control with the form.
+   * Register a control with the form. Input elements using ngModelController do this automatically
+   * when they are linked.
    *
-   * Input elements using ngModelController do this automatically when they are linked.
+   * Note that the current state of the control will not be reflected on the new parent form. This
+   * is not an issue with normal use, as freshly compiled and linked controls are in a `$pristine`
+   * state.
+   *
+   * However, if the method is used programmatically, for example by adding dynamically created controls,
+   * or controls that have been previously removed without destroying their corresponding DOM element,
+   * it's the developers responsiblity to make sure the current state propagates to the parent form.
+   *
+   * For example, if an input control is added that is already `$dirty` and has `$error` properties,
+   * calling `$setDirty()` and `$validate()` afterwards will propagate the state to the parent form.
    */
   form.$addControl = function(control) {
     // Breaking change - before, inputs whose name was "hasOwnProperty" were quietly ignored
@@ -29227,6 +30609,8 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
     if (control.$name) {
       form[control.$name] = control;
     }
+
+    control.$$parentForm = form;
   };
 
   // Private API: rename a form control
@@ -29243,11 +30627,18 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
   /**
    * @ngdoc method
    * @name form.FormController#$removeControl
+   * @param {object} control control object, either a {@link form.FormController} or an
+   * {@link ngModel.NgModelController}
    *
    * @description
    * Deregister a control from the form.
    *
    * Input elements using ngModelController do this automatically when they are destroyed.
+   *
+   * Note that only the removed control's validation state (`$errors`etc.) will be removed from the
+   * form. `$dirty`, `$submitted` states will not be changed, because the expected behavior can be
+   * different from case to case. For example, removing the only `$dirty` control from a form may or
+   * may not mean that the form is still `$dirty`.
    */
   form.$removeControl = function(control) {
     if (control.$name && form[control.$name] === control) {
@@ -29264,6 +30655,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
     });
 
     arrayRemove(controls, control);
+    control.$$parentForm = nullFormCtrl;
   };
 
 
@@ -29300,7 +30692,6 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
         delete object[property];
       }
     },
-    parentForm: parentForm,
     $animate: $animate
   });
 
@@ -29319,7 +30710,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
     $animate.addClass(element, DIRTY_CLASS);
     form.$dirty = true;
     form.$pristine = false;
-    parentForm.$setDirty();
+    form.$$parentForm.$setDirty();
   };
 
   /**
@@ -29375,7 +30766,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
   form.$setSubmitted = function() {
     $animate.addClass(element, SUBMITTED_CLASS);
     form.$submitted = true;
-    parentForm.$setSubmitted();
+    form.$$parentForm.$setSubmitted();
   };
 }
 
@@ -29425,6 +30816,7 @@ function FormController(element, attrs, $scope, $animate, $interpolate) {
  * # CSS classes
  *  - `ng-valid` is set if the form is valid.
  *  - `ng-invalid` is set if the form is invalid.
+ *  - `ng-pending` is set if the form is pending.
  *  - `ng-pristine` is set if the form is pristine.
  *  - `ng-dirty` is set if the form is dirty.
  *  - `ng-submitted` is set if the form was submitted.
@@ -29548,6 +30940,7 @@ var formDirectiveFactory = function(isNgForm) {
     var formDirective = {
       name: 'form',
       restrict: isNgForm ? 'EAC' : 'E',
+      require: ['form', '^^?form'], //first is the form's own ctrl, second is an optional parent form
       controller: FormController,
       compile: function ngFormCompile(formElement, attr) {
         // Setup initial state of the control
@@ -29556,7 +30949,9 @@ var formDirectiveFactory = function(isNgForm) {
         var nameAttr = attr.name ? 'name' : (isNgForm && attr.ngForm ? 'ngForm' : false);
 
         return {
-          pre: function ngFormPreLink(scope, formElement, attr, controller) {
+          pre: function ngFormPreLink(scope, formElement, attr, ctrls) {
+            var controller = ctrls[0];
+
             // if `action` attr is not present on the form, prevent the default action (submission)
             if (!('action' in attr)) {
               // we can't use jq events because if a form is destroyed during submission the default
@@ -29585,7 +30980,9 @@ var formDirectiveFactory = function(isNgForm) {
               });
             }
 
-            var parentFormCtrl = controller.$$parentForm;
+            var parentFormCtrl = ctrls[1] || controller.$$parentForm;
+            parentFormCtrl.$addControl(controller);
+
             var setter = nameAttr ? getSetter(controller.$name) : noop;
 
             if (nameAttr) {
@@ -29593,13 +30990,13 @@ var formDirectiveFactory = function(isNgForm) {
               attr.$observe(nameAttr, function(newValue) {
                 if (controller.$name === newValue) return;
                 setter(scope, undefined);
-                parentFormCtrl.$$renameControl(controller, newValue);
+                controller.$$parentForm.$$renameControl(controller, newValue);
                 setter = getSetter(controller.$name);
                 setter(scope, controller);
               });
             }
             formElement.on('$destroy', function() {
-              parentFormCtrl.$removeControl(controller);
+              controller.$$parentForm.$removeControl(controller);
               setter(scope, undefined);
               extend(controller, nullFormCtrl); //stop propagating child destruction handlers upwards
             });
@@ -29761,9 +31158,17 @@ var inputType = {
      * @param {string} ngModel Assignable angular expression to data-bind to.
      * @param {string=} name Property name of the form under which the control is published.
      * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`. This must be a
-     * valid ISO date string (yyyy-MM-dd).
+     *   valid ISO date string (yyyy-MM-dd). You can also use interpolation inside this attribute
+     *   (e.g. `min="{{minDate | date:'yyyy-MM-dd'}}"`). Note that `min` will also add native HTML5
+     *   constraint validation.
      * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`. This must be
-     * a valid ISO date string (yyyy-MM-dd).
+     *   a valid ISO date string (yyyy-MM-dd). You can also use interpolation inside this attribute
+     *   (e.g. `max="{{maxDate | date:'yyyy-MM-dd'}}"`). Note that `max` will also add native HTML5
+     *   constraint validation.
+     * @param {(date|string)=} ngMin Sets the `min` validation constraint to the Date / ISO date string
+     *   the `ngMin` expression evaluates to. Note that it does not set the `min` attribute.
+     * @param {(date|string)=} ngMax Sets the `max` validation constraint to the Date / ISO date string
+     *   the `ngMax` expression evaluates to. Note that it does not set the `max` attribute.
      * @param {string=} required Sets `required` validation error key if the value is not entered.
      * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
      *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
@@ -29855,10 +31260,18 @@ var inputType = {
     *
     * @param {string} ngModel Assignable angular expression to data-bind to.
     * @param {string=} name Property name of the form under which the control is published.
-    * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`. This must be a
-    * valid ISO datetime format (yyyy-MM-ddTHH:mm:ss).
-    * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`. This must be
-    * a valid ISO datetime format (yyyy-MM-ddTHH:mm:ss).
+    * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`.
+    *   This must be a valid ISO datetime format (yyyy-MM-ddTHH:mm:ss). You can also use interpolation
+    *   inside this attribute (e.g. `min="{{minDatetimeLocal | date:'yyyy-MM-ddTHH:mm:ss'}}"`).
+    *   Note that `min` will also add native HTML5 constraint validation.
+    * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`.
+    *   This must be a valid ISO datetime format (yyyy-MM-ddTHH:mm:ss). You can also use interpolation
+    *   inside this attribute (e.g. `max="{{maxDatetimeLocal | date:'yyyy-MM-ddTHH:mm:ss'}}"`).
+    *   Note that `max` will also add native HTML5 constraint validation.
+    * @param {(date|string)=} ngMin Sets the `min` validation error key to the Date / ISO datetime string
+    *   the `ngMin` expression evaluates to. Note that it does not set the `min` attribute.
+    * @param {(date|string)=} ngMax Sets the `max` validation error key to the Date / ISO datetime string
+    *   the `ngMax` expression evaluates to. Note that it does not set the `max` attribute.
     * @param {string=} required Sets `required` validation error key if the value is not entered.
     * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
     *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
@@ -29951,10 +31364,18 @@ var inputType = {
    *
    * @param {string} ngModel Assignable angular expression to data-bind to.
    * @param {string=} name Property name of the form under which the control is published.
-   * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`. This must be a
-   * valid ISO time format (HH:mm:ss).
-   * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`. This must be a
-   * valid ISO time format (HH:mm:ss).
+   * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`.
+   *   This must be a valid ISO time format (HH:mm:ss). You can also use interpolation inside this
+   *   attribute (e.g. `min="{{minTime | date:'HH:mm:ss'}}"`). Note that `min` will also add
+   *   native HTML5 constraint validation.
+   * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`.
+   *   This must be a valid ISO time format (HH:mm:ss). You can also use interpolation inside this
+   *   attribute (e.g. `max="{{maxTime | date:'HH:mm:ss'}}"`). Note that `max` will also add
+   *   native HTML5 constraint validation.
+   * @param {(date|string)=} ngMin Sets the `min` validation constraint to the Date / ISO time string the
+   *   `ngMin` expression evaluates to. Note that it does not set the `min` attribute.
+   * @param {(date|string)=} ngMax Sets the `max` validation constraint to the Date / ISO time string the
+   *   `ngMax` expression evaluates to. Note that it does not set the `max` attribute.
    * @param {string=} required Sets `required` validation error key if the value is not entered.
    * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
    *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
@@ -30046,10 +31467,18 @@ var inputType = {
     *
     * @param {string} ngModel Assignable angular expression to data-bind to.
     * @param {string=} name Property name of the form under which the control is published.
-    * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`. This must be a
-    * valid ISO week format (yyyy-W##).
-    * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`. This must be
-    * a valid ISO week format (yyyy-W##).
+    * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`.
+    *   This must be a valid ISO week format (yyyy-W##). You can also use interpolation inside this
+    *   attribute (e.g. `min="{{minWeek | date:'yyyy-Www'}}"`). Note that `min` will also add
+    *   native HTML5 constraint validation.
+    * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`.
+    *   This must be a valid ISO week format (yyyy-W##). You can also use interpolation inside this
+    *   attribute (e.g. `max="{{maxWeek | date:'yyyy-Www'}}"`). Note that `max` will also add
+    *   native HTML5 constraint validation.
+    * @param {(date|string)=} ngMin Sets the `min` validation constraint to the Date / ISO week string
+    *   the `ngMin` expression evaluates to. Note that it does not set the `min` attribute.
+    * @param {(date|string)=} ngMax Sets the `max` validation constraint to the Date / ISO week string
+    *   the `ngMax` expression evaluates to. Note that it does not set the `max` attribute.
     * @param {string=} required Sets `required` validation error key if the value is not entered.
     * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
     *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
@@ -30143,10 +31572,19 @@ var inputType = {
    *
    * @param {string} ngModel Assignable angular expression to data-bind to.
    * @param {string=} name Property name of the form under which the control is published.
-   * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`. This must be
-   * a valid ISO month format (yyyy-MM).
-   * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`. This must
-   * be a valid ISO month format (yyyy-MM).
+   * @param {string=} min Sets the `min` validation error key if the value entered is less than `min`.
+   *   This must be a valid ISO month format (yyyy-MM). You can also use interpolation inside this
+   *   attribute (e.g. `min="{{minMonth | date:'yyyy-MM'}}"`). Note that `min` will also add
+   *   native HTML5 constraint validation.
+   * @param {string=} max Sets the `max` validation error key if the value entered is greater than `max`.
+   *   This must be a valid ISO month format (yyyy-MM). You can also use interpolation inside this
+   *   attribute (e.g. `max="{{maxMonth | date:'yyyy-MM'}}"`). Note that `max` will also add
+   *   native HTML5 constraint validation.
+   * @param {(date|string)=} ngMin Sets the `min` validation constraint to the Date / ISO week string
+   *   the `ngMin` expression evaluates to. Note that it does not set the `min` attribute.
+   * @param {(date|string)=} ngMax Sets the `max` validation constraint to the Date / ISO week string
+   *   the `ngMax` expression evaluates to. Note that it does not set the `max` attribute.
+
    * @param {string=} required Sets `required` validation error key if the value is not entered.
    * @param {string=} ngRequired Adds `required` attribute and `required` validation constraint to
    *    the element when the ngRequired expression evaluates to true. Use `ngRequired` instead of
@@ -30908,7 +32346,7 @@ function createDateInputType(type, regexp, parseDate, format) {
     }
 
     function parseObservedDateValue(val) {
-      return isDefined(val) ? (isDate(val) ? val : parseDate(val)) : undefined;
+      return isDefined(val) && !isDate(val) ? parseDate(val) || undefined : val;
     }
   };
 }
@@ -31403,7 +32841,7 @@ var ngBindDirective = ['$compile', function($compile) {
         $compile.$$addBindingInfo(element, attr.ngBind);
         element = element[0];
         scope.$watch(attr.ngBind, function ngBindWatchAction(value) {
-          element.textContent = value === undefined ? '' : value;
+          element.textContent = isUndefined(value) ? '' : value;
         });
       };
     }
@@ -31471,7 +32909,7 @@ var ngBindTemplateDirective = ['$interpolate', '$compile', function($interpolate
         $compile.$$addBindingInfo(element, interpolateFn.expressions);
         element = element[0];
         attr.$observe('ngBindTemplate', function(value) {
-          element.textContent = value === undefined ? '' : value;
+          element.textContent = isUndefined(value) ? '' : value;
         });
       };
     }
@@ -33428,16 +34866,18 @@ var ngIncludeFillContentDirective = ['$compile',
  * current scope.
  *
  * <div class="alert alert-danger">
- * The only appropriate use of `ngInit` is for aliasing special properties of
- * {@link ng.directive:ngRepeat `ngRepeat`}, as seen in the demo below. Besides this case, you
- * should use {@link guide/controller controllers} rather than `ngInit`
- * to initialize values on a scope.
+ * This directive can be abused to add unnecessary amounts of logic into your templates.
+ * There are only a few appropriate uses of `ngInit`, such as for aliasing special properties of
+ * {@link ng.directive:ngRepeat `ngRepeat`}, as seen in the demo below; and for injecting data via
+ * server side scripting. Besides these few cases, you should use {@link guide/controller controllers}
+ * rather than `ngInit` to initialize values on a scope.
  * </div>
+ *
  * <div class="alert alert-warning">
- * **Note**: If you have assignment in `ngInit` along with {@link ng.$filter `$filter`}, make
- * sure you have parenthesis for correct precedence:
+ * **Note**: If you have assignment in `ngInit` along with a {@link ng.$filter `filter`}, make
+ * sure you have parentheses to ensure correct operator precedence:
  * <pre class="prettyprint">
- * `<div ng-init="test1 = (data | orderBy:'name')"></div>`
+ * `<div ng-init="test1 = ($index | toString)"></div>`
  * </pre>
  * </div>
  *
@@ -33849,7 +35289,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
   this.$$success = {}; // keep valid keys here
   this.$pending = undefined; // keep pending keys here
   this.$name = $interpolate($attr.name || '', false)($scope);
-
+  this.$$parentForm = nullFormCtrl;
 
   var parsedNgModel = $parse($attr.ngModel),
       parsedNgModelAssign = parsedNgModel.assign,
@@ -33929,8 +35369,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     return isUndefined(value) || value === '' || value === null || value !== value;
   };
 
-  var parentForm = $element.inheritedData('$formController') || nullFormCtrl,
-      currentValidationRunId = 0;
+  var currentValidationRunId = 0;
 
   /**
    * @ngdoc method
@@ -33963,7 +35402,6 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     unset: function(object, property) {
       delete object[property];
     },
-    parentForm: parentForm,
     $animate: $animate
   });
 
@@ -34001,7 +35439,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
     ctrl.$pristine = false;
     $animate.removeClass($element, PRISTINE_CLASS);
     $animate.addClass($element, DIRTY_CLASS);
-    parentForm.$setDirty();
+    ctrl.$$parentForm.$setDirty();
   };
 
   /**
@@ -34171,7 +35609,7 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
 
     function processParseErrors() {
       var errorKey = ctrl.$$parserName || 'parse';
-      if (parserValid === undefined) {
+      if (isUndefined(parserValid)) {
         setValidity(errorKey, null);
       } else {
         if (!parserValid) {
@@ -34341,37 +35779,47 @@ var NgModelController = ['$scope', '$exceptionHandler', '$attrs', '$element', '$
    * @description
    * Update the view value.
    *
-   * This method should be called when an input directive want to change the view value; typically,
-   * this is done from within a DOM event handler.
+   * This method should be called when a control wants to change the view value; typically,
+   * this is done from within a DOM event handler. For example, the {@link ng.directive:input input}
+   * directive calls it when the value of the input changes and {@link ng.directive:select select}
+   * calls it when an option is selected.
    *
-   * For example {@link ng.directive:input input} calls it when the value of the input changes and
-   * {@link ng.directive:select select} calls it when an option is selected.
-   *
-   * If the new `value` is an object (rather than a string or a number), we should make a copy of the
-   * object before passing it to `$setViewValue`.  This is because `ngModel` does not perform a deep
-   * watch of objects, it only looks for a change of identity. If you only change the property of
-   * the object then ngModel will not realise that the object has changed and will not invoke the
-   * `$parsers` and `$validators` pipelines.
-   *
-   * For this reason, you should not change properties of the copy once it has been passed to
-   * `$setViewValue`. Otherwise you may cause the model value on the scope to change incorrectly.
-   *
-   * When this method is called, the new `value` will be staged for committing through the `$parsers`
+   * When `$setViewValue` is called, the new `value` will be staged for committing through the `$parsers`
    * and `$validators` pipelines. If there are no special {@link ngModelOptions} specified then the staged
    * value sent directly for processing, finally to be applied to `$modelValue` and then the
-   * **expression** specified in the `ng-model` attribute.
-   *
-   * Lastly, all the registered change listeners, in the `$viewChangeListeners` list, are called.
+   * **expression** specified in the `ng-model` attribute. Lastly, all the registered change listeners,
+   * in the `$viewChangeListeners` list, are called.
    *
    * In case the {@link ng.directive:ngModelOptions ngModelOptions} directive is used with `updateOn`
    * and the `default` trigger is not listed, all those actions will remain pending until one of the
    * `updateOn` events is triggered on the DOM element.
    * All these actions will be debounced if the {@link ng.directive:ngModelOptions ngModelOptions}
    * directive is used with a custom debounce for this particular event.
+   * Note that a `$digest` is only triggered once the `updateOn` events are fired, or if `debounce`
+   * is specified, once the timer runs out.
    *
-   * Note that calling this function does not trigger a `$digest`.
+   * When used with standard inputs, the view value will always be a string (which is in some cases
+   * parsed into another type, such as a `Date` object for `input[date]`.)
+   * However, custom controls might also pass objects to this method. In this case, we should make
+   * a copy of the object before passing it to `$setViewValue`. This is because `ngModel` does not
+   * perform a deep watch of objects, it only looks for a change of identity. If you only change
+   * the property of the object then ngModel will not realise that the object has changed and
+   * will not invoke the `$parsers` and `$validators` pipelines. For this reason, you should
+   * not change properties of the copy once it has been passed to `$setViewValue`.
+   * Otherwise you may cause the model value on the scope to change incorrectly.
    *
-   * @param {string} value Value from the view.
+   * <div class="alert alert-info">
+   * In any case, the value passed to the method should always reflect the current value
+   * of the control. For example, if you are calling `$setViewValue` for an input element,
+   * you should pass the input DOM value. Otherwise, the control and the scope model become
+   * out of sync. It's also important to note that `$setViewValue` does not call `$render` or change
+   * the control's DOM value in any way. If we want to change the control's DOM value
+   * programmatically, we should update the `ngModel` scope expression. Its new value will be
+   * picked up by the model controller, which will run it through the `$formatters`, `$render` it
+   * to update the DOM, and finally call `$validate` on it.
+   * </div>
+   *
+   * @param {*} value value from the view.
    * @param {string} trigger Event that triggered the update.
    */
   this.$setViewValue = function(value, trigger) {
@@ -34634,7 +36082,7 @@ var ngModelDirective = ['$rootScope', function($rootScope) {
       return {
         pre: function ngModelPreLink(scope, element, attr, ctrls) {
           var modelCtrl = ctrls[0],
-              formCtrl = ctrls[1] || nullFormCtrl;
+              formCtrl = ctrls[1] || modelCtrl.$$parentForm;
 
           modelCtrl.$$setOptions(ctrls[2] && ctrls[2].$options);
 
@@ -34643,12 +36091,12 @@ var ngModelDirective = ['$rootScope', function($rootScope) {
 
           attr.$observe('name', function(newValue) {
             if (modelCtrl.$name !== newValue) {
-              formCtrl.$$renameControl(modelCtrl, newValue);
+              modelCtrl.$$parentForm.$$renameControl(modelCtrl, newValue);
             }
           });
 
           scope.$on('$destroy', function() {
-            formCtrl.$removeControl(modelCtrl);
+            modelCtrl.$$parentForm.$removeControl(modelCtrl);
           });
         },
         post: function ngModelPostLink(scope, element, attr, ctrls) {
@@ -34843,7 +36291,7 @@ var ngModelOptionsDirective = function() {
       var that = this;
       this.$options = copy($scope.$eval($attrs.ngModelOptions));
       // Allow adding/overriding bound events
-      if (this.$options.updateOn !== undefined) {
+      if (isDefined(this.$options.updateOn)) {
         this.$options.updateOnDefault = false;
         // extract "default" pseudo-event from list of events that can trigger a model update
         this.$options.updateOn = trim(this.$options.updateOn.replace(DEFAULT_REGEXP, function() {
@@ -34866,7 +36314,6 @@ function addSetValidityMethod(context) {
       classCache = {},
       set = context.set,
       unset = context.unset,
-      parentForm = context.parentForm,
       $animate = context.$animate;
 
   classCache[INVALID_CLASS] = !(classCache[VALID_CLASS] = $element.hasClass(VALID_CLASS));
@@ -34874,7 +36321,7 @@ function addSetValidityMethod(context) {
   ctrl.$setValidity = setValidity;
 
   function setValidity(validationErrorKey, state, controller) {
-    if (state === undefined) {
+    if (isUndefined(state)) {
       createAndSet('$pending', validationErrorKey, controller);
     } else {
       unsetAndCleanup('$pending', validationErrorKey, controller);
@@ -34918,7 +36365,7 @@ function addSetValidityMethod(context) {
     }
 
     toggleValidationCss(validationErrorKey, combinedState);
-    parentForm.$setValidity(validationErrorKey, combinedState, ctrl);
+    ctrl.$$parentForm.$setValidity(validationErrorKey, combinedState, ctrl);
   }
 
   function createAndSet(name, value, controller) {
@@ -35986,8 +37433,10 @@ var ngPluralizeDirective = ['$locale', '$interpolate', '$log', function($locale,
  * | `$even`   | {@type boolean} | true if the iterator position `$index` is even (otherwise false).           |
  * | `$odd`    | {@type boolean} | true if the iterator position `$index` is odd (otherwise false).            |
  *
- * Creating aliases for these properties is possible with {@link ng.directive:ngInit `ngInit`}.
- * This may be useful when, for instance, nesting ngRepeats.
+ * <div class="alert alert-info">
+ *   Creating aliases for these properties is possible with {@link ng.directive:ngInit `ngInit`}.
+ *   This may be useful when, for instance, nesting ngRepeats.
+ * </div>
  *
  *
  * # Iterating over object properties
@@ -36392,7 +37841,7 @@ var ngRepeatDirective = ['$parse', '$animate', function($parse, $animate) {
             // if object, extract keys, in enumeration order, unsorted
             collectionKeys = [];
             for (var itemKey in collection) {
-              if (collection.hasOwnProperty(itemKey) && itemKey.charAt(0) !== '$') {
+              if (hasOwnProperty.call(collection, itemKey) && itemKey.charAt(0) !== '$') {
                 collectionKeys.push(itemKey);
               }
             }
@@ -37605,9 +39054,12 @@ var optionDirective = ['$interpolate', function($interpolate) {
     priority: 100,
     compile: function(element, attr) {
 
-      // If the value attribute is not defined then we fall back to the
-      // text content of the option element, which may be interpolated
-      if (isUndefined(attr.value)) {
+      if (isDefined(attr.value)) {
+        // If the value attribute is defined, check if it contains an interpolation
+        var valueInterpolated = $interpolate(attr.value, true);
+      } else {
+        // If the value attribute is not defined then we fall back to the
+        // text content of the option element, which may be interpolated
         var interpolateFn = $interpolate(element.text(), true);
         if (!interpolateFn) {
           attr.$set('value', element.text());
@@ -37623,24 +39075,38 @@ var optionDirective = ['$interpolate', function($interpolate) {
             selectCtrl = parent.data(selectCtrlName) ||
               parent.parent().data(selectCtrlName); // in case we are in optgroup
 
+        function addOption(optionValue) {
+          selectCtrl.addOption(optionValue, element);
+          selectCtrl.ngModelCtrl.$render();
+          chromeHack(element);
+        }
+
         // Only update trigger option updates if this is an option within a `select`
         // that also has `ngModel` attached
         if (selectCtrl && selectCtrl.ngModelCtrl) {
 
-          if (interpolateFn) {
+          if (valueInterpolated) {
+            // The value attribute is interpolated
+            var oldVal;
+            attr.$observe('value', function valueAttributeObserveAction(newVal) {
+              if (isDefined(oldVal)) {
+                selectCtrl.removeOption(oldVal);
+              }
+              oldVal = newVal;
+              addOption(newVal);
+            });
+          } else if (interpolateFn) {
+            // The text content is interpolated
             scope.$watch(interpolateFn, function interpolateWatchAction(newVal, oldVal) {
               attr.$set('value', newVal);
               if (oldVal !== newVal) {
                 selectCtrl.removeOption(oldVal);
               }
-              selectCtrl.addOption(newVal, element);
-              selectCtrl.ngModelCtrl.$render();
-              chromeHack(element);
+              addOption(newVal);
             });
           } else {
-            selectCtrl.addOption(attr.value, element);
-            selectCtrl.ngModelCtrl.$render();
-            chromeHack(element);
+            // The value attribute is static
+            addOption(attr.value);
           }
 
           element.on('$destroy', function() {
@@ -37896,7 +39362,7 @@ $provide.value("$locale", {
 })(window, document);
 
 !window.angular.$$csp().noInlineStyle && window.angular.element(document.head).prepend('<style type="text/css">@charset "UTF-8";[ng\\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide:not(.ng-hide-animate){display:none !important;}ng\\:form{display:block;}.ng-animate-shim{visibility:hidden;}.ng-anchor{position:absolute;}</style>');;/**
- * @license AngularJS v1.4.4
+ * @license AngularJS v1.4.6
  * (c) 2010-2015 Google, Inc. http://angularjs.org
  * License: MIT
  */
@@ -37938,7 +39404,7 @@ var CSS_PREFIX = '', TRANSITION_PROP, TRANSITIONEND_EVENT, ANIMATION_PROP, ANIMA
 // Also, the only modern browser that uses vendor prefixes for transitions/keyframes is webkit
 // therefore there is no reason to test anymore for other vendor prefixes:
 // http://caniuse.com/#search=transition
-if (window.ontransitionend === undefined && window.onwebkittransitionend !== undefined) {
+if (isUndefined(window.ontransitionend) && isDefined(window.onwebkittransitionend)) {
   CSS_PREFIX = '-webkit-';
   TRANSITION_PROP = 'WebkitTransition';
   TRANSITIONEND_EVENT = 'webkitTransitionEnd transitionend';
@@ -37947,7 +39413,7 @@ if (window.ontransitionend === undefined && window.onwebkittransitionend !== und
   TRANSITIONEND_EVENT = 'transitionend';
 }
 
-if (window.onanimationend === undefined && window.onwebkitanimationend !== undefined) {
+if (isUndefined(window.onanimationend) && isDefined(window.onwebkitanimationend)) {
   CSS_PREFIX = '-webkit-';
   ANIMATION_PROP = 'WebkitAnimation';
   ANIMATIONEND_EVENT = 'webkitAnimationEnd animationend';
@@ -38276,6 +39742,55 @@ function $$BodyProvider() {
   }];
 }
 
+var $$rAFSchedulerFactory = ['$$rAF', function($$rAF) {
+  var queue, cancelFn;
+
+  function scheduler(tasks) {
+    // we make a copy since RAFScheduler mutates the state
+    // of the passed in array variable and this would be difficult
+    // to track down on the outside code
+    queue = queue.concat(tasks);
+    nextTick();
+  }
+
+  queue = scheduler.queue = [];
+
+  /* waitUntilQuiet does two things:
+   * 1. It will run the FINAL `fn` value only when an uncancelled RAF has passed through
+   * 2. It will delay the next wave of tasks from running until the quiet `fn` has run.
+   *
+   * The motivation here is that animation code can request more time from the scheduler
+   * before the next wave runs. This allows for certain DOM properties such as classes to
+   * be resolved in time for the next animation to run.
+   */
+  scheduler.waitUntilQuiet = function(fn) {
+    if (cancelFn) cancelFn();
+
+    cancelFn = $$rAF(function() {
+      cancelFn = null;
+      fn();
+      nextTick();
+    });
+  };
+
+  return scheduler;
+
+  function nextTick() {
+    if (!queue.length) return;
+
+    var items = queue.shift();
+    for (var i = 0; i < items.length; i++) {
+      items[i]();
+    }
+
+    if (!cancelFn) {
+      $$rAF(function() {
+        if (!cancelFn) nextTick();
+      });
+    }
+  }
+}];
+
 var $$AnimateChildrenDirective = [function() {
   return function(scope, element, attrs) {
     var val = attrs.ngAnimateChildren;
@@ -38289,6 +39804,8 @@ var $$AnimateChildrenDirective = [function() {
     }
   };
 }];
+
+var ANIMATE_TIMER_KEY = '$$animateCss';
 
 /**
  * @ngdoc service
@@ -38616,8 +40133,10 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
   var gcsLookup = createLocalCacheLookup();
   var gcsStaggerLookup = createLocalCacheLookup();
 
-  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout', '$$forceReflow', '$sniffer', '$$rAF',
-       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,   $$forceReflow,   $sniffer,   $$rAF) {
+  this.$get = ['$window', '$$jqLite', '$$AnimateRunner', '$timeout',
+               '$$forceReflow', '$sniffer', '$$rAFScheduler', '$animate',
+       function($window,   $$jqLite,   $$AnimateRunner,   $timeout,
+                $$forceReflow,   $sniffer,   $$rAFScheduler, $animate) {
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
@@ -38677,12 +40196,8 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
     var cancelLastRAFRequest;
     var rafWaitQueue = [];
     function waitUntilQuiet(callback) {
-      if (cancelLastRAFRequest) {
-        cancelLastRAFRequest(); //cancels the request
-      }
       rafWaitQueue.push(callback);
-      cancelLastRAFRequest = $$rAF(function() {
-        cancelLastRAFRequest = null;
+      $$rAFScheduler.waitUntilQuiet(function() {
         gcsLookup.flush();
         gcsStaggerLookup.flush();
 
@@ -38699,8 +40214,6 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       });
     }
 
-    return init;
-
     function computeTimings(node, className, cacheKey) {
       var timings = computeCachedCssStyles(node, className, cacheKey, DETECT_CSS_PROPERTIES);
       var aD = timings.animationDelay;
@@ -38715,9 +40228,11 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       return timings;
     }
 
-    function init(element, options) {
+    return function init(element, options) {
       var node = getDomNode(element);
-      if (!node || !node.parentNode) {
+      if (!node
+          || !node.parentNode
+          || !$animate.enabled()) {
         return closeAndReturnNoopAnimator();
       }
 
@@ -38773,7 +40288,6 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
       // there actually is a detected transition or keyframe animation
       if (options.applyClassesEarly && addRemoveClassName.length) {
         applyAnimationClasses(element, options);
-        addRemoveClassName = '';
       }
 
       var preparationClasses = [structuralClassName, addRemoveClassName].join(' ').trim();
@@ -38886,6 +40400,18 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
 
       if (maxDuration === 0 && !flags.recalculateTimingStyles) {
         return closeAndReturnNoopAnimator();
+      }
+
+      if (options.delay != null) {
+        var delayStyle = parseFloat(options.delay);
+
+        if (flags.applyTransitionDelay) {
+          temporaryStyles.push(getCssDelayStyle(delayStyle));
+        }
+
+        if (flags.applyAnimationDelay) {
+          temporaryStyles.push(getCssDelayStyle(delayStyle, true));
+        }
       }
 
       // we need to recalculate the delay value since we used a pre-emptive negative
@@ -39002,6 +40528,8 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           cancel: cancelFn
         });
 
+        // should flush the cache animation
+        waitUntilQuiet(noop);
         close();
 
         return {
@@ -39099,27 +40627,16 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
             flags.hasAnimations = timings.animationDuration > 0;
           }
 
-          if (flags.applyTransitionDelay || flags.applyAnimationDelay) {
+          if (flags.applyAnimationDelay) {
             relativeDelay = typeof options.delay !== "boolean" && truthyTimingValue(options.delay)
                   ? parseFloat(options.delay)
                   : relativeDelay;
 
             maxDelay = Math.max(relativeDelay, 0);
-
-            var delayStyle;
-            if (flags.applyTransitionDelay) {
-              timings.transitionDelay = relativeDelay;
-              delayStyle = getCssDelayStyle(relativeDelay);
-              temporaryStyles.push(delayStyle);
-              node.style[delayStyle[0]] = delayStyle[1];
-            }
-
-            if (flags.applyAnimationDelay) {
-              timings.animationDelay = relativeDelay;
-              delayStyle = getCssDelayStyle(relativeDelay, true);
-              temporaryStyles.push(delayStyle);
-              node.style[delayStyle[0]] = delayStyle[1];
-            }
+            timings.animationDelay = relativeDelay;
+            delayStyle = getCssDelayStyle(relativeDelay, true);
+            temporaryStyles.push(delayStyle);
+            node.style[delayStyle[0]] = delayStyle[1];
           }
 
           maxDelayTime = maxDelay * ONE_SECOND;
@@ -39148,17 +40665,47 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           }
 
           startTime = Date.now();
-          element.on(events.join(' '), onAnimationProgress);
-          $timeout(onAnimationExpired, maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime, false);
+          var timerTime = maxDelayTime + CLOSING_TIME_BUFFER * maxDurationTime;
+          var endTime = startTime + timerTime;
 
+          var animationsData = element.data(ANIMATE_TIMER_KEY) || [];
+          var setupFallbackTimer = true;
+          if (animationsData.length) {
+            var currentTimerData = animationsData[0];
+            setupFallbackTimer = endTime > currentTimerData.expectedEndTime;
+            if (setupFallbackTimer) {
+              $timeout.cancel(currentTimerData.timer);
+            } else {
+              animationsData.push(close);
+            }
+          }
+
+          if (setupFallbackTimer) {
+            var timer = $timeout(onAnimationExpired, timerTime, false);
+            animationsData[0] = {
+              timer: timer,
+              expectedEndTime: endTime
+            };
+            animationsData.push(close);
+            element.data(ANIMATE_TIMER_KEY, animationsData);
+          }
+
+          element.on(events.join(' '), onAnimationProgress);
           applyAnimationToStyles(element, options);
         }
 
         function onAnimationExpired() {
-          // although an expired animation is a failed animation, getting to
-          // this outcome is very easy if the CSS code screws up. Therefore we
-          // should still continue normally as if the animation completed correctly.
-          close();
+          var animationsData = element.data(ANIMATE_TIMER_KEY);
+
+          // this will be false in the event that the element was
+          // removed from the DOM (via a leave animation or something
+          // similar)
+          if (animationsData) {
+            for (var i = 1; i < animationsData.length; i++) {
+              animationsData[i]();
+            }
+            element.removeData(ANIMATE_TIMER_KEY);
+          }
         }
 
         function onAnimationProgress(event) {
@@ -39185,7 +40732,7 @@ var $AnimateCssProvider = ['$animateProvider', function($animateProvider) {
           }
         }
       }
-    }
+    };
   }];
 }];
 
@@ -39211,13 +40758,13 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
 
-    return function initDriverFn(animationDetails, onBeforeClassesAppliedCb) {
+    return function initDriverFn(animationDetails) {
       return animationDetails.from && animationDetails.to
           ? prepareFromToAnchorAnimation(animationDetails.from,
                                          animationDetails.to,
                                          animationDetails.classes,
                                          animationDetails.anchors)
-          : prepareRegularAnimation(animationDetails, onBeforeClassesAppliedCb);
+          : prepareRegularAnimation(animationDetails);
     };
 
     function filterCssClasses(classes) {
@@ -39413,21 +40960,14 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
       };
     }
 
-    function prepareRegularAnimation(animationDetails, onBeforeClassesAppliedCb) {
+    function prepareRegularAnimation(animationDetails) {
       var element = animationDetails.element;
       var options = animationDetails.options || {};
 
-      // since the ng-EVENT, class-ADD and class-REMOVE classes are applied inside
-      // of the animateQueue pre and postDigest stages then there is no need to add
-      // then them here as well.
-      options.$$skipPreparationClasses = true;
-
-      // during the pre/post digest stages inside of animateQueue we also performed
-      // the blocking (transition:-9999s) so there is no point in doing that again.
-      options.skipBlocking = true;
-
       if (animationDetails.structural) {
         options.event = animationDetails.event;
+        options.structural = true;
+        options.applyClassesEarly = true;
 
         // we special case the leave animation since we want to ensure that
         // the element is removed as soon as the animation is over. Otherwise
@@ -39436,11 +40976,6 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
           options.onDone = options.domOperation;
         }
       }
-
-      // we apply the classes right away since the pre-digest took care of the
-      // preparation classes.
-      onBeforeClassesAppliedCb(element);
-      applyAnimationClasses(element, options);
 
       // We assign the preparationClasses as the actual animation event since
       // the internals of $animateCss will just suffix the event token values
@@ -39465,8 +41000,8 @@ var $$AnimateCssDriverProvider = ['$$animationProvider', function($$animationPro
 //  by the time...
 
 var $$AnimateJsProvider = ['$animateProvider', function($animateProvider) {
-  this.$get = ['$injector', '$$AnimateRunner', '$$rAFMutex', '$$jqLite',
-       function($injector,   $$AnimateRunner,   $$rAFMutex,   $$jqLite) {
+  this.$get = ['$injector', '$$AnimateRunner', '$$jqLite',
+       function($injector,   $$AnimateRunner,   $$jqLite) {
 
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
          // $animateJs(element, 'enter');
@@ -40161,9 +41696,6 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
         return runner;
       }
 
-      applyGeneratedPreparationClasses(element, isStructural ? event : null, options);
-      blockTransitions(node, SAFE_FAST_FORWARD_DURATION_VALUE);
-
       // the counter keeps track of cancelled animations
       var counter = (existingAnimation.counter || 0) + 1;
       newAnimation.counter = counter;
@@ -40222,10 +41754,7 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
             : animationDetails.event;
 
         markElementAnimationState(element, RUNNING_STATE);
-        var realRunner = $$animation(element, event, animationDetails.options, function(e) {
-          $$forceReflow();
-          blockTransitions(getDomNode(e), false);
-        });
+        var realRunner = $$animation(element, event, animationDetails.options);
 
         realRunner.done(function(status) {
           close(!status);
@@ -40370,19 +41899,34 @@ var $$AnimateQueueProvider = ['$animateProvider', function($animateProvider) {
   }];
 }];
 
-var $$rAFMutexFactory = ['$$rAF', function($$rAF) {
+var $$AnimateAsyncRunFactory = ['$$rAF', function($$rAF) {
+  var waitQueue = [];
+
+  function waitForTick(fn) {
+    waitQueue.push(fn);
+    if (waitQueue.length > 1) return;
+    $$rAF(function() {
+      for (var i = 0; i < waitQueue.length; i++) {
+        waitQueue[i]();
+      }
+      waitQueue = [];
+    });
+  }
+
   return function() {
     var passed = false;
-    $$rAF(function() {
+    waitForTick(function() {
       passed = true;
     });
-    return function(fn) {
-      passed ? fn() : $$rAF(fn);
+    return function(callback) {
+      passed ? callback() : waitForTick(callback);
     };
   };
 }];
 
-var $$AnimateRunnerFactory = ['$q', '$$rAFMutex', function($q, $$rAFMutex) {
+var $$AnimateRunnerFactory = ['$q', '$sniffer', '$$animateAsyncRun',
+                      function($q,   $sniffer,   $$animateAsyncRun) {
+
   var INITIAL_STATE = 0;
   var DONE_PENDING_STATE = 1;
   var DONE_COMPLETE_STATE = 2;
@@ -40427,7 +41971,7 @@ var $$AnimateRunnerFactory = ['$q', '$$rAFMutex', function($q, $$rAFMutex) {
     this.setHost(host);
 
     this._doneCallbacks = [];
-    this._runInAnimationFrame = $$rAFMutex();
+    this._runInAnimationFrame = $$animateAsyncRun();
     this._state = 0;
   }
 
@@ -40539,8 +42083,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
     return element.data(RUNNER_STORAGE_KEY);
   }
 
-  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap',
-       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap) {
+  this.$get = ['$$jqLite', '$rootScope', '$injector', '$$AnimateRunner', '$$HashMap', '$$rAFScheduler',
+       function($$jqLite,   $rootScope,   $injector,   $$AnimateRunner,   $$HashMap,   $$rAFScheduler) {
 
     var animationQueue = [];
     var applyAnimationClasses = applyAnimationClassesFactory($$jqLite);
@@ -40608,11 +42152,11 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           if (remainingLevelEntries <= 0) {
             remainingLevelEntries = nextLevelEntries;
             nextLevelEntries = 0;
-            result = result.concat(row);
+            result.push(row);
             row = [];
           }
           row.push(entry.fn);
-          forEach(entry.children, function(childEntry) {
+          entry.children.forEach(function(childEntry) {
             nextLevelEntries++;
             queue.push(childEntry);
           });
@@ -40620,14 +42164,15 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         }
 
         if (row.length) {
-          result = result.concat(row);
+          result.push(row);
         }
+
         return result;
       }
     }
 
     // TODO(matsko): document the signature in a better way
-    return function(element, event, options, onBeforeClassesAppliedCb) {
+    return function(element, event, options) {
       options = prepareAnimationOptions(options);
       var isStructural = ['enter', 'move', 'leave'].indexOf(event) >= 0;
 
@@ -40679,8 +42224,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           // the element was destroyed early on which removed the runner
           // form its storage. This means we can't animate this element
           // at all and it already has been closed due to destruction.
-          var elm = entry.element;
-          if (getRunner(elm) && getDomNode(elm).parentNode) {
+          if (getRunner(entry.element)) {
             animations.push(entry);
           } else {
             entry.close();
@@ -40711,7 +42255,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
                   : animationEntry.element;
 
               if (getRunner(targetElement)) {
-                var operation = invokeFirstDriver(animationEntry, onBeforeClassesAppliedCb);
+                var operation = invokeFirstDriver(animationEntry);
                 if (operation) {
                   startAnimationFn = operation.start;
                 }
@@ -40731,11 +42275,9 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         });
 
         // we need to sort each of the animations in order of parent to child
-        // relationships. This ensures that the parent to child classes are
-        // applied at the right time.
-        forEach(sortAnimations(toBeSortedAnimations), function(triggerAnimation) {
-          triggerAnimation();
-        });
+        // relationships. This ensures that the child classes are applied at the
+        // right time.
+        $$rAFScheduler(sortAnimations(toBeSortedAnimations));
       });
 
       return runner;
@@ -40805,7 +42347,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           var lookupKey = from.animationID.toString();
           if (!anchorGroups[lookupKey]) {
             var group = anchorGroups[lookupKey] = {
-              // TODO(matsko): double-check this code
+              structural: true,
               beforeStart: function() {
                 fromAnimation.beforeStart();
                 toAnimation.beforeStart();
@@ -40859,7 +42401,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
         return matches.join(' ');
       }
 
-      function invokeFirstDriver(animationDetails, onBeforeClassesAppliedCb) {
+      function invokeFirstDriver(animationDetails) {
         // we loop in reverse order since the more general drivers (like CSS and JS)
         // may attempt more elements, but custom drivers are more particular
         for (var i = drivers.length - 1; i >= 0; i--) {
@@ -40867,7 +42409,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
           if (!$injector.has(driverName)) continue; // TODO(matsko): remove this check
 
           var factory = $injector.get(driverName);
-          var driver = factory(animationDetails, onBeforeClassesAppliedCb);
+          var driver = factory(animationDetails);
           if (driver) {
             return driver;
           }
@@ -40923,7 +42465,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
 /* global angularAnimateModule: true,
 
    $$BodyProvider,
-   $$rAFMutexFactory,
+   $$AnimateAsyncRunFactory,
+   $$rAFSchedulerFactory,
    $$AnimateChildrenDirective,
    $$AnimateRunnerFactory,
    $$AnimateQueueProvider,
@@ -40940,7 +42483,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * @description
  *
  * The `ngAnimate` module provides support for CSS-based animations (keyframes and transitions) as well as JavaScript-based animations via
- * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` then the animation hooks are enabled for an Angular app.
+ * callback hooks. Animations are not enabled by default, however, by including `ngAnimate` the animation hooks are enabled for an Angular app.
  *
  * <div doc-module-components="ngAnimate"></div>
  *
@@ -40973,7 +42516,7 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * CSS-based animations with ngAnimate are unique since they require no JavaScript code at all. By using a CSS class that we reference between our HTML
  * and CSS code we can create an animation that will be picked up by Angular when an the underlying directive performs an operation.
  *
- * The example below shows how an `enter` animation can be made possible on a element using `ng-if`:
+ * The example below shows how an `enter` animation can be made possible on an element using `ng-if`:
  *
  * ```html
  * <div ng-if="bool" class="fade">
@@ -41108,8 +42651,8 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  *   /&#42; this will have a 100ms delay between each successive leave animation &#42;/
  *   transition-delay: 0.1s;
  *
- *   /&#42; in case the stagger doesn't work then the duration value
- *    must be set to 0 to avoid an accidental CSS inheritance &#42;/
+ *   /&#42; As of 1.4.4, this must always be set: it signals ngAnimate
+ *     to not accidentally inherit a delay property from another CSS class &#42;/
  *   transition-duration: 0s;
  * }
  * .my-animation.ng-enter.ng-enter-active {
@@ -41658,16 +43201,16 @@ var $$AnimationProvider = ['$animateProvider', function($animateProvider) {
  * @description
  * The ngAnimate `$animate` service documentation is the same for the core `$animate` service.
  *
- * Click here {@link ng.$animate $animate to learn more about animations with `$animate`}.
+ * Click here {@link ng.$animate to learn more about animations with `$animate`}.
  */
 angular.module('ngAnimate', [])
   .provider('$$body', $$BodyProvider)
 
   .directive('ngAnimateChildren', $$AnimateChildrenDirective)
-
-  .factory('$$rAFMutex', $$rAFMutexFactory)
+  .factory('$$rAFScheduler', $$rAFSchedulerFactory)
 
   .factory('$$AnimateRunner', $$AnimateRunnerFactory)
+  .factory('$$animateAsyncRun', $$AnimateAsyncRunFactory)
 
   .provider('$$animateQueue', $$AnimateQueueProvider)
   .provider('$$animation', $$AnimationProvider)
@@ -46050,7 +47593,7 @@ angular.module('ui.router.state')
   .filter('isState', $IsStateFilter)
   .filter('includedByState', $IncludedByStateFilter);
 })(window, window.angular);;/**
- * Satellizer 0.12.2
+ * Satellizer 0.12.5
  * (c) 2015 Sahat Yalkabov
  * License: MIT
  */
@@ -46073,31 +47616,51 @@ angular.module('ui.router.state')
       authToken: 'Bearer',
       storageType: 'localStorage',
       providers: {
-        google: {
-          name: 'google',
-          url: '/auth/google',
-          authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          scope: ['profile', 'email'],
-          scopePrefix: 'openid',
-          scopeDelimiter: ' ',
-          requiredUrlParams: ['scope'],
-          optionalUrlParams: ['display'],
-          display: 'popup',
-          type: '2.0',
-          popupOptions: { width: 452, height: 633 }
-        },
         facebook: {
           name: 'facebook',
           url: '/auth/facebook',
           authorizationEndpoint: 'https://www.facebook.com/v2.3/dialog/oauth',
           redirectUri: (window.location.origin || window.location.protocol + '//' + window.location.host) + '/',
+          requiredUrlParams: ['display', 'scope'],
           scope: ['email'],
           scopeDelimiter: ',',
-          requiredUrlParams: ['display', 'scope'],
           display: 'popup',
           type: '2.0',
           popupOptions: { width: 580, height: 400 }
+        },
+        google: {
+          name: 'google',
+          url: '/auth/google',
+          authorizationEndpoint: 'https://accounts.google.com/o/oauth2/auth',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          requiredUrlParams: ['scope'],
+          optionalUrlParams: ['display'],
+          scope: ['profile', 'email'],
+          scopePrefix: 'openid',
+          scopeDelimiter: ' ',
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 452, height: 633 }
+        },
+        github: {
+          name: 'github',
+          url: '/auth/github',
+          authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          optionalUrlParams: ['scope'],
+          scope: ['user:email'],
+          scopeDelimiter: ' ',
+          type: '2.0',
+          popupOptions: { width: 1020, height: 618 }
+        },
+        instagram: {
+          name: 'instagram',
+          url: '/auth/instagram',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          requiredUrlParams: ['scope'],
+          scope: ['basic'],
+          scopeDelimiter: '+',
+          authorizationEndpoint: 'https://api.instagram.com/oauth/authorize'
         },
         linkedin: {
           name: 'linkedin',
@@ -46111,16 +47674,37 @@ angular.module('ui.router.state')
           type: '2.0',
           popupOptions: { width: 527, height: 582 }
         },
-        github: {
-          name: 'github',
-          url: '/auth/github',
-          authorizationEndpoint: 'https://github.com/login/oauth/authorize',
+        twitter: {
+          name: 'twitter',
+          url: '/auth/twitter',
+          authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
           redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          optionalUrlParams: ['scope'],
-          scope: ['user:email'],
+          type: '1.0',
+          popupOptions: { width: 495, height: 645 }
+        },
+        twitch: {
+          name: 'twitch',
+          url: '/auth/twitch',
+          authorizationEndpoint: 'https://api.twitch.tv/kraken/oauth2/authorize',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          requiredUrlParams: ['scope'],
+          scope: ['user_read'],
           scopeDelimiter: ' ',
+          display: 'popup',
           type: '2.0',
-          popupOptions: { width: 1020, height: 618 }
+          popupOptions: { width: 500, height: 560 }
+        },
+        live: {
+          name: 'live',
+          url: '/auth/live',
+          authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
+          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
+          requiredUrlParams: ['display', 'scope'],
+          scope: ['wl.emails'],
+          scopeDelimiter: ' ',
+          display: 'popup',
+          type: '2.0',
+          popupOptions: { width: 500, height: 560 }
         },
         yahoo: {
           name: 'yahoo',
@@ -46131,26 +47715,6 @@ angular.module('ui.router.state')
           scopeDelimiter: ',',
           type: '2.0',
           popupOptions: { width: 559, height: 519 }
-        },
-        twitter: {
-          name: 'twitter',
-          url: '/auth/twitter',
-          authorizationEndpoint: 'https://api.twitter.com/oauth/authenticate',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          type: '1.0',
-          popupOptions: { width: 495, height: 645 }
-        },
-        live: {
-          name: 'live',
-          url: '/auth/live',
-          authorizationEndpoint: 'https://login.live.com/oauth20_authorize.srf',
-          redirectUri: window.location.origin || window.location.protocol + '//' + window.location.host,
-          scope: ['wl.emails'],
-          scopeDelimiter: ' ',
-          requiredUrlParams: ['display', 'scope'],
-          display: 'popup',
-          type: '2.0',
-          popupOptions: { width: 500, height: 560 }
         }
       }
     })
@@ -46243,8 +47807,8 @@ angular.module('ui.router.state')
             return local.login(user, opts);
           };
 
-          $auth.signup = function(user) {
-            return local.signup(user);
+          $auth.signup = function(user, options) {
+            return local.signup(user, options);
           };
 
           $auth.logout = function() {
@@ -46309,7 +47873,7 @@ angular.module('ui.router.state')
 
           if (token && token.split('.').length === 3) {
             var base64Url = token.split('.')[1];
-            var base64 = base64Url.replace('-', '+').replace('_', '/');
+            var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
             return JSON.parse(decodeURIComponent(escape(window.atob(base64))));
           }
         };
@@ -46352,10 +47916,18 @@ angular.module('ui.router.state')
           if (token) {
             if (token.split('.').length === 3) {
               var base64Url = token.split('.')[1];
-              var base64 = base64Url.replace('-', '+').replace('_', '/');
+              var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
               var exp = JSON.parse($window.atob(base64)).exp;
+
               if (exp) {
-                return Math.round(new Date().getTime() / 1000) <= exp;
+                var isExpired = Math.round(new Date().getTime() / 1000) >= exp;
+
+                if (isExpired) {
+                  storage.remove(tokenName);
+                  return false;
+                } else {
+                  return true;
+                }
               }
               return true;
             }
@@ -46484,8 +48056,8 @@ angular.module('ui.router.state')
           Oauth2.open = function(options, userData) {
             defaults = utils.merge(options, defaults);
 
+            var url;
             var openPopup;
-            var url = [defaults.authorizationEndpoint, Oauth2.buildQueryString()].join('?');
             var stateName = defaults.name + '_state';
 
             if (angular.isFunction(defaults.state)) {
@@ -46493,6 +48065,8 @@ angular.module('ui.router.state')
             } else if (angular.isString(defaults.state)) {
               storage.set(stateName, defaults.state);
             }
+
+            url = [defaults.authorizationEndpoint, Oauth2.buildQueryString()].join('?');
 
             if (config.cordova) {
               openPopup = popup.open(url, defaults.name, defaults.popupOptions, defaults.redirectUri).eventListener(defaults.redirectUri);
@@ -46890,7 +48464,3158 @@ angular.module('ui.router.state')
       $httpProvider.interceptors.push('SatellizerInterceptor');
     }]);
 
-})(window, window.angular);;/*!
+})(window, window.angular);
+;//! angular-formly version 7.1.1 built with ♥ by Astrism <astrisms@gmail.com>, Kent C. Dodds <kent@doddsfamily.us> (ó ì_í)=óò=(ì_í ò)
+
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory(require("angular"), require("api-check"));
+	else if(typeof define === 'function' && define.amd)
+		define(["angular", "api-check"], factory);
+	else if(typeof exports === 'object')
+		exports["ngFormly"] = factory(require("angular"), require("api-check"));
+	else
+		root["ngFormly"] = factory(root["angular"], root["apiCheck"]);
+})(this, function(__WEBPACK_EXTERNAL_MODULE_3__, __WEBPACK_EXTERNAL_MODULE_5__) {
+return /******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId])
+/******/ 			return installedModules[moduleId].exports;
+
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			exports: {},
+/******/ 			id: moduleId,
+/******/ 			loaded: false
+/******/ 		};
+
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+
+/******/ 		// Flag the module as loaded
+/******/ 		module.loaded = true;
+
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+
+
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(0);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _indexCommon = __webpack_require__(1);
+
+	var _indexCommon2 = _interopRequireDefault(_indexCommon);
+
+	exports['default'] = _indexCommon2['default'];
+	module.exports = exports['default'];
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _providersFormlyApiCheck = __webpack_require__(4);
+
+	var _providersFormlyApiCheck2 = _interopRequireDefault(_providersFormlyApiCheck);
+
+	var _otherDocsBaseUrl = __webpack_require__(6);
+
+	var _otherDocsBaseUrl2 = _interopRequireDefault(_otherDocsBaseUrl);
+
+	var _providersFormlyUsability = __webpack_require__(7);
+
+	var _providersFormlyUsability2 = _interopRequireDefault(_providersFormlyUsability);
+
+	var _providersFormlyConfig = __webpack_require__(8);
+
+	var _providersFormlyConfig2 = _interopRequireDefault(_providersFormlyConfig);
+
+	var _providersFormlyValidationMessages = __webpack_require__(10);
+
+	var _providersFormlyValidationMessages2 = _interopRequireDefault(_providersFormlyValidationMessages);
+
+	var _servicesFormlyUtil = __webpack_require__(11);
+
+	var _servicesFormlyUtil2 = _interopRequireDefault(_servicesFormlyUtil);
+
+	var _servicesFormlyWarn = __webpack_require__(12);
+
+	var _servicesFormlyWarn2 = _interopRequireDefault(_servicesFormlyWarn);
+
+	var _directivesFormlyCustomValidation = __webpack_require__(13);
+
+	var _directivesFormlyCustomValidation2 = _interopRequireDefault(_directivesFormlyCustomValidation);
+
+	var _directivesFormlyField = __webpack_require__(14);
+
+	var _directivesFormlyField2 = _interopRequireDefault(_directivesFormlyField);
+
+	var _directivesFormlyFocus = __webpack_require__(15);
+
+	var _directivesFormlyFocus2 = _interopRequireDefault(_directivesFormlyFocus);
+
+	var _directivesFormlyForm = __webpack_require__(16);
+
+	var _directivesFormlyForm2 = _interopRequireDefault(_directivesFormlyForm);
+
+	var _runFormlyNgModelAttrsManipulator = __webpack_require__(17);
+
+	var _runFormlyNgModelAttrsManipulator2 = _interopRequireDefault(_runFormlyNgModelAttrsManipulator);
+
+	var _runFormlyCustomTags = __webpack_require__(18);
+
+	var _runFormlyCustomTags2 = _interopRequireDefault(_runFormlyCustomTags);
+
+	var ngModuleName = 'formly';
+
+	exports['default'] = ngModuleName;
+
+	var ngModule = _angularFix2['default'].module(ngModuleName, []);
+
+	ngModule.constant('formlyApiCheck', _providersFormlyApiCheck2['default']);
+	ngModule.constant('formlyErrorAndWarningsUrlPrefix', _otherDocsBaseUrl2['default']);
+	ngModule.constant('formlyVersion', ("7.1.1")); // <-- webpack variable
+
+	ngModule.provider('formlyUsability', _providersFormlyUsability2['default']);
+	ngModule.provider('formlyConfig', _providersFormlyConfig2['default']);
+
+	ngModule.factory('formlyValidationMessages', _providersFormlyValidationMessages2['default']);
+	ngModule.factory('formlyUtil', _servicesFormlyUtil2['default']);
+	ngModule.factory('formlyWarn', _servicesFormlyWarn2['default']);
+
+	ngModule.directive('formlyCustomValidation', _directivesFormlyCustomValidation2['default']);
+	ngModule.directive('formlyField', _directivesFormlyField2['default']);
+	ngModule.directive('formlyFocus', _directivesFormlyFocus2['default']);
+	ngModule.directive('formlyForm', _directivesFormlyForm2['default']);
+
+	ngModule.run(_runFormlyNgModelAttrsManipulator2['default']);
+	ngModule.run(_runFormlyCustomTags2['default']);
+	module.exports = exports['default'];
+
+/***/ },
+/* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	// some versions of angular don't export the angular module properly,
+	// so we get it from window in this case.
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var angular = __webpack_require__(3);
+
+	/* istanbul ignore next */
+	if (!angular.version) {
+	  angular = window.angular;
+	}
+	exports['default'] = angular;
+	module.exports = exports['default'];
+
+/***/ },
+/* 3 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_3__;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _apiCheck = __webpack_require__(5);
+
+	var _apiCheck2 = _interopRequireDefault(_apiCheck);
+
+	var apiCheck = (0, _apiCheck2['default'])({
+	  output: {
+	    prefix: 'angular-formly:',
+	    docsBaseUrl: __webpack_require__(6)
+	  }
+	});
+
+	function shapeRequiredIfNot(otherProps, propChecker) {
+	  if (!_angularFix2['default'].isArray(otherProps)) {
+	    otherProps = [otherProps];
+	  }
+	  var type = 'specified if these are not specified: `' + otherProps.join(', ') + '` (otherwise it\'s optional)';
+
+	  function shapeRequiredIfNotDefinition(prop, propName, location, obj) {
+	    var propExists = obj && obj.hasOwnProperty(propName);
+	    var otherPropsExist = otherProps.some(function (otherProp) {
+	      return obj && obj.hasOwnProperty(otherProp);
+	    });
+	    if (!otherPropsExist && !propExists) {
+	      return apiCheck.utils.getError(propName, location, type);
+	    } else if (propExists) {
+	      return propChecker(prop, propName, location, obj);
+	    }
+	  }
+
+	  shapeRequiredIfNotDefinition.type = type;
+	  return apiCheck.utils.checkerHelpers.setupChecker(shapeRequiredIfNotDefinition);
+	}
+
+	var formlyExpression = apiCheck.oneOfType([apiCheck.string, apiCheck.func]);
+	var specifyWrapperType = apiCheck.typeOrArrayOf(apiCheck.string).nullable;
+
+	var apiCheckProperty = apiCheck.func;
+
+	var apiCheckInstanceProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.func.withProperties({
+	  warn: apiCheck.func,
+	  'throw': apiCheck.func,
+	  shape: apiCheck.func
+	}));
+
+	var apiCheckFunctionProperty = apiCheck.shape.onlyIf('apiCheck', apiCheck.oneOf(['throw', 'warn']));
+
+	var formlyWrapperType = apiCheck.shape({
+	  name: shapeRequiredIfNot('types', apiCheck.string).optional,
+	  template: apiCheck.shape.ifNot('templateUrl', apiCheck.string).optional,
+	  templateUrl: apiCheck.shape.ifNot('template', apiCheck.string).optional,
+	  types: apiCheck.typeOrArrayOf(apiCheck.string).optional,
+	  overwriteOk: apiCheck.bool.optional,
+	  apiCheck: apiCheckProperty.optional,
+	  apiCheckInstance: apiCheckInstanceProperty.optional,
+	  apiCheckFunction: apiCheckFunctionProperty.optional,
+	  apiCheckOptions: apiCheck.object.optional
+	}).strict;
+
+	var expressionProperties = apiCheck.objectOf(apiCheck.oneOfType([formlyExpression, apiCheck.shape({
+	  expression: formlyExpression,
+	  message: formlyExpression.optional
+	}).strict]));
+
+	var modelChecker = apiCheck.oneOfType([apiCheck.string, apiCheck.object]);
+
+	var templateManipulators = apiCheck.shape({
+	  preWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional,
+	  postWrapper: apiCheck.arrayOf(apiCheck.func).nullable.optional
+	}).strict.nullable;
+
+	var validatorChecker = apiCheck.objectOf(apiCheck.oneOfType([formlyExpression, apiCheck.shape({
+	  expression: formlyExpression,
+	  message: formlyExpression.optional
+	}).strict]));
+
+	var fieldOptionsApiShape = {
+	  $$hashKey: apiCheck.any.optional,
+	  type: apiCheck.shape.ifNot(['template', 'templateUrl'], apiCheck.string).optional,
+	  template: apiCheck.shape.ifNot(['type', 'templateUrl'], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  templateUrl: apiCheck.shape.ifNot(['type', 'template'], apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
+	  model: modelChecker.optional,
+	  originalModel: modelChecker.optional,
+	  className: apiCheck.string.optional,
+	  id: apiCheck.string.optional,
+	  name: apiCheck.string.optional,
+	  expressionProperties: expressionProperties.optional,
+	  extras: apiCheck.shape({
+	    validateOnModelChange: apiCheck.bool.optional,
+	    skipNgModelAttrsManipulator: apiCheck.oneOfType([apiCheck.string, apiCheck.bool]).optional
+	  }).strict.optional,
+	  data: apiCheck.object.optional,
+	  templateOptions: apiCheck.object.optional,
+	  wrapper: specifyWrapperType.optional,
+	  modelOptions: apiCheck.shape({
+	    updateOn: apiCheck.string.optional,
+	    debounce: apiCheck.oneOfType([apiCheck.objectOf(apiCheck.number), apiCheck.number]).optional,
+	    allowInvalid: apiCheck.bool.optional,
+	    getterSetter: apiCheck.bool.optional,
+	    timezone: apiCheck.string.optional
+	  }).optional,
+	  watcher: apiCheck.typeOrArrayOf(apiCheck.shape({
+	    expression: formlyExpression.optional,
+	    listener: formlyExpression
+	  })).optional,
+	  validators: validatorChecker.optional,
+	  asyncValidators: validatorChecker.optional,
+	  parsers: apiCheck.arrayOf(formlyExpression).optional,
+	  formatters: apiCheck.arrayOf(formlyExpression).optional,
+	  noFormControl: apiCheck.bool.optional,
+	  hide: apiCheck.bool.optional,
+	  hideExpression: formlyExpression.optional,
+	  ngModelElAttrs: apiCheck.objectOf(apiCheck.string).optional,
+	  ngModelAttrs: apiCheck.objectOf(apiCheck.shape({
+	    statement: apiCheck.shape.ifNot(['value', 'attribute', 'bound', 'boolean'], apiCheck.any).optional,
+	    value: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+	    attribute: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+	    bound: apiCheck.shape.ifNot('statement', apiCheck.any).optional,
+	    boolean: apiCheck.shape.ifNot('statement', apiCheck.any).optional
+	  }).strict).optional,
+	  elementAttributes: apiCheck.objectOf(apiCheck.string).optional,
+	  optionsTypes: apiCheck.typeOrArrayOf(apiCheck.string).optional,
+	  link: apiCheck.func.optional,
+	  controller: apiCheck.oneOfType([apiCheck.string, apiCheck.func, apiCheck.array]).optional,
+	  validation: apiCheck.shape({
+	    show: apiCheck.bool.nullable.optional,
+	    messages: apiCheck.objectOf(formlyExpression).optional,
+	    errorExistsAndShouldBeVisible: apiCheck.bool.optional
+	  }).optional,
+	  formControl: apiCheck.typeOrArrayOf(apiCheck.object).optional,
+	  value: apiCheck.func.optional,
+	  runExpressions: apiCheck.func.optional,
+	  templateManipulators: templateManipulators.optional,
+	  resetModel: apiCheck.func.optional,
+	  updateInitialValue: apiCheck.func.optional,
+	  initialValue: apiCheck.any.optional,
+	  defaultValue: apiCheck.any.optional
+	};
+
+	var formlyFieldOptions = apiCheck.shape(fieldOptionsApiShape).strict;
+
+	var formOptionsApi = apiCheck.shape({
+	  formState: apiCheck.object.optional,
+	  resetModel: apiCheck.func.optional,
+	  updateInitialValue: apiCheck.func.optional,
+	  removeChromeAutoComplete: apiCheck.bool.optional,
+	  templateManipulators: templateManipulators.optional,
+	  wrapper: specifyWrapperType.optional,
+	  fieldTransform: apiCheck.oneOfType([apiCheck.func, apiCheck.array]).optional,
+	  data: apiCheck.object.optional
+	}).strict;
+
+	var fieldGroup = apiCheck.shape({
+	  $$hashKey: apiCheck.any.optional,
+	  key: apiCheck.oneOfType([apiCheck.string, apiCheck.number]).optional,
+	  // danger. Nested field groups wont get api-checked...
+	  fieldGroup: apiCheck.arrayOf(apiCheck.oneOfType([formlyFieldOptions, apiCheck.object])),
+	  className: apiCheck.string.optional,
+	  options: formOptionsApi.optional,
+	  hide: apiCheck.bool.optional,
+	  hideExpression: formlyExpression.optional,
+	  data: apiCheck.object.optional,
+	  model: modelChecker.optional,
+	  form: apiCheck.object.optional,
+	  elementAttributes: apiCheck.objectOf(apiCheck.string).optional
+	}).strict;
+
+	var typeOptionsDefaultOptions = _angularFix2['default'].copy(fieldOptionsApiShape);
+	typeOptionsDefaultOptions.key = apiCheck.string.optional;
+
+	var formlyTypeOptions = apiCheck.shape({
+	  name: apiCheck.string,
+	  template: apiCheck.shape.ifNot('templateUrl', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  templateUrl: apiCheck.shape.ifNot('template', apiCheck.oneOfType([apiCheck.string, apiCheck.func])).optional,
+	  controller: apiCheck.oneOfType([apiCheck.func, apiCheck.string, apiCheck.array]).optional,
+	  link: apiCheck.func.optional,
+	  defaultOptions: apiCheck.oneOfType([apiCheck.func, apiCheck.shape(typeOptionsDefaultOptions)]).optional,
+	  'extends': apiCheck.string.optional,
+	  wrapper: specifyWrapperType.optional,
+	  data: apiCheck.object.optional,
+	  apiCheck: apiCheckProperty.optional,
+	  apiCheckInstance: apiCheckInstanceProperty.optional,
+	  apiCheckFunction: apiCheckFunctionProperty.optional,
+	  apiCheckOptions: apiCheck.object.optional,
+	  overwriteOk: apiCheck.bool.optional
+	}).strict;
+
+	_angularFix2['default'].extend(apiCheck, {
+	  formlyTypeOptions: formlyTypeOptions, formlyFieldOptions: formlyFieldOptions, formlyExpression: formlyExpression, formlyWrapperType: formlyWrapperType, fieldGroup: fieldGroup, formOptionsApi: formOptionsApi
+	});
+
+	exports['default'] = apiCheck;
+	module.exports = exports['default'];
+
+/***/ },
+/* 5 */
+/***/ function(module, exports) {
+
+	module.exports = __WEBPACK_EXTERNAL_MODULE_5__;
+
+/***/ },
+/* 6 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = "https://github.com/formly-js/angular-formly/blob/" + ("7.1.1") + "/other/ERRORS_AND_WARNINGS.md#";
+	module.exports = exports["default"];
+
+/***/ },
+/* 7 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyUsability;
+
+	// @ngInject
+	function formlyUsability(formlyApiCheck, formlyErrorAndWarningsUrlPrefix) {
+	  var _this = this;
+
+	  _angularFix2['default'].extend(this, {
+	    getFormlyError: getFormlyError,
+	    getFieldError: getFieldError,
+	    checkWrapper: checkWrapper,
+	    checkWrapperTemplate: checkWrapperTemplate,
+	    getErrorMessage: getErrorMessage,
+	    $get: function $get() {
+	      return _this;
+	    }
+	  });
+
+	  function getFieldError(errorInfoSlug, message, field) {
+	    if (arguments.length < 3) {
+	      field = message;
+	      message = errorInfoSlug;
+	      errorInfoSlug = null;
+	    }
+	    return new Error(getErrorMessage(errorInfoSlug, message) + (' Field definition: ' + _angularFix2['default'].toJson(field)));
+	  }
+
+	  function getFormlyError(errorInfoSlug, message) {
+	    if (!message) {
+	      message = errorInfoSlug;
+	      errorInfoSlug = null;
+	    }
+	    return new Error(getErrorMessage(errorInfoSlug, message));
+	  }
+
+	  function getErrorMessage(errorInfoSlug, message) {
+	    var url = '';
+	    if (errorInfoSlug !== null) {
+	      url = '' + formlyErrorAndWarningsUrlPrefix + errorInfoSlug;
+	    }
+	    return 'Formly Error: ' + message + '. ' + url;
+	  }
+
+	  function checkWrapper(wrapper) {
+	    formlyApiCheck['throw'](formlyApiCheck.formlyWrapperType, wrapper, {
+	      prefix: 'formlyConfig.setWrapper',
+	      urlSuffix: 'setwrapper-validation-failed'
+	    });
+	  }
+
+	  function checkWrapperTemplate(template, additionalInfo) {
+	    var formlyTransclude = '<formly-transclude></formly-transclude>';
+	    if (template.indexOf(formlyTransclude) === -1) {
+	      throw getFormlyError('Template wrapper templates must use "' + formlyTransclude + '" somewhere in them. ' + ('This one does not have "<formly-transclude></formly-transclude>" in it: ' + template) + '\n' + ('Additional information: ' + JSON.stringify(additionalInfo)));
+	    }
+	  }
+	}
+	formlyUsability.$inject = ["formlyApiCheck", "formlyErrorAndWarningsUrlPrefix"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 8 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _otherUtils = __webpack_require__(9);
+
+	var _otherUtils2 = _interopRequireDefault(_otherUtils);
+
+	exports['default'] = formlyConfig;
+
+	// @ngInject
+	function formlyConfig(formlyUsabilityProvider, formlyErrorAndWarningsUrlPrefix, formlyApiCheck) {
+	  var _this2 = this;
+
+	  var typeMap = {};
+	  var templateWrappersMap = {};
+	  var defaultWrapperName = 'default';
+	  var _this = this;
+	  var getError = formlyUsabilityProvider.getFormlyError;
+
+	  _angularFix2['default'].extend(this, {
+	    setType: setType,
+	    getType: getType,
+	    getTypeHeritage: getTypeHeritage,
+	    setWrapper: setWrapper,
+	    getWrapper: getWrapper,
+	    getWrapperByType: getWrapperByType,
+	    removeWrapperByName: removeWrapperByName,
+	    removeWrappersForType: removeWrappersForType,
+	    disableWarnings: false,
+	    extras: {
+	      disableNgModelAttrsManipulator: false,
+	      ngModelAttrsManipulatorPreferUnbound: false,
+	      removeChromeAutoComplete: false,
+	      defaultHideDirective: 'ng-if',
+	      getFieldId: null,
+	      explicitAsync: false
+	    },
+	    templateManipulators: {
+	      preWrapper: [],
+	      postWrapper: []
+	    },
+	    $get: function $get() {
+	      return _this2;
+	    }
+	  });
+
+	  function setType(options) {
+	    if (_angularFix2['default'].isArray(options)) {
+	      var _ret = (function () {
+	        var allTypes = [];
+	        _angularFix2['default'].forEach(options, function (item) {
+	          allTypes.push(setType(item));
+	        });
+	        return {
+	          v: allTypes
+	        };
+	      })();
+
+	      if (typeof _ret === 'object') return _ret.v;
+	    } else if (_angularFix2['default'].isObject(options)) {
+	      checkType(options);
+	      if (options['extends']) {
+	        extendTypeOptions(options);
+	      }
+	      typeMap[options.name] = options;
+	      return typeMap[options.name];
+	    } else {
+	      throw getError('You must provide an object or array for setType. You provided: ' + JSON.stringify(arguments));
+	    }
+	  }
+
+	  function checkType(options) {
+	    formlyApiCheck['throw'](formlyApiCheck.formlyTypeOptions, options, {
+	      prefix: 'formlyConfig.setType',
+	      url: 'settype-validation-failed'
+	    });
+	    if (!options.overwriteOk) {
+	      checkOverwrite(options.name, typeMap, options, 'types');
+	    } else {
+	      options.overwriteOk = undefined;
+	    }
+	  }
+
+	  function extendTypeOptions(options) {
+	    var extendsType = getType(options['extends'], true, options);
+	    extendTypeControllerFunction(options, extendsType);
+	    extendTypeLinkFunction(options, extendsType);
+	    extendTypeDefaultOptions(options, extendsType);
+	    _otherUtils2['default'].reverseDeepMerge(options, extendsType);
+	    extendTemplate(options, extendsType);
+	  }
+
+	  function extendTemplate(options, extendsType) {
+	    if (options.template && extendsType.templateUrl) {
+	      delete options.templateUrl;
+	    } else if (options.templateUrl && extendsType.template) {
+	      delete options.template;
+	    }
+	  }
+
+	  function extendTypeControllerFunction(options, extendsType) {
+	    var extendsCtrl = extendsType.controller;
+	    if (!_angularFix2['default'].isDefined(extendsCtrl)) {
+	      return;
+	    }
+	    var optionsCtrl = options.controller;
+	    if (_angularFix2['default'].isDefined(optionsCtrl)) {
+	      options.controller = function ($scope, $controller) {
+	        $controller(extendsCtrl, { $scope: $scope });
+	        $controller(optionsCtrl, { $scope: $scope });
+	      };
+	      options.controller.$inject = ['$scope', '$controller'];
+	    } else {
+	      options.controller = extendsCtrl;
+	    }
+	  }
+
+	  function extendTypeLinkFunction(options, extendsType) {
+	    var extendsFn = extendsType.link;
+	    if (!_angularFix2['default'].isDefined(extendsFn)) {
+	      return;
+	    }
+	    var optionsFn = options.link;
+	    if (_angularFix2['default'].isDefined(optionsFn)) {
+	      options.link = function () {
+	        extendsFn.apply(undefined, arguments);
+	        optionsFn.apply(undefined, arguments);
+	      };
+	    } else {
+	      options.link = extendsFn;
+	    }
+	  }
+
+	  function extendTypeDefaultOptions(options, extendsType) {
+	    var extendsDO = extendsType.defaultOptions;
+	    if (!_angularFix2['default'].isDefined(extendsDO)) {
+	      return;
+	    }
+	    var optionsDO = options.defaultOptions;
+	    var optionsDOIsFn = _angularFix2['default'].isFunction(optionsDO);
+	    var extendsDOIsFn = _angularFix2['default'].isFunction(extendsDO);
+	    if (extendsDOIsFn) {
+	      options.defaultOptions = function defaultOptions(opts, scope) {
+	        var extendsDefaultOptions = extendsDO(opts, scope);
+	        var mergedDefaultOptions = {};
+	        _otherUtils2['default'].reverseDeepMerge(mergedDefaultOptions, opts, extendsDefaultOptions);
+	        var extenderOptionsDefaultOptions = optionsDO;
+	        if (optionsDOIsFn) {
+	          extenderOptionsDefaultOptions = extenderOptionsDefaultOptions(mergedDefaultOptions, scope);
+	        }
+	        _otherUtils2['default'].reverseDeepMerge(extendsDefaultOptions, extenderOptionsDefaultOptions);
+	        return extendsDefaultOptions;
+	      };
+	    } else if (optionsDOIsFn) {
+	      options.defaultOptions = function defaultOptions(opts, scope) {
+	        var newDefaultOptions = {};
+	        _otherUtils2['default'].reverseDeepMerge(newDefaultOptions, opts, extendsDO);
+	        return optionsDO(newDefaultOptions, scope);
+	      };
+	    }
+	  }
+
+	  function getType(name, throwError, errorContext) {
+	    if (!name) {
+	      return undefined;
+	    }
+	    var type = typeMap[name];
+	    if (!type && throwError === true) {
+	      throw getError('There is no type by the name of "' + name + '": ' + JSON.stringify(errorContext));
+	    } else {
+	      return type;
+	    }
+	  }
+
+	  function getTypeHeritage(parent) {
+	    var heritage = [];
+	    var type = parent;
+	    if (_angularFix2['default'].isString(type)) {
+	      type = getType(parent);
+	    }
+	    parent = type['extends'];
+	    while (parent) {
+	      type = getType(parent);
+	      heritage.push(type);
+	      parent = type['extends'];
+	    }
+	    return heritage;
+	  }
+
+	  function setWrapper(_x, _x2) {
+	    var _again = true;
+
+	    _function: while (_again) {
+	      var options = _x,
+	          name = _x2;
+	      _again = false;
+
+	      if (_angularFix2['default'].isArray(options)) {
+	        return options.map(function (wrapperOptions) {
+	          return setWrapper(wrapperOptions);
+	        });
+	      } else if (_angularFix2['default'].isObject(options)) {
+	        options.types = getOptionsTypes(options);
+	        options.name = getOptionsName(options, name);
+	        checkWrapperAPI(options);
+	        templateWrappersMap[options.name] = options;
+	        return options;
+	      } else if (_angularFix2['default'].isString(options)) {
+	        _x = {
+	          template: options,
+	          name: name
+	        };
+	        _x2 = undefined;
+	        _again = true;
+	        continue _function;
+	      }
+	    }
+	  }
+
+	  function getOptionsTypes(options) {
+	    if (_angularFix2['default'].isString(options.types)) {
+	      return [options.types];
+	    }
+	    if (!_angularFix2['default'].isDefined(options.types)) {
+	      return [];
+	    } else {
+	      return options.types;
+	    }
+	  }
+
+	  function getOptionsName(options, name) {
+	    return options.name || name || options.types.join(' ') || defaultWrapperName;
+	  }
+
+	  function checkWrapperAPI(options) {
+	    formlyUsabilityProvider.checkWrapper(options);
+	    if (options.template) {
+	      formlyUsabilityProvider.checkWrapperTemplate(options.template, options);
+	    }
+	    if (!options.overwriteOk) {
+	      checkOverwrite(options.name, templateWrappersMap, options, 'templateWrappers');
+	    } else {
+	      delete options.overwriteOk;
+	    }
+	    checkWrapperTypes(options);
+	  }
+
+	  function checkWrapperTypes(options) {
+	    var shouldThrow = !_angularFix2['default'].isArray(options.types) || !options.types.every(_angularFix2['default'].isString);
+	    if (shouldThrow) {
+	      throw getError('Attempted to create a template wrapper with types that is not a string or an array of strings');
+	    }
+	  }
+
+	  function checkOverwrite(property, object, newValue, objectName) {
+	    if (object.hasOwnProperty(property)) {
+	      warn('overwriting-types-or-wrappers', ['Attempting to overwrite ' + property + ' on ' + objectName + ' which is currently', JSON.stringify(object[property]) + ' with ' + JSON.stringify(newValue), 'To supress this warning, specify the property "overwriteOk: true"'].join(' '));
+	    }
+	  }
+
+	  function getWrapper(name) {
+	    return templateWrappersMap[name || defaultWrapperName];
+	  }
+
+	  function getWrapperByType(type) {
+	    /* eslint prefer-const:0 */
+	    var wrappers = [];
+	    for (var _name in templateWrappersMap) {
+	      if (templateWrappersMap.hasOwnProperty(_name)) {
+	        if (templateWrappersMap[_name].types && templateWrappersMap[_name].types.indexOf(type) !== -1) {
+	          wrappers.push(templateWrappersMap[_name]);
+	        }
+	      }
+	    }
+	    return wrappers;
+	  }
+
+	  function removeWrapperByName(name) {
+	    var wrapper = templateWrappersMap[name];
+	    delete templateWrappersMap[name];
+	    return wrapper;
+	  }
+
+	  function removeWrappersForType(type) {
+	    var wrappers = getWrapperByType(type);
+	    if (!wrappers) {
+	      return undefined;
+	    }
+	    if (!_angularFix2['default'].isArray(wrappers)) {
+	      return removeWrapperByName(wrappers.name);
+	    } else {
+	      wrappers.forEach(function (wrapper) {
+	        return removeWrapperByName(wrapper.name);
+	      });
+	      return wrappers;
+	    }
+	  }
+
+	  function warn() {
+	    if (!_this.disableWarnings && console.warn) {
+	      /* eslint no-console:0 */
+	      var args = Array.prototype.slice.call(arguments);
+	      var warnInfoSlug = args.shift();
+	      args.unshift('Formly Warning:');
+	      args.push('' + formlyErrorAndWarningsUrlPrefix + warnInfoSlug);
+	      console.warn.apply(console, _toConsumableArray(args));
+	    }
+	  }
+	}
+	formlyConfig.$inject = ["formlyUsabilityProvider", "formlyErrorAndWarningsUrlPrefix", "formlyApiCheck"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 9 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = {
+	  formlyEval: formlyEval, getFieldId: getFieldId, reverseDeepMerge: reverseDeepMerge, findByNodeName: findByNodeName, arrayify: arrayify, extendFunction: extendFunction, extendArray: extendArray, startsWith: startsWith, contains: contains
+	};
+
+	function formlyEval(scope, expression, $modelValue, $viewValue, extraLocals) {
+	  if (_angularFix2['default'].isFunction(expression)) {
+	    return expression($viewValue, $modelValue, scope, extraLocals);
+	  } else {
+	    return scope.$eval(expression, _angularFix2['default'].extend({ $viewValue: $viewValue, $modelValue: $modelValue }, extraLocals));
+	  }
+	}
+
+	function getFieldId(formId, options, index) {
+	  if (options.id) {
+	    return options.id;
+	  }
+	  var type = options.type;
+	  if (!type && options.template) {
+	    type = 'template';
+	  } else if (!type && options.templateUrl) {
+	    type = 'templateUrl';
+	  }
+
+	  return [formId, type, options.key, index].join('_');
+	}
+
+	function reverseDeepMerge(dest) {
+	  _angularFix2['default'].forEach(arguments, function (src, index) {
+	    if (!index) {
+	      return;
+	    }
+	    _angularFix2['default'].forEach(src, function (val, prop) {
+	      if (!_angularFix2['default'].isDefined(dest[prop])) {
+	        dest[prop] = _angularFix2['default'].copy(val);
+	      } else if (objAndSameType(dest[prop], val)) {
+	        reverseDeepMerge(dest[prop], val);
+	      }
+	    });
+	  });
+	  return dest;
+	}
+
+	function objAndSameType(obj1, obj2) {
+	  return _angularFix2['default'].isObject(obj1) && _angularFix2['default'].isObject(obj2) && Object.getPrototypeOf(obj1) === Object.getPrototypeOf(obj2);
+	}
+
+	// recurse down a node tree to find a node with matching nodeName, for custom tags jQuery.find doesn't work in IE8
+	function findByNodeName(el, nodeName) {
+	  if (!el.prop) {
+	    // not a jQuery or jqLite object -> wrap it
+	    el = _angularFix2['default'].element(el);
+	  }
+
+	  if (el.prop('nodeName') === nodeName.toUpperCase()) {
+	    return el;
+	  }
+
+	  var c = el.children();
+	  for (var i = 0; c && i < c.length; i++) {
+	    var node = findByNodeName(c[i], nodeName);
+	    if (node) {
+	      return node;
+	    }
+	  }
+	}
+
+	function arrayify(obj) {
+	  if (obj && !_angularFix2['default'].isArray(obj)) {
+	    obj = [obj];
+	  } else if (!obj) {
+	    obj = [];
+	  }
+	  return obj;
+	}
+
+	function extendFunction() {
+	  for (var _len = arguments.length, fns = Array(_len), _key = 0; _key < _len; _key++) {
+	    fns[_key] = arguments[_key];
+	  }
+
+	  return function extendedFunction() {
+	    var args = arguments;
+	    fns.forEach(function (fn) {
+	      return fn.apply(null, args);
+	    });
+	  };
+	}
+
+	function extendArray(primary, secondary, property) {
+	  if (property) {
+	    primary = primary[property];
+	    secondary = secondary[property];
+	  }
+	  if (secondary && primary) {
+	    _angularFix2['default'].forEach(secondary, function (item) {
+	      if (primary.indexOf(item) === -1) {
+	        primary.push(item);
+	      }
+	    });
+	    return primary;
+	  } else if (secondary) {
+	    return secondary;
+	  } else {
+	    return primary;
+	  }
+	}
+
+	function startsWith(str, search) {
+	  if (_angularFix2['default'].isString(str) && _angularFix2['default'].isString(search)) {
+	    return str.length >= search.length && str.substring(0, search.length) === search;
+	  } else {
+	    return false;
+	  }
+	}
+
+	function contains(str, search) {
+	  if (_angularFix2['default'].isString(str) && _angularFix2['default'].isString(search)) {
+	    return str.length >= search.length && str.indexOf(search) !== -1;
+	  } else {
+	    return false;
+	  }
+	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 10 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports["default"] = formlyValidationMessages;
+
+	// @ngInject
+	function formlyValidationMessages() {
+
+	  var validationMessages = {
+	    addTemplateOptionValueMessage: addTemplateOptionValueMessage,
+	    addStringMessage: addStringMessage,
+	    messages: {}
+	  };
+
+	  return validationMessages;
+
+	  function addTemplateOptionValueMessage(name, prop, prefix, suffix, alternate) {
+	    validationMessages.messages[name] = templateOptionValue(prop, prefix, suffix, alternate);
+	  }
+
+	  function addStringMessage(name, string) {
+	    validationMessages.messages[name] = function () {
+	      return string;
+	    };
+	  }
+
+	  function templateOptionValue(prop, prefix, suffix, alternate) {
+	    return function getValidationMessage(viewValue, modelValue, scope) {
+	      if (scope.options.templateOptions[prop]) {
+	        return prefix + " " + scope.options.templateOptions[prop] + " " + suffix;
+	      } else {
+	        return alternate;
+	      }
+	    };
+	  }
+	}
+	module.exports = exports["default"];
+
+/***/ },
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _otherUtils = __webpack_require__(9);
+
+	var _otherUtils2 = _interopRequireDefault(_otherUtils);
+
+	exports['default'] = formlyUtil;
+
+	// @ngInject
+	function formlyUtil() {
+	  return _otherUtils2['default'];
+	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 12 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	exports['default'] = formlyWarn;
+
+	// @ngInject
+	function formlyWarn(formlyConfig, formlyErrorAndWarningsUrlPrefix, $log) {
+	  return function warn() {
+	    if (!formlyConfig.disableWarnings) {
+	      var args = Array.prototype.slice.call(arguments);
+	      var warnInfoSlug = args.shift();
+	      args.unshift('Formly Warning:');
+	      args.push('' + formlyErrorAndWarningsUrlPrefix + warnInfoSlug);
+	      $log.warn.apply($log, _toConsumableArray(args));
+	    }
+	  };
+	}
+	formlyWarn.$inject = ["formlyConfig", "formlyErrorAndWarningsUrlPrefix", "$log"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 13 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyCustomValidation;
+
+	// @ngInject
+	function formlyCustomValidation(formlyUtil) {
+	  return {
+	    restrict: 'A',
+	    require: 'ngModel',
+	    link: function formlyCustomValidationLink(scope, el, attrs, ctrl) {
+	      var opts = scope.options;
+	      opts.validation.messages = opts.validation.messages || {};
+	      _angularFix2['default'].forEach(opts.validation.messages, function (message, key) {
+	        opts.validation.messages[key] = function () {
+	          return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
+	        };
+	      });
+
+	      var useNewValidatorsApi = ctrl.hasOwnProperty('$validators') && !attrs.hasOwnProperty('useParsers');
+	      _angularFix2['default'].forEach(opts.validators, _angularFix2['default'].bind(null, addValidatorToPipeline, false));
+	      _angularFix2['default'].forEach(opts.asyncValidators, _angularFix2['default'].bind(null, addValidatorToPipeline, true));
+
+	      function addValidatorToPipeline(isAsync, validator, name) {
+	        setupMessage(validator, name);
+	        validator = _angularFix2['default'].isObject(validator) ? validator.expression : validator;
+	        if (useNewValidatorsApi) {
+	          setupWithValidators(validator, name, isAsync);
+	        } else {
+	          setupWithParsers(validator, name, isAsync);
+	        }
+	      }
+
+	      function setupMessage(validator, name) {
+	        var message = validator.message;
+	        if (message) {
+	          opts.validation.messages[name] = function () {
+	            return formlyUtil.formlyEval(scope, message, ctrl.$modelValue, ctrl.$viewValue);
+	          };
+	        }
+	      }
+
+	      function setupWithValidators(validator, name, isAsync) {
+	        var validatorCollection = isAsync ? '$asyncValidators' : '$validators';
+
+	        ctrl[validatorCollection][name] = function evalValidity(modelValue, viewValue) {
+	          return formlyUtil.formlyEval(scope, validator, modelValue, viewValue);
+	        };
+	      }
+
+	      function setupWithParsers(validator, name, isAsync) {
+	        var inFlightValidator = undefined;
+	        ctrl.$parsers.unshift(function evalValidityOfParser(viewValue) {
+	          var isValid = formlyUtil.formlyEval(scope, validator, ctrl.$modelValue, viewValue);
+	          if (isAsync) {
+	            ctrl.$pending = ctrl.$pending || {};
+	            ctrl.$pending[name] = true;
+	            inFlightValidator = isValid;
+	            isValid.then(function () {
+	              if (inFlightValidator === isValid) {
+	                ctrl.$setValidity(name, true);
+	              }
+	            })['catch'](function () {
+	              if (inFlightValidator === isValid) {
+	                ctrl.$setValidity(name, false);
+	              }
+	            })['finally'](function () {
+	              var $pending = ctrl.$pending || {};
+	              if (Object.keys($pending).length === 1) {
+	                delete ctrl.$pending;
+	              } else {
+	                delete ctrl.$pending[name];
+	              }
+	            });
+	          } else {
+	            ctrl.$setValidity(name, isValid);
+	          }
+	          return viewValue;
+	        });
+	      }
+	    }
+	  };
+	}
+	formlyCustomValidation.$inject = ["formlyUtil"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 14 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _apiCheck = __webpack_require__(5);
+
+	var _apiCheck2 = _interopRequireDefault(_apiCheck);
+
+	exports['default'] = formlyField;
+
+	/**
+	 * @ngdoc directive
+	 * @name formlyField
+	 * @restrict AE
+	 */
+	// @ngInject
+	function formlyField($http, $q, $compile, $templateCache, $interpolate, formlyConfig, formlyApiCheck, formlyUtil, formlyUsability, formlyWarn) {
+	  var arrayify = formlyUtil.arrayify;
+
+	  FormlyFieldController.$inject = ["$scope", "$timeout", "$parse", "$controller", "formlyValidationMessages"];
+	  return {
+	    restrict: 'AE',
+	    transclude: true,
+	    require: '?^formlyForm',
+	    scope: {
+	      options: '=',
+	      model: '=',
+	      originalModel: '=?',
+	      formId: '@', // TODO remove formId in a breaking release
+	      index: '=?',
+	      fields: '=?',
+	      formState: '=?',
+	      formOptions: '=?',
+	      form: '=?' // TODO require form in a breaking release
+	    },
+	    controller: FormlyFieldController,
+	    link: fieldLink
+	  };
+
+	  // @ngInject
+	  function FormlyFieldController($scope, $timeout, $parse, $controller, formlyValidationMessages) {
+	    /* eslint max-statements:[2, 31] */
+	    if ($scope.options.fieldGroup) {
+	      setupFieldGroup();
+	      return;
+	    }
+
+	    var fieldType = getFieldType($scope.options);
+	    simplifyLife($scope.options);
+	    mergeFieldOptionsWithTypeDefaults($scope.options, fieldType);
+	    extendOptionsWithDefaults($scope.options, $scope.index);
+	    checkApi($scope.options);
+	    // set field id to link labels and fields
+
+	    // initalization
+	    setFieldIdAndName();
+	    setDefaultValue();
+	    setInitialValue();
+	    runExpressions();
+	    addValidationMessages($scope.options);
+	    invokeControllers($scope, $scope.options, fieldType);
+
+	    // function definitions
+	    function runExpressions() {
+	      // must run on next tick to make sure that the current value is correct.
+	      $timeout(function runExpressionsOnNextTick() {
+	        var field = $scope.options;
+	        var currentValue = valueGetterSetter();
+	        _angularFix2['default'].forEach(field.expressionProperties, function runExpression(expression, prop) {
+	          var setter = $parse(prop).assign;
+	          var promise = $q.when(formlyUtil.formlyEval($scope, expression, currentValue, currentValue));
+	          promise.then(function setFieldValue(value) {
+	            setter(field, value);
+	          });
+	        });
+	      }, 0, false);
+	    }
+
+	    function valueGetterSetter(newVal) {
+	      if (!$scope.model || !$scope.options.key) {
+	        return undefined;
+	      }
+	      if (_angularFix2['default'].isDefined(newVal)) {
+	        $scope.model[$scope.options.key] = newVal;
+	      }
+	      return $scope.model[$scope.options.key];
+	    }
+
+	    function simplifyLife(options) {
+	      // add a few empty objects (if they don't already exist) so you don't have to undefined check everywhere
+	      formlyUtil.reverseDeepMerge(options, {
+	        originalModel: options.model,
+	        extras: {},
+	        data: {},
+	        templateOptions: {},
+	        validation: {}
+	      });
+	      // create $scope.to so template authors can reference to instead of $scope.options.templateOptions
+	      $scope.to = $scope.options.templateOptions;
+	      $scope.formOptions = $scope.formOptions || {};
+	    }
+
+	    function setFieldIdAndName() {
+	      if (_angularFix2['default'].isFunction(formlyConfig.extras.getFieldId)) {
+	        $scope.id = formlyConfig.extras.getFieldId($scope.options, $scope.model, $scope);
+	      } else {
+	        var formName = $scope.form && $scope.form.$name || $scope.formId;
+	        $scope.id = formlyUtil.getFieldId(formName, $scope.options, $scope.index);
+	      }
+	      $scope.options.id = $scope.id;
+	      $scope.name = $scope.options.name || $scope.options.id;
+	      $scope.options.name = $scope.name;
+	    }
+
+	    function setDefaultValue() {
+	      if (_angularFix2['default'].isDefined($scope.options.defaultValue) && !_angularFix2['default'].isDefined($scope.model[$scope.options.key])) {
+	        $scope.model[$scope.options.key] = $scope.options.defaultValue;
+	      }
+	    }
+
+	    function setInitialValue() {
+	      $scope.options.initialValue = $scope.model && $scope.model[$scope.options.key];
+	    }
+
+	    function mergeFieldOptionsWithTypeDefaults(options, type) {
+	      if (type) {
+	        mergeOptions(options, type.defaultOptions);
+	      }
+	      var properOrder = arrayify(options.optionsTypes).reverse(); // so the right things are overridden
+	      _angularFix2['default'].forEach(properOrder, function (typeName) {
+	        mergeOptions(options, formlyConfig.getType(typeName, true, options).defaultOptions);
+	      });
+	    }
+
+	    function mergeOptions(options, extraOptions) {
+	      if (extraOptions) {
+	        if (_angularFix2['default'].isFunction(extraOptions)) {
+	          extraOptions = extraOptions(options, $scope);
+	        }
+	        formlyUtil.reverseDeepMerge(options, extraOptions);
+	      }
+	    }
+
+	    function extendOptionsWithDefaults(options, index) {
+	      var key = options.key || index || 0;
+	      _angularFix2['default'].extend(options, {
+	        // attach the key in case the formly-field directive is used directly
+	        key: key,
+	        value: options.value || valueGetterSetter,
+	        runExpressions: runExpressions,
+	        resetModel: resetModel,
+	        updateInitialValue: updateInitialValue
+	      });
+	    }
+
+	    function resetModel() {
+	      $scope.model[$scope.options.key] = $scope.options.initialValue;
+	      if ($scope.options.formControl) {
+	        if (_angularFix2['default'].isArray($scope.options.formControl)) {
+	          _angularFix2['default'].forEach($scope.options.formControl, function (formControl) {
+	            resetFormControl(formControl, true);
+	          });
+	        } else {
+	          resetFormControl($scope.options.formControl);
+	        }
+	      }
+	    }
+
+	    function resetFormControl(formControl, isMultiNgModel) {
+	      if (!isMultiNgModel) {
+	        formControl.$setViewValue($scope.model[$scope.options.key]);
+	      }
+
+	      formControl.$render();
+	      formControl.$setUntouched && formControl.$setUntouched();
+	      formControl.$setPristine();
+
+	      // To prevent breaking change requiring a digest to reset $viewModel
+	      if (!$scope.$root.$$phase) {
+	        $scope.$digest();
+	      }
+	    }
+
+	    function updateInitialValue() {
+	      $scope.options.initialValue = $scope.model[$scope.options.key];
+	    }
+
+	    function addValidationMessages(options) {
+	      options.validation.messages = options.validation.messages || {};
+	      _angularFix2['default'].forEach(formlyValidationMessages.messages, function createFunctionForMessage(expression, name) {
+	        if (!options.validation.messages[name]) {
+	          options.validation.messages[name] = function evaluateMessage(viewValue, modelValue, scope) {
+	            return formlyUtil.formlyEval(scope, expression, modelValue, viewValue);
+	          };
+	        }
+	      });
+	    }
+
+	    function invokeControllers(scope) {
+	      var options = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
+	      var type = arguments.length <= 2 || arguments[2] === undefined ? {} : arguments[2];
+
+	      _angularFix2['default'].forEach([type.controller, options.controller], function (controller) {
+	        if (controller) {
+	          $controller(controller, { $scope: scope });
+	        }
+	      });
+	    }
+
+	    function setupFieldGroup() {
+	      $scope.options.options = $scope.options.options || {};
+	      $scope.options.options.formState = $scope.formState;
+	    }
+	  }
+
+	  // link function
+	  function fieldLink(scope, el, attrs, formlyFormCtrl) {
+	    if (scope.options.fieldGroup) {
+	      setFieldGroupTemplate();
+	      return;
+	    }
+
+	    // watch the field model (if exists) if there is no parent formly-form directive (that would watch it instead)
+	    if (!formlyFormCtrl && scope.options.model) {
+	      scope.$watch('options.model', function () {
+	        return scope.options.runExpressions();
+	      }, true);
+	    }
+
+	    addAttributes();
+	    addClasses();
+
+	    var type = getFieldType(scope.options);
+	    var args = arguments;
+	    var thusly = this;
+	    var fieldCount = 0;
+	    var fieldManipulators = getManipulators(scope.options, scope.formOptions);
+	    getFieldTemplate(scope.options).then(runManipulators(fieldManipulators.preWrapper)).then(transcludeInWrappers(scope.options, scope.formOptions)).then(runManipulators(fieldManipulators.postWrapper)).then(setElementTemplate).then(watchFormControl).then(callLinkFunctions)['catch'](function (error) {
+	      formlyWarn('there-was-a-problem-setting-the-template-for-this-field', 'There was a problem setting the template for this field ', scope.options, error);
+	    });
+
+	    function setFieldGroupTemplate() {
+	      checkFieldGroupApi(scope.options);
+	      el.addClass('formly-field-group');
+	      var extraAttributes = '';
+	      if (scope.options.elementAttributes) {
+	        extraAttributes = Object.keys(scope.options.elementAttributes).map(function (key) {
+	          return key + '="' + scope.options.elementAttributes[key] + '"';
+	        }).join(' ');
+	      }
+	      var modelValue = 'model';
+	      scope.options.form = scope.form;
+	      if (scope.options.key) {
+	        modelValue = 'model[\'' + scope.options.key + '\']';
+	      }
+	      setElementTemplate('\n          <formly-form model="' + modelValue + '"\n                       fields="options.fieldGroup"\n                       options="options.options"\n                       form="options.form"\n                       class="' + scope.options.className + '"\n                       ' + extraAttributes + '\n                       is-field-group>\n          </formly-form>\n        ');
+	    }
+
+	    function addAttributes() {
+	      if (scope.options.elementAttributes) {
+	        el.attr(scope.options.elementAttributes);
+	      }
+	    }
+
+	    function addClasses() {
+	      if (scope.options.className) {
+	        el.addClass(scope.options.className);
+	      }
+	      if (scope.options.type) {
+	        el.addClass('formly-field-' + scope.options.type);
+	      }
+	    }
+
+	    function setElementTemplate(templateString) {
+	      el.html(asHtml(templateString));
+	      $compile(el.contents())(scope);
+	      return templateString;
+	    }
+
+	    function watchFormControl(templateString) {
+	      var stopWatchingShowError = _angularFix2['default'].noop;
+	      if (scope.options.noFormControl) {
+	        return;
+	      }
+	      var templateEl = _angularFix2['default'].element('<div>' + templateString + '</div>');
+	      var ngModelNodes = templateEl[0].querySelectorAll('[ng-model],[data-ng-model]');
+
+	      if (ngModelNodes.length) {
+	        _angularFix2['default'].forEach(ngModelNodes, function (ngModelNode) {
+	          fieldCount++;
+	          watchFieldNameOrExistence(ngModelNode.getAttribute('name'));
+	        });
+	      }
+
+	      function watchFieldNameOrExistence(name) {
+	        var nameExpressionRegex = /\{\{(.*?)}}/;
+	        var nameExpression = nameExpressionRegex.exec(name);
+	        if (nameExpression) {
+	          name = $interpolate(name)(scope);
+	        }
+	        watchFieldExistence(name);
+	      }
+
+	      function watchFieldExistence(name) {
+	        scope.$watch('form["' + name + '"]', function formControlChange(formControl) {
+	          if (formControl) {
+	            if (fieldCount > 1) {
+	              if (!scope.options.formControl) {
+	                scope.options.formControl = [];
+	              }
+	              scope.options.formControl.push(formControl);
+	            } else {
+	              scope.options.formControl = formControl;
+	            }
+	            scope.fc = scope.options.formControl; // shortcut for template authors
+	            stopWatchingShowError();
+	            addShowMessagesWatcher();
+	            addParsers();
+	            addFormatters();
+	          }
+	        });
+	      }
+
+	      function addShowMessagesWatcher() {
+	        stopWatchingShowError = scope.$watch(function watchShowValidationChange() {
+	          var customExpression = formlyConfig.extras.errorExistsAndShouldBeVisibleExpression;
+	          var options = scope.options;
+	          var fc = scope.fc;
+
+	          if (!fc.$invalid) {
+	            return false;
+	          } else if (typeof options.validation.show === 'boolean') {
+	            return options.validation.show;
+	          } else if (customExpression) {
+	            return formlyUtil.formlyEval(scope, customExpression, fc.$modelValue, fc.$viewValue);
+	          } else {
+	            var noTouchedButDirty = _angularFix2['default'].isUndefined(fc.$touched) && fc.$dirty;
+	            return scope.fc.$touched || noTouchedButDirty;
+	          }
+	        }, function onShowValidationChange(show) {
+	          scope.options.validation.errorExistsAndShouldBeVisible = show;
+	          scope.showError = show; // shortcut for template authors
+	        });
+	      }
+
+	      function addParsers() {
+	        setParsersOrFormatters('parsers');
+	      }
+
+	      function addFormatters() {
+	        setParsersOrFormatters('formatters');
+	        var ctrl = scope.fc;
+	        var formWasPristine = scope.form.$pristine;
+	        if (scope.options.formatters) {
+	          (function () {
+	            var value = ctrl.$modelValue;
+	            ctrl.$formatters.forEach(function (formatter) {
+	              value = formatter(value);
+	            });
+
+	            ctrl.$setViewValue(value);
+	            ctrl.$render();
+	            ctrl.$setPristine();
+	            if (formWasPristine) {
+	              scope.form.$setPristine();
+	            }
+	          })();
+	        }
+	      }
+
+	      function setParsersOrFormatters(which) {
+	        var originalThingProp = 'originalParser';
+	        if (which === 'formatters') {
+	          originalThingProp = 'originalFormatter';
+	        }
+
+	        // init with type's parsers
+	        var things = getThingsFromType(type);
+
+	        // get optionsTypes things
+	        things = formlyUtil.extendArray(things, getThingsFromOptionsTypes(scope.options.optionsTypes));
+
+	        // get field's things
+	        things = formlyUtil.extendArray(things, scope.options[which]);
+
+	        // convert things into formlyExpression things
+	        _angularFix2['default'].forEach(things, function (thing, index) {
+	          things[index] = getFormlyExpressionThing(thing);
+	        });
+
+	        var ngModelCtrls = scope.fc;
+	        if (!_angularFix2['default'].isArray(ngModelCtrls)) {
+	          ngModelCtrls = [ngModelCtrls];
+	        }
+
+	        _angularFix2['default'].forEach(ngModelCtrls, function (ngModelCtrl) {
+	          var _ngModelCtrl;
+
+	          ngModelCtrl['$' + which] = (_ngModelCtrl = ngModelCtrl['$' + which]).concat.apply(_ngModelCtrl, _toConsumableArray(things));
+	        });
+
+	        function getThingsFromType(theType) {
+	          if (!theType) {
+	            return [];
+	          }
+	          if (_angularFix2['default'].isString(theType)) {
+	            theType = formlyConfig.getType(theType, true, scope.options);
+	          }
+	          var typeThings = [];
+
+	          // get things from parent
+	          if (theType['extends']) {
+	            typeThings = formlyUtil.extendArray(typeThings, getThingsFromType(theType['extends']));
+	          }
+
+	          // get own type's things
+	          typeThings = formlyUtil.extendArray(typeThings, getDefaultOptionsProperty(theType, which, []));
+
+	          // get things from optionsTypes
+	          typeThings = formlyUtil.extendArray(typeThings, getThingsFromOptionsTypes(getDefaultOptionsOptionsTypes(theType)));
+
+	          return typeThings;
+	        }
+
+	        function getThingsFromOptionsTypes() {
+	          var optionsTypes = arguments.length <= 0 || arguments[0] === undefined ? [] : arguments[0];
+
+	          var optionsTypesThings = [];
+	          _angularFix2['default'].forEach(_angularFix2['default'].copy(arrayify(optionsTypes)).reverse(), function (optionsTypeName) {
+	            optionsTypesThings = formlyUtil.extendArray(optionsTypesThings, getThingsFromType(optionsTypeName));
+	          });
+	          return optionsTypesThings;
+	        }
+
+	        function getFormlyExpressionThing(thing) {
+	          formlyExpressionParserOrFormatterFunction[originalThingProp] = thing;
+	          return formlyExpressionParserOrFormatterFunction;
+
+	          function formlyExpressionParserOrFormatterFunction($viewValue) {
+	            var $modelValue = scope.options.value();
+	            return formlyUtil.formlyEval(scope, thing, $modelValue, $viewValue);
+	          }
+	        }
+	      }
+	    }
+
+	    function callLinkFunctions() {
+	      if (type && type.link) {
+	        type.link.apply(thusly, args);
+	      }
+	      if (scope.options.link) {
+	        scope.options.link.apply(thusly, args);
+	      }
+	    }
+
+	    function runManipulators(manipulators) {
+	      return function runManipulatorsOnTemplate(templateToManipulate) {
+	        var chain = $q.when(templateToManipulate);
+	        _angularFix2['default'].forEach(manipulators, function (manipulator) {
+	          chain = chain.then(function (template) {
+	            return $q.when(manipulator(template, scope.options, scope)).then(function (newTemplate) {
+	              return _angularFix2['default'].isString(newTemplate) ? newTemplate : asHtml(newTemplate);
+	            });
+	          });
+	        });
+	        return chain;
+	      };
+	    }
+	  }
+
+	  // sort-of stateless util functions
+	  function asHtml(el) {
+	    var wrapper = _angularFix2['default'].element('<a></a>');
+	    return wrapper.append(el).html();
+	  }
+
+	  function getFieldType(options) {
+	    return options.type && formlyConfig.getType(options.type);
+	  }
+
+	  function getManipulators(options, formOptions) {
+	    var preWrapper = [];
+	    var postWrapper = [];
+	    addManipulators(options.templateManipulators);
+	    addManipulators(formOptions.templateManipulators);
+	    addManipulators(formlyConfig.templateManipulators);
+	    return { preWrapper: preWrapper, postWrapper: postWrapper };
+
+	    function addManipulators(manipulators) {
+	      /* eslint-disable */ // it doesn't understand this :-(
+
+	      var _ref = manipulators || {};
+
+	      var _ref$preWrapper = _ref.preWrapper;
+	      var pre = _ref$preWrapper === undefined ? [] : _ref$preWrapper;
+	      var _ref$postWrapper = _ref.postWrapper;
+	      var post = _ref$postWrapper === undefined ? [] : _ref$postWrapper;
+
+	      preWrapper = preWrapper.concat(pre);
+	      postWrapper = postWrapper.concat(post);
+	      /* eslint-enable */
+	    }
+	  }
+
+	  function getFieldTemplate(options) {
+	    function fromOptionsOrType(key, fieldType) {
+	      if (_angularFix2['default'].isDefined(options[key])) {
+	        return options[key];
+	      } else if (fieldType && _angularFix2['default'].isDefined(fieldType[key])) {
+	        return fieldType[key];
+	      }
+	    }
+
+	    var type = formlyConfig.getType(options.type, true, options);
+	    var template = fromOptionsOrType('template', type);
+	    var templateUrl = fromOptionsOrType('templateUrl', type);
+	    if (_angularFix2['default'].isUndefined(template) && !templateUrl) {
+	      throw formlyUsability.getFieldError('type-type-has-no-template', 'Type \'' + options.type + '\' has no template. On element:', options);
+	    }
+
+	    return getTemplate(templateUrl || template, _angularFix2['default'].isUndefined(template), options);
+	  }
+
+	  function getTemplate(template, isUrl, options) {
+	    var templatePromise = undefined;
+	    if (_angularFix2['default'].isFunction(template)) {
+	      templatePromise = $q.when(template(options));
+	    } else {
+	      templatePromise = $q.when(template);
+	    }
+
+	    if (!isUrl) {
+	      return templatePromise;
+	    } else {
+	      var _ret2 = (function () {
+	        var httpOptions = { cache: $templateCache };
+	        return {
+	          v: templatePromise.then(function (url) {
+	            return $http.get(url, httpOptions);
+	          }).then(function (response) {
+	            return response.data;
+	          })['catch'](function handleErrorGettingATemplate(error) {
+	            formlyWarn('problem-loading-template-for-templateurl', 'Problem loading template for ' + template, error);
+	          })
+	        };
+	      })();
+
+	      if (typeof _ret2 === 'object') return _ret2.v;
+	    }
+	  }
+
+	  function transcludeInWrappers(options, formOptions) {
+	    var wrapper = getWrapperOption(options, formOptions);
+
+	    return function transcludeTemplate(template) {
+	      if (!wrapper.length) {
+	        return $q.when(template);
+	      }
+
+	      wrapper.forEach(function (aWrapper) {
+	        formlyUsability.checkWrapper(aWrapper, options);
+	        runApiCheck(aWrapper, options);
+	      });
+	      var promises = wrapper.map(function (w) {
+	        return getTemplate(w.template || w.templateUrl, !w.template);
+	      });
+	      return $q.all(promises).then(function (wrappersTemplates) {
+	        wrappersTemplates.forEach(function (wrapperTemplate, index) {
+	          formlyUsability.checkWrapperTemplate(wrapperTemplate, wrapper[index]);
+	        });
+	        wrappersTemplates.reverse(); // wrapper 0 is wrapped in wrapper 1 and so on...
+	        var totalWrapper = wrappersTemplates.shift();
+	        wrappersTemplates.forEach(function (wrapperTemplate) {
+	          totalWrapper = doTransclusion(totalWrapper, wrapperTemplate);
+	        });
+	        return doTransclusion(totalWrapper, template);
+	      });
+	    };
+	  }
+
+	  function doTransclusion(wrapper, template) {
+	    var superWrapper = _angularFix2['default'].element('<a></a>'); // this allows people not have to have a single root in wrappers
+	    superWrapper.append(wrapper);
+	    var transcludeEl = superWrapper.find('formly-transclude');
+	    if (!transcludeEl.length) {
+	      // try it using our custom find function
+	      transcludeEl = formlyUtil.findByNodeName(superWrapper, 'formly-transclude');
+	    }
+	    transcludeEl.replaceWith(template);
+	    return superWrapper.html();
+	  }
+
+	  function getWrapperOption(options, formOptions) {
+	    /* eslint complexity:[2, 6] */
+	    var wrapper = options.wrapper;
+	    // explicit null means no wrapper
+	    if (wrapper === null) {
+	      return [];
+	    }
+
+	    // nothing specified means use the default wrapper for the type
+	    if (!wrapper) {
+	      // get all wrappers that specify they apply to this type
+	      wrapper = arrayify(formlyConfig.getWrapperByType(options.type));
+	    } else {
+	      wrapper = arrayify(wrapper).map(formlyConfig.getWrapper);
+	    }
+
+	    // get all wrappers for that the type specified that it uses.
+	    var type = formlyConfig.getType(options.type, true, options);
+	    if (type && type.wrapper) {
+	      var typeWrappers = arrayify(type.wrapper).map(formlyConfig.getWrapper);
+	      wrapper = wrapper.concat(typeWrappers);
+	    }
+
+	    // add form wrappers
+	    if (formOptions.wrapper) {
+	      var formWrappers = arrayify(formOptions.wrapper).map(formlyConfig.getWrapper);
+	      wrapper = wrapper.concat(formWrappers);
+	    }
+
+	    // add the default wrapper last
+	    var defaultWrapper = formlyConfig.getWrapper();
+	    if (defaultWrapper) {
+	      wrapper.push(defaultWrapper);
+	    }
+	    return wrapper;
+	  }
+
+	  function checkApi(options) {
+	    formlyApiCheck['throw'](formlyApiCheck.formlyFieldOptions, options, {
+	      prefix: 'formly-field directive',
+	      url: 'formly-field-directive-validation-failed'
+	    });
+	    // validate with the type
+	    var type = options.type && formlyConfig.getType(options.type);
+	    if (type) {
+	      runApiCheck(type, options, true);
+	    }
+	    if (options.expressionProperties && options.expressionProperties.hide) {
+	      formlyWarn('dont-use-expressionproperties.hide-use-hideexpression-instead', 'You have specified `hide` in `expressionProperties`. Use `hideExpression` instead', options);
+	    }
+	  }
+
+	  function checkFieldGroupApi(options) {
+	    formlyApiCheck['throw'](formlyApiCheck.fieldGroup, options, {
+	      prefix: 'formly-field directive',
+	      url: 'formly-field-directive-validation-failed'
+	    });
+	  }
+
+	  function runApiCheck(_ref2, options, forType) {
+	    var apiCheck = _ref2.apiCheck;
+	    var apiCheckInstance = _ref2.apiCheckInstance;
+	    var apiCheckFunction = _ref2.apiCheckFunction;
+	    var apiCheckOptions = _ref2.apiCheckOptions;
+
+	    runApiCheckForType(apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions, options);
+	    if (forType && options.type) {
+	      _angularFix2['default'].forEach(formlyConfig.getTypeHeritage(options.type), function (type) {
+	        runApiCheckForType(type.apiCheck, type.apiCheckInstance, type.apiCheckFunction, type.apiCheckOptions, options);
+	      });
+	    }
+	  }
+
+	  function runApiCheckForType(apiCheck, apiCheckInstance, apiCheckFunction, apiCheckOptions, options) {
+	    /* eslint complexity:[2, 9] */
+	    if (!apiCheck) {
+	      return;
+	    }
+	    var instance = apiCheckInstance || formlyConfig.extras.apiCheckInstance || formlyApiCheck;
+	    if (instance.config.disabled || _apiCheck2['default'].globalConfig.disabled) {
+	      return;
+	    }
+	    var fn = apiCheckFunction || 'warn';
+	    // this is the new API
+	    var checkerObjects = apiCheck(instance);
+	    _angularFix2['default'].forEach(checkerObjects, function (shape, name) {
+	      var checker = instance.shape(shape);
+	      var checkOptions = _angularFix2['default'].extend({
+	        prefix: 'formly-field type ' + options.type + ' for property ' + name,
+	        url: formlyApiCheck.config.output.docsBaseUrl + 'formly-field-type-apicheck-failed'
+	      }, apiCheckOptions);
+	      instance[fn](checker, options[name], checkOptions);
+	    });
+	  }
+	}
+	formlyField.$inject = ["$http", "$q", "$compile", "$templateCache", "$interpolate", "formlyConfig", "formlyApiCheck", "formlyUtil", "formlyUsability", "formlyWarn"];
+
+	// Stateless util functions
+	function getDefaultOptionsOptionsTypes(type) {
+	  return getDefaultOptionsProperty(type, 'optionsTypes', []);
+	}
+
+	function getDefaultOptionsProperty(type, prop, defaultValue) {
+	  return type.defaultOptions && type.defaultOptions[prop] || defaultValue;
+	}
+	module.exports = exports['default'];
+
+/***/ },
+/* 15 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	exports['default'] = formlyFocus;
+
+	// @ngInject
+	function formlyFocus($timeout, $document) {
+	  return {
+	    restrict: 'A',
+	    link: function formlyFocusLink(scope, element, attrs) {
+	      var previousEl = null;
+	      var el = element[0];
+	      var doc = $document[0];
+	      attrs.$observe('formlyFocus', function respondToFocusExpressionChange(value) {
+	        /* eslint no-bitwise:0 */ // I know what I'm doing. I promise...
+	        if (value === 'true') {
+	          $timeout(function setElementFocus() {
+	            previousEl = doc.activeElement;
+	            el.focus();
+	          }, ~ ~attrs.focusWait);
+	        } else if (value === 'false') {
+	          if (doc.activeElement === el) {
+	            el.blur();
+	            if (attrs.hasOwnProperty('refocus') && previousEl) {
+	              previousEl.focus();
+	            }
+	          }
+	        }
+	      });
+	    }
+	  };
+	}
+	formlyFocus.$inject = ["$timeout", "$document"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 16 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+	var _slice = Array.prototype.slice;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) arr2[i] = arr[i]; return arr2; } else { return Array.from(arr); } }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = formlyForm;
+
+	/**
+	 * @ngdoc directive
+	 * @name formlyForm
+	 * @restrict AE
+	 */
+	// @ngInject
+	function formlyForm(formlyUsability, formlyWarn, $parse, formlyConfig, $interpolate) {
+	  var currentFormId = 1;
+	  FormlyFormController.$inject = ["$scope", "formlyApiCheck", "formlyUtil"];
+	  return {
+	    restrict: 'AE',
+	    template: formlyFormGetTemplate,
+	    replace: true,
+	    transclude: true,
+	    scope: {
+	      fields: '=',
+	      model: '=',
+	      form: '=?',
+	      options: '=?'
+	    },
+	    controller: FormlyFormController,
+	    link: formlyFormLink
+	  };
+
+	  function formlyFormGetTemplate(el, attrs) {
+	    var rootEl = getRootEl();
+	    var fieldRootEl = getFieldRootEl();
+	    var formId = 'formly_' + currentFormId++;
+	    var parentFormAttributes = '';
+	    if (attrs.hasOwnProperty('isFieldGroup') && el.parent().parent().hasClass('formly')) {
+	      parentFormAttributes = copyAttributes(el.parent().parent()[0].attributes);
+	    }
+	    return '\n        <' + rootEl + ' class="formly"\n                 name="' + getFormName() + '"\n                 role="form" ' + parentFormAttributes + '>\n          <' + fieldRootEl + ' formly-field\n               ng-repeat="field in fields ' + getTrackBy() + '"\n               ' + getHideDirective() + '="!field.hide"\n               class="formly-field"\n               options="field"\n               model="field.model || model"\n               original-model="model"\n               fields="fields"\n               form="theFormlyForm"\n               form-id="' + getFormName() + '"\n               form-state="options.formState"\n               form-options="options"\n               index="$index">\n          </' + fieldRootEl + '>\n          <div ng-transclude class="' + getTranscludeClass() + '"></div>\n        </' + rootEl + '>\n      ';
+
+	    function getRootEl() {
+	      return attrs.rootEl || 'ng-form';
+	    }
+
+	    function getFieldRootEl() {
+	      return attrs.fieldRootEl || 'div';
+	    }
+
+	    function getHideDirective() {
+	      return attrs.hideDirective || formlyConfig.extras.defaultHideDirective || 'ng-if';
+	    }
+
+	    function getTrackBy() {
+	      if (!attrs.trackBy) {
+	        return '';
+	      } else {
+	        return 'track by ' + attrs.trackBy;
+	      }
+	    }
+
+	    function getFormName() {
+	      var formName = formId;
+	      var bindName = attrs.bindName;
+	      if (bindName) {
+	        if (_angularFix2['default'].version.minor < 3) {
+	          throw formlyUsability.getFormlyError('bind-name attribute on formly-form not allowed in < angular 1.3');
+	        }
+	        // we can do a one-time binding here because we know we're in 1.3.x territory
+	        formName = $interpolate.startSymbol() + '::\'formly_\' + ' + bindName + $interpolate.endSymbol();
+	      }
+	      return formName;
+	    }
+
+	    function getTranscludeClass() {
+	      return attrs.transcludeClass || '';
+	    }
+
+	    function copyAttributes(attributes) {
+	      var excluded = ['model', 'form', 'fields', 'options', 'name', 'role', 'class', 'data-model', 'data-form', 'data-fields', 'data-options', 'data-name'];
+	      var arrayAttrs = [];
+	      _angularFix2['default'].forEach(attributes, function (_ref) {
+	        var nodeName = _ref.nodeName;
+	        var value = _ref.value;
+
+	        if (nodeName !== 'undefined' && excluded.indexOf(nodeName) === -1) {
+	          arrayAttrs.push(toKebabCase(nodeName) + '="' + value + '"');
+	        }
+	      });
+	      return arrayAttrs.join(' ');
+	    }
+	  }
+
+	  // @ngInject
+	  function FormlyFormController($scope, formlyApiCheck, formlyUtil) {
+	    setupOptions();
+	    $scope.model = $scope.model || {};
+	    setupFields();
+
+	    // watch the model and evaluate watch expressions that depend on it.
+	    $scope.$watch('model', onModelOrFormStateChange, true);
+	    if ($scope.options.formState) {
+	      $scope.$watch('options.formState', onModelOrFormStateChange, true);
+	    }
+
+	    function onModelOrFormStateChange() {
+	      _angularFix2['default'].forEach($scope.fields, function runFieldExpressionProperties(field, index) {
+	        var model = field.model || $scope.model;
+	        field.runExpressions && field.runExpressions();
+	        if (field.hideExpression) {
+	          // can't use hide with expressionProperties reliably
+	          var val = model[field.key];
+	          field.hide = evalCloseToFormlyExpression(field.hideExpression, val, field, index);
+	        }
+	        if (field.extras && field.extras.validateOnModelChange && field.formControl) {
+	          field.formControl.$validate();
+	        }
+	      });
+	    }
+
+	    function setupFields() {
+	      $scope.fields = $scope.fields || [];
+
+	      checkDeprecatedOptions($scope.options);
+
+	      var fieldTransforms = $scope.options.fieldTransform || formlyConfig.extras.fieldTransform;
+
+	      if (!_angularFix2['default'].isArray(fieldTransforms)) {
+	        fieldTransforms = [fieldTransforms];
+	      }
+
+	      _angularFix2['default'].forEach(fieldTransforms, function transformFields(fieldTransform) {
+	        if (fieldTransform) {
+	          $scope.fields = fieldTransform($scope.fields, $scope.model, $scope.options, $scope.form);
+	          if (!$scope.fields) {
+	            throw formlyUsability.getFormlyError('fieldTransform must return an array of fields');
+	          }
+	        }
+	      });
+
+	      setupModels();
+
+	      _angularFix2['default'].forEach($scope.fields, attachKey); // attaches a key based on the index if a key isn't specified
+	      _angularFix2['default'].forEach($scope.fields, setupWatchers); // setup watchers for all fields
+	    }
+
+	    function checkDeprecatedOptions(options) {
+	      if (formlyConfig.extras.fieldTransform && _angularFix2['default'].isFunction(formlyConfig.extras.fieldTransform)) {
+	        formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for formlyConfig.extras: ' + formlyConfig.extras.fieldTransform.name, formlyConfig.extras);
+	      } else if (options.fieldTransform && _angularFix2['default'].isFunction(options.fieldTransform)) {
+	        formlyWarn('fieldtransform-as-a-function-deprecated', 'fieldTransform as a function has been deprecated.', 'Attempted for form', options);
+	      }
+	    }
+
+	    function setupOptions() {
+	      formlyApiCheck['throw']([formlyApiCheck.formOptionsApi.optional], [$scope.options], { prefix: 'formly-form options check' });
+	      $scope.options = $scope.options || {};
+	      $scope.options.formState = $scope.options.formState || {};
+
+	      _angularFix2['default'].extend($scope.options, {
+	        updateInitialValue: updateInitialValue,
+	        resetModel: resetModel
+	      });
+	    }
+
+	    function updateInitialValue() {
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
+	        if (isFieldGroup(field) && field.options) {
+	          field.options.updateInitialValue();
+	        } else {
+	          field.updateInitialValue();
+	        }
+	      });
+	    }
+
+	    function resetModel() {
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
+	        if (isFieldGroup(field) && field.options) {
+	          field.options.resetModel();
+	        } else if (field.resetModel) {
+	          field.resetModel();
+	        }
+	      });
+	    }
+
+	    function setupModels() {
+	      // a set of field models that are already watched (the $scope.model will have its own watcher)
+	      var watchedModels = [$scope.model];
+
+	      if ($scope.options.formState) {
+	        // $scope.options.formState will have its own watcher
+	        watchedModels.push($scope.options.formState);
+	      }
+
+	      _angularFix2['default'].forEach($scope.fields, function (field) {
+	        var isNewModel = initModel(field);
+
+	        if (field.model && isNewModel && watchedModels.indexOf(field.model) === -1) {
+	          $scope.$watch(function () {
+	            return field.model;
+	          }, onModelOrFormStateChange, true);
+	          watchedModels.push(field.model);
+	        }
+	      });
+	    }
+
+	    function initModel(field) {
+	      var isNewModel = true;
+
+	      if (_angularFix2['default'].isString(field.model)) {
+	        var expression = field.model;
+	        var index = $scope.fields.indexOf(field);
+
+	        isNewModel = !refrencesCurrentlyWatchedModel(expression);
+
+	        field.model = evalCloseToFormlyExpression(expression, undefined, field, index);
+	        if (!field.model) {
+	          throw formlyUsability.getFieldError('field-model-must-be-initialized', 'Field model must be initialized. When specifying a model as a string for a field, the result of the' + ' expression must have been initialized ahead of time.', field);
+	        }
+	      }
+	      return isNewModel;
+	    }
+
+	    function refrencesCurrentlyWatchedModel(expression) {
+	      return ['model', 'formState'].some(function (item) {
+	        return formlyUtil.startsWith(expression, item + '.') || formlyUtil.startsWith(expression, item + '[');
+	      });
+	    }
+
+	    function attachKey(field, index) {
+	      if (!isFieldGroup(field)) {
+	        field.key = field.key || index || 0;
+	      }
+	    }
+
+	    function setupWatchers(field, index) {
+	      if (isFieldGroup(field) || !_angularFix2['default'].isDefined(field.watcher)) {
+	        return;
+	      }
+	      var watchers = field.watcher;
+	      if (!_angularFix2['default'].isArray(watchers)) {
+	        watchers = [watchers];
+	      }
+	      _angularFix2['default'].forEach(watchers, function setupWatcher(watcher) {
+	        if (!_angularFix2['default'].isDefined(watcher.listener)) {
+	          throw formlyUsability.getFieldError('all-field-watchers-must-have-a-listener', 'All field watchers must have a listener', field);
+	        }
+	        var watchExpression = getWatchExpression(watcher, field, index);
+	        var watchListener = getWatchListener(watcher, field, index);
+
+	        var type = watcher.type || '$watch';
+	        watcher.stopWatching = $scope[type](watchExpression, watchListener, watcher.watchDeep);
+	      });
+	    }
+
+	    function getWatchExpression(watcher, field, index) {
+	      var watchExpression = watcher.expression || 'model[\'' + field.key + '\']';
+	      if (_angularFix2['default'].isFunction(watchExpression)) {
+	        (function () {
+	          // wrap the field's watch expression so we can call it with the field as the first arg
+	          // and the stop function as the last arg as a helper
+	          var originalExpression = watchExpression;
+	          watchExpression = function formlyWatchExpression() {
+	            var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
+	            return originalExpression.apply(undefined, _toConsumableArray(args));
+	          };
+	          watchExpression.displayName = 'Formly Watch Expression for field for ' + field.key;
+	        })();
+	      }
+	      return watchExpression;
+	    }
+
+	    function getWatchListener(watcher, field, index) {
+	      var watchListener = watcher.listener;
+	      if (_angularFix2['default'].isFunction(watchListener)) {
+	        (function () {
+	          // wrap the field's watch listener so we can call it with the field as the first arg
+	          // and the stop function as the last arg as a helper
+	          var originalListener = watchListener;
+	          watchListener = function formlyWatchListener() {
+	            var args = modifyArgs.apply(undefined, [watcher, index].concat(_slice.call(arguments)));
+	            return originalListener.apply(undefined, _toConsumableArray(args));
+	          };
+	          watchListener.displayName = 'Formly Watch Listener for field for ' + field.key;
+	        })();
+	      }
+	      return watchListener;
+	    }
+
+	    function modifyArgs(watcher, index) {
+	      for (var _len = arguments.length, originalArgs = Array(_len > 2 ? _len - 2 : 0), _key = 2; _key < _len; _key++) {
+	        originalArgs[_key - 2] = arguments[_key];
+	      }
+
+	      return [$scope.fields[index]].concat(originalArgs, [watcher.stopWatching]);
+	    }
+
+	    function evalCloseToFormlyExpression(expression, val, field, index) {
+	      var extraLocals = getFormlyFieldLikeLocals(field, index);
+	      return formlyUtil.formlyEval($scope, expression, val, val, extraLocals);
+	    }
+
+	    function getFormlyFieldLikeLocals(field, index) {
+	      // this makes it closer to what a regular formlyExpression would be
+	      return {
+	        options: field,
+	        index: index,
+	        formState: $scope.options.formState,
+	        formId: $scope.formId
+	      };
+	    }
+	  }
+
+	  function formlyFormLink(scope, el, attrs) {
+	    setFormController();
+	    fixChromeAutocomplete();
+
+	    function setFormController() {
+	      var formId = attrs.name;
+	      scope.formId = formId;
+	      scope.theFormlyForm = scope[formId];
+	      if (attrs.form) {
+	        var getter = $parse(attrs.form);
+	        var setter = getter.assign;
+	        var parentForm = getter(scope.$parent);
+	        if (parentForm) {
+	          scope.theFormlyForm = parentForm;
+	          if (scope[formId]) {
+	            scope.theFormlyForm.$removeControl(scope[formId]);
+	          }
+
+	          // this next line is probably one of the more dangerous things that angular-formly does to improve the
+	          // API for angular-formly forms. It ensures that the NgModelControllers inside of formly-form will be
+	          // attached to the form that is passed to formly-form rather than the one that formly-form creates
+	          // this is necessary because it's confusing to have a step between the form you pass in
+	          // and the fields in that form. It also is because angular doesn't propagate properties like $submitted down
+	          // to children forms :-( This line was added to solve this issue:
+	          // https://github.com/formly-js/angular-formly/issues/287
+	          // luckily, this is how the formController has been accessed by the NgModelController since angular 1.0.0
+	          // so I expect it will remain this way for the life of angular 1.x
+	          el.removeData('$formController');
+	        } else {
+	          setter(scope.$parent, scope[formId]);
+	        }
+	      }
+	      if (!scope.theFormlyForm && !formlyConfig.disableWarnings) {
+	        /* eslint no-console:0 */
+	        formlyWarn('formly-form-has-no-formcontroller', 'Your formly-form does not have a `form` property. Many functions of the form (like validation) may not work', el, scope);
+	      }
+	    }
+
+	    /*
+	     * chrome autocomplete lameness
+	     * see https://code.google.com/p/chromium/issues/detail?id=468153#c14
+	     * ლ(ಠ益ಠლ)   (╯°□°)╯︵ ┻━┻    (◞‸◟；)
+	     */
+	    function fixChromeAutocomplete() {
+	      var global = formlyConfig.extras.removeChromeAutoComplete === true;
+	      var offInstance = scope.options && scope.options.removeChromeAutoComplete === false;
+	      var onInstance = scope.options && scope.options.removeChromeAutoComplete === true;
+	      if (global && !offInstance || onInstance) {
+	        var input = document.createElement('input');
+	        input.setAttribute('autocomplete', 'address-level4');
+	        input.setAttribute('hidden', 'true');
+	        el[0].appendChild(input);
+	      }
+	    }
+	  }
+
+	  // stateless util functions
+	  function toKebabCase(string) {
+	    if (string) {
+	      return string.replace(/([A-Z])/g, function ($1) {
+	        return '-' + $1.toLowerCase();
+	      });
+	    } else {
+	      return '';
+	    }
+	  }
+
+	  function isFieldGroup(field) {
+	    return field && !!field.fieldGroup;
+	  }
+	}
+	formlyForm.$inject = ["formlyUsability", "formlyWarn", "$parse", "formlyConfig", "$interpolate"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 17 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	var _otherUtils = __webpack_require__(9);
+
+	exports['default'] = addFormlyNgModelAttrsManipulator;
+
+	// @ngInject
+	function addFormlyNgModelAttrsManipulator(formlyConfig, $interpolate) {
+	  if (formlyConfig.extras.disableNgModelAttrsManipulator) {
+	    return;
+	  }
+	  formlyConfig.templateManipulators.preWrapper.push(ngModelAttrsManipulator);
+
+	  function ngModelAttrsManipulator(template, options, scope) {
+	    var node = document.createElement('div');
+	    var skip = options.extras && options.extras.skipNgModelAttrsManipulator;
+	    if (skip === true) {
+	      return template;
+	    }
+	    node.innerHTML = template;
+
+	    var modelNodes = getNgModelNodes(node, skip);
+	    if (!modelNodes || !modelNodes.length) {
+	      return template;
+	    }
+
+	    addIfNotPresent(modelNodes, 'id', scope.id);
+	    addIfNotPresent(modelNodes, 'name', scope.name || scope.id);
+
+	    addValidation();
+	    alterNgModelAttr();
+	    addModelOptions();
+	    addTemplateOptionsAttrs();
+	    addNgModelElAttrs();
+
+	    return node.innerHTML;
+
+	    function addValidation() {
+	      if (_angularFix2['default'].isDefined(options.validators) || _angularFix2['default'].isDefined(options.validation.messages)) {
+	        addIfNotPresent(modelNodes, 'formly-custom-validation', '');
+	      }
+	    }
+
+	    function alterNgModelAttr() {
+	      if (isPropertyAccessor(options.key)) {
+	        addRegardlessOfPresence(modelNodes, 'ng-model', 'model.' + options.key);
+	      }
+	    }
+
+	    function addModelOptions() {
+	      if (_angularFix2['default'].isDefined(options.modelOptions)) {
+	        addIfNotPresent(modelNodes, 'ng-model-options', 'options.modelOptions');
+	        if (options.modelOptions.getterSetter) {
+	          addRegardlessOfPresence(modelNodes, 'ng-model', 'options.value');
+	        }
+	      }
+	    }
+
+	    function addTemplateOptionsAttrs() {
+	      if (!options.templateOptions && !options.expressionProperties) {
+	        // no need to run these if there are no templateOptions or expressionProperties
+	        return;
+	      }
+	      var to = options.templateOptions || {};
+	      var ep = options.expressionProperties || {};
+
+	      var ngModelAttributes = getBuiltInAttributes();
+
+	      // extend with the user's specifications winning
+	      _angularFix2['default'].extend(ngModelAttributes, options.ngModelAttrs);
+
+	      // Feel free to make this more simple :-)
+	      _angularFix2['default'].forEach(ngModelAttributes, function (val, name) {
+	        /* eslint complexity:[2, 14] */
+	        var attrVal = undefined,
+	            attrName = undefined;
+	        var ref = 'options.templateOptions[\'' + name + '\']';
+	        var toVal = to[name];
+	        var epVal = getEpValue(ep, name);
+
+	        var inTo = _angularFix2['default'].isDefined(toVal);
+	        var inEp = _angularFix2['default'].isDefined(epVal);
+	        if (val.value) {
+	          // I realize this looks backwards, but it's right, trust me...
+	          attrName = val.value;
+	          attrVal = name;
+	        } else if (val.statement && inTo) {
+	          attrName = val.statement;
+	          if (_angularFix2['default'].isString(to[name])) {
+	            attrVal = '$eval(' + ref + ')';
+	          } else if (_angularFix2['default'].isFunction(to[name])) {
+	            attrVal = ref + '(model[options.key], options, this, $event)';
+	          } else {
+	            throw new Error('options.templateOptions.' + name + ' must be a string or function: ' + JSON.stringify(options));
+	          }
+	        } else if (val.bound && inEp) {
+	          attrName = val.bound;
+	          attrVal = ref;
+	        } else if ((val.attribute || val.boolean) && inEp) {
+	          attrName = val.attribute || val.boolean;
+	          attrVal = '' + $interpolate.startSymbol() + ref + $interpolate.endSymbol();
+	        } else if (val.attribute && inTo) {
+	          attrName = val.attribute;
+	          attrVal = toVal;
+	        } else if (val.boolean) {
+	          if (inTo && !inEp && toVal) {
+	            attrName = val.boolean;
+	            attrVal = true;
+	          } else {
+	            /* eslint no-empty:0 */
+	            // empty to illustrate that a boolean will not be added via val.bound
+	            // if you want it added via val.bound, then put it in expressionProperties
+	          }
+	        } else if (val.bound && inTo) {
+	            attrName = val.bound;
+	            attrVal = ref;
+	          }
+
+	        if (_angularFix2['default'].isDefined(attrName) && _angularFix2['default'].isDefined(attrVal)) {
+	          addIfNotPresent(modelNodes, attrName, attrVal);
+	        }
+	      });
+	    }
+
+	    function addNgModelElAttrs() {
+	      _angularFix2['default'].forEach(options.ngModelElAttrs, function (val, name) {
+	        addRegardlessOfPresence(modelNodes, name, val);
+	      });
+	    }
+	  }
+
+	  // Utility functions
+	  function getNgModelNodes(node, skip) {
+	    var selectorNot = _angularFix2['default'].isString(skip) ? ':not(' + skip + ')' : '';
+	    var skipNot = ':not([formly-skip-ng-model-attrs-manipulator])';
+	    var query = '[ng-model]' + selectorNot + skipNot + ', [data-ng-model]' + selectorNot + skipNot;
+	    try {
+	      return node.querySelectorAll(query);
+	    } catch (e) {
+	      //this code is needed for IE8, as it does not support the CSS3 ':not' selector
+	      //it should be removed when IE8 support is dropped
+	      return getNgModelNodesFallback(node, skip);
+	    }
+	  }
+
+	  function getNgModelNodesFallback(node, skip) {
+	    var allNgModelNodes = node.querySelectorAll('[ng-model], [data-ng-model]');
+	    var matchingNgModelNodes = [];
+
+	    //make sure this array is compatible with NodeList type by adding an 'item' function
+	    matchingNgModelNodes.item = function (i) {
+	      return this[i];
+	    };
+
+	    for (var i = 0; i < allNgModelNodes.length; i++) {
+	      var ngModelNode = allNgModelNodes[i];
+	      if (!ngModelNode.hasAttribute('formly-skip-ng-model-attrs-manipulator') && !(_angularFix2['default'].isString(skip) && nodeMatches(ngModelNode, skip))) {
+	        matchingNgModelNodes.push(ngModelNode);
+	      }
+	    }
+
+	    return matchingNgModelNodes;
+	  }
+
+	  function nodeMatches(node, selector) {
+	    var div = document.createElement('div');
+	    div.innerHTML = node.outerHTML;
+	    return div.querySelector(selector);
+	  }
+
+	  function getBuiltInAttributes() {
+	    var ngModelAttributes = {
+	      focus: {
+	        attribute: 'formly-focus'
+	      }
+	    };
+	    var boundOnly = [];
+	    var bothBooleanAndBound = ['required', 'disabled'];
+	    var bothAttributeAndBound = ['pattern', 'minlength'];
+	    var statementOnly = ['change', 'keydown', 'keyup', 'keypress', 'click', 'focus', 'blur'];
+	    var attributeOnly = ['placeholder', 'min', 'max', 'tabindex', 'type'];
+	    if (formlyConfig.extras.ngModelAttrsManipulatorPreferUnbound) {
+	      bothAttributeAndBound.push('maxlength');
+	    } else {
+	      boundOnly.push('maxlength');
+	    }
+
+	    _angularFix2['default'].forEach(boundOnly, function (item) {
+	      ngModelAttributes[item] = { bound: 'ng-' + item };
+	    });
+
+	    _angularFix2['default'].forEach(bothBooleanAndBound, function (item) {
+	      ngModelAttributes[item] = { boolean: item, bound: 'ng-' + item };
+	    });
+
+	    _angularFix2['default'].forEach(bothAttributeAndBound, function (item) {
+	      ngModelAttributes[item] = { attribute: item, bound: 'ng-' + item };
+	    });
+
+	    _angularFix2['default'].forEach(statementOnly, function (item) {
+	      var propName = 'on' + item.substr(0, 1).toUpperCase() + item.substr(1);
+	      ngModelAttributes[propName] = { statement: 'ng-' + item };
+	    });
+
+	    _angularFix2['default'].forEach(attributeOnly, function (item) {
+	      ngModelAttributes[item] = { attribute: item };
+	    });
+	    return ngModelAttributes;
+	  }
+
+	  function getEpValue(ep, name) {
+	    return ep['templateOptions.' + name] || ep['templateOptions[\'' + name + '\']'] || ep['templateOptions["' + name + '"]'];
+	  }
+
+	  function addIfNotPresent(nodes, attr, val) {
+	    _angularFix2['default'].forEach(nodes, function (node) {
+	      if (!node.getAttribute(attr)) {
+	        node.setAttribute(attr, val);
+	      }
+	    });
+	  }
+
+	  function addRegardlessOfPresence(nodes, attr, val) {
+	    _angularFix2['default'].forEach(nodes, function (node) {
+	      node.setAttribute(attr, val);
+	    });
+	  }
+
+	  function isPropertyAccessor(key) {
+	    return (0, _otherUtils.contains)(key, '.') || (0, _otherUtils.contains)(key, '[') && (0, _otherUtils.contains)(key, ']');
+	  }
+	}
+	addFormlyNgModelAttrsManipulator.$inject = ["formlyConfig", "$interpolate"];
+	module.exports = exports['default'];
+
+/***/ },
+/* 18 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, '__esModule', {
+	  value: true
+	});
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _angularFix = __webpack_require__(2);
+
+	var _angularFix2 = _interopRequireDefault(_angularFix);
+
+	exports['default'] = addCustomTags;
+
+	// @ngInject
+	function addCustomTags($document) {
+	  if ($document && $document.get) {
+	    (function () {
+	      // IE8 check ->
+	      // http://stackoverflow.com/questions/10964966/detect-ie-version-prior-to-v9-in-javascript/10965203#10965203
+	      var document = $document.get(0);
+	      var div = document.createElement('div');
+	      div.innerHTML = '<!--[if lt IE 9]><i></i><![endif]-->';
+	      var isIeLessThan9 = div.getElementsByTagName('i').length === 1;
+
+	      if (isIeLessThan9) {
+	        // add the custom elements that we need for formly
+	        var customElements = ['formly-field', 'formly-form', 'formly-custom-validation', 'formly-focus', 'formly-transpose'];
+	        _angularFix2['default'].forEach(customElements, function (el) {
+	          document.createElement(el);
+	        });
+	      }
+	    })();
+	  }
+	}
+	addCustomTags.$inject = ["$document"];
+	module.exports = exports['default'];
+
+/***/ }
+/******/ ])
+});
+;;/**
+ * dirPagination - AngularJS module for paginating (almost) anything.
+ *
+ *
+ * Credits
+ * =======
+ *
+ * Daniel Tabuenca: https://groups.google.com/d/msg/angular/an9QpzqIYiM/r8v-3W1X5vcJ
+ * for the idea on how to dynamically invoke the ng-repeat directive.
+ *
+ * I borrowed a couple of lines and a few attribute names from the AngularUI Bootstrap project:
+ * https://github.com/angular-ui/bootstrap/blob/master/src/pagination/pagination.js
+ *
+ * Copyright 2014 Michael Bromley <michael@michaelbromley.co.uk>
+ */
+
+(function() {
+
+    /**
+     * Config
+     */
+    var moduleName = 'angularUtils.directives.dirPagination';
+    var DEFAULT_ID = '__default';
+
+    /**
+     * Module
+     */
+    var module;
+    try {
+        module = angular.module(moduleName);
+    } catch(err) {
+        // named module does not exist, so create one
+        module = angular.module(moduleName, []);
+    }
+
+    module
+        .directive('dirPaginate', ['$compile', '$parse', 'paginationService', dirPaginateDirective])
+        .directive('dirPaginateNoCompile', noCompileDirective)
+        .directive('dirPaginationControls', ['paginationService', 'paginationTemplate', dirPaginationControlsDirective])
+        .filter('itemsPerPage', ['paginationService', itemsPerPageFilter])
+        .service('paginationService', paginationService)
+        .provider('paginationTemplate', paginationTemplateProvider)
+        .run(['$templateCache',dirPaginationControlsTemplateInstaller]);
+
+    function dirPaginateDirective($compile, $parse, paginationService) {
+
+        return  {
+            terminal: true,
+            multiElement: true,
+            compile: dirPaginationCompileFn
+        };
+
+        function dirPaginationCompileFn(tElement, tAttrs){
+
+            var expression = tAttrs.dirPaginate;
+            // regex taken directly from https://github.com/angular/angular.js/blob/master/src/ng/directive/ngRepeat.js#L211
+            var match = expression.match(/^\s*([\s\S]+?)\s+in\s+([\s\S]+?)(?:\s+track\s+by\s+([\s\S]+?))?\s*$/);
+
+            var filterPattern = /\|\s*itemsPerPage\s*:[^|\)]*/;
+            if (match[2].match(filterPattern) === null) {
+                throw 'pagination directive: the \'itemsPerPage\' filter must be set.';
+            }
+            var itemsPerPageFilterRemoved = match[2].replace(filterPattern, '');
+            var collectionGetter = $parse(itemsPerPageFilterRemoved);
+
+            addNoCompileAttributes(tElement);
+
+            // If any value is specified for paginationId, we register the un-evaluated expression at this stage for the benefit of any
+            // dir-pagination-controls directives that may be looking for this ID.
+            var rawId = tAttrs.paginationId || DEFAULT_ID;
+            paginationService.registerInstance(rawId);
+
+            return function dirPaginationLinkFn(scope, element, attrs){
+
+                // Now that we have access to the `scope` we can interpolate any expression given in the paginationId attribute and
+                // potentially register a new ID if it evaluates to a different value than the rawId.
+                var paginationId = $parse(attrs.paginationId)(scope) || attrs.paginationId || DEFAULT_ID;
+                paginationService.registerInstance(paginationId);
+
+                var repeatExpression = getRepeatExpression(expression, paginationId);
+                addNgRepeatToElement(element, attrs, repeatExpression);
+
+                removeTemporaryAttributes(element);
+                var compiled =  $compile(element);
+
+                var currentPageGetter = makeCurrentPageGetterFn(scope, attrs, paginationId);
+                paginationService.setCurrentPageParser(paginationId, currentPageGetter, scope);
+
+                if (typeof attrs.totalItems !== 'undefined') {
+                    paginationService.setAsyncModeTrue(paginationId);
+                    scope.$watch(function() {
+                        return $parse(attrs.totalItems)(scope);
+                    }, function (result) {
+                        if (0 <= result) {
+                            paginationService.setCollectionLength(paginationId, result);
+                        }
+                    });
+                } else {
+                    scope.$watchCollection(function() {
+                        return collectionGetter(scope);
+                    }, function(collection) {
+                        if (collection) {
+                            paginationService.setCollectionLength(paginationId, collection.length);
+                        }
+                    });
+                }
+
+                // Delegate to the link function returned by the new compilation of the ng-repeat
+                compiled(scope);
+            };
+        }
+
+        /**
+         * If a pagination id has been specified, we need to check that it is present as the second argument passed to
+         * the itemsPerPage filter. If it is not there, we add it and return the modified expression.
+         *
+         * @param expression
+         * @param paginationId
+         * @returns {*}
+         */
+        function getRepeatExpression(expression, paginationId) {
+            var repeatExpression,
+                idDefinedInFilter = !!expression.match(/(\|\s*itemsPerPage\s*:[^|]*:[^|]*)/);
+
+            if (paginationId !== DEFAULT_ID && !idDefinedInFilter) {
+                repeatExpression = expression.replace(/(\|\s*itemsPerPage\s*:[^|]*)/, "$1 : '" + paginationId + "'");
+            } else {
+                repeatExpression = expression;
+            }
+
+            return repeatExpression;
+        }
+
+        /**
+         * Adds the ng-repeat directive to the element. In the case of multi-element (-start, -end) it adds the
+         * appropriate multi-element ng-repeat to the first and last element in the range.
+         * @param element
+         * @param attrs
+         * @param repeatExpression
+         */
+        function addNgRepeatToElement(element, attrs, repeatExpression) {
+            if (element[0].hasAttribute('dir-paginate-start') || element[0].hasAttribute('data-dir-paginate-start')) {
+                // using multiElement mode (dir-paginate-start, dir-paginate-end)
+                attrs.$set('ngRepeatStart', repeatExpression);
+                element.eq(element.length - 1).attr('ng-repeat-end', true);
+            } else {
+                attrs.$set('ngRepeat', repeatExpression);
+            }
+        }
+
+        /**
+         * Adds the dir-paginate-no-compile directive to each element in the tElement range.
+         * @param tElement
+         */
+        function addNoCompileAttributes(tElement) {
+            angular.forEach(tElement, function(el) {
+                if (el.nodeType === 1) {
+                    angular.element(el).attr('dir-paginate-no-compile', true);
+                }
+            });
+        }
+
+        /**
+         * Removes the variations on dir-paginate (data-, -start, -end) and the dir-paginate-no-compile directives.
+         * @param element
+         */
+        function removeTemporaryAttributes(element) {
+            angular.forEach(element, function(el) {
+                if (el.nodeType === 1) {
+                    angular.element(el).removeAttr('dir-paginate-no-compile');
+                }
+            });
+            element.eq(0).removeAttr('dir-paginate-start').removeAttr('dir-paginate').removeAttr('data-dir-paginate-start').removeAttr('data-dir-paginate');
+            element.eq(element.length - 1).removeAttr('dir-paginate-end').removeAttr('data-dir-paginate-end');
+        }
+
+        /**
+         * Creates a getter function for the current-page attribute, using the expression provided or a default value if
+         * no current-page expression was specified.
+         *
+         * @param scope
+         * @param attrs
+         * @param paginationId
+         * @returns {*}
+         */
+        function makeCurrentPageGetterFn(scope, attrs, paginationId) {
+            var currentPageGetter;
+            if (attrs.currentPage) {
+                currentPageGetter = $parse(attrs.currentPage);
+            } else {
+                // if the current-page attribute was not set, we'll make our own
+                var defaultCurrentPage = paginationId + '__currentPage';
+                scope[defaultCurrentPage] = 1;
+                currentPageGetter = $parse(defaultCurrentPage);
+            }
+            return currentPageGetter;
+        }
+    }
+
+    /**
+     * This is a helper directive that allows correct compilation when in multi-element mode (ie dir-paginate-start, dir-paginate-end).
+     * It is dynamically added to all elements in the dir-paginate compile function, and it prevents further compilation of
+     * any inner directives. It is then removed in the link function, and all inner directives are then manually compiled.
+     */
+    function noCompileDirective() {
+        return {
+            priority: 5000,
+            terminal: true
+        };
+    }
+
+    function dirPaginationControlsTemplateInstaller($templateCache) {
+        $templateCache.put('angularUtils.directives.dirPagination.template', '<ul class="pagination" ng-if="1 < pages.length || !autoHide"><li ng-if="boundaryLinks" ng-class="{ disabled : pagination.current == 1 }"><a href="" ng-click="setCurrent(1)">&laquo;</a></li><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == 1 }"><a href="" ng-click="setCurrent(pagination.current - 1)">&lsaquo;</a></li><li ng-repeat="pageNumber in pages track by tracker(pageNumber, $index)" ng-class="{ active : pagination.current == pageNumber, disabled : pageNumber == \'...\' || ( ! autoHide && pages.length === 1 ) }"><a href="" ng-click="setCurrent(pageNumber)">{{ pageNumber }}</a></li><li ng-if="directionLinks" ng-class="{ disabled : pagination.current == pagination.last }"><a href="" ng-click="setCurrent(pagination.current + 1)">&rsaquo;</a></li><li ng-if="boundaryLinks"  ng-class="{ disabled : pagination.current == pagination.last }"><a href="" ng-click="setCurrent(pagination.last)">&raquo;</a></li></ul>');
+    }
+
+    function dirPaginationControlsDirective(paginationService, paginationTemplate) {
+
+        var numberRegex = /^\d+$/;
+
+        return {
+            restrict: 'AE',
+            templateUrl: function(elem, attrs) {
+                return attrs.templateUrl || paginationTemplate.getPath();
+            },
+            scope: {
+                maxSize: '=?',
+                onPageChange: '&?',
+                paginationId: '=?',
+                autoHide: '=?'
+            },
+            link: dirPaginationControlsLinkFn
+        };
+
+        function dirPaginationControlsLinkFn(scope, element, attrs) {
+
+            // rawId is the un-interpolated value of the pagination-id attribute. This is only important when the corresponding dir-paginate directive has
+            // not yet been linked (e.g. if it is inside an ng-if block), and in that case it prevents this controls directive from assuming that there is
+            // no corresponding dir-paginate directive and wrongly throwing an exception.
+            var rawId = attrs.paginationId ||  DEFAULT_ID;
+            var paginationId = scope.paginationId || attrs.paginationId ||  DEFAULT_ID;
+
+            if (!paginationService.isRegistered(paginationId) && !paginationService.isRegistered(rawId)) {
+                var idMessage = (paginationId !== DEFAULT_ID) ? ' (id: ' + paginationId + ') ' : ' ';
+                console.warn('Pagination directive: the pagination controls' + idMessage + 'cannot be used without the corresponding pagination directive, which was not found at link time.');
+            }
+
+            if (!scope.maxSize) { scope.maxSize = 9; }
+            scope.autoHide = scope.autoHide === undefined ? true : scope.autoHide;
+            scope.directionLinks = angular.isDefined(attrs.directionLinks) ? scope.$parent.$eval(attrs.directionLinks) : true;
+            scope.boundaryLinks = angular.isDefined(attrs.boundaryLinks) ? scope.$parent.$eval(attrs.boundaryLinks) : false;
+
+            var paginationRange = Math.max(scope.maxSize, 5);
+            scope.pages = [];
+            scope.pagination = {
+                last: 1,
+                current: 1
+            };
+            scope.range = {
+                lower: 1,
+                upper: 1,
+                total: 1
+            };
+
+            scope.$watch(function() {
+                if (paginationService.isRegistered(paginationId)) {
+                    return (paginationService.getCollectionLength(paginationId) + 1) * paginationService.getItemsPerPage(paginationId);
+                }
+            }, function(length) {
+                if (0 < length) {
+                    generatePagination();
+                }
+            });
+
+            scope.$watch(function() {
+                if (paginationService.isRegistered(paginationId)) {
+                    return (paginationService.getItemsPerPage(paginationId));
+                }
+            }, function(current, previous) {
+                if (current != previous && typeof previous !== 'undefined') {
+                    goToPage(scope.pagination.current);
+                }
+            });
+
+            scope.$watch(function() {
+                if (paginationService.isRegistered(paginationId)) {
+                    return paginationService.getCurrentPage(paginationId);
+                }
+            }, function(currentPage, previousPage) {
+                if (currentPage != previousPage) {
+                    goToPage(currentPage);
+                }
+            });
+
+            scope.setCurrent = function(num) {
+                if (paginationService.isRegistered(paginationId) && isValidPageNumber(num)) {
+                    num = parseInt(num, 10);
+                    paginationService.setCurrentPage(paginationId, num);
+                }
+            };
+
+            /**
+             * Custom "track by" function which allows for duplicate "..." entries on long lists,
+             * yet fixes the problem of wrongly-highlighted links which happens when using
+             * "track by $index" - see https://github.com/michaelbromley/angularUtils/issues/153
+             * @param id
+             * @param index
+             * @returns {string}
+             */
+            scope.tracker = function(id, index) {
+                return id + '_' + index;
+            };
+
+            function goToPage(num) {
+                if (paginationService.isRegistered(paginationId) && isValidPageNumber(num)) {
+                    scope.pages = generatePagesArray(num, paginationService.getCollectionLength(paginationId), paginationService.getItemsPerPage(paginationId), paginationRange);
+                    scope.pagination.current = num;
+                    updateRangeValues();
+
+                    // if a callback has been set, then call it with the page number as an argument
+                    if (scope.onPageChange) {
+                        scope.onPageChange({ newPageNumber : num });
+                    }
+                }
+            }
+
+            function generatePagination() {
+                if (paginationService.isRegistered(paginationId)) {
+                    var page = parseInt(paginationService.getCurrentPage(paginationId)) || 1;
+                    scope.pages = generatePagesArray(page, paginationService.getCollectionLength(paginationId), paginationService.getItemsPerPage(paginationId), paginationRange);
+                    scope.pagination.current = page;
+                    scope.pagination.last = scope.pages[scope.pages.length - 1];
+                    if (scope.pagination.last < scope.pagination.current) {
+                        scope.setCurrent(scope.pagination.last);
+                    } else {
+                        updateRangeValues();
+                    }
+                }
+            }
+
+            /**
+             * This function updates the values (lower, upper, total) of the `scope.range` object, which can be used in the pagination
+             * template to display the current page range, e.g. "showing 21 - 40 of 144 results";
+             */
+            function updateRangeValues() {
+                if (paginationService.isRegistered(paginationId)) {
+                    var currentPage = paginationService.getCurrentPage(paginationId),
+                        itemsPerPage = paginationService.getItemsPerPage(paginationId),
+                        totalItems = paginationService.getCollectionLength(paginationId);
+
+                    scope.range.lower = (currentPage - 1) * itemsPerPage + 1;
+                    scope.range.upper = Math.min(currentPage * itemsPerPage, totalItems);
+                    scope.range.total = totalItems;
+                }
+            }
+            function isValidPageNumber(num) {
+                return (numberRegex.test(num) && (0 < num && num <= scope.pagination.last));
+            }
+        }
+
+        /**
+         * Generate an array of page numbers (or the '...' string) which is used in an ng-repeat to generate the
+         * links used in pagination
+         *
+         * @param currentPage
+         * @param rowsPerPage
+         * @param paginationRange
+         * @param collectionLength
+         * @returns {Array}
+         */
+        function generatePagesArray(currentPage, collectionLength, rowsPerPage, paginationRange) {
+            var pages = [];
+            var totalPages = Math.ceil(collectionLength / rowsPerPage);
+            var halfWay = Math.ceil(paginationRange / 2);
+            var position;
+
+            if (currentPage <= halfWay) {
+                position = 'start';
+            } else if (totalPages - halfWay < currentPage) {
+                position = 'end';
+            } else {
+                position = 'middle';
+            }
+
+            var ellipsesNeeded = paginationRange < totalPages;
+            var i = 1;
+            while (i <= totalPages && i <= paginationRange) {
+                var pageNumber = calculatePageNumber(i, currentPage, paginationRange, totalPages);
+
+                var openingEllipsesNeeded = (i === 2 && (position === 'middle' || position === 'end'));
+                var closingEllipsesNeeded = (i === paginationRange - 1 && (position === 'middle' || position === 'start'));
+                if (ellipsesNeeded && (openingEllipsesNeeded || closingEllipsesNeeded)) {
+                    pages.push('...');
+                } else {
+                    pages.push(pageNumber);
+                }
+                i ++;
+            }
+            return pages;
+        }
+
+        /**
+         * Given the position in the sequence of pagination links [i], figure out what page number corresponds to that position.
+         *
+         * @param i
+         * @param currentPage
+         * @param paginationRange
+         * @param totalPages
+         * @returns {*}
+         */
+        function calculatePageNumber(i, currentPage, paginationRange, totalPages) {
+            var halfWay = Math.ceil(paginationRange/2);
+            if (i === paginationRange) {
+                return totalPages;
+            } else if (i === 1) {
+                return i;
+            } else if (paginationRange < totalPages) {
+                if (totalPages - halfWay < currentPage) {
+                    return totalPages - paginationRange + i;
+                } else if (halfWay < currentPage) {
+                    return currentPage - halfWay + i;
+                } else {
+                    return i;
+                }
+            } else {
+                return i;
+            }
+        }
+    }
+
+    /**
+     * This filter slices the collection into pages based on the current page number and number of items per page.
+     * @param paginationService
+     * @returns {Function}
+     */
+    function itemsPerPageFilter(paginationService) {
+
+        return function(collection, itemsPerPage, paginationId) {
+            if (typeof (paginationId) === 'undefined') {
+                paginationId = DEFAULT_ID;
+            }
+            if (!paginationService.isRegistered(paginationId)) {
+                throw 'pagination directive: the itemsPerPage id argument (id: ' + paginationId + ') does not match a registered pagination-id.';
+            }
+            var end;
+            var start;
+            if (collection instanceof Array) {
+                itemsPerPage = parseInt(itemsPerPage) || 9999999999;
+                if (paginationService.isAsyncMode(paginationId)) {
+                    start = 0;
+                } else {
+                    start = (paginationService.getCurrentPage(paginationId) - 1) * itemsPerPage;
+                }
+                end = start + itemsPerPage;
+                paginationService.setItemsPerPage(paginationId, itemsPerPage);
+
+                return collection.slice(start, end);
+            } else {
+                return collection;
+            }
+        };
+    }
+
+    /**
+     * This service allows the various parts of the module to communicate and stay in sync.
+     */
+    function paginationService() {
+
+        var instances = {};
+        var lastRegisteredInstance;
+
+        this.registerInstance = function(instanceId) {
+            if (typeof instances[instanceId] === 'undefined') {
+                instances[instanceId] = {
+                    asyncMode: false
+                };
+                lastRegisteredInstance = instanceId;
+            }
+        };
+
+        this.isRegistered = function(instanceId) {
+            return (typeof instances[instanceId] !== 'undefined');
+        };
+
+        this.getLastInstanceId = function() {
+            return lastRegisteredInstance;
+        };
+
+        this.setCurrentPageParser = function(instanceId, val, scope) {
+            instances[instanceId].currentPageParser = val;
+            instances[instanceId].context = scope;
+        };
+        this.setCurrentPage = function(instanceId, val) {
+            instances[instanceId].currentPageParser.assign(instances[instanceId].context, val);
+        };
+        this.getCurrentPage = function(instanceId) {
+            var parser = instances[instanceId].currentPageParser;
+            return parser ? parser(instances[instanceId].context) : 1;
+        };
+
+        this.setItemsPerPage = function(instanceId, val) {
+            instances[instanceId].itemsPerPage = val;
+        };
+        this.getItemsPerPage = function(instanceId) {
+            return instances[instanceId].itemsPerPage;
+        };
+
+        this.setCollectionLength = function(instanceId, val) {
+            instances[instanceId].collectionLength = val;
+        };
+        this.getCollectionLength = function(instanceId) {
+            return instances[instanceId].collectionLength;
+        };
+
+        this.setAsyncModeTrue = function(instanceId) {
+            instances[instanceId].asyncMode = true;
+        };
+
+        this.isAsyncMode = function(instanceId) {
+            return instances[instanceId].asyncMode;
+        };
+    }
+
+    /**
+     * This provider allows global configuration of the template path used by the dir-pagination-controls directive.
+     */
+    function paginationTemplateProvider() {
+
+        var templatePath = 'angularUtils.directives.dirPagination.template';
+
+        this.setPath = function(path) {
+            templatePath = path;
+        };
+
+        this.$get = function() {
+            return {
+                getPath: function() {
+                    return templatePath;
+                }
+            };
+        };
+    }
+})();
+;/*!
  * Bootstrap v4.0.0-alpha (http://getbootstrap.com)
  * Copyright 2011-2015 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/master/LICENSE)
@@ -48950,7 +53675,7 @@ var Modal = (function ($) {
         this._originalBodyPadding = document.body.style.paddingRight || '';
 
         if (this._isBodyOverflowing) {
-          document.body.style.paddingRight = bodyPadding + (this._scrollbarWidth + 'px');
+          document.body.style.paddingRight = bodyPadding + this._scrollbarWidth + 'px';
         }
       }
     }, {
@@ -49658,7 +54383,7 @@ var Tooltip = (function ($) {
   var DefaultType = {
     animation: 'boolean',
     template: 'string',
-    title: '(string|function)',
+    title: '(string|element|function)',
     trigger: 'string',
     delay: '(number|object)',
     html: 'boolean',
@@ -49944,15 +54669,30 @@ var Tooltip = (function ($) {
     }, {
       key: 'setContent',
       value: function setContent() {
-        var tip = this.getTipElement();
-        var title = this.getTitle();
-        var method = this.config.html ? 'innerHTML' : 'innerText';
+        var $tip = $(this.getTipElement());
 
-        $(tip).find(Selector.TOOLTIP_INNER)[0][method] = title;
+        this.setElementContent($tip.find(Selector.TOOLTIP_INNER), this.getTitle());
 
-        $(tip).removeClass(ClassName.FADE).removeClass(ClassName.IN);
+        $tip.removeClass(ClassName.FADE).removeClass(ClassName.IN);
 
         this.cleanupTether();
+      }
+    }, {
+      key: 'setElementContent',
+      value: function setElementContent($element, content) {
+        var html = this.config.html;
+        if (typeof content === 'object' && (content.nodeType || content.jquery)) {
+          // content is a DOM node or a jQuery
+          if (html) {
+            if (!$(content).parent().is($element)) {
+              $element.empty().append(content);
+            }
+          } else {
+            $element.text($(content).text());
+          }
+        } else {
+          $element[html ? 'html' : 'text'](content);
+        }
       }
     }, {
       key: 'getTitle',
@@ -50243,7 +54983,7 @@ var Popover = (function ($) {
   });
 
   var DefaultType = $.extend({}, Tooltip.DefaultType, {
-    content: '(string|function)'
+    content: '(string|element|function)'
   });
 
   var ClassName = {
@@ -50307,19 +55047,13 @@ var Popover = (function ($) {
     }, {
       key: 'setContent',
       value: function setContent() {
-        var tip = this.getTipElement();
-        var title = this.getTitle();
-        var content = this._getContent();
-        var titleElement = $(tip).find(Selector.TITLE)[0];
-
-        if (titleElement) {
-          titleElement[this.config.html ? 'innerHTML' : 'innerText'] = title;
-        }
+        var $tip = $(this.getTipElement());
 
         // we use append for html objects to maintain js events
-        $(tip).find(Selector.CONTENT).children().detach().end()[this.config.html ? typeof content === 'string' ? 'html' : 'append' : 'text'](content);
+        this.setElementContent($tip.find(Selector.TITLE), this.getTitle());
+        this.setElementContent($tip.find(Selector.CONTENT), this._getContent());
 
-        $(tip).removeClass(ClassName.FADE).removeClass(ClassName.IN);
+        $tip.removeClass(ClassName.FADE).removeClass(ClassName.IN);
 
         this.cleanupTether();
       }

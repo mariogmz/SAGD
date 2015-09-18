@@ -1,6 +1,5 @@
-<!-- Alerts -->
 <div class="alert success" role="alert" ng-show="vm.message && !vm.error">
-  <p><strong>¡Éxito!</strong> {{vm.message}}</p>
+  <p></p><strong>¡Éxito!</strong> {{vm.message}}</p>
 </div>
 <div class="alert danger" role="alert" ng-show="vm.error">
   <p><strong>¡Error!</strong></p>
@@ -19,41 +18,15 @@
     Editar
   </div>
   <div class="block">
-    <form class="item-form" name="vm.margenForm">
+    <form class="item-form" ng-submit="vm.save()">
       <fieldset>
         <legend>Márgen #<strong>{{vm.margen.id}}</strong></legend>
-        <div class="inline-field">
-          <label for="name">Nombre:</label>
-
-          <div class="field">
-            <input type="text" id="name" ng-model="vm.margen.nombre" ng-change="vm.clean()">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="value">Valor:</label>
-
-          <div class="field">
-            <input type="text" id="value" ng-model="vm.margen.valor" ng-change="vm.clean()">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="ws1">Webservice P1:</label>
-
-          <div class="field">
-            <input type="text" id="ws1" ng-model="vm.margen.valor_webservice_p1" ng-change="vm.clean()">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="ws8">Webservice P8:</label>
-
-          <div class="field">
-            <input type="text" id="ws8" ng-model="vm.margen.valor_webservice_p8" ng-change="vm.clean()">
-          </div>
-        </div>
+        <formly-form model="vm.margen" fields="vm.fields">
+          <input type="submit" class="button primary" value="Guardar cambios">
+          <a ui-sref="margenIndex" class="button secondary">Regresar</a>
+        </formly-form>
       </fieldset>
     </form>
-    <button type="button" class="button primary" ng-click="vm.save()">Guardar cambios</button>
-    <a ui-sref="margenIndex" class="button secondary">Regresar</a>
   </div>
 </div>
 

@@ -3,37 +3,10 @@
     Detalle
   </div>
   <div class="block">
-    <form class="item-form">
+    <form class="item-form" novalidate disabled>
       <fieldset disabled>
         <legend>Márgen #<strong>{{vm.margen.id}}</strong></legend>
-        <div class="inline-field">
-          <label for="name">Nombre:</label>
-
-          <div class="field">
-            <input type="text" id="name" value="{{vm.margen.nombre}}">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="value">Valor:</label>
-
-          <div class="field">
-            <input type="text" id="value" value="{{vm.margen.valor | percentage:2}}">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="ws1">Webservice P1:</label>
-
-          <div class="field">
-            <input type="text" id="ws1" value="{{vm.margen.valor_webservice_p1 | percentage:2}}">
-          </div>
-        </div>
-        <div class="inline-field">
-          <label for="ws8">Webservice P8:</label>
-
-          <div class="field">
-            <input type="text" id="ws8" value="{{vm.margen.valor_webservice_p8 | percentage:2}}">
-          </div>
-        </div>
+        <formly-form model="vm.margen" fields="vm.fields"></formly-form>
       </fieldset>
     </form>
     <a ui-sref="margenIndex" class="button primary">Regresar</a>
