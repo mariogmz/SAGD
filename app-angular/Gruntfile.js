@@ -3,6 +3,38 @@ module.exports = function(grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+    ngconstant: {
+      options: {
+        name: 'blocks.env',
+        wrap: '(function (){\n  "use strict";\n\n {%= __ngModule %} }());'
+      },
+      development: {
+        options: {
+          dest: 'app/blocks/env/env.js',
+        },
+        constants: {
+          'ENV': {
+            name: 'development',
+            applicationFqdn: "http://api.sagd.app",
+            apiNamespace: "/api",
+            version: "/v1"
+          }
+        }
+      },
+      stage: {
+        options: {
+          dest: 'app/blocks/env/env.js',
+        },
+        constants: {
+          'ENV': {
+            name: 'stage',
+            applicationFqdn: "https://zegucomarb.dyndns.info:8080",
+            apiNamespace: "/api",
+            version: "/v1"
+          }
+        }
+      }
+    },
     concat: {
       libs: {
         options: {
@@ -92,10 +124,29 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.loadNpmTasks('grunt-ng-constant');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+
+  grunt.registerTask('dev', function() {
+    grunt.task.run([
+      'ngconstant:development',
+      'concat',
+      'uglify',
+      'sass'
+    ]);
+  });
+
+  grunt.registerTask('stage', function() {
+    grunt.task.run([
+      'ngconstant:stage',
+      'concat',
+      'uglify',
+      'sass'
+    ]);
+  });
 
   grunt.registerTask('default', ['watch']);
 };
