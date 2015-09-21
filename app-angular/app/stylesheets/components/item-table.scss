@@ -6,6 +6,12 @@ table.item-table {
     @extend .thead-inverse;
   }
 
+  th.action {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
   .action-buttons {
     @extend .btn-group;
 
