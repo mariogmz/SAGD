@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr dir-paginate="proveedor in vm.proveedores.data | filter:vm.search | itemsPerPage:vm.itemsPerPage">
+        <tr dir-paginate="proveedor in vm.proveedores | filter:vm.search | itemsPerPage: 10">
             <td>{{proveedor.clave}}</td>
             <td>{{proveedor.razon_social}}</td>
             <td>{{proveedor.pagina_web}}</td>
