@@ -20,7 +20,7 @@
       "push": "bottom",
       "spacing1": 15,
       "spacing2": 15,
-      context: $(".view")
+      context: $("body")
     };
 
     var pnotify = {
