@@ -25,7 +25,7 @@ class MargenController extends Controller
      */
     public function index()
     {
-        $margenes = $this->margen->paginate(15);
+        $margenes = $this->margen->all();
         return $margenes;
     }
 
