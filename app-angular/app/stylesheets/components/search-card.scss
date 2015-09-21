@@ -10,11 +10,11 @@
     @include make-container();
   }
 
-  .row{
+  .row {
     @include make-row();
   }
 
-  .form{
+  .form {
     @include make-col();
     @include make-container();
 
@@ -26,11 +26,11 @@
       @include make-col-span(9);
     }
 
-    .field{
+    .field {
       @extend .form-group;
       @include make-row();
 
-      label{
+      label {
         @extend .form-control-label;
         @include make-col();
         @include make-col-span(4);
@@ -39,7 +39,7 @@
         }
       }
 
-      input{
+      input {
         @extend .form-control;
         @include make-col();
         @include make-col-span(8);
@@ -51,7 +51,7 @@
     }
   }
 
-  .paginator{
+  .paginator {
     @include make-col();
     text-align: right;
 
@@ -63,5 +63,8 @@
       @include make-col-span(3);
     }
   }
+}
 
+.paginator {
+  @extend .pull-right;
 }
