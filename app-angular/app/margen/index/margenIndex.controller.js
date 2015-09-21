@@ -27,17 +27,26 @@
 
     initialize();
 
-    function initialize() {
-      return obtenerMargenes().then(function(){
+    function initialize(){
+      return obtenerMargenes().then(function (){
         console.log("Margenes obtenidos");
       });
     }
 
-    function obtenerMargenes() {
+    function obtenerMargenes(){
       return api.get('/margen')
-        .then(function(response){
+        .then(function (response){
           vm.margenes = response.data;
           return vm.margenes;
+        });
+    }
+
+    function eliminarMargen(id){
+      return api.delete('/margen/' + id)
+        .then(function (response){
+          pnotify.alert('')
+        }).catch(function (response){
+
         });
     }
 
@@ -45,6 +54,7 @@
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }
+
   }
 
 })();
