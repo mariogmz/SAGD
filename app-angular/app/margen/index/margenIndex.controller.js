@@ -8,15 +8,16 @@
     .module('sagdApp.margen')
     .controller('margenIndexController', MargenIndexController);
 
-  MargenIndexController.$inject = ['$auth', '$state', 'api'];
+  MargenIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
 
-  function MargenIndexController($auth, $state, api){
+  function MargenIndexController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.sort = sort;
+    vm.eliminarMargen = eliminarMargen;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Nombre', key: 'nombre'},
@@ -42,11 +43,13 @@
     }
 
     function eliminarMargen(id){
-      return api.delete('/margen/' + id)
+      return api.delete('/margen/', id)
         .then(function (response){
-          pnotify.alert('')
+          obtenerMargenes().then(function(){
+            pnotify.alert('¡Exito!', response.data.message, 'success');
+          });
         }).catch(function (response){
-
+          pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
