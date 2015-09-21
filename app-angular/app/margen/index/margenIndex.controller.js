@@ -16,7 +16,14 @@
     }
 
     var vm = this;
-    vm.margenes = [];
+    vm.sort = sort;
+    vm.sortKeys = [
+      {name: '#', key: 'id'},
+      {name: 'Nombre', key: 'nombre'},
+      {name: 'Valor', key: 'valor'},
+      {name: 'Webservice-P1', key: 'valor_webservice_p1'},
+      {name: 'Webservice-P8', key: 'valor_webservice_p8'}
+    ];
 
     initialize();
 
@@ -32,6 +39,11 @@
           vm.margenes = response.data;
           return vm.margenes;
         });
+    }
+
+    function sort(keyname){
+      vm.sortKey = keyname;
+      vm.reverse = !vm.reverse;
     }
   }
 

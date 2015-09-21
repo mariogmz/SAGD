@@ -8,14 +8,16 @@
     .config(configure)
     .run(updateState);
 
-  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider'];
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider','paginationTemplateProvider'];
 
-  function configure($urlRouterProvider, $authProvider, $locationProvider){
+  function configure($urlRouterProvider, $authProvider, $locationProvider, paginationTemplateProvider){
     var baseUrl = "http://api.sagd.app/api/v1";
     $authProvider.loginUrl = baseUrl + '/authenticate';
     $authProvider.withCredentials = true;
 
     $urlRouterProvider.otherwise('/');
+
+    paginationTemplateProvider.setPath('app/templates/components/pagination-control.html');
 
     if (window.history && window.history.pushState) {
       $locationProvider.html5Mode(true).hashPrefix('!');

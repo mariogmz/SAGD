@@ -1,17 +1,15 @@
 <div class="table-responsive">
   <table class="item-table">
-    <thead>
+    <thead class="sortable">
     <tr>
-      <th>#</th>
-      <th>Nombre</th>
-      <th>Valor</th>
-      <th>Webservice-P1</th>
-      <th>Webservice-P8</th>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
       <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="margen in vm.margenes" >
+    <tr ng-repeat="margen in vm.margenes | orderBy:vm.sortKey:vm.reverse" >
       <th scope="row" >{{margen.id}}</th>
       <td><a ui-sref="margenShow({id:margen.id})">{{margen.nombre}}</a></td>
       <td>{{margen.valor | percentage:2}}</td>
