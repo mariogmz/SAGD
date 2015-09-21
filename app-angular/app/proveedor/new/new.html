@@ -1,0 +1,15 @@
+<div class="container-fluid">
+    <h1>Agregar Proveedor</h1>
+    <hr>
+    <div class="block">
+        <form class="item-form">
+            <fieldset>
+                <formly-form model="vm.model" fields="vm.fields">
+                    <button type="submit" class="btn btn-success" ng-click="vm.onSubmit(vm.model)">Guardar</button>
+                </formly-form>
+                <a ui-sref="proveedor" class="button secondary">Regresar</a>
+            </fieldset>
+        </form>
+    </div>
+
+</div>

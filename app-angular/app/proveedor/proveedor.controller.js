@@ -5,7 +5,8 @@
 
     angular
         .module('sagdApp.proveedor')
-        .controller("proveedorController", ProveedorController);
+        .controller("proveedorController", ProveedorController)
+        .controller("proveedorNuevoController", ProveedorNuevoController);
 
     ProveedorController.$inject = ['$auth', '$state', '$http'];
 
@@ -31,5 +32,12 @@
             vm.reverse = !vm.reverse; //if true make it false and vice versa
         }
     }
+
+    function ProveedorNuevoController($auth, $state, $http) {
+
+
+
+    }
+
 
 })();
