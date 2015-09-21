@@ -8,11 +8,10 @@
     .config(configure)
     .run(updateState);
 
-  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider'];
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', 'apiProvider'];
 
-  function configure($urlRouterProvider, $authProvider, $locationProvider){
-    var baseUrl = "http://api.sagd.app/api/v1";
-    $authProvider.loginUrl = baseUrl + '/authenticate';
+  function configure($urlRouterProvider, $authProvider, $locationProvider, api){
+    $authProvider.loginUrl = api.$get().endpoint + '/authenticate';
     $authProvider.withCredentials = true;
 
     $urlRouterProvider.otherwise('/');
