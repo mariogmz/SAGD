@@ -45,7 +45,7 @@
                 state: 'producto.caracteristica.unidad'
               }, {
                 name: 'Familias',
-                state: 'producto.caracteristica.familia'
+                state: 'familiaIndex'
               }, {
                 name: 'Subfamilias',
                 state: 'producto.caracteristica.subfamilia'
@@ -53,7 +53,7 @@
             ]
           }, {
             name: 'Márgenes',
-            state: 'margenIndex',
+            state: 'margenIndex'
           }, {
             name: 'Inventario',
             state: 'inventario',

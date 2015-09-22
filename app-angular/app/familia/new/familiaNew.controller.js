@@ -1,16 +1,16 @@
-// app/marca/marca.controller.js
+// app/familia/familia.controller.js
 
 (function (){
 
   'use strict';
 
   angular
-    .module('sagdApp.marca')
-    .controller('marcaNewController', MarcaNewController);
+    .module('sagdApp.familia')
+    .controller('familiaNewController', FamiliaNewController);
 
-  MarcaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  FamiliaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
 
-  function MarcaNewController($auth, $state, api, pnotify){
+  function FamiliaNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -23,7 +23,7 @@
         templateOptions: {
           type: 'text',
           label: 'Clave:',
-          placeholder: 'Máximo 3 caracteres alfanuméricos',
+          placeholder: 'Máximo 5 caracteres alfanuméricos',
           required: true
         }
       }, {
@@ -32,18 +32,26 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          placeholder: 'Máximo 25 caracteres',
+          placeholder: 'Máximo 45 caracteres',
           required: true
+        }
+      }, {
+        type: 'textarea',
+        key: 'descripcion',
+        templateOptions: {
+          label: 'Descripción:',
+          placeholder: 'Máximo 100 caracteres'
         }
       }];
 
     vm.create = create;
 
     function create(){
-      api.post('/marca', vm.marca)
+      api.post('/familia', vm.familia)
         .then(function (response){
+          debugger;
           pnotify.alert('¡Exito!', response.data.message, 'success');
-          $state.go('marcaShow', {id: response.data.marca.id});
+          $state.go('familiaShow', {id: response.data.familia.id});
         })
         .catch(function (response){
           pnotify.alertList(response.data.message, response.data.error, 'error');
