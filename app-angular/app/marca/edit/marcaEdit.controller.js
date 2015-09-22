@@ -6,11 +6,11 @@
 
   angular
     .module('sagdApp.marca')
-    .controller('marcaEditController', MargenEditController);
+    .controller('marcaEditController', MarcaEditController);
 
-  MargenEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  MarcaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
-  function MargenEditController($auth, $state, $stateParams, api, pnotify){
+  function MarcaEditController($auth, $state, $stateParams, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }

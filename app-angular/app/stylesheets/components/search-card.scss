@@ -16,7 +16,6 @@
 
   .form {
     @include make-col();
-    @include make-container();
 
     @media (max-width: 106.1rem) {
       @include make-col-span(7);
@@ -51,7 +50,7 @@
     }
   }
 
-  .paginator {
+  .actions {
     @include make-col();
     text-align: right;
 

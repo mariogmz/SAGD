@@ -20,6 +20,13 @@
     vm.fields = [
       {
         type: 'input',
+        key: 'clave',
+        templateOptions: {
+          type: 'text',
+          label: 'Clave:'
+        }
+      }, {
+        type: 'input',
         key: 'nombre',
         templateOptions: {
           type: 'text',
