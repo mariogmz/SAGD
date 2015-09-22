@@ -42,6 +42,12 @@
         });
 
         formlyConfigWrapper.setType({
+          name: 'textarea',
+          templateUrl: 'app/templates/fields/textarea.html',
+          wrapper: commonWrappers
+        });
+
+        formlyConfigWrapper.setType({
           name: 'checkbox',
           templateUrl: 'app/templates/fields/checkbox.html'
         });

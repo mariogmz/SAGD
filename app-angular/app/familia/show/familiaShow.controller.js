@@ -32,6 +32,12 @@
           type: 'text',
           label: 'Nombre:'
         }
+      }, {
+        type: 'textarea',
+        key: 'descripcion',
+        templateOptions: {
+          label: 'Descripción'
+        }
       }
     ];
     initialize();

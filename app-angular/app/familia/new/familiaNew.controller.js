@@ -23,7 +23,7 @@
         templateOptions: {
           type: 'text',
           label: 'Clave:',
-          placeholder: 'Máximo 3 caracteres alfanuméricos',
+          placeholder: 'Máximo 5 caracteres alfanuméricos',
           required: true
         }
       }, {
@@ -32,8 +32,15 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          placeholder: 'Máximo 25 caracteres',
+          placeholder: 'Máximo 45 caracteres',
           required: true
+        }
+      }, {
+        type: 'textarea',
+        key: 'descripcion',
+        templateOptions: {
+          label: 'Descripción:',
+          placeholder: 'Máximo 100 caracteres'
         }
       }];
 
