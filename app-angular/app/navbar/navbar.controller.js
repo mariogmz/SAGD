@@ -42,7 +42,7 @@
                 state: 'producto.caracteristica.garantia'
               }, {
                 name: 'Unidades',
-                state: 'producto.caracteristica.unidad'
+                state: 'unidadIndex'
               }, {
                 name: 'Familias',
                 state: 'producto.caracteristica.familia'
