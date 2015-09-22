@@ -14,6 +14,7 @@
       'sagdApp.empleado',
       'sagdApp.producto',
       'sagdApp.margen',
+      'sagdApp.marca',
       'sagdApp.navbar',
       'sagdApp.proveedor',
       'sagdApp.cliente'

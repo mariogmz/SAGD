@@ -34,17 +34,17 @@
         }
       }, {
         type: 'input',
-        key: 'valor_webservice_p8',
-        templateOptions: {
-          type: 'text',
-          label: 'Webservice P8:'
-        }
-      }, {
-        type: 'input',
         key: 'valor_webservice_p1',
         templateOptions: {
           type: 'text',
           label: 'Webservice P1:'
+        }
+      }, {
+        type: 'input',
+        key: 'valor_webservice_p8',
+        templateOptions: {
+          type: 'text',
+          label: 'Webservice P8:'
         }
       }
     ];

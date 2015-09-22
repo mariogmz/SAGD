@@ -1,0 +1,18 @@
+.action-buttons {
+  @extend .btn-group;
+
+  .create{
+    @extend .btn;
+    @extend .btn-primary;
+  }
+
+  .edit {
+    @extend .btn;
+    @extend .btn-success;
+  }
+
+  .delete {
+    @extend .btn;
+    @extend .btn-danger;
+  }
+}

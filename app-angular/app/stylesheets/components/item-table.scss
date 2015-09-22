@@ -3,20 +3,18 @@ table.item-table {
   @extend .table-hover;
 
   thead {
-    @extend .thead-inverse;
+    background-color: $gray-suit;
+    color: $alto;
+
   }
 
-  .action-buttons {
-    @extend .btn-group;
-
-    .edit {
-      @extend .btn;
-      @extend .btn-success;
-    }
-
-    .delete {
-      @extend .btn;
-      @extend .btn-danger;
+  th.action {
+    transition: all 500ms ease-in-out;
+    &:hover {
+      background-color: $mine-shaft;
+      color: $white;
+      cursor: pointer;
+      transition: all 500ms ease-in-out;
     }
   }
 }

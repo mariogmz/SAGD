@@ -1,0 +1,69 @@
+.search-card {
+  @extend .card;
+
+  .header {
+    @extend .card-header;
+  }
+
+  .block {
+    @extend .card-block;
+    @include make-container();
+  }
+
+  .row {
+    @include make-row();
+  }
+
+  .form {
+    @include make-col();
+
+    @media (max-width: 106.1rem) {
+      @include make-col-span(7);
+    }
+
+    @media (min-width: 106.2rem) {
+      @include make-col-span(9);
+    }
+
+    .field {
+      @extend .form-group;
+      @include make-row();
+
+      label {
+        @extend .form-control-label;
+        @include make-col();
+        @include make-col-span(4);
+        @media (min-width: 106.2rem) {
+          @include make-col-span(3);
+        }
+      }
+
+      input {
+        @extend .form-control;
+        @include make-col();
+        @include make-col-span(8);
+        @media (min-width: 106.2rem) {
+          @include make-col-span(5);
+        }
+
+      }
+    }
+  }
+
+  .actions {
+    @include make-col();
+    text-align: right;
+
+    @media (max-width: 106.1rem) {
+      @include make-col-span(5);
+    }
+
+    @media (min-width: 106.2rem) {
+      @include make-col-span(3);
+    }
+  }
+}
+
+.paginator {
+  @extend .pull-right;
+}

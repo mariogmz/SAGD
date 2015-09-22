@@ -31,44 +31,80 @@
     function getResource(resource, parameters){
       parameters = parameters ? parameters : "";
       return $http.get(endpoint + resource + parameters)
+<<<<<<< HEAD
+          .then(function (response){
+            return response;
+          })
+          .catch(function (error){
+            return Promise.reject(error);
+          });
+=======
         .then(function (response){
           return response;
         })
         .catch(function (error){
           return Promise.reject(error);
         });
+>>>>>>> origin/feature/productos-crud
     }
 
     function putResource(resource, parameters, data){
       parameters = parameters ? parameters : "";
       return $http.put(endpoint + resource + parameters, data)
+<<<<<<< HEAD
+          .then(function (response){
+            return response;
+          })
+          .catch(function (error){
+            return Promise.reject(error);
+          });
+=======
         .then(function (response){
           return response;
         })
         .catch(function (error){
           return Promise.reject(error);
         });
+>>>>>>> origin/feature/productos-crud
     }
 
     function postResource(resource, data){
       return $http.post(endpoint + resource, data)
+<<<<<<< HEAD
+          .then(function (response){
+            return response;
+          })
+          .catch(function (error){
+            return Promise.reject(error);
+          });
+=======
         .then(function (response){
           return response;
         })
         .catch(function (error){
           return Promise.reject(error);
         });
+>>>>>>> origin/feature/productos-crud
     }
 
     function deleteResource(resource, parameters){
       parameters = parameters ? parameters : "";
       return $http.delete(endpoint + resource + parameters)
+<<<<<<< HEAD
+          .then(function (response){
+            return response;
+          })
+          .catch(function (error){
+            return Promise.reject(error);
+          });
+=======
         .then(function (response){
           return response;
         })
         .catch(function (error){
           return Promise.reject(error);
         });
+>>>>>>> origin/feature/productos-crud
     }
   }
 }());

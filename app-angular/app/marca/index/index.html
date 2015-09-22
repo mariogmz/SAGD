@@ -1,6 +1,6 @@
 <div class="search-card">
   <div class="header">
-    Márgenes
+    Marcas
   </div>
   <div class="block">
     <div class="row">
@@ -14,7 +14,7 @@
       </div>
       <div class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ui-sref="margenNew">Crear nuevo</button>
+          <button type="button" class="create" ui-sref="marcaNew">Crear nueva</button>
         </div>
       </div>
     </div>
@@ -32,17 +32,15 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="margen in vm.margenes | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
-      <th scope="row">{{margen.id}}</th>
-      <td><a ui-sref="margenShow({id:margen.id})">{{margen.nombre}}</a></td>
-      <td>{{margen.valor | percentage:2}}</td>
-      <td>{{margen.valor_webservice_p1 | percentage:2 }}</td>
-      <td>{{margen.valor_webservice_p8 | percentage:2 }}</td>
+    <tr dir-paginate="marca in vm.marcas | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+      <th scope="row">{{marca.id}}</th>
+      <td><a ui-sref="marcaShow({id:marca.id})">{{marca.clave}}</a></td>
+      <td>{{marca.nombre}}</td>
 
       <td>
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="edit" ui-sref="margenEdit({id:margen.id})">Editar</button>
-          <button type="button" class="delete" ng-click="vm.eliminarMargen(margen.id)">Eliminar</button>
+          <button type="button" class="edit" ui-sref="marcaEdit({id:marca.id})">Editar</button>
+          <button type="button" class="delete" ng-click="vm.eliminarMarca(marca.id)">Eliminar</button>
         </div>
       </td>
     </tr>

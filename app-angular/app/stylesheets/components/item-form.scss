@@ -17,6 +17,14 @@ form.item-form {
       @extend .col-sm-9;
     }
 
+    .field-medium {
+      @extend .col-sm-6;
+    }
+
+    .field-small {
+      @extend .col-sm-3;
+    }
+
     input {
       @extend .form-control;
     }

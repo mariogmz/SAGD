@@ -23,6 +23,8 @@
       context: $("body")
     };
 
+    var delay = 4000;
+
     var pnotify = {
       alert: alert,
       desktopAlert: desktopAlert,
@@ -37,6 +39,11 @@
         text: text,
         type: type,
         hide: sticky ? false : true,
+        delay: delay,
+        nonblock: {
+          nonblock: true,
+          nonblock_opacity: .2
+        },
         stack: stack_context
       });
     }
@@ -47,6 +54,7 @@
         text: text,
         type: type,
         hide: sticky ? false : true,
+        delay: delay,
         desktop: {
           desktop: true
         }
