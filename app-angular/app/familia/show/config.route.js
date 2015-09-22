@@ -1,21 +1,21 @@
-// app/marca/show/config.route.js
+// app/familia/show/config.route.js
 
 (function() {
     'use strict';
 
     angular
-        .module('sagdApp.marca')
+        .module('sagdApp.familia')
         .config(configureRoutes);
 
     configureRoutes.$inject = ['$stateProvider'];
 
     function configureRoutes($stateProvider) {
         $stateProvider
-            .state('marcaShow', {
-                url: 'marca/:id',
-                parent: 'marca',
-                templateUrl: 'app/marca/show/show.html',
-                controller: 'marcaShowController',
+            .state('familiaShow', {
+                url: 'familia/:id',
+                parent: 'familia',
+                templateUrl: 'app/familia/show/show.html',
+                controller: 'familiaShowController',
                 controllerAs: 'vm'
             });
     }

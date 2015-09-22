@@ -1,9 +1,9 @@
-// app/marca/marca.module.js
+// app/familia/familia.module.js
 
 (function() {
     'use strict';
 
-    angular.module('sagdApp.marca', [
+    angular.module('sagdApp.familia', [
       'sagdApp.core',
       'blocks.api'
     ]);

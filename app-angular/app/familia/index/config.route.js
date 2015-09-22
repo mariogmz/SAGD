@@ -1,21 +1,21 @@
-// app/marca/index/config.route.js
+// app/familia/index/config.route.js
 
 (function() {
     'use strict';
 
     angular
-        .module('sagdApp.marca')
+        .module('sagdApp.familia')
         .config(configureRoutes);
 
     configureRoutes.$inject = ['$stateProvider'];
 
     function configureRoutes($stateProvider) {
         $stateProvider
-            .state('marcaIndex', {
-                url: 'marca',
-                parent: 'marca',
-                templateUrl: 'app/marca/index/index.html',
-                controller: 'marcaIndexController',
+            .state('familiaIndex', {
+                url: 'familia',
+                parent: 'familia',
+                templateUrl: 'app/familia/index/index.html',
+                controller: 'familiaIndexController',
                 controllerAs: 'vm'
             });
     }

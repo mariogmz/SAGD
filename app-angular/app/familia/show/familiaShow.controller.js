@@ -1,16 +1,16 @@
-// app/marca/show/marca.controller.js
+// app/familia/show/familia.controller.js
 
 (function (){
 
   'use strict';
 
   angular
-    .module('sagdApp.marca')
-    .controller('marcaShowController', MarcaShowController);
+    .module('sagdApp.familia')
+    .controller('familiaShowController', FamiliaShowController);
 
-  MarcaShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  FamiliaShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
 
-  function MarcaShowController($auth, $state, $stateParams, api){
+  function FamiliaShowController($auth, $state, $stateParams, api){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -37,15 +37,15 @@
     initialize();
 
     function initialize(){
-      return obtenerMarca().then(function (response){
+      return obtenerFamilia().then(function (response){
         console.log(response.message);
       });
     }
 
-    function obtenerMarca(){
-      return api.get('/marca/', vm.id)
+    function obtenerFamilia(){
+      return api.get('/familia/', vm.id)
         .then(function (response){
-          vm.marca = response.data.marca;
+          vm.familia = response.data.familia;
           return response.data;
         })
         .catch(function (response){

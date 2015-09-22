@@ -1,23 +1,23 @@
-// app/marca/index/margenIndex.controller.js
+// app/familia/index/margenIndex.controller.js
 
 (function (){
 
   'use strict';
 
   angular
-    .module('sagdApp.marca')
-    .controller('marcaIndexController', MarcaIndexController);
+    .module('sagdApp.familia')
+    .controller('familiaIndexController', FamiliaIndexController);
 
-  MarcaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  FamiliaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
 
-  function MarcaIndexController($auth, $state, api, pnotify){
+  function FamiliaIndexController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.sort = sort;
-    vm.eliminarMarca = eliminarMarca;
+    vm.eliminarFamilia = eliminarFamilia;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
@@ -27,23 +27,23 @@
     initialize();
 
     function initialize(){
-      return obtenerMarcas().then(function (){
-        console.log("Marcas obtenidas");
+      return obtenerFamilias().then(function (){
+        console.log("Familias obtenidas");
       });
     }
 
-    function obtenerMarcas(){
-      return api.get('/marca')
+    function obtenerFamilias(){
+      return api.get('/familia')
         .then(function (response){
-          vm.marcas = response.data;
-          return vm.marcas;
+          vm.familias = response.data;
+          return vm.familias;
         });
     }
 
-    function eliminarMarca(id){
-      return api.delete('/marca/', id)
+    function eliminarFamilia(id){
+      return api.delete('/familia/', id)
         .then(function (response){
-          obtenerMarcas().then(function(){
+          obtenerFamilias().then(function(){
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
         }).catch(function (response){

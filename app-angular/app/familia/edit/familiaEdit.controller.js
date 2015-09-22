@@ -1,12 +1,12 @@
-// app/marca/marca.controller.js
+// app/familia/familia.controller.js
 
 (function (){
 
   'use strict';
 
   angular
-    .module('sagdApp.marca')
-    .controller('marcaEditController', MarcaEditController);
+    .module('sagdApp.familia')
+    .controller('familiaEditController', MarcaEditController);
 
   MarcaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
@@ -42,15 +42,15 @@
     initialize();
 
     function initialize(){
-      return obtenerMargen('/marca/', vm.id).then(function (response){
+      return obtenerMargen('/familia/', vm.id).then(function (response){
         console.log(response.message);
       });
     }
 
     function obtenerMargen(){
-      return api.get('/marca/', vm.id)
+      return api.get('/familia/', vm.id)
         .then(function (response){
-          vm.marca = response.data.marca;
+          vm.familia = response.data.familia;
           return response.data;
         })
         .catch(function (response){
@@ -60,7 +60,7 @@
     }
 
     function guardarMargen(){
-      return api.put('/marca/', vm.id, vm.marca)
+      return api.put('/familia/', vm.id, vm.familia)
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
@@ -68,7 +68,7 @@
         })
         .catch(function (response){
           vm.error = response.data;
-          pnotify.alertList('No se pudo guardar la marca', vm.error.error, 'error');
+          pnotify.alertList('No se pudo guardar la familia', vm.error.error, 'error');
           return response;
         });
     }

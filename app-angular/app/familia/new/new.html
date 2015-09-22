@@ -1,14 +1,14 @@
 <div class="card">
   <div class="header">
-    Crear nueva marca
+    Crear nueva familia
   </div>
   <div class="block">
     <form class="item-form" ng-submit="vm.create()">
       <fieldset>
-        <legend>Ingrese los datos para crear la nueva marca</legend>
-        <formly-form model="vm.marca" fields="vm.fields">
+        <legend>Ingrese los datos para crear la nueva familia</legend>
+        <formly-form model="vm.familia" fields="vm.fields">
           <input type="submit" class="button primary" value="Guardar cambios">
-          <a ui-sref="marcaIndex" class="button secondary">Regresar</a>
+          <a ui-sref="familiaIndex" class="button secondary">Regresar</a>
         </formly-form>
       </fieldset>
     </form>
