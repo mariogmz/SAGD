@@ -17,18 +17,4 @@ table.item-table {
       transition: all 500ms ease-in-out;
     }
   }
-
-  .action-buttons {
-    @extend .btn-group;
-
-    .edit {
-      @extend .btn;
-      @extend .btn-success;
-    }
-
-    .delete {
-      @extend .btn;
-      @extend .btn-danger;
-    }
-  }
 }

@@ -36,7 +36,7 @@
             actions: [
               {
                 name: 'Marcas',
-                state: 'producto.caracteristica.marca'
+                state: 'marcaIndex'
               }, {
                 name: 'Garantías',
                 state: 'producto.caracteristica.garantia'
