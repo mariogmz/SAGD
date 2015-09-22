@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="header">
+        Editar
+    </div>
+    <div class="block">
+        <form class="item-form" ng-submit="vm.onSubmit(vm.proveedor)">
+            <fieldset>
+                <legend>Proveedor #<strong>{{vm.proveedor.id}}</strong></legend>
+                <formly-form model="vm.proveedor" fields="vm.fields">
+                    <input type="submit" class="button primary" value="Guardar cambios">
+                    <a ui-sref="proveedorIndex" class="button secondary">Regresar</a>
+                </formly-form>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

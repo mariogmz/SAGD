@@ -1,4 +1,4 @@
-// app/proveedor/config.route.js
+// app/proveedor/edit/onfig.route.js
 
 (function (){
   'use strict';
@@ -11,12 +11,13 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-        .state('proveedorIndex', {
-          url: 'sucursales/proveedor',
+        .state('proveedorEdit', {
+          url: 'sucursales/proveedor/editar/:id',
           parent: 'layout',
-          templateUrl: 'app/proveedor/proveedor.html',
-          controller: 'proveedorController',
+          templateUrl: 'app/proveedor/edit/edit.html',
+          controller: 'proveedorEditController',
           controllerAs: 'vm'
         });
+
   }
 })();

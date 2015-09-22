@@ -1,4 +1,4 @@
-// app/proveedor/proveedorNew.controller.js
+// app/proveedor/proveedorEdit.controller.js
 
 (function (){
 
@@ -6,17 +6,18 @@
 
   angular
     .module('sagdApp.proveedor')
-    .controller('proveedorNewController', ProveedorNewController);
+    .controller('proveedorEditController', ProveedorEditController);
 
-  ProveedorNewController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  ProveedorEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
-  function ProveedorNewController($auth, $state, $stateParams, api, pnotify){
+  function ProveedorEditController($auth, $state, $stateParams, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
 
+    vm.id = $stateParams.id;
     vm.onSubmit = onSubmit;
     vm.model = {};
 
@@ -55,20 +56,36 @@
 
     ];
 
+    function obtenerProveedor(){
+      return api.get('/proveedor/', vm.id)
+          .then(function (response){
+            vm.proveedor = response.data.proveedor;
+            return response.data;
+          })
+          .catch(function (response){
+            vm.error = response.data;
+            return response.data;
+          });
+    }
+
+    vm.proveedor = obtenerProveedor(vm.id);
+
     function onSubmit(){
 
       //console.log(api);
       //alert(JSON.stringify(vm.model), null, 2);
 
-      return api.post('/proveedor', vm.model)
+      return api.put('/proveedor/', vm.proveedor.id, vm.proveedor)
       .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            return response;
+            //return response;
+
+            $location.path('/proveedor', false);
           })
           .catch(function (response){
             vm.error = response.data;
-            pnotify.alertList('No se pudo guardar el proveedor', vm.error.error, 'error');
+            pnotify.alertList('No se pudo modificar el proveedor', vm.error.error, 'error');
             return response;
          });
     }
