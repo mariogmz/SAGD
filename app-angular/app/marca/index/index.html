@@ -1,0 +1,50 @@
+<div class="search-card">
+  <div class="header">
+    Búsqueda
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Ingrese su término de búsqueda</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="paginator">
+        <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr dir-paginate="marca in vm.marcas | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+      <th scope="row">{{marca.id}}</th>
+      <td><a ui-sref="marcaShow({id:marca.id})">{{marca.clave}}</a></td>
+      <td>{{marca.nombre}}</td>
+
+      <td>
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="marcaEdit({id:marca.id})">Editar</button>
+          <button type="button" class="delete" ng-click="vm.eliminarMarca(marca.id)">Eliminar</button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+</div>
