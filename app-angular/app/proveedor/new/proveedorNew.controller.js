@@ -8,9 +8,9 @@
     .module('sagdApp.proveedor')
     .controller('proveedorNewController', ProveedorNewController);
 
-  ProveedorNewController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  ProveedorNewController.$inject = ['$auth', '$state', '$stateParams', '$location', 'api', 'pnotify'];
 
-  function ProveedorNewController($auth, $state, $stateParams, api, pnotify){
+  function ProveedorNewController($auth, $state, $stateParams, $location, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -42,7 +42,7 @@
         }
       },{
         type: 'input',
-        key: 'sitio_web',
+        key: 'pagina_web',
         templateOptions: {
           label: 'Sitio Web',
         }
@@ -70,7 +70,7 @@
       .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            return response;
+            $location.path('sucursales/proveedor');
           })
           .catch(function (response){
             vm.error = response.data;

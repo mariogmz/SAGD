@@ -15,7 +15,7 @@
           url: 'sucursales/proveedor',
           parent: 'layout',
           templateUrl: 'app/proveedor/proveedor.html',
-          controller: 'proveedorController',
+          controller: 'proveedorIndexController',
           controllerAs: 'vm'
         });
   }
