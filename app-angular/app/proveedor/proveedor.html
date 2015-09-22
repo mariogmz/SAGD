@@ -1,18 +1,25 @@
-<div class="container-fluid">
-    <h1>Proveedores</h1>
-    <hr>
-    <form class="form-inline">
-        <div class="form-group">
-            <label for="search">Buscar:</label>
-            <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
+<h1>Proveedores</h1>
+<div class="search-card">
+    <div class="block">
+        <div class="row">
+            <div class="form">
+                <form class="form-inline">
+                    <div class="form-group">
+                        <label for="search">Buscar:</label>
+                        <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <div class="action-buttons" role="group" aria-label="Acciones">
+                    <button type="button" class="create" ui-sref="proveedorNew">Crear nuevo</button>
+                </div>
+            </div>
         </div>
-    </form>
-    <div class="pull-right">
-        <button type="button" class="btn btn-secondary" ui-sref="proveedorNew">Nuevo</button>
     </div>
-    <br/>
-    <br/>
+</div>
 
+<div class="container-fluid">
     <table class="item-table table-striped table-hover">
         <thead>
         <tr>
@@ -30,7 +37,7 @@
             <td>
                 <div class="action-buttons" role="group" aria-label="Acciones">
                     <button type="button" class="edit" ui-sref="proveedorEdit({id:proveedor.id})">Editar</button>
-                    <button type="button" class="delete">Eliminar</button>
+                    <button type="button" class="delete" ui-sref="vm.eliminarProveedor(proveedor.id)">Eliminar</button>
                 </div>
             </td>
         </tr>

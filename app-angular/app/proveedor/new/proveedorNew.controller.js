@@ -41,6 +41,12 @@
           required: true
         }
       },{
+        type: 'input',
+        key: 'sitio_web',
+        templateOptions: {
+          label: 'Sitio Web',
+        }
+      },{
         type: 'select',
         key: 'externo',
         templateOptions: {

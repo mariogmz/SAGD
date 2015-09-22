@@ -33,13 +33,19 @@
         validators: {
           notEquals: '$viewValue != "Prov"'
         }
-      },{
+      }, {
         type: 'input',
         key: 'razon_social',
         templateOptions: {
           label: 'Razón social',
           placeholder: 'Introduzca la razón social',
           required: true
+        }
+      },{
+        type: 'input',
+        key: 'sitio_web',
+        templateOptions: {
+          label: 'Sitio Web',
         }
       },{
         type: 'select',

@@ -1,16 +1,15 @@
-// app/proveedor/proveedor.controller.js
+// app/proveedor/index/proveedorIndex.controller.js
 
 (function () {
     'use strict';
 
     angular
         .module('sagdApp.proveedor')
-        .controller("proveedorController", ProveedorController)
-        .controller("proveedorNuevoController", ProveedorNuevoController);
+        .controller("proveedorIndexController", ProveedorIndexController);
 
-    ProveedorController.$inject = ['$auth', '$state', '$http'];
+    ProveedorIndexController.$inject = ['$auth', '$state', '$http'];
 
-    function ProveedorController($auth, $state, $http) {
+    function ProveedorIndexController($auth, $state, $http) {
         if (!$auth.isAuthenticated()) {
             $state.go('login', {});
         }
@@ -33,10 +32,15 @@
         }
     }
 
-    function ProveedorNuevoController($auth, $state, $http) {
-
-
-
+    function eliminarProveedor(id){
+        return api.delete('/proveedor/', id)
+            .then(function (response){
+                obtenerProveedor().then(function(){
+                    pnotify.alert('¡Exito!', response.data.message, 'success');
+                });
+            }).catch(function (response){
+                pnotify.alert('¡Error!', response.data.message, 'error');
+            });
     }
 
 
