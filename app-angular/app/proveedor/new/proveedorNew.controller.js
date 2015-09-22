@@ -38,7 +38,7 @@
     function onSubmit(){
       //alert(JSON.stringify(vm.model), null, 2);
 
-      return api.put('/proveedor/', vm.id, vm.model)
+      return api.post('/proveedor/', vm.id, vm.model)
       .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
