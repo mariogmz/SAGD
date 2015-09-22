@@ -58,7 +58,7 @@ class ProveedorControllerTest extends TestCase
         $this->post($this->endpoint, ['clave' => 'DICO', 'razon_social' => 'DICOTECH MAYORISTA DE TECNOLOGIA'])
             ->seeJson([
                 'message' => 'Proveedor creado exitosamente',
-                'cliente' => 'self'
+                'proveedor' => 'self'
             ])
             ->assertResponseStatus(201);
     }
@@ -147,7 +147,7 @@ class ProveedorControllerTest extends TestCase
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del proveedor',
+                'message' => 'No se pudo realizar la actualizacion del Proveedor',
                 'error' => 'Proveedor no encontrado'
             ])
             ->assertResponseStatus(404);
@@ -168,65 +168,10 @@ class ProveedorControllerTest extends TestCase
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del proveedor',
+                'message' => 'No se pudo realizar la actualizacion del Proveedor',
                 'error' => 'Errors'
             ])
             ->assertResponseStatus(400);
     }
 
-    /**
-     * @covers ::destroy
-     */
-    public function test_DELETE_destroy_ok()
-    {
-        $endpoint = $this->endpoint . '/10';
-
-        $this->mock
-            ->shouldReceive(['find' => Mockery::self(), 'delete' => true])->withAnyArgs();
-        $this->app->instance('App\Proveedor', $this->mock);
-
-        $this->delete($endpoint)
-            ->seeJson([
-                'message' => 'Proveedor eliminado correctamente'
-            ])
-            ->assertResponseStatus(200);
-    }
-
-    /**
-     * @covers ::destroy
-     */
-    public function test_DELETE_destroy_not_found()
-    {
-        $endpoint = $this->endpoint . '/123456';
-
-        $this->mock
-            ->shouldReceive('find')->with(123456)->andReturn(null);
-        $this->app->instance('App\Proveedor', $this->mock);
-
-        $this->delete($endpoint)
-            ->seeJson([
-                'message' => 'No se pudo eliminar el proveedor',
-                'error' => 'Proveedor no encontrado'
-            ])
-            ->assertResponseStatus(404);
-    }
-
-    /**
-     * @covers ::destroy
-     */
-    public function test_DELETE_destroy_bad()
-    {
-        $endpoint = $this->endpoint . '/10';
-
-        $this->mock
-            ->shouldReceive(['find' => Mockery::self(), 'delete' => false])->withAnyArgs();
-        $this->app->instance('App\Proveedor', $this->mock);
-
-        $this->delete($endpoint)
-            ->seeJson([
-                'message' => 'No se pudo eliminar el proveedor',
-                'error' => 'El metodo de eliminar no se pudo ejecutar'
-            ])
-            ->assertResponseStatus(400);
-    }
 }

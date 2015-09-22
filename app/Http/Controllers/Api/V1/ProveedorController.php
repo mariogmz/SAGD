@@ -95,7 +95,7 @@ class ProveedorController extends Controller
         if( empty($this->proveedor) )
         {
             return response()->json([
-                'message' => 'No se pudo realizar la actualizacion del proveedor',
+                'message' => 'No se pudo realizar la actualizacion del Proveedor',
                 'error' => 'Proveedor no encontrado'
             ], 404);
         }
