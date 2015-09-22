@@ -25,10 +25,28 @@ class LGGModelTest extends TestCase {
     }
 
     /**
-     * @covers ::destroy
+     * @coversNothing
+     * Testing on an actual model since LGGModel can't be instantiated nor mocked
      */
-    public function test_destroy()
+    public function testSoftDeletes()
     {
-        $this->markTestIncomplete('Not yet implemented');
+        $model = App\Margen::create([
+            'nombre' => 'Margen',
+            'valor' => 0.1,
+            'valor_webservice_p1' => 0.1,
+            'valor_webservice_p8' => 0.2
+        ]);
+
+        $this->assertNull($model->deleted_at);
+        $this->assertFalse($model->trashed());
+
+        $model->delete();
+        $this->assertInstanceOf(Carbon\Carbon::class, $model->deleted_at);
+        $this->assertNotNull($model->deleted_at);
+        $this->assertTrue($model->trashed());
+
+        $model->restore();
+        $this->assertNull($model->deleted_at);
+        $this->assertFalse($model->trashed());
     }
 }
