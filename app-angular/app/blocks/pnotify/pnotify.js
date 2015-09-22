@@ -37,6 +37,10 @@
         text: text,
         type: type,
         hide: sticky ? false : true,
+        nonblock: {
+          nonblock: true,
+          nonblock_opacity: .2
+        },
         stack: stack_context
       });
     }
