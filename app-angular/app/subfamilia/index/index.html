@@ -1,6 +1,6 @@
 <div class="search-card">
   <div class="header">
-    Familias
+    Subfamilias
   </div>
   <div class="block">
     <div class="row">
@@ -14,7 +14,7 @@
       </div>
       <div class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ui-sref="familiaNew">Crear nueva</button>
+          <button type="button" class="create" ui-sref="subfamiliaNew">Crear nueva</button>
         </div>
       </div>
     </div>
@@ -32,15 +32,17 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="familia in vm.familias | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
-      <th scope="row">{{familia.id}}</th>
-      <td><a ui-sref="familiaShow({id:familia.id})">{{familia.clave}}</a></td>
-      <td>{{familia.nombre}}</td>
+    <tr dir-paginate="subfamilia in vm.subfamilias | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+      <th scope="row">{{subfamilia.id}}</th>
+      <td><a ui-sref="subfamiliaShow({id:subfamilia.id})">{{subfamilia.clave}}</a></td>
+      <td>{{subfamilia.nombre}}</td>
+      <td>{{subfamilia.familia_id}}</td>
+      <td>{{subfamilia.margen_id}}</td>
 
       <td>
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="edit" ui-sref="familiaEdit({id:familia.id})">Editar</button>
-          <button type="button" class="delete" ng-click="vm.eliminarFamilia(familia.id)">Eliminar</button>
+          <button type="button" class="edit" ui-sref="subfamiliaEdit({id:subfamilia.id})">Editar</button>
+          <button type="button" class="delete" ng-click="vm.eliminarSubfamilia(subfamilia.id)">Eliminar</button>
         </div>
       </td>
     </tr>

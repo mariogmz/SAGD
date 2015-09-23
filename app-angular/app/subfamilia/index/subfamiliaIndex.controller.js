@@ -21,7 +21,9 @@
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
-      {name: 'Nombre', key: 'nombre'}
+      {name: 'Nombre', key: 'nombre'},
+      {name: 'Familia', key: 'familia_id'},
+      {name: 'Margen', key: 'margen_id'}
     ];
 
     initialize();
@@ -43,7 +45,7 @@
     function eliminarSubfamilia(id){
       return api.delete('/subfamilia/', id)
         .then(function (response){
-          obtenerSubfamilias().then(function(){
+          obtenerSubfamilias().then(function (){
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
         }).catch(function (response){

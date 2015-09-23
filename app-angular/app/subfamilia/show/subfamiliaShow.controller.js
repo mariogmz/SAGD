@@ -33,10 +33,18 @@
           label: 'Nombre:'
         }
       }, {
-        type: 'textarea',
-        key: 'descripcion',
+        type: 'input',
+        key: 'familia_id',
         templateOptions: {
-          label: 'Descripción'
+          type: 'text',
+          label: 'Familia:'
+        }
+      }, {
+        type: 'input',
+        key: 'margen_id',
+        templateOptions: {
+          type: 'text',
+          label: 'Margen:'
         }
       }
     ];

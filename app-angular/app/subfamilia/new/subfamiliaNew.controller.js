@@ -23,8 +23,8 @@
         templateOptions: {
           type: 'text',
           label: 'Clave:',
-          placeholder: 'Máximo 5 caracteres alfanuméricos',
-          required: true
+          required: true,
+          placeholder: 'Máximo 4 caracteres alfanuméricos'
         }
       }, {
         type: 'input',
@@ -32,24 +32,46 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          placeholder: 'Máximo 45 caracteres',
-          required: true
+          required: true,
+          placeholder: 'Máximo 45 caracteres'
         }
       }, {
-        type: 'textarea',
-        key: 'descripcion',
+        type: 'select',
+        key: 'familia_id',
         templateOptions: {
-          label: 'Descripción:',
-          placeholder: 'Máximo 100 caracteres'
+          label: 'Familia:',
+          required: true,
+          options: [],
+          ngOptions: 'familia.id as familia.nombre for familia in to.options'
+        },
+        controller: /*@ngInject*/ function ($scope){
+          $scope.to.loading = api.get('/familia').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
         }
-      }];
+      }, {
+        type: 'select',
+        key: 'margen_id',
+        templateOptions: {
+          label: 'Margen:',
+          options: [],
+          ngOptions: 'margen.id as margen.nombre for margen in to.options'
+        },
+        controller: /*@ngInject*/ function ($scope){
+          $scope.to.loading = api.get('/margen').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
+      }
+    ];
 
     vm.create = create;
 
     function create(){
       api.post('/subfamilia', vm.subfamilia)
         .then(function (response){
-          debugger;
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('subfamiliaShow', {id: response.data.subfamilia.id});
         })
@@ -57,6 +79,7 @@
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }
+
   }
 
 })();
