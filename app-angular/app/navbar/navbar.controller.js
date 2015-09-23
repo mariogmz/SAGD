@@ -48,7 +48,7 @@
                 state: 'familiaIndex'
               }, {
                 name: 'Subfamilias',
-                state: 'producto.caracteristica.subfamilia'
+                state: 'subfamiliaIndex'
               }
             ]
           }, {
