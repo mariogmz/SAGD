@@ -10,8 +10,8 @@
   ApiProvider.$inject = ['$http', 'ENV'];
 
   function ApiProvider($http, ENV){
-    var apiNamespace = ENV.apiNamespace;
     var applicationFqdn = ENV.applicationFqdn;
+    var apiNamespace = ENV.apiNamespace;
     var version = ENV.version;
     var endpoint = applicationFqdn + apiNamespace + version;
 
