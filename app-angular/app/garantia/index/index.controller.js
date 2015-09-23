@@ -21,9 +21,9 @@
     vm.eliminarGarantia = eliminarGarantia;
     vm.sortKeys = [
       {name: '#', key: 'id'},
-      {name: 'Seriado', key: 'seriado'},
       {name: 'Descripción', key: 'descripcion'},
       {name: 'Días', key: 'dias'},
+      {name: 'Seriado', key: 'seriado'},
     ];
 
     activate();
