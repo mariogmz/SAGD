@@ -48,8 +48,9 @@
           label: 'Seriado:',
           options: [
             {value: 0, name: 'No'},
-            {value: 1, name: 'Si'},
-          ]
+            {value: 1, name: 'Si'}
+          ],
+          required: true
         }
       }
     ];
