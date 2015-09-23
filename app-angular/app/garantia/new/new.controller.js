@@ -17,6 +17,10 @@
 
     var vm = this;
     vm.create = create;
+    vm.garantia = {
+      dias: 0,
+      seriado: 1
+    };
 
     vm.fields = [
       {
@@ -41,7 +45,11 @@
         key: 'seriado',
         templateOptions: {
           type: 'select',
-          label: 'Seriado:'
+          label: 'Seriado:',
+          options: [
+            {value: 0, name: 'No'},
+            {value: 1, name: 'Si'},
+          ]
         }
       }
     ];
@@ -54,7 +62,7 @@
     }
 
     function create() {
-      api.post('/tipo-garantia', vm.unidad)
+      api.post('/tipo-garantia', vm.garantia)
         .then(function(response){
           pnotify.alert('Exito', response.data.message, 'success');
           $state.go('garantiaShow', {id: response.data.tipoGarantia.id});
