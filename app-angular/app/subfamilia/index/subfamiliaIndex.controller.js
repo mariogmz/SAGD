@@ -22,8 +22,8 @@
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
       {name: 'Nombre', key: 'nombre'},
-      {name: 'Familia', key: 'familia_id'},
-      {name: 'Margen', key: 'margen_id'}
+      {name: 'Familia', key: 'familia.clave'},
+      {name: 'Margen', key: 'margen.clave'}
     ];
 
     initialize();

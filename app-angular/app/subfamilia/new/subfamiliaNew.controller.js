@@ -44,7 +44,7 @@
           options: [],
           ngOptions: 'familia.id as familia.nombre for familia in to.options'
         },
-        controller: /*@ngInject*/ function ($scope){
+        controller: /* @ngInject */ function ($scope){
           $scope.to.loading = api.get('/familia').then(function (response){
             $scope.to.options = response.data;
             return response;
@@ -58,7 +58,7 @@
           options: [],
           ngOptions: 'margen.id as margen.nombre for margen in to.options'
         },
-        controller: /*@ngInject*/ function ($scope){
+        controller: /* @ngInject */ function ($scope){
           $scope.to.loading = api.get('/margen').then(function (response){
             $scope.to.options = response.data;
             return response;
