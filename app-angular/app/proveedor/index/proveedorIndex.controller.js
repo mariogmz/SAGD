@@ -15,6 +15,13 @@
         }
 
         var vm = this;
+        vm.sort = sort;
+        vm.sortKeys = [
+            {name: '#', key: 'id'},
+            {name: 'Clave', key: 'clave'},
+            {name: 'Razón social', key: 'razon_social'},
+            {name: 'Página web', key: 'pagina_web'}
+        ];
 
         vm.obtenerProveedores = function () {
             api.get('/proveedor').
@@ -27,9 +34,9 @@
 
         vm.obtenerProveedores();
 
-        vm.sort = function (keyname) {
-            vm.sortKey = keyname;   //set the sortKey to the param passed
-            vm.reverse = !vm.reverse; //if true make it false and vice versa
+        function sort(keyname){
+            vm.sortKey = keyname;
+            vm.reverse = !vm.reverse;
         }
 
     }
