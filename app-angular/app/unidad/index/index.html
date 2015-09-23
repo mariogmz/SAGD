@@ -40,7 +40,7 @@
         <td>
           <div class="action-buttons" role="group" aria-label="Acciones">
             <button type="button" class="edit" ui-sref="unidadEdit({id:unidad.id})">Editar</button>
-            <button type="button" class="delete" ui-sref="vm.eliminarUnidad(unidad.id)">Eliminar</button>
+            <button type="button" class="delete" ng-click="vm.eliminarUnidad(unidad.id)">Eliminar</button>
           </div>
         </td>
       </tr>
