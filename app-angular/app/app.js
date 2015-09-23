@@ -8,16 +8,17 @@
     .module('sagdApp', [
       'sagdApp.core',
 
-      'sagdApp.layout',
-      'sagdApp.home',
-      'sagdApp.session',
-      'sagdApp.empleado',
-      'sagdApp.producto',
-      'sagdApp.margen',
-      'sagdApp.marca',
-      'sagdApp.familia',
-      'sagdApp.navbar',
       'sagdApp.cliente',
+      'sagdApp.empleado',
+      'sagdApp.familia',
+      'sagdApp.garantia',
+      'sagdApp.home',
+      'sagdApp.layout',
+      'sagdApp.marca',
+      'sagdApp.margen',
+      'sagdApp.navbar',
+      'sagdApp.producto',
+      'sagdApp.session',
       'sagdApp.unidad'
   ]);
 })();
