@@ -44,7 +44,7 @@
         });
     }
 
-    function eliminarGarantia() {
+    function eliminarGarantia(id) {
       return api.delete('/tipo-garantia/', id)
         .then(function(response){
           obtenerGarantias()
