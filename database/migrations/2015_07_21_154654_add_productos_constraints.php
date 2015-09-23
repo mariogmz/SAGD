@@ -20,7 +20,7 @@ class AddProductosConstraints extends Migration {
 
             $table->foreign('tipo_garantia_id')->references('id')->on('tipos_garantias');
             $table->foreign('marca_id')->references('id')->on('marcas');
-            $table->foreign('margen_id')->references('id')->on('margenes')->onDelete('set null');
+            $table->foreign('margen_id')->references('id')->on('margenes');
             $table->foreign('unidad_id')->references('id')->on('unidades');
             $table->foreign('subfamilia_id')->references('id')->on('subfamilias');
         });

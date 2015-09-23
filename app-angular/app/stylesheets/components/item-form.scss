@@ -28,5 +28,10 @@ form.item-form {
     input {
       @extend .form-control;
     }
+
+    textarea{
+      @extend .form-control;
+      resize: none;
+    }
   }
 }

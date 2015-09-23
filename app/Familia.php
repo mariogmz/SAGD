@@ -19,13 +19,12 @@ namespace App;
  */
 class Familia extends LGGModel {
 
-    //
     protected $table = "familias";
     public $timestamps = false;
     protected $fillable = ['clave', 'nombre', 'descripcion'];
 
     public static $rules = [
-        'clave'       => 'required|max:4|unique:familias',
+        'clave'       => 'required|max:4|alpha_num|unique:familias',
         'nombre'      => 'required|max:45',
         'descripcion' => 'max:100'
     ];

@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="header">
+    Editar
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.save()">
+      <fieldset>
+        <legend>Tipo de Garantía #<strong>{{vm.garantia.id}}</strong></legend>
+        <formly-form model="vm.garantia" fields="vm.fields">
+          <input type="submit" class="button primary" value="Guardar cambios">
+          <a ui-sref="garantiaIndex" class="button secondary">Regresar</a>
+        </formly-form>
+      </fieldset>
+    </form>
+  </div>
+</div>

@@ -17,7 +17,7 @@
 
     var vm = this;
     vm.id = $stateParams.id;
-    vm.save = guardarMargen;
+    vm.save = guardarMarca;
 
     vm.fields = [
       {
@@ -42,12 +42,12 @@
     initialize();
 
     function initialize(){
-      return obtenerMargen('/marca/', vm.id).then(function (response){
+      return obtenerMarca('/marca/', vm.id).then(function (response){
         console.log(response.message);
       });
     }
 
-    function obtenerMargen(){
+    function obtenerMarca(){
       return api.get('/marca/', vm.id)
         .then(function (response){
           vm.marca = response.data.marca;
@@ -59,7 +59,7 @@
         });
     }
 
-    function guardarMargen(){
+    function guardarMarca(){
       return api.put('/marca/', vm.id, vm.marca)
         .then(function (response){
           vm.message = response.data.message;

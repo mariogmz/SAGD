@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="header">
+    Detalle
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend>Familia #<strong>{{vm.familia.id}}</strong></legend>
+        <formly-form model="vm.familia" fields="vm.fields"></formly-form>
+      </fieldset>
+    </form>
+    <a ui-sref="familiaIndex" class="button primary">Regresar</a>
+  </div>
+</div>
+

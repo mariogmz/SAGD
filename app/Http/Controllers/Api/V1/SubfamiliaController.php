@@ -23,7 +23,7 @@ class SubfamiliaController extends Controller {
      * @return Response
      */
     public function index() {
-        return $this->subfamilia->all();
+        return $this->subfamilia->with('familia','margen')->get();
     }
 
     /**

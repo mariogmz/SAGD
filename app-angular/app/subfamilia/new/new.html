@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="header">
+    Crear nueva subfamilia
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.create()">
+      <fieldset>
+        <legend>Ingrese los datos para crear la nueva subfamilia</legend>
+        <formly-form model="vm.subfamilia" fields="vm.fields">
+          <input type="submit" class="button primary" value="Guardar cambios">
+          <a ui-sref="subfamiliaIndex" class="button secondary">Regresar</a>
+        </formly-form>
+      </fieldset>
+    </form>
+  </div>
+</div>
+

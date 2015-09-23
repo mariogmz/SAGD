@@ -42,7 +42,6 @@
     function create(){
       api.post('/marca', vm.marca)
         .then(function (response){
-          debugger;
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('marcaShow', {id: response.data.marca.id});
         })

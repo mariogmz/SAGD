@@ -1,0 +1,53 @@
+<div class="search-card">
+  <div class="header">
+    Tipo de Garantias
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="create" ui-sref="garantiaNew">Crear nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+      <tr>
+        <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+          {{sortKey.name}}
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr dir-paginate="garantia in vm.garantias | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+        <th scope="row">{{garantia.id}}</th>
+        <td><a ui-sref="garantiaShow({id:garantia.id})">{{garantia.descripcion}}</a></td>
+        <td>{{garantia.dias}}</td>
+        <td>{{garantia.seriado | boolean}}</td>
+
+        <td>
+          <div class="action-buttons" role="group" aria-label="Acciones">
+            <button type="button" class="edit" ui-sref="garantiaEdit({id:garantia.id})">Editar</button>
+            <button type="button" class="delete" ng-click="vm.eliminarGarantia(garantia.id)">Eliminar</button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+</div>
