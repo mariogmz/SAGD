@@ -1,23 +1,23 @@
-// app/familia/familia.controller.js
+// app/subfamilia/subfamilia.controller.js
 
 (function (){
 
   'use strict';
 
   angular
-    .module('sagdApp.familia')
-    .controller('familiaEditController', FamiliaEditController);
+    .module('sagdApp.subfamilia')
+    .controller('subfamiliaEditController', SubfamiliaEditController);
 
-  FamiliaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  SubfamiliaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
-  function FamiliaEditController($auth, $state, $stateParams, api, pnotify){
+  function SubfamiliaEditController($auth, $state, $stateParams, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.id = $stateParams.id;
-    vm.save = guardarFamilia;
+    vm.save = guardarSubfamilia;
 
     vm.fields = [
       {
@@ -42,15 +42,15 @@
     initialize();
 
     function initialize(){
-      return obtenerFamilia('/familia/', vm.id).then(function (response){
+      return obtenerSubfamilia('/subfamilia/', vm.id).then(function (response){
         console.log(response.message);
       });
     }
 
-    function obtenerFamilia(){
-      return api.get('/familia/', vm.id)
+    function obtenerSubfamilia(){
+      return api.get('/subfamilia/', vm.id)
         .then(function (response){
-          vm.familia = response.data.familia;
+          vm.subfamilia = response.data.subfamilia;
           return response.data;
         })
         .catch(function (response){
@@ -59,8 +59,8 @@
         });
     }
 
-    function guardarFamilia(){
-      return api.put('/familia/', vm.id, vm.familia)
+    function guardarSubfamilia(){
+      return api.put('/subfamilia/', vm.id, vm.subfamilia)
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
@@ -68,7 +68,7 @@
         })
         .catch(function (response){
           vm.error = response.data;
-          pnotify.alertList('No se pudo guardar la familia', vm.error.error, 'error');
+          pnotify.alertList('No se pudo guardar la subfamilia', vm.error.error, 'error');
           return response;
         });
     }

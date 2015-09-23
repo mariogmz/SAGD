@@ -16,6 +16,7 @@
       'sagdApp.margen',
       'sagdApp.marca',
       'sagdApp.familia',
+      'sagdApp.subfamilia',
       'sagdApp.navbar',
       'sagdApp.cliente'
   ]);
