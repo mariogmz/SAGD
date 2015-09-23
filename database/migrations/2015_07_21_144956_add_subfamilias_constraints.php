@@ -13,10 +13,10 @@ class AddSubfamiliasConstraints extends Migration {
         //
         Schema::table('subfamilias', function ($table) {
             $table->integer('familia_id')->unsigned();
-            $table->integer('margen_id')->unsigned()->optional();
+            $table->integer('margen_id')->unsigned()->nullable();
 
             $table->foreign('familia_id')->references('id')->on('familias');
-            $table->foreign('margen_id')->references('id')->on('margenes');
+            $table->foreign('margen_id')->references('id')->on('margenes')->onDelete('set null');
         });
     }
 

@@ -14,7 +14,10 @@
       'sagdApp.empleado',
       'sagdApp.producto',
       'sagdApp.margen',
+      'sagdApp.marca',
+      'sagdApp.familia',
       'sagdApp.navbar',
-      'sagdApp.cliente'
+      'sagdApp.cliente',
+      'sagdApp.unidad'
   ]);
 })();

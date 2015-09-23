@@ -8,13 +8,15 @@
     .config(configure)
     .run(updateState);
 
-  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', 'apiProvider'];
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', 'apiProvider', 'paginationTemplateProvider'];
 
-  function configure($urlRouterProvider, $authProvider, $locationProvider, api){
+  function configure($urlRouterProvider, $authProvider, $locationProvider, api, paginationTemplateProvider){
     $authProvider.loginUrl = api.$get().endpoint + '/authenticate';
     $authProvider.withCredentials = true;
 
     $urlRouterProvider.otherwise('/');
+
+    paginationTemplateProvider.setPath('app/templates/components/pagination-control.html');
 
     if (window.history && window.history.pushState) {
       $locationProvider.html5Mode(true).hashPrefix('!');

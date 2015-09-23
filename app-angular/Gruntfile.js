@@ -53,6 +53,7 @@ module.exports = function(grunt) {
           './bower_components/pnotify/src/pnotify.core.js',
           './bower_components/pnotify/src/pnotify.desktop.js',
           './bower_components/pnotify/src/pnotify.buttons.js',
+          './bower_components/pnotify/src/pnotify.nonblock.js',
           './bower_components/pnotify/src/pnotify.callbacks.js'
         ],
         dest: './public/libs/frontend.js'
@@ -100,6 +101,7 @@ module.exports = function(grunt) {
           './bower_components/pnotify/src/pnotify.core.js',
           './bower_components/pnotify/src/pnotify.desktop.js',
           './bower_components/pnotify/src/pnotify.buttons.js',
+          './bower_components/pnotify/src/pnotify.nonblock.js',
           './bower_components/pnotify/src/pnotify.callbacks.js'
         ],
         tasks: ['concat:libs', 'uglify:libs'],

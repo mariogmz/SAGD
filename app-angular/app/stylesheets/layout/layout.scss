@@ -1,21 +1,29 @@
 .main-container {
-	@extend .container-fluid;
+  @extend .container-fluid;
+}
 
-	.view {
-		@include make-row();
-	}
+.fixed{
+  @media (min-width: 106.2rem) {
+    max-height: 900px;
+  }
+  max-height: 590px;
+  overflow: auto;
 }
 
 .view {
-  position: relative;
-	.module-container {
-		@include make-col();
-		@include make-col-span(9);
-	}
-	.notification-bar {
-		@include make-col();
-		@include make-col-span(3);
-    overflow: auto;
-    height: 100%;
-	}
+  @include make-row();
+
+  .module-container {
+    @include make-col();
+    @include make-col-span(9);
+    @extend .fixed;
+  }
+
+  .notification-bar {
+    @include make-col();
+    @include make-col-span(3);
+    @include make-col-offset(9);
+    @extend .fixed;
+    position: fixed;
+  }
 }

@@ -30,7 +30,7 @@
         angular.forEach(['radio', 'select'], function (fieldName){
           formlyConfigWrapper.setType({
             name: fieldName,
-            templateUrl: 'app/templates/fields/' + fieldName,
+            templateUrl: 'app/templates/fields/' + fieldName + '.html',
             wrapper: commonWrappers
           });
         });
@@ -38,6 +38,12 @@
         formlyConfigWrapper.setType({
           name: 'input',
           templateUrl: 'app/templates/fields/input.html',
+          wrapper: commonWrappers
+        });
+
+        formlyConfigWrapper.setType({
+          name: 'textarea',
+          templateUrl: 'app/templates/fields/textarea.html',
           wrapper: commonWrappers
         });
 

@@ -1,6 +1,9 @@
-<div ng-repeat="(key, option) in options.templateOptions.options" ng-class="options.className?'item-radio-stack':'item-radio'">
-  <label>
-    <input type="radio" id="{{id + '_' + $index}}" ng-value="option.value" ng-model="model[options.key]">
-    {{option.name}}
-  </label>
+<div class="field">
+  <div ng-repeat="(key, option) in options.templateOptions.options"
+       ng-class="options.className?'item-radio-stack':'item-radio'">
+    <label>
+      <input type="radio" id="{{id + '_' + $index}}" ng-value="option.value" ng-model="model[options.key]">
+      {{option.name}}
+    </label>
+  </div>
 </div>
