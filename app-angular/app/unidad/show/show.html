@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="header">
+    Detalle
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend>Unidad #<strong>{{vm.unidad.id}}</strong></legend>
+        <formly-form model="vm.unidad" fields="vm.fields"></formly-form>
+      </fieldset>
+    </form>
+    <a ui-sref="unidadIndex" class="button primary">Regresar</a>
+  </div>
+</div>
