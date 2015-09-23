@@ -4,15 +4,15 @@
   'use strict';
 
   angular
-      .module('blocks.api')
-      .factory('api', ApiProvider);
+    .module('blocks.api')
+    .factory('api', ApiProvider);
 
-  ApiProvider.$inject = ['$http'];
+  ApiProvider.$inject = ['$http', 'ENV'];
 
-  function ApiProvider($http){
-    var applicationFqdn = "http://api.sagd.app";
-    var apiNamespace = "/api";
-    var version = "/v1";
+  function ApiProvider($http, ENV){
+    var applicationFqdn = ENV.applicationFqdn;
+    var apiNamespace = ENV.apiNamespace;
+    var version = ENV.version;
     var endpoint = applicationFqdn + apiNamespace + version;
 
     var apiProvider = {
