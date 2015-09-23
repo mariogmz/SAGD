@@ -85,9 +85,7 @@
       .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            //return response;
-
-            $location.path('sucursales/proveedor');
+            $location.path('proveedorIndex');
           })
           .catch(function (response){
             vm.error = response.data;

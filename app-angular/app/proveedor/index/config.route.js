@@ -12,10 +12,10 @@
   function configureRoutes($stateProvider) {
     $stateProvider
         .state('proveedorIndex', {
-          url: 'sucursales/proveedor',
-          parent: 'layout',
+          url: 'proveedor',
+          parent: 'proveedor',
           templateUrl: 'app/proveedor/index/index.html',
-          controller: 'proveedorController',
+          controller: 'proveedorIndexController',
           controllerAs: 'vm'
         });
   }

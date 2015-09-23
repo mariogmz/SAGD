@@ -4,19 +4,18 @@
   'use strict';
 
   angular
-    .module('sagdApp.proveedor')
-    .config(configureRoutes);
+      .module('sagdApp.proveedor')
+      .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider) {
+  function configureRoutes($stateProvider){
     $stateProvider
         .state('proveedor', {
-          url: 'sucursales/proveedor',
+          abstract: true,
+          url: '',
           parent: 'layout',
-          templateUrl: 'app/proveedor/proveedor.html',
-          controller: 'proveedorIndexController',
-          controllerAs: 'vm'
+          templateUrl: 'app/proveedor/proveedor.html'
         });
   }
 })();

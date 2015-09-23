@@ -12,7 +12,7 @@
   function configureRoutes($stateProvider) {
     $stateProvider
         .state('proveedorEdit', {
-          url: 'sucursales/proveedor/editar/:id',
+          url: 'proveedor/editar/:id',
           parent: 'layout',
           templateUrl: 'app/proveedor/edit/edit.html',
           controller: 'proveedorEditController',

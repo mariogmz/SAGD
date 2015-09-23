@@ -12,7 +12,7 @@
   function configureRoutes($stateProvider) {
     $stateProvider
         .state('proveedorNew', {
-          url: 'sucursales/proveedor/nuevo',
+          url: 'proveedor/nuevo',
           parent: 'layout',
           templateUrl: 'app/proveedor/new/new.html',
           controller: 'proveedorNewController',
