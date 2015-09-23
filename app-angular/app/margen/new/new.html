@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="header">
+    Crear nueva margen
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.create()">
+      <fieldset>
+        <legend>Ingrese los datos para crear el nuevo margen</legend>
+        <formly-form model="vm.margen" fields="vm.fields">
+          <input type="submit" class="button primary" value="Guardar cambios">
+          <a ui-sref="marcaIndex" class="button secondary">Regresar</a>
+        </formly-form>
+      </fieldset>
+    </form>
+  </div>
+</div>
+

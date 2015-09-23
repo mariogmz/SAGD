@@ -21,29 +21,52 @@
       version: version,
       endpoint: endpoint,
       get: getResource,
-      put: putResource
+      put: putResource,
+      post: postResource,
+      delete: deleteResource
     };
 
     return apiProvider;
 
-    function getResource(resource, parameters) {
-      parameters = parameters ? parameters:"";
+    function getResource(resource, parameters){
+      parameters = parameters ? parameters : "";
       return $http.get(endpoint + resource + parameters)
-        .then(function(response){
+        .then(function (response){
           return response;
         })
-        .catch(function(error){
+        .catch(function (error){
           return Promise.reject(error);
         });
     }
 
-    function putResource(resource, parameters, data) {
-      parameters = parameters ? parameters:"";
+    function putResource(resource, parameters, data){
+      parameters = parameters ? parameters : "";
       return $http.put(endpoint + resource + parameters, data)
-        .then(function(response){
+        .then(function (response){
           return response;
         })
-        .catch(function(error){
+        .catch(function (error){
+          return Promise.reject(error);
+        });
+    }
+
+    function postResource(resource, data){
+      return $http.post(endpoint + resource, data)
+        .then(function (response){
+          return response;
+        })
+        .catch(function (error){
+          return Promise.reject(error);
+        });
+    }
+
+    function deleteResource(resource, parameters){
+      parameters = parameters ? parameters : "";
+      return $http.delete(endpoint + resource + parameters)
+        .then(function (response){
+          return response;
+        })
+        .catch(function (error){
           return Promise.reject(error);
         });
     }

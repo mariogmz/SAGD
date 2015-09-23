@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="header">
+    Crear nuevo tipo de garantía
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.create()">
+      <legend>Ingrese los datos para crear el nuevo tipo de garantía</legend>
+      <formly-form model="vm.garantia" fields="vm.fields">
+        <input type="submit" class="button primary" value="Guardar cambios">
+        <a ui-sref="garantiaIndex" class="button secondary">Regresar</a>
+      </formly-form>
+    </form>
+  </div>
+</div>

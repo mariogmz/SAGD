@@ -1,0 +1,28 @@
+ul.pagination {
+  @extend .pagination;
+
+  a{
+    color: $persian-red;
+    &:hover{
+      color: $old-brick;
+    }
+  }
+
+  .active {
+    a {
+      background-color: $gray-suit;
+      border-color: $gray-suit;
+
+      &:focus{
+        background-color: $gray-suit;
+        border-color: $gray-suit;
+      }
+
+      &:hover{
+        background-color: $mine-shaft;
+        border-color: $mine-shaft;
+
+      }
+    }
+  }
+}

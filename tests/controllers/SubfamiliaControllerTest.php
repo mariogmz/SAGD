@@ -30,7 +30,10 @@ class SubfamiliaControllerTest extends TestCase {
      * @covers ::index
      */
     public function test_GET_index() {
-        $this->mock->shouldReceive('all')->once()->andReturn('success');
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'get' => 'success'
+        ])->withAnyArgs();
         $this->app->instance('App\Subfamilia', $this->mock);
 
         $this->get($this->endpoint)

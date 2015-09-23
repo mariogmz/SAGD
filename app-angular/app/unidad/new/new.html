@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="header">
+    Crear nueva unidad
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.create()">
+      <legend>Ingrese los datos para crear la nueva unidad</legend>
+      <formly-form model="vm.unidad" fields="vm.fields">
+        <input type="submit" class="button primary" value="Guardar cambios">
+        <a ui-sref="unidadIndex" class="button secondary">Regresar</a>
+      </formly-form>
+    </form>
+  </div>
+</div>

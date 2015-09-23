@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="header">
+    Editar
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.save()">
+      <fieldset>
+        <legend>Familia #<strong>{{vm.familia.id}}</strong></legend>
+        <formly-form model="vm.familia" fields="vm.fields">
+          <input type="submit" class="button primary" value="Guardar cambios">
+          <a ui-sref="familiaIndex" class="button secondary">Regresar</a>
+        </formly-form>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
