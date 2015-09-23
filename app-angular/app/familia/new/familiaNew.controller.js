@@ -49,7 +49,6 @@
     function create(){
       api.post('/familia', vm.familia)
         .then(function (response){
-          debugger;
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('familiaShow', {id: response.data.familia.id});
         })

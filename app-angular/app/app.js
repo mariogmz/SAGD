@@ -19,6 +19,7 @@
       'sagdApp.navbar',
       'sagdApp.producto',
       'sagdApp.session',
+      'sagdApp.subfamilia',
       'sagdApp.unidad'
   ]);
 })();

@@ -23,13 +23,12 @@ namespace App;
  */
 class Subfamilia extends LGGModel {
 
-    //
     protected $table = "subfamilias";
     public $timestamps = false;
     protected $fillable = ['clave', 'nombre', 'familia_id', 'margen_id'];
 
     public static $rules = [
-        'clave'      => 'required|max:4|unique:subfamilias',
+        'clave'      => 'required|max:4|alpha|unique:subfamilias',
         'nombre'     => 'required|max:45',
         'familia_id' => 'required|integer',
         'margen_id'  => 'integer'
