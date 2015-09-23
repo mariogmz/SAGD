@@ -39,7 +39,7 @@
                 state: 'marcaIndex'
               }, {
                 name: 'Garantías',
-                state: 'producto.caracteristica.garantia'
+                state: 'garantiaIndex'
               }, {
                 name: 'Unidades',
                 state: 'unidadIndex'
