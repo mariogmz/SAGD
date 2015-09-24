@@ -1,29 +1,23 @@
 .main-container {
-  @extend .container-fluid;
-}
-
-.fixed{
-  @media (min-width: 106.2rem) {
-    max-height: 900px;
-  }
-  max-height: 590px;
-  overflow: auto;
-}
-
-.view {
+  @include make-container();
   @include make-row();
+
+  margin: 0;
+  padding: 0;
 
   .module-container {
     @include make-col();
     @include make-col-span(9);
-    @extend .fixed;
+
+    max-height: 90vh;
+    overflow: auto;
   }
 
   .notification-bar {
     @include make-col();
     @include make-col-span(3);
-    @include make-col-offset(9);
-    @extend .fixed;
-    position: fixed;
+
+    max-height: 90vh;
+    overflow: auto;
   }
 }
