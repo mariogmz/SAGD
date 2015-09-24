@@ -5,12 +5,12 @@
   'use strict';
 
   angular
-    .module('sagdApp.cliente')
-    .controller('clienteNewController', ClienteNewController);
+      .module('sagdApp.cliente')
+      .controller('clienteNewController', ClienteNewController);
 
   ClienteNewController.$inject = ['$auth', '$state', '$stateParams', '$location', 'api', 'pnotify'];
 
-  function ClienteNewController($auth, $state, $stateParams, $location, api, pnotify){
+  function ClienteNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -30,9 +30,9 @@
           required: true
         },
         validators: {
-          notEquals: '$viewValue != "admin"'
+          notEquals: '$viewValue != "Prov"'
         }
-      },{
+      }, {
         type: 'input',
         key: 'usuario',
         templateOptions: {
@@ -40,40 +40,22 @@
           placeholder: 'Introduzca el usuario',
           required: true
         }
-      },{
-        type: 'input',
-        key: 'nombre',
-        templateOptions: {
-          label: 'Nombre',
-        }
-      },{
-        type: 'select',
-        key: 'activo',
-        templateOptions: {
-          label: '¿Activo?',
-          options:
-            [
-              { value: 0, name: "No" },
-              { value: 1, name: "Si" }
-            ]
-        }
       }
 
     ];
 
     function onSubmit(){
-
       return api.post('/cliente', vm.model)
-      .then(function (response){
+          .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            $state.go('clienteShow', {id: response.data.cliente.id});
+            $state.go('clienteShow', {id: response.data.proveedor.id});
           })
           .catch(function (response){
             vm.error = response.data;
             pnotify.alertList('No se pudo guardar el cliente', vm.error.error, 'error');
             return response;
-         });
+          });
     }
 
   }

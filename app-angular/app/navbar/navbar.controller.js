@@ -139,7 +139,7 @@
         submodules: [
           {
             name: 'Consultar',
-            state: 'cliente'
+            state: 'clienteIndex'
           }, {
             name: 'Página Web Distribuidores',
             state: 'cliente.pagina'
