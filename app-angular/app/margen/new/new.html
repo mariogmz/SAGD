@@ -7,7 +7,7 @@
       <fieldset>
         <legend>Ingrese los datos para crear el nuevo margen</legend>
         <formly-form model="vm.margen" fields="vm.fields">
-          <a ui-sref="marcaIndex" class="button secondary">Regresar</a>
+          <a ng-click="vm.back()" class="button secondary">Regresar</a>
           <input type="submit" class="button primary" value="Guardar cambios">
         </formly-form>
       </fieldset>

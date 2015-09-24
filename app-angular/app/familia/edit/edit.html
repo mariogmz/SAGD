@@ -7,7 +7,7 @@
       <fieldset>
         <legend>Familia #<strong>{{vm.familia.id}}</strong></legend>
         <formly-form model="vm.familia" fields="vm.fields">
-          <a ui-sref="familiaIndex" class="button secondary">Regresar</a>
+          <a ng-click="vm.back()" class="button secondary">Regresar</a>
           <input type="submit" class="button primary" value="Guardar cambios">
         </formly-form>
       </fieldset>
