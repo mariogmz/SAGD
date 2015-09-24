@@ -4,13 +4,11 @@
 <div ng-controller="NavbarController as vm" nav-bar></div>
 <!-- Main Container -->
 <div class="main-container">
-  <div class="view">
     <!-- Module view -->
-    <div class="module-container">
-      <div ui-view></div>
-    </div>
+    <section ui-view class="module-container">
+    </section>
     <!-- Notification Panel view -->
-    <div class="notification-bar">
+    <aside class="notification-bar">
       <div class="card card-inverse" style="background-color: #333; border-color: #333; text-align: center; height: 60px">
         <div class="card-block">
           <h3 class="card-title">Notificaciones</h3>
@@ -56,6 +54,5 @@
           </blockquote>
         </div>
       </div>
-    </div>
-  </div>
+    </aside>
 </div>
