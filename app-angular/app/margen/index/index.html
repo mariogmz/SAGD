@@ -14,7 +14,7 @@
       </div>
       <div class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ui-sref="margenNew">Crear nuevo</button>
+          <button type="button" class="create" ui-sref="margenNew"><i></i> Crear nuevo</button>
         </div>
       </div>
     </div>
@@ -39,10 +39,10 @@
       <td>{{margen.valor_webservice_p1 | percentage:2 }}</td>
       <td>{{margen.valor_webservice_p8 | percentage:2 }}</td>
 
-      <td>
+      <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="edit" ui-sref="margenEdit({id:margen.id})">Editar</button>
-          <button type="button" class="delete" ng-click="vm.eliminarMargen(margen.id)">Eliminar</button>
+          <button type="button" class="edit" ui-sref="margenEdit({id:margen.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarMargen(margen.id)"><i></i></button>
         </div>
       </td>
     </tr>
