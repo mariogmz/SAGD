@@ -18,6 +18,7 @@
     var vm = this;
     vm.id = $stateParams.id;
     vm.save = guardarMargen;
+    vm.back = goBack;
 
     vm.fields = [
       {
@@ -87,6 +88,10 @@
           pnotify.alertList('No se pudo guardar el margen', vm.error.error, 'error');
           return response;
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 

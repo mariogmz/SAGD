@@ -18,6 +18,7 @@
     var vm = this;
     vm.id = $stateParams.id;
     vm.save = guardarSubfamilia;
+    vm.back = goBack;
 
     vm.fields = [
       {
@@ -71,6 +72,10 @@
           pnotify.alertList('No se pudo guardar la subfamilia', vm.error.error, 'error');
           return response;
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 
