@@ -1,4 +1,4 @@
-// app/proveedor/new/onfig.route.js
+// app/proveedor/new/config.route.js
 
 (function (){
   'use strict';
@@ -9,15 +9,15 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider) {
+  function configureRoutes($stateProvider){
     $stateProvider
-        .state('proveedorNew', {
-          url: 'proveedor/nuevo',
-          parent: 'layout',
-          templateUrl: 'app/proveedor/new/new.html',
-          controller: 'proveedorNewController',
-          controllerAs: 'vm'
-        });
+      .state('proveedorNew', {
+        url: 'proveedor/nuevo',
+        parent: 'layout',
+        templateUrl: 'app/proveedor/new/new.html',
+        controller: 'proveedorNewController',
+        controllerAs: 'vm'
+      });
 
   }
 })();

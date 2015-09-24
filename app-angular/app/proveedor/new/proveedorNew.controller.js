@@ -10,7 +10,7 @@
 
   ProveedorNewController.$inject = ['$auth', '$state', '$stateParams', '$location', 'api', 'pnotify'];
 
-  function ProveedorNewController($auth, $state, $stateParams, $location, api, pnotify){
+  function ProveedorNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -32,7 +32,7 @@
         validators: {
           notEquals: '$viewValue != "Prov"'
         }
-      },{
+      }, {
         type: 'input',
         key: 'razon_social',
         templateOptions: {
@@ -40,43 +40,38 @@
           placeholder: 'Introduzca la razón social',
           required: true
         }
-      },{
+      }, {
         type: 'input',
         key: 'pagina_web',
         templateOptions: {
-          label: 'Sitio Web',
+          label: 'Sitio Web'
         }
-      },{
+      }, {
         type: 'select',
         key: 'externo',
         templateOptions: {
           label: '¿Es Externo?',
-          options:
-            [
-              { value: 0, name: "No" },
-              { value: 1, name: "Si" }
-            ]
+          options: [
+            {value: 0, name: "No"},
+            {value: 1, name: "Si"}
+          ]
         }
       }
 
     ];
 
     function onSubmit(){
-
-      //console.log(api);
-      //alert(JSON.stringify(vm.model), null, 2);
-
       return api.post('/proveedor', vm.model)
-      .then(function (response){
-            vm.message = response.data.message;
-            pnotify.alert('Exito', vm.message, 'success');
-            $state.go('proveedorShow', {id: response.data.proveedor.id});
-          })
-          .catch(function (response){
-            vm.error = response.data;
-            pnotify.alertList('No se pudo guardar el proveedor', vm.error.error, 'error');
-            return response;
-         });
+        .then(function (response){
+          vm.message = response.data.message;
+          pnotify.alert('Exito', vm.message, 'success');
+          $state.go('proveedorShow', {id: response.data.proveedor.id});
+        })
+        .catch(function (response){
+          vm.error = response.data;
+          pnotify.alertList('No se pudo guardar el proveedor', vm.error.error, 'error');
+          return response;
+        });
     }
 
   }
