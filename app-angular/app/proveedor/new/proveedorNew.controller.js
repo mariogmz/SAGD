@@ -70,7 +70,7 @@
       .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            $location.path('sucursales/proveedor');
+            $state.go('proveedorShow', {id: response.data.proveedor.id});
           })
           .catch(function (response){
             vm.error = response.data;

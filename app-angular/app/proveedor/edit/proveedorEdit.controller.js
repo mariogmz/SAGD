@@ -78,14 +78,12 @@
 
     function onSubmit(){
 
-      //console.log(api);
-      //alert(JSON.stringify(vm.model), null, 2);
-
       return api.put('/proveedor/', vm.proveedor.id, vm.proveedor)
       .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            $location.path('proveedorIndex');
+            $state.go('proveedorShow', {id: vm.proveedor.id});
+
           })
           .catch(function (response){
             vm.error = response.data;
