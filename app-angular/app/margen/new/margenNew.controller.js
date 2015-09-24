@@ -16,6 +16,8 @@
     }
 
     var vm = this;
+
+    vm.back = goBack;
     vm.fields = [
       {
         type: 'input',
@@ -68,6 +70,10 @@
         .catch(function (response){
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 

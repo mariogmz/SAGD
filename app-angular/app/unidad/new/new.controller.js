@@ -18,6 +18,7 @@
     var vm = this;
 
     vm.create = create;
+    vm.back = goBack;
 
     vm.fields = [
       {
@@ -57,6 +58,10 @@
         .catch(function(response){
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 })();
