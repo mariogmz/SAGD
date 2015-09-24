@@ -134,7 +134,7 @@
         ]
       }, {
         name: 'Clientes',
-        state: 'cliente',
+        state: 'clienteIndex',
         active: false,
         submodules: [
           {

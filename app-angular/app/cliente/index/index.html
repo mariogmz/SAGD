@@ -1,0 +1,56 @@
+<h1>Clientes</h1>
+<div class="search-card">
+    <div class="block">
+        <div class="row">
+            <div class="form">
+                <form>
+                    <div class="field">
+                        <label>Buscar:</label>
+                        <input type="text" ng-model="vm.search" autofocus>
+                    </div>
+                </form>
+            </div>
+            <div class="actions">
+                <div class="action-buttons" role="group" aria-label="Acciones">
+                    <button type="button" class="create" ui-sref="clienteNew"><i></i> Crear nuevo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="table-responsive">
+    <table class="item-table">
+        <thead class="sortable">
+            <tr>
+                <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+                    {{sortKey.name}}
+                </th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage: 10">
+            <td>{{proveedor.id}}</td>
+            <td><a ui-sref="clienteShow({id:cliente.id})">{{cliente.clave}}</a></td>
+            <td>{{cliente.razon_social}}</td>
+            <td>{{cliente.pagina_web}}</td>
+            <td>
+                <div class="action-buttons" role="group" aria-label="Acciones">
+                    <button type="button" class="edit" ui-sref="clienteEdit({id:cliente.id})"><i></i></button>
+                </div>
+            </td>
+        </tr>
+
+        </tbody>
+    </table>
+
+    <div class="pull-right">
+        <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+    </div>
+
+    <div class="danger" ng-if="vm.errores">
+        <strong>Hubo un error: </strong> {{vm.errores.error}}
+        <br>Por favor accede de nuevo
+    </div>
+</div>
