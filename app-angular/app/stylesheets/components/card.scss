@@ -7,6 +7,7 @@
 
   .block {
     @extend .card-block;
+    @extend .text-right;
 
     h4 {
       @extend .card-title;
