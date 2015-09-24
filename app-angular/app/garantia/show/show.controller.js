@@ -17,6 +17,8 @@
 
     var vm = this;
     vm.id = $stateParams.id;
+    vm.back = goBack;
+
     vm.fields = [
       {
         type: 'input',
@@ -62,6 +64,10 @@
           vm.error = response.data;
           return response.data;
         })
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 })();

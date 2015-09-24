@@ -14,7 +14,7 @@
       </div>
       <div class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ui-sref="marcaNew">Crear nueva</button>
+          <button type="button" class="create" ui-sref="marcaNew"><i></i> Crear nueva</button>
         </div>
       </div>
     </div>
@@ -37,10 +37,10 @@
       <td><a ui-sref="marcaShow({id:marca.id})">{{marca.clave}}</a></td>
       <td>{{marca.nombre}}</td>
 
-      <td>
+      <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="edit" ui-sref="marcaEdit({id:marca.id})">Editar</button>
-          <button type="button" class="delete" ng-click="vm.eliminarMarca(marca.id)">Eliminar</button>
+          <button type="button" class="edit" ui-sref="marcaEdit({id:marca.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarMarca(marca.id)"><i></i></button>
         </div>
       </td>
     </tr>

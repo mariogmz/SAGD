@@ -14,6 +14,11 @@ TEST_DB_DATABASE=sagd_test
 TEST_DB_USERNAME=sagd_test
 TEST_DB_PASSWORD=zegucomtest
 
+DB_HOST_LEGACY=server.grupodicotech.com.mx
+DB_DATABASE_LEGACY=sazcentralizado
+DB_USERNAME_LEGACY=development
+DB_PASSWORD_LEGACY=test123!
+
 CACHE_DRIVER=file
 SESSION_DRIVER=file
 QUEUE_DRIVER=sync

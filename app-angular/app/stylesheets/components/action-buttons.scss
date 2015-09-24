@@ -1,18 +1,37 @@
 .action-buttons {
   @extend .btn-group;
+}
 
-  .create{
-    @extend .btn;
-    @extend .btn-primary;
+i {
+  @extend .fa;
+}
+
+.create {
+  @extend .btn;
+  @extend .btn-primary;
+  font-size: inherit;
+
+  i {
+    @extend .fa-plus;
   }
+}
 
-  .edit {
-    @extend .btn;
-    @extend .btn-success;
+.edit {
+  @extend .btn;
+  @extend .btn-success;
+  font-size: inherit;
+
+  i {
+    @extend .fa-pencil;
   }
+}
 
-  .delete {
-    @extend .btn;
-    @extend .btn-danger;
+.delete {
+  @extend .btn;
+  @extend .btn-danger;
+  font-size: inherit;
+
+  i {
+    @extend .fa-trash;
   }
 }

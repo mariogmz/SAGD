@@ -16,6 +16,8 @@
     }
 
     var vm = this;
+    vm.back = goBack;
+
     vm.fields = [
       {
         type: 'input',
@@ -80,6 +82,9 @@
         });
     }
 
+    function goBack() {
+      window.history.back();
+    }
   }
 
 })();

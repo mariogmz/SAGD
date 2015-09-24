@@ -7,8 +7,8 @@
       <fieldset>
         <legend>Subfamilia #<strong>{{vm.subfamilia.id}}</strong></legend>
         <formly-form model="vm.subfamilia" fields="vm.fields">
+          <a ng-click="vm.back()" class="button secondary">Regresar</a>
           <input type="submit" class="button primary" value="Guardar cambios">
-          <a ui-sref="subfamiliaIndex" class="button secondary">Regresar</a>
         </formly-form>
       </fieldset>
     </form>
