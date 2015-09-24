@@ -1,18 +1,19 @@
 <div class="container-fluid">
-    <h1>Agregar Proveedor</h1>
-    <div class="card">
-        <div class="header"></div>
-        <div class="block">
-            <form class="item-form">
-                <fieldset>
-                    <formly-form model="vm.model" fields="vm.fields">
-                        <div class="pull-right">
-                            <a ui-sref="proveedorIndex" class="button secondary">Regresar</a>
-                            <button type="submit" class="button primary" ng-click="vm.onSubmit(vm.model)">Guardar cambios</button>
-                        </div>
-                    </formly-form>
-                </fieldset>
-            </form>
-        </div>
+  <h1>Agregar Proveedor</h1>
+
+  <div class="card">
+    <div class="header"></div>
+    <div class="block">
+      <form class="item-form">
+        <fieldset>
+          <formly-form model="vm.model" fields="vm.fields">
+            <div class="pull-right">
+              <a ui-sref="proveedorIndex" class="button secondary">Regresar</a>
+              <button type="submit" class="button primary" ng-click="vm.onSubmit(vm.model)">Guardar cambios</button>
+            </div>
+          </formly-form>
+        </fieldset>
+      </form>
     </div>
+  </div>
 </div>
