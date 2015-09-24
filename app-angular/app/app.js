@@ -16,10 +16,12 @@
       'sagdApp.layout',
       'sagdApp.marca',
       'sagdApp.margen',
-      'sagdApp.navbar',
+      'sagdApp.navbar',      
       'sagdApp.producto',
+	  'sagdApp.proveedor',
       'sagdApp.session',
       'sagdApp.subfamilia',
       'sagdApp.unidad'
+
   ]);
 })();

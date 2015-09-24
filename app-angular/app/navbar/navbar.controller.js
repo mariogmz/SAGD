@@ -155,7 +155,7 @@
             state: 'sucursal'
           }, {
             name: 'Proveedores',
-            state: 'proveedor'
+            state: 'proveedorIndex'
           }, {
             name: 'Gastos',
             state: 'sucursal.gastos'
