@@ -14,7 +14,7 @@
       </div>
       <div class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ui-sref="subfamiliaNew">Crear nueva</button>
+          <button type="button" class="create" ui-sref="subfamiliaNew"><i></i> Crear nueva</button>
         </div>
       </div>
     </div>
@@ -39,10 +39,10 @@
       <td>{{subfamilia.familia.clave}}</td>
       <td>{{subfamilia.margen.nombre}}</td>
 
-      <td>
+      <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="edit" ui-sref="subfamiliaEdit({id:subfamilia.id})">Editar</button>
-          <button type="button" class="delete" ng-click="vm.eliminarSubfamilia(subfamilia.id)">Eliminar</button>
+          <button type="button" class="edit" ui-sref="subfamiliaEdit({id:subfamilia.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarSubfamilia(subfamilia.id)"><i></i></button>
         </div>
       </td>
     </tr>

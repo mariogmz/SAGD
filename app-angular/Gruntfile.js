@@ -35,6 +35,17 @@ module.exports = function(grunt) {
         }
       }
     },
+    copy: {
+      main: {
+        files: [{
+          expand: true,
+          flatten: true,
+          src: ['./bower_components/font-awesome/fonts/*'],
+          dest: './public/fonts/',
+          filter: 'isFile'
+        }]
+      }
+    },
     concat: {
       libs: {
         options: {
@@ -131,10 +142,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
   grunt.registerTask('dev', function() {
     grunt.task.run([
       'ngconstant:development',
+      'copy',
       'concat',
       'uglify',
       'sass'
@@ -144,6 +157,7 @@ module.exports = function(grunt) {
   grunt.registerTask('stage', function() {
     grunt.task.run([
       'ngconstant:stage',
+      'copy',
       'concat',
       'uglify',
       'sass'
