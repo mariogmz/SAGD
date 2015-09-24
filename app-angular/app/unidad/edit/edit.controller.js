@@ -18,6 +18,7 @@
     var vm = this;
     vm.id = $stateParams.id;
     vm.save = guardarUnidad;
+    vm.back = goBack;
 
     vm.fields = [
       {
@@ -74,6 +75,10 @@
           pnotify.alert('No se pudo guardar la marca', vm.error.error, 'error');
           return response;
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 })();

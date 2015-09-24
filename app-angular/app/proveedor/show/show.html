@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="header">
+    Detalle
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend>Proveedor #<strong>{{vm.proveedor.id}}</strong></legend>
+        <formly-form model="vm.proveedor" fields="vm.fields"></formly-form>
+      </fieldset>
+    </form>
+    <a ng-click="vm.back()" class="button primary">Regresar</a>
+  </div>
+</div>
+

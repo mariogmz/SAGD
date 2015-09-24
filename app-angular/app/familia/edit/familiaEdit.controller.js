@@ -6,18 +6,19 @@
 
   angular
     .module('sagdApp.familia')
-    .controller('familiaEditController', MarcaEditController);
+    .controller('familiaEditController', FamiliaEditController);
 
-  MarcaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  FamiliaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
-  function MarcaEditController($auth, $state, $stateParams, api, pnotify){
+  function FamiliaEditController($auth, $state, $stateParams, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.id = $stateParams.id;
-    vm.save = guardarMargen;
+    vm.save = guardarFamilia;
+    vm.back = goBack;
 
     vm.fields = [
       {
@@ -42,12 +43,12 @@
     initialize();
 
     function initialize(){
-      return obtenerMargen('/familia/', vm.id).then(function (response){
+      return obtenerFamilia('/familia/', vm.id).then(function (response){
         console.log(response.message);
       });
     }
 
-    function obtenerMargen(){
+    function obtenerFamilia(){
       return api.get('/familia/', vm.id)
         .then(function (response){
           vm.familia = response.data.familia;
@@ -59,7 +60,7 @@
         });
     }
 
-    function guardarMargen(){
+    function guardarFamilia(){
       return api.put('/familia/', vm.id, vm.familia)
         .then(function (response){
           vm.message = response.data.message;
@@ -71,6 +72,10 @@
           pnotify.alertList('No se pudo guardar la familia', vm.error.error, 'error');
           return response;
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 

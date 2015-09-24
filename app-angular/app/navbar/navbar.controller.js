@@ -39,7 +39,7 @@
                 state: 'marcaIndex'
               }, {
                 name: 'Garantías',
-                state: 'producto.caracteristica.garantia'
+                state: 'garantiaIndex'
               }, {
                 name: 'Unidades',
                 state: 'unidadIndex'
@@ -48,7 +48,7 @@
                 state: 'familiaIndex'
               }, {
                 name: 'Subfamilias',
-                state: 'producto.caracteristica.subfamilia'
+                state: 'subfamiliaIndex'
               }
             ]
           }, {
@@ -155,7 +155,7 @@
             state: 'sucursal'
           }, {
             name: 'Proveedores',
-            state: 'proveedor'
+            state: 'proveedorIndex'
           }, {
             name: 'Gastos',
             state: 'sucursal.gastos'

@@ -16,7 +16,7 @@ class AddSubfamiliasConstraints extends Migration {
             $table->integer('margen_id')->unsigned()->nullable();
 
             $table->foreign('familia_id')->references('id')->on('familias');
-            $table->foreign('margen_id')->references('id')->on('margenes')->onDelete('set null');
+            $table->foreign('margen_id')->references('id')->on('margenes');
         });
     }
 

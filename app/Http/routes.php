@@ -34,5 +34,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
 
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
+
+        Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
+
     });
 });

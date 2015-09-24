@@ -16,6 +16,7 @@
     }
 
     var vm = this;
+    vm.back = goBack;
     vm.fields = [
       {
         type: 'input',
@@ -49,13 +50,16 @@
     function create(){
       api.post('/familia', vm.familia)
         .then(function (response){
-          debugger;
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('familiaShow', {id: response.data.familia.id});
         })
         .catch(function (response){
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
+    }
+
+    function goBack() {
+      window.history.back();
     }
   }
 

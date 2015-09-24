@@ -14,7 +14,7 @@
       </div>
       <div class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ui-sref="unidadNew">Crear nuevo</button>
+          <button type="button" class="create" ui-sref="unidadNew"><i></i> Crear nuevo</button>
         </div>
       </div>
     </div>
@@ -37,10 +37,10 @@
         <td><a ui-sref="unidadShow({id:unidad.id})">{{unidad.clave}}</a></td>
         <td>{{unidad.nombre}}</td>
 
-        <td>
+        <td class="actions">
           <div class="action-buttons" role="group" aria-label="Acciones">
-            <button type="button" class="edit" ui-sref="unidadEdit({id:unidad.id})">Editar</button>
-            <button type="button" class="delete" ng-click="vm.eliminarUnidad(unidad.id)">Eliminar</button>
+            <button type="button" class="edit" ui-sref="unidadEdit({id:unidad.id})"><i></i></button>
+            <button type="button" class="delete" ng-click="vm.eliminarUnidad(unidad.id)"><i></i></button>
           </div>
         </td>
       </tr>

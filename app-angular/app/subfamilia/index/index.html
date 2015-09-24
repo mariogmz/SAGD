@@ -1,0 +1,54 @@
+<div class="search-card">
+  <div class="header">
+    Subfamilias
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="create" ui-sref="subfamiliaNew"><i></i> Crear nueva</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr dir-paginate="subfamilia in vm.subfamilias | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+      <th scope="row">{{subfamilia.id}}</th>
+      <td><a ui-sref="subfamiliaShow({id:subfamilia.id})">{{subfamilia.clave}}</a></td>
+      <td>{{subfamilia.nombre}}</td>
+      <td>{{subfamilia.familia.clave}}</td>
+      <td>{{subfamilia.margen.nombre}}</td>
+
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="subfamiliaEdit({id:subfamilia.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarSubfamilia(subfamilia.id)"><i></i></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+</div>

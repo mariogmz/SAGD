@@ -1,52 +1,57 @@
-<div class="container-fluid">
-  <h1>Clientes</h1>
-  <hr>
-  <form class="form-inline">
-    <div class="form-group">
-      <label for="search">Buscar:</label>
-      <input type="text" class="form-control" ng-model="vm.search" id="search" required autofocus>
+<div class="search-card">
+  <div class="header">
+    Clientes
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="create" ui-sref="clienteNew"><i></i> Crear nuevo</button>
+        </div>
+      </div>
     </div>
-    <div class="pull-right">
-      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
-    </div>
-  </form>
-  <br/>
+  </div>
+</div>
 
-
+<div class="table-responsive">
   <table class="item-table">
-    <thead>
+    <thead class="sortable">
     <tr>
-      <th class="clickable" ng-click="vm.sort('id')">
+      <th class="action" ng-click="vm.sort('id')">
         #
       </th>
-      <th class="clickable" ng-click="vm.sort('nombre')">
+      <th class="action" ng-click="vm.sort('nombre')">
         Nombre
       </th>
-      <th class="clickable" ng-click="vm.sort('usuario')">Usuario</th>
+      <th class="action" ng-click="vm.sort('usuario')">Usuario</th>
       <th>Acciones</th>
     </tr>
     </thead>
     <tbody>
 
     <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search| itemsPerPage:10">
-      <td>{{cliente.id}}</td>
-      <td>{{cliente.nombre}}</td>
+      <td scope="row">{{cliente.id}}</td>
+      <td><a ui-sref="clienteShow({id:cliente.id})"></a> {{cliente.nombre}}</td>
       <td>{{cliente.usuario}}</td>
-      <td>
+
+      <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="edit">Editar</button>
-          <button type="button" class="delete">Eliminar</button>
+          <button type="button" class="edit" ui-sref="clienteEdit({id:cliente.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarCliente(cliente.id)"><i></i></button>
         </div>
       </td>
     </tr>
-
     </tbody>
   </table>
-  <div class="pull-right">
-    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
-  </div>
-  <div class="danger" ng-if="vm.errores">
-    <strong>Hubo un error: </strong> {{vm.errores.error}}
-    <br>Por favor accede de nuevo
-  </div>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
 </div>

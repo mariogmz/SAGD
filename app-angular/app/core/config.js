@@ -19,7 +19,9 @@
     paginationTemplateProvider.setPath('app/templates/components/pagination-control.html');
 
     if (window.history && window.history.pushState) {
+
       $locationProvider.html5Mode(true).hashPrefix('!');
+
     }
   }
 

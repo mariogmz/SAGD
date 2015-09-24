@@ -5,7 +5,6 @@ table.item-table {
   thead {
     background-color: $gray-suit;
     color: $alto;
-
   }
 
   th.action {
@@ -15,6 +14,13 @@ table.item-table {
       color: $white;
       cursor: pointer;
       transition: all 500ms ease-in-out;
+    }
+  }
+
+  td.actions{
+    text-align: center;
+    .action-buttons{
+      min-width: 100px;
     }
   }
 }

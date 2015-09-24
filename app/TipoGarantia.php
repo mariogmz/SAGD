@@ -38,8 +38,8 @@ class TipoGarantia extends LGGModel {
      */
     public static function boot() {
         TipoGarantia::creating(function ($tipogarantia) {
-            $tipogarantia->seriado = (empty($tipogarantia->seriado) ? true : $tipogarantia->seriado);
-            $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->seriado);
+            $tipogarantia->seriado = (is_null($tipogarantia->seriado) ? true : $tipogarantia->seriado);
+            $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->dias);
             if (!$tipogarantia->isValid()) {
                 return false;
             }
@@ -48,8 +48,8 @@ class TipoGarantia extends LGGModel {
         });
         TipoGarantia::updating(function ($tipogarantia) {
             $tipogarantia->updateRules = self::$rules;
-            $tipogarantia->seriado = (empty($tipogarantia->seriado) ? true : $tipogarantia->seriado);
-            $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->seriado);
+            $tipogarantia->seriado = (is_null($tipogarantia->seriado) ? true : $tipogarantia->seriado);
+            $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->dias);
 
             return $tipogarantia->isValid('update');
         });
