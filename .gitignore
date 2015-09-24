@@ -31,6 +31,8 @@ app-angular/public/libs/frontend.js
 app-angular/public/libs/frontend.min.js
 app-angular/tests/reports/*.html
 app-angular/tests/reports/screenshots/*.png
+app-angular/public/fonts/*
+!app-angular/public/fonts/.gitkeep
 *.iml
 
 ## Directory-based project format:
