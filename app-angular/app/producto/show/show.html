@@ -1,0 +1,15 @@
+<div class="card">
+  <div class="header">
+    <h4>Producto ({{vm.producto.nombre}})</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend>Producto #<strong>{{vm.producto.id}}</strong></legend>
+        <formly-form model="vm.producto" fields="vm.fields"></formly-form>
+      </fieldset>
+    </form>
+    <a ng-click="vm.back()" class="button primary">Regresar</a>
+  </div>
+</div>
+
