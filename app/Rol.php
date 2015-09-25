@@ -33,6 +33,7 @@ class Rol extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Rol::creating(function ($rol) {
             $rol->clave = strtoupper($rol->clave);
             if (!$rol->isValid()) {

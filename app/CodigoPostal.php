@@ -38,6 +38,7 @@ class CodigoPostal extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         CodigoPostal::creating(function ($codigo_postal) {
             return $codigo_postal->isValid();
         });

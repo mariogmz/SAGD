@@ -32,6 +32,7 @@ class NivelPermiso extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         NivelPermiso::creating(function ($model) {
             return $model->isValid();
         });

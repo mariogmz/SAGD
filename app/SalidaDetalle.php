@@ -46,6 +46,7 @@ class SalidaDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         SalidaDetalle::creating(function ($model) {
             return $model->isValid();
         });

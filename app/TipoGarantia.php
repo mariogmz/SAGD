@@ -37,6 +37,7 @@ class TipoGarantia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         TipoGarantia::creating(function ($tipogarantia) {
             $tipogarantia->seriado = (is_null($tipogarantia->seriado) ? true : $tipogarantia->seriado);
             $tipogarantia->dias = (empty($tipogarantia->dias) ? 0 : $tipogarantia->dias);

@@ -36,6 +36,7 @@ class Configuracion extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Configuracion::creating(function ($config) {
             $config->nombre = strtoupper($config->nombre);
             $config->tipo = strtoupper($config->tipo);

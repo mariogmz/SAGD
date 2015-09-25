@@ -37,6 +37,7 @@ class LogAcceso extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         LogAcceso::creating(function ($log_entry) {
             if (!$log_entry->isValid()) {
                 return false;

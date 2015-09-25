@@ -36,6 +36,7 @@ class CorteDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         CorteDetalle::creating(function ($model) {
             return $model->isValid();
         });

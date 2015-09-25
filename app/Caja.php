@@ -47,6 +47,7 @@ class Caja extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Caja::creating(function ($model) {
             return $model->isValid();
         });

@@ -56,6 +56,7 @@ class EntradaDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EntradaDetalle::creating(function ($model) {
             return $model->isValid();
         });

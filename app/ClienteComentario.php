@@ -42,6 +42,7 @@ class ClienteComentario extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ClienteComentario::creating(function ($cc) {
             if (!$cc->isValid()) {
                 return false;

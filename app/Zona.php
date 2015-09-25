@@ -34,6 +34,7 @@ class Zona extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Zona::creating(function ($model) {
             $model->clave = strtoupper($model->clave);
 

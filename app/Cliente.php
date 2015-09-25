@@ -98,6 +98,7 @@ class Cliente extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Cliente::creating(function ($cliente) {
             return $cliente->isValid();
         });

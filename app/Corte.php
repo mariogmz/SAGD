@@ -48,6 +48,7 @@ class Corte extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Corte::creating(function ($model) {
             if (!empty($model->corte_global_id) && !is_numeric($model->corte_global_id)) return false;
             if (!empty($model->caja_id) && !is_numeric($model->caja_id)) return false;

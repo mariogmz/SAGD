@@ -36,6 +36,7 @@ class Telefono extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Telefono::creating(function ($telefono) {
             if (!$telefono->isValid()) {
                 return false;

@@ -66,6 +66,7 @@ class Precio extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Precio::creating(function ($precio) {
             if (!$precio->isValid()) {
                 return false;

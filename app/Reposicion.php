@@ -44,6 +44,7 @@ class Reposicion extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Reposicion::creating(function ($model) {
             return $model->isValid();
         });

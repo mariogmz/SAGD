@@ -29,6 +29,7 @@ class TipoCorteConcepto extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         TipoCorteConcepto::creating(function ($model) {
             return $model->isValid();
         });

@@ -37,6 +37,7 @@ class PaqueteriaCobertura extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         PaqueteriaCobertura::creating(function ($model) {
             return $model->isValid();
         });

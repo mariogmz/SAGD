@@ -55,6 +55,7 @@ class RazonSocialEmisor extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         RazonSocialEmisor::creating(function ($model) {
             return $model->isValid();
         });

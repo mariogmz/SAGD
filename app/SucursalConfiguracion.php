@@ -38,6 +38,7 @@ class SucursalConfiguracion extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         SucursalConfiguracion::creating(function ($sucursal_configuracion) {
             if (!$sucursal_configuracion->isValid() || !(empty($sucursal_configuracion->valor_numero) xor empty($sucursal_configuracion->valor_texto))) {
                 return false;

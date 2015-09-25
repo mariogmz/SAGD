@@ -26,6 +26,7 @@ class RolPermiso extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         RolPermiso::creating(function ($rp) {
             if (!$rp->isValid()) {
                 return false;

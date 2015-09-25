@@ -66,6 +66,7 @@ class Empleado extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Empleado::creating(function ($empleado) {
             if (!$empleado->isValid()) {
                 return false;

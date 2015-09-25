@@ -45,6 +45,7 @@ class VentaMovimiento extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         VentaMovimiento::creating(function ($model) {
             return $model->isValid();
         });

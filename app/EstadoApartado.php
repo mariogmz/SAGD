@@ -34,6 +34,7 @@ class EstadoApartado extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstadoApartado::creating(function ($model) {
             return $model->isValid();
         });

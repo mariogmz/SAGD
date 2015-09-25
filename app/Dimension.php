@@ -43,6 +43,7 @@ class Dimension extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Dimension::creating(function ($dimension) {
             if (!$dimension->isValid()) {
                 return false;
