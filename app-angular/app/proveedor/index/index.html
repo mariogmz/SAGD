@@ -1,56 +1,59 @@
-<h1>Proveedores</h1>
 <div class="search-card">
-    <div class="block">
-        <div class="row">
-            <div class="form">
-                <form>
-                    <div class="field">
-                        <label>Buscar:</label>
-                        <input type="text" ng-model="vm.search" autofocus>
-                    </div>
-                </form>
-            </div>
-            <div class="actions">
-                <div class="action-buttons" role="group" aria-label="Acciones">
-                    <button type="button" class="create" ui-sref="proveedorNew"><i></i> Crear nuevo</button>
-                </div>
-            </div>
+  <div class="header">
+    <h4>Proveedores</h4>
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="create" ui-sref="proveedorNew"><i></i> Crear nuevo</button>
         </div>
+      </div>
     </div>
+  </div>
 </div>
 
 <div class="table-responsive">
-    <table class="item-table">
-        <thead class="sortable">
-            <tr>
-                <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-                    {{sortKey.name}}
-                </th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr dir-paginate="proveedor in vm.proveedores | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage: 10">
-            <td>{{proveedor.id}}</td>
-            <td><a ui-sref="proveedorShow({id:proveedor.id})">{{proveedor.clave}}</a></td>
-            <td>{{proveedor.razon_social}}</td>
-            <td>{{proveedor.pagina_web}}</td>
-            <td>
-                <div class="action-buttons" role="group" aria-label="Acciones">
-                    <button type="button" class="edit" ui-sref="proveedorEdit({id:proveedor.id})"><i></i></button>
-                </div>
-            </td>
-        </tr>
+  <table class="item-table">
+    <thead class="sortable">
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr
+      dir-paginate="proveedor in vm.proveedores | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage: 10">
+      <td>{{proveedor.id}}</td>
+      <td><a ui-sref="proveedorShow({id:proveedor.id})">{{proveedor.clave}}</a></td>
+      <td>{{proveedor.razon_social}}</td>
+      <td>{{proveedor.pagina_web}}</td>
+      <td>
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="proveedorEdit({id:proveedor.id})"><i></i></button>
+        </div>
+      </td>
+    </tr>
 
-        </tbody>
-    </table>
+    </tbody>
+  </table>
 
-    <div class="pull-right">
-        <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-    </div>
+  <div class="pull-right">
+    <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
+  </div>
 
-    <div class="danger" ng-if="vm.errores">
-        <strong>Hubo un error: </strong> {{vm.errores.error}}
-        <br>Por favor accede de nuevo
-    </div>
+  <div class="danger" ng-if="vm.errores">
+    <strong>Hubo un error: </strong> {{vm.errores.error}}
+    <br>Por favor accede de nuevo
+  </div>
 </div>
