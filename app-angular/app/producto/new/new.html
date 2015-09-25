@@ -1,0 +1,17 @@
+<div class="card">
+  <div class="header">
+    <h4>Crear nuevo producto</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.create()">
+      <fieldset>
+        <legend>Ingrese los datos para crear el nuevo producto</legend>
+        <formly-form model="vm.producto" fields="vm.fields">
+          <a ng-click="vm.back()" class="button secondary">Regresar</a>
+          <input type="submit" class="button primary" value="Guardar cambios">
+        </formly-form>
+      </fieldset>
+    </form>
+  </div>
+</div>
+
