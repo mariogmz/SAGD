@@ -41,6 +41,7 @@ class Margen extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Margen::creating(function ($margen) {
             $margen->valor || $margen->valor = 0.0;
             $margen['valor_webservice_p1'] || $margen['valor_webservice_p1'] = 0.0;

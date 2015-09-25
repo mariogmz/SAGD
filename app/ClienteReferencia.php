@@ -31,6 +31,7 @@ class ClienteReferencia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ClienteReferencia::creating(function ($cr) {
             if (!$cr->isValid()) {
                 return false;

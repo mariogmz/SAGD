@@ -43,6 +43,7 @@ class GastoExtra extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         GastoExtra::creating(function ($model) {
             return $model->isValid();
         });

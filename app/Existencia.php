@@ -52,6 +52,7 @@ class Existencia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Existencia::creating(function ($e) {
             $e->cantidad || $e->cantidad = 0;
             $e->cantidad_apartado || $e->cantidad_apartado = 0;

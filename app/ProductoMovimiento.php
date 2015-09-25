@@ -55,6 +55,7 @@ class ProductoMovimiento extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ProductoMovimiento::creating(function ($pm) {
             $pm->entraron || $pm->entraron = 0;
             $pm->salieron || $pm->salieron = 0;

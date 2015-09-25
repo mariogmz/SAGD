@@ -30,6 +30,7 @@ class EstatusVenta extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstatusVenta::creating(function ($model) {
             return $model->isValid();
         });

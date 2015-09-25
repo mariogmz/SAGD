@@ -48,6 +48,7 @@ class Paqueteria extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Paqueteria::creating(function ($model) {
             $model->clave = strtoupper($model->clave);
 

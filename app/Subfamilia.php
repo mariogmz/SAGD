@@ -41,6 +41,7 @@ class Subfamilia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Subfamilia::creating(function ($subfamilia) {
             $subfamilia->clave = strtoupper($subfamilia->clave);
             if (!$subfamilia->isValid()) {

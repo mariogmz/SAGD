@@ -35,6 +35,7 @@ class Marca extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Marca::creating(function ($marca) {
             $marca->clave = strtoupper($marca->clave);
             if (!$marca->isValid()) {

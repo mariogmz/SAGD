@@ -72,6 +72,7 @@ class VentaDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         VentaDetalle::creating(function ($model) {
             if (is_null($model->producto_id) && !is_null($model->metodo_pago_id)) return false;
 

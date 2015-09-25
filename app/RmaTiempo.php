@@ -30,6 +30,7 @@ class RmaTiempo extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         RmaTiempo::creating(function ($model) {
             return $model->isValid();
         });

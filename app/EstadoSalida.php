@@ -30,6 +30,7 @@ class EstadoSalida extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstadoSalida::creating(function ($es) {
             return $es->isValid();
         });

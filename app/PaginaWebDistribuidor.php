@@ -44,6 +44,7 @@ class PaginaWebDistribuidor extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         PaginaWebDistribuidor::creating(function ($pwd) {
             if (!$pwd->isValid()) {
                 return false;

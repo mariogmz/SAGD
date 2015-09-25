@@ -41,6 +41,7 @@ class Domicilio extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Domicilio::creating(function ($domicilio) {
             if (!$domicilio->isValid()) {
                 return false;

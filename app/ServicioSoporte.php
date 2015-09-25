@@ -57,6 +57,7 @@ class ServicioSoporte extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ServicioSoporte::creating(function ($model) {
             if (!$model->isValid()) {
                 return false;

@@ -34,6 +34,7 @@ class Unidad extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Unidad::creating(function ($unidad) {
             $unidad->clave = strtoupper($unidad->clave);
             if (!$unidad->isValid()) {

@@ -81,6 +81,7 @@ class NotaCredito extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         NotaCredito::creating(function ($model) {
             return $model->isValid();
         });

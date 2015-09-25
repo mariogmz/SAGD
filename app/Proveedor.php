@@ -42,6 +42,7 @@ class Proveedor extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Proveedor::creating(function ($proveedor) {
             $proveedor->clave = strtoupper($proveedor->clave);
             if (!$proveedor->isValid()) {

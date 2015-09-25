@@ -44,6 +44,7 @@ class SucursalEnvio extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         SucursalEnvio::creating(function ($sucursal_envio) {
             if (!$sucursal_envio->isValid()) {
                 return false;

@@ -50,6 +50,7 @@ class DatoContacto extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         DatoContacto::creating(function ($dato_contacto) {
             if (!$dato_contacto->isValid()) {
                 return false;

@@ -27,6 +27,7 @@ class EmpleadoPermiso extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EmpleadoPermiso::creating(function ($model) {
             return $model->isValid();
         });

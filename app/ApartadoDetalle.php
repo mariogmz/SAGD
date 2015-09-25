@@ -52,6 +52,7 @@ class ApartadoDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ApartadoDetalle::creating(function ($model) {
             return $model->isValid();
         });

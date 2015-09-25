@@ -56,6 +56,7 @@ class Sucursal extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Sucursal::creating(function ($sucursal) {
             $sucursal->clave = strtoupper($sucursal->clave);
             if (!$sucursal->isValid()) {

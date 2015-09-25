@@ -46,6 +46,7 @@ class MetodoPago extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         MetodoPago::creating(function ($model) {
             return $model->isValid();
         });
