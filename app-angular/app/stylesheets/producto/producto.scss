@@ -1,0 +1,50 @@
+form.product-form {
+
+  fieldset {
+    @extend .form-group;
+  }
+
+  input, textarea, select {
+    @extend .form-control
+  }
+
+  .block {
+    @include make-container();
+    @extend .text-left;
+  }
+
+  .icecat {
+    @include make-row();
+
+    fieldset {
+      @include make-col();
+      @include make-col-span(5);
+    }
+
+    input, textarea, select {
+      @include make-col();
+      @include make-col-span(8);
+    }
+
+    label {
+      @include make-col();
+      @include make-col-span(4)
+    }
+
+    span {
+      @include make-col();
+      @include make-col-span(2);
+      @extend .text-center;
+
+      button {
+        @extend .btn;
+        @extend .btn-primary;
+      }
+    }
+  }
+
+  .row {
+    @include make-row();
+  }
+
+}
