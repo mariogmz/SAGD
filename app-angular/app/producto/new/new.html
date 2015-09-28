@@ -18,7 +18,7 @@
             </fieldset>
             <fieldset>
               <label for="marca_id">Marca:</label>
-              <input type="select" id="marca_id">
+              <select id="marca_id"></select>
             </fieldset>
             <span>
                <button><img width="90px" src="/public/img/icecat_logo.svg"></button>
@@ -46,7 +46,7 @@
             <div class="col-sm">
               <fieldset>
                 <label for="subfamilia_id">Subfamilia:</label>
-                <input type="text" id="subfamilia_id">
+                <select id="subfamilia_id"></select>
               </fieldset>
             </div>
 
@@ -72,25 +72,31 @@
             <div class="col-sm">
               <fieldset>
                 <label for="unidad_id">Unidad de medida:</label>
-                <input type="text" id="unidad_id">
+                <select id="unidad_id"></select>
               </fieldset>
-              <fieldset>
-                <label for="tipo_garantia_id">Tipo de garantía:</label>
-                <input type="text" id="tipo_garantia_id">
+              <fieldset class="checkbox">
+                <label>
+                  <input type="checkbox">
+                  <span></span>
+                  ¿En remate?
+                </label>
               </fieldset>
             </div>
 
             <div class="col-sm">
               <fieldset>
-                <label for="remate">¿En remate?</label>
-                <input type="text" id="remate">
+                <label for="tipo_garantia_id">Tipo de garantía:</label>
+                <select id="tipo_garantia_id"></select>
               </fieldset>
-              <fieldset>
-                <label for="activo">¿Activo?</label>
-                <input type="text" id="activo">
+              <fieldset class="checkbox">
+                <label>
+                  <input type="checkbox">
+                  <span></span>
+                  ¿Activo?
+                </label>
               </fieldset>
             </div>
-            
+
             <!-- Descripciones -->
             <div class="col-lg">
               <fieldset>
@@ -148,8 +154,8 @@
           </div>
         </div>
       </div>
-        <a ng-click="vm.back()" class="button secondary">Regresar</a>
-        <input type="submit" class="button primary" value="Guardar cambios">
+      <a ng-click="vm.back()" class="button secondary">Regresar</a>
+      <input type="submit" class="button primary" value="Guardar cambios">
     </form>
   </div>
 </div>
