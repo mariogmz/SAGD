@@ -36,32 +36,40 @@
           <!-- Clasificaciones internas -->
           <div class="row">
             <!-- UPC -->
-            <fieldset class="col-sm-3">
-              <label for="upc">UPC:</label>
-              <input type="text" id="upc">
-            </fieldset>
+            <div class="col-sm">
+              <fieldset>
+                <label for="upc">UPC:</label>
+                <input type="text" id="upc">
+              </fieldset>
+            </div>
             <!-- Subfamilia -->
-            <fieldset class="col-sm-3">
-              <label for="subfamilia_id">Subfamilia:</label>
-              <input type="text" id="subfamilia_id">
-            </fieldset>
+            <div class="col-sm">
+              <fieldset>
+                <label for="subfamilia_id">Subfamilia:</label>
+                <input type="text" id="subfamilia_id">
+              </fieldset>
+            </div>
 
             <!-- Subclave -->
-            <fieldset class="col-sm-3">
-              <label for="subclave">Subclave:</label>
-              <input type="text" id="subclave">
-            </fieldset>
+            <div class="col-sm">
+              <fieldset>
+                <label for="subclave">Subclave:</label>
+                <input type="text" id="subclave">
+              </fieldset>
+            </div>
             <!-- Clave -->
-            <fieldset class="col-sm-3">
-              <label for="clave">Clave:</label>
-              <input type="text" id="clave">
-            </fieldset>
+            <div class="col-sm">
+              <fieldset>
+                <label for="clave">Clave:</label>
+                <input type="text" id="clave">
+              </fieldset>
+            </div>
           </div>
-
+          <hr>
           <div class="row">
 
             <!-- Características -->
-            <div class="col-sm-3">
+            <div class="col-sm">
               <fieldset>
                 <label for="unidad_id">Unidad de medida:</label>
                 <input type="text" id="unidad_id">
@@ -72,9 +80,9 @@
               </fieldset>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm">
               <fieldset>
-                <label for="remate">Spiff:</label>
+                <label for="remate">¿En remate?</label>
                 <input type="text" id="remate">
               </fieldset>
               <fieldset>
@@ -82,9 +90,9 @@
                 <input type="text" id="activo">
               </fieldset>
             </div>
-
+            
             <!-- Descripciones -->
-            <div class="col-sm-6">
+            <div class="col-lg">
               <fieldset>
                 <label for="descripcion">Descripción:</label>
                 <textarea id="descripcion"></textarea>
@@ -117,29 +125,31 @@
         <div class="block">
           <div class="row">
             <!-- Peso -->
-            <fieldset class="col-sm-3">
+            <fieldset class="col-sm">
               <label for="peso">Peso (kg):</label>
               <input type="text" id="peso">
             </fieldset>
             <!-- Longitúd -->
-            <fieldset class="col-sm-3">
+            <fieldset class="col-sm">
               <label for="largo">Largo (cm):</label>
               <input type="text" id="largo">
             </fieldset>
 
             <!-- Ancho -->
-            <fieldset class="col-sm-3">
+            <fieldset class="col-sm">
               <label for="ancho">Ancho (cm):</label>
               <input type="text" id="ancho">
             </fieldset>
             <!-- Altura -->
-            <fieldset class="col-sm-3">
+            <fieldset class="col-sm">
               <label for="alto">Alto (cm):</label>
               <input type="text" id="alto">
             </fieldset>
           </div>
         </div>
       </div>
+        <a ng-click="vm.back()" class="button secondary">Regresar</a>
+        <input type="submit" class="button primary" value="Guardar cambios">
     </form>
   </div>
 </div>
