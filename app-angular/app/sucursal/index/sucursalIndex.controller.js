@@ -63,7 +63,7 @@
         })
     }
 
-    function sort() {
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }
