@@ -61,7 +61,6 @@ namespace App;
  */
 class Producto extends LGGModel {
 
-    //
     protected $table = "productos";
     public $timestamps = true;
     protected $fillable = ['activo', 'clave', 'descripcion', 'descripcion_corta',
@@ -77,7 +76,7 @@ class Producto extends LGGModel {
         'numero_parte'      => 'required|unique:productos',
         'remate'            => 'required|boolean',
         'spiff'             => 'required|numeric',
-        'subclave'          => 'required',
+        'subclave'          => 'required|string|max:45',
         'upc'               => 'required|string|max:20|unique:productos',
         'tipo_garantia_id'  => 'required|integer',
         'marca_id'          => 'required|integer',
