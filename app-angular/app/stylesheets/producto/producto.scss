@@ -4,13 +4,23 @@ form.product-form {
     @extend .form-group;
   }
 
-  input, textarea, select {
+  input:not([type='submit']), textarea, select {
     @extend .form-control
   }
 
   .block {
     @include make-container();
     @extend .text-left;
+  }
+
+  .col-sm {
+    @include make-col();
+    @include make-col-span(3);
+  }
+
+  .col-lg {
+    @include make-col();
+    @include make-col-span(6);
   }
 
   .icecat {
