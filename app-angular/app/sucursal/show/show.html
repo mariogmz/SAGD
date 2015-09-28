@@ -1,0 +1,14 @@
+<div class="card">
+  <div class="header">
+    <h4>Sucursal - {{vm.sucursal.nombre}}</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend>Sucursal #<strong>{{vm.sucursal.id}}</strong></legend>
+        <formly-form model="vm.sucursal" fields="vm.fields"></formly-form>
+      </fieldset>
+    </form>
+    <a ng-click="vm.back()" class="button primary">Regresar</a>
+  </div>
+</div>
