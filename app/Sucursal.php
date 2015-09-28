@@ -39,7 +39,7 @@ class Sucursal extends LGGModel {
     protected $table = 'sucursales';
     public $timestamps = false;
 
-    protected $fillable = ['clave', 'nombre', 'horarios', 'ubicacion'];
+    protected $fillable = ['clave', 'nombre', 'horarios', 'ubicacion', 'proveedor_id', 'domicilio_id'];
     public static $rules = [
         'clave'        => 'required|string|size:8|alpha|unique:sucursales',
         'nombre'       => 'required|string|max:45',

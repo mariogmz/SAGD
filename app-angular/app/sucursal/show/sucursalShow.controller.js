@@ -67,7 +67,7 @@
           type: 'text',
           label: 'Domicilio:'
         }
-      },
+      }
     ];
 
     activate();
