@@ -1,0 +1,56 @@
+<div class="search-card">
+  <div class="header">
+    <h4>Sucursales</h4>
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="create" ui-sref="sucursalNew"><i></i> Crear nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+      <tr>
+        <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+          {{sortKey.name}}
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr dir-paginate="sucursal in vm.sucursales | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+        <th scope="row">{{sucursal.id}}</th>
+        <td><a ui-sref="sucursalShow({id:sucursal.id})"></a>{{sucursal.clave}}</td>
+        <td><a ui-sref="sucursalShow({id:sucursal.id})"></a>{{sucursal.nombre}}</td>
+        <td><span class="truncate">{{sucursal.horarios}}</span></td>
+        <td>{{sucursal.ubicacion}}</td>
+        <td><a ui-sref="proveedorShow({id:sucursal.proveedor.id})"></a>{{sucursal.proveedor.clave}}</td>
+        <td>{{sucursal.domicilio.calle}}</td>
+
+        <td class="actions">
+          <div class="action-buttons" role="group" aria-label="Acciones">
+            <button type="button" class="edit" ui-sref="sucursalEdit({id:sucursal.id})"><i></i></button>
+            <button type="button" class="delete" ng-click="vm.eliminarSucursal(sucursal.id)"><i></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="paginator">
+  <dir-paginator-controls max-size="5" direction-links="true" boundary-links="true"></dir-paginator-controls>
+</div>
