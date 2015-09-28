@@ -29,6 +29,7 @@
                     vm.clientes = response.data;
                 }, function (response) {
                     vm.errors = response;
+
                 });
         };
 

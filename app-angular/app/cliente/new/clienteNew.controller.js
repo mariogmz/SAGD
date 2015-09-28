@@ -8,7 +8,7 @@
       .module('sagdApp.cliente')
       .controller('clienteNewController', ClienteNewController);
 
-  ClienteNewController.$inject = ['$auth', '$state', '$stateParams', '$location', 'api', 'pnotify'];
+  ClienteNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
 
   function ClienteNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
@@ -28,9 +28,14 @@
           label: 'Clave:',
           placeholder: 'Introduzca la clave',
           required: true
-        },
-        validators: {
-          notEquals: '$viewValue != "Prov"'
+        }
+      }, {
+        type: 'input',
+        key: 'nombre',
+        templateOptions: {
+          label: 'Nombre:',
+          placeholder: 'Introduzca el nombre',
+          required: true
         }
       }, {
         type: 'input',
