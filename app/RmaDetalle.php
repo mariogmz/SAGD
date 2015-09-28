@@ -41,6 +41,7 @@ class RmaDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         RmaDetalle::creating(function ($model) {
             return $model->isValid();
         });

@@ -43,6 +43,7 @@ class ClienteAutorizacion extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ClienteAutorizacion::creating(function ($ca) {
             if (!$ca->isValid()) {
                 return false;

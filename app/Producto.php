@@ -93,6 +93,7 @@ class Producto extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Producto::creating(function ($producto) {
             $producto->subclave || $producto->subclave = $producto->numero_parte;
             if (!$producto->isValid()) {

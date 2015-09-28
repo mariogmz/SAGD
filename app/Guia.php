@@ -45,6 +45,7 @@ class Guia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Guia::creating(function ($model) {
             return $model->isValid();
         });

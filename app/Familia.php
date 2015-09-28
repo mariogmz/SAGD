@@ -36,6 +36,7 @@ class Familia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Familia::creating(function ($familia) {
             $familia->clave = strtoupper($familia->clave);
             if (!$familia->isValid()) {

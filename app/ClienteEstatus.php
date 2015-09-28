@@ -35,6 +35,7 @@ class ClienteEstatus extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ClienteEstatus::creating(function ($clienteEstatus) {
             if (!$clienteEstatus->isValid()) {
                 return false;

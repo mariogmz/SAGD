@@ -34,6 +34,7 @@ class EstadoSoporte extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstadoSoporte::creating(function ($model) {
             if (!$model->isValid()) {
                 return false;

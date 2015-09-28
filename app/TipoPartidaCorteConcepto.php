@@ -33,6 +33,7 @@ class TipoPartidaCorteConcepto extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         TipoPartidaCorteConcepto::creating(function ($model) {
             return $model->isValid();
         });

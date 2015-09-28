@@ -80,6 +80,7 @@ class Factura extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Factura::creating(function ($model) {
             return $model->isValid();
         });

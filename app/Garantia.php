@@ -34,6 +34,7 @@ class Garantia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Garantia::creating(function ($model) {
             return $model->isValid();
         });

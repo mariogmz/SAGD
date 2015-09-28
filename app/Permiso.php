@@ -32,6 +32,7 @@ class Permiso extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Permiso::creating(function ($model) {
             $model->clave = strtoupper($model->clave);
 

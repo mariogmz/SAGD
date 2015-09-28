@@ -30,6 +30,7 @@ class EstadoRma extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstadoRma::creating(function ($model) {
             if (!$model->isValid()) {
                 return false;

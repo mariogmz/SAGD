@@ -42,6 +42,7 @@ class PaqueteriaRango extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         PaqueteriaRango::creating(function ($model) {
             return $model->isValid();
         });

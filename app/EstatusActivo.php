@@ -31,6 +31,7 @@ class EstatusActivo extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstatusActivo::creating(function ($model) {
             return $model->isValid();
         });

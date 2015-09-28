@@ -41,6 +41,7 @@ class SoporteProducto extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         SoporteProducto::creating(function ($model) {
             if (!$model->isValid()) {
                 return false;

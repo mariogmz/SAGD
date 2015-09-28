@@ -60,6 +60,7 @@ class Entrada extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Entrada::creating(function ($model) {
             return $model->isValid();
         });

@@ -38,6 +38,7 @@ class EstadoTransferencia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         EstadoTransferencia::creating(function ($model) {
             return $model->isValid();
         });

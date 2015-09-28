@@ -46,6 +46,7 @@ class Anticipo extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Anticipo::creating(function ($model) {
             return $model->isValid();
         });

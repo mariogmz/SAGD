@@ -27,6 +27,7 @@ class TipoVenta extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         TipoVenta::creating(function ($model) {
             return $model->isValid();
         });

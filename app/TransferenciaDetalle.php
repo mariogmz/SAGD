@@ -59,6 +59,7 @@ class TransferenciaDetalle extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         TransferenciaDetalle::creating(function ($model) {
             return $model->isValid();
         });

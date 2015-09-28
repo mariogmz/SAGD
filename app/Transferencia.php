@@ -63,6 +63,7 @@ class Transferencia extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Transferencia::creating(function ($model) {
             return $model->isValid();
         });

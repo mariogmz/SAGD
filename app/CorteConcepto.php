@@ -33,6 +33,7 @@ class CorteConcepto extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         CorteConcepto::creating(function ($model) {
             return $model->isValid();
         });

@@ -39,6 +39,7 @@ class MetodoPagoRango extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         MetodoPagoRango::creating(function ($model) {
             return $model->isValid() && self::revisarRango($model);
         });

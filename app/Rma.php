@@ -55,6 +55,7 @@ class Rma extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         Rma::creating(function ($model) {
             if (!$model->isValid()) {
                 return false;

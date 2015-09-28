@@ -34,6 +34,7 @@ class ProductoSucursal extends LGGModel {
      * @codeCoverageIgnore
      */
     public static function boot() {
+        parent::boot();
         ProductoSucursal::creating(function ($ps) {
             if (!$ps->isValid()) {
                 return false;
