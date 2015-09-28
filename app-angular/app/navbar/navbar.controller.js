@@ -152,7 +152,7 @@
         submodules: [
           {
             name: 'Consultar',
-            state: 'sucursal'
+            state: 'sucursalIndex'
           }, {
             name: 'Proveedores',
             state: 'proveedorIndex'
