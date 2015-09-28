@@ -25,7 +25,7 @@ class SucursalController extends Controller
      */
     public function index()
     {
-        $sucursales = $this->sucursal->all();
+        $sucursales = $this->sucursal->with('proveedor', 'domicilio')->get();
         return $sucursales;
     }
 
@@ -64,7 +64,7 @@ class SucursalController extends Controller
      */
     public function show($id)
     {
-        $this->sucursal = $this->sucursal->find($id);
+        $this->sucursal = $this->sucursal->with('proveedor', 'domicilio')->find($id);
         if( $this->sucursal )
         {
             return response()->json([

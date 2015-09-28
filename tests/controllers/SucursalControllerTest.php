@@ -34,9 +34,9 @@ class SucursalControllerTest extends TestCase
     public function test_GET_index()
     {
         $this->mock
-            ->shouldReceive('all')
-            ->once()
-            ->andReturn('[{"id":1,"clave":"DICOTAGS","nombre":"Dicotech Aguascalientes","horarios":"Lunes a Viernes de 9:00am a 6:30pm, Sabados de 9:00am a 2:30pm","ubicacion":null,"proveedor_id":1,"domicilio_id":1,"deleted_at":null}]');
+            ->shouldReceive([
+                'with' => Mockery::self(),
+                'get' => '[{"id":1,"clave":"DICOTAGS","nombre":"Dicotech Aguascalientes","horarios":"Lunes a Viernes de 9:00am a 6:30pm, Sabados de 9:00am a 2:30pm","ubicacion":null,"proveedor_id":1,"domicilio_id":1,"deleted_at":null}]']);
         $this->app->instance('App\Sucursal', $this->mock);
 
         $this->get($this->endpoint)
@@ -95,7 +95,12 @@ class SucursalControllerTest extends TestCase
     {
         $endpoint = $this->endpoint . '/1';
 
-        $this->mock->shouldReceive('find')->with(1)->andReturn(true);
+        $this->mock
+            ->shouldReceive([
+                'with' => Mockery::self(),
+                'find' => true
+            ])
+            ->withAnyArgs();
         $this->app->instance('App\Sucursal', $this->mock);
 
 
@@ -113,7 +118,12 @@ class SucursalControllerTest extends TestCase
     {
         $endpoint = $this->endpoint . '/10000';
 
-        $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
+        $this->mock
+            ->shouldReceive([
+                'with' => Mockery::self(),
+                'find' => false
+            ])
+            ->withAnyArgs();
         $this->app->instance('App\Sucursal', $this->mock);
 
         $this->get($endpoint)
