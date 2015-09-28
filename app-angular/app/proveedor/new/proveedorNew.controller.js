@@ -8,7 +8,7 @@
     .module('sagdApp.proveedor')
     .controller('proveedorNewController', ProveedorNewController);
 
-  ProveedorNewController.$inject = ['$auth', '$state', '$stateParams', '$location', 'api', 'pnotify'];
+  ProveedorNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
 
   function ProveedorNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
