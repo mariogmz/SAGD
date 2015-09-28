@@ -8,9 +8,25 @@ form.product-form {
     @extend .form-control
   }
 
+  select {
+    @extend .c-select;
+  }
+
   .block {
     @include make-container();
     @extend .text-left;
+  }
+
+  .checkbox {
+
+    label {
+      @extend .c-input;
+      @extend .c-checkbox;
+
+      span {
+        @extend .c-indicator;
+      }
+    }
   }
 
   .col-sm {
