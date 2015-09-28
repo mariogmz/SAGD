@@ -33,6 +33,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('cliente', 'ClienteController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('codigo-postal', 'CodigoPostalController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('domicilio', 'DomicilioController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
 
