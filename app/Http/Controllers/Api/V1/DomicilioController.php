@@ -15,6 +15,7 @@ class DomicilioController extends Controller
     public function __construct(Domicilio $domicilio)
     {
         $this->domicilio = $domicilio;
+        $this->middleware('jwt.auth');
     }
 
     /**

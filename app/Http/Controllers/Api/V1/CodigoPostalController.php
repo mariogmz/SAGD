@@ -15,6 +15,7 @@ class CodigoPostalController extends Controller
     public function __construct(CodigoPostal $codigoPostal)
     {
         $this->codigoPostal = $codigoPostal;
+        $this->middleware('jwt.auth');
     }
 
     /**
