@@ -1,6 +1,6 @@
 // app/session/session.controller.js
 
-(function () {
+(function (){
 
   'use strict';
 
@@ -10,23 +10,30 @@
 
   SessionController.$inject = ['session'];
 
-  function SessionController(session) {
+  function SessionController(session){
     var vm = this;
 
-    vm.login = function () {
-      session.login(vm.email, vm.password).then(function(){
+    vm.login = login;
+    vm.logout = logout;
+    vm.clean = cleanLoginError;
+
+
+    function login(){
+      vm.loading = true;
+      session.login(vm.email, vm.password).then(function (){
         vm.loginError = session.getLoginError();
+        vm.loading = false;
       });
-    };
+    }
 
-    vm.logout = function () {
+    function logout(){
       session.logout();
-    };
+    }
 
-    vm.cleanLoginError = function(evt){
+    function cleanLoginError(evt){
       session.cleanLoginError();
       vm.loginError = session.getLoginError();
-    };
+    }
 
   }
 
