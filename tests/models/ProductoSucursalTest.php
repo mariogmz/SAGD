@@ -3,7 +3,7 @@
 /**
 * @coversDefaultClass \App\ProductoSucursal
 */
-class ProductoSucursal extends TestCase
+class ProductoSucursalTest extends TestCase
 {
 
     protected $productoSucursal;
