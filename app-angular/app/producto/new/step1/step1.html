@@ -13,7 +13,8 @@
       </fieldset>
       <fieldset>
         <label for="marca_id">Marca:</label>
-        <select id="marca_id"></select>
+        <select id="marca_id"
+                ng-model="parentVm.marcas" ng-options="marca.id as marca.nombre for marca in parentVm.marcas"></select>
       </fieldset>
       <span>
          <button><img width="90px" src="/public/img/icecat_logo.svg"></button>
@@ -41,7 +42,8 @@
       <div class="col-sm">
         <fieldset>
           <label for="subfamilia_id">Subfamilia:</label>
-          <select id="subfamilia_id"></select>
+          <select id="subfamilia_id"
+                  ng-model="parentVm.subfamilias" ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias"></select>
         </fieldset>
       </div>
 
@@ -67,7 +69,8 @@
       <div class="col-sm">
         <fieldset>
           <label for="unidad_id">Unidad de medida:</label>
-          <select id="unidad_id"></select>
+          <select id="unidad_id"
+                  ng-model="parentVm.unidades" ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades"></select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
@@ -81,7 +84,8 @@
       <div class="col-sm">
         <fieldset>
           <label for="tipo_garantia_id">Tipo de garantía:</label>
-          <select id="tipo_garantia_id"></select>
+          <select id="tipo_garantia_id"
+                  ng-model="parentVm.tiposGarantia" ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia"></select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
