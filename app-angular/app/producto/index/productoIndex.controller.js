@@ -25,6 +25,7 @@
       {name: 'Familia', key: 'familia.clave'},
       {name: 'Margen', key: 'margen.clave'}
     ];
+    vm.next = goToCreateStep1;
 
     initialize();
 
@@ -56,6 +57,10 @@
     function sort(keyname){
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
+    }
+
+    function goToCreateStep1(){
+      $state.go('productoNew.step1');
     }
 
   }
