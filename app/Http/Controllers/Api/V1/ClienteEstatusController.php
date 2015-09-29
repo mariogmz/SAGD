@@ -12,7 +12,7 @@ class ClienteEstatusController extends Controller
 {
     protected $clienteEstatus;
 
-    public function __construct(ClienteReferencia $clienteReferencia)
+    public function __construct(ClienteEstatus $clienteEstatus)
     {
         $this->clienteEstatus= $clienteEstatus;
         $this->middleware('jwt.auth');
