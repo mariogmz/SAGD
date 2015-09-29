@@ -59,14 +59,6 @@
           type: 'text',
           label: 'Proveedor:'
         }
-      },
-      {
-        type: 'input',
-        key: 'domicilio.calle',
-        templateOptions: {
-          type: 'text',
-          label: 'Domicilio:'
-        }
       }
     ];
 

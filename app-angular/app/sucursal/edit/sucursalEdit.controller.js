@@ -17,7 +17,7 @@
 
     var vm = this;
     vm.id = $stateParams.id;
-    vm.save = guardarSucursal;
+    vm.save = guardarModelos;
     vm.back = goBack;
     vm.sucursal = [];
     vm.proveedores = [];
@@ -63,14 +63,6 @@
             options: [{value: 0, name: 'Seleccione un proveedor'}],
             required: true
           }
-        },
-        {
-          type: 'input',
-          key: 'domicilio_id',
-          templateOptions: {
-            type: 'text',
-            label: 'Domicilio:'
-          }
         }
       ];
 
@@ -102,18 +94,38 @@
         });
     }
 
-    function guardarSucursal() {
-      return api.put('/sucursal/', vm.id, vm.sucursal)
-        .then(function (response) {
-          vm.message = response.data.message;
-          pnotify.alert('Exito', vm.message, 'success');
-          return response;
-        })
-        .catch(function (response) {
-          vm.error = response.data;
-          pnotify.alert('No se pudo guardar la sucursal', vm.error.error, 'error');
-          return response;
+    function guardarModelos() {
+      guardarCodigoPostal()
+      .then(function(response) {
+        guardarDomicilio()
+        .then(function(response) {
+          return guardarSucursal()
+          .then(function(response) {
+            vm.message = response.data.message;
+            pnotify.alert('Exito', vm.message, 'success');
+            return response;
+          })
+          .catch(updateError);
         });
+      });
+    }
+
+    function updateError(response) {
+      vm.error = response.data;
+      pnotify.alert('No se pudo guardar la sucursal', vm.error.error, 'error');
+      return response;
+    }
+
+    function guardarSucursal() {
+      return api.put('/sucursal/', vm.id, vm.sucursal);
+    }
+
+    function guardarDomicilio() {
+      return api.put('/domicilio/', vm.sucursal.domicilio_id, vm.sucursal.domicilio);
+    }
+
+    function guardarCodigoPostal() {
+      return api.put('/codigo-postal/', vm.sucursal.domicilio.codigo_postal_id, vm.sucursal.domicilio.codigo_postal);
     }
 
     function obtenerProveedores() {
@@ -177,14 +189,6 @@
               return {value: proveedor.id, name: proveedor.razon_social};
             }),
             required: true
-          }
-        },
-        {
-          type: 'input',
-          key: 'domicilio_id',
-          templateOptions: {
-            type: 'text',
-            label: 'Domicilio:'
           }
         }
       ];

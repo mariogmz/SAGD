@@ -17,7 +17,7 @@
 
     var vm = this;
     vm.back = goBack;
-    vm.create = crearSucursal;
+    vm.create = crearModelos;
     vm.proveedores = [];
 
     vm.fields = [
@@ -69,14 +69,6 @@
           options: [{value: 0, name: 'Seleccione un proveedor'}],
           required: true
         }
-      },
-      {
-        type: 'input',
-        key: 'domicilio_id',
-        templateOptions: {
-          type: 'text',
-          label: 'Domicilio:'
-        }
       }
     ];
 
@@ -92,15 +84,45 @@
         });
     }
 
-    function crearSucursal() {
-      return api.post('/sucursal', vm.sucursal)
-        .then(function (response){
-          pnotify.alert('Exito', response.data.message, 'success');
-          $state.go('sucursalShow', {id: response.data.sucursal.id});
+    function crearModelos() {
+      obtenerCodigoPostal()
+      .then(function(response) {
+        vm.domicilio.codigo_postal_id = response.data.codigo_postal.id;
+        crearDomicilio()
+        .then(function(response) {
+          vm.sucursal.domicilio_id = response.data.domicilio.id;
+          crearSucursal()
+          .then(function (response){
+            pnotify.alert('Exito', response.data.message, 'success');
+            $state.go('sucursalShow', {id: response.data.sucursal.id});
+          })
+          .catch(createError);
         })
-        .catch(function (response){
-          pnotify.alertList(response.data.message, response.data.error, 'error');
-        });
+        .catch(createError);
+      })
+      .catch(findError);
+    }
+
+    function findError(response) {
+      vm.error = response.data;
+      pnotify.alert('No se pudo encontrar el codigo postal', vm.error.error, 'error');
+      return response;
+    }
+
+    function createError(response) {
+      pnotify.alertList(response.data.message, response.data.error, 'error');
+    }
+
+    function crearSucursal() {
+      return api.post('/sucursal', vm.sucursal);
+    }
+
+    function crearDomicilio() {
+      return api.post('/domicilio', vm.domicilio);
+    }
+
+    function obtenerCodigoPostal() {
+      return api.get('/codigo-postal/find/', vm.domicilio.codigo_postal.codigo_postal);
     }
 
     function obtenerProveedores() {
@@ -171,14 +193,6 @@
               return {value: proveedor.id, name: proveedor.razon_social};
             }),
             required: true
-          }
-        },
-        {
-          type: 'input',
-          key: 'domicilio_id',
-          templateOptions: {
-            type: 'text',
-            label: 'Domicilio:'
           }
         }
       ];
