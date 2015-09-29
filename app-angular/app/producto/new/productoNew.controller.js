@@ -1,4 +1,4 @@
-// app/producto/producto.controller.js
+// app/producto/new/productoNew.controller.js
 
 (function (){
 
