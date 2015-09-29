@@ -14,7 +14,9 @@
       <fieldset>
         <label for="marca_id">Marca:</label>
         <select id="marca_id"
-                ng-model="parentVm.marcas" ng-options="marca.id as marca.nombre for marca in parentVm.marcas"></select>
+                ng-model="parentVm.producto.marca_id" ng-options="marca.id as marca.nombre for marca in parentVm.marcas">
+          <option value="">Seleccione una marca</option>
+        </select>
       </fieldset>
       <span>
          <button><img width="90px" src="/public/img/icecat_logo.svg"></button>
@@ -43,7 +45,9 @@
         <fieldset>
           <label for="subfamilia_id">Subfamilia:</label>
           <select id="subfamilia_id"
-                  ng-model="parentVm.subfamilias" ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias"></select>
+                  ng-model="parentVm.producto.subfamilia_id" ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias">
+            <option value="">Seleccione una subfamilia</option>
+          </select>
         </fieldset>
       </div>
 
@@ -70,7 +74,9 @@
         <fieldset>
           <label for="unidad_id">Unidad de medida:</label>
           <select id="unidad_id"
-                  ng-model="parentVm.unidades" ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades"></select>
+                  ng-model="parentVm.producto.unidad_id" ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades">
+            <option value="">Seleccione una unidad de medida</option>
+          </select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
@@ -85,7 +91,9 @@
         <fieldset>
           <label for="tipo_garantia_id">Tipo de garantía:</label>
           <select id="tipo_garantia_id"
-                  ng-model="parentVm.tiposGarantia" ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia"></select>
+                  ng-model="parentVm.producto.tipo_garantia_id" ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia">
+            <option value="">Seleccione un tipo de garantía</option>
+          </select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
