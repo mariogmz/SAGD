@@ -2,7 +2,8 @@
 <div class="signin-screen">
   <div class="login-card">
     <div class="login-card-logo">
-      <img src="../public/img/sagd.svg" alt="Sistema Administrativo de Grupo Dicotech">
+      <i ng-class="{'fa fa-spinner fa-spin fa-5x' : vm.loading}"></i>
+      <img ng-hide="vm.loading" src="../public/img/sagd.svg" alt="Sistema Administrativo de Grupo Dicotech">
     </div>
 
     <div class="login-card-block">
@@ -11,16 +12,21 @@
 
       <form ng-class="{'error': vm.loginError}">
         <fieldset>
-          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email" ng-change="vm.cleanLoginError()" onfocus>
+          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email"
+                 ng-change="vm.clean()" onfocus>
         </fieldset>
         <fieldset>
-          <input type="password" placeholder="Contraseña" required ng-model="vm.password" ng-change="vm.cleanLoginError()">
-          <p  id="flash-error"
-              ng-show="vm.loginError"
-              ng-class="{'active': vm.loginError}">Credenciales de acceso incorrectas.</p>
+          <input type="password" placeholder="Contraseña" required ng-model="vm.password"
+                 ng-change="vm.clean()">
+
+          <p id="flash-error"
+             ng-show="vm.loginError"
+             ng-class="{'active': vm.loginError}">Credenciales de acceso incorrectas.</p>
         </fieldset>
 
-        <button id="acceder" type="submit" ng-click="vm.login()">Acceder</button>
+        <button id="acceder" type="submit" ng-click="vm.login()">
+          Acceder
+        </button>
       </form>
       <hr>
       <a ui-sref="forgot">¿Olvidaste tu contraseña?</a>
