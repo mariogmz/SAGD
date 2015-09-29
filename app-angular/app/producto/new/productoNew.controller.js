@@ -8,30 +8,17 @@
     .module('sagdApp.producto')
     .controller('productoNewController', ProductoNewController);
 
-  ProductoNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  ProductoNewController.$inject = ['$auth', '$state'];
 
-  function ProductoNewController($auth, $state, api, pnotify){
+  function ProductoNewController($auth, $state){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
+    } else {
+      $state.go('productoNew.step1');
     }
 
     var vm = this;
     vm.back = goBack;
-    vm.create = create;
-    vm.title = 'Hell yeah!';
-
-    $state.go('productoNew.step1');
-
-    function create(){
-      api.post('/producto', vm.producto)
-        .then(function (response){
-          pnotify.alert('¡Exito!', response.data.message, 'success');
-          $state.go('productoShow', {id: response.data.producto.id});
-        })
-        .catch(function (response){
-          pnotify.alertList(response.data.message, response.data.error, 'error');
-        });
-    }
 
     function goBack(){
       window.history.back();
