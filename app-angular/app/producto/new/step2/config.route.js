@@ -14,7 +14,7 @@
       .state('productoNew.step2', {
         parent: 'productoNew',
         templateUrl: 'app/producto/new/step2/step2.html',
-        controller: 'productoNewStep2Controller',
+        controller: 'productoNewStepController',
         controllerAs: 'vm'
       });
   }

@@ -17,8 +17,10 @@
 
     var vm = this;
     vm.back = goBack;
-
     vm.create = create;
+    vm.title = 'Hell yeah!';
+
+    $state.go('productoNew.step1');
 
     function create(){
       api.post('/producto', vm.producto)
