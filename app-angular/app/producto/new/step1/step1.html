@@ -9,12 +9,13 @@
     <div class="row icecat">
       <fieldset>
         <label for="numero_parte">Número de parte:</label>
-        <input type="text" id="numero_parte">
+        <input type="text" id="numero_parte" ng-model="parentVm.producto.numero_parte">
       </fieldset>
       <fieldset>
         <label for="marca_id">Marca:</label>
         <select id="marca_id"
-                ng-model="parentVm.producto.marca_id" ng-options="marca.id as marca.nombre for marca in parentVm.marcas">
+                ng-model="parentVm.producto.marca_id"
+                ng-options="marca.id as marca.nombre for marca in parentVm.marcas">
           <option value="">Seleccione una marca</option>
         </select>
       </fieldset>
@@ -24,6 +25,7 @@
     </div>
   </div>
 </div>
+
 <!-- Datos generales -->
 <div class="card">
   <div class="header">
@@ -37,7 +39,7 @@
       <div class="col-sm">
         <fieldset>
           <label for="upc">UPC:</label>
-          <input type="text" id="upc">
+          <input type="text" id="upc" ng-model="parentVm.producto.upc">
         </fieldset>
       </div>
       <!-- Subfamilia -->
@@ -45,7 +47,8 @@
         <fieldset>
           <label for="subfamilia_id">Subfamilia:</label>
           <select id="subfamilia_id"
-                  ng-model="parentVm.producto.subfamilia_id" ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias">
+                  ng-model="parentVm.producto.subfamilia_id"
+                  ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias">
             <option value="">Seleccione una subfamilia</option>
           </select>
         </fieldset>
@@ -55,14 +58,14 @@
       <div class="col-sm">
         <fieldset>
           <label for="subclave">Subclave:</label>
-          <input type="text" id="subclave">
+          <input type="text" id="subclave" ng-model="parentVm.producto.subclave">
         </fieldset>
       </div>
       <!-- Clave -->
       <div class="col-sm">
         <fieldset>
           <label for="clave">Clave:</label>
-          <input type="text" id="clave">
+          <input type="text" id="clave" ng-model="parentVm.producto.clave">
         </fieldset>
       </div>
     </div>
@@ -74,13 +77,14 @@
         <fieldset>
           <label for="unidad_id">Unidad de medida:</label>
           <select id="unidad_id"
-                  ng-model="parentVm.producto.unidad_id" ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades">
+                  ng-model="parentVm.producto.unidad_id"
+                  ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades">
             <option value="">Seleccione una unidad de medida</option>
           </select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
-            <input type="checkbox">
+            <input type="checkbox" ng-model="parentVm.producto.remate">
             <span></span>
             ¿En remate?
           </label>
@@ -91,13 +95,14 @@
         <fieldset>
           <label for="tipo_garantia_id">Tipo de garantía:</label>
           <select id="tipo_garantia_id"
-                  ng-model="parentVm.producto.tipo_garantia_id" ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia">
+                  ng-model="parentVm.producto.tipo_garantia_id"
+                  ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia">
             <option value="">Seleccione un tipo de garantía</option>
           </select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
-            <input type="checkbox">
+            <input type="checkbox" ng-model="parentVm.producto.activo">
             <span></span>
             ¿Activo?
           </label>
@@ -108,11 +113,11 @@
       <div class="col-lg">
         <fieldset>
           <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion"></textarea>
+          <textarea id="descripcion" ng-model="parentVm.producto.descripcion"></textarea>
         </fieldset>
         <fieldset>
           <label for="descripcion_corta">Descripción corta:</label>
-          <input type="text" id="descripcion_corta">
+          <input type="text" id="descripcion_corta" ng-model="parentVm.producto.descripcion_corta">
         </fieldset>
       </div>
     </div>
@@ -130,23 +135,23 @@
       <!-- Peso -->
       <fieldset class="col-sm">
         <label for="peso">Peso (kg):</label>
-        <input type="text" id="peso">
+        <input type="text" id="peso" ng-model="parentVm.dimension.peso">
       </fieldset>
       <!-- Longitúd -->
       <fieldset class="col-sm">
         <label for="largo">Largo (cm):</label>
-        <input type="text" id="largo">
+        <input type="text" id="largo" ng-model="parentVm.dimension.largo">
       </fieldset>
 
       <!-- Ancho -->
       <fieldset class="col-sm">
         <label for="ancho">Ancho (cm):</label>
-        <input type="text" id="ancho">
+        <input type="text" id="ancho" ng-model="parentVm.dimension.ancho">
       </fieldset>
       <!-- Altura -->
       <fieldset class="col-sm">
         <label for="alto">Alto (cm):</label>
-        <input type="text" id="alto">
+        <input type="text" id="alto" ng-model="parentVm.dimension.alto">
       </fieldset>
     </div>
   </div>
