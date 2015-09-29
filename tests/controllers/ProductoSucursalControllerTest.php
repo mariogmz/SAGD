@@ -53,7 +53,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->post($this->endpoint, ['upc' => 123456])
             ->seeJson([
-                'message' => 'ProductoSucursal creado exitosamente',
+                'message' => 'Producto asociado a sucursal exitosamente',
                 'producto'  => 'self'
             ])
             ->assertResponseStatus(201);
@@ -70,7 +70,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->post($this->endpoint, ['upc' => 123456])
             ->seeJson([
-                'message' => 'ProductoSucursal no creado',
+                'message' => 'Producto no asociado a sucursal',
                 'error'   => ['clave' => 'Clave es requerido']
             ])
             ->assertResponseStatus(400);
@@ -91,7 +91,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'ProductoSucursal obtenido exitosamente',
+                'message' => 'Asociación producto-sucursal obtenida exitosamente',
                 'producto'  => 'self'
             ])
             ->assertResponseStatus(200);
@@ -108,8 +108,8 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'ProductoSucursal no encontrado o no existente',
-                'error'   => 'No encontrado'
+                'message' => 'Asociación producto-sucursal no encontrada',
+                'error'   => 'No encontrada'
             ])
             ->assertResponseStatus(404);
 
@@ -130,7 +130,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'ProductoSucursal se actualizo correctamente'
+                'message' => 'Asociación de producto-sucursal actualizada correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -149,7 +149,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del producto',
+                'message' => 'No se pudo actualizar la relación producto-sucursal',
                 'error'   => 'ProductoSucursal no encontrado'
             ])
             ->assertResponseStatus(404);
@@ -171,7 +171,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del producto',
+                'message' => 'No se pudo actualizar la relación producto-sucursal',
                 'error'   => ['clave' => 'La clave ya existe']
             ])->assertResponseStatus(400);
     }
@@ -190,7 +190,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'ProductoSucursal eliminado correctamente'
+                'message' => 'Relación producto-sucursal eliminada correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -208,7 +208,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar el producto',
+                'message' => 'No se pudo eliminar la relación producto-sucursal',
                 'error'   => 'ProductoSucursal no encontrado'
             ])
             ->assertResponseStatus(404);
@@ -229,7 +229,7 @@ class ProductoSucursalControllerTest extends TestCase {
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar el producto',
+                'message' => 'No se pudo eliminar la relación producto-sucursal',
                 'error'   => 'Metodo de eliminar no se pudo ejecutar'
             ])
             ->assertResponseStatus(400);

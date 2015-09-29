@@ -37,13 +37,13 @@ class ProductoSucursalController extends Controller {
         $this->producto->fill($params);
         if ($this->producto->save()) {
             return response()->json([
-                'message' => 'ProductoSucursal creado exitosamente',
+                'message' => 'Producto asociado a sucursal exitosamente',
                 'producto' => $this->producto->self()
             ], 201,
                 ['Location' => route('api.v1.producto.show', $this->producto->getId())]);
         } else {
             return response()->json([
-                'message' => 'ProductoSucursal no creado',
+                'message' => 'Producto no asociado a sucursal',
                 'error'   => $this->producto->errors
             ], 400);
         }
@@ -59,13 +59,13 @@ class ProductoSucursalController extends Controller {
         $this->producto = $this->producto->find($id);
         if ($this->producto) {
             return response()->json([
-                'message' => 'ProductoSucursal obtenido exitosamente',
+                'message' => 'Asociación producto-sucursal obtenida exitosamente',
                 'producto' => $this->producto->self()
             ], 200);
         } else {
             return response()->json([
-                'message' => 'ProductoSucursal no encontrado o no existente',
-                'error'   => 'No encontrado'
+                'message' => 'Asociación producto-sucursal no encontrada',
+                'error'   => 'No encontrada'
             ], 404);
         }
     }
@@ -82,16 +82,16 @@ class ProductoSucursalController extends Controller {
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
             return response()->json([
-                'message' => 'No se pudo realizar la actualizacion del producto',
+                'message' => 'No se pudo actualizar la relación producto-sucursal',
                 'error'   => 'ProductoSucursal no encontrado'
             ], 404);
         } elseif ($this->producto->update($params)) {
             return response()->json([
-                'message' => 'ProductoSucursal se actualizo correctamente'
+                'message' => 'Asociación de producto-sucursal actualizada correctamente'
             ], 200);
         } else {
             return response()->json([
-                'message' => 'No se pudo realizar la actualizacion del producto',
+                'message' => 'No se pudo actualizar la relación producto-sucursal',
                 'error'   => $this->producto->errors
             ], 400);
         }
@@ -107,16 +107,16 @@ class ProductoSucursalController extends Controller {
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
             return response()->json([
-                'message' => 'No se pudo eliminar el producto',
+                'message' => 'No se pudo eliminar la relación producto-sucursal',
                 'error'   => 'ProductoSucursal no encontrado'
             ], 404);
         } elseif ($this->producto->delete()) {
             return response()->json([
-                'message' => 'ProductoSucursal eliminado correctamente',
+                'message' => 'Relación producto-sucursal eliminada correctamente',
             ], 200);
         } else {
             return response()->json([
-                'message' => 'No se pudo eliminar el producto',
+                'message' => 'No se pudo eliminar la relación producto-sucursal',
                 'error'   => $this->producto->errors
             ], 400);
         }
