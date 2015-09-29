@@ -45,6 +45,21 @@
           placeholder: 'Introduzca el usuario',
           required: true
         }
+      }, {
+        type: 'select',
+        key: 'cliente_referencia_id',
+        templateOptions: {
+          label: 'Referencia:',
+          required: true,
+          options: [],
+          ngOptions: 'clientes_referencias.id as clientes_referencias.nombre for clientes_referencias in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/cliente-referencia').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
       }
 
     ];

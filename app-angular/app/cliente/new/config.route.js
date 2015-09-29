@@ -13,7 +13,7 @@
     $stateProvider
         .state('clienteNew', {
           url: 'cliente/nuevo',
-          parent: 'layout',
+          parent: 'cliente',
           templateUrl: 'app/cliente/new/new.html',
           controller: 'clienteNewController',
           controllerAs: 'vm'
