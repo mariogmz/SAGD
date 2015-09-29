@@ -64,7 +64,7 @@ class SucursalController extends Controller
      */
     public function show($id)
     {
-        $this->sucursal = $this->sucursal->with('proveedor', 'domicilio')->find($id);
+        $this->sucursal = $this->sucursal->with('proveedor', 'domicilio.codigoPostal')->find($id);
         if( $this->sucursal )
         {
             return response()->json([

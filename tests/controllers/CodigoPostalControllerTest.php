@@ -248,4 +248,49 @@ class CodigoPostalControllerTest extends TestCase {
             ->assertResponseStatus(400);
 
     }
+
+    /**
+     * @covers ::find
+     */
+    public function test_GET_find_ok()
+    {
+        $endpoint = $this->endpoint . '/find/20115';
+
+        $this->mock
+            ->shouldReceive([
+                'where' => Mockery::self(),
+                'first' => Mockery::self(),
+                'self' => 'Codigo Postal'
+        ])->withAnyArgs();
+        $this->app->instance('App\CodigoPostal', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Codigo Postal obtenido exitosamente',
+                'codigo_postal' => 'Codigo Postal'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::find
+     */
+    public function test_GET_find_not_found()
+    {
+        $endpoint = $this->endpoint . '/find/20115';
+
+        $this->mock
+            ->shouldReceive([
+                'where' => Mockery::self(),
+                'first' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\CodigoPostal', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Codigo Postal no encontrado o no existente',
+                'error' => 'No encontrado'
+            ])
+            ->assertResponseStatus(404);
+    }
 }

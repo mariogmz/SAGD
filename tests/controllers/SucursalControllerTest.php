@@ -36,13 +36,15 @@ class SucursalControllerTest extends TestCase
         $this->mock
             ->shouldReceive([
                 'with' => Mockery::self(),
-                'get' => '[{"id":1,"clave":"DICOTAGS","nombre":"Dicotech Aguascalientes","horarios":"Lunes a Viernes de 9:00am a 6:30pm, Sabados de 9:00am a 2:30pm","ubicacion":null,"proveedor_id":1,"domicilio_id":1,"deleted_at":null}]']);
+                'get' => '[{"id":1,"clave":"DICOTECH","nombre":"Dicotech Aguascalientes","horarios":"Lunes a Viernes de 9:00am a 6:30pm, Sabados de 9:00am a 2:30pm","ubicacion":null,"proveedor_id":1,"domicilio_id":1,"deleted_at":null,"proveedor":{"id":1,"clave":"DICO","razon_social":"DICOTECH MAYORISTA DE TECNOLOGIA S.A. DE C.V.","externo":0,"pagina_web":"http:\/\/www.dicotech.com.mx","deleted_at":null},"domicilio":{"id":1,"calle":"Av. de la Convenci\u00f3n de 1914 Norte #502, Col. Morelos","localidad":"Aguascalientes","codigo_postal_id":1435,"deleted_at":null}}]']);
         $this->app->instance('App\Sucursal', $this->mock);
 
         $this->get($this->endpoint)
             ->seeJson([
-                'clave' => 'DICOTAGS',
-                'nombre' => 'Dicotech Aguascalientes'
+                'clave' => 'DICOTECH',
+                'nombre' => 'Dicotech Aguascalientes',
+                'externo' => 0,
+                'localidad' => 'Aguascalientes',
             ])
             ->assertResponseStatus(200);
     }
