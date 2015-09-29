@@ -23,14 +23,6 @@
     vm.fields = [
       {
         type: 'input',
-        key: 'clave',
-        templateOptions: {
-          label: 'Clave:',
-          placeholder: 'Introduzca la clave',
-          required: true
-        }
-      }, {
-        type: 'input',
         key: 'nombre',
         templateOptions: {
           label: 'Nombre:',
@@ -66,6 +58,21 @@
         },
         controller: /* @ngInject */ function ($scope){
           $scope.to.loading = api.get('/cliente-referencia').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
+      }, {
+        type: 'select',
+        key: 'rol_id',
+        templateOptions: {
+          label: 'Rol:',
+          required: true,
+          options: [],
+          ngOptions: 'roles.clave as roles.nombre for roles in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/roles').then(function (response){
             $scope.to.options = response.data;
             return response;
           });
