@@ -41,6 +41,12 @@ class RolesTableSeeder extends Seeder {
             ], [
                 'clave'  => 'FINANZ',
                 'nombre' => 'PERSONAL DE FINANZAS',
+            ], [
+                'clave'  => 'UFINAL',
+                'nombre' => 'USUARIO FINAL',
+            ], [
+                'clave'  => 'DISTRI',
+                'nombre' => 'DISTRIBUIDOR',
             ],
         ];
     }

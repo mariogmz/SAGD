@@ -70,6 +70,21 @@
             return response;
           });
         }
+      }, {
+        type: 'select',
+        key: 'cliente_estatus_id',
+        templateOptions: {
+          label: 'Estatus:',
+          required: true,
+          options: [],
+          ngOptions: 'clientes_estatus.id as clientes_estatus.nombre for clientes_estatus in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/cliente-estatus').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
       }
 
     ];
