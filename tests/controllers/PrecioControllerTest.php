@@ -3,17 +3,17 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 /**
- * @coversDefaultClass \App\Http\Controllers\Api\V1\ProductoController
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\PrecioController
  */
-class ProductoControllerTest extends TestCase {
+class PrecioControllerTest extends TestCase {
 
     use WithoutMiddleware;
 
-    protected $endpoint = '/v1/producto';
+    protected $endpoint = '/v1/precio';
 
     public function setUp() {
         parent::setUp();
-        $this->mock = $this->setUpMock('App\Producto');
+        $this->mock = $this->setUpMock('App\Precio');
     }
 
     public function setUpMock($class) {
@@ -31,7 +31,7 @@ class ProductoControllerTest extends TestCase {
      */
     public function test_GET_index() {
         $this->mock->shouldReceive('all')->once()->andReturn('success');
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
@@ -49,12 +49,12 @@ class ProductoControllerTest extends TestCase {
                 'getId' => 1
             ])
             ->withAnyArgs();
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->post($this->endpoint, ['upc' => 123456])
             ->seeJson([
-                'message' => 'Producto creado exitosamente',
-                'producto'  => 'self'
+                'message' => 'Precio creado exitosamente',
+                'precio'  => 'self'
             ])
             ->assertResponseStatus(201);
     }
@@ -66,11 +66,11 @@ class ProductoControllerTest extends TestCase {
         $this->mock
             ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
         $this->mock->errors = ['clave' => 'Clave es requerido'];
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->post($this->endpoint, ['upc' => 123456])
             ->seeJson([
-                'message' => 'Producto no creado',
+                'message' => 'Precio no creado',
                 'error'   => ['clave' => 'Clave es requerido']
             ])
             ->assertResponseStatus(400);
@@ -86,13 +86,13 @@ class ProductoControllerTest extends TestCase {
             'find' => Mockery::self(),
             'self' => 'self'
         ])->withAnyArgs();
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Producto obtenido exitosamente',
-                'producto'  => 'self'
+                'message' => 'Precio obtenido exitosamente',
+                'precio'  => 'self'
             ])
             ->assertResponseStatus(200);
     }
@@ -104,11 +104,11 @@ class ProductoControllerTest extends TestCase {
         $endpoint = $this->endpoint . '/10000';
 
         $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Producto no encontrado o no existente',
+                'message' => 'Precio no encontrado o no existente',
                 'error'   => 'No encontrado'
             ])
             ->assertResponseStatus(404);
@@ -126,11 +126,11 @@ class ProductoControllerTest extends TestCase {
             'find'   => Mockery::self(),
             'update' => true
         ])->withAnyArgs();
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'Producto se actualizo correctamente'
+                'message' => 'Precio se actualizo correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -145,12 +145,12 @@ class ProductoControllerTest extends TestCase {
         $this->mock->shouldReceive([
             'find' => null,
         ])->withAnyArgs();
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del producto',
-                'error'   => 'Producto no encontrado'
+                'message' => 'No se pudo realizar la actualizacion del precio',
+                'error'   => 'Precio no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -167,11 +167,11 @@ class ProductoControllerTest extends TestCase {
             'update' => false
         ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'La clave ya existe'];
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del producto',
+                'message' => 'No se pudo realizar la actualizacion del precio',
                 'error'   => ['clave' => 'La clave ya existe']
             ])->assertResponseStatus(400);
     }
@@ -186,11 +186,11 @@ class ProductoControllerTest extends TestCase {
             'find'   => Mockery::self(),
             'delete' => true
         ])->withAnyArgs();
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'Producto eliminado correctamente'
+                'message' => 'Precio eliminado correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -204,12 +204,12 @@ class ProductoControllerTest extends TestCase {
         $this->mock->shouldReceive([
             'find' => null,
         ])->withAnyArgs();
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar el producto',
-                'error'   => 'Producto no encontrado'
+                'message' => 'No se pudo eliminar el precio',
+                'error'   => 'Precio no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -225,11 +225,11 @@ class ProductoControllerTest extends TestCase {
             'delete' => false,
         ])->withAnyArgs();
         $this->mock->errors = 'Metodo de eliminar no se pudo ejecutar';
-        $this->app->instance('App\Producto', $this->mock);
+        $this->app->instance('App\Precio', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar el producto',
+                'message' => 'No se pudo eliminar el precio',
                 'error'   => 'Metodo de eliminar no se pudo ejecutar'
             ])
             ->assertResponseStatus(400);

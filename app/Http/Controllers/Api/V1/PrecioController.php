@@ -3,17 +3,17 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\ProductoSucursal;
+use App\Precio;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
-class ProductoSucursalController extends Controller {
+class PrecioController extends Controller {
 
-    protected $producto_sucursal;
+    protected $precio;
 
-    public function __construct(ProductoSucursal $producto_sucursal) {
-        $this->producto = $producto_sucursal;
+    public function __construct(Precio $precio) {
+        $this->precio = $precio;
         $this->middleware('jwt.auth');
     }
 
@@ -23,7 +23,7 @@ class ProductoSucursalController extends Controller {
      * @return Response
      */
     public function index() {
-        return $this->producto->all();
+        return $this->precio->all();
     }
 
     /**
@@ -34,17 +34,17 @@ class ProductoSucursalController extends Controller {
      */
     public function store(Request $request) {
         $params = $request->all();
-        $this->producto->fill($params);
-        if ($this->producto->save()) {
+        $this->precio->fill($params);
+        if ($this->precio->save()) {
             return response()->json([
-                'message' => 'ProductoSucursal creado exitosamente',
-                'producto' => $this->producto->self()
+                'message' => 'Precio creado exitosamente',
+                'precio' => $this->precio->self()
             ], 201,
-                ['Location' => route('api.v1.producto.show', $this->producto->getId())]);
+                ['Location' => route('api.v1.precio.show', $this->precio->getId())]);
         } else {
             return response()->json([
-                'message' => 'ProductoSucursal no creado',
-                'error'   => $this->producto->errors
+                'message' => 'Precio no creado',
+                'error'   => $this->precio->errors
             ], 400);
         }
     }
@@ -56,15 +56,15 @@ class ProductoSucursalController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $this->producto = $this->producto->find($id);
-        if ($this->producto) {
+        $this->precio = $this->precio->find($id);
+        if ($this->precio) {
             return response()->json([
-                'message' => 'ProductoSucursal obtenido exitosamente',
-                'producto' => $this->producto->self()
+                'message' => 'Precio obtenido exitosamente',
+                'precio' => $this->precio->self()
             ], 200);
         } else {
             return response()->json([
-                'message' => 'ProductoSucursal no encontrado o no existente',
+                'message' => 'Precio no encontrado o no existente',
                 'error'   => 'No encontrado'
             ], 404);
         }
@@ -79,20 +79,20 @@ class ProductoSucursalController extends Controller {
      */
     public function update(Request $request, $id) {
         $params = $request->all();
-        $this->producto = $this->producto->find($id);
-        if (empty($this->producto)) {
+        $this->precio = $this->precio->find($id);
+        if (empty($this->precio)) {
             return response()->json([
-                'message' => 'No se pudo realizar la actualizacion del producto',
-                'error'   => 'ProductoSucursal no encontrado'
+                'message' => 'No se pudo realizar la actualizacion del precio',
+                'error'   => 'Precio no encontrado'
             ], 404);
-        } elseif ($this->producto->update($params)) {
+        } elseif ($this->precio->update($params)) {
             return response()->json([
-                'message' => 'ProductoSucursal se actualizo correctamente'
+                'message' => 'Precio se actualizo correctamente'
             ], 200);
         } else {
             return response()->json([
-                'message' => 'No se pudo realizar la actualizacion del producto',
-                'error'   => $this->producto->errors
+                'message' => 'No se pudo realizar la actualizacion del precio',
+                'error'   => $this->precio->errors
             ], 400);
         }
     }
@@ -104,20 +104,20 @@ class ProductoSucursalController extends Controller {
      * @return Response
      */
     public function destroy($id) {
-        $this->producto = $this->producto->find($id);
-        if (empty($this->producto)) {
+        $this->precio = $this->precio->find($id);
+        if (empty($this->precio)) {
             return response()->json([
-                'message' => 'No se pudo eliminar el producto',
-                'error'   => 'ProductoSucursal no encontrado'
+                'message' => 'No se pudo eliminar el precio',
+                'error'   => 'Precio no encontrado'
             ], 404);
-        } elseif ($this->producto->delete()) {
+        } elseif ($this->precio->delete()) {
             return response()->json([
-                'message' => 'ProductoSucursal eliminado correctamente',
+                'message' => 'Precio eliminado correctamente',
             ], 200);
         } else {
             return response()->json([
-                'message' => 'No se pudo eliminar el producto',
-                'error'   => $this->producto->errors
+                'message' => 'No se pudo eliminar el precio',
+                'error'   => $this->precio->errors
             ], 400);
         }
     }
