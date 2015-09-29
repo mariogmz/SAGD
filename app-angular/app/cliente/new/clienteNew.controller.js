@@ -47,6 +47,16 @@
         }
       }, {
         type: 'select',
+        key: 'sexo',
+        templateOptions: {
+          label: 'Sexo',
+          options: [
+            {value: "HOMBRE", name: "Hombre"},
+            {value: "MUJER", name: "Mujer"}
+          ]
+        }
+      }, {
+        type: 'select',
         key: 'cliente_referencia_id',
         templateOptions: {
           label: 'Referencia:',
