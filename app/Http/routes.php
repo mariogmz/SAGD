@@ -31,6 +31,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function () {
         Route::resource('subfamilia', 'SubfamiliaController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('margen', 'MargenController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('producto-sucursal', 'ProductoSucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::resource('precio', 'PrecioController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
 
         Route::resource('cliente', 'ClienteController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('codigo-postal', 'CodigoPostalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
