@@ -96,10 +96,16 @@
         type: 'select',
         key: 'sucursal_id',
         templateOptions: {
-          label: 'Sucursal de Preferencia:',
-          options: [
-            {value: "1", name: "Dicotech"}
-          ]
+          label: 'Sucursal de preferencia:',
+          required: true,
+          options: [],
+          ngOptions: 'sucursales.id as sucursales.nombre for sucursales in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/sucursal').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
         }
       }
 
@@ -110,7 +116,7 @@
           .then(function (response){
             vm.message = response.data.message;
             pnotify.alert('Exito', vm.message, 'success');
-            $state.go('clienteShow', {id: response.data.proveedor.id});
+            $state.go('clienteShow', {id: response.data.cliente.id});
           })
           .catch(function (response){
             vm.error = response.data;

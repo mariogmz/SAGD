@@ -31,13 +31,13 @@
         </thead>
         <tbody>
         <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage: 10">
-            <td>{{proveedor.id}}</td>
-            <td><a ui-sref="clienteShow({id:cliente.id})">{{cliente.clave}}</a></td>
-            <td>{{cliente.razon_social}}</td>
-            <td>{{cliente.pagina_web}}</td>
+            <td>{{cliente.id}}</td>
+            <td>{{cliente.usuario}}</td>
+            <td>{{cliente.nombre}}</td>
             <td>
                 <div class="action-buttons" role="group" aria-label="Acciones">
                     <button type="button" class="edit" ui-sref="clienteEdit({id:cliente.id})"><i></i></button>
+                    <button type="button" class="delete" ng-click="vm.eliminarCliente(cliente.id)"><i></i></button>
                 </div>
             </td>
         </tr>

@@ -15,10 +15,10 @@
         }
 
         var vm = this;
+        vm.eliminarCliente = eliminarCliente;
         vm.sort = sort;
         vm.sortKeys = [
             {name: '#', key: 'id'},
-            {name: 'Clave', key: 'clave'},
             {name: 'Usuario', key: 'usuario'},
             {name: 'Nombre', key: 'nombre'}
         ];
@@ -34,6 +34,19 @@
         };
 
         vm.obtenerClientes();
+
+        function eliminarCliente(id) {
+            return api.delete('/cliente/', id)
+                .then(function(response){
+                    obtenerClientes()
+                        .then(function(){
+                            pnotify.alert('Exito', response.data.message, 'success');
+                        });
+                })
+                .catch(function(response){
+                    pnotify.alert('Error', response.data.message, 'error');
+                });
+        }
 
         function sort(keyname){
             vm.sortKey = keyname;
