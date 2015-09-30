@@ -18,8 +18,10 @@
     }
 
     var vm = this;
+    vm.producto = {};
+    vm.precio = {};
+    vm.dimension = {};
     vm.back = goBack;
-
     initialize();
 
     /**

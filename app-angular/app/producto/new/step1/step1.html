@@ -9,13 +9,15 @@
     <div class="row icecat">
       <fieldset>
         <label for="numero_parte">Número de parte:</label>
-        <input type="text" id="numero_parte" ng-model="parentVm.producto.numero_parte">
+        <input type="text" id="numero_parte" ng-model="parentVm.producto.numero_parte"
+          ng-blur="vm.updateSubclave()">
       </fieldset>
       <fieldset>
         <label for="marca_id">Marca:</label>
         <select id="marca_id"
-                ng-model="parentVm.producto.marca_id"
-                ng-options="marca.id as marca.nombre for marca in parentVm.marcas | orderBy:'nombre'">
+                ng-model="vm.marca"
+                ng-options="marca.nombre for marca in parentVm.marcas | orderBy:'nombre'"
+                ng-change="vm.updateClave()">
           <option value="">Seleccione una marca</option>
         </select>
       </fieldset>
@@ -47,8 +49,9 @@
         <fieldset>
           <label for="subfamilia_id">Subfamilia:</label>
           <select id="subfamilia_id"
-                  ng-model="parentVm.producto.subfamilia_id"
-                  ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias | orderBy:'nombre'">
+                  ng-model="vm.subfamilia"
+                  ng-options="subfamilia.nombre for subfamilia in parentVm.subfamilias | orderBy:'nombre'"
+                  ng-change="vm.updateClave()">
             <option value="">Seleccione una subfamilia</option>
           </select>
         </fieldset>
@@ -58,14 +61,15 @@
       <div class="col-sm">
         <fieldset>
           <label for="subclave">Subclave:</label>
-          <input type="text" id="subclave" ng-model="parentVm.producto.subclave">
+          <input type="text" id="subclave" ng-model="vm.subclave"
+                 ng-blur="vm.updateSubclave()">
         </fieldset>
       </div>
       <!-- Clave -->
       <div class="col-sm">
         <fieldset>
           <label for="clave">Clave:</label>
-          <input type="text" id="clave" ng-model="parentVm.producto.clave" disabled>
+          <input type="text" id="clave" disabled ng-model="vm.clave">
         </fieldset>
       </div>
     </div>
