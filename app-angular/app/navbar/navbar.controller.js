@@ -147,12 +147,12 @@
         ]
       }, {
         name: 'Sucursales',
-        state: 'sucursal',
+        state: 'sucursalIndex',
         active: false,
         submodules: [
           {
             name: 'Consultar',
-            state: 'sucursal'
+            state: 'sucursalIndex'
           }, {
             name: 'Proveedores',
             state: 'proveedorIndex'

@@ -23,4 +23,14 @@ table.item-table {
       min-width: 100px;
     }
   }
+
+  span.truncate {
+    @include transition('all 0.5s ease-in-out');
+
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 300px;
+  }
 }

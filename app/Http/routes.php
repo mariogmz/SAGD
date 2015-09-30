@@ -34,12 +34,13 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('cliente-referencia', 'ClienteReferenciaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('cliente-estatus', 'ClienteEstatusController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('codigo-postal', 'CodigoPostalController', ['only' => ['index','store','show','update','destroy']]);
+        Route::get('/codigo-postal/find/{id}', 'CodigoPostalController@find');
         Route::resource('domicilio', 'DomicilioController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('rol', 'RolController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
-
+        Route::resource('sucursal', 'SucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
 
     });
