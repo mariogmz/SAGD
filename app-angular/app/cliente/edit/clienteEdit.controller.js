@@ -24,17 +24,6 @@
     vm.fields = [
       {
         type: 'input',
-        key: 'clave',
-        templateOptions: {
-          label: 'Clave:',
-          placeholder: 'Introduzca la clave',
-          required: true
-        },
-        validators: {
-          notEquals: '$viewValue != "admin"'
-        }
-      },{
-        type: 'input',
         key: 'usuario',
         templateOptions: {
           label: 'Usuario',
@@ -47,18 +36,78 @@
         templateOptions: {
           label: 'Nombre',
         }
-      },{
+      }, {
         type: 'select',
-        key: 'activo',
+        key: 'sexo',
         templateOptions: {
-          label: '¿Activo?',
-          options:
-              [
-                { value: 0, name: "No" },
-                { value: 1, name: "Si" }
-              ]
+          label: 'Sexo:',
+          options: [
+            {value: "HOMBRE", name: "Hombre"},
+            {value: "MUJER", name: "Mujer"}
+          ]
+        }
+      }, {
+        type: 'select',
+        key: 'cliente_referencia_id',
+        templateOptions: {
+          label: 'Referencia:',
+          required: true,
+          options: [],
+          ngOptions: 'clientes_referencias.id as clientes_referencias.nombre for clientes_referencias in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/cliente-referencia').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
+      }, {
+        type: 'select',
+        key: 'rol_id',
+        templateOptions: {
+          label: 'Rol:',
+          required: true,
+          options: [],
+          ngOptions: 'roles.id as roles.nombre for roles in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/rol').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
+      }, {
+        type: 'select',
+        key: 'cliente_estatus_id',
+        templateOptions: {
+          label: 'Estatus:',
+          required: true,
+          options: [],
+          ngOptions: 'clientes_estatus.id as clientes_estatus.nombre for clientes_estatus in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/cliente-estatus').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
+        }
+      }, {
+        type: 'select',
+        key: 'sucursal_id',
+        templateOptions: {
+          label: 'Sucursal de preferencia:',
+          required: true,
+          options: [],
+          ngOptions: 'sucursales.id as sucursales.nombre for sucursales in to.options'
+        },
+        controller: /* @ngInject */ function ($scope){
+          $scope.to.loading = api.get('/sucursal').then(function (response){
+            $scope.to.options = response.data;
+            return response;
+          });
         }
       }
+
     ];
 
     function obtenerCliente(){
