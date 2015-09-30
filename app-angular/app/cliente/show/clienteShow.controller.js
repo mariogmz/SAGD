@@ -22,17 +22,6 @@
     vm.fields = [
       {
         type: 'input',
-        key: 'clave',
-        templateOptions: {
-          label: 'Clave:',
-          placeholder: 'Introduzca la clave',
-          required: true
-        },
-        validators: {
-          notEquals: '$viewValue != "admin"'
-        }
-      },{
-        type: 'input',
         key: 'usuario',
         templateOptions: {
           label: 'Usuario',
@@ -69,7 +58,7 @@
     function obtenerClientes(){
       return api.get('/cliente/', vm.id)
         .then(function (response){
-          vm.cliente = response.data.proveedor;
+          vm.cliente = response.data.cliente;
           return response.data;
         })
         .catch(function (response){

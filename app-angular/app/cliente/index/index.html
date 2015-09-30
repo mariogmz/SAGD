@@ -32,7 +32,7 @@
         <tbody>
         <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage: 10">
             <td>{{cliente.id}}</td>
-            <td>{{cliente.usuario}}</td>
+            <td><a ui-sref="clienteShow({id:cliente.id})">{{cliente.usuario}}</a></td>
             <td>{{cliente.nombre}}</td>
             <td>
                 <div class="action-buttons" role="group" aria-label="Acciones">
