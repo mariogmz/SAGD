@@ -147,7 +147,7 @@
         ]
       }, {
         name: 'Sucursales',
-        state: 'sucursal',
+        state: 'sucursalIndex',
         active: false,
         submodules: [
           {
