@@ -61,8 +61,17 @@
       });
     }
 
+    function obtenerMargenes(){
+      return obtenerTiposDeGarantias().then(function (){
+        return api.get('/margen').then(function (response){
+          vm.margenes = response.data;
+          console.log('Margenes obtenidos correctamente');
+        })
+      });
+    }
+
     function initialize(){
-      obtenerTiposDeGarantias().then(function (){
+      obtenerMargenes().then(function (){
         console.log('Datos obtenidos correctamente');
       });
     }

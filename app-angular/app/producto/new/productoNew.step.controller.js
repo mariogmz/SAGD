@@ -13,8 +13,6 @@
   function ProductoNewStepController($state){
 
     var vm = this;
-
-    vm.title = parent.title;
     vm.go = goToStep;
 
     function goToStep(step){
