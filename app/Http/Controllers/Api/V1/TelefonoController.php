@@ -15,6 +15,7 @@ class TelefonoController extends Controller
     public function __construct(Telefono $telefono)
     {
         $this->telefono = $telefono;
+        $this->middleware('jwt.auth');
     }
 
     /**

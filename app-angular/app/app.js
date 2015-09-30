@@ -9,6 +9,8 @@
       'sagdApp.core',
 
       'sagdApp.cliente',
+      'sagdApp.codigo-postal',
+      'sagdApp.domicilio',
       'sagdApp.empleado',
       'sagdApp.familia',
       'sagdApp.garantia',
@@ -16,11 +18,12 @@
       'sagdApp.layout',
       'sagdApp.marca',
       'sagdApp.margen',
-      'sagdApp.navbar',      
+      'sagdApp.navbar',
       'sagdApp.producto',
-	  'sagdApp.proveedor',
+      'sagdApp.proveedor',
       'sagdApp.session',
       'sagdApp.subfamilia',
+      'sagdApp.sucursal',
       'sagdApp.unidad'
 
   ]);

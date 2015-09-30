@@ -15,6 +15,7 @@ class CodigoPostalController extends Controller
     public function __construct(CodigoPostal $codigoPostal)
     {
         $this->codigoPostal = $codigoPostal;
+        $this->middleware('jwt.auth');
     }
 
     /**
@@ -129,6 +130,29 @@ class CodigoPostalController extends Controller
                 'message' => 'No se pudo eliminar el codigo postal',
                 'error' => $this->codigoPostal->errors
             ], 400);
+        }
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function find($id)
+    {
+        $this->codigoPostal = $this->codigoPostal->where(['codigo_postal' => $id])->first();
+        if ($this->codigoPostal)
+        {
+            return response()->json([
+                'message' => 'Codigo Postal obtenido exitosamente',
+                'codigo_postal' => $this->codigoPostal->self()
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Codigo Postal no encontrado o no existente',
+                'error' => 'No encontrado'
+            ], 404);
         }
     }
 }
