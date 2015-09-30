@@ -69,10 +69,10 @@
           label: 'Rol:',
           required: true,
           options: [],
-          ngOptions: 'roles.clave as roles.nombre for roles in to.options'
+          ngOptions: 'roles.id as roles.nombre for roles in to.options'
         },
         controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/roles').then(function (response){
+          $scope.to.loading = api.get('/rol').then(function (response){
             $scope.to.options = response.data;
             return response;
           });
