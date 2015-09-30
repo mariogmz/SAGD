@@ -32,7 +32,7 @@
         <fieldset>
           <label for="margen_id">Margen: </label>
           <select id="margen_id" ng-model="parentVm.producto.margen_id"
-                  ng-options="margen.id as margen.nombre for margen in parentVm.margenes">
+                  ng-options="margen.id as margen.nombre for margen in parentVm.margenes | orderBy:'nombre'">
             <option value="">Seleccione un margen</option>
           </select>
         </fieldset>

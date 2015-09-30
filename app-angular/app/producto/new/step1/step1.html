@@ -15,7 +15,7 @@
         <label for="marca_id">Marca:</label>
         <select id="marca_id"
                 ng-model="parentVm.producto.marca_id"
-                ng-options="marca.id as marca.nombre for marca in parentVm.marcas">
+                ng-options="marca.id as marca.nombre for marca in parentVm.marcas | orderBy:'nombre'">
           <option value="">Seleccione una marca</option>
         </select>
       </fieldset>
@@ -48,7 +48,7 @@
           <label for="subfamilia_id">Subfamilia:</label>
           <select id="subfamilia_id"
                   ng-model="parentVm.producto.subfamilia_id"
-                  ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias">
+                  ng-options="subfamilia.id as subfamilia.nombre for subfamilia in parentVm.subfamilias | orderBy:'nombre'">
             <option value="">Seleccione una subfamilia</option>
           </select>
         </fieldset>
