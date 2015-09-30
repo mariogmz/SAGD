@@ -205,6 +205,14 @@ class Cliente extends LGGModel {
 
 
     /**
+     * Get the ClienteEstatus associated with Cliente
+     * @return App\ClienteEstatus
+     */
+    public function clienteEstatus() {
+        return $this->belongsTo('App\ClienteEstatus');
+    }
+
+    /**
      * Obtiene las paginas web distribuidor asociado con el Cliente
      * @return Illuminate\Database\Eloquent\Collection
      */

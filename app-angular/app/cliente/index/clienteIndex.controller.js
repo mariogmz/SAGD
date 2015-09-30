@@ -20,7 +20,8 @@
         vm.sortKeys = [
             {name: '#', key: 'id'},
             {name: 'Usuario', key: 'usuario'},
-            {name: 'Nombre', key: 'nombre'}
+            {name: 'Nombre', key: 'nombre'},
+            {name: 'Estatus', key: 'estatus.id'},
         ];
 
         vm.obtenerClientes = function () {
