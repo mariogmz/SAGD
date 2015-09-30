@@ -8,8 +8,8 @@
     .module('sagdApp', [
       'sagdApp.core',
 
-      'sagdApp.codigo-postal',
       'sagdApp.cliente',
+      'sagdApp.codigo-postal',
       'sagdApp.domicilio',
       'sagdApp.empleado',
       'sagdApp.familia',
