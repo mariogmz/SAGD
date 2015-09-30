@@ -16,7 +16,6 @@
     }
 
     var vm = this;
-    vm.sucursales = [];
     vm.sort = sort;
     vm.eliminarSucursal = eliminarSucursal;
     vm.sortKeys = [
