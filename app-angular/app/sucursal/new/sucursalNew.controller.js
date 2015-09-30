@@ -79,7 +79,7 @@
     function activate() {
       return obtenerProveedores()
         .then(function (response) {
-          console.log(response.message);
+          console.log("Proveedores obtenidos");
           assignFields();
         });
     }

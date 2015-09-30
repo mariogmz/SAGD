@@ -73,7 +73,7 @@
     function activate() {
       return obtenerProveedores()
         .then(function (response) {
-          console.log(response.message);
+          console.log("Proveedores obtenidos");
           obtenerSucursal()
             .then(function (response) {
               console.log(response.message);
@@ -95,8 +95,9 @@
     }
 
     function guardarModelos() {
-      guardarCodigoPostal()
+      obtenerCodigoPostal()
       .then(function(response) {
+        vm.sucursal.domicilio.codigo_postal_id = response.data.codigo_postal.id;
         guardarDomicilio()
         .then(function(response) {
           return guardarSucursal()
@@ -106,13 +107,15 @@
             return response;
           })
           .catch(updateError);
-        });
-      });
+        })
+        .catch(updateError);
+      })
+      .catch(updateError);
     }
 
     function updateError(response) {
       vm.error = response.data;
-      pnotify.alert('No se pudo guardar la sucursal', vm.error.error, 'error');
+      pnotify.alert('No se pudo guardar la sucursal', vm.error.message, 'error');
       return response;
     }
 
@@ -124,8 +127,8 @@
       return api.put('/domicilio/', vm.sucursal.domicilio_id, vm.sucursal.domicilio);
     }
 
-    function guardarCodigoPostal() {
-      return api.put('/codigo-postal/', vm.sucursal.domicilio.codigo_postal_id, vm.sucursal.domicilio.codigo_postal);
+    function obtenerCodigoPostal() {
+      return api.get('/codigo-postal/find/', vm.sucursal.domicilio.codigo_postal.codigo_postal);
     }
 
     function obtenerProveedores() {
