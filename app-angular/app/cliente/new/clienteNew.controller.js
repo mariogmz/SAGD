@@ -33,7 +33,7 @@
         type: 'input',
         key: 'usuario',
         templateOptions: {
-          label: 'Usuario',
+          label: 'Usuario:',
           placeholder: 'Introduzca el usuario',
           required: true
         }
@@ -41,7 +41,7 @@
         type: 'select',
         key: 'sexo',
         templateOptions: {
-          label: 'Sexo',
+          label: 'Sexo:',
           options: [
             {value: "HOMBRE", name: "Hombre"},
             {value: "MUJER", name: "Mujer"}
@@ -91,6 +91,15 @@
             $scope.to.options = response.data;
             return response;
           });
+        }
+      }, {
+        type: 'select',
+        key: 'sucursal_id',
+        templateOptions: {
+          label: 'Sucursal de Preferencia:',
+          options: [
+            {value: "1", name: "Dicotech"}
+          ]
         }
       }
 
