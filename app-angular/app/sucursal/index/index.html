@@ -36,8 +36,6 @@
         <th scope="row">{{sucursal.id}}</th>
         <td><a ui-sref="sucursalShow({id:sucursal.id})">{{sucursal.clave}}</a></td>
         <td>{{sucursal.nombre}}</td>
-        <td><span class="truncate">{{sucursal.horarios}}</span></td>
-        <td>{{sucursal.ubicacion}}</td>
         <td><a ui-sref="proveedorShow({id:sucursal.proveedor.id})"></a>{{sucursal.proveedor.clave}}</td>
         <td><span class="truncate">{{sucursal.domicilio.calle}}</span></td>
 

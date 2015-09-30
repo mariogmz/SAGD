@@ -23,8 +23,6 @@
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
       {name: 'Nombre', key: 'nombre'},
-      {name: 'Horarios', key: 'horarios'},
-      {name: 'Ubicacion', key: 'ubicacion'},
       {name: 'Proveedor', key: 'proveedor'},
       {name: 'Domicilio', key: 'domicilio'},
     ];
