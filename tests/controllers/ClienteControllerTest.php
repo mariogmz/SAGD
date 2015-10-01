@@ -31,9 +31,11 @@ class ClienteControllerTest extends TestCase
     /**
      * @covers ::index
      */
-    public function test_GET_index()
-    {
-        $this->mock->shouldReceive('all')->once()->andReturn('[{"id":1,"clave":"Z","nombre":"ZEGUCOM"}]');
+    public function test_GET_index() {
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'get' => 'success'
+        ])->withAnyArgs();
         $this->app->instance('App\Cliente', $this->mock);
 
         $this->get($this->endpoint)
