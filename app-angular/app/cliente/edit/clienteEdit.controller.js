@@ -122,7 +122,7 @@
           });
     }
 
-    vm.cliente = obtenerCliente(vm.id);
+    vm.cliente = obtenerCliente();
 
     function onSubmit(){
 
