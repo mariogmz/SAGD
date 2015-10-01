@@ -14,7 +14,7 @@ class ProductoController extends Controller {
 
     public function __construct(Producto $producto) {
         $this->producto = $producto;
-        $this->middleware('jwt.auth');
+//        $this->middleware('jwt.auth');
     }
 
     /**
@@ -34,8 +34,8 @@ class ProductoController extends Controller {
      */
     public function store(Request $request) {
         $params = $request->all();
-        $this->producto->fill($params);
-        if ($this->producto->save()) {
+        $this->producto->fill($params['producto']);
+        if ($this->producto->saveWithData($params)) {
             return response()->json([
                 'message' => 'Producto creado exitosamente',
                 'producto' => $this->producto->self()

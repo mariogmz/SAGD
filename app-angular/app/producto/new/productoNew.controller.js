@@ -130,12 +130,23 @@
 
     function crearProductoSucursal(){
       return crearDimension().then(function (){
-
+        return api.get('proveedoresconsucursales').then(function (response){
+          var productos_sucursales = [];
+          angular.forEach(response.data, function (proveedor){
+            angular.forEach(proveedor.sucursales, function (sucursal){
+              productos_sucursales.push({
+                producto_id: vm.producto.id,
+                sucursal_id: sucursal.id,
+                proveedor_id: proveedor.id
+              });
+            });
+          })
+        })
       });
     }
 
     function crearPrecio(){
-      return crearProductoSucursal().then(function(){
+      return crearProductoSucursal().then(function (){
 
       });
     }
