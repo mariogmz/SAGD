@@ -3,18 +3,18 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 /**
- * @coversDefaultClass \App\Http\Controllers\Api\V1\ClienteReferenciaController
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\ClienteEstatusController
  */
 class ClienteReferenciaControllerTest extends TestCase
 {
     use WithoutMiddleware;
 
-    protected $endpoint = '/v1/cliente-referencia';
+    protected $endpoint = '/v1/cliente-estatus';
 
     public function setUp()
     {
         parent::setUp();
-        $this->mock = $this->setUpMock('App\ClienteReferencia');
+        $this->mock = $this->setUpMock('App\ClienteEstatus');
     }
 
     public function setUpMock($class)
@@ -33,8 +33,8 @@ class ClienteReferenciaControllerTest extends TestCase
      */
     public function test_GET_index()
     {
-        $this->mock->shouldReceive('all')->once()->andReturn('[{"id":1,"nombre":"Por medio de Google"}]');
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->mock->shouldReceive('all')->once()->andReturn('[{"id":1,"nombre":"Nuevo"}]');
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
@@ -53,12 +53,12 @@ class ClienteReferenciaControllerTest extends TestCase
                 'getId' => 1
             ])
             ->withAnyArgs();
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
-        $this->post($this->endpoint, ['nombre' => 'Por medio de google'])
+        $this->post($this->endpoint, ['nombre' => 'Nuevo'])
             ->seeJson([
-                'message' => 'Referencia creada exitosamente',
-                'clienteReferencia' => 'self'
+                'message' => 'Estatus creado exitosamente',
+                'clienteEstatus' => 'self'
             ])
             ->assertResponseStatus(201);
     }
@@ -71,11 +71,11 @@ class ClienteReferenciaControllerTest extends TestCase
         $this->mock
             ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
-        $this->post($this->endpoint, ['nombre' => 'Por medio de Google'])
+        $this->post($this->endpoint, ['nombre' => 'Nuevo'])
             ->seeJson([
-                'message' => 'Referencia no creada',
+                'message' => 'Estatus no creado',
                 'error' => 'Errors'
             ])
             ->assertResponseStatus(400);
@@ -89,7 +89,7 @@ class ClienteReferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/1';
 
         $this->mock->shouldReceive('find')->with(1)->andReturn(true);
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
 
         $this->get($endpoint)
@@ -104,11 +104,11 @@ class ClienteReferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/10000';
 
         $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Referencia no encontrada o no existente',
+                'message' => 'Estatus no encontrado o no existente',
                 'error' => 'No encontrado'
             ])
             ->assertResponseStatus(404);
@@ -121,15 +121,15 @@ class ClienteReferenciaControllerTest extends TestCase
     public function test_PUT_update_ok()
     {
         $endpoint = $this->endpoint . '/1';
-        $parameters = ['nombre' => 'Por medio de Google'];
+        $parameters = ['nombre' => 'Nuevo'];
 
         $this->mock
             ->shouldReceive(['find' => Mockery::self(), 'update' => true])->withAnyArgs();
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'Referencia se actualizo correctamente'
+                'message' => 'Estatus se actualizo correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -140,15 +140,15 @@ class ClienteReferenciaControllerTest extends TestCase
     public function test_PUT_update_no_encontrado()
     {
         $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $endpoint = $this->endpoint . '/10000';
-        $parameters = ['nombre' => 'Por medio de Google'];
+        $parameters = ['nombre' => 'Nuevo'];
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion de la Referencia',
-                'error' => 'Referencia no encontrada'
+                'message' => 'No se pudo realizar la actualizacion del Estatus',
+                'error' => 'Estatus no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -159,16 +159,16 @@ class ClienteReferenciaControllerTest extends TestCase
     public function test_PUT_update_clave_repetida()
     {
         $endpoint = $this->endpoint . '/1';
-        $parameters = ['nombre' => 'Z'];
+        $parameters = ['nombre' => 'Nuevo'];
 
         $this->mock
             ->shouldReceive(['find' => Mockery::self(), 'update' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion de la Referencia',
+                'message' => 'No se pudo realizar la actualizacion del Estatus',
                 'error' => 'Errors'
             ])
             ->assertResponseStatus(400);
@@ -183,11 +183,11 @@ class ClienteReferenciaControllerTest extends TestCase
 
         $this->mock
             ->shouldReceive(['find' => Mockery::self(), 'delete' => true])->withAnyArgs();
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'Referencia eliminada correctamente'
+                'message' => 'Estatus eliminado correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -201,12 +201,12 @@ class ClienteReferenciaControllerTest extends TestCase
         $this->mock->shouldReceive([
             'find' => null,
         ])->withAnyArgs();
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar la referencia',
-                'error'   => 'Referencia no encontrada'
+                'message' => 'No se pudo eliminar el estatus',
+                'error'   => 'Estatus no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -222,11 +222,11 @@ class ClienteReferenciaControllerTest extends TestCase
             'delete' => false,
         ])->withAnyArgs();
         $this->mock->errors = 'Metodo de eliminar no se pudo ejecutar';
-        $this->app->instance('App\ClienteReferencia', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar la referencia',
+                'message' => 'No se pudo eliminar el estatus',
                 'error'   => 'Metodo de eliminar no se pudo ejecutar'
             ])
             ->assertResponseStatus(400);
