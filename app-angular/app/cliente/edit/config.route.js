@@ -1,4 +1,4 @@
-// app/cliente/edit/onfig.route.js
+// app/cliente/edit/config.route.js
 
 (function (){
   'use strict';
