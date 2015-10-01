@@ -65,8 +65,8 @@ class ProductoSucursal extends LGGModel {
      * Obtiene los precios asociados
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function precios() {
-        return $this->hasMany('App\Precio', 'producto_sucursal_id');
+    public function precio() {
+        return $this->hasOne('App\Precio', 'producto_sucursal_id');
     }
 
     /**

@@ -3,6 +3,8 @@
 namespace App;
 
 
+use App\ProductoSucursal;
+
 /**
  * App\Producto
  *
@@ -29,10 +31,10 @@ namespace App;
  * @property-read \App\Margen $margen
  * @property-read \App\Unidad $unidad
  * @property-read \App\Subfamilia $subfamilia
- * @property-read \App\Dimension $dimension
+ * @property-read Dimension $dimension
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoMovimiento[] $productoMovimientos
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoSucursal[] $productosSucursales
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Sucursal[] $sucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|ProductoSucursal[] $productosSucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|Sucursal[] $sucursales
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Proveedor[] $proveedores
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\EntradaDetalle[] $entradasDetalles
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\SalidaDetalle[] $salidasDetalles
@@ -282,6 +284,26 @@ class Producto extends LGGModel {
      */
     public function reposiciones() {
         return $this->hasMany('App\Reposicion');
+    }
+
+    public function saveWithData($parameters) {
+        if ($this->save()) {
+            $dimension = new Dimension($parameters['dimension']);
+            $this->dimension()->save($dimension);
+
+            $sucursales = Sucursal::all(['id', 'proveedor_id']);
+            foreach ($sucursales as $sucursal) {
+                $this->sucursales()->attach($sucursal->id, ['proveedor_id' => $sucursal->proveedor_id]);
+
+            }
+            $precio = new \App\Precio($parameters['precio']);
+            $productos_sucursales = ProductoSucursal::all();
+            foreach ($productos_sucursales as $producto_sucursal)
+            {
+                $producto_sucursal->precios()->save($precio);
+            }
+        }
+
     }
 
 }
