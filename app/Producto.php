@@ -169,11 +169,16 @@ class Producto extends LGGModel {
     }
 
     /**
-     * Obtiene los productos_movimientos relacionados con el Producto
+     * Obtiene los productos_movimientos de todas las sucursales relacionados con el Producto
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function productoMovimientos() {
-        return $this->hasMany('App\ProductoMovimiento');
+    public function movimientos(Sucursal $sucursal = null) {
+        if( is_null($sucursal) ) {
+            return $this->hasManyThrough('App\ProductoMovimiento', 'App\ProductoSucursal',
+                'producto_id', 'producto_sucursal_id');
+        } else {
+            return $this->productosSucursales()->where('sucursal_id', $sucursal->id)->first()->movimientos;
+        }
     }
 
     /**
@@ -205,14 +210,12 @@ class Producto extends LGGModel {
      * Obtiene las existencias relacionadas con el Producto
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function existencias($sucursal_id = null) {
-        if (is_null($sucursal_id)) {
+    public function existencias(Sucursal $sucursal = null) {
+        if (is_null($sucursal)) {
             return $this->hasManyThrough('App\Existencia', 'App\ProductoSucursal',
                 'producto_id', 'productos_sucursales_id');
         } else {
-            $ps = $this->productosSucursales->where('sucursal_id', $sucursal_id)->last();
-
-            return $ps->existencias;
+            return $this->productosSucursales->where('sucursal_id', $sucursal->id)->first()->existencia;
         }
     }
 
@@ -295,22 +298,27 @@ class Producto extends LGGModel {
             $this->attachDimension(new \App\Dimension($parameters['dimension']));
             $this->attachSucursales();
             $this->addPrecio(new \App\Precio($parameters['precio']));
+            $this->inicializarExistencias();
             return true;
         }
         return false;
     }
 
-    private function attachDimension($dimension)
-    {
+    private function attachDimension($dimension) {
         $this->dimension()->save($dimension);
     }
 
-    private function attachSucursales()
-    {
+    private function attachSucursales() {
         $sucursales = Sucursal::all();
         foreach ($sucursales as $sucursal) {
             $this->addSucursal($sucursal);
         }
+    }
+
+    private function inicializarExistencias() {
+        $this->productosSucursales->each(function($productoSucursal, $key){
+            $productoSucursal->existencia()->save(new \App\Existencia);
+        });
     }
 
 }

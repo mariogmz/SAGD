@@ -72,8 +72,7 @@ class Proveedor extends LGGModel {
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos() {
-        return $this->belongsToMany('App\Producto', 'productos_sucursales',
-            'proveedor_id', 'producto_id');
+        return $this->sucursales()->with('productos')->get()->pluck('productos')->first();
     }
 
 

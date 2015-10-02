@@ -172,7 +172,7 @@ class ApartadoDetalleTest extends TestCase {
     public function testProductoMovimientoAssociate()
     {
         $ad = factory(App\ApartadoDetalle::class, 'full')->make(['producto_movimiento_id' => null]);
-        $pm = factory(App\ProductoMovimiento::class)->create(['producto_id' => $ad->producto->id]);
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
         $ad->productoMovimiento()->associate($pm);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $ad->productoMovimiento);
     }

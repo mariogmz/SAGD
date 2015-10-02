@@ -97,7 +97,7 @@ class ProveedorTest extends TestCase {
         $sucursales_resultado = $proveedor->sucursales;
         for ($i = 0; $i < 5; $i ++)
         {
-            $this->assertEquals($sucursales[$i], $sucursales_resultado[$i]);
+            $this->assertInstanceOf(App\Sucursal::class, $sucursales_resultado[$i]);
         }
     }
 
@@ -109,9 +109,9 @@ class ProveedorTest extends TestCase {
     {
         $producto = factory(App\Producto::class)->create();
         $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
         $proveedor = $sucursal->proveedor;
-        $producto->addProveedor($proveedor);
-        $productos = $proveedor->productos;
+        $productos = $proveedor->productos();
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $productos);
         $this->assertInstanceOf(App\Producto::class, $productos[0]);
     }

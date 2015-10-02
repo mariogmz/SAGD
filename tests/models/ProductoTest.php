@@ -263,17 +263,32 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::productoMovimientos
+     * @covers ::movimientos
      * @group relaciones
+     * @group movimientos
      */
-    public function testProductoMovimientos() {
-        $producto = factory(App\Producto::class)->create();
-        factory(App\ProductoMovimiento::class, 'withproduct')->create([
-            'producto_id' => $producto->id
-        ]);
-        $pms = $producto->productoMovimientos;
+    public function testMovimientos() {
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
+        $producto = $pm->productoSucursal->producto;
+        $pms = $producto->movimientos;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+    }
+
+    /**
+     * @covers ::movimientos
+     * @group relaciones
+     * @group movimientos
+     */
+    public function testMovimientosConSucursal() {
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
+        $producto = $pm->productoSucursal->producto;
+        $sucursal = $pm->productoSucursal->sucursal;
+        $producto->addSucursal(factory(App\Sucursal::class)->create());
+        $pms = $producto->movimientos($sucursal);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+        $this->assertCount(1, $pms);
     }
 
     /**
@@ -354,10 +369,8 @@ class ProductoTest extends TestCase {
         factory(App\Existencia::class)->make()->productoSucursal()->associate($ps)->save();
         factory(App\Existencia::class)->make()->productoSucursal()->associate($ps)->save();
 
-        $existencias = $producto->existencias($sucursal2->id);
-
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $existencias);
-        $this->assertInstanceOf(App\Existencia::class, $existencias[0]);
+        $existencia = $producto->existencias($sucursal2);
+        $this->assertInstanceOf(App\Existencia::class, $existencia);
     }
 
     /**
@@ -442,7 +455,15 @@ class ProductoTest extends TestCase {
      */
     public function testSalidasDetalles() {
         $producto = factory(App\Producto::class)->create();
-        $sd = factory(App\SalidaDetalle::class, 'full')->create(['producto_id' => $producto->id]);
+        $producto->addSucursal(factory(App\Sucursal::class)->create());
+        $pm = factory(App\ProductoMovimiento::class)->create([
+            'producto_sucursal_id' => $producto->productosSucursales()->first()->id
+        ]);
+        factory(App\SalidaDetalle::class)->create([
+            'producto_id'            => $producto->id,
+            'producto_movimiento_id' => $pm->id,
+            'salida_id'              => factory(App\Salida::class, 'full')->create()->id
+        ]);
         $sds = $producto->salidasDetalles;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sds);
         $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
@@ -515,5 +536,9 @@ class ProductoTest extends TestCase {
 
         $this->assertNotNull($producto->precios);
         $this->assertNotNull($producto->preciosProveedor());
+
+        $this->assertNotNull($producto->existencias);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->existencias);
+        $this->assertGreaterThan(0, count($producto->existencias));
     }
 }
