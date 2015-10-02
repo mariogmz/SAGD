@@ -21,20 +21,72 @@ class ClienteSucursalTest extends TestCase
      */
     public function testModeloEsActualizable()
     {
-        $cr = factory(App\ClienteSucursal::class)->create();
-        $cr->tabulador = '10';
-        $this->assertTrue($cr->isValid('update'));
-        $this->assertTrue($cr->save());
-        $this->assertSame('10', $cr->tabulador);
+        $model = factory(App\ClienteSucursal::class)->create();
+        $model->cliente_id = 1;
+        $this->assertTrue($model->isValid('update'));
+        $this->assertTrue($model->save());
+        $this->assertSame(1, $model->cliente_id);
     }
 
     /**
      * @coversNothing
      */
-    public function testUsuarioEsObligatorio()
+    public function testUsuarioEsRequerido()
     {
-        //$clienteSucursal = factory(App\ClienteSucursal::class)->make(['usuario_id' => null]);
-        //$this->assertFalse($clienteSucursal->isValid());
+        $model = factory(App\ClienteSucursal::class)->make(['cliente_id' => null]);
+        $this->assertFalse($model->isValid());
     }
+
+    /**
+     * @coversNothing
+     */
+    public function testSucursalEsRequerido()
+    {
+        $model = factory(App\ClienteSucursal::class)->make(['sucursal_id' => null]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testTabuladorEsRequerido()
+    {
+        $model = factory(App\ClienteSucursal::class)->make(['tabulador' => null]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testTabuladorEsEntero()
+    {
+        $model = factory(App\ClienteSucursal::class)->make(['tabulador' => 1.1]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testTabuladorEsUnNumero()
+    {
+        $model = factory(App\ClienteSucursal::class)->make(['tabulador' => "Tabulador1"]);
+        $this->assertFalse($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testHabilitadaDebeSerBooleano() {
+        $model = factory(App\ClienteSucursal::class)->make([
+            'habilitada' => 'InvalidString'
+        ]);
+        $this->assertFalse($model->isValid());
+
+        $model->habilitada = 0;
+        $this->assertTrue($model->isValid());
+        $model->habilitada = 1;
+        $this->assertTrue($model->isValid());
+    }
+
 
 }
