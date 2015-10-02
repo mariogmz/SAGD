@@ -24,12 +24,12 @@ class ClienteSucursal extends LGGModel {
     protected $fillable = ['tabulador', 'tabulador_original', 'habilitada', 'venta_especial', 'cliente_id', 'sucursal_id'];
 
     public static $rules = [
-        'tabulador'          => 'required|max:50',
-        'tabulador_original' => 'required|max:50',
-        'habilitada'         => 'boolean',
-        'venta_especial'     => 'boolean',
-        'cliente_id'         => 'required|integer',
-        'sucursal_id'        => 'required|integer',
+        'tabulador'          => 'integer|required|min:1',
+        'tabulador_original' => 'integer|required|min:1',
+        'habilitada'         => 'boolean|required',
+        'venta_especial'     => 'boolean|required',
+        'cliente_id'         => 'integer|required',
+        'sucursal_id'        => 'integer|required',
     ];
 
     public $updateRules = [];
@@ -56,7 +56,7 @@ class ClienteSucursal extends LGGModel {
 
 
     /**
-     * Obtiene los Clientes asociado con la Sucursal
+     * Obtiene los Clientes asociados con la Sucursal
      * @return Illuminate\Database\Eloquent\Collection::class
      */
     public function clientes() {
