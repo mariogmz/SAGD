@@ -25,7 +25,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        return $this->cliente->with('clienteEstatus')->get();
+        return $this->cliente->with('estatus')->get();
     }
 
     /**
