@@ -504,7 +504,7 @@ class ProductoTest extends TestCase {
         $producto = factory(App\Producto::class)->create();
         factory(App\Sucursal::class)->create();
 
-        $producto->saveWithData($params);
+        $this->assertTrue($producto->saveWithData($params));
 
         // Dimension
         $this->assertNotNull($producto->dimension);

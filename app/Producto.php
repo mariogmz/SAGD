@@ -292,15 +292,24 @@ class Producto extends LGGModel {
 
     public function saveWithData($parameters) {
         if ($this->save()) {
-            $dimension = new Dimension($parameters['dimension']);
-            $this->dimension()->save($dimension);
+            $this->attachDimension(new \App\Dimension($parameters['dimension']));
+            $this->attachSucursales();
+            $this->addPrecio(new \App\Precio($parameters['precio']));
+            return true;
+        }
+        return false;
+    }
 
-            $sucursales = Sucursal::all();
-            foreach ($sucursales as $sucursal) {
-                $this->addSucursal($sucursal);
-            }
-            $precio = new \App\Precio($parameters['precio']);
-            $this->addPrecio($precio);
+    private function attachDimension($dimension)
+    {
+        $this->dimension()->save($dimension);
+    }
+
+    private function attachSucursales()
+    {
+        $sucursales = Sucursal::all();
+        foreach ($sucursales as $sucursal) {
+            $this->addSucursal($sucursal);
         }
     }
 
