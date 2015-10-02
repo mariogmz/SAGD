@@ -50,7 +50,13 @@ class AddSoftDeletesToAllTables extends Migration
     private function filterTables()
     {
         $this->tables = array_map(
-            function($value){ return $value->Tables_in_sagd_local; },
+            function($value){
+                try {
+                    return $value->Tables_in_sagd_local;
+                } catch(ErrorException $e) {
+                    return $value->Tables_in_sagd_test;
+                }
+            },
             $this->tables
         );
         array_diff($this->tables, ['migrations']);
