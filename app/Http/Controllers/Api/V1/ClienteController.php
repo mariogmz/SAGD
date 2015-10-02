@@ -26,10 +26,6 @@ class ClienteController extends Controller
     public function index()
     {
         return $this->cliente->with('clienteEstatus')->get();
-
-
-        //$clientes = Cliente::paginate();
-        //return $clientes;
     }
 
     /**
