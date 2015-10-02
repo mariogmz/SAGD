@@ -14,7 +14,7 @@ class ProductoController extends Controller {
 
     public function __construct(Producto $producto) {
         $this->producto = $producto;
-//        $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**

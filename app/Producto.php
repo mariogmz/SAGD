@@ -3,8 +3,6 @@
 namespace App;
 
 
-use App\ProductoSucursal;
-
 /**
  * App\Producto
  *
@@ -119,19 +117,7 @@ class Producto extends LGGModel {
      * @return void
      */
     public function addSucursal($sucursal) {
-        $this->sucursales()->attach($sucursal->id, ['proveedor_id' => $sucursal->proveedor->id]);
-    }
-
-    /**
-     * Agrega el proveedor y sucursales para un producto
-     * @param App\Proveedor
-     * @return void
-     */
-    public function addProveedor($proveedor) {
-        $sucursales = $proveedor->sucursales;
-        foreach ($sucursales as $sucursal) {
-            $this->proveedores()->attach($proveedor->id, ['sucursal_id' => $sucursal->id]);
-        }
+        $this->sucursales()->attach($sucursal->id);
     }
 
     /**
@@ -212,8 +198,7 @@ class Producto extends LGGModel {
      * @return Illuminate\Database\Eloquent\Collection
      */
     public function proveedores() {
-        return $this->belongsToMany('App\Proveedor', 'productos_sucursales',
-            'producto_id', 'proveedor_id');
+        return $this->sucursales()->with('proveedor')->get()->pluck('proveedor')->unique();
     }
 
     /**
@@ -231,15 +216,9 @@ class Producto extends LGGModel {
         }
     }
 
-    public function precios($proveedor_id = null) {
-        if (is_null($proveedor_id)) {
-            return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
-                'producto_id', 'producto_sucursal_id');
-        } else {
-            $ps = $this->productosSucursales->where('proveedor_id', $proveedor_id)->first();
-
-            return $ps->precios;
-        }
+    public function precios() {
+        return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
+            'producto_id', 'producto_sucursal_id');
     }
 
 
@@ -286,24 +265,43 @@ class Producto extends LGGModel {
         return $this->hasMany('App\Reposicion');
     }
 
+    /**
+     * Agrega el precio a cada producto sucursal del producto
+     * @param Precio
+     */
+    public function addPrecio($precio) {
+        $productos_sucursales = $this->productosSucursales;
+        foreach ($productos_sucursales as $producto_sucursal) {
+            $producto_sucursal->precio()->save(clone $precio);
+        }
+    }
+
+    /**
+     * Obtienes los precios agrupados por proveedor
+     * @return \lluminate\Database\Eloquent\Collection
+     */
+    public function preciosProveedor() {
+        return $this->productosSucursales()
+            ->join('precios', 'precios.producto_sucursal_id', '=', 'productos_sucursales.id')
+            ->join('sucursales', 'productos_sucursales.id', '=', 'sucursales.id')
+            ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
+            ->select('precios.*')
+            ->groupBy('proveedores.id')
+            ->get();
+    }
+
     public function saveWithData($parameters) {
         if ($this->save()) {
             $dimension = new Dimension($parameters['dimension']);
             $this->dimension()->save($dimension);
 
-            $sucursales = Sucursal::all(['id', 'proveedor_id']);
+            $sucursales = Sucursal::all();
             foreach ($sucursales as $sucursal) {
-                $this->sucursales()->attach($sucursal->id, ['proveedor_id' => $sucursal->proveedor_id]);
-
+                $this->addSucursal($sucursal);
             }
             $precio = new \App\Precio($parameters['precio']);
-            $productos_sucursales = ProductoSucursal::all();
-            foreach ($productos_sucursales as $producto_sucursal)
-            {
-                $producto_sucursal->precios()->save($precio);
-            }
+            $this->addPrecio($precio);
         }
-
     }
 
 }

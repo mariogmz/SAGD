@@ -175,4 +175,21 @@ class Sucursal extends LGGModel {
     public function cajas() {
         return $this->hasMany('App\Caja');
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function productosSucursales() {
+        return $this->hasMany('App\ProductoSucursal');
+    }
+
+    /**
+     * @param \App\Producto
+     * @return \App\Precio
+     */
+    public function precio($producto) {
+        return $this->productosSucursales
+            ->where('producto_id', $producto->id)
+            ->first()->precio;
+    }
 }

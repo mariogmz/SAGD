@@ -208,4 +208,19 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(App\Caja::class, $cajas[0]);
         $this->assertCount(1, $cajas);
     }
+
+    /**
+     * @covers ::precio
+     * @group relaciones
+     */
+    public function testPrecio() {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $precio = factory(App\Precio::class, 'bare')->make();
+
+        $producto->addSucursal($sucursal);
+        $producto->addPrecio($precio);
+
+        $this->assertInstanceOf(App\Precio::class, $sucursal->precio($producto));
+    }
 }
