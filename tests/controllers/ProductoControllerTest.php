@@ -86,17 +86,19 @@ class ProductoControllerTest extends TestCase {
         $endpoint = $this->endpoint . '/1';
 
         $this->mock->shouldReceive([
-            'with' => Mockery::self(),
-            'find' => Mockery::self(),
-            'self' => 'self'
+            'with'             => Mockery::self(),
+            'find'             => Mockery::self(),
+            'self'             => 'self',
+            'preciosProveedor' => 'precios'
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
 
 
         $this->get($endpoint)
             ->seeJson([
-                'message'  => 'Producto obtenido exitosamente',
-                'producto' => 'self'
+                'message'           => 'Producto obtenido exitosamente',
+                'producto'          => 'self',
+                'precios_proveedor' => 'precios'
             ])
             ->assertResponseStatus(200);
     }
