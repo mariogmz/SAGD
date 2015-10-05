@@ -7,17 +7,17 @@
     .module('sagdApp.unidad')
     .controller('unidadIndexController', unidadIndexController);
 
-  unidadIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  unidadIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function unidadIndexController($auth, $state, api, pnotify) {
+  function unidadIndexController($auth, $state, api, pnotify, modal) {
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.sort = sort;
-    vm.eliminarUnidad = eliminarUnidad;
+    vm.eliminarUnidad = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
@@ -40,6 +40,23 @@
           vm.unidades = response.data;
           return vm.unidades;
         });
+    }
+
+    function eliminar(sucursal) {
+      modal.confirm({
+        title: 'Eliminar Unidad',
+        content: 'Estas a punto de eliminar una unidad. ¿Estás seguro?',
+        accept: 'Eliminar Unidad',
+        type: 'danger'
+      })
+      .then(function(response) {
+        modal.hide('confirm');
+        eliminarUnidad(sucursal.id);
+      })
+      .catch(function(response) {
+        modal.hide('confirm');
+        return false;
+      })
     }
 
     function eliminarUnidad(id) {
