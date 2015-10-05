@@ -22,18 +22,19 @@ $factory->define(App\SalidaDetalle::class, function ($faker)
 });
 
 $factory->defineAs(App\SalidaDetalle::class, 'full', function($faker) use ($factory){
+    $producto = factory(App\Producto::class)->create();
+    $producto->addSucursal( factory(App\Sucursal::class)->create() );
     $sd = $factory->raw(App\SalidaDetalle::class);
-    $sd['producto_id'] = factory(App\Producto::class)->create()->id;
+    $sd['producto_id'] = $producto->id;
     $sd['producto_movimiento_id'] = factory(App\ProductoMovimiento::class)->create([
-        'producto_id' => $sd['producto_id']])->id;
+        'producto_sucursal_id' => $producto->productosSucursales()->first()->id]);
     $sd['salida_id'] = factory(App\Salida::class, 'full')->create()->id;
     return $sd;
 });
 
 $factory->defineAs(App\SalidaDetalle::class, 'noproducto', function($faker) use ($factory){
     $sd = $factory->raw(App\SalidaDetalle::class);
-    $sd['producto_movimiento_id'] = factory(App\ProductoMovimiento::class)->create([
-        'producto_id' => factory(App\Producto::class)->create()->id])->id;
+    $sd['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
     $sd['salida_id'] = factory(App\Salida::class, 'full')->create()->id;
     return $sd;
 });
@@ -48,7 +49,6 @@ $factory->defineAs(App\SalidaDetalle::class, 'noproductomovimiento', function($f
 $factory->defineAs(App\SalidaDetalle::class, 'nosalida', function($faker) use ($factory){
     $sd = $factory->raw(App\SalidaDetalle::class);
     $sd['producto_id'] = factory(App\Producto::class)->create()->id;
-    $sd['producto_movimiento_id'] = factory(App\ProductoMovimiento::class)->create([
-        'producto_id' => $sd['producto_id']])->id;
+    $sd['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
     return $sd;
 });

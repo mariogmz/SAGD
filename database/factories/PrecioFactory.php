@@ -28,6 +28,22 @@ $factory->define(App\Precio::class, function ($faker) {
     ];
 });
 
+$factory->defineAs(App\Precio::class, 'bare', function($faker) use ($factory){
+    return [
+        'costo' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_1' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_2' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_3' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_4' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_5' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_6' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_7' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_8' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_9' => $faker->randomFloat(2, 0.0, 9999.99),
+        'precio_10' => $faker->randomFloat(2, 0.0, 9999.99)
+    ];
+});
+
 $factory->defineAs(App\Precio::class, 'nullcosto', function($faker) use ($factory){
     $precio = $factory->raw(App\Precio::class);
     $precio['costo'] = null;

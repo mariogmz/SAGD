@@ -123,7 +123,7 @@ class SucursalConfiguracionTest extends TestCase {
             'sucursal_id' => $sucursal->id
         ]);
         $sucursal_resultado = $sucursal_configuracion->sucursal;
-        $this->assertEquals($sucursal, $sucursal_resultado);
+        $this->assertEquals($sucursal->id, $sucursal_resultado->id);
     }
 
     /**
@@ -137,6 +137,6 @@ class SucursalConfiguracionTest extends TestCase {
             'configuracion_id' => $configuracion->id
         ]);
         $configuracion_resultado = $sucursal_configuracion->configuracion;
-        $this->assertEquals($configuracion, $configuracion_resultado);
+        $this->assertEquals($configuracion->id, $configuracion_resultado->id);
     }
 }

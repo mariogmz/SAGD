@@ -66,7 +66,7 @@ class DomicilioTest extends TestCase {
             'codigo_postal_id' => $codigo_postal->id
         ]);
         $codigo_postal_resultado = $domicilio->codigoPostal;
-        $this->assertEquals($codigo_postal, $codigo_postal_resultado);
+        $this->assertInstanceOf(App\CodigoPostal::class , $codigo_postal_resultado);
     }
 
     /**
@@ -95,7 +95,7 @@ class DomicilioTest extends TestCase {
         ]);
         $sucursales_resultado = $domicilio->sucursales;
         for ($i = 0; $i < 5; $i ++) {
-            $this->assertEquals($sucursales_resultado[$i], $sucursales[$i]);
+            $this->assertInstanceOf(App\Sucursal::class, $sucursales[$i]);
         }
     }
 

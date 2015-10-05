@@ -21,9 +21,9 @@ $factory->define(App\ProductoMovimiento::class, function ($faker) {
     ];
 });
 
-$factory->defineAs(App\ProductoMovimiento::class, 'withproduct', function($faker) use ($factory){
+$factory->defineAs(App\ProductoMovimiento::class, 'withproductosucursal', function($faker) use ($factory){
     $pm = $factory->raw(App\ProductoMovimiento::class);
-    return array_merge($pm, ['producto_id' => factory(App\Producto::class)->create()->id]);
+    return array_merge($pm, ['producto_sucursal_id' => factory(App\ProductoSucursal::class)->create()->id]);
 });
 
 $factory->defineAs(App\ProductoMovimiento::class, 'longmovimiento', function($faker) use ($factory){

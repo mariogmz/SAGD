@@ -63,7 +63,6 @@
     function create(){
       api.post('/margen', vm.margen)
         .then(function (response){
-          debugger;
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('margenShow', {id: response.data.margen.id});
         })

@@ -72,7 +72,7 @@ class SucursalTest extends TestCase {
         $sucursal = factory(App\Sucursal::class)->make([
             'proveedor_id' => $proveedor->id
         ]);
-        $this->assertEquals($proveedor, $sucursal->proveedor);
+        $this->assertEquals($proveedor->id, $sucursal->proveedor->id);
     }
 
     /**
@@ -84,7 +84,7 @@ class SucursalTest extends TestCase {
         $sucursal = factory(App\Sucursal::class)->create([
             'domicilio_id' => $domicilio->id
         ]);
-        $this->assertEquals($domicilio, $sucursal->domicilio);
+        $this->assertEquals($domicilio->id, $sucursal->domicilio->id);
     }
 
     /**
@@ -207,5 +207,49 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $cajas);
         $this->assertInstanceOf(App\Caja::class, $cajas[0]);
         $this->assertCount(1, $cajas);
+    }
+
+    /**
+     * @covers ::precio
+     * @group relaciones
+     */
+    public function testPrecio() {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $precio = factory(App\Precio::class, 'bare')->make();
+
+        $producto->addSucursal($sucursal);
+        $producto->addPrecio($precio);
+
+        $this->assertInstanceOf(App\Precio::class, $sucursal->precio($producto));
+    }
+
+    /**
+     * @covers ::movimientos
+     * @group relaciones
+     * @group movimientos
+     */
+    public function testMovimientos() {
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
+        $sucursal = $pm->productoSucursal->sucursal;
+        $pms = $sucursal->movimientos;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+    }
+
+    /**
+     * @covers ::movimientos
+     * @group relaciones
+     * @group movimientos
+     */
+    public function testMovimientosConProducto() {
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
+        $producto = $pm->productoSucursal->producto;
+        $sucursal = $pm->productoSucursal->sucursal;
+        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $pms = $sucursal->movimientos($producto);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+        $this->assertCount(1, $pms);
     }
 }
