@@ -24,7 +24,7 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function index() {
-        return $this->producto->with('subfamilia')->get();
+        return $this->producto->all();
     }
 
     /**
@@ -58,7 +58,7 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $this->producto = $this->producto->find($id);
+        $this->producto = $this->producto->with('tipoGarantia','marca','unidad','subfamilia')->find($id);
         if ($this->producto) {
             return response()->json([
                 'message' => 'Producto obtenido exitosamente',
