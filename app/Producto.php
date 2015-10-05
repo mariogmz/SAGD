@@ -4,6 +4,7 @@ namespace App;
 
 
 use Carbon\Carbon;
+use Illuminate\Support\MessageBag;
 
 
 /**
@@ -75,7 +76,7 @@ class Producto extends LGGModel {
         'clave'             => 'required|max:60|unique:productos',
         'descripcion'       => 'required|max:300',
         'descripcion_corta' => 'max:50',
-        'fecha_entrada'     => 'required|date',
+        'fecha_entrada'     => 'date',
         'numero_parte'      => 'required|unique:productos',
         'remate'            => 'required|boolean',
         'spiff'             => 'required|numeric',
@@ -98,11 +99,9 @@ class Producto extends LGGModel {
         parent::boot();
         Producto::creating(function ($producto) {
             $producto->subclave || $producto->subclave = $producto->numero_parte;
-            $producto->fecha_entrada || $producto->fecha_entrada = Carbon::now();
             if (!$producto->isValid()) {
                 return false;
             }
-
             return true;
         });
         Producto::updating(function ($producto) {
@@ -110,7 +109,6 @@ class Producto extends LGGModel {
             $producto->updateRules['clave'] .= ',clave,' . $producto->id;
             $producto->updateRules['numero_parte'] .= ',numero_parte,' . $producto->id;
             $producto->updateRules['upc'] .= ',upc,' . $producto->id;
-
             return $producto->isValid('update');
         });
     }
@@ -298,14 +296,23 @@ class Producto extends LGGModel {
     }
 
     public function saveWithData($parameters) {
-        if ($this->save()) {
-            $this->attachDimension(new \App\Dimension($parameters['dimension']));
+        $dimension = new \App\Dimension($parameters['dimension']);
+        $precio = new \App\Precio($parameters['precio']);
+        $dimension->producto_id = 0;
+        $precio->producto_sucursal_id = 0;
+
+        if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
+            $this->save();
+            $this->attachDimension($dimension);
             $this->attachSucursales();
-            $this->addPrecio(new \App\Precio($parameters['precio']));
+            $this->addPrecio($precio);
             $this->inicializarExistencias();
 
             return true;
         } else {
+            $this->errors || $this->errors = new MessageBag();
+            if($dimension->errors){ $this->errors->merge($dimension->errors);}
+            if($precio->errors){ $this->errors->merge($precio->errors);}
             return false;
         }
     }
@@ -322,7 +329,7 @@ class Producto extends LGGModel {
     }
 
     private function inicializarExistencias() {
-        $this->productosSucursales->each(function ($productoSucursal, $key) {
+        $this->productosSucursales->each(function ($productoSucursal) {
             $productoSucursal->existencia()->save(new \App\Existencia);
         });
     }

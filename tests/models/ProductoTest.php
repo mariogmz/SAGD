@@ -103,9 +103,12 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaEntradaEsRequerido() {
-        $producto = factory(App\Producto::class)->make(['fecha_entrada' => null]);
-        $this->assertFalse($producto->isValid());
+    public function testFechaEntradaEsActualSiSePoneNull(){
+        $producto = factory(App\Producto::class)->make();
+        $producto->fecha_entrada = null;
+        $this->assertTrue($producto->save());
+        $producto = App\Producto::last();
+        $this->assertNotNull($producto->fecha_entrada);
     }
 
     /**
@@ -257,7 +260,7 @@ class ProductoTest extends TestCase {
      */
     public function testDimension() {
         $producto = factory(App\Producto::class)->create();
-        $dimension = factory(App\Dimension::class)->create(['producto_id' => $producto->id]);
+        factory(App\Dimension::class)->create(['producto_id' => $producto->id]);
         $testDimension = $producto->dimension;
         $this->assertInstanceOf(App\Dimension::class, $testDimension);
     }
@@ -520,10 +523,10 @@ class ProductoTest extends TestCase {
         $params = [
             "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
-            "precio"    => ["precio_1" => 90.5, "precio_2" => 90.5, "precio_3" => 90.5, "precio_4" => 90.5, "precio_5" => 90.5, "precio_6" => 90.5, "precio_7" => 90.5, "precio_8" => 90.5]
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.5, "precio_3" => 90.5, "precio_4" => 90.5, "precio_5" => 90.5, "precio_6" => 90.5, "precio_7" => 90.5, "precio_8" => 90.5, "precio_9" => 90.5, "precio_10" => 90.5]
         ];
-        $producto = factory(App\Producto::class)->create();
-        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+        factory(App\Sucursal::class)->make();
 
         $this->assertTrue($producto->saveWithData($params));
 

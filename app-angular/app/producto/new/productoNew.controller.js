@@ -82,7 +82,7 @@
 
     function updateSubclave(){
       if (vm.producto) {
-        vm.producto.subclave = vm.producto.subclave || vm.producto.numero_parte;
+        vm.producto.subclave = vm.producto.subclave || vm.producto.numero_parte || '';
         vm.producto.subclave = vm.producto.subclave.toUpperCase();
         updateClave();
       }
@@ -93,7 +93,7 @@
       var familia = vm.subfamilia ? vm.subfamilia.familia.clave : '';
       var marca = vm.marca ? vm.marca.clave : '';
 
-      vm.producto.clave = familia + subfamilia + marca + (vm.producto.subclave || '');
+      vm.producto.clave = familia + subfamilia + marca + vm.producto.subclave;
       vm.producto.subfamilia_id = vm.subfamilia ? vm.subfamilia.id : null;
       vm.producto.marca_id = vm.marca ? vm.marca.id : null;
     }
@@ -105,6 +105,11 @@
     }
 
     function crearProducto(){
+      console.log({
+        producto: vm.producto,
+        dimension: vm.dimension,
+        precio: vm.precio
+      });
       return api.post('/producto', {
         producto: vm.producto,
         dimension: vm.dimension,
