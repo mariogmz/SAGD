@@ -1,0 +1,19 @@
+<div class="card">
+    <div class="header">
+        <h4>Modificar cliente ({{vm.cliente.usuario}})</h4>
+    </div>
+    <div class="block">
+        <form class="item-form" ng-submit="vm.onSubmit(vm.cliente)">
+            <fieldset>
+                <legend>Cliente #<strong>{{vm.cliente.id}}</strong></legend>
+                <formly-form model="vm.cliente" fields="vm.fields">
+                    <div class="pull-right">
+                        <a ui-sref="clienteIndex" class="button secondary">Regresar</a>
+                        <input type="submit" class="button primary" value="Guardar cambios">
+                    </div>
+                </formly-form>
+            </fieldset>
+        </form>
+    </div>
+</div>
+

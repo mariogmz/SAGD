@@ -3,18 +3,18 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 /**
- * @coversDefaultClass \App\Http\Controllers\Api\V1\ClienteController
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\ClienteEstatusController
  */
-class ClienteControllerTest extends TestCase
+class ClienteReferenciaControllerTest extends TestCase
 {
     use WithoutMiddleware;
 
-    protected $endpoint = '/v1/cliente';
+    protected $endpoint = '/v1/cliente-estatus';
 
     public function setUp()
     {
         parent::setUp();
-        $this->mock = $this->setUpMock('App\Cliente');
+        $this->mock = $this->setUpMock('App\ClienteEstatus');
     }
 
     public function setUpMock($class)
@@ -31,12 +31,10 @@ class ClienteControllerTest extends TestCase
     /**
      * @covers ::index
      */
-    public function test_GET_index() {
-        $this->mock->shouldReceive([
-            'with' => Mockery::self(),
-            'get' => 'success'
-        ])->withAnyArgs();
-        $this->app->instance('App\Cliente', $this->mock);
+    public function test_GET_index()
+    {
+        $this->mock->shouldReceive('all')->once()->andReturn('[{"id":1,"nombre":"Nuevo"}]');
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
@@ -55,12 +53,12 @@ class ClienteControllerTest extends TestCase
                 'getId' => 1
             ])
             ->withAnyArgs();
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
-        $this->post($this->endpoint, ['clave' => 'ZEG', 'nombre' => 'Zegucom'])
+        $this->post($this->endpoint, ['nombre' => 'Nuevo'])
             ->seeJson([
-                'message' => 'Cliente creado exitosamente',
-                'cliente' => 'self'
+                'message' => 'Estatus creado exitosamente',
+                'clienteEstatus' => 'self'
             ])
             ->assertResponseStatus(201);
     }
@@ -73,11 +71,11 @@ class ClienteControllerTest extends TestCase
         $this->mock
             ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
-        $this->post($this->endpoint, ['clave' => 'Z', 'nombre' => 'Zegucom'])
+        $this->post($this->endpoint, ['nombre' => 'Nuevo'])
             ->seeJson([
-                'message' => 'Cliente no creado',
+                'message' => 'Estatus no creado',
                 'error' => 'Errors'
             ])
             ->assertResponseStatus(400);
@@ -91,7 +89,7 @@ class ClienteControllerTest extends TestCase
         $endpoint = $this->endpoint . '/1';
 
         $this->mock->shouldReceive('find')->with(1)->andReturn(true);
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
 
         $this->get($endpoint)
@@ -106,11 +104,11 @@ class ClienteControllerTest extends TestCase
         $endpoint = $this->endpoint . '/10000';
 
         $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Cliente no encontrado o no existente',
+                'message' => 'Estatus no encontrado o no existente',
                 'error' => 'No encontrado'
             ])
             ->assertResponseStatus(404);
@@ -123,15 +121,15 @@ class ClienteControllerTest extends TestCase
     public function test_PUT_update_ok()
     {
         $endpoint = $this->endpoint . '/1';
-        $parameters = ['nombre' => 'Useless'];
+        $parameters = ['nombre' => 'Nuevo'];
 
         $this->mock
             ->shouldReceive(['find' => Mockery::self(), 'update' => true])->withAnyArgs();
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'Cliente se actualizo correctamente'
+                'message' => 'Estatus se actualizo correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -142,15 +140,15 @@ class ClienteControllerTest extends TestCase
     public function test_PUT_update_no_encontrado()
     {
         $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $endpoint = $this->endpoint . '/10000';
-        $parameters = ['nombre' => 'PUT'];
+        $parameters = ['nombre' => 'Nuevo'];
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del cliente',
-                'error' => 'Cliente no encontrado'
+                'message' => 'No se pudo realizar la actualizacion del Estatus',
+                'error' => 'Estatus no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -161,16 +159,16 @@ class ClienteControllerTest extends TestCase
     public function test_PUT_update_clave_repetida()
     {
         $endpoint = $this->endpoint . '/1';
-        $parameters = ['clave' => 'Z'];
+        $parameters = ['nombre' => 'Nuevo'];
 
         $this->mock
             ->shouldReceive(['find' => Mockery::self(), 'update' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->put($endpoint, $parameters)
             ->seeJson([
-                'message' => 'No se pudo realizar la actualizacion del cliente',
+                'message' => 'No se pudo realizar la actualizacion del Estatus',
                 'error' => 'Errors'
             ])
             ->assertResponseStatus(400);
@@ -181,15 +179,15 @@ class ClienteControllerTest extends TestCase
      */
     public function test_DELETE_destroy_ok()
     {
-        $endpoint = $this->endpoint . '/10';
+        $endpoint = $this->endpoint . '/1';
 
         $this->mock
             ->shouldReceive(['find' => Mockery::self(), 'delete' => true])->withAnyArgs();
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'Cliente eliminado correctamente'
+                'message' => 'Estatus eliminado correctamente'
             ])
             ->assertResponseStatus(200);
     }
@@ -197,18 +195,18 @@ class ClienteControllerTest extends TestCase
     /**
      * @covers ::destroy
      */
-    public function test_DELETE_destroy_not_found()
-    {
-        $endpoint = $this->endpoint . '/123456';
+    public function test_DELETE_destroy_not_found() {
+        $endpoint = $this->endpoint . '/1';
 
-        $this->mock
-            ->shouldReceive('find')->with(123456)->andReturn(null);
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->mock->shouldReceive([
+            'find' => null,
+        ])->withAnyArgs();
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar el cliente',
-                'error' => 'Cliente no encontrado'
+                'message' => 'No se pudo eliminar el estatus',
+                'error'   => 'Estatus no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -216,19 +214,22 @@ class ClienteControllerTest extends TestCase
     /**
      * @covers ::destroy
      */
-    public function test_DELETE_destroy_bad()
-    {
-        $endpoint = $this->endpoint . '/10';
+    public function test_DELETE_destroy_bad() {
+        $endpoint = $this->endpoint . '/1';
 
-        $this->mock
-            ->shouldReceive(['find' => Mockery::self(), 'delete' => false])->withAnyArgs();
-        $this->app->instance('App\Cliente', $this->mock);
+        $this->mock->shouldReceive([
+            'find'   => Mockery::self(),
+            'delete' => false,
+        ])->withAnyArgs();
+        $this->mock->errors = 'Metodo de eliminar no se pudo ejecutar';
+        $this->app->instance('App\ClienteEstatus', $this->mock);
 
         $this->delete($endpoint)
             ->seeJson([
-                'message' => 'No se pudo eliminar el cliente',
-                'error' => 'El metodo de eliminar no se pudo ejecutar'
+                'message' => 'No se pudo eliminar el estatus',
+                'error'   => 'Metodo de eliminar no se pudo ejecutar'
             ])
             ->assertResponseStatus(400);
+
     }
 }

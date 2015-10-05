@@ -4,6 +4,7 @@
     'use strict';
 
     angular.module('sagdApp.cliente', [
-      'sagdApp.core'
+      'sagdApp.core',
+      'blocks.api'
     ]);
 })();
