@@ -45,7 +45,7 @@
         title: 'Eliminar Marca',
         content: 'Estas a punto de eliminar una marca. ¿Estás seguro?',
         accept: 'Eliminar Marca',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');

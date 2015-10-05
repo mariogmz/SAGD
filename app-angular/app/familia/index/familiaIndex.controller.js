@@ -45,7 +45,7 @@
         title: 'Eliminar Familia',
         content: 'Estas a punto de eliminar una familia. ¿Estás seguro?',
         accept: 'Eliminar Familia',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');

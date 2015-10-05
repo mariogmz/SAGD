@@ -47,7 +47,7 @@
         title: 'Eliminar Unidad',
         content: 'Estas a punto de eliminar una unidad. ¿Estás seguro?',
         accept: 'Eliminar Unidad',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');

@@ -53,7 +53,7 @@
         title: 'Eliminar Sucursal',
         content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre + '. ¿Estás seguro?',
         accept: 'Eliminar Sucursal',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');

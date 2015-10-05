@@ -47,9 +47,7 @@
       config.content    ? modal.find('#modal-content').text(config.content)         : '';
       config.dismiss    ? modal.find('#modal-dismiss').text(config.dismiss)         : '';
       config.accept     ? modal.find('#modal-accept').text(config.accept)           : '';
-      config.isDanger   ? modal.find('#modal-accept').addClass('btn btn-danger')    : '';
-      config.isWarning  ? modal.find('#modal-accept').addClass('btn btn-warning')   : '';
-      config.isSuccess  ? modal.find('#modal-accept').addClass('btn btn-success')   : '';
+      config.type       ? modal.find('#modal-accept').addClass('btn btn-'+config.type) : '';
     }
   }
 })();

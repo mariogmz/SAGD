@@ -47,7 +47,7 @@
         title: 'Eliminar Subfamilia',
         content: 'Estas a punto de eliminar la subfamilia ' + subfamilia.nombre + '. ¿Estás seguro?',
         accept: 'Eliminar Subfamilia',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');

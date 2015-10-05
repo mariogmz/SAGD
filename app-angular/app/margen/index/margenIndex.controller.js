@@ -47,7 +47,7 @@
         title: 'Eliminar Margen',
         content: 'Estas a punto de eliminar un margen. ¿Estás seguro?',
         accept: 'Eliminar Margen',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');

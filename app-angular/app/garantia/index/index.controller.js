@@ -48,7 +48,7 @@
         title: 'Eliminar Tipo de Garantia',
         content: 'Estas a punto de eliminar un tipo de Garantia. ¿Estás seguro?',
         accept: 'Eliminar',
-        isDanger: true
+        type: 'danger'
       })
       .then(function(response) {
         modal.hide('confirm');
