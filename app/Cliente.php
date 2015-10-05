@@ -212,6 +212,13 @@ class Cliente extends LGGModel {
         return $this->hasMany('App\PaginaWebDistribuidor', 'cliente_id');
     }
 
+    /**
+     * Obtiene las Sucursales relacionadas con el cliente
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function sucursales() {
+        return $this->hasMany('App\clienteSucursal', 'cliente_id');
+    }
 
     /**
      * Obtiene los Domicilios asociado con el Cliente
