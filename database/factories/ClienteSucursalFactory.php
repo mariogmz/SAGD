@@ -22,9 +22,3 @@ $factory->define(App\ClienteSucursal::class, function ($faker)
         'sucursal_id' => 1
     ];
 });
-
-$factory->defineAs(App\ClienteSucursal::class, 'longname', function($faker) use ($factory){
-    $clienteSucursal = $factory->raw(App\ClienteSucursal::class);
-    $clienteSucursal['tabulador'] = $faker->numberBetween($min = 1, $max = 10);
-    return $clienteSucursal;
-});

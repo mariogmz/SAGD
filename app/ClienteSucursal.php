@@ -56,10 +56,10 @@ class ClienteSucursal extends LGGModel {
 
 
     /**
-     * Obtiene los Clientes asociados con la Sucursal
+     * Obtiene los Clientes asociados con el registro de Tabulador por Sucursal
      * @return Illuminate\Database\Eloquent\Collection::class
      */
     public function clientes() {
-        return $this->hasMany('App\Cliente', 'cliente_id');
+        return $this->belongsTo(Cliente::class, 'cliente_id');
     }
 }

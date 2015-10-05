@@ -88,5 +88,16 @@ class ClienteSucursalTest extends TestCase
         $this->assertTrue($model->isValid());
     }
 
+    /**
+     * @covers ::cliente
+     * @group relaciones
+     */
+    public function testRelacionCliente()
+    {
+        $clienteSucursal = factory(App\ClienteSucursal::class)->create();
+        $cliente = $clienteSucursal->cliente_id;
+        $this->assertInstanceOf(App\Cliente::class, $cliente);
+    }
+
 
 }
