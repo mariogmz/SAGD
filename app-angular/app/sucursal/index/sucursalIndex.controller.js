@@ -53,7 +53,8 @@
       modal.confirm({
         title: 'Eliminar Sucursal',
         content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre,
-        accept: 'Eliminar Sucursal'
+        accept: 'Eliminar Sucursal',
+        isDanger: true
       })
       .then(function(response) {
         modal.hide('confirm');

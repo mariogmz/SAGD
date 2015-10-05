@@ -23,11 +23,9 @@
 
     function confirm(config) {
       modal = $('#confirm-modal');
-      config.title ? modal.find('#modal-title').text(config.title) : '';
-      config.content ? modal.find('#modal-content').text(config.content) : '';
-      config.dismiss ? modal.find('#modal-dismiss').text(config.dismiss) : '';
-      config.accept ? modal.find('#modal-accept').text(config.accept) : '';
+      configureModal(modal, config);
       modal.modal('show');
+
       return new Promise(function(resolve, reject) {
         modal
         .on('click', '#modal-accept', function(event) {
@@ -42,6 +40,16 @@
     function hide(type) {
       modal = $('#'+ type +'-modal');
       modal.modal('hide');
+    }
+
+    function configureModal(modal, config) {
+      config.title      ? modal.find('#modal-title').text(config.title)             : '';
+      config.content    ? modal.find('#modal-content').text(config.content)         : '';
+      config.dismiss    ? modal.find('#modal-dismiss').text(config.dismiss)         : '';
+      config.accept     ? modal.find('#modal-accept').text(config.accept)           : '';
+      config.isDanger   ? modal.find('#modal-accept').addClass('btn btn-danger')    : '';
+      config.isWarning  ? modal.find('#modal-accept').addClass('btn btn-warning')   : '';
+      config.isSuccess  ? modal.find('#modal-accept').addClass('btn btn-success')   : '';
     }
   }
 })();
