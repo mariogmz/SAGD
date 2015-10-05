@@ -52,7 +52,7 @@
     function eliminar(sucursal) {
       modal.confirm({
         title: 'Eliminar Sucursal',
-        content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre,
+        content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre + '. ¿Estás seguro?',
         accept: 'Eliminar Sucursal',
         isDanger: true
       })

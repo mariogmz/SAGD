@@ -7,10 +7,10 @@
     .module('sagdApp.garantia')
     .controller('garantiaIndexController', garantiaIndexController);
 
-  garantiaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  garantiaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function garantiaIndexController($auth, $state, api, pnotify) {
+  function garantiaIndexController($auth, $state, api, pnotify, modal) {
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -18,7 +18,7 @@
     var vm = this;
     vm.garantias = [];
     vm.sort = sort;
-    vm.eliminarGarantia = eliminarGarantia;
+    vm.eliminarGarantia = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Descripción', key: 'descripcion'},
@@ -42,6 +42,23 @@
           vm.garantias = response.data;
           return vm.garantias;
         });
+    }
+
+    function eliminar(garantia) {
+      modal.confirm({
+        title: 'Eliminar Tipo de Garantia',
+        content: 'Estas a punto de eliminar un tipo de Garantia. ¿Estás seguro?',
+        accept: 'Eliminar',
+        isDanger: true
+      })
+      .then(function(response) {
+        modal.hide('confirm');
+        eliminarGarantia(garantia.id);
+      })
+      .catch(function(response) {
+        modal.hide('confirm');
+        return false;
+      });
     }
 
     function eliminarGarantia(id) {
