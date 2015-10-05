@@ -16,7 +16,6 @@
     }
 
     var vm = this;
-    vm.garantias = [];
     vm.sort = sort;
     vm.eliminarGarantia = eliminar;
     vm.sortKeys = [
