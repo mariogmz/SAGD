@@ -14,7 +14,7 @@
      */
     'blocks.session', 'blocks.state', 'blocks.utils',
     'blocks.api', 'blocks.formly', 'blocks.pnotify',
-    'blocks.env',
+    'blocks.env', 'blocks.modal',
 
     /*
      * 3rd party app modules
