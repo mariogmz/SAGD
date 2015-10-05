@@ -24,7 +24,7 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function index() {
-        return $this->producto->with('unidad','productosSucursales')->get();
+        return $this->producto->with('subfamilia')->get();
     }
 
     /**
