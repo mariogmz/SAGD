@@ -21,8 +21,8 @@
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
+      {name: 'UPC', key: 'upc'},
       {name: 'Descripción', key: 'descripcion'},
-      {name: 'Número de parte', key: 'numero_parte'},
       {name: 'Subfamilia', key: 'subfamilia.clave'}
     ];
     vm.next = goToCreateStep1;

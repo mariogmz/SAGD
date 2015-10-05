@@ -35,8 +35,8 @@
     <tr dir-paginate="producto in vm.productos | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
       <th scope="row">{{producto.id}}</th>
       <td><a ui-sref="productoShow({id:producto.id})">{{producto.clave}}</a></td>
+      <td>{{producto.upc}}</td>
       <td>{{(producto.descripcion | limitTo:55) + '...'}}</td>
-      <td>{{producto.numero_parte}}</td>
       <td><a ui-sref="subfamiliaShow({id:producto.subfamilia_id})">{{producto.subfamilia.clave}}</a></td>
 
       <td class="actions">
