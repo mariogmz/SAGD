@@ -3,6 +3,9 @@
 namespace App;
 
 
+use Carbon\Carbon;
+
+
 /**
  * App\Producto
  *
@@ -95,6 +98,7 @@ class Producto extends LGGModel {
         parent::boot();
         Producto::creating(function ($producto) {
             $producto->subclave || $producto->subclave = $producto->numero_parte;
+            $producto->fecha_entrada || $producto->fecha_entrada = Carbon::now();
             if (!$producto->isValid()) {
                 return false;
             }
