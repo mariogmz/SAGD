@@ -17,7 +17,19 @@ module.exports = function(grunt) {
             name: 'development',
             applicationFqdn: "http://api.sagd.app",
             apiNamespace: "/api",
-            version: "/v1"
+            version: "/v1",
+            cache_time: 1,
+            cache_whitelist: [
+              'codigo_postal',
+              'domicilio',
+              'familia',
+              'garantia',
+              'marca',
+              'margen',
+              'proveedor',
+              'subfamilia',
+              'unidad'
+            ]
           }
         }
       },
@@ -30,7 +42,19 @@ module.exports = function(grunt) {
             name: 'stage',
             applicationFqdn: "https://zegucomarb.dyndns.info:8080",
             apiNamespace: "/api",
-            version: "/v1"
+            version: "/v1",
+            cache_time: 2,
+            cache_whitelist: [
+              'codigo_postal',
+              'domicilio',
+              'familia',
+              'garantia',
+              'marca',
+              'margen',
+              'proveedor',
+              'subfamilia',
+              'unidad'
+            ]
           }
         }
       }
@@ -65,7 +89,8 @@ module.exports = function(grunt) {
           './bower_components/pnotify/src/pnotify.desktop.js',
           './bower_components/pnotify/src/pnotify.buttons.js',
           './bower_components/pnotify/src/pnotify.nonblock.js',
-          './bower_components/pnotify/src/pnotify.callbacks.js'
+          './bower_components/pnotify/src/pnotify.callbacks.js',
+          './bower_components/lscache/lscache.js'
         ],
         dest: './public/libs/frontend.js'
       },
