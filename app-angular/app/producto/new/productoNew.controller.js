@@ -18,14 +18,17 @@
     }
 
     var vm = this;
-    vm.producto = {};
+    vm.producto = {
+      activo: true,
+      remate: false
+    };
     vm.precio = {};
     vm.dimension = {};
 
     vm.back = goBack;
     vm.updateSubclave = updateSubclave;
     vm.updateClave = updateClave;
-    vm.save = crearPrecio;
+    vm.save = crearProducto;
 
     initialize();
 
@@ -77,10 +80,6 @@
       });
     }
 
-    function obtenerProveedoresConSucursales(){
-      return api.get('/proveedor')
-    }
-
     function updateSubclave(){
       if (vm.producto) {
         vm.producto.subclave = vm.producto.subclave || vm.producto.numero_parte;
@@ -112,7 +111,7 @@
         precio: vm.precio
       }).then(function (response){
         pnotify.alert('¡Exito!', response.data.message, 'success');
-        $state.go('margenShow', {id: response.data.margen.id});
+        $state.go('productoShow', {id: response.data.producto.id});
       }).catch(function (response){
         pnotify.alertList(response.data.message, response.data.error, 'error');
       });
