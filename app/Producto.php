@@ -173,7 +173,7 @@ class Producto extends LGGModel {
      * @return Illuminate\Database\Eloquent\Collection
      */
     public function movimientos(Sucursal $sucursal = null) {
-        if( is_null($sucursal) ) {
+        if (is_null($sucursal)) {
             return $this->hasManyThrough('App\ProductoMovimiento', 'App\ProductoSucursal',
                 'producto_id', 'producto_sucursal_id');
         } else {
@@ -299,9 +299,11 @@ class Producto extends LGGModel {
             $this->attachSucursales();
             $this->addPrecio(new \App\Precio($parameters['precio']));
             $this->inicializarExistencias();
+
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     private function attachDimension($dimension) {
@@ -316,7 +318,7 @@ class Producto extends LGGModel {
     }
 
     private function inicializarExistencias() {
-        $this->productosSucursales->each(function($productoSucursal, $key){
+        $this->productosSucursales->each(function ($productoSucursal, $key) {
             $productoSucursal->existencia()->save(new \App\Existencia);
         });
     }

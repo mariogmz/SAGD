@@ -7,6 +7,7 @@ use App\Producto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductoController extends Controller {
 
@@ -33,6 +34,7 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
+
         $params = $request->all();
         $this->producto->fill($params['producto']);
         if ($this->producto->saveWithData($params)) {

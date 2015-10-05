@@ -106,48 +106,15 @@
     }
 
     function crearProducto(){
-      return api.post('/producto', vm.producto)
-        .then(function (response){
-          vm.producto = response.data.producto;
-          console.log('Producto creado correctamente, id: ' + vm.producto.id);
-        }).catch(function (response){
-          pnotify.alertList(response.data.message, response.data.error, 'error');
-        });
-    }
-
-    function crearDimension(){
-      return crearProducto().then(function (){
-        return api.post('/dimension', vm.dimension)
-          .then(function (response){
-            vm.dimension = response.data.dimension;
-            console.log('Dimension creada correctamente, id: ' + vm.dimension.id);
-          })
-          .catch(function (response){
-            pnotify.alertList(response.data.message, response.data.error, 'error');
-          });
-      });
-    }
-
-    function crearProductoSucursal(){
-      return crearDimension().then(function (){
-        return api.get('proveedoresconsucursales').then(function (response){
-          var productos_sucursales = [];
-          angular.forEach(response.data, function (proveedor){
-            angular.forEach(proveedor.sucursales, function (sucursal){
-              productos_sucursales.push({
-                producto_id: vm.producto.id,
-                sucursal_id: sucursal.id,
-                proveedor_id: proveedor.id
-              });
-            });
-          })
-        })
-      });
-    }
-
-    function crearPrecio(){
-      return crearProductoSucursal().then(function (){
-
+      return api.post('/producto', {
+        producto: vm.producto,
+        dimension: vm.dimension,
+        precio: vm.precio
+      }).then(function (response){
+        pnotify.alert('¡Exito!', response.data.message, 'success');
+        $state.go('margenShow', {id: response.data.margen.id});
+      }).catch(function (response){
+        pnotify.alertList(response.data.message, response.data.error, 'error');
       });
     }
 
