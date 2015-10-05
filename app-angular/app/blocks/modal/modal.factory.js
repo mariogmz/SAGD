@@ -25,6 +25,9 @@
       modal = $('#confirm-modal');
       configureModal(modal, config);
       modal.modal('show');
+      setTimeout(function(){
+        modal.find('#modal-dismiss').focus();
+      }, 400);
 
       return new Promise(function(resolve, reject) {
         modal
