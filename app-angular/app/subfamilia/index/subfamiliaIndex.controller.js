@@ -8,16 +8,16 @@
     .module('sagdApp.subfamilia')
     .controller('subfamiliaIndexController', SubfamiliaIndexController);
 
-  SubfamiliaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  SubfamiliaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
 
-  function SubfamiliaIndexController($auth, $state, api, pnotify){
+  function SubfamiliaIndexController($auth, $state, api, pnotify, modal){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.sort = sort;
-    vm.eliminarSubfamilia = eliminarSubfamilia;
+    vm.eliminarSubfamilia = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
@@ -40,6 +40,23 @@
           vm.subfamilias = response.data;
           return vm.subfamilias;
         });
+    }
+
+    function eliminar(subfamilia) {
+       modal.confirm({
+        title: 'Eliminar Subfamilia',
+        content: 'Estas a punto de eliminar la subfamilia ' + subfamilia.nombre + '. ¿Estás seguro?',
+        accept: 'Eliminar Subfamilia',
+        type: 'danger'
+      })
+      .then(function(response) {
+        modal.hide('confirm');
+        eliminarSubfamilia(subfamilia.id);
+      })
+      .catch(function(response) {
+        modal.hide('confirm');
+        return false;
+      });
     }
 
     function eliminarSubfamilia(id){

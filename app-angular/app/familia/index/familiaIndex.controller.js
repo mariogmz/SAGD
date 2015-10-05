@@ -8,16 +8,16 @@
     .module('sagdApp.familia')
     .controller('familiaIndexController', FamiliaIndexController);
 
-  FamiliaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  FamiliaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
 
-  function FamiliaIndexController($auth, $state, api, pnotify){
+  function FamiliaIndexController($auth, $state, api, pnotify, modal){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.sort = sort;
-    vm.eliminarFamilia = eliminarFamilia;
+    vm.eliminarFamilia = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
@@ -38,6 +38,23 @@
           vm.familias = response.data;
           return vm.familias;
         });
+    }
+
+    function eliminar(familia) {
+      modal.confirm({
+        title: 'Eliminar Familia',
+        content: 'Estas a punto de eliminar una familia. ¿Estás seguro?',
+        accept: 'Eliminar Familia',
+        type: 'danger'
+      })
+      .then(function(response) {
+        modal.hide('confirm');
+        eliminarFamilia(familia.id);
+      })
+      .catch(function(response) {
+        modal.hide('confirm');
+        return false;
+      });
     }
 
     function eliminarFamilia(id){

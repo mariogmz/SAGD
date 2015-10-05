@@ -7,17 +7,17 @@
     .module('sagdApp.sucursal')
     .controller('sucursalIndexController', sucursalIndexController);
 
-  sucursalIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  sucursalIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function sucursalIndexController($auth, $state, api, pnotify) {
+  function sucursalIndexController($auth, $state, api, pnotify, modal) {
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.sort = sort;
-    vm.eliminarSucursal = eliminarSucursal;
+    vm.eliminarSucursal = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
@@ -48,8 +48,25 @@
         });
     }
 
-    function eliminarSucursal(id) {
-      return api.delete('/sucursal/', id)
+    function eliminar(sucursal) {
+      modal.confirm({
+        title: 'Eliminar Sucursal',
+        content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre + '. ¿Estás seguro?',
+        accept: 'Eliminar Sucursal',
+        type: 'danger'
+      })
+      .then(function(response) {
+        modal.hide('confirm');
+        eliminarSucursal(sucursal);
+      })
+      .catch(function(response) {
+        modal.hide('confirm');
+        return false;
+      });
+    }
+
+    function eliminarSucursal(sucursal) {
+      return api.delete('/sucursal/', sucursal.id)
         .then(function (response) {
           obtenerSucursales().then(function () {
             pnotify.alert('Exito', response.data.message, 'success');
