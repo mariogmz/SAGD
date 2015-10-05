@@ -7,6 +7,7 @@
   angular
     .module('sagdApp', [
       'sagdApp.core',
+      'sagdApp.loader',
 
       'sagdApp.cliente',
       'sagdApp.codigo-postal',

@@ -12,6 +12,12 @@
 
   function utils(){
 
+    return {
+      pluck: pluck,
+      strip: stripApiCall
+    };
+
+
     function pluck(collection, key){
       var result = angular.isArray(collection) ? [] : {};
 
@@ -21,9 +27,10 @@
       return result;
     }
 
-    return {
-      pluck: pluck
-    };
+    function stripApiCall(string) {
+      return string.replace(/^\//g, '').replace(/(\/|,)/g, '-');
+    }
+
 
   }
 
