@@ -1,0 +1,17 @@
+<div class="card">
+    <div class="header">
+        <h4>Crear nuevo cliente</h4>
+    </div>
+    <div class="block">
+        <form class="item-form" ng-submit="vm.onSubmit(vm.model)">
+            <fieldset>
+                <formly-form model="vm.model" fields="vm.fields" form="vm.Form">
+                    <div class="pull-right">
+                        <a ui-sref="clienteIndex" class="button secondary">Regresar</a>
+                        <input type="submit" class="button primary" ng-disabled="vm.Form.$pristine" value="Guardar cambios">
+                    </div>
+                </formly-form>
+            </fieldset>
+        </form>
+    </div>
+</div>

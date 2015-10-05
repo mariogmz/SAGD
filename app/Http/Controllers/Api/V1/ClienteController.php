@@ -25,11 +25,7 @@ class ClienteController extends Controller
      */
     public function index()
     {
-        $clientes = $this->cliente->all();
-        return $clientes;
-
-        //$clientes = Cliente::paginate();
-        //return $clientes;
+        return $this->cliente->with('estatus')->get();
     }
 
     /**
