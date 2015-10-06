@@ -93,17 +93,12 @@
     activate();
 
     function activate() {
-
-      obtenerReferencias().then(function (response) {
-        obtenerRoles().then(function (response) {
-          obtenerEstatus().then(function (response) {
-            obtenerSucursales().then(function (response) {
-              assignFields();
-            });
-          });
-        });
-      });
-
+      obtenerReferencias()
+          .then(obtenerRoles)
+          .then(obtenerEstatus)
+          .then(obtenerSucursales)
+          .then(assignFields);
+     
     }
 
 
