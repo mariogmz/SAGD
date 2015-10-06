@@ -1,3 +1,46 @@
 <!-- app/producto/show/partials/peso-dimensiones.html -->
 
-Pesos y dimensiones
+<!-- Peso y Dimensiones -->
+<div class="card borderless">
+  <div class="block">
+    <div class="row">
+      <!-- Peso -->
+      <fieldset class="col-sm">
+        <label for="peso">Peso:</label>
+
+        <div class="with-icon">
+          <input type="text" id="peso" ng-model="vm.producto.dimension.peso">
+          <span>kg</span>
+        </div>
+      </fieldset>
+      <!-- Longitúd -->
+      <fieldset class="col-sm">
+        <label for="largo">Largo:</label>
+
+        <div class="with-icon">
+          <input type="text" id="largo" ng-model="vm.producto.dimension.largo">
+          <span>cm</span>
+        </div>
+      </fieldset>
+
+      <!-- Ancho -->
+      <fieldset class="col-sm">
+        <label for="ancho">Ancho:</label>
+
+        <div class="with-icon">
+          <input type="text" id="ancho" ng-model="vm.producto.dimension.ancho">
+          <span>cm</span>
+        </div>
+      </fieldset>
+      <!-- Altura -->
+      <fieldset class="col-sm">
+        <label for="alto">Alto:</label>
+
+        <div class="with-icon">
+          <input type="text" id="alto" ng-model="vm.producto.dimension.alto">
+          <span>cm</span>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>

@@ -3,8 +3,19 @@ ul.tabs {
   @extend .nav-tabs;
 
   li.nav-item {
+
     a[role="tab"] {
       @extend .nav-link;
+
+      background-color: $gray-suit;
+      color: $alto;
+      transition: all 500ms ease-in-out;
+
+      &:hover{
+        background-color: $mine-shaft;
+        color: $white;
+        transition: all 500ms ease-in-out;
+      }
     }
   }
 }

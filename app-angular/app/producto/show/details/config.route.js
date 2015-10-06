@@ -20,11 +20,14 @@
           'peso-dimensiones': {
             templateUrl: 'app/producto/show/details/peso-dimensiones.html'
           },
-          'costos': {
-            templateUrl: 'app/producto/show/details/costos.html'
-          },
           'precios': {
             templateUrl: 'app/producto/show/details/precios.html'
+          },
+          'movimientos': {
+            templateUrl: 'app/producto/show/details/movimientos.html'
+          },
+          'existencias': {
+            templateUrl: 'app/producto/show/details/existencias.html'
           }
         }
       });
