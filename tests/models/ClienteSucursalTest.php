@@ -94,9 +94,34 @@ class ClienteSucursalTest extends TestCase
      */
     public function testRelacionCliente()
     {
-        $clienteSucursal = factory(App\ClienteSucursal::class)->create();
-        $cliente = $clienteSucursal->cliente_id;
-        $this->assertInstanceOf(App\Cliente::class, $cliente);
+        //$clienteSucursal = factory(App\ClienteSucursal::class)->create();
+        //$cliente = $clienteSucursal->cliente_id;
+        //$this->assertInstanceOf(App\Cliente::class, $cliente);
+
+        //$cliente = factory(App\Cliente::class)->create();
+        //$cs = factory(App\ClienteSucursal::class)->create();
+        //$cs->clientes()->save($cliente);
+        //$clientes = $cs->clientes;
+        //$this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
+        //$this->assertInstanceOf(App\Cliente::class, $clientes[0]);
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testExisteEnTabla()
+    {
+        $this->seeInDatabase('clientes_sucursales', ['tabulador' => 1]);
+        $this->seeInDatabase('clientes_sucursales', ['tabulador' => 6]);
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testNoExisteEnTabla()
+    {
+        $this->notSeeInDatabase('clientes_sucursales', ['tabulador' => 0]);
+        $this->notSeeInDatabase('clientes_sucursales', ['tabulador' => 11]);
     }
 
 
