@@ -4,7 +4,7 @@ ul.tabs {
 
   li.nav-item {
 
-    a[role="tab"] {
+    a[data-toggle="tab"] {
       @extend .nav-link;
 
       background-color: $gray-suit;
@@ -18,7 +18,30 @@ ul.tabs {
       }
     }
   }
+
+  li.back{
+    @extend .pull-right;
+
+    a{
+      @extend .nav-link;
+      @extend .btn;
+      @extend .btn-secondary;
+      border: 1px solid #E5E5E5;
+      transition: all 500ms ease-in-out;
+
+      &:hover{
+        transition: all 500ms ease-in-out;
+      }
+    }
+
+    i{
+      @extend .fa;
+      @extend .fa-arrow-left;
+    }
+
+  }
 }
+
 
 article.tab-content{
   @extend .tab-content;

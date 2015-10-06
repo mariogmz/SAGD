@@ -7,19 +7,22 @@
     <!-- Nav tabs -->
     <ul class="tabs" role="tablist">
       <li class="nav-item">
-        <a href="#datos-generales" role="tab" data-toggle="tab">Datos Generales</a>
+        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
       </li>
       <li class="nav-item">
         <a href="#peso-dimensiones" role="tab" data-toggle="tab">Peso y Dimensiones</a>
       </li>
       <li class="nav-item">
-        <a class="active" href="#precios" role="tab" data-toggle="tab">Precios</a>
+        <a href="#precios" role="tab" data-toggle="tab">Precios</a>
       </li>
       <li class="nav-item">
         <a href="#movimientos" role="tab" data-toggle="tab">Movimientos</a>
       </li>
       <li class="nav-item">
         <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
+      </li>
+      <li class="nav-item back">
+        <a ui-sref="productoIndex" role="tab"><i></i> Regresar</a>
       </li>
     </ul>
 
@@ -29,7 +32,7 @@
       <article class="tab-content">
 
         <!-- Datos Generales -->
-        <section role="tabpanel" class="fade" id="datos-generales">
+        <section role="tabpanel" class="fade in active" id="datos-generales">
           <div ui-view="datos-generales"></div>
         </section>
         <!-- Pesos & Dimensiones -->
@@ -37,7 +40,7 @@
           <div ui-view="peso-dimensiones"></div>
         </section>
         <!-- Precios -->
-        <section role="tabpanel" class="fade in active" id="precios">
+        <section role="tabpanel" class="fade" id="precios">
           <div ui-view="precios"></div>
         </section>
         <!-- Movimientos -->

@@ -16,6 +16,23 @@
     }
 
     var vm = this;
+    vm.sortKeys = [
+      {name: '#', key: 'id'},
+      {name: 'Proveedor', key: 'clave'},
+      {name: 'Costo', key: 'costo'},
+      {name: 'P1', key: 'precio_1'},
+      {name: 'P2', key: 'precio_2'},
+      {name: 'P3', key: 'precio_3'},
+      {name: 'P4', key: 'precio_4'},
+      {name: 'P5', key: 'precio_5'},
+      {name: 'P6', key: 'precio_6'},
+      {name: 'P7', key: 'precio_7'},
+      {name: 'P8', key: 'precio_8'},
+      {name: 'P9', key: 'precio_9'},
+      {name: 'P10', key: 'precio_10'}
+    ];
+
+    vm.sort = sort;
     vm.id = $stateParams.id;
     vm.back = goBack;
 
@@ -32,13 +49,18 @@
       return api.get('/producto/', vm.id)
         .then(function (response){
           vm.producto = response.data.producto;
-          vm.precio = response.data.precios_proveedor;
+          vm.precios = response.data.precios_proveedor;
           return response.data;
         })
         .catch(function (response){
           vm.error = response.data;
           return response.data;
         });
+    }
+
+    function sort(keyname){
+      vm.sortKey = keyname;
+      vm.reverse = !vm.reverse;
     }
 
     function goBack() {
