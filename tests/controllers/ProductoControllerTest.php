@@ -31,7 +31,9 @@ class ProductoControllerTest extends TestCase {
      */
     public function test_GET_index() {
         $this->mock->shouldReceive(
-            ['all' => 'success'])->once()->withAnyArgs();
+            ['with' => Mockery::self(),
+             'get'  => 'success']
+        )->once()->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
