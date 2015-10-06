@@ -21,9 +21,9 @@
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Clave', key: 'clave'},
-      {name: 'Nombre', key: 'nombre'},
-      {name: 'Familia', key: 'familia.clave'},
-      {name: 'Margen', key: 'margen.clave'}
+      {name: 'UPC', key: 'upc'},
+      {name: 'Descripción', key: 'descripcion'},
+      {name: 'Subfamilia', key: 'subfamilia.clave'}
     ];
     vm.next = goToCreateStep1;
 
@@ -46,9 +46,7 @@
     function eliminarProducto(id){
       return api.delete('/producto/', id)
         .then(function (response){
-          obtenerProductos().then(function (){
-            pnotify.alert('¡Exito!', response.data.message, 'success');
-          });
+          pnotify.alert('¡Exito!', response.data.message, 'success');
         }).catch(function (response){
           pnotify.alert('¡Error!', response.data.message, 'error');
         });

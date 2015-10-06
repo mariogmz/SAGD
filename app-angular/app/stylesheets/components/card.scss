@@ -1,6 +1,10 @@
 .card {
   @extend .card;
 
+  .borderless{
+    border-top: none;
+  }
+
   .header {
     @extend .card-header;
   }
@@ -8,6 +12,7 @@
   .block {
     @extend .card-block;
     @extend .text-right;
+
 
     h4 {
       @extend .card-title;

@@ -1,15 +1,58 @@
-<div class="card">
-  <div class="header">
-    <h4>Producto ({{vm.producto.nombre}})</h4>
-  </div>
-  <div class="block">
-    <form class="item-form" novalidate disabled>
-      <fieldset disabled>
-        <legend>Producto #<strong>{{vm.producto.id}}</strong></legend>
-        <formly-form model="vm.producto" fields="vm.fields"></formly-form>
-      </fieldset>
-    </form>
-    <a ng-click="vm.back()" class="button primary">Regresar</a>
-  </div>
-</div>
+<article class="card">
+  <section class="header">
+    <h4>Producto</h4>
+  </section>
+  <section class="block">
 
+    <!-- Nav tabs -->
+    <ul class="tabs" role="tablist">
+      <li class="nav-item">
+        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
+      </li>
+      <li class="nav-item">
+        <a href="#peso-dimensiones" role="tab" data-toggle="tab">Peso y Dimensiones</a>
+      </li>
+      <li class="nav-item">
+        <a href="#precios" role="tab" data-toggle="tab">Precios</a>
+      </li>
+      <li class="nav-item">
+        <a href="#movimientos" role="tab" data-toggle="tab">Movimientos</a>
+      </li>
+      <li class="nav-item">
+        <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
+      </li>
+      <li class="nav-item back">
+        <a ui-sref="productoIndex" role="tab"><i></i> Regresar</a>
+      </li>
+    </ul>
+
+    <div class="product-form">
+      <fieldset disabled>
+      <!-- Tab panes -->
+      <article class="tab-content">
+
+        <!-- Datos Generales -->
+        <section role="tabpanel" class="fade in active" id="datos-generales">
+          <div ui-view="datos-generales"></div>
+        </section>
+        <!-- Pesos & Dimensiones -->
+        <section role="tabpanel" class="fade" id="peso-dimensiones">
+          <div ui-view="peso-dimensiones"></div>
+        </section>
+        <!-- Precios -->
+        <section role="tabpanel" class="fade" id="precios">
+          <div ui-view="precios"></div>
+        </section>
+        <!-- Movimientos -->
+        <section role="tabpanel" class="fade" id="movimientos">
+          <div ui-view="movimientos"></div>
+        </section>
+        <!-- Existencias -->
+        <section role="tabpanel" class="fade" id="existencias">
+          <div ui-view="existencias"></div>
+        </section>
+      </article>
+      </fieldset>
+    </div>
+  </section>
+</article>

@@ -58,11 +58,12 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $this->producto = $this->producto->find($id);
+        $this->producto = $this->producto->with('tipoGarantia','marca','margen','unidad','subfamilia','dimension')->find($id);
         if ($this->producto) {
             return response()->json([
                 'message' => 'Producto obtenido exitosamente',
-                'producto' => $this->producto->self()
+                'producto' => $this->producto->self(),
+                'precios_proveedor' => $this->producto->preciosProveedor()
             ], 200);
         } else {
             return response()->json([

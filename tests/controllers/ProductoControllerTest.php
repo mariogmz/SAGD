@@ -30,9 +30,9 @@ class ProductoControllerTest extends TestCase {
      * @covers ::index
      */
     public function test_GET_index() {
-        $this->mock->shouldReceive('all')->once()->andReturn('success');
+        $this->mock->shouldReceive(
+            ['all' => 'success'])->once()->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
-
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
     }
@@ -65,7 +65,7 @@ class ProductoControllerTest extends TestCase {
     public function test_POST_store_bad_data() {
         $this->mock
             ->shouldReceive([
-                'fill' => Mockery::self(),
+                'fill'         => Mockery::self(),
                 'saveWithData' => false
             ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'Clave es requerido'];
@@ -86,16 +86,19 @@ class ProductoControllerTest extends TestCase {
         $endpoint = $this->endpoint . '/1';
 
         $this->mock->shouldReceive([
-            'find' => Mockery::self(),
-            'self' => 'self'
+            'with'             => Mockery::self(),
+            'find'             => Mockery::self(),
+            'self'             => 'self',
+            'preciosProveedor' => 'precios'
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
 
 
         $this->get($endpoint)
             ->seeJson([
-                'message'  => 'Producto obtenido exitosamente',
-                'producto' => 'self'
+                'message'           => 'Producto obtenido exitosamente',
+                'producto'          => 'self',
+                'precios_proveedor' => 'precios'
             ])
             ->assertResponseStatus(200);
     }
@@ -106,7 +109,11 @@ class ProductoControllerTest extends TestCase {
     public function test_GET_show_no_encontrado() {
         $endpoint = $this->endpoint . '/10000';
 
-        $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'find' => false,
+            'self' => 'self'
+        ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
 
         $this->get($endpoint)
