@@ -1,0 +1,18 @@
+ul.tabs {
+  @extend .nav;
+  @extend .nav-tabs;
+
+  li.nav-item {
+    a[role="tab"] {
+      @extend .nav-link;
+    }
+  }
+}
+
+article.tab-content{
+  @extend .tab-content;
+
+  section{
+    @extend .tab-pane;
+  }
+}

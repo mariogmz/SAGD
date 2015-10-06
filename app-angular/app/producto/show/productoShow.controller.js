@@ -19,42 +19,12 @@
     vm.id = $stateParams.id;
     vm.back = goBack;
 
-    vm.fields = [
-      {
-        type: 'input',
-        key: 'clave',
-        templateOptions: {
-          type: 'text',
-          label: 'Clave:'
-        }
-      }, {
-        type: 'input',
-        key: 'nombre',
-        templateOptions: {
-          type: 'text',
-          label: 'Nombre:'
-        }
-      }, {
-        type: 'input',
-        key: 'familia_id',
-        templateOptions: {
-          type: 'text',
-          label: 'Familia:'
-        }
-      }, {
-        type: 'input',
-        key: 'margen_id',
-        templateOptions: {
-          type: 'text',
-          label: 'Margen:'
-        }
-      }
-    ];
     initialize();
 
     function initialize(){
-      return obtenerProducto().then(function (response){
-        console.log(response.message);
+      return obtenerProducto().then(function (){
+        console.log('Producto obtenido correctamente.');
+        $state.go('productoShow.details');
       });
     }
 
@@ -62,6 +32,7 @@
       return api.get('/producto/', vm.id)
         .then(function (response){
           vm.producto = response.data.producto;
+          vm.precio = response.data.precios_proveedor;
           return response.data;
         })
         .catch(function (response){
