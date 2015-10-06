@@ -67,6 +67,7 @@
           type: 'select',
           label: 'Proveedor:',
           options: [{value: 0, name: 'Seleccione un proveedor'}],
+          ngOptions: 'proveedor.id as proveedor.razon_social for proveedor in to.options | orderBy:"razon_social"',
           required: true
         }
       }
@@ -143,59 +144,12 @@
     }
 
     function assignFields() {
-      vm.fields = [
-        {
-          type: 'input',
-          key: 'clave',
-          templateOptions: {
-            type: 'text',
-            label: 'Clave:',
-            required: true,
-            placeholder: 'Máximo 8 caracteres. 4 de proveedor y 4 de ciudad'
-          }
-        },
-        {
-          type: 'input',
-          key: 'nombre',
-          templateOptions: {
-            type: 'text',
-            label: 'Nombre:',
-            required: true,
-            placeholder: 'Nombre completo de la sucursal'
-          }
-        },
-        {
-          type: 'input',
-          key: 'horarios',
-          templateOptions: {
-            type: 'text',
-            label: 'Horario:',
-            required: true,
-            placeholder: 'Especificar que días y a que horas se encuentra abierta esta sucursal'
-          }
-        },
-        {
-          type: 'input',
-          key: 'ubicacion',
-          templateOptions: {
-            type: 'text',
-            label: 'Ubicacion:',
-            placeholder: 'URL a Google Maps con la ubicación de la sucursal/bodega'
-          }
-        },
-        {
-          type: 'select',
-          key: 'proveedor_id',
-          templateOptions: {
-            type: 'select',
-            label: 'Proveedor:',
-            options: vm.proveedores.map(function(proveedor) {
-              return {value: proveedor.id, name: proveedor.razon_social};
-            }),
-            required: true
-          }
+      vm.fields = vm.fields.map(function(object) {
+        if(object.key == "proveedor_id") {
+          object.templateOptions.options = vm.proveedores;
         }
-      ];
+        return object;
+      });
     }
   }
 })();
