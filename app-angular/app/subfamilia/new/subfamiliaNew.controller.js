@@ -44,13 +44,7 @@
           label: 'Familia:',
           required: true,
           options: [],
-          ngOptions: 'familia.id as familia.nombre for familia in to.options'
-        },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/familia').then(function (response){
-            $scope.to.options = response.data;
-            return response;
-          });
+          ngOptions: 'familia.id as familia.nombre for familia in to.options | orderBy:"nombre"'
         }
       }, {
         type: 'select',
@@ -58,18 +52,22 @@
         templateOptions: {
           label: 'Margen:',
           options: [],
-          ngOptions: 'margen.id as margen.nombre for margen in to.options'
-        },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/margen').then(function (response){
-            $scope.to.options = response.data;
-            return response;
-          });
+          ngOptions: 'margen.id as margen.nombre for margen in to.options | orderBy:"nombre"'
         }
       }
     ];
 
     vm.create = create;
+
+    activate();
+
+    function activate() {
+      obtenerFamilias().then(function(response) {
+        obtenerMargenes().then(function(response) {
+          assignFields();
+        })
+      })
+    }
 
     function create(){
       api.post('/subfamilia', vm.subfamilia)
@@ -82,8 +80,46 @@
         });
     }
 
+    function obtenerFamilias() {
+      return api.get('/familia')
+      .then(function(response) {
+        vm.familias = response.data;
+        return response;
+      })
+      .catch(function(response) {
+        vm.error = response.data;
+        pnotify.alert('No se pudo obtener las familias', vm.error.error, 'error');
+        return response;
+      });
+    }
+
+    function obtenerMargenes() {
+      return api.get('/margen')
+      .then(function(response) {
+        vm.margenes = response.data;
+        return response;
+      })
+      .catch(function(response) {
+        vm.error = response.data;
+        pnotify.alert('No se pudo obtener los margenes', vm.error.error, 'error');
+        return response;
+      });
+    }
+
     function goBack() {
       window.history.back();
+    }
+
+    function assignFields() {
+      vm.fields = vm.fields.map(function(field) {
+        if(field.key == "familia_id") {
+          field.templateOptions.options = vm.familias;
+        }
+        if(field.key == "margen_id") {
+          field.templateOptions.options = vm.margenes;
+        }
+        return field;
+      });
     }
   }
 
