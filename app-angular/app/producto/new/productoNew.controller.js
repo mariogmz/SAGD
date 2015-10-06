@@ -100,11 +100,6 @@
     }
 
     function crearProducto(){
-      console.log({
-        producto: vm.producto,
-        dimension: vm.dimension,
-        precio: vm.precio
-      });
       return api.post('/producto', {
         producto: vm.producto,
         dimension: vm.dimension,
