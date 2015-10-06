@@ -61,6 +61,7 @@
             type: 'select',
             label: 'Proveedor:',
             options: [{value: 0, name: 'Seleccione un proveedor'}],
+            ngOptions: 'proveedor.id as proveedor.razon_social for proveedor in to.options | orderBy:"razon_social"',
             required: true
           }
         }
@@ -149,52 +150,12 @@
     }
 
     function assignFields() {
-      vm.fields = [
-        {
-          type: 'input',
-          key: 'clave',
-          templateOptions: {
-            type: 'text',
-            label: 'Clave:'
-          }
-        },
-        {
-          type: 'input',
-          key: 'nombre',
-          templateOptions: {
-            type: 'text',
-            label: 'Nombre:'
-          }
-        },
-        {
-          type: 'input',
-          key: 'horarios',
-          templateOptions: {
-            type: 'text',
-            label: 'Horario:'
-          }
-        },
-        {
-          type: 'input',
-          key: 'ubicacion',
-          templateOptions: {
-            type: 'text',
-            label: 'Ubicacion:'
-          }
-        },
-        {
-          type: 'select',
-          key: 'proveedor_id',
-          templateOptions: {
-            type: 'select',
-            label: 'Proveedor:',
-            options: vm.proveedores.map(function(proveedor) {
-              return {value: proveedor.id, name: proveedor.razon_social};
-            }),
-            required: true
-          }
+      vm.fields = vm.fields.map(function(object) {
+        if(object.key == "proveedor_id") {
+          object.templateOptions.options = vm.proveedores;
         }
-      ];
+        return object;
+      });
     }
   }
 })();
