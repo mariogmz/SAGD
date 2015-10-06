@@ -13,6 +13,7 @@
   function ClienteNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
+      exit();
     }
 
     var vm = this;
@@ -93,19 +94,16 @@
 
     function activate() {
 
-      return obtenerReferencias()
-        .then(function (response) {
-          return obtenerRoles()
-            .then(function (response) {
-              return obtenerEstatus()
-                .then(function (response) {
-                  return obtenerSucursales()
-                    .then(function (response) {
-                      assignFields();
-                    });
-                });
+      obtenerReferencias().then(function (response) {
+        obtenerRoles().then(function (response) {
+          obtenerEstatus().then(function (response) {
+            obtenerSucursales().then(function (response) {
+              assignFields();
             });
+          });
         });
+      });
+
     }
 
 
