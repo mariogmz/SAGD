@@ -43,40 +43,41 @@
     }
 
     function obtenerSubfamilias(){
-      return obtenerMarcas().then(function (){
-        return api.get('/subfamilia').then(function (response){
-          vm.subfamilias = response.data;
-          console.log('Subfamilias obtenidas');
-
-        });
+      return api.get('/subfamilia').then(function (response){
+        vm.subfamilias = response.data;
+        console.log('Subfamilias obtenidas');
       });
     }
 
     function obtenerUnidades(){
-      return obtenerSubfamilias().then(function (){
-        return api.get('/unidad').then(function (response){
-          vm.unidades = response.data;
-          console.log('Unidades obtenidas correctamente');
-
-        });
+      return api.get('/unidad').then(function (response){
+        vm.unidades = response.data;
+        console.log('Unidades obtenidas correctamente');
       });
     }
 
     function obtenerTiposDeGarantias(){
-      return obtenerUnidades().then(function (){
-        return api.get('/tipo-garantia').then(function (response){
-          vm.tiposGarantia = response.data;
-          console.log('Tipos de garantía obtenidos correctamente');
-        });
+      return api.get('/tipo-garantia').then(function (response){
+        vm.tiposGarantia = response.data;
+        console.log('Tipos de garantía obtenidos correctamente');
       });
     }
 
     function obtenerMargenes(){
-      return obtenerTiposDeGarantias().then(function (){
-        return api.get('/margen').then(function (response){
-          vm.margenes = response.data;
-          console.log('Margenes obtenidos correctamente');
-        })
+      return api.get('/margen').then(function (response){
+        vm.margenes = response.data;
+        console.log('Margenes obtenidos correctamente');
+      });
+    }
+
+    function initialize(){
+      obtenerMarcas()
+      .then(obtenerSubfamilias)
+      .then(obtenerUnidades)
+      .then(obtenerTiposDeGarantias)
+      .then(obtenerMargenes)
+      .then(function(){
+        console.log('Datos obtenidos correctamente');
       });
     }
 
@@ -96,12 +97,6 @@
       vm.producto.clave = familia + subfamilia + marca + vm.producto.subclave;
       vm.producto.subfamilia_id = vm.subfamilia ? vm.subfamilia.id : null;
       vm.producto.marca_id = vm.marca ? vm.marca.id : null;
-    }
-
-    function initialize(){
-      obtenerMargenes().then(function (){
-        console.log('Datos obtenidos correctamente');
-      });
     }
 
     function crearProducto(){
