@@ -23,6 +23,7 @@
       'sagdApp.producto',
       'sagdApp.proveedor',
       'sagdApp.session',
+      'sagdApp.sidebar',
       'sagdApp.subfamilia',
       'sagdApp.sucursal',
       'sagdApp.unidad'
