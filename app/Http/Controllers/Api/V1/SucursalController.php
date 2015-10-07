@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Sucursal;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use App\Events\SucursalVista;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Sucursal;
+use Event;
+use Illuminate\Http\Request;
 
 class SucursalController extends Controller
 {
@@ -67,6 +68,7 @@ class SucursalController extends Controller
         $this->sucursal = $this->sucursal->with('proveedor', 'domicilio.codigoPostal')->find($id);
         if( $this->sucursal )
         {
+            event(new SucursalVista( $this->sucursal->self()));
             return response()->json([
                 'message' => 'Sucursal obtenida exitosamente',
                 'sucursal' => $this->sucursal

@@ -39,22 +39,14 @@
     vm.collection = '';
 
     notifications.on('sucursales:App\\Events\\SucursalVista', function(data){
-      addNotification();
+      addNotification(data.data);
     });
 
 
-    function addNotification() {
-      var template = "\
-<div class='card card-inverse card-primary text-center'>\
-  <div class='card-block'>\
-      <blockquote class='card-blockquote'>\
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>\
-        <footer>Someone famous in <cite title='Source Title'>Source Title</cite></footer>\
-      </blockquote>\
-  </div>\
-</div>";
-      var target = $("#notification-bar");
-      target.append(template);
+    function addNotification(data) {
+      var template = "<p>"+data.usuario +": "+data.mensaje+"</p>";
+      var target = $("#listener");
+      target.prepend(template);
     }
   }
 })();
