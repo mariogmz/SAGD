@@ -372,4 +372,17 @@ class ClienteTest extends TestCase {
         ]);
         $this->assertInstanceOf(App\User::class, $cliente->user);
     }
+
+    /**
+     * @covers ::domicilios
+     * @group relaciones
+     */
+    public function testTabuladores()
+    {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $tabulador = factory(App\Tabulador::class)->create(['cliente_id' => $cliente->id]);
+        $tabuladores = $cliente->tabuladores;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tabuladores);
+        $this->assertInstanceOf(App\Tabulador::class, $tabuladores[0]);
+    }
 }

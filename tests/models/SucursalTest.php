@@ -208,4 +208,17 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(App\Caja::class, $cajas[0]);
         $this->assertCount(1, $cajas);
     }
+
+    /**
+     * @covers ::tabuladores
+     * @group relaciones
+     */
+    public function testTabuladores() {
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Tabulador::class)->create(['sucursal_id' => $sucursal->id]);
+        $tabuladores = $sucursal->tabuladores;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tabuladores);
+        $this->assertInstanceOf(App\Tabulador::class, $tabuladores[0]);
+        $this->assertCount(1, $tabuladores);
+    }
 }

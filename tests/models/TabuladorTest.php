@@ -89,21 +89,6 @@ class TabuladorTest extends TestCase
     }
 
     /**
-     * @covers ::cliente
-     * @group relaciones
-     */
-    public function testRelacionCliente()
-    {
-
-        $cliente = factory(App\Cliente::class)->create();
-        $cs = factory(App\Tabulador::class)->create(['cliente_id' => $cliente->id, 'sucursal_id' => $cliente->sucursal_id]);
-
-        $clientes = $cs->clientes;
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
-        $this->assertInstanceOf(App\Cliente::class, $clientes[0]);
-    }
-
-    /**
      * @coversNothing
      */
     public function testExisteEnTabla()
@@ -121,5 +106,27 @@ class TabuladorTest extends TestCase
         $this->notSeeInDatabase('tabuladores', ['tabulador' => 11]);
     }
 
+    /**
+     * @covers ::cliente
+     * @group relaciones
+     */
+    public function testRelacionCliente()
+    {
+        $cliente = factory(App\Cliente::class)->create();
+        $tabulador = factory(App\Tabulador::class)->create(['cliente_id' => $cliente->id, 'sucursal_id' => $cliente->sucursal_id]);
+        $this->assertInstanceOf(App\Cliente::class, $tabulador->cliente);
+        $this->assertEquals($cliente->id, $tabulador->cliente->id);
+    }
 
+    /**
+     * @covers ::sucursales
+     * @group relaciones
+     */
+    public function testRelacionSucursal()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        $tabulador = factory(App\Tabulador::class)->create(['sucursal_id' => $sucursal->id]);
+        $this->assertInstanceOf(App\Sucursal::class, $tabulador->sucursal);
+        $this->assertEquals($sucursal->id, $tabulador->sucursal->id);
+    }
 }

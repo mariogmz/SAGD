@@ -217,7 +217,7 @@ class Cliente extends LGGModel {
      * @return Illuminate\Database\Eloquent\Collection
      */
     public function tabuladores() {
-        return $this->hasMany('App\Tabuladores', 'cliente_id');
+        return $this->hasMany('App\Tabulador');
     }
 
     /**

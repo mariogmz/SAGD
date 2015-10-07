@@ -175,4 +175,12 @@ class Sucursal extends LGGModel {
     public function cajas() {
         return $this->hasMany('App\Caja');
     }
+
+    /**
+     * Obtiene los tabuladores asociados a la sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function tabuladores() {
+        return $this->hasMany('App\Tabulador');
+    }
 }
