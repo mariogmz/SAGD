@@ -132,12 +132,19 @@ class ProductoControllerTest extends TestCase {
      */
     public function test_PUT_update_ok() {
         $endpoint = $this->endpoint . '/1';
-        $parameters = ['upc' => 123456];
+        $parameters = [
+            'upc'       => 1234567890,
+            'dimension' => [
+                'largo' => '10.00'
+            ]
+        ];
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'update' => true
+            'getAttribute' => Mockery::self(),
+            'update' => true,
         ])->withAnyArgs();
+
         $this->app->instance('App\Producto', $this->mock);
 
         $this->put($endpoint, $parameters)
@@ -176,7 +183,8 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'update' => false
+            'update' => false,
+            'getAttribute' => Mockery::self(),
         ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'La clave ya existe'];
         $this->app->instance('App\Producto', $this->mock);

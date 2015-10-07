@@ -84,19 +84,27 @@ class ProductoController extends Controller {
         $params = $request->all();
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
+
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del producto',
                 'error'   => 'Producto no encontrado'
             ], 404);
-        } elseif ($this->producto->update($params)) {
+
+        } elseif ($this->producto->update($params) && $this->producto->dimension->update($params['dimension'])) {
+
             return response()->json([
                 'message' => 'Producto se actualizo correctamente'
             ], 200);
+
         } else {
+
+            $this->producto->errors || $this->producto->errors = new Illuminate\Support\MessageBag();
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del producto',
-                'error'   => $this->producto->errors
+                'error'   => $this->producto->dimension->errors ?
+                    $this->producto->errors : $this->producto->errors->merge($this->producto->dimension->errors)
             ], 400);
+
         }
     }
 
