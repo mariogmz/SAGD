@@ -4,7 +4,7 @@ namespace App;
 
 
 /**
- * App\ClienteSucursal
+ * App\Tabulador
  *
  * @property integer $id
  * @property integer $tabulador
@@ -13,13 +13,13 @@ namespace App;
  * @property boolean $venta_especial
  * @property integer $sucursal_id
  * @property integer $cliente_id
- * @method static \Illuminate\Database\Query\Builder|\App\ClienteSucursal whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
-class ClienteSucursal extends LGGModel {
+class Tabulador extends LGGModel {
 
     //
-    protected $table = "clientes_sucursales";
+    protected $table = "tabuladores";
     public $timestamps = false;
     protected $fillable = ['tabulador', 'tabulador_original', 'habilitada', 'venta_especial', 'cliente_id', 'sucursal_id'];
 
@@ -40,14 +40,14 @@ class ClienteSucursal extends LGGModel {
      */
     public static function boot() {
         parent::boot();
-        ClienteReferencia::creating(function ($cr) {
+        Tabulador::creating(function ($cr) {
             if (!$cr->isValid()) {
                 return false;
             }
 
             return true;
         });
-        ClienteSucursal::updating(function ($cr) {
+        Tabulador::updating(function ($cr) {
             $cr->updateRules = self::$rules;
 
             return $cr->isValid('update');
@@ -57,9 +57,17 @@ class ClienteSucursal extends LGGModel {
 
     /**
      * Obtiene los Clientes asociados con el registro de Tabulador por Sucursal
-     * @return Illuminate\Database\Eloquent\Collection::class
+     * @return App\Cliente
      */
-    public function clientes() {
-        return $this->belongsTo(Cliente::class, 'cliente_id');
+    public function cliente() {
+        return $this->belongsTo(Cliente::class);
+    }
+
+    /**
+     * Obtiene las Sucursales asociadas con el registro de Tabulador
+     * @return App\Sucursal
+     */
+    public function sucursal() {
+        return $this->belongsTo(Sucursal::class);
     }
 }

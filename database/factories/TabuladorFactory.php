@@ -11,14 +11,16 @@
 |
 */
 
-$factory->define(App\ClienteSucursal::class, function ($faker)
+$factory->define(App\Tabulador::class, function ($faker)
 {
+    $cliente = factory(App\Cliente::class, "full")->create();
+
     return [
         'tabulador' => $faker->numberBetween($min = 1, $max = 10),
         'tabulador_original' => $faker->numberBetween($min = 1, $max = 10),
         'habilitada' => $faker->numberBetween(0, 1),
         'venta_especial' => $faker->numberBetween(0, 1),
-        'cliente_id' => 1,
-        'sucursal_id' => 1
+        'cliente_id' => $cliente->id,
+        'sucursal_id' => $cliente->sucursal_id
     ];
 });

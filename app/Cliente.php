@@ -213,11 +213,11 @@ class Cliente extends LGGModel {
     }
 
     /**
-     * Obtiene las Sucursales relacionadas con el cliente
+     * Obtiene los Tabuladores por sucursal del Cliente
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function sucursales() {
-        return $this->hasMany('App\clienteSucursal', 'cliente_id');
+    public function tabuladores() {
+        return $this->hasMany('App\Tabuladores', 'cliente_id');
     }
 
     /**

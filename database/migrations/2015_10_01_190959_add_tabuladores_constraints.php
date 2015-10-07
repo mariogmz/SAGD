@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddClientesSucursalesConstraints extends Migration
+class AddTabuladoresConstraints extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddClientesSucursalesConstraints extends Migration
     public function up()
     {
         //
-        Schema::table('clientes_sucursales', function ($table) {
+        Schema::table('tabuladores', function ($table) {
             $table->integer('cliente_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
 
@@ -30,9 +30,9 @@ class AddClientesSucursalesConstraints extends Migration
     public function down()
     {
         //
-        Schema::table('clientes_sucursales', function ($table) {
-            $table->dropForeign('clientes_sucursales_cliente_id_foreign');
-            $table->dropForeign('clientes_sucursales_sucursal_id_foreign');
+        Schema::table('tabuladores', function ($table) {
+            $table->dropForeign('tabuladores_cliente_id_foreign');
+            $table->dropForeign('tabuladores_sucursal_id_foreign');
 
             $table->dropColumn(['cliente_id', 'sucursal_id']);
         });

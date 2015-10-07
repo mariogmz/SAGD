@@ -1,9 +1,9 @@
 <?php
 
 /**
- * @coversDefaultClass \App\ClienteSucursal
+ * @coversDefaultClass \App\Tabulador
  */
-class ClienteSucursalTest extends TestCase
+class TabuladorTest extends TestCase
 {
 
     /**
@@ -11,8 +11,8 @@ class ClienteSucursalTest extends TestCase
      */
     public function testModeloEsValido()
     {
-        $clienteSucursal = factory(App\ClienteSucursal::class)->make();
-        $this->assertTrue($clienteSucursal->isValid());
+        $tabulador = factory(App\Tabulador::class)->make();
+        $this->assertTrue($tabulador->isValid());
     }
 
     /**
@@ -21,7 +21,7 @@ class ClienteSucursalTest extends TestCase
      */
     public function testModeloEsActualizable()
     {
-        $model = factory(App\ClienteSucursal::class)->create();
+        $model = factory(App\Tabulador::class)->create();
         $model->cliente_id = 1;
         $this->assertTrue($model->isValid('update'));
         $this->assertTrue($model->save());
@@ -33,7 +33,7 @@ class ClienteSucursalTest extends TestCase
      */
     public function testUsuarioEsRequerido()
     {
-        $model = factory(App\ClienteSucursal::class)->make(['cliente_id' => null]);
+        $model = factory(App\Tabulador::class)->make(['cliente_id' => null]);
         $this->assertFalse($model->isValid());
     }
 
@@ -42,7 +42,7 @@ class ClienteSucursalTest extends TestCase
      */
     public function testSucursalEsRequerido()
     {
-        $model = factory(App\ClienteSucursal::class)->make(['sucursal_id' => null]);
+        $model = factory(App\Tabulador::class)->make(['sucursal_id' => null]);
         $this->assertFalse($model->isValid());
     }
 
@@ -51,7 +51,7 @@ class ClienteSucursalTest extends TestCase
      */
     public function testTabuladorEsRequerido()
     {
-        $model = factory(App\ClienteSucursal::class)->make(['tabulador' => null]);
+        $model = factory(App\Tabulador::class)->make(['tabulador' => null]);
         $this->assertFalse($model->isValid());
     }
 
@@ -60,7 +60,7 @@ class ClienteSucursalTest extends TestCase
      */
     public function testTabuladorEsEntero()
     {
-        $model = factory(App\ClienteSucursal::class)->make(['tabulador' => 1.1]);
+        $model = factory(App\Tabulador::class)->make(['tabulador' => 1.1]);
         $this->assertFalse($model->isValid());
     }
 
@@ -69,7 +69,7 @@ class ClienteSucursalTest extends TestCase
      */
     public function testTabuladorEsUnNumero()
     {
-        $model = factory(App\ClienteSucursal::class)->make(['tabulador' => "Tabulador1"]);
+        $model = factory(App\Tabulador::class)->make(['tabulador' => "Tabulador1"]);
         $this->assertFalse($model->isValid());
     }
 
@@ -77,7 +77,7 @@ class ClienteSucursalTest extends TestCase
      * @coversNothing
      */
     public function testHabilitadaDebeSerBooleano() {
-        $model = factory(App\ClienteSucursal::class)->make([
+        $model = factory(App\Tabulador::class)->make([
             'habilitada' => 'InvalidString'
         ]);
         $this->assertFalse($model->isValid());
@@ -94,16 +94,13 @@ class ClienteSucursalTest extends TestCase
      */
     public function testRelacionCliente()
     {
-        //$clienteSucursal = factory(App\ClienteSucursal::class)->create();
-        //$cliente = $clienteSucursal->cliente_id;
-        //$this->assertInstanceOf(App\Cliente::class, $cliente);
 
-        //$cliente = factory(App\Cliente::class)->create();
-        //$cs = factory(App\ClienteSucursal::class)->create();
-        //$cs->clientes()->save($cliente);
-        //$clientes = $cs->clientes;
-        //$this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
-        //$this->assertInstanceOf(App\Cliente::class, $clientes[0]);
+        $cliente = factory(App\Cliente::class)->create();
+        $cs = factory(App\Tabulador::class)->create(['cliente_id' => $cliente->id, 'sucursal_id' => $cliente->sucursal_id]);
+
+        $clientes = $cs->clientes;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $clientes);
+        $this->assertInstanceOf(App\Cliente::class, $clientes[0]);
     }
 
     /**
@@ -111,8 +108,8 @@ class ClienteSucursalTest extends TestCase
      */
     public function testExisteEnTabla()
     {
-        $this->seeInDatabase('clientes_sucursales', ['tabulador' => 1]);
-        $this->seeInDatabase('clientes_sucursales', ['tabulador' => 6]);
+        $this->seeInDatabase('tabuladores', ['tabulador' => 1]);
+        $this->seeInDatabase('tabuladores', ['tabulador' => 6]);
     }
 
     /**
@@ -120,8 +117,8 @@ class ClienteSucursalTest extends TestCase
      */
     public function testNoExisteEnTabla()
     {
-        $this->notSeeInDatabase('clientes_sucursales', ['tabulador' => 0]);
-        $this->notSeeInDatabase('clientes_sucursales', ['tabulador' => 11]);
+        $this->notSeeInDatabase('tabuladores', ['tabulador' => 0]);
+        $this->notSeeInDatabase('tabuladores', ['tabulador' => 11]);
     }
 
 
