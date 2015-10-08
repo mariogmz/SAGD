@@ -1,17 +1,146 @@
 <div class="card">
-    <div class="header">
-        <h4>Crear nuevo cliente</h4>
-    </div>
-    <div class="block">
-        <form class="item-form" ng-submit="vm.onSubmit(vm.model)">
-            <fieldset>
-                <formly-form model="vm.model" fields="vm.fields" form="vm.Form">
-                    <div class="pull-right">
-                        <a ui-sref="clienteIndex" class="button secondary">Regresar</a>
-                        <input type="submit" class="button primary" ng-disabled="vm.Form.$pristine" value="Guardar cambios">
-                    </div>
-                </formly-form>
+  <div class="header">
+    <h4>Crear nuevo cliente</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" ng-submit="vm.onSubmit(vm.model)" autocomplete="off">
+      <section class="card">
+        <div class="header">
+          <h5>Datos para usuario</h5>
+        </div>
+        <div class="row block">
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="usuario">Usuario:</label>
+              <input type="text" id="usuario" class="form-control" placeholder="Mínimo 4 y máximo 20 caracteres">
             </fieldset>
-        </form>
-    </div>
+           </div>
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="password">Contraseña:</label>
+              <input type="password" id="password" class="form-control">
+            </fieldset>
+          </div>
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" class="form-control" id="email" placeholder="Example input">
+            </fieldset>
+          </div>
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="repite_email">Repite email:</label>
+              <input type="email" class="form-control" id="repite_email" placeholder="">
+            </fieldset>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="header">
+          <h5>Datos personales</h5>
+        </div>
+        <div class="row block">
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="nombre">Nombre:</label>
+                <input type="text" id="nombre" class="form-control" placeholder="">
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="nombre">Autorizado:</label>
+                <input type="text" id="nombre" class="form-control" placeholder="">
+              </fieldset>
+            </div>
+          </div>
+
+          <div class="row block">
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="sexo">Sexo:</label>
+                <select name="sexo" id="sexo" class="form-control">
+                  <option value="HOMBRE">Hombre</option>
+                  <option value="MUJER">Mujer</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+                <input type="text" id="fecha_nacimiento" class="form-control" placeholder="">
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="nombre">Ocupación:</label>
+                <input type="text" id="ocupacion" class="form-control">
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="telefono">Teléfono:</label>
+                <input type="text" id="telefono" class="form-control" placeholder="">
+              </fieldset>
+            </div>
+            <div class="col-lg-4">
+              <fieldset class="form-group">
+                <label for="celular">Celular:</label>
+                <input type="text" id="celular" class="form-control">
+              </fieldset>
+            </div>
+          </div>
+      </section>
+
+      <section class="card">
+        <div class="header">
+          <h5>Sistema</h5>
+        </div>
+        <div class="row block">
+          <div class="row block">
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="cliente_estatus_id">Estatus:</label>
+                <select name="cliente_estatus_id" id="cliente_estatus_id" class="form-control">
+                  <option value=0>Seleccione una opción</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="empleado_id">Vendedor:</label>
+                <select name="empleado_id" id="empleado_id" class="form-control">
+                  <option value=0>Seleccione una opción</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="cliente_referencia_id">Referencia:</label>
+                <select name="cliente_referencia_id" id="cliente_referencia_id" class="form-control">
+                  <option value=0>Seleccione una opción</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="fecha_expira_club_zegucom">Club Zegucom:</label>
+                  <input type="text" id="fecha_expira_club_zegucom" class="form-control">
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+
+
+        <div class="row block">
+
+              <div class="pull-right">
+                <a ui-sref="clienteIndex" class="button secondary">Regresar</a>
+                <input type="submit" class="button primary" ng-disabled="vm.Form.$pristine" value="Guardar cambios">
+              </div>
+        </div>
+    </form>
+  </div>
 </div>
