@@ -128,7 +128,7 @@ class TabuladorController extends Controller
             ], 200);
         } else {
             return response()->json([
-                'message' => 'No se pudo eliminar el tabulador',
+                'message' => 'No se pudo eliminar el Tabulador',
                 'error'   => $this->tabulador->errors
             ], 400);
         }

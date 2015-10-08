@@ -41,8 +41,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
         Route::resource('sucursal', 'SucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
-        Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
-        Route::resource('tabulador', 'TabuladorController', ['only' => ['index','store','show','update']]);
+        Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update', 'destroy']]);
+        Route::resource('tabulador', 'TabuladorController', ['only' => ['index','store','show','update', 'destroy']]);
 
     });
 });
