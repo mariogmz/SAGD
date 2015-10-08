@@ -7,6 +7,25 @@ table.item-table {
     color: $alto;
   }
 
+  td.actions {
+    @extend .text-center;
+    .action-buttons {
+      min-width: 100px;
+    }
+  }
+
+  td.with-input {
+    padding-left: 3px;
+    padding-right: 3px;
+
+    & > input[type="text"] {
+      @extend .text-center;
+      //border: none;
+      padding-left: 2px;
+      padding-right: 2px;
+    }
+  }
+
   th.action {
     transition: all 500ms ease-in-out;
     &:hover {
@@ -17,14 +36,11 @@ table.item-table {
     }
   }
 
-  th:last-child{
+  th:last-child {
     text-align: center;
   }
 
-  td.actions{
-    text-align: center;
-    .action-buttons{
-      min-width: 100px;
-    }
+  tr:hover td.with-input > input[type="text"] {
+    background-color: #F5F5F5;
   }
 }
