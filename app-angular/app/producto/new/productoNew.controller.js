@@ -20,7 +20,8 @@
     var vm = this;
     vm.producto = {
       activo: true,
-      remate: false
+      remate: false,
+      subclave: ''
     };
     vm.precio = {};
     vm.dimension = {};

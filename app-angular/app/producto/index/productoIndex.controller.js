@@ -26,6 +26,7 @@
       {name: 'Subfamilia', key: 'subfamilia.clave'}
     ];
     vm.next = goToCreateStep1;
+    vm.delete = eliminarProducto;
 
     initialize();
 
@@ -46,7 +47,9 @@
     function eliminarProducto(id){
       return api.delete('/producto/', id)
         .then(function (response){
-          pnotify.alert('¡Exito!', response.data.message, 'success');
+          obtenerProductos().then(function (){
+            pnotify.alert('¡Exito!', response.data.message, 'success');
+          });
         }).catch(function (response){
           pnotify.alert('¡Error!', response.data.message, 'error');
         });

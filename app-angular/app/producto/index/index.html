@@ -42,12 +42,13 @@
       <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
           <button type="button" class="edit" ui-sref="productoEdit({id:producto.id})"><i></i></button>
-          <button type="button" class="delete" ng-click="vm.eliminarSubfamilia(producto.id)"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.delete(producto.id)"><i></i></button>
         </div>
       </td>
     </tr>
     </tbody>
   </table>
+  <loader model="vm.productos"></loader>
 </div>
 <div class="paginator">
   <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
