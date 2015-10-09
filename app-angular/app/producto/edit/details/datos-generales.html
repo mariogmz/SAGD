@@ -1,0 +1,115 @@
+<!-- app/producto/show/partials/datos-generales.html -->
+
+<div class="card borderless">
+  <div class="block">
+    <div class="row">
+      <!-- Subfamilia -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="subfamilia">Subfamilia</label>
+          <select id="subfamilia"
+                  ng-model="vm.subfamilia"
+                  ng-options="subfamilia.nombre for subfamilia in vm.subfamilias | orderBy:'nombre'"
+                  ng-change="vm.updateClave()">
+            <option value="" ng-bind="vm.subfamilias? 'Seleccione una subfamilia' : vm.producto.subfamilia.nombre"></option>
+          </select>
+        </fieldset>
+      </div>
+      <!-- Marca -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="marca_id">Marca:</label>
+          <select id="marca_id"
+                  ng-model="vm.marca"
+                  ng-options="marca.nombre for marca in vm.marcas | orderBy:'nombre'"
+                  ng-change="vm.updateClave()">
+            <option value="" ng-bind="vm.marcas? 'Seleccione una marca' : vm.producto.marca.nombre"></option>
+          </select>
+        </fieldset>
+      </div>
+      <!-- UPC -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="upc">UPC:</label>
+          <input type="text" id="upc" ng-model="vm.producto.upc">
+        </fieldset>
+      </div>
+      <!-- Número de parte -->
+      <div class="col-sm">
+        <fieldset>
+          <label for=numero_parte>Número de parte:</label>
+          <input type="text" id="numero_parte" ng-model="vm.producto.numero_parte" ng-blur="vm.updateSubclave()">
+          </select>
+        </fieldset>
+      </div>
+      <!-- Subclave -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="subclave">Subclave:</label>
+          <input type="text" id="subclave" ng-model="vm.producto.subclave" ng-blur="vm.updateSubclave()">
+        </fieldset>
+      </div>
+      <!-- Clave -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="clave">Clave:</label>
+          <input type="text" id="clave" disabled ng-model="vm.producto.clave">
+        </fieldset>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+
+      <!-- Descripciones -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="descripcion">Descripción:</label>
+          <textarea id="descripcion" ng-model="vm.producto.descripcion"></textarea>
+        </fieldset>
+        <fieldset>
+          <label for="descripcion_corta">Descripción corta:</label>
+          <input type="text" id="descripcion_corta" ng-model="vm.producto.descripcion_corta">
+        </fieldset>
+      </div>
+
+      <!-- Características -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="unidad_id">Unidad de medida:</label>
+          <select id="unidad_id"
+                  ng-model="vm.producto.unidad_id"
+                  ng-options="unidad.id as unidad.nombre for unidad in vm.unidades">
+            <option ng-bind="vm.unidades? 'Seleccione una unidad de medida' : vm.producto.unidad.nombre"></option>
+          </select>
+        </fieldset>
+        <fieldset class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="vm.producto.remate" ng-true-value="1" ng-false-value="0">
+            <span></span>
+            ¿En remate?
+          </label>
+        </fieldset>
+      </div>
+
+      <div class="col-sm">
+        <fieldset>
+          <label for="tipo_garantia_id">Tipo de garantía:</label>
+          <select id="tipo_garantia_id"
+                  ng-model="vm.producto.tipo_garantia_id"
+                  ng-options="tipo.id as tipo.descripcion for tipo in vm.tiposGarantia">
+            <option value="" ng-bind="vm.tiposGarantia? 'Seleccione un tipo de garantía' : vm.producto.tipo_garantia.descripcion"></option>
+          </select>
+        </fieldset>
+        <fieldset class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="vm.producto.activo" ng-true-value="1" ng-false-value="0">
+            <span></span>
+            ¿Activo?
+          </label>
+        </fieldset>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -7,6 +7,7 @@ use App\Producto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class ProductoController extends Controller {
 
@@ -23,7 +24,7 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function index() {
-        return $this->producto->all();
+        return $this->producto->with('subfamilia')->get();
     }
 
     /**
@@ -33,9 +34,10 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function store(Request $request) {
+
         $params = $request->all();
-        $this->producto->fill($params);
-        if ($this->producto->save()) {
+        $this->producto->fill($params['producto']);
+        if ($this->producto->saveWithData($params)) {
             return response()->json([
                 'message' => 'Producto creado exitosamente',
                 'producto' => $this->producto->self()
@@ -56,11 +58,12 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $this->producto = $this->producto->find($id);
+        $this->producto = $this->producto->with('tipoGarantia','marca','margen','unidad','subfamilia','dimension')->find($id);
         if ($this->producto) {
             return response()->json([
                 'message' => 'Producto obtenido exitosamente',
-                'producto' => $this->producto->self()
+                'producto' => $this->producto->self(),
+                'precios_proveedor' => $this->producto->preciosProveedor()
             ], 200);
         } else {
             return response()->json([
@@ -81,19 +84,24 @@ class ProductoController extends Controller {
         $params = $request->all();
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
+
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del producto',
                 'error'   => 'Producto no encontrado'
             ], 404);
-        } elseif ($this->producto->update($params)) {
+
+        } elseif ($this->producto->updateWithData($params)) {
             return response()->json([
                 'message' => 'Producto se actualizo correctamente'
             ], 200);
+
         } else {
+
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del producto',
                 'error'   => $this->producto->errors
             ], 400);
+
         }
     }
 

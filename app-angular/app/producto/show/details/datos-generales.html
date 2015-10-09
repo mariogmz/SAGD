@@ -1,0 +1,96 @@
+<!-- app/producto/show/partials/datos-generales.html -->
+
+<div class="card borderless">
+  <div class="block">
+    <div class="row">
+      <!-- Subfamilia -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="subfamilia">Subfamilia</label>
+          <input type="text" id="subfamilia" ng-model="vm.producto.subfamilia.nombre">
+        </fieldset>
+      </div>
+      <!-- Marca -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="marca_id">Marca:</label>
+          <input type="text" id="marca_id" ng-model="vm.producto.marca.nombre">
+        </fieldset>
+      </div>
+      <!-- UPC -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="upc">UPC:</label>
+          <input type="text" id="upc" ng-model="vm.producto.upc">
+        </fieldset>
+      </div>
+      <!-- Número de parte -->
+      <div class="col-sm">
+        <fieldset>
+          <label for=numero_parte>Número de parte:</label>
+          <input type="text" id="numero_parte" ng-model="vm.producto.numero_parte">
+        </fieldset>
+      </div>
+      <!-- Subclave -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="subclave">Subclave:</label>
+          <input type="text" id="subclave" ng-model="vm.producto.subclave">
+        </fieldset>
+      </div>
+      <!-- Clave -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="clave">Clave:</label>
+          <input type="text" id="clave" ng-model="vm.producto.clave">
+        </fieldset>
+      </div>
+    </div>
+    <hr>
+
+    <div class="row">
+
+      <!-- Descripciones -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="descripcion">Descripción:</label>
+          <textarea id="descripcion" ng-model="vm.producto.descripcion"></textarea>
+        </fieldset>
+        <fieldset>
+          <label for="descripcion_corta">Descripción corta:</label>
+          <input type="text" id="descripcion_corta" ng-model="vm.producto.descripcion_corta">
+        </fieldset>
+      </div>
+
+      <!-- Características -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="unidad_id">Unidad de medida:</label>
+          <input type="text" id="unidad_id" ng-model="vm.producto.unidad.nombre">
+        </fieldset>
+        <fieldset class="checkbox">
+          <label>
+            <input type="checkbox" ng-checked="vm.producto.remate">
+            <span></span>
+            ¿En remate?
+          </label>
+        </fieldset>
+      </div>
+
+      <div class="col-sm">
+        <fieldset>
+          <label for="tipo_garantia_id">Tipo de garantía:</label>
+          <input type="text" id="tipo_garantia_id" ng-model="vm.producto.tipo_garantia.descripcion">
+        </fieldset>
+        <fieldset class="checkbox">
+          <label>
+            <input type="checkbox" ng-checked="vm.producto.activo">
+            <span></span>
+            ¿Activo?
+          </label>
+        </fieldset>
+      </div>
+    </div>
+
+  </div>
+</div>

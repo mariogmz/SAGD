@@ -16,7 +16,7 @@ $factory->define(App\RmaDetalle::class, function ($faker) {
         'descripcion_falla'      => $faker->text(80),
         'rma_id'                 => factory(App\Rma::class)->create()->id,
         'garantia_id'            => factory(App\Garantia::class)->create()->id,
-        'producto_movimiento_id' => factory(App\ProductoMovimiento::class, 'withproduct')->create()->id
+        'producto_movimiento_id' => factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id
     ];
 });
 

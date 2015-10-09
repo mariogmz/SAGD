@@ -26,10 +26,14 @@ $factory->define(App\TransferenciaDetalle::class, function ($faker)
 });
 
 $factory->defineAs(App\TransferenciaDetalle::class, 'full', function($faker) use ($factory){
+    $producto = factory(App\Producto::class)->create();
+    $producto->addSucursal( factory(App\Sucursal::class)->create() );
+
     $td = $factory->raw(App\TransferenciaDetalle::class);
     $td['transferencia_id'] = factory(App\Transferencia::class, 'full')->create()->id;
-    $td['producto_id'] = factory(App\Producto::class)->create()->id;
+    $td['producto_id'] = $producto->id;
     $td['producto_movimiento_id'] = factory(App\ProductoMovimiento::class)->create([
-        'producto_id' => $td['producto_id']])->id;
+        'producto_sucursal_id' => $producto->productosSucursales()->first()->id
+    ])->id;
     return $td;
 });

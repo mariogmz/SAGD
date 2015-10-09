@@ -1,0 +1,182 @@
+<!-- /app/producto/new/step1/step1.html -->
+
+<!-- Relacionado con Icecat -->
+<div class="card">
+  <div class="header">
+    <h5>Ficha de Icecat</h5>
+  </div>
+  <div class="block">
+    <div class="row icecat">
+      <fieldset>
+        <label for="numero_parte">Número de parte:</label>
+        <input type="text" id="numero_parte" ng-model="parentVm.producto.numero_parte"
+               ng-blur="parentVm.updateSubclave()">
+      </fieldset>
+      <fieldset>
+        <label for="marca_id">Marca:</label>
+        <select id="marca_id"
+                ng-model="parentVm.marca"
+                ng-options="marca.nombre for marca in parentVm.marcas | orderBy:'nombre'"
+                ng-change="parentVm.updateClave()">
+          <option value="">Seleccione una marca</option>
+        </select>
+      </fieldset>
+      <span>
+         <button disabled><img width="90px" src="/public/img/icecat_logo.svg"></button>
+      </span>
+    </div>
+  </div>
+</div>
+
+<!-- Datos generales -->
+<div class="card">
+  <div class="header">
+    <h5>Datos Generales</h5>
+  </div>
+  <section class="block">
+
+    <!-- Clasificaciones internas -->
+    <div class="row">
+      <!-- UPC -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="upc">UPC:</label>
+          <input type="text" id="upc" ng-model="parentVm.producto.upc">
+        </fieldset>
+      </div>
+      <!-- Subfamilia -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="subfamilia_id">Subfamilia:</label>
+          <select id="subfamilia_id"
+                  ng-model="parentVm.subfamilia"
+                  ng-options="subfamilia.nombre for subfamilia in parentVm.subfamilias | orderBy:'nombre'"
+                  ng-change="parentVm.updateClave()">
+            <option value="">Seleccione una subfamilia</option>
+          </select>
+        </fieldset>
+      </div>
+
+      <!-- Subclave -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="subclave">Subclave:</label>
+          <input type="text" id="subclave" ng-model="parentVm.producto.subclave"
+                 ng-blur="parentVm.updateSubclave()">
+        </fieldset>
+      </div>
+      <!-- Clave -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="clave">Clave:</label>
+          <input type="text" id="clave" disabled ng-model="parentVm.producto.clave">
+        </fieldset>
+      </div>
+    </div>
+    <hr>
+    <div class="row">
+
+      <!-- Características -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="unidad_id">Unidad de medida:</label>
+          <select id="unidad_id"
+                  ng-model="parentVm.producto.unidad_id"
+                  ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades">
+            <option value="">Seleccione una unidad de medida</option>
+          </select>
+        </fieldset>
+        <fieldset class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="parentVm.producto.remate">
+            <span></span>
+            ¿En remate?
+          </label>
+        </fieldset>
+      </div>
+
+      <div class="col-sm">
+        <fieldset>
+          <label for="tipo_garantia_id">Tipo de garantía:</label>
+          <select id="tipo_garantia_id"
+                  ng-model="parentVm.producto.tipo_garantia_id"
+                  ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia">
+            <option value="">Seleccione un tipo de garantía</option>
+          </select>
+        </fieldset>
+        <fieldset class="checkbox">
+          <label>
+            <input type="checkbox" ng-model="parentVm.producto.activo">
+            <span></span>
+            ¿Activo?
+          </label>
+        </fieldset>
+      </div>
+
+      <!-- Descripciones -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="descripcion">Descripción:</label>
+          <textarea id="descripcion" ng-model="parentVm.producto.descripcion"></textarea>
+        </fieldset>
+        <fieldset>
+          <label for="descripcion_corta">Descripción corta:</label>
+          <input type="text" id="descripcion_corta" ng-model="parentVm.producto.descripcion_corta">
+        </fieldset>
+      </div>
+    </div>
+
+  </section>
+</div>
+
+<!-- Peso y Dimensiones -->
+<div class="card">
+  <div class="header">
+    <h5>Peso y Dimensiones</h5>
+  </div>
+  <div class="block">
+    <div class="row">
+      <!-- Peso -->
+      <fieldset class="col-sm">
+        <label for="peso">Peso:</label>
+
+        <div class="with-icon">
+          <span>kg</span>
+          <input type="text" id="peso" ng-model="parentVm.dimension.peso">
+        </div>
+      </fieldset>
+      <!-- Longitúd -->
+      <fieldset class="col-sm">
+        <label for="largo">Largo:</label>
+
+        <div class="with-icon">
+          <span>cm</span>
+          <input type="text" id="largo" ng-model="parentVm.dimension.largo">
+        </div>
+      </fieldset>
+
+      <!-- Ancho -->
+      <fieldset class="col-sm">
+        <label for="ancho">Ancho:</label>
+
+        <div class="with-icon">
+          <span>cm</span>
+          <input type="text" id="ancho" ng-model="parentVm.dimension.ancho">
+        </div>
+      </fieldset>
+      <!-- Altura -->
+      <fieldset class="col-sm">
+        <label for="alto">Alto:</label>
+
+        <div class="with-icon">
+          <span>cm</span>
+          <input type="text" id="alto" ng-model="parentVm.dimension.alto">
+        </div>
+      </fieldset>
+    </div>
+  </div>
+</div>
+<!-- Botones de acción -->
+<a ng-click="parentVm.back()" class="button secondary">Regresar</a>
+<a ng-click="vm.go(2)" class="button primary">Siguiente</a>
+

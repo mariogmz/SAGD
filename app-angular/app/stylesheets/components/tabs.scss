@@ -1,0 +1,74 @@
+ul.tabs {
+  @extend .nav;
+  @extend .nav-tabs;
+
+  li.nav-item {
+
+    a[data-toggle="tab"] {
+      @extend .nav-link;
+
+      background-color: $gray-suit;
+      color: $alto;
+      transition: all 500ms ease-in-out;
+
+      &:hover{
+        background-color: $mine-shaft;
+        color: $white;
+        transition: all 500ms ease-in-out;
+      }
+    }
+  }
+
+  li.back{
+    @extend .pull-right;
+
+    a{
+      @extend .nav-link;
+      @extend .btn;
+      @extend .btn-secondary;
+      border: 1px solid #E5E5E5;
+      transition: all 500ms ease-in-out;
+
+      &:hover{
+        transition: all 500ms ease-in-out;
+      }
+    }
+
+    i{
+      @extend .fa;
+      @extend .fa-arrow-left;
+    }
+
+  }
+
+  li.save{
+    @extend .pull-right;
+
+    a{
+      @extend .nav-link;
+      @extend .btn;
+      @extend .btn-primary;
+      border: 1px solid #E5E5E5;
+      transition: all 500ms ease-in-out;
+
+      &:hover{
+        transition: all 500ms ease-in-out;
+      }
+    }
+
+    i{
+      @extend .fa;
+      @extend .fa-floppy-o;
+    }
+
+  }
+}
+
+
+article.tab-content{
+  @extend .tab-content;
+
+  section{
+    @extend .tab-pane;
+  }
+}

@@ -32,7 +32,7 @@ class SubfamiliaControllerTest extends TestCase {
     public function test_GET_index() {
         $this->mock->shouldReceive([
             'with' => Mockery::self(),
-            'get' => 'success'
+            'get'  => 'success'
         ])->withAnyArgs();
         $this->app->instance('App\Subfamilia', $this->mock);
 
@@ -56,8 +56,8 @@ class SubfamiliaControllerTest extends TestCase {
 
         $this->post($this->endpoint, ['clave' => 'NT', 'nombre' => 'Notebooks'])
             ->seeJson([
-                'message' => 'Subfamilia creada exitosamente',
-                'subfamilia'  => 'self'
+                'message'    => 'Subfamilia creada exitosamente',
+                'subfamilia' => 'self'
             ])
             ->assertResponseStatus(201);
     }
@@ -86,6 +86,7 @@ class SubfamiliaControllerTest extends TestCase {
         $endpoint = $this->endpoint . '/1';
 
         $this->mock->shouldReceive([
+            'with' => Mockery::self(),
             'find' => Mockery::self(),
             'self' => 'self'
         ])->withAnyArgs();
@@ -94,8 +95,8 @@ class SubfamiliaControllerTest extends TestCase {
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Subfamilia obtenida exitosamente',
-                'subfamilia'  => 'self'
+                'message'    => 'Subfamilia obtenida exitosamente',
+                'subfamilia' => 'self'
             ])
             ->assertResponseStatus(200);
     }
@@ -106,7 +107,11 @@ class SubfamiliaControllerTest extends TestCase {
     public function test_GET_show_no_encontrado() {
         $endpoint = $this->endpoint . '/10000';
 
-        $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'find' => false,
+            'self' => 'self'
+        ])->withAnyArgs();
         $this->app->instance('App\Subfamilia', $this->mock);
 
         $this->get($endpoint)

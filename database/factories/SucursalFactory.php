@@ -29,3 +29,13 @@ $factory->defineAs(App\Sucursal::class, 'mismaclave', function ($faker) use ($fa
         'clave' => 'DICOTECH',
     ]);
 });
+
+$factory->defineAs(App\Sucursal::class, 'noprov', function ($faker) use ($factory) {
+    return [
+        'clave'        => App\Caker::realUnique(App\Sucursal::class, 'clave', 'regexify', '[A-Z]{8}'),
+        'nombre'       => $faker->regexify('\w{1,45}'),
+        'horarios'     => $faker->regexify('\w{1,100}'),
+        'ubicacion'    => $faker->regexify('\w{1,45}'),
+        'domicilio_id' => factory(App\Domicilio::class)->create()->id
+    ];
+});

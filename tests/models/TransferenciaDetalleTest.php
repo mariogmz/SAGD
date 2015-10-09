@@ -226,7 +226,7 @@ class TransferenciaDetalleTest extends TestCase {
     public function testProductoMovimientoAssociate()
     {
         $td = factory(App\TransferenciaDetalle::class, 'full')->make(['producto_movimiento_id' => null]);
-        $pm = factory(App\ProductoMovimiento::class)->create(['producto_id' => $td->producto->id]);
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
         $td->productoMovimiento()->associate($pm);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $td->productoMovimiento);
     }

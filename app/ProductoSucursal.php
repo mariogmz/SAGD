@@ -9,7 +9,6 @@ namespace App;
  * @property integer $id
  * @property integer $producto_id
  * @property integer $sucursal_id
- * @property integer $proveedor_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Existencia[] $existencias
  * @property-read \App\Sucursal $sucursal
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Precio[] $precios
@@ -17,15 +16,14 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereSucursalId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereProveedorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class ProductoSucursal extends LGGModel {
 
-    //
+
     protected $table = "productos_sucursales";
     public $timestamps = false;
-    protected $fillable = ['producto_id', 'sucursal_id', 'proveedor_id'];
+    protected $fillable = ['producto_id', 'sucursal_id'];
 
     public static $rules = [];
 
@@ -48,8 +46,8 @@ class ProductoSucursal extends LGGModel {
      * Obtiene la Existencia asociado al producto sucursal
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function existencias() {
-        return $this->hasMany('App\Existencia', 'productos_sucursales_id');
+    public function existencia() {
+        return $this->hasOne('App\Existencia', 'productos_sucursales_id');
     }
 
     /**
@@ -63,10 +61,10 @@ class ProductoSucursal extends LGGModel {
 
     /**
      * Obtiene los precios asociados
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \App\Precio
      */
-    public function precios() {
-        return $this->hasMany('App\Precio', 'producto_sucursal_id');
+    public function precio() {
+        return $this->hasOne('App\Precio', 'producto_sucursal_id');
     }
 
     /**
@@ -75,5 +73,13 @@ class ProductoSucursal extends LGGModel {
      */
     public function producto() {
         return $this->belongsTo('App\Producto', 'producto_id');
+    }
+
+    /**
+     * Obtiene los Productos Movimientos asociados
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function movimientos() {
+        return $this->hasMany('App\ProductoMovimiento', 'producto_sucursal_id');
     }
 }

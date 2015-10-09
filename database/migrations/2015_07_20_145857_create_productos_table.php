@@ -17,7 +17,7 @@ class CreateProductosTable extends Migration {
             $table->string('clave', 60);
             $table->string('descripcion', 300);
             $table->string('descripcion_corta', 50)->nullable();
-            $table->timestamp('fecha_entrada');
+            $table->timestamp('fecha_entrada')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->string('numero_parte', 30);
             $table->boolean('remate')->default(false)->unsigned();
             $table->decimal('spiff', 14, 2);

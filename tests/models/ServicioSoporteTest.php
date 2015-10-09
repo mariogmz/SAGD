@@ -188,7 +188,7 @@ class ServicioSoporteTest extends TestCase {
         $servicio_soporte = factory(App\ServicioSoporte::class)->create([
             'estado_soporte_id' => $estado_soporte->id
         ]);
-        $this->assertEquals($estado_soporte, $servicio_soporte->estadoSoporte);
+        $this->assertInstanceOf(App\EstadoSoporte::class, $servicio_soporte->estadoSoporte);
     }
 
     /**

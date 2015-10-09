@@ -36,14 +36,14 @@
         }
       }, {
         type: 'input',
-        key: 'familia_id',
+        key: 'familia.nombre',
         templateOptions: {
           type: 'text',
           label: 'Familia:'
         }
       }, {
         type: 'input',
-        key: 'margen_id',
+        key: 'margen.nombre',
         templateOptions: {
           type: 'text',
           label: 'Margen:'

@@ -27,12 +27,14 @@ $factory->define(App\EntradaDetalle::class, function ($faker)
 });
 
 $factory->defineAs(App\EntradaDetalle::class, 'full', function($faker) use ($factory){
+    $producto = factory(App\Producto::class)->create();
+    $producto->addSucursal( factory(App\Sucursal::class)->create() );
     $ed = $factory->raw(App\EntradaDetalle::class);
     $producto = factory(App\Producto::class)->create();
     $ed['entrada_id'] = factory(App\Entrada::class, 'full')->create()->id;
     $ed['producto_id'] = $producto->id;
     $ed['sucursal_id'] = App\Caker::getSucursal()->id;
-    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id])->id;
+    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
 
@@ -41,7 +43,7 @@ $factory->defineAs(App\EntradaDetalle::class, 'noentrada', function($faker) use 
     $producto = factory(App\Producto::class)->create();
     $ed['producto_id'] = $producto->id;
     $ed['sucursal_id'] = App\Caker::getSucursal()->id;
-    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id])->id;
+    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
 
@@ -49,8 +51,7 @@ $factory->defineAs(App\EntradaDetalle::class, 'noproducto', function($faker) use
     $ed = $factory->raw(App\EntradaDetalle::class);
     $ed['entrada_id'] = factory(App\Entrada::class, 'full')->create()->id;
     $ed['sucursal_id'] = App\Caker::getSucursal()->id;
-    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproduct')->create([
-            'producto_id' => factory(App\Producto::class)->create()->id])->id;
+    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
 
@@ -59,7 +60,7 @@ $factory->defineAs(App\EntradaDetalle::class, 'nosucursal', function($faker) use
     $producto = factory(App\Producto::class)->create();
     $ed['entrada_id'] = factory(App\Entrada::class, 'full')->create()->id;
     $ed['producto_id'] = $producto->id;
-    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id])->id;
+    $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
 
