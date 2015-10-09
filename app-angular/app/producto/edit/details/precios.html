@@ -49,8 +49,8 @@
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="precio in vm.precios | orderBy:vm.sortKey:vm.reverse">
-            <td ng-bind="precio.clave"></td>
+          <tr ng-repeat="precio in vm.producto.precios | orderBy:vm.sortKey:vm.reverse">
+            <td>{{precio.clave != 'DICO' ? precio.clave : ''}}<img ng-if="precio.clave == 'DICO'" width="90px" src="/public/img/logo_dicotechSF.svg"></td>
             <td class="with-input"><input type="text" ng-model="precio.costo"></td>
             <td class="with-input"><input type="text" ng-model="precio.precio_1"></td>
             <td class="with-input"><input type="text" ng-model="precio.precio_2"></td>

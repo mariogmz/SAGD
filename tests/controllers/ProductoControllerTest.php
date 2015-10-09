@@ -136,13 +136,24 @@ class ProductoControllerTest extends TestCase {
             'upc'       => 1234567890,
             'dimension' => [
                 'largo' => '10.00'
+            ],
+            'precios' => [
+                [
+                    'id' => 1,
+                    'clave' => 'DICO',
+                    'costo' => "30.00"
+                ],
+                [
+                    'id' => 5,
+                    'clave' => 'INGRAM',
+                    'costo' => "90.00"
+                ]
             ]
         ];
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'getAttribute' => Mockery::self(),
-            'update' => true,
+            'updateWithData' => true,
         ])->withAnyArgs();
 
         $this->app->instance('App\Producto', $this->mock);
@@ -183,8 +194,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'update' => false,
-            'getAttribute' => Mockery::self(),
+            'updateWithData' => false
         ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'La clave ya existe'];
         $this->app->instance('App\Producto', $this->mock);

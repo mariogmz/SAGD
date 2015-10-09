@@ -3,7 +3,7 @@
 namespace App;
 
 
-use Carbon\Carbon;
+use DB;
 use Illuminate\Support\MessageBag;
 
 
@@ -102,6 +102,7 @@ class Producto extends LGGModel {
             if (!$producto->isValid()) {
                 return false;
             }
+
             return true;
         });
         Producto::updating(function ($producto) {
@@ -109,6 +110,7 @@ class Producto extends LGGModel {
             $producto->updateRules['clave'] .= ',clave,' . $producto->id;
             $producto->updateRules['numero_parte'] .= ',numero_parte,' . $producto->id;
             $producto->updateRules['upc'] .= ',upc,' . $producto->id;
+
             return $producto->isValid('update');
         });
     }
@@ -290,7 +292,9 @@ class Producto extends LGGModel {
             ->join('precios', 'precios.producto_sucursal_id', '=', 'productos_sucursales.id')
             ->join('sucursales', 'productos_sucursales.id', '=', 'sucursales.id')
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
-            ->select('proveedores.*','precios.*')
+            ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'precios.costo', 'precios.precio_1',
+                'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
+                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10')
             ->groupBy('proveedores.id')
             ->get();
     }
@@ -311,10 +315,59 @@ class Producto extends LGGModel {
             return true;
         } else {
             $this->errors || $this->errors = new MessageBag();
-            if($dimension->errors){ $this->errors->merge($dimension->errors);}
-            if($precio->errors){ $this->errors->merge($precio->errors);}
+            if ($dimension->errors) {
+                $this->errors->merge($dimension->errors);
+            }
+            if ($precio->errors) {
+                $this->errors->merge($precio->errors);
+            }
+
             return false;
         }
+    }
+
+    public function updateWithData($parameters) {
+        DB::beginTransaction();
+        if ($this->update($parameters) &&
+            $this->dimension->update($parameters['dimension'])
+            && (empty($precios_errores = $this->guardarPreciosPorProveedor($parameters)))
+        ) {
+            DB::commit();
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            if ($this->dimension->errors) {
+                $this->errors->merge($this->dimension->errors);
+            }
+            if ($precios_errores) {
+                $this->errors->merge(['Precios' => $precios_errores]);
+            }
+            DB::rollback();
+
+            return false;
+        }
+    }
+
+    private function guardarPreciosPorProveedor($parameters) {
+        $precios_proveedor = $parameters['precios'];
+        $errors = [];
+        foreach ($precios_proveedor as $precio_proveedor) {
+            $sucursales_id = Sucursal::whereProveedorId($precio_proveedor['proveedor_id'])->get()->pluck('id');
+            $productos_sucursales = ProductoSucursal::with('precio')->whereIn('sucursal_id', $sucursales_id)->whereProductoId($parameters['id'])->get();
+
+            foreach ($productos_sucursales as $producto_sucursal) {
+                if (!$producto_sucursal->precio->update($precio_proveedor)) {
+
+                    foreach ($producto_sucursal->precio->errors->toArray() as $err) {
+                        if (!in_array($err, $errors)) {
+                            array_push($errors, $err);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $errors;
     }
 
     private function attachDimension($dimension) {

@@ -44,7 +44,7 @@
 
     function initialize(){
       obtenerProducto()
-        .then(function(){
+        .then(function (){
           obtenerMarcas();
           obtenerSubfamilias();
           obtenerUnidades();
@@ -59,7 +59,7 @@
         .then(function (response){
           vm.producto = response.data.producto;
           vm.subfamilia = vm.producto.subfamilia;
-          vm.precios = response.data.precios_proveedor;
+          vm.producto.precios = response.data.precios_proveedor;
           console.log('Producto #' + vm.id + ' obtenido.');
           $state.go('productoEdit.details');
           return response.data;
