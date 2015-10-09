@@ -7,14 +7,24 @@
       <div class="col-lg">
         <fieldset>
           <label for="subfamilia">Subfamilia</label>
-          <input type="text" id="subfamilia" ng-model="vm.producto.subfamilia.nombre">
+          <select id="subfamilia"
+                  ng-model="vm.subfamilia"
+                  ng-options="subfamilia.nombre for subfamilia in vm.subfamilias | orderBy:'nombre'"
+                  ng-change="vm.updateClave()">
+            <option value="" ng-bind="vm.subfamilias? 'Seleccione una subfamilia' : vm.producto.subfamilia.nombre"></option>
+          </select>
         </fieldset>
       </div>
       <!-- Marca -->
       <div class="col-lg">
         <fieldset>
           <label for="marca_id">Marca:</label>
-          <input type="text" id="marca_id" ng-model="vm.producto.marca.nombre">
+          <select id="marca_id"
+                  ng-model="vm.marca"
+                  ng-options="marca.nombre for marca in vm.marcas | orderBy:'nombre'"
+                  ng-change="vm.updateClave()">
+            <option value="" ng-bind="vm.marcas? 'Seleccione una marca' : vm.producto.marca.nombre"></option>
+          </select>
         </fieldset>
       </div>
       <!-- UPC -->
@@ -28,21 +38,22 @@
       <div class="col-sm">
         <fieldset>
           <label for=numero_parte>Número de parte:</label>
-          <input type="text" id="numero_parte" ng-model="vm.producto.numero_parte">
+          <input type="text" id="numero_parte" ng-model="vm.producto.numero_parte" ng-blur="vm.updateSubclave()">
+          </select>
         </fieldset>
       </div>
       <!-- Subclave -->
       <div class="col-sm">
         <fieldset>
           <label for="subclave">Subclave:</label>
-          <input type="text" id="subclave" ng-model="vm.producto.subclave">
+          <input type="text" id="subclave" ng-model="vm.producto.subclave" ng-blur="vm.updateSubclave()">
         </fieldset>
       </div>
       <!-- Clave -->
       <div class="col-sm">
         <fieldset>
           <label for="clave">Clave:</label>
-          <input type="text" id="clave" ng-model="vm.producto.clave">
+          <input type="text" id="clave" disabled ng-model="vm.producto.clave">
         </fieldset>
       </div>
     </div>
@@ -66,11 +77,15 @@
       <div class="col-sm">
         <fieldset>
           <label for="unidad_id">Unidad de medida:</label>
-          <input type="text" id="unidad_id" ng-model="vm.producto.unidad.nombre">
+          <select id="unidad_id"
+                  ng-model="vm.producto.unidad_id"
+                  ng-options="unidad.id as unidad.nombre for unidad in vm.unidades">
+            <option ng-bind="vm.unidades? 'Seleccione una unidad de medida' : vm.producto.unidad.nombre"></option>
+          </select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
-            <input type="checkbox" ng-checked="vm.producto.remate">
+            <input type="checkbox" ng-model="vm.producto.remate" ng-true-value="1" ng-false-value="0">
             <span></span>
             ¿En remate?
           </label>
@@ -80,11 +95,15 @@
       <div class="col-sm">
         <fieldset>
           <label for="tipo_garantia_id">Tipo de garantía:</label>
-          <input type="text" id="tipo_garantia_id" ng-model="vm.producto.tipo_garantia.descripcion">
+          <select id="tipo_garantia_id"
+                  ng-model="vm.producto.tipo_garantia_id"
+                  ng-options="tipo.id as tipo.descripcion for tipo in vm.tiposGarantia">
+            <option value="" ng-bind="vm.tiposGarantia? 'Seleccione un tipo de garantía' : vm.producto.tipo_garantia.descripcion"></option>
+          </select>
         </fieldset>
         <fieldset class="checkbox">
           <label>
-            <input type="checkbox" ng-checked="vm.producto.activo">
+            <input type="checkbox" ng-model="vm.producto.activo" ng-true-value="1" ng-false-value="0">
             <span></span>
             ¿Activo?
           </label>

@@ -9,7 +9,6 @@ namespace App;
  * @property integer $id
  * @property integer $producto_id
  * @property integer $sucursal_id
- * @property integer $proveedor_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Existencia[] $existencias
  * @property-read \App\Sucursal $sucursal
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Precio[] $precios
@@ -17,7 +16,6 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereSucursalId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereProveedorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class ProductoSucursal extends LGGModel {

@@ -84,19 +84,24 @@ class ProductoController extends Controller {
         $params = $request->all();
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
+
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del producto',
                 'error'   => 'Producto no encontrado'
             ], 404);
-        } elseif ($this->producto->update($params)) {
+
+        } elseif ($this->producto->updateWithData($params)) {
             return response()->json([
                 'message' => 'Producto se actualizo correctamente'
             ], 200);
+
         } else {
+
             return response()->json([
                 'message' => 'No se pudo realizar la actualizacion del producto',
                 'error'   => $this->producto->errors
             ], 400);
+
         }
     }
 

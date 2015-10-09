@@ -40,6 +40,28 @@ ul.tabs {
     }
 
   }
+
+  li.save{
+    @extend .pull-right;
+
+    a{
+      @extend .nav-link;
+      @extend .btn;
+      @extend .btn-primary;
+      border: 1px solid #E5E5E5;
+      transition: all 500ms ease-in-out;
+
+      &:hover{
+        transition: all 500ms ease-in-out;
+      }
+    }
+
+    i{
+      @extend .fa;
+      @extend .fa-floppy-o;
+    }
+
+  }
 }
 
 
