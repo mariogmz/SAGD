@@ -14,40 +14,36 @@
   @include box-shadow(#777);
 
   background-color: $white;
-  margin-top: 8%;
-
+  margin: 8% auto auto auto;
   max-width: 420px;
   min-width: 280px;
 
+  button[type="submit"] {
+    @extend .btn;
+    @extend .btn-primary;
+    @extend .btn-block;
 
-  .login-card-logo {
-    @extend .container;
-    text-align: center;
-    margin: 30px 30px 5px 30px;
-    img {
-      @extend .card-img-top;
-      width: 70%;
-    }
+  }
+
+  fieldset {
+    @extend .form-group;
+  }
+
+  input {
+    @extend .form-control;
   }
 
   .login-card-block {
     @extend .card-block;
+
     h4 {
       @extend .card-title;
     }
+
     h6 {
       @extend .card-subtitle;
       @extend .text-muted;
       margin-bottom: 10px;
-    }
-
-    fieldset {
-      @extend .form-group;
-    }
-
-    input {
-      @extend .form-control;
-
     }
 
     form.error {
@@ -65,13 +61,46 @@
         @extend .help-block;
       }
     }
+  }
 
+  .login-card-logo {
+    @extend .container;
+    margin: 30px 30px 5px 30px;
+    text-align: center;
 
-    button[type="submit"] {
-      @extend .btn;
-      @extend .btn-primary;
-      @extend .btn-block;
+    i.loading {
+      @extend .fa;
+      @extend .fa-spinner;
+      @extend .fa-spin;
+      @extend .fa-5x;
 
+      color: $gray-suit;
+    }
+    img {
+      @extend .card-img-top;
+      width: 70%;
+    }
+  }
+
+  .with-icon {
+    @extend .input-group;
+    margin-bottom: 5px;
+
+    span {
+      @extend .input-group-addon;
+    }
+
+    i {
+      @extend .fa;
+      @extend .fa-fw;
+
+      &.email {
+        @extend .fa-envelope-o;
+      }
+
+      &.key {
+        @extend .fa-key;
+      }
     }
   }
 }

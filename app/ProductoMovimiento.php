@@ -80,10 +80,10 @@ class ProductoMovimiento extends LGGModel {
 
     /**
      * Obtiene el Producto asociado al Movimiento
-     * @return App\Producto
+     * @return App\ProductoSucursal
      */
-    public function producto() {
-        return $this->belongsTo('App\Producto');
+    public function productoSucursal() {
+        return $this->belongsTo('App\ProductoSucursal');
     }
 
     /**
@@ -94,7 +94,6 @@ class ProductoMovimiento extends LGGModel {
         return $this->hasMany('App\RmaDetalle');
     }
 
-
     /**
      * Obtiene las Entradas Detalles asociadas con el Producto Movimiento
      * @return Illuminate\Database\Eloquent\Collection
@@ -102,7 +101,6 @@ class ProductoMovimiento extends LGGModel {
     public function entradasDetalles() {
         return $this->hasMany('App\EntradaDetalle', 'producto_movimiento_id');
     }
-
 
     /**
      * Obtiene las Salidas Detalles asociadas con el Producto Movimiento
@@ -112,7 +110,6 @@ class ProductoMovimiento extends LGGModel {
         return $this->hasMany('App\SalidaDetalle', 'producto_movimiento_id');
     }
 
-
     /**
      * Obtiene las Transferencias Detalles asociadas con el Producto Movimiento
      * @return Illuminate\Database\Eloquent\Collection
@@ -121,12 +118,27 @@ class ProductoMovimiento extends LGGModel {
         return $this->hasMany('App\TransferenciaDetalle', 'producto_movimiento_id');
     }
 
-
     /**
      * Obtiene los Apartados Detalles asociados con el Producto Movimiento
      * @return Illuminate\Database\Eloquent\Collection
      */
     public function apartadosDetalles() {
         return $this->hasMany('App\ApartadoDetalle', 'producto_movimiento_id');
+    }
+
+    /**
+     * Obtiene el producto al que pertenece
+     * @return mixed
+     */
+    public function producto() {
+        return $this->productoSucursal->producto();
+    }
+
+    /**
+     * Obtiene la sucursal al que pertenece
+     * @return mixed
+     */
+    public function sucursal() {
+        return $this->productoSucursal->sucursal();
     }
 }

@@ -2,7 +2,7 @@
 <div class="signin-screen">
   <div class="login-card">
     <div class="login-card-logo">
-      <i ng-class="{'fa fa-spinner fa-spin fa-5x' : vm.loading}"></i>
+      <i ng-class="{'loading' : vm.loading}"></i>
       <img ng-hide="vm.loading" src="../public/img/sagd.svg" alt="Sistema Administrativo de Grupo Dicotech">
     </div>
 
@@ -12,13 +12,16 @@
 
       <form ng-class="{'error': vm.loginError}">
         <fieldset>
-          <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email"
-                 ng-change="vm.clean()" onfocus>
-        </fieldset>
-        <fieldset>
-          <input type="password" placeholder="Contraseña" required ng-model="vm.password"
-                 ng-change="vm.clean()">
-
+          <div class="with-icon">
+            <span><i class="email"></i></span>
+            <input type="email" placeholder="Correo electrónico" required autofocus ng-model="vm.email"
+                   ng-change="vm.clean()" onfocus>
+          </div>
+          <div class="with-icon">
+            <span><i class="key"></i></span>
+            <input type="password" placeholder="Contraseña" required ng-model="vm.password"
+                   ng-change="vm.clean()">
+          </div>
           <p id="flash-error"
              ng-show="vm.loginError"
              ng-class="{'active': vm.loginError}">Credenciales de acceso incorrectas.</p>

@@ -42,7 +42,7 @@ class Precio extends LGGModel {
     public $timestamps = false;
     protected $fillable = ['costo', 'precio_1', 'precio_2', 'precio_3',
         'precio_4', 'precio_5', 'precio_6', 'precio_7', 'precio_8', 'precio_9',
-        'precio_10', 'producto_sucursal_id'];
+        'precio_10'];
 
     public static $rules = [
         'costo'                => 'required|numeric|min:0.0',

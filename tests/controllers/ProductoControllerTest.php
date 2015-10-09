@@ -30,9 +30,11 @@ class ProductoControllerTest extends TestCase {
      * @covers ::index
      */
     public function test_GET_index() {
-        $this->mock->shouldReceive('all')->once()->andReturn('success');
+        $this->mock->shouldReceive(
+            ['with' => Mockery::self(),
+             'get'  => 'success']
+        )->once()->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
-
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
     }
@@ -43,18 +45,18 @@ class ProductoControllerTest extends TestCase {
     public function test_POST_store() {
         $this->mock
             ->shouldReceive([
-                'fill'  => Mockery::self(),
-                'save'  => true,
-                'self'  => 'self',
-                'getId' => 1
+                'fill'         => Mockery::self(),
+                'saveWithData' => true,
+                'self'         => 'self',
+                'getId'        => 1
             ])
             ->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
 
-        $this->post($this->endpoint, ['upc' => 123456])
+        $this->post($this->endpoint, ['producto' => ['upc' => 123456]])
             ->seeJson([
-                'message' => 'Producto creado exitosamente',
-                'producto'  => 'self'
+                'message'  => 'Producto creado exitosamente',
+                'producto' => 'self'
             ])
             ->assertResponseStatus(201);
     }
@@ -64,11 +66,14 @@ class ProductoControllerTest extends TestCase {
      */
     public function test_POST_store_bad_data() {
         $this->mock
-            ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
+            ->shouldReceive([
+                'fill'         => Mockery::self(),
+                'saveWithData' => false
+            ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'Clave es requerido'];
         $this->app->instance('App\Producto', $this->mock);
 
-        $this->post($this->endpoint, ['upc' => 123456])
+        $this->post($this->endpoint, ['producto' => ['upc' => 123456]])
             ->seeJson([
                 'message' => 'Producto no creado',
                 'error'   => ['clave' => 'Clave es requerido']
@@ -83,16 +88,19 @@ class ProductoControllerTest extends TestCase {
         $endpoint = $this->endpoint . '/1';
 
         $this->mock->shouldReceive([
-            'find' => Mockery::self(),
-            'self' => 'self'
+            'with'             => Mockery::self(),
+            'find'             => Mockery::self(),
+            'self'             => 'self',
+            'preciosProveedor' => 'precios'
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
 
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Producto obtenido exitosamente',
-                'producto'  => 'self'
+                'message'           => 'Producto obtenido exitosamente',
+                'producto'          => 'self',
+                'precios_proveedor' => 'precios'
             ])
             ->assertResponseStatus(200);
     }
@@ -103,7 +111,11 @@ class ProductoControllerTest extends TestCase {
     public function test_GET_show_no_encontrado() {
         $endpoint = $this->endpoint . '/10000';
 
-        $this->mock->shouldReceive('find')->with(10000)->andReturn(false);
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'find' => false,
+            'self' => 'self'
+        ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
 
         $this->get($endpoint)
@@ -120,12 +132,30 @@ class ProductoControllerTest extends TestCase {
      */
     public function test_PUT_update_ok() {
         $endpoint = $this->endpoint . '/1';
-        $parameters = ['upc' => 123456];
+        $parameters = [
+            'upc'       => 1234567890,
+            'dimension' => [
+                'largo' => '10.00'
+            ],
+            'precios' => [
+                [
+                    'id' => 1,
+                    'clave' => 'DICO',
+                    'costo' => "30.00"
+                ],
+                [
+                    'id' => 5,
+                    'clave' => 'INGRAM',
+                    'costo' => "90.00"
+                ]
+            ]
+        ];
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'update' => true
+            'updateWithData' => true,
         ])->withAnyArgs();
+
         $this->app->instance('App\Producto', $this->mock);
 
         $this->put($endpoint, $parameters)
@@ -164,7 +194,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'update' => false
+            'updateWithData' => false
         ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'La clave ya existe'];
         $this->app->instance('App\Producto', $this->mock);

@@ -148,7 +148,7 @@ class MetodoPagoTest extends TestCase {
             'estatus_activo_id' => $estatus_activo->id
         ]);
         $estatus_activo_resultado = $metodo_pago->estatusActivo;
-        $this->assertEquals($estatus_activo, $estatus_activo_resultado);
+        $this->assertInstanceOf(App\EstatusActivo::class, $estatus_activo_resultado);
     }
 
     /**

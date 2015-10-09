@@ -5,13 +5,39 @@ form.item-form {
     text-align: left;
   }
 
+  label {
+    @extend .form-control-label;
+  }
+
+  input:not([type='submit']) {
+    @extend .form-control;
+  }
+
+  textarea {
+    @extend .form-control;
+    resize: none;
+  }
+
+  .row {
+    @include make-row();
+  }
+
+  .col {
+    @include make-col();
+    @include make-col-span(6);
+  }
+
+  .block-field{
+    @extend .form-group;
+    text-align: left;
+  }
+
   .inline-field {
     @extend .form-group;
     @extend .row;
 
     label {
       @extend .col-sm-3;
-      @extend .form-control-label;
     }
 
     .field {
@@ -24,15 +50,6 @@ form.item-form {
 
     .field-small {
       @extend .col-sm-3;
-    }
-
-    input {
-      @extend .form-control;
-    }
-
-    textarea{
-      @extend .form-control;
-      resize: none;
     }
   }
 }

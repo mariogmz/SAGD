@@ -97,9 +97,8 @@ class ConfiguracionTest extends TestCase {
             'configuracion_id' => $configuracion->id
         ]);
         $sucursales_configuraciones_resultado = $configuracion->sucursalesConfiguraciones;
-        for ($i = 0; $i < 5; $i ++)
-        {
-            $this->assertEquals($sucursales_configuraciones[$i], $sucursales_configuraciones_resultado[$i]);
+        for ($i = 0; $i < 5; $i ++) {
+            $this->assertInstanceOf(App\SucursalConfiguracion::class, $sucursales_configuraciones_resultado[$i]);
         }
     }
 }
