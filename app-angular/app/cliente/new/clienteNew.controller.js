@@ -21,7 +21,7 @@
     vm.onSubmit = onSubmit;
     vm.model = {};
 
-    vm.fields = [
+   /* vm.fields = [
       {
         type: 'input',
         key: 'nombre',
@@ -87,8 +87,7 @@
         }
       }
 
-    ];
-
+    ];*/
 
     activate();
 
@@ -96,16 +95,15 @@
       obtenerReferencias()
           .then(obtenerRoles)
           .then(obtenerEstatus)
-          .then(obtenerSucursales)
-          .then(assignFields);
+          .then(obtenerSucursales);
+          //.then(assignFields);
      
     }
 
     function obtenerReferencias() {
-      return api.get('/cliente-referencia')
-          .then(function (response) {
+      return api.get('/cliente-referencia').then(function (response) {
             vm.referencias = response.data;
-            return response;
+            console.log('Referencias obtenidas correctamente');
           })
           .catch(function (response) {
             vm.error = response.data;
@@ -131,7 +129,7 @@
       return api.get('/cliente-estatus')
           .then(function (response) {
             vm.estatus = response.data;
-            return response;
+            console.log('Estatus obtenidos correctamente');
           })
           .catch(function (response) {
             vm.error = response.data;
@@ -153,7 +151,7 @@
           });
     }
 
-    function assignFields() {
+   /* function assignFields() {
       vm.fields = vm.fields.map(function(object) {
         if(object.key == "cliente_referencia_id") {
           object.templateOptions.options = vm.referencias;
@@ -173,7 +171,7 @@
 
         return object;
       });
-    }
+    }*/
 
     function onSubmit(){
       return api.post('/cliente', vm.model)

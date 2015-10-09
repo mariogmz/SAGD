@@ -3,7 +3,7 @@
     <h4>Crear nuevo cliente</h4>
   </div>
   <div class="block">
-    <form class="item-form" ng-submit="vm.onSubmit(vm)" autocomplete="off">
+    <form class="item-form" autocomplete="off">
       <section class="card">
         <div class="header">
           <h5>Datos para usuario</h5>
@@ -102,8 +102,10 @@
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="cliente_estatus_id">Estatus:</label>
-                <select name="cliente_estatus_id" id="cliente_estatus_id" class="form-control">
-                  <option value=0>Seleccione una opción</option>
+                <select id="cliente_estatus_id" name="cliente_estatus_id" class="form-control"
+                        ng-model="vm.estatus"
+                        ng-options="estatus.nombre for estatus in vm.estatus| orderBy:'nombre'">
+                  <option value="">Seleccione una opción</option>
                 </select>
               </fieldset>
             </div>
@@ -118,9 +120,12 @@
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="cliente_referencia_id">Referencia:</label>
-                <select name="cliente_referencia_id" id="cliente_referencia_id" class="form-control">
-                  <option value=0>Seleccione una opción</option>
+                <select id="cliente_referencia_id" class="form-control"
+                        ng-model="vm.referencias"
+                        ng-options="referencias.nombre for referencias in vm.referencias | orderBy:'nombre'">
+                  <option value="">Seleccione una opción</option>
                 </select>
+
               </fieldset>
             </div>
             <div class="col-lg-6">
@@ -142,13 +147,11 @@
         </div>
       </section>
 
-
         <div class="row block">
-
-              <div class="pull-right">
-                <a ui-sref="clienteIndex" class="button secondary">Regresar</a>
-                <input type="submit" class="button primary" ng-disabled="vm.Form.$pristine" value="Guardar cambios">
-              </div>
+          <div class="pull-right">
+            <a ui-sref="clienteIndex" class="button secondary">Regresar</a>
+            <input type="submit" class="button primary" value="Guardar cambios">
+          </div>
         </div>
     </form>
   </div>
