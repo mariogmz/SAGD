@@ -101,21 +101,6 @@
      
     }
 
-
-    function onSubmit(){
-      return api.post('/cliente', vm.model)
-          .then(function (response){
-            vm.message = response.data.message;
-            pnotify.alert('Exito', vm.message, 'success');
-            $state.go('clienteShow', {id: response.data.cliente.id});
-          })
-          .catch(function (response){
-            vm.error = response.data;
-            pnotify.alertList('No se pudo guardar el cliente', vm.error.error, 'error');
-            return response;
-          });
-    }
-
     function obtenerReferencias() {
       return api.get('/cliente-referencia')
           .then(function (response) {
@@ -188,6 +173,20 @@
 
         return object;
       });
+    }
+
+    function onSubmit(){
+      return api.post('/cliente', vm.model)
+          .then(function (response){
+            vm.message = response.data.message;
+            pnotify.alert('Exito', vm.message, 'success');
+            $state.go('clienteShow', {id: response.data.cliente.id});
+          })
+          .catch(function (response){
+            vm.error = response.data;
+            pnotify.alertList('No se pudo guardar el cliente', vm.error.error, 'error');
+            return response;
+          });
     }
 
   }

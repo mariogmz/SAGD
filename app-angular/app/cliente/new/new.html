@@ -3,7 +3,7 @@
     <h4>Crear nuevo cliente</h4>
   </div>
   <div class="block">
-    <form class="item-form" ng-submit="vm.onSubmit(vm.model)" autocomplete="off">
+    <form class="item-form" ng-submit="vm.onSubmit(vm)" autocomplete="off">
       <section class="card">
         <div class="header">
           <h5>Datos para usuario</h5>
@@ -12,7 +12,7 @@
           <div class="col-lg-3">
             <fieldset class="form-group">
               <label for="usuario">Usuario:</label>
-              <input type="text" id="usuario" class="form-control" placeholder="Mínimo 4 y máximo 20 caracteres">
+              <input type="text" id="usuario" ng-model="vn.usuario" class="form-control" placeholder="Mínimo 4 y máximo 20 caracteres">
             </fieldset>
            </div>
           <div class="col-lg-3">
@@ -24,7 +24,7 @@
           <div class="col-lg-3">
             <fieldset class="form-group">
               <label for="email">Email:</label>
-              <input type="email" class="form-control" id="email" placeholder="Example input">
+              <input type="email" class="form-control" id="email" placeholder="">
             </fieldset>
           </div>
           <div class="col-lg-3">
@@ -50,8 +50,8 @@
             </div>
             <div class="col-lg-4">
               <fieldset class="form-group">
-                <label for="nombre">Autorizado:</label>
-                <input type="text" id="nombre" class="form-control" placeholder="">
+                <label for="autorizado">Autorizado:</label>
+                <input type="text" id="autorizado" class="form-control" placeholder="">
               </fieldset>
             </div>
           </div>
@@ -123,6 +123,15 @@
                 </select>
               </fieldset>
             </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="sucursal_id">Sucursal:</label>
+                <select name="sucursal_id" id="sucursal_id" class="form-control">
+                  <option value=0>Seleccione una opción</option>
+                </select>
+              </fieldset>
+            </div>
+
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="fecha_expira_club_zegucom">Club Zegucom:</label>
