@@ -79,7 +79,7 @@ class Producto extends LGGModel {
         'fecha_entrada'     => 'date',
         'numero_parte'      => 'required|unique:productos',
         'remate'            => 'required|boolean',
-        'spiff'             => 'required|numeric',
+        'spiff'             => 'required|numeric|min:0.0',
         'subclave'          => 'required|string|max:45',
         'upc'               => 'required|string|max:20|unique:productos',
         'tipo_garantia_id'  => 'required|integer',

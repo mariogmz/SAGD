@@ -42,11 +42,47 @@ class DimensionTest extends TestCase
     /**
      * @coversNothing
      */
-    public function testAtributosNoPuedenSerNegativos()
-    {
-        $dimension = factory(App\Dimension::class, 'negativeattr')->make();
-        $this->assertFalse($dimension->isValid());
+    public function testLargoMayorQueCero() {
+        $model = factory(App\Dimension::class)->make();
+        $model->largo = 0;
+        $this->assertFalse($model->isValid());
+        $model->largo = 1;
+        $this->assertTrue($model->isValid());
     }
+
+    /**
+     * @coversNothing
+     */
+    public function testAnchoMayorQueCero() {
+        $model = factory(App\Dimension::class)->make();
+        $model->ancho = 0;
+        $this->assertFalse($model->isValid());
+        $model->ancho = 0.1;
+        $this->assertTrue($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testAltoMayorQueCero() {
+        $model = factory(App\Dimension::class)->make();
+        $model->alto = 0;
+        $this->assertFalse($model->isValid());
+        $model->alto = 0.1;
+        $this->assertTrue($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testPesoMayorQueCero() {
+        $model = factory(App\Dimension::class)->make();
+        $model->peso = 0;
+        $this->assertFalse($model->isValid());
+        $model->peso = 0.1;
+        $this->assertTrue($model->isValid());
+    }
+
 
     /**
      * @covers ::producto
