@@ -604,4 +604,50 @@ class ProductoTest extends TestCase {
         }
 
     }
+
+    /**
+     * @covers ::updateWithData
+     * @group saves
+     */
+    public function testUpdateWithDataOnFailureDiscardChanges() {
+
+        $producto = factory(App\Producto::class)->create();
+        $producto->dimension()->save(new App\Dimension([
+            'largo' => 1,
+            'ancho' => 1,
+            'alto'  => 1,
+            'peso'  => 1
+        ]));
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+
+        $precio =factory(App\Precio::class)->make();
+        $precio->producto_sucursal_id = $producto->productosSucursales()->first()->id;
+        $this->assertTrue($precio->save());
+
+        $params = [
+            'dimension'   => [
+                'peso' => 2.00
+            ],
+            'precios'     => [
+                [
+                    'costo'        => 'ABC',
+                    'proveedor_id' => $sucursal->proveedor_id
+                ]
+            ],
+            'id' => $producto->id,
+            'descripcion' => 'TEST_DESCRIPTION'
+        ];
+
+        $this->assertFalse($producto->updateWithData($params));
+
+        $producto = App\Producto::find($producto->id);
+        $this->assertNotSame($params['descripcion'], $producto->descripcion);
+        $this->assertNotSame($params['dimension']['peso'], floatval($producto->dimension->peso));
+
+        foreach (App\ProductoSucursal::whereProductoId($producto->id)->whereSucursalId($sucursal->id)->get() as $producto_sucursal) {
+            $precio = $producto_sucursal->precio;
+            $this->assertNotSame($params['precios'][0]['costo'], floatval($precio->costo));
+        }
+    }
 }
