@@ -45,17 +45,17 @@ class Precio extends LGGModel {
         'precio_10'];
 
     public static $rules = [
-        'costo'                => 'required|numeric|min:0.0',
-        'precio_1'             => 'required|numeric|min:0.0',
-        'precio_2'             => 'required|numeric|min:0.0',
-        'precio_3'             => 'required|numeric|min:0.0',
-        'precio_4'             => 'required|numeric|min:0.0',
-        'precio_5'             => 'required|numeric|min:0.0',
-        'precio_6'             => 'required|numeric|min:0.0',
-        'precio_7'             => 'required|numeric|min:0.0',
-        'precio_8'             => 'required|numeric|min:0.0',
-        'precio_9'             => 'required|numeric|min:0.0',
-        'precio_10'            => 'required|numeric|min:0.0',
+        'costo'                => 'required|numeric|min:0.1',
+        'precio_1'             => 'required|numeric|min:0.1',
+        'precio_2'             => 'required|numeric|less_than:precio_1',
+        'precio_3'             => 'required|numeric|less_than:precio_2',
+        'precio_4'             => 'required|numeric|less_than:precio_3',
+        'precio_5'             => 'required|numeric|less_than:precio_4',
+        'precio_6'             => 'required|numeric|less_than:precio_5',
+        'precio_7'             => 'required|numeric|less_than:precio_6',
+        'precio_8'             => 'required|numeric|less_than:precio_7',
+        'precio_9'             => 'required|numeric|less_than:precio_8',
+        'precio_10'            => 'required|numeric|less_than:precio_9',
         'producto_sucursal_id' => 'required|integer'
     ];
 

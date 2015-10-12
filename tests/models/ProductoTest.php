@@ -54,6 +54,16 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
+    public function testSpiffNoNegativo() {
+        $model = factory(App\Producto::class)->make(['spiff' => -10.00]);
+        $this->assertFalse($model->isValid());
+        $model->spiff = 10.00;
+        $this->assertTrue($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
     public function testClaveEsUnico() {
         $producto = factory(App\Producto::class)->create();
         $segundoProducto = factory(App\Producto::class)->make(['clave' => $producto->clave]);
