@@ -438,15 +438,18 @@ class ProductoTest extends TestCase {
         $producto->addSucursal($zz);
         $producto->addSucursal($pg);
         $producto->addSucursal($pl);
+
         $precio = factory(App\Precio::class, 'bare')->make();
 
         $producto->addPrecio($precio);
 
-        $this->assertCount(4, $producto->precios);
+        $precios = App\ProductoSucursal::whereProductoId($producto->id)->get()->count();
+        $this->assertCount($precios, $producto->precios);
 
         $preciosReales = $producto->preciosProveedor();
+        $cantidad_proveedores = App\ProductoSucursal::with('sucursal')->whereProductoId($producto->id)->get()->groupBy('sucursal.proveedor_id')->count();
 
-        $this->assertCount(2, $preciosReales);
+        $this->assertCount($cantidad_proveedores, $preciosReales);
     }
 
     /**
@@ -553,5 +556,31 @@ class ProductoTest extends TestCase {
         $this->assertNotNull($producto->existencias);
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->existencias);
         $this->assertGreaterThan(0, count($producto->existencias));
+    }
+
+    /**
+     * @covers ::updateWithData
+     * @group saves
+     */
+    public function testUpdateWithDataSuccess(){
+        $producto = App\Producto::has('precios')->last();
+        if(empty($producto)) {
+            $producto = new App\Producto();
+            $producto->saveWithData([
+                "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+                "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+                "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.5, "precio_3" => 90.5, "precio_4" => 90.5, "precio_5" => 90.5, "precio_6" => 90.5, "precio_7" => 90.5, "precio_8" => 90.5, "precio_9" => 90.5, "precio_10" => 90.5]
+            ]);
+        }
+
+
+    }
+
+    /**
+     * @covers ::updateWithData
+     * @group saves
+     */
+    public function testUpdateWithDataFailure(){
+
     }
 }
