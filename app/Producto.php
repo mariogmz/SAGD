@@ -290,7 +290,7 @@ class Producto extends LGGModel {
     public function preciosProveedor() {
         return $this->productosSucursales()
             ->join('precios', 'precios.producto_sucursal_id', '=', 'productos_sucursales.id')
-            ->join('sucursales', 'productos_sucursales.id', '=', 'sucursales.id')
+            ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
             ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'precios.costo', 'precios.precio_1',
                 'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',

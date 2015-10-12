@@ -13,7 +13,7 @@ return [
     |
     */
     'greater_than'         => ':attribute debe ser mayor que :field',
-    'less_than'            => ':attribute debe ser mayor que :field',
+    'less_than'            => ':attribute debe ser menor que :field',
     'mult'                 => ':attribute debe ser igual a :field1 * :field2',
     'accepted'             => ':attribute debe ser aceptado.',
     'active_url'           => ':attribute no es una URL valida.',
@@ -105,6 +105,6 @@ return [
     |
     */
 
-    'attributes' => [],
+    'attributes' => []
 
 ];
