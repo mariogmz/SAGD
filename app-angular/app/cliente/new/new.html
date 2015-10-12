@@ -3,7 +3,7 @@
     <h4>Crear nuevo cliente</h4>
   </div>
   <div class="block">
-    <form class="item-form" autocomplete="off">
+    <form class="item-form" autocomplete="off" onsubmit="">
       <section class="card">
         <div class="header">
           <h5>Datos para usuario</h5>
@@ -12,7 +12,7 @@
           <div class="col-lg-3">
             <fieldset class="form-group">
               <label for="usuario">Usuario:</label>
-              <input type="text" id="usuario" ng-model="vn.usuario" class="form-control" placeholder="Mínimo 4 y máximo 20 caracteres">
+              <input type="text" id="usuario" ng-model="vm.usuario" class="form-control" placeholder="Mínimo 4 y máximo 20 caracteres">
             </fieldset>
            </div>
           <div class="col-lg-3">
@@ -102,10 +102,10 @@
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="cliente_estatus_id">Estatus:</label>
-                <select id="cliente_estatus_id" name="cliente_estatus_id" class="form-control"
-                        ng-model="vm.estatus"
-                        ng-options="estatus.nombre for estatus in vm.estatus| orderBy:'nombre'">
-                  <option value="">Seleccione una opción</option>
+                  <select id="cliente_estatus_id" class="form-control"
+                    ng-model="cliente_estatus_id"
+                    ng-options="estatus.nombre for estatus in vm.estatus track by estatus.id | orderBy:'nombre'" >
+                  <option value="">Seleccione un estatus</option>
                 </select>
               </fieldset>
             </div>
@@ -113,7 +113,8 @@
               <fieldset class="form-group">
                 <label for="empleado_id">Vendedor:</label>
                 <select name="empleado_id" id="empleado_id" class="form-control">
-                  <option value=0>Seleccione una opción</option>
+                  <option value=0>Seleccione un vendedor</option>
+                  <option value=1>Empleado prueba</option>
                 </select>
               </fieldset>
             </div>
@@ -121,18 +122,19 @@
               <fieldset class="form-group">
                 <label for="cliente_referencia_id">Referencia:</label>
                 <select id="cliente_referencia_id" class="form-control"
-                        ng-model="vm.referencias"
-                        ng-options="referencias.nombre for referencias in vm.referencias | orderBy:'nombre'">
-                  <option value="">Seleccione una opción</option>
+                        ng-model="cliente_referencia_id"
+                        ng-options="referencias.nombre for referencias in vm.referencias track by referencias.id | orderBy:'id'">
+                  <option value="">Seleccione una referencia</option>
                 </select>
-
               </fieldset>
             </div>
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="sucursal_id">Sucursal:</label>
-                <select name="sucursal_id" id="sucursal_id" class="form-control">
-                  <option value=0>Seleccione una opción</option>
+                <select id="sucursal_id" class="form-control"
+                        ng-model="sucursal_id"
+                        ng-options="sucursales.nombre for sucursales in vm.sucursales track by sucursales.id | orderBy:'nombre'">
+                  <option value="">Seleccione una sucursal</option>
                 </select>
               </fieldset>
             </div>
