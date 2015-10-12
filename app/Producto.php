@@ -328,11 +328,12 @@ class Producto extends LGGModel {
 
     public function updateWithData($parameters) {
         DB::beginTransaction();
-        if ($this->update($parameters) &&
-            $this->dimension->update($parameters['dimension'])
+        if ($this->update($parameters)
+            && $this->dimension->update($parameters['dimension'])
             && (empty($precios_errores = $this->guardarPreciosPorProveedor($parameters)))
         ) {
             DB::commit();
+
             return true;
         } else {
             $this->errors || $this->errors = new MessageBag();
@@ -357,7 +358,6 @@ class Producto extends LGGModel {
 
             foreach ($productos_sucursales as $producto_sucursal) {
                 if (!$producto_sucursal->precio->update($precio_proveedor)) {
-
                     foreach ($producto_sucursal->precio->errors->toArray() as $err) {
                         if (!in_array($err, $errors)) {
                             array_push($errors, $err);

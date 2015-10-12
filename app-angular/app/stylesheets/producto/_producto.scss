@@ -4,7 +4,9 @@
     @extend .form-group;
   }
 
-  input:not([type='submit']), textarea, select {
+  input:not([type='submit']),
+  textarea,
+  select {
     @extend .form-control
   }
 

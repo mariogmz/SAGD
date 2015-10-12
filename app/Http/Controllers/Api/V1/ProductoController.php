@@ -3,11 +3,10 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Producto;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Producto;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 
 class ProductoController extends Controller {
 
@@ -39,7 +38,7 @@ class ProductoController extends Controller {
         $this->producto->fill($params['producto']);
         if ($this->producto->saveWithData($params)) {
             return response()->json([
-                'message' => 'Producto creado exitosamente',
+                'message'  => 'Producto creado exitosamente',
                 'producto' => $this->producto->self()
             ], 201,
                 ['Location' => route('api.v1.producto.show', $this->producto->getId())]);
@@ -58,11 +57,11 @@ class ProductoController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $this->producto = $this->producto->with('tipoGarantia','marca','margen','unidad','subfamilia','dimension')->find($id);
+        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension')->find($id);
         if ($this->producto) {
             return response()->json([
-                'message' => 'Producto obtenido exitosamente',
-                'producto' => $this->producto->self(),
+                'message'           => 'Producto obtenido exitosamente',
+                'producto'          => $this->producto->self(),
                 'precios_proveedor' => $this->producto->preciosProveedor()
             ], 200);
         } else {
