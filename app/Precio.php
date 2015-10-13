@@ -89,7 +89,12 @@ class Precio extends LGGModel {
         return $this->belongsTo('App\ProductoSucursal', 'producto_sucursal_id');
     }
 
+    /**
+     * Obtiene el producto relacionado 
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function producto() {
         return $this->productoSucursal->belongsTo('App\Producto', 'producto_id');
     }
+
 }

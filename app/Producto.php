@@ -299,6 +299,14 @@ class Producto extends LGGModel {
             ->get();
     }
 
+
+    /**
+     * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
+     * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
+     * los datos asociados en sus dimensiones.
+     * @param array $parameters
+     * @return bool
+     */
     public function saveWithData($parameters) {
         $dimension = new \App\Dimension($parameters['dimension']);
         $precio = new \App\Precio($parameters['precio']);
@@ -326,6 +334,11 @@ class Producto extends LGGModel {
         }
     }
 
+    /**
+     * Función que hace las operaciones necesarias para la actualización de datos del producto
+     * @param array $parameters
+     * @return bool
+     */
     public function updateWithData($parameters) {
         DB::beginTransaction();
         if ($this->update($parameters)
