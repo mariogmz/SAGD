@@ -42,6 +42,9 @@
       addNotification(data.data);
     });
 
+    notifications.on('info:App\\Events\\ProductoActualizado', function(data) {
+      addNotification(data.data);
+    });
 
     function addNotification(data) {
       var template = "<p>"+data.usuario +": "+data.mensaje+"</p>";
