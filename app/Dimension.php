@@ -23,16 +23,15 @@ namespace App;
  */
 class Dimension extends LGGModel {
 
-    //
     protected $table = "dimensiones";
     public $timestamps = false;
     protected $fillable = ['largo', 'ancho', 'alto', 'peso', 'producto_id'];
 
     public static $rules = [
-        'largo'       => 'required|numeric|min:0.0',
-        'ancho'       => 'required|numeric|min:0.0',
-        'alto'        => 'required|numeric|min:0.0',
-        'peso'        => 'required|numeric|min:0.0',
+        'largo'       => 'required|numeric|min:0.1',
+        'ancho'       => 'required|numeric|min:0.1',
+        'alto'        => 'required|numeric|min:0.1',
+        'peso'        => 'required|numeric|min:0.1',
         'producto_id' => 'required|integer'
     ];
 

@@ -56,7 +56,7 @@ class SubfamiliaController extends Controller {
      * @return Response
      */
     public function show($id) {
-        $this->subfamilia = $this->subfamilia->find($id);
+        $this->subfamilia = $this->subfamilia->with('familia','margen')->find($id);
         if ($this->subfamilia) {
             return response()->json([
                 'message' => 'Subfamilia obtenida exitosamente',

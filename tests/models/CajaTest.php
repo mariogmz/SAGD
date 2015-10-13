@@ -81,8 +81,7 @@ class CajaTest extends TestCase {
         $caja = factory(App\Caja::class)->create([
             'sucursal_id' => $sucursal->id
         ]);
-        $sucursal_resultado = $caja->sucursal;
-        $this->assertEquals($sucursal, $sucursal_resultado);
+        $this->assertInstanceOf(App\Sucursal::class, $caja->sucursal);
     }
 
     /**

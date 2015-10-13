@@ -107,7 +107,7 @@ class CodigoPostalTest extends TestCase {
         $domicilios_resultado = $codigo_postal->domicilios;
         for ($i = 0; $i < 5; $i ++)
         {
-            $this->assertEquals($domicilios[$i], $domicilios_resultado[$i]);
+            $this->assertInstanceOf(App\Domicilio::class, $domicilios_resultado[$i]);
         }
     }
 

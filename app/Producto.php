@@ -3,6 +3,10 @@
 namespace App;
 
 
+use DB;
+use Illuminate\Support\MessageBag;
+
+
 /**
  * App\Producto
  *
@@ -29,10 +33,10 @@ namespace App;
  * @property-read \App\Margen $margen
  * @property-read \App\Unidad $unidad
  * @property-read \App\Subfamilia $subfamilia
- * @property-read \App\Dimension $dimension
+ * @property-read Dimension $dimension
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoMovimiento[] $productoMovimientos
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoSucursal[] $productosSucursales
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Sucursal[] $sucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|ProductoSucursal[] $productosSucursales
+ * @property-read \Illuminate\Database\Eloquent\Collection|Sucursal[] $sucursales
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Proveedor[] $proveedores
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\EntradaDetalle[] $entradasDetalles
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\SalidaDetalle[] $salidasDetalles
@@ -61,7 +65,6 @@ namespace App;
  */
 class Producto extends LGGModel {
 
-    //
     protected $table = "productos";
     public $timestamps = true;
     protected $fillable = ['activo', 'clave', 'descripcion', 'descripcion_corta',
@@ -73,11 +76,11 @@ class Producto extends LGGModel {
         'clave'             => 'required|max:60|unique:productos',
         'descripcion'       => 'required|max:300',
         'descripcion_corta' => 'max:50',
-        'fecha_entrada'     => 'required|date',
+        'fecha_entrada'     => 'date',
         'numero_parte'      => 'required|unique:productos',
         'remate'            => 'required|boolean',
-        'spiff'             => 'required|numeric',
-        'subclave'          => 'required',
+        'spiff'             => 'required|numeric|min:0.0',
+        'subclave'          => 'required|string|max:45',
         'upc'               => 'required|string|max:20|unique:productos',
         'tipo_garantia_id'  => 'required|integer',
         'marca_id'          => 'required|integer',
@@ -118,19 +121,7 @@ class Producto extends LGGModel {
      * @return void
      */
     public function addSucursal($sucursal) {
-        $this->sucursales()->attach($sucursal->id, ['proveedor_id' => $sucursal->proveedor->id]);
-    }
-
-    /**
-     * Agrega el proveedor y sucursales para un producto
-     * @param App\Proveedor
-     * @return void
-     */
-    public function addProveedor($proveedor) {
-        $sucursales = $proveedor->sucursales;
-        foreach ($sucursales as $sucursal) {
-            $this->proveedores()->attach($proveedor->id, ['sucursal_id' => $sucursal->id]);
-        }
+        $this->sucursales()->attach($sucursal->id);
     }
 
     /**
@@ -182,11 +173,16 @@ class Producto extends LGGModel {
     }
 
     /**
-     * Obtiene los productos_movimientos relacionados con el Producto
+     * Obtiene los productos_movimientos de todas las sucursales relacionados con el Producto
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function productoMovimientos() {
-        return $this->hasMany('App\ProductoMovimiento');
+    public function movimientos(Sucursal $sucursal = null) {
+        if (is_null($sucursal)) {
+            return $this->hasManyThrough('App\ProductoMovimiento', 'App\ProductoSucursal',
+                'producto_id', 'producto_sucursal_id');
+        } else {
+            return $this->productosSucursales()->where('sucursal_id', $sucursal->id)->first()->movimientos;
+        }
     }
 
     /**
@@ -211,34 +207,25 @@ class Producto extends LGGModel {
      * @return Illuminate\Database\Eloquent\Collection
      */
     public function proveedores() {
-        return $this->belongsToMany('App\Proveedor', 'productos_sucursales',
-            'producto_id', 'proveedor_id');
+        return $this->sucursales()->with('proveedor')->get()->pluck('proveedor')->unique();
     }
 
     /**
      * Obtiene las existencias relacionadas con el Producto
      * @return Illuminate\Database\Eloquent\Collection
      */
-    public function existencias($sucursal_id = null) {
-        if (is_null($sucursal_id)) {
+    public function existencias(Sucursal $sucursal = null) {
+        if (is_null($sucursal)) {
             return $this->hasManyThrough('App\Existencia', 'App\ProductoSucursal',
                 'producto_id', 'productos_sucursales_id');
         } else {
-            $ps = $this->productosSucursales->where('sucursal_id', $sucursal_id)->last();
-
-            return $ps->existencias;
+            return $this->productosSucursales->where('sucursal_id', $sucursal->id)->first()->existencia;
         }
     }
 
-    public function precios($proveedor_id = null) {
-        if (is_null($proveedor_id)) {
-            return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
-                'producto_id', 'producto_sucursal_id');
-        } else {
-            $ps = $this->productosSucursales->where('proveedor_id', $proveedor_id)->first();
-
-            return $ps->precios;
-        }
+    public function precios() {
+        return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
+            'producto_id', 'producto_sucursal_id');
     }
 
 
@@ -283,6 +270,121 @@ class Producto extends LGGModel {
      */
     public function reposiciones() {
         return $this->hasMany('App\Reposicion');
+    }
+
+    /**
+     * Agrega el precio a cada producto sucursal del producto
+     * @param Precio
+     */
+    public function addPrecio($precio) {
+        $productos_sucursales = $this->productosSucursales;
+        foreach ($productos_sucursales as $producto_sucursal) {
+            $producto_sucursal->precio()->save(clone $precio);
+        }
+    }
+
+    /**
+     * Obtienes los precios agrupados por proveedor
+     * @return \lluminate\Database\Eloquent\Collection
+     */
+    public function preciosProveedor() {
+        return $this->productosSucursales()
+            ->join('precios', 'precios.producto_sucursal_id', '=', 'productos_sucursales.id')
+            ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
+            ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
+            ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'precios.costo', 'precios.precio_1',
+                'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
+                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10')
+            ->groupBy('proveedores.id')
+            ->get();
+    }
+
+    public function saveWithData($parameters) {
+        $dimension = new \App\Dimension($parameters['dimension']);
+        $precio = new \App\Precio($parameters['precio']);
+        $dimension->producto_id = 0;
+        $precio->producto_sucursal_id = 0;
+
+        if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
+            $this->save();
+            $this->attachDimension($dimension);
+            $this->attachSucursales();
+            $this->addPrecio($precio);
+            $this->inicializarExistencias();
+
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            if ($dimension->errors) {
+                $this->errors->merge($dimension->errors);
+            }
+            if ($precio->errors) {
+                $this->errors->merge($precio->errors);
+            }
+
+            return false;
+        }
+    }
+
+    public function updateWithData($parameters) {
+        DB::beginTransaction();
+        if ($this->update($parameters)
+            && $this->dimension->update($parameters['dimension'])
+            && (empty($precios_errores = $this->guardarPreciosPorProveedor($parameters)))
+        ) {
+            DB::commit();
+
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            if ($this->dimension->errors) {
+                $this->errors->merge($this->dimension->errors);
+            }
+            if ($precios_errores) {
+                $this->errors->merge(['Precios' => $precios_errores]);
+            }
+            DB::rollback();
+
+            return false;
+        }
+    }
+
+    private function guardarPreciosPorProveedor($parameters) {
+        $precios_proveedor = $parameters['precios'];
+        $errors = [];
+        foreach ($precios_proveedor as $precio_proveedor) {
+            $sucursales_id = Sucursal::whereProveedorId($precio_proveedor['proveedor_id'])->get()->pluck('id');
+            $productos_sucursales = ProductoSucursal::with('precio')->whereIn('sucursal_id', $sucursales_id)->whereProductoId($parameters['id'])->get();
+
+            foreach ($productos_sucursales as $producto_sucursal) {
+                if (!$producto_sucursal->precio->update($precio_proveedor)) {
+                    foreach ($producto_sucursal->precio->errors->toArray() as $err) {
+                        if (!in_array($err, $errors)) {
+                            array_push($errors, $err);
+                        }
+                    }
+                }
+            }
+        }
+
+        return $errors;
+    }
+
+    private function attachDimension($dimension) {
+        $this->dimension()->save($dimension);
+    }
+
+    private function attachSucursales() {
+        $sucursales = Sucursal::all();
+        foreach ($sucursales as $sucursal) {
+            $this->addSucursal($sucursal);
+        }
+    }
+
+    private function inicializarExistencias() {
+        $this->productosSucursales->each(function ($productoSucursal) {
+            $productoSucursal->existencia()->save(new \App\Existencia);
+        });
     }
 
 }

@@ -1,0 +1,107 @@
+<!-- app/producto/show/partials/precios.html -->
+
+<!-- Costos -->
+<div class="card borderless">
+  <article class="block">
+
+    <section class="row">
+
+      <!-- Spiff -->
+      <div class="col-sm">
+        <fieldset>
+          <label for="spiff">Spiff: </label>
+
+          <div class="with-icon">
+            <span><i class="money"></i></span>
+            <input type="text" id="spiff" ng-model="vm.producto.spiff">
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Margen -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="margen_id">Margen: </label>
+          <input type="text" id="margen_id" ng-model="vm.producto.margen.nombre">
+        </fieldset>
+      </div>
+
+    </section>
+  </article>
+
+
+  <!-- Precios -->
+  <div class="card">
+    <article class="header">
+      <h5>Precios por proveedor</h5>
+    </article>
+    <article class="block">
+      <div class="table-responsive">
+        <table class="item-table">
+          <thead class="sortable">
+          <tr>
+            <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+              {{sortKey.name}}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr dir-paginate="precio in vm.precios | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+            <th scope="row" ng-bind="precio.id"></th>
+            <td ng-bind="precio.clave"></td>
+            <td ng-bind="precio.costo | currency"></td>
+            <td ng-bind="precio.precio_1 | currency"></td>
+            <td ng-bind="precio.precio_2 | currency"></td>
+            <td ng-bind="precio.precio_3 | currency"></td>
+            <td ng-bind="precio.precio_4 | currency"></td>
+            <td ng-bind="precio.precio_5 | currency"></td>
+            <td ng-bind="precio.precio_6 | currency"></td>
+            <td ng-bind="precio.precio_7 | currency"></td>
+            <td ng-bind="precio.precio_8 | currency"></td>
+            <td ng-bind="precio.precio_9 | currency"></td>
+            <td ng-bind="precio.precio_10 | currency"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </article>
+  </div>
+  <!-- Utilidades -->
+  <div class="card">
+    <article class="header">
+      <h5>Utilidades por proveedor (Falta implementar fórmula real)</h5>
+    </article>
+    <article class="block">
+      <div class="table-responsive">
+        <table class="item-table">
+          <thead class="sortable">
+          <tr>
+            <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+              {{sortKey.name}}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr dir-paginate="precio in vm.precios | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+            <th scope="row" ng-bind="precio.id"></th>
+            <td ng-bind="precio.clave"></td>
+            <td ng-bind="precio.costo | currency"></td>
+            <td ng-bind="precio.precio_1 - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_2  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_3  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_4  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_5  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_6  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_7  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_8  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_9  - precio.costo | currency"></td>
+            <td ng-bind="precio.precio_10  - precio.costo | currency"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </article>
+  </div>
+</div>

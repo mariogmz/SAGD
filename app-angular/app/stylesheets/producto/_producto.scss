@@ -1,0 +1,95 @@
+.product-form {
+
+  fieldset {
+    @extend .form-group;
+  }
+
+  input:not([type='submit']),
+  textarea,
+  select {
+    @extend .form-control
+  }
+
+  select {
+    @extend .c-select;
+  }
+
+  .card .block {
+    @include make-container();
+    @extend .text-left;
+  }
+
+  .checkbox {
+
+    label {
+      @extend .c-input;
+      @extend .c-checkbox;
+
+      span {
+        @extend .c-indicator;
+      }
+    }
+  }
+
+  .col-sm {
+    @include make-col();
+    @include make-col-span(3);
+  }
+
+  .col-lg {
+    @include make-col();
+    @include make-col-span(6);
+  }
+
+  .icecat {
+    @include make-row();
+
+    fieldset {
+      @include make-col();
+      @include make-col-span(5);
+    }
+
+    input, textarea, select {
+      @include make-col();
+      @include make-col-span(8);
+    }
+
+    label {
+      @include make-col();
+      @include make-col-span(4)
+    }
+
+    span {
+      @include make-col();
+      @include make-col-span(2);
+      @extend .text-center;
+
+      button {
+        @extend .btn;
+        @extend .btn-primary;
+      }
+    }
+  }
+
+  .with-icon {
+    @extend .input-group;
+
+    i {
+      @extend .fa;
+      @extend .fa-fw;
+    }
+
+    i.money {
+      @extend .fa-usd;
+    }
+
+    span {
+      @extend .input-group-addon;
+    }
+  }
+
+  .row {
+    @include make-row();
+  }
+
+}

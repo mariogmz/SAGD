@@ -1,0 +1,55 @@
+form.item-form {
+
+  legend {
+    font-size: 1.4rem;
+    text-align: left;
+  }
+
+  label {
+    @extend .form-control-label;
+  }
+
+  input:not([type='submit']) {
+    @extend .form-control;
+  }
+
+  textarea {
+    @extend .form-control;
+    resize: none;
+  }
+
+  .row {
+    @include make-row();
+  }
+
+  .col {
+    @include make-col();
+    @include make-col-span(6);
+  }
+
+  .block-field{
+    @extend .form-group;
+    text-align: left;
+  }
+
+  .inline-field {
+    @extend .form-group;
+    @extend .row;
+
+    label {
+      @extend .col-sm-3;
+    }
+
+    .field {
+      @extend .col-sm-9;
+    }
+
+    .field-medium {
+      @extend .col-sm-6;
+    }
+
+    .field-small {
+      @extend .col-sm-3;
+    }
+  }
+}

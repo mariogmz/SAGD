@@ -209,7 +209,7 @@ class EntradaDetalleTest extends TestCase {
     {
         $ed = factory(App\EntradaDetalle::class, 'noproductomovimiento')->make();
         $producto = $ed->producto;
-        $pm = factory(App\ProductoMovimiento::class, 'withproduct')->create(['producto_id' => $producto->id]);
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
         $ed->productoMovimiento()->associate($pm);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $ed->productoMovimiento);
     }

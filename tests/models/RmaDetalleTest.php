@@ -86,7 +86,7 @@ class RmaDetalleTest extends TestCase {
      * @group relaciones
      */
     public function testProductoMovimiento() {
-        $parent = factory(App\ProductoMovimiento::class, 'withproduct')->create();
+        $parent = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
         $child = factory(App\RmaDetalle::class)->create([
             'producto_movimiento_id' => $parent->id
         ]);

@@ -36,8 +36,8 @@
       <th scope="row">{{subfamilia.id}}</th>
       <td><a ui-sref="subfamiliaShow({id:subfamilia.id})">{{subfamilia.clave}}</a></td>
       <td>{{subfamilia.nombre}}</td>
-      <td>{{subfamilia.familia.clave}}</td>
-      <td>{{subfamilia.margen.nombre}}</td>
+      <td><a ui-sref="familiaShow({id:subfamilia.familia_id})">{{subfamilia.familia.clave}}</a></td>
+      <td><a ui-sref="margenShow({id:subfamilia.margen_id})">{{subfamilia.margen.nombre}}</a></td>
 
       <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">

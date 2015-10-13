@@ -13,23 +13,23 @@
       };
     });
 
-  NavbarController.$inject = ['session', 'state', 'utils'];
+  NavbarController.$inject = ['session', 'state'];
 
-  function NavbarController(session, state, utils){
+  function NavbarController(session, state){
     var vm = this;
     vm.modules = [
       {
         name: 'Inicio',
         state: 'home',
-        active: false,
+        active: false
       }, {
         name: 'Productos',
-        state: 'producto',
+        state: 'productoIndex',
         active: false,
         submodules: [
           {
             name: 'Consultar',
-            state: 'producto',
+            state: 'productoIndex'
           }, {
             name: 'Características',
             state: 'producto.caracteristica',
