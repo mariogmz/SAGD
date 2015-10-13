@@ -68,7 +68,6 @@ class SucursalController extends Controller
         $this->sucursal = $this->sucursal->with('proveedor', 'domicilio.codigoPostal')->find($id);
         if( $this->sucursal )
         {
-            event(new SucursalVista( $this->sucursal->self()));
             return response()->json([
                 'message' => 'Sucursal obtenida exitosamente',
                 'sucursal' => $this->sucursal
