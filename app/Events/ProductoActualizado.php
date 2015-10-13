@@ -13,7 +13,7 @@ class ProductoActualizado extends Event implements ShouldBroadcast
 
     protected $producto;
     protected $usuario;
-    public $data;
+    public $payload;
 
     /**
      * Create a new event instance.
@@ -33,9 +33,11 @@ class ProductoActualizado extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        $this->data = [
-            'usuario' => $this->usuario->usuario,
-            'mensaje' => "Actualizó el producto: ".$this->producto->upc
+        $this->payload = [
+            'user' => $this->usuario->usuario,
+            'message' => "Se actualizó el producto: ".$this->producto->upc,
+            'timestamp' => \Carbon\Carbon::now()->toDateTimeString(),
+            'level' => 'info'
         ];
         return ['info'];
     }

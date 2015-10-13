@@ -1,7 +1,9 @@
 var app = require('http').createServer(handler);
 var io = require('socket.io')(app);
 var Redis = require('ioredis');
+var subscriber = new Redis();
 var redis = new Redis();
+var pastMessages = 'saved';
 
 app.listen(3000, function(){
     console.log('Listening on Port 3000');
@@ -15,17 +17,38 @@ function handler(req, res) {
 }
 
 io.on('connection', function(socket){
-
+  var visitor = socket.client.conn.remoteAddress;
+  var origin = socket.handshake.headers.origin;
+  console.log("New client: %s from %s", visitor, origin);
+  updateClientWithMessages();
 });
 
 
-redis.psubscribe('*', function(err, count) {
+subscriber.psubscribe('*', function(err, count) {
 
 });
 
-redis.on('pmessage', function(subscribed, channel, message) {
-    message = JSON.parse(message);
-    console.log(subscribed);
-    console.log("Emitting on ("+channel+"): "+ message.event + "\n -> " + JSON.stringify(message.data));
-    io.emit(channel + ':' + message.event, message.data);
+subscriber.on('pmessage', function(subscribed, channel, message) {
+    saveMessagetoRedis(message);
+    emitMessage(channel, message);
 });
+
+function updateClientWithMessages() {
+  redis.lrange(pastMessages, 0, 4).then(function(data) {
+    var length = data.length -1;
+    for (var i = 0; i < length; i++) {
+      emitMessage(pastMessages, data[i]);
+    };
+  });
+}
+
+function saveMessagetoRedis(message) {
+  redis.lpush(pastMessages, message);
+  redis.ltrim(pastMessages, 0, 19);
+}
+
+function emitMessage(channel, message) {
+  message = JSON.parse(message);
+  console.log("Emitting on (%s): %s", channel, message.event);
+  io.emit(channel, message);
+}

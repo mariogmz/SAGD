@@ -36,20 +36,18 @@
   /* @ngInject */
   function SidebarController(notifications) {
     var vm = this;
-    vm.collection = '';
+    vm.collection = [];
 
-    notifications.on('sucursales:App\\Events\\SucursalVista', function(data){
-      addNotification(data.data);
+    notifications.on('info', function(data) {
+      addInfo(data.data.payload);
     });
 
-    notifications.on('info:App\\Events\\ProductoActualizado', function(data) {
-      addNotification(data.data);
+    notifications.on('saved', function(data) {
+      addInfo(data.data.payload);
     });
 
-    function addNotification(data) {
-      var template = "<p>"+data.usuario +": "+data.mensaje+"</p>";
-      var target = $("#listener");
-      target.prepend(template);
+    function addInfo(payload) {
+      vm.collection.push(payload);
     }
   }
 })();

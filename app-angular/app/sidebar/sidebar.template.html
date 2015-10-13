@@ -7,10 +7,16 @@
 
   <section class="card">
     <header class="header">
-      Listener
+      Información
     </header>
-    <article class="card-block" id="listener">
-      <p>Algo de prueba</p>
+    <article class="card-block" id="channel-info">
+      <div ng-repeat="info in vm.collection track by $index">
+        <p>
+          {{info.message}}<br/>
+          <small>por <em>{{info.user}}</em></small> -
+          <small> {{info.timestamp}}</small>
+        </p>
+      </div>
     </article>
   </section>
 </aside>
