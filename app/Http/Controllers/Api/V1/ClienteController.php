@@ -38,7 +38,7 @@ class ClienteController extends Controller
     {
         $params = $request->all();
         $this->cliente->fill($params);
-        if( $this->cliente->save() )
+        if( $this->cliente->saveWithData($params) )
         {
             return response()->json(
                 [

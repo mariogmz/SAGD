@@ -273,4 +273,28 @@ class Cliente extends LGGModel {
     {
         return $this->morphOne('App\User', 'morphable');
     }
+
+    /**
+     * Crea cliente nuevo con tabuladores
+    */
+    public function saveWithData($parameters) {
+
+        if($this->guardarTabuladores()) {
+            $this->save();
+            return true;
+        }
+    }
+
+  /**
+   * @return bool
+   */
+    private function guardarTabuladores() {
+        $sucursales = Sucursal::all();
+
+        dd($sucursales);
+
+        foreach ($sucursales as $sucursal) {
+            //$this->addSucursal($sucursal);
+        }
+    }
 }

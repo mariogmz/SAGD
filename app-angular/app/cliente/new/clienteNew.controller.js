@@ -95,11 +95,6 @@
 
 
     function create(){
-
-
-      console.log(vm.model);
-
-
       return api.post('/cliente', vm.model)
           .then(function (response){
             vm.message = response.data.message;
