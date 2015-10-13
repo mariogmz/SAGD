@@ -17,6 +17,7 @@
 
     var vm = this;
     vm.create = create;
+    vm.model = {};
 
     activate();
 
@@ -95,9 +96,8 @@
 
     function create(){
 
-      console.log("Model: " + vm.model);
-      return 0;
 
+      console.log(vm.model);
 
 
       return api.post('/cliente', vm.model)
