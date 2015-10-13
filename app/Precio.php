@@ -1,6 +1,7 @@
 <?php
 
 namespace App;
+use Sagd\Calculadora;
 
 
 /**
@@ -36,6 +37,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class Precio extends LGGModel {
+
+    use Calculadora;
 
     //
     protected $table = "precios";
@@ -101,14 +104,8 @@ class Precio extends LGGModel {
      * Obtiene el proveedor al que pertenece este precio
      * @return \App\Proveedor
      */
-    public function proveedor(){
+    public function proveedor() {
         return $this->productoSucursal->sucursal->proveedor();
-    }
-
-
-
-    private function calcular(){
-
     }
 
 }
