@@ -16,17 +16,16 @@
     }
 
     var vm = this;
-    vm.onSubmit = onSubmit;
+    vm.create = create;
 
     activate();
 
     function activate() {
       obtenerReferencias()
-          .then(obtenerRoles)
           .then(obtenerEstatus)
-          .then(obtenerSucursales)
-          .then(console.log("Activate!"));
-
+          .then(obtenerEpleados)
+          .then(obtenerRoles)
+          .then(obtenerSucursales);
     }
 
     function obtenerReferencias() {
@@ -37,19 +36,6 @@
           .catch(function (response) {
             vm.error = response.data;
             pnotify.alert('Hubo un problema al obtener las Referencias', vm.error.error, 'error');
-            return response;
-          });
-    }
-
-    function obtenerRoles() {
-      return api.get('/rol')
-          .then(function (response) {
-            vm.roles = response.data;
-            return response;
-          })
-          .catch(function (response) {
-            vm.error = response.data;
-            pnotify.alert('Hubo un problema al obtener los Roles', vm.error.error, 'error');
             return response;
           });
     }
@@ -67,6 +53,32 @@
           });
     }
 
+    function obtenerEpleados() {
+      return api.get('/empleado')
+          .then(function (response) {
+            vm.empleados = response.data;
+            console.log('Empleados obtenidos correctamente');
+          })
+          .catch(function (response) {
+            vm.error = response.data;
+            pnotify.alert('Hubo un problema al obtener los Empleados', vm.error.error, 'error');
+            return response;
+          });
+    }
+
+    function obtenerRoles() {
+      return api.get('/rol')
+          .then(function (response) {
+            vm.roles = response.data;
+            return response;
+          })
+          .catch(function (response) {
+            vm.error = response.data;
+            pnotify.alert('Hubo un problema al obtener los Roles', vm.error.error, 'error');
+            return response;
+          });
+    }
+
     function obtenerSucursales() {
       return api.get('/sucursal')
           .then(function (response) {
@@ -80,9 +92,13 @@
           });
     }
 
-    function onSubmit(){
 
-      console.log("Submit!");
+    function create(){
+
+      console.log("Model: " + vm.model);
+      return 0;
+
+
 
       return api.post('/cliente', vm.model)
           .then(function (response){

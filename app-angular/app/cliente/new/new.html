@@ -3,7 +3,7 @@
     <h4>Crear nuevo cliente</h4>
   </div>
   <div class="block">
-    <form class="item-form" autocomplete="off" ng-submit="vm.onSubmit()">
+    <form class="item-form" autocomplete="off" model="vm.model" ng-submit="vm.create(vm.model)">
       <section class="card">
         <div class="header">
           <h5>Datos para usuario</h5>
@@ -12,13 +12,13 @@
           <div class="col-lg-3">
             <fieldset class="form-group">
               <label for="usuario">Usuario:</label>
-              <input type="text" id="usuario" ng-model="vm.usuario" class="form-control" placeholder="Mínimo 4 y máximo 20 caracteres">
+              <input type="text" id="usuario" ng-model="vm.usuario" class="form-control" placeholder="">
             </fieldset>
            </div>
           <div class="col-lg-3">
             <fieldset class="form-group">
               <label for="password">Contraseña:</label>
-              <input type="password" id="password" class="form-control">
+              <input type="password" id="password" ng-model="vm.password" class="form-control">
             </fieldset>
           </div>
           <div class="col-lg-3">
@@ -112,9 +112,10 @@
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="empleado_id">Vendedor:</label>
-                <select name="empleado_id" id="empleado_id" class="form-control">
-                  <option value=0>Seleccione un vendedor</option>
-                  <option value=1>Empleado prueba</option>
+                <select id="empleado_id" class="form-control"
+                        ng-model="empleado_id"
+                        ng-options="empleados.nombre for empleados in vm.empleados track by empleados.id | orderBy:'id'">
+                  <option value="">Seleccione un vendedor</option>
                 </select>
               </fieldset>
             </div>
