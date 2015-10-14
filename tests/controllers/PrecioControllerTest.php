@@ -38,6 +38,57 @@ class PrecioControllerTest extends TestCase {
     }
 
     /**
+     * @covers ::calcular
+     */
+    public function test_GET_calcular_success() {
+        $precio = 5940.00;
+        $costo = 5444.03;
+        $externo = 0;
+        $margen_id = 14;
+        $endpoint = "/v1/calcular-precio/{$precio}/costo/{$costo}/externo/{$externo}/margen/{$margen_id}";
+
+        $this->mock->shouldReceive([
+            'calcularPrecios' => ['Exito']
+        ])->withAnyArgs();
+
+        $this->app->instance('App\Precio', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message'   => 'Precios calculados correctamente.',
+                'resultado' => ['Exito']
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::calcular
+     */
+    public function test_GET_calcular_failure() {
+        $precio = 5940.00;
+        $costo = 5444.03;
+        $externo = 0;
+        $margen_id = 14;
+        $endpoint = "/v1/calcular-precio/{$precio}/costo/{$costo}/externo/{$externo}/margen/{$margen_id}";
+
+        $this->mock->shouldReceive([
+            'calcularPrecios' => null
+        ])->withAnyArgs();
+
+        $this->app->instance('App\Precio', $this->mock);
+
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo realizar el cálculo de precios y utilidades.',
+                'error'   => [
+                    'Calculo' => 'Ocurrió un error al momento de realizar los cálculos.'
+                ]
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
      * @covers ::store
      */
     public function test_POST_store() {

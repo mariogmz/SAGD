@@ -56,7 +56,6 @@ trait CalculadoraPrecios {
     private function calcularExterno() {
         $utilidades = null;
         if (is_null($this->margen_id)) {
-            $this->utilidad_base = 0;
             $utilidades = $this->calcularUtilidadesSinMargen();
         } else {
             $margen = \App\Margen::find($this->margen_id);
@@ -65,7 +64,6 @@ trait CalculadoraPrecios {
             $utilidades = $this->calcularUtilidadesConMargen();
         }
         $precios = $this->obtenerPrecios($utilidades);
-
         return $this->redondeos([
             'precios'    => $precios,
             'utilidades' => $utilidades
@@ -119,7 +117,7 @@ trait CalculadoraPrecios {
     }
 
     private function obtenerPrecios($utilidades) {
-        $precio_1 = $this->precio_1;
+        $precio_1 = $this->costo * ($utilidades['utilidad_1'] / 100 + 1);
         $precio_2 = $this->costo * ($utilidades['utilidad_2'] / 100 + 1);
         $precio_3 = $this->costo * ($utilidades['utilidad_3'] / 100 + 1);
         $precio_4 = $this->costo * ($utilidades['utilidad_4'] / 100 + 1);

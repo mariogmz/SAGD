@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Precio;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Precio;
 use Illuminate\Http\Request;
 
 class PrecioController extends Controller {
@@ -27,6 +27,44 @@ class PrecioController extends Controller {
     }
 
     /**
+     * Calcula los precios y utilidades
+     * @param Request $request
+     * @return Response
+     */
+    public function calcular(Request $request) {
+        $precio = $request->precio;
+        $costo = $request->costo;
+        $externo = (bool) $request->externo;
+        $margen_id = $request->margen_id;
+        if (!is_null($precio)
+            && !is_null($costo)
+            && !empty($resultados = $this->precio->calcularPrecios($precio, $costo, $externo, $margen_id))
+        ) {
+            return response()->json([
+                'message'   => 'Precios calculados correctamente.',
+                'resultado' => $resultados
+            ], 200);
+        } else {
+            $errors = [];
+            if (is_null($precio)) {
+                $errors['Precio'] = 'El precio es necesario.';
+            }
+            if (is_null($costo)) {
+                $errors['Costo'] = 'El costo es necesario.';
+            }
+            if (is_null($resultados)) {
+                $errors['Calculo'] = 'Ocurrió un error al momento de realizar los cálculos.';
+            }
+
+            return response()->json([
+                'message' => 'No se pudo realizar el cálculo de precios y utilidades.',
+                'error'   => $errors
+            ], 400);
+        }
+
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  Request $request
@@ -38,7 +76,7 @@ class PrecioController extends Controller {
         if ($this->precio->save()) {
             return response()->json([
                 'message' => 'Precio creado exitosamente',
-                'precio' => $this->precio->self()
+                'precio'  => $this->precio->self()
             ], 201,
                 ['Location' => route('api.v1.precio.show', $this->precio->getId())]);
         } else {
@@ -60,7 +98,7 @@ class PrecioController extends Controller {
         if ($this->precio) {
             return response()->json([
                 'message' => 'Precio obtenido exitosamente',
-                'precio' => $this->precio->self()
+                'precio'  => $this->precio->self()
             ], 200);
         } else {
             return response()->json([

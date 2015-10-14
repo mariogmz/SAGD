@@ -1,8 +1,9 @@
 <?php
 
 namespace App;
-use Sagd\Calculadora;
 
+
+use Sagd\CalculadoraPrecios;
 
 /**
  * App\Precio
@@ -38,8 +39,7 @@ use Sagd\Calculadora;
  */
 class Precio extends LGGModel {
 
-    use Calculadora;
-
+    use CalculadoraPrecios;
     //
     protected $table = "precios";
     public $timestamps = false;
