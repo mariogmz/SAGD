@@ -14,6 +14,7 @@ composer.lock
 codigos_postales.txt
 _ide_helper.php
 .phpstorm.meta.php
+.DS_Store
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
