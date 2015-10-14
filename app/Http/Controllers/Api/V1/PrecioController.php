@@ -47,13 +47,13 @@ class PrecioController extends Controller {
         } else {
             $errors = [];
             if (is_null($precio)) {
-                $errors['Precio'] = 'El precio es necesario.';
+                $errors['Precio'] = ['El precio es necesario.'];
             }
             if (is_null($costo)) {
-                $errors['Costo'] = 'El costo es necesario.';
+                $errors['Costo'] = ['El costo es necesario.'];
             }
-            if (is_null($resultados)) {
-                $errors['Calculo'] = 'Ocurrió un error al momento de realizar los cálculos.';
+            if (!isset($resultados)) {
+                $errors['Calculo'] = ['Ocurrió un error al momento de realizar los cálculos.'];
             }
 
             return response()->json([
