@@ -43,9 +43,8 @@ class PrecioControllerTest extends TestCase {
     public function test_GET_calcular_success() {
         $precio = 5940.00;
         $costo = 5444.03;
-        $externo = 0;
         $margen_id = 14;
-        $endpoint = "/v1/calcular-precio/{$precio}/costo/{$costo}/externo/{$externo}/margen/{$margen_id}";
+        $endpoint = "/v1/calcular-precio/?precio={$precio}&costo={$costo}&margen_id={$margen_id}";
 
         $this->mock->shouldReceive([
             'calcularPrecios' => ['Exito']
@@ -67,9 +66,7 @@ class PrecioControllerTest extends TestCase {
     public function test_GET_calcular_failure() {
         $precio = 5940.00;
         $costo = 5444.03;
-        $externo = 0;
-        $margen_id = 14;
-        $endpoint = "/v1/calcular-precio/{$precio}/costo/{$costo}/externo/{$externo}/margen/{$margen_id}";
+        $endpoint = "/v1/calcular-precio/?precio={$precio}&costo={$costo}";
 
         $this->mock->shouldReceive([
             'calcularPrecios' => null

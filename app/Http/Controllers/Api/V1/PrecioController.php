@@ -34,8 +34,8 @@ class PrecioController extends Controller {
     public function calcular(Request $request) {
         $precio = $request->precio;
         $costo = $request->costo;
-        $externo = (bool) $request->externo;
-        $margen_id = $request->margen_id;
+        $externo = $request->has('externo') ? $request->externo : null;
+        $margen_id = $request->has('margen_id') ? $request->margen_id : null;
         if (!is_null($precio)
             && !is_null($costo)
             && !empty($resultados = $this->precio->calcularPrecios($precio, $costo, $externo, $margen_id))
