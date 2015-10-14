@@ -1,12 +1,14 @@
 <?php
 namespace Sagd;
 
-trait Calculadora {
+
+trait CalculadoraPrecios {
 
     // En caso de que no se haya establecido un margen_id, equivale al valor del margen legacy 'Libre'
     protected $factor_margen = 0;
     protected $factor_diferencia_margen = 0.70;
 
+    protected $precio_1;
     protected $utilidad_base;
     protected $costo;
     protected $margen_id;
@@ -15,31 +17,19 @@ trait Calculadora {
      * Calcula todos los precios dado un precio base y un margen (opcional)
      * @param float $precio_1
      * @param float|null $costo
+     * @param bool|null $externo
      * @param int|null $margen_id
      * @return array
      */
-    public function calcularPrecios($precio_1, $costo, $margen_id = null) {
+    public function calcularPrecios($precio_1, $costo, $externo = false, $margen_id = null) {
         $this->precio_1 = $precio_1;
         $this->costo = $costo;
         $this->margen_id = $margen_id;
 
-        $resultados = [
-            'interno' => [
-                'precios'    => [],
-                'utilidades' => []
-            ],
-            'externo' => [
-                'precios'    => [],
-                'utilidades' => []
-            ]
-        ];
-
         // Calcular utilidad 1
-        $this->utilidad_base = 100 * ($precio_1 / $this->costo - 1);
-
+        $this->utilidad_base = round(100 * ($this->precio_1 / $this->costo - 1), 2);
         if ($this->utilidad_base > 0) {
-            $resultados['interno'] = $this->calcularInterno();
-            $resultados['externo'] = $this->calcularExterno();
+            return $externo ? $this->calcularExterno() : $this->calcularInterno();
         } else {
             return null;
         }
@@ -51,12 +41,16 @@ trait Calculadora {
             $utilidades = $this->calcularUtilidadesSinMargen();
         } else {
             $margen = \App\Margen::find($this->margen_id);
-            $this->factor_margen = $margen->margen;
+            $this->factor_margen = $margen->valor * 100;
+
             $utilidades = $this->calcularUtilidadesConMargen();
         }
         $precios = $this->obtenerPrecios($utilidades);
 
-        return compact($precios, $utilidades);
+        return $this->redondeos([
+            'precios'    => $precios,
+            'utilidades' => $utilidades
+        ]);
     }
 
     private function calcularExterno() {
@@ -66,19 +60,21 @@ trait Calculadora {
             $utilidades = $this->calcularUtilidadesSinMargen();
         } else {
             $margen = \App\Margen::find($this->margen_id);
-            $this->utilidad_base = $margen->valor_webservice_p1;
-            $this->factor_margen = $margen->valor_webservice_p8;
+            $this->utilidad_base = $margen->valor_webservice_p1 * 100;
+            $this->factor_margen = $margen->valor_webservice_p8 * 100;
             $utilidades = $this->calcularUtilidadesConMargen();
         }
         $precios = $this->obtenerPrecios($utilidades);
 
-        return compact($precios, $utilidades);
+        return $this->redondeos([
+            'precios'    => $precios,
+            'utilidades' => $utilidades
+        ]);
     }
 
     private function calcularUtilidadesConMargen() {
         $diferencia_mayoreo = $this->factor_margen / 8;
         $diferencia_mayoreo = $diferencia_mayoreo > 5 ? 5 : $diferencia_mayoreo;
-
         $utilidad_1 = $this->utilidad_base;
 
         // Utilidades mayoristas (del 6 al 10)
@@ -123,7 +119,7 @@ trait Calculadora {
     }
 
     private function obtenerPrecios($utilidades) {
-        $precio_1 = $this->costo * ($utilidades['utilidad_1'] / 100 + 1);
+        $precio_1 = $this->precio_1;
         $precio_2 = $this->costo * ($utilidades['utilidad_2'] / 100 + 1);
         $precio_3 = $this->costo * ($utilidades['utilidad_3'] / 100 + 1);
         $precio_4 = $this->costo * ($utilidades['utilidad_4'] / 100 + 1);
@@ -136,6 +132,24 @@ trait Calculadora {
 
         return compact('precio_1', 'precio_2', 'precio_3', 'precio_4', 'precio_5',
             'precio_6', 'precio_7', 'precio_8', 'precio_9', 'precio_10');
+    }
+
+    /**
+     * Redondea los resultados finales después de todas las operaciones
+     * @param array $resultados
+     * @return array
+     */
+    private function redondeos($resultados){
+        for($i = 1; $i <= 10; $i++){
+            $var = 'utilidad_' . $i;
+            $resultados['utilidades'][$var] = round($resultados['utilidades'][$var], 2);
+        }
+
+        for($i = 1; $i <= 10; $i++){
+            $var = 'precio_' . $i;
+            $resultados['precios'][$var] = round($resultados['precios'][$var], 2);
+        }
+        return $resultados;
     }
 
 
