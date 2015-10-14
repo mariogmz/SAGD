@@ -30,6 +30,19 @@
 
     function getResource(resource, parameters){
       parameters = parameters ? parameters : "";
+      if (angular.isArray(parameters)) {
+        var paramsUrl = null;
+        angular.forEach(parameters, function (param){
+          if (param.value) {
+            if (paramsUrl) {
+              paramsUrl += '&' + param.key + '=' + param.value;
+            } else {
+              paramsUrl = '?' + param.key + '=' + param.value;
+            }
+          }
+        });
+        parameters = paramsUrl;
+      }
       var unifiedUri = resource + parameters;
       var cached = cache.cached(unifiedUri);
 
