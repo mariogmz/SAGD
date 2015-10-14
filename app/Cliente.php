@@ -279,22 +279,37 @@ class Cliente extends LGGModel {
     */
     public function saveWithData($parameters) {
 
-        if($this->guardarTabuladores()) {
-            $this->save();
+        return $this->save();
+
+
+
+        /*if(!$this->id){
+          return $this;
+        }else{
+
+          if($this->guardarTabuladores($this->id)){
             return true;
-        }
+          }else {
+            return 0;
+          }
+        }*/
+
     }
 
   /**
    * @return bool
    */
-    private function guardarTabuladores() {
+    public function guardarTabuladores($cliente_id) {
         $sucursales = Sucursal::all();
 
-        dd($sucursales);
-
         foreach ($sucursales as $sucursal) {
-            //$this->addSucursal($sucursal);
+          try{
+            Tabulador::create(array('cliente_id'  => $cliente_id, 'sucursal_id' => $sucursal->id, 'tabulador' => 1, 'tabulador_original' => 1, 'habilitada' => 1, 'venta_especial' => 0));
+          }catch (exception $e){
+            return false;
+          }
         }
+
+        return true;
     }
 }
