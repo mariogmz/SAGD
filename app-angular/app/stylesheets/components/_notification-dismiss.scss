@@ -1,0 +1,20 @@
+.notification-dismiss {
+
+  @include make-col();
+  @include make-col-span(2);
+
+  @include transition(all 0.25s ease-in-out);
+  @include transform(translateX(100%));
+
+  align-items: center;
+  background-color: $persian-red;
+  display: flex;
+  height: 70px;
+  justify-content: center;
+
+  a {
+    @include normalize_link($white);
+
+    font-size: 1.375em;
+  }
+}
