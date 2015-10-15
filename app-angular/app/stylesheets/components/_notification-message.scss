@@ -1,7 +1,7 @@
   .notification-message {
 
     @include make-col();
-    @include make-col-span(11);
+    @include make-col-span(9.5);
 
     height: 50px;
     margin-top: 10px;
