@@ -356,12 +356,12 @@ class Producto extends LGGModel {
      */
     private function guardarPrecios($precio_interno) {
         $precio_externo = $precio_interno->calcularPrecios($precio_interno->precio_1, $precio_interno->costo, true);
-        $precio_externo = new Precio($precio_externo);
+        $precio_externo = new Precio($precio_externo['precios']);
         foreach($this->productosSucursales as $producto_sucursal){
             if($producto_sucursal->sucursal->proveedor->externo){
-                $producto_sucursal->precio()->save(clone $precio_interno);
-            }else{
                 $producto_sucursal->precio()->save(clone $precio_externo);
+            }else{
+                $producto_sucursal->precio()->save(clone $precio_interno);
             }
         }
     }
