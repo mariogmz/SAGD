@@ -78,7 +78,7 @@ class Cliente extends LGGModel {
         'usuario'                   => 'required|max:20|unique:clientes,usuario',
         'nombre'                    => 'required|max:200',
         'fecha_nacimiento'          => 'date',
-        'sexo'                      => 'required|in:HOMBRE,MUJER',
+        'sexo'                      => 'in:HOMBRE,MUJER',
         'ocupacion'                 => 'max:45',
         'fecha_verificacion_correo' => 'date',
         'fecha_expira_club_zegucom' => 'date',
@@ -281,7 +281,8 @@ class Cliente extends LGGModel {
 
         return $this->save();
 
-
+        //$cliente = new App\Cliente($parameters);
+        //$cliente->save();
 
         /*if(!$this->id){
           return $this;

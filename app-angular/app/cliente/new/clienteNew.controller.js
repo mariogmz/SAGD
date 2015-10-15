@@ -95,6 +95,18 @@
 
 
     function create(){
+
+      console.log(vm.form);
+
+      vm.form = {
+         submit: function(){
+            if(vm.form.$invalid){
+              pnotify.alert('Error', 'Error validacion', 'error');
+              return false;
+            }
+         }
+      };
+
       return api.post('/cliente', vm.model)
           .then(function (response){
             vm.message = response.data.message;
