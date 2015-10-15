@@ -1,0 +1,15 @@
+  .notification-message {
+
+    @include make-col();
+    @include make-col-span(11);
+
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    p {
+
+      margin: 0;
+      padding: 0;
+    }
+  }

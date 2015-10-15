@@ -1,0 +1,27 @@
+.notification-cell {
+
+  @include make-row();
+
+  height: 70px;
+  margin-left: 0;
+  padding-left: 0;
+
+  @keyframes fading {
+    from {
+      @include transform(translateY(-60px));
+      opacity: 0;
+    }
+
+    to {
+      @include transform(translateY(0px));
+      opacity: 1;
+    }
+  }
+
+  &.new {
+    @include transition(all 1s ease);
+
+    animation-name: fading;
+    animation-duration: 1s;
+  }
+}

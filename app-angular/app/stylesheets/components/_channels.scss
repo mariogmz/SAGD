@@ -1,0 +1,11 @@
+article.channels {
+
+  @include make-container();
+
+  margin-left: 0;
+  max-height: 500px;
+  overflow-y: auto;
+  padding-bottom: 0;
+  padding-left: 0;
+  padding-top: 0;
+}

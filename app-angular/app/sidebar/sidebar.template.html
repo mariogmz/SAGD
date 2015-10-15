@@ -5,17 +5,19 @@
     </header>
   </section>
 
-  <section class="card">
-    <header class="header">
-      Información
-    </header>
-    <article class="card-block" id="channel-info">
-      <div ng-repeat="info in vm.collection track by $index">
-        <p>
-          {{info.message}}<br/>
-          <small>por <em>{{info.user}}</em></small> -
-          <small> {{info.timestamp}}</small>
-        </p>
+  <section class="notification-card" ng-show="vm.collection.length">
+    <article class="card-block channels">
+      <div class="notification-cell" ng-class="{new: item.isNew}" ng-repeat="item in vm.collection">
+        <div class="notification-type" ng-class="item.level">
+          <span>&nbsp;</span>
+        </div>
+        <div class="notification-message">
+          <p>
+            {{item.message}}<br/>
+            <small>por <em>{{item.user}}</em></small> -
+            <small> {{item.timestamp}}</small>
+          </p>
+        </div>
       </div>
     </article>
   </section>
