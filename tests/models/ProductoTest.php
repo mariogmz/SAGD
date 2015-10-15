@@ -513,7 +513,7 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::saveWithData
+     * @covers ::guardarNuevo
      * @group saves
      */
     public function testSaveWithData() {
@@ -525,7 +525,7 @@ class ProductoTest extends TestCase {
         $producto = factory(App\Producto::class)->make();
         factory(App\Sucursal::class)->make();
 
-        $this->assertTrue($producto->saveWithData($params));
+        $this->assertTrue($producto->guardarNuevo($params));
 
         // Dimension
         $this->assertNotNull($producto->dimension);
@@ -543,10 +543,10 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::updateWithData
+     * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateWithDataSuccess() {
+    public function testUpdateExitoso() {
 
         $producto = factory(App\Producto::class)->create();
         $producto->dimension()->save(new App\Dimension([
@@ -576,7 +576,7 @@ class ProductoTest extends TestCase {
             'descripcion' => 'TEST_DESCRIPTION'
         ];
 
-        $this->assertTrue($producto->updateWithData($params));
+        $this->assertTrue($producto->actualizar($params));
 
         $producto = App\Producto::find($producto->id);
         $this->assertSame($params['descripcion'], $producto->descripcion);
@@ -590,10 +590,10 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::updateWithData
+     * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateWithDataOnFailureDiscardChanges() {
+    public function testUpdateEnCasoDeFalloHaceRollback() {
 
         $producto = factory(App\Producto::class)->create();
         $producto->dimension()->save(new App\Dimension([
@@ -623,7 +623,7 @@ class ProductoTest extends TestCase {
             'descripcion' => 'TEST_DESCRIPTION'
         ];
 
-        $this->assertFalse($producto->updateWithData($params));
+        $this->assertFalse($producto->actualizar($params));
 
         $producto = App\Producto::find($producto->id);
         $this->assertNotSame($params['descripcion'], $producto->descripcion);

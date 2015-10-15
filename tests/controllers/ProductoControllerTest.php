@@ -46,7 +46,7 @@ class ProductoControllerTest extends TestCase {
         $this->mock
             ->shouldReceive([
                 'fill'         => Mockery::self(),
-                'saveWithData' => true,
+                'guardarNuevo' => true,
                 'self'         => 'self',
                 'getId'        => 1
             ])
@@ -68,7 +68,7 @@ class ProductoControllerTest extends TestCase {
         $this->mock
             ->shouldReceive([
                 'fill'         => Mockery::self(),
-                'saveWithData' => false
+                'guardarNuevo' => false
             ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'Clave es requerido'];
         $this->app->instance('App\Producto', $this->mock);
@@ -153,7 +153,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'updateWithData' => true,
+            'actualizar' => true,
         ])->withAnyArgs();
 
         $this->app->instance('App\Producto', $this->mock);
@@ -194,7 +194,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'updateWithData' => false
+            'actualizar' => false
         ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'La clave ya existe'];
         $this->app->instance('App\Producto', $this->mock);

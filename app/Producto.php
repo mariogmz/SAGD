@@ -296,7 +296,7 @@ class Producto extends LGGModel {
      * @param array $parameters
      * @return bool
      */
-    public function saveWithData($parameters) {
+    public function guardarNuevo($parameters) {
         $dimension = new Dimension($parameters['dimension']);
         $precio = new Precio($parameters['precio']);
         $dimension->producto_id = 0;
@@ -328,7 +328,7 @@ class Producto extends LGGModel {
      * @param array $parameters
      * @return bool
      */
-    public function updateWithData($parameters) {
+    public function actualizar($parameters) {
         DB::beginTransaction();
         if ($this->update($parameters)
             && $this->dimension->update($parameters['dimension'])

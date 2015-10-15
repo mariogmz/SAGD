@@ -36,7 +36,7 @@ class ProductoController extends Controller {
 
         $params = $request->all();
         $this->producto->fill($params['producto']);
-        if ($this->producto->saveWithData($params)) {
+        if ($this->producto->guardarNuevo($params)) {
             return response()->json([
                 'message'  => 'Producto creado exitosamente',
                 'producto' => $this->producto->self()
@@ -89,7 +89,7 @@ class ProductoController extends Controller {
                 'error'   => 'Producto no encontrado'
             ], 404);
 
-        } elseif ($this->producto->updateWithData($params)) {
+        } elseif ($this->producto->actualizar($params)) {
             return response()->json([
                 'message' => 'Producto se actualizo correctamente'
             ], 200);
