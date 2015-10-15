@@ -23,6 +23,10 @@ io.on('connection', function(socket){
   socket.on('fetch', function(employee){
     notifications.fetch(socket, employee);
   });
+
+  socket.on('delete', function(payload) {
+    notifications.delete(socket, payload);
+  });
 });
 
 

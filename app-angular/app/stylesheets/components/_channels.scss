@@ -3,7 +3,7 @@ article.channels {
   @include make-container();
 
   margin-left: 0;
-  max-height: 500px;
+  max-height: 80vh;
   overflow-y: auto;
   overflow-x: hidden;
   padding-bottom: 0;

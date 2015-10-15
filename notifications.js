@@ -5,7 +5,8 @@ var Notifications = (function() {
 
   var exports = {
     register: registerEvent,
-    fetch: getEmployeeNotifications
+    fetch: getEmployeeNotifications,
+    delete: deleteNotification
   };
 
   return exports;
@@ -90,17 +91,26 @@ var Notifications = (function() {
   }
 
   function getLatestNotificationsFrom(list) {
-    return redis.lrange(list, 0, 8);
+    return redis.lrange(list, 0, 9);
   }
 
   function getEmployeeNotifications(socket, employee) {
     var user = employee.usuario;
     var list = user + '-notifications';
     getLatestNotificationsFrom(list).then(function (data) {
-      for (var i=0; i<data.length; i++) {
+      for (var i=data.length - 1; i >= 0; i--) {
         var message = JSON.parse(data[i]);
+        message.data.payload.redis = { 'index': i};
         socket.emit(message.data.payload.channel, message);
       }
+    });
+  }
+
+  function deleteNotification(socket, payload) {
+    var list = payload.user + '-notifications';
+    var index = payload.index;
+    redis.lindex(list, index).then(function (element) {
+      redis.lrem(list, 1, element);
     });
   }
 })();

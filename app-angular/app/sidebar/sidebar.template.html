@@ -7,7 +7,8 @@
 
   <section class="notification-card" ng-show="vm.collection.length">
     <article class="card-block channels">
-      <div class="notification-cell" ng-class="{new: item.isNew}" ng-repeat="item in vm.collection">
+      <div class="notification-cell" id="{{'notification-cel-'+$index}}"
+          ng-class="{new: item.isNew, deleting: item.wasDeleted}" ng-repeat="item in vm.collection">
         <div class="notification-type" ng-class="item.level">
           <span>&nbsp;</span>
         </div>
@@ -19,7 +20,7 @@
           </p>
         </div>
         <div class="notification-dismiss">
-          <a href=""><span>&#10005;</span></a>
+          <a ng-click="vm.removeNotification($index, $event)"><span>&#10005;</span></a>
         </div>
       </div>
     </article>

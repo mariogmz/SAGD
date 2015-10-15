@@ -31,13 +31,14 @@
     }
   }
 
-  SidebarController.$inject = ['notifications', 'session']
+  SidebarController.$inject = ['notifications', 'session', '$timeout'];
 
   /* @ngInject */
-  function SidebarController(notifications, session) {
+  function SidebarController(notifications, session, $timeout) {
     var vm = this;
     vm.collection = [];
     vm.saved = [];
+    vm.removeNotification = deleteNotification;
 
     notifications.emit('fetch', session.obtenerEmpleado());
 
@@ -60,6 +61,23 @@
       if (vm.collection.length > 50) {
         vm.collection.pop();
       }
+    }
+
+    function deleteNotification(index, event) {
+      if (vm.collection.length <= 1) { return; }
+      var payload = {
+        'user': session.obtenerEmpleado().usuario,
+        'index': index
+      };
+      notifications.emit('delete', payload);
+      vm.collection[index].wasDeleted = true;
+      removeFromDOM(index);
+    }
+
+    function removeFromDOM(index) {
+      $timeout(1000).then(function(){
+        vm.collection.splice(index, 1);
+      });
     }
   }
 })();
