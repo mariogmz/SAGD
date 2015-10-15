@@ -129,7 +129,7 @@
 
         }).catch(function (response){
           pnotify.alertList(response.data.message, response.data.error, 'error');
-        })
+        });
     }
 
     function calcular(){

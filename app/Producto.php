@@ -273,17 +273,6 @@ class Producto extends LGGModel {
     }
 
     /**
-     * Agrega el precio a cada producto sucursal del producto
-     * @param Precio
-     */
-    public function addPrecio($precio) {
-        $productos_sucursales = $this->productosSucursales;
-        foreach ($productos_sucursales as $producto_sucursal) {
-            $producto_sucursal->precio()->save(clone $precio);
-        }
-    }
-
-    /**
      * Obtienes los precios agrupados por proveedor
      * @return \lluminate\Database\Eloquent\Collection
      */
@@ -308,8 +297,8 @@ class Producto extends LGGModel {
      * @return bool
      */
     public function saveWithData($parameters) {
-        $dimension = new \App\Dimension($parameters['dimension']);
-        $precio = new \App\Precio($parameters['precio']);
+        $dimension = new Dimension($parameters['dimension']);
+        $precio = new Precio($parameters['precio']);
         $dimension->producto_id = 0;
         $precio->producto_sucursal_id = 0;
 
@@ -317,7 +306,7 @@ class Producto extends LGGModel {
             $this->save();
             $this->attachDimension($dimension);
             $this->attachSucursales();
-            $this->addPrecio($precio);
+            $this->guardarPrecios($precio);
             $this->inicializarExistencias();
 
             return true;
@@ -329,7 +318,7 @@ class Producto extends LGGModel {
             if ($precio->errors) {
                 $this->errors->merge($precio->errors);
             }
-
+            print_r($this->errors);
             return false;
         }
     }
@@ -343,7 +332,7 @@ class Producto extends LGGModel {
         DB::beginTransaction();
         if ($this->update($parameters)
             && $this->dimension->update($parameters['dimension'])
-            && (empty($precios_errores = $this->guardarPreciosPorProveedor($parameters)))
+            && (empty($precios_errores = $this->actualizarPreciosPorProveedor($parameters)))
         ) {
             DB::commit();
 
@@ -362,7 +351,22 @@ class Producto extends LGGModel {
         }
     }
 
-    private function guardarPreciosPorProveedor($parameters) {
+    /**
+     * @param Precio $precio_interno
+     */
+    private function guardarPrecios($precio_interno) {
+        $precio_externo = $precio_interno->calcularPrecios($precio_interno->precio_1, $precio_interno->costo, true);
+        $precio_externo = new Precio($precio_externo);
+        foreach($this->productosSucursales as $producto_sucursal){
+            if($producto_sucursal->sucursal->proveedor->externo){
+                $producto_sucursal->precio()->save(clone $precio_interno);
+            }else{
+                $producto_sucursal->precio()->save(clone $precio_externo);
+            }
+        }
+    }
+
+    private function actualizarPreciosPorProveedor($parameters) {
         $precios_proveedor = $parameters['precios'];
         $errors = [];
         foreach ($precios_proveedor as $precio_proveedor) {
