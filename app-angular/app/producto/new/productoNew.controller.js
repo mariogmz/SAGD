@@ -30,6 +30,7 @@
     vm.updateSubclave = updateSubclave;
     vm.updateClave = updateClave;
     vm.calcularPrecios = calcularPrecios;
+    vm.calcular = calcular;
     vm.save = crearProducto;
 
     initialize();
@@ -123,9 +124,18 @@
       return api.get('/calcular-precio', params)
         .then(function (response){
           console.log(response.data.message);
+          vm.precio = response.data.resultado.precios;
+          vm.utilidad = response.data.resultado.utilidades;
+
         }).catch(function (response){
           pnotify.alertList(response.data.message, response.data.error, 'error');
         })
+    }
+
+    function calcular(){
+      if (vm.precio.precio_1 && vm.precio.costo) {
+        calcularPrecios();
+      }
     }
 
     function goBack(){

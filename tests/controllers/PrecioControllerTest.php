@@ -79,7 +79,7 @@ class PrecioControllerTest extends TestCase {
             ->seeJson([
                 'message' => 'No se pudo realizar el cálculo de precios y utilidades.',
                 'error'   => [
-                    'Calculo' => 'Ocurrió un error al momento de realizar los cálculos.'
+                    'Calculo' => ['Ocurrió un error al momento de realizar los cálculos.']
                 ]
             ])
             ->assertResponseStatus(400);

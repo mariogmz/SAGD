@@ -46,7 +46,6 @@ trait CalculadoraPrecios {
             $utilidades = $this->calcularUtilidadesConMargen();
         }
         $precios = $this->obtenerPrecios($utilidades);
-
         return $this->redondeos([
             'precios'    => $precios,
             'utilidades' => $utilidades
@@ -117,6 +116,7 @@ trait CalculadoraPrecios {
     }
 
     private function obtenerPrecios($utilidades) {
+        $costo = $this->costo;
         $precio_1 = $this->costo * ($utilidades['utilidad_1'] / 100 + 1);
         $precio_2 = $this->costo * ($utilidades['utilidad_2'] / 100 + 1);
         $precio_3 = $this->costo * ($utilidades['utilidad_3'] / 100 + 1);
@@ -128,7 +128,7 @@ trait CalculadoraPrecios {
         $precio_9 = $this->costo * ($utilidades['utilidad_9'] / 100 + 1);
         $precio_10 = $this->costo * ($utilidades['utilidad_10'] / 100 + 1);
 
-        return compact('precio_1', 'precio_2', 'precio_3', 'precio_4', 'precio_5',
+        return compact('costo','precio_1', 'precio_2', 'precio_3', 'precio_4', 'precio_5',
             'precio_6', 'precio_7', 'precio_8', 'precio_9', 'precio_10');
     }
 

@@ -52,8 +52,12 @@ class PrecioController extends Controller {
             if (is_null($costo)) {
                 $errors['Costo'] = ['El costo es necesario.'];
             }
+
             if (!isset($resultados)) {
                 $errors['Calculo'] = ['Ocurrió un error al momento de realizar los cálculos.'];
+                if($costo >= $precio){
+                    array_push($errors['Calculo'],['El precio es menor o igual al costo']);
+                }
             }
 
             return response()->json([
