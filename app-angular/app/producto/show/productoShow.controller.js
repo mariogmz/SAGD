@@ -17,7 +17,6 @@
 
     var vm = this;
     vm.sortKeys = [
-      {name: '#', key: 'id'},
       {name: 'Proveedor', key: 'clave'},
       {name: 'Costo', key: 'costo'},
       {name: 'P1', key: 'precio_1'},
@@ -57,6 +56,8 @@
           return response.data;
         });
     }
+
+    function obtenerUtilidades
 
     function sort(keyname){
       vm.sortKey = keyname;
