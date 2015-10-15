@@ -37,7 +37,7 @@ class ProductoActualizado extends Event implements ShouldBroadcast
             'user' => $this->usuario->usuario,
             'message' => "Se actualizó el producto: ".$this->producto->upc,
             'timestamp' => \Carbon\Carbon::now()->toDateTimeString(),
-            'level' => 'info'
+            'level' => 'ws-info'
         ];
         return ['info'];
     }
