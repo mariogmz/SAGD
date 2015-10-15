@@ -57,8 +57,6 @@
         });
     }
 
-    function obtenerUtilidades
-
     function sort(keyname){
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
