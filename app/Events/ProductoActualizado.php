@@ -23,7 +23,11 @@ class ProductoActualizado extends Event implements ShouldBroadcast
     public function __construct(Producto $producto)
     {
         $this->producto = $producto;
-        $this->usuario = \JWTAuth::parseToken()->authenticate()->morphable;
+        try {
+            $this->usuario = \JWTAuth::parseToken()->authenticate()->morphable;
+        } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
+            $this->usuario = "cli";
+        }
     }
 
     /**
