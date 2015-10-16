@@ -14,7 +14,8 @@
 
     return {
       pluck: pluck,
-      strip: stripApiCall
+      strip: stripApiCall,
+      querify : querify
     };
 
 
@@ -29,6 +30,21 @@
 
     function stripApiCall(string) {
       return string.replace(/^\//g, '').replace(/(\/|,)/g, '-');
+    }
+
+    function querify(parameters){
+      if (angular.isArray(parameters)) {
+        var paramsUrl = '?';
+        parameters = parameters.map(function(param){
+          param = $.map(param, function(value, index){return [value];});
+          return param.join('=');
+        });
+        paramsUrl += parameters.join('&');
+        return paramsUrl;
+      }else{
+        return parameters;
+      }
+
     }
 
 

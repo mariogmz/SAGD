@@ -167,9 +167,10 @@
     }
 
     function calcularPreciosMargen(){
-      angular.forEach(vm.producto.precios, function (precio, index){
-        calcularPrecios(index);
-      });
+      var cantidadProveedores = vm.producto.precios.length;
+      for(var i=0; i < cantidadProveedores ; i++){
+        calcularPrecios(i);
+      }
     }
 
     //////// Utils /////////

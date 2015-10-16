@@ -7,9 +7,9 @@
     .module('blocks.api')
     .factory('api', ApiProvider);
 
-  ApiProvider.$inject = ['$http', 'ENV', 'lscache'];
+  ApiProvider.$inject = ['$http', 'ENV', 'lscache','utils'];
 
-  function ApiProvider($http, ENV, cache){
+  function ApiProvider($http, ENV, cache, utils){
     var applicationFqdn = ENV.applicationFqdn;
     var apiNamespace = ENV.apiNamespace;
     var version = ENV.version;
@@ -29,20 +29,8 @@
     return apiProvider;
 
     function getResource(resource, parameters){
-      parameters = parameters ? parameters : "";
-      if (angular.isArray(parameters)) {
-        var paramsUrl = null;
-        angular.forEach(parameters, function (param){
-          if (param.value) {
-            if (paramsUrl) {
-              paramsUrl += '&' + param.key + '=' + param.value;
-            } else {
-              paramsUrl = '?' + param.key + '=' + param.value;
-            }
-          }
-        });
-        parameters = paramsUrl;
-      }
+      parameters = parameters ? utils.querify(parameters) : "";
+
       var unifiedUri = resource + parameters;
       var cached = cache.cached(unifiedUri);
 
