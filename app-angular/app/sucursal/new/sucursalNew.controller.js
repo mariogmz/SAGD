@@ -19,6 +19,7 @@
     vm.back = goBack;
     vm.create = crearModelos;
     vm.proveedores = [];
+    vm.bases = [];
 
     vm.fields = [
       {
@@ -70,6 +71,17 @@
           ngOptions: 'proveedor.id as proveedor.razon_social for proveedor in to.options | orderBy:"razon_social"',
           required: true
         }
+      },
+      {
+        type: 'select',
+        key: 'base_id',
+        templateOptions: {
+          type: 'select',
+          label: 'Asignar precios en base a proveedor:',
+          options: [{value: 0, name: 'Seleccione un proveedor'}],
+          ngOptions: 'base.id as base.razon_social for base in to.options | orderBy:"razon_social"',
+          required: true
+        }
       }
     ];
 
@@ -78,10 +90,10 @@
     ////////////////
 
     function activate() {
-      return obtenerProveedores()
-        .then(function (response) {
-          console.log("Proveedores obtenidos");
-          assignFields();
+      return obtenerProveedores().then(function (response) {
+          obtenerBases().then(function(response) {
+            assignFields();
+          });
         });
     }
 
@@ -126,6 +138,17 @@
       return api.get('/codigo-postal/find/', vm.domicilio.codigo_postal.codigo_postal);
     }
 
+    function obtenerBases() {
+      return api.get('/proveedor', [{'key': 'base', 'value': 'true'}]).then(function(response) {
+        vm.bases = response.data;
+        return response;
+      }).catch(function(response){
+        vm.error = response.data;
+        pnotify.alert('No se pudo obtener los proveedores base', vm.error.error, 'error');
+        return response;
+      });
+    }
+
     function obtenerProveedores() {
       return api.get('/proveedor')
         .then(function (response) {
@@ -147,6 +170,9 @@
       vm.fields = vm.fields.map(function(object) {
         if(object.key == "proveedor_id") {
           object.templateOptions.options = vm.proveedores;
+        }
+        if(object.key == "base_id") {
+          object.templateOptions.options = vm.bases;
         }
         return object;
       });
