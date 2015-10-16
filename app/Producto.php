@@ -318,8 +318,6 @@ class Producto extends LGGModel {
             if ($precio->errors) {
                 $this->errors->merge($precio->errors);
             }
-            print_r($this->errors);
-
             return false;
         }
     }
