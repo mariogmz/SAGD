@@ -403,24 +403,6 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::addPrecio
-     * @group precios
-     */
-    public function testAddPrecio() {
-        $producto = factory(App\Producto::class)->create();
-        $sucursal = factory(App\Sucursal::class)->create();
-        $producto->addSucursal($sucursal);
-
-        $precio = factory(App\Precio::class, 'bare')->make();
-
-        $producto->addPrecio($precio);
-
-        $precios = $producto->precios;
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $precios);
-        $this->assertInstanceOf(App\Precio::class, $precios[0]);
-    }
-
-    /**
      * @covers ::precios
      * @group relaciones
      * @group precios
@@ -441,7 +423,9 @@ class ProductoTest extends TestCase {
 
         $precio = factory(App\Precio::class, 'bare')->make();
 
-        $producto->addPrecio($precio);
+        foreach($producto->productosSucursales as $ps){
+            $ps->precio()->save(clone $precio);
+        }
 
         $precios = App\ProductoSucursal::whereProductoId($producto->id)->get()->count();
         $this->assertCount($precios, $producto->precios);
@@ -529,19 +513,19 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::saveWithData
+     * @covers ::guardarNuevo
      * @group saves
      */
     public function testSaveWithData() {
         $params = [
             "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
-            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.5, "precio_6" => 90.5, "precio_7" => 90.5, "precio_8" => 90.5, "precio_9" => 90.5, "precio_10" => 90.5]
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
         $producto = factory(App\Producto::class)->make();
         factory(App\Sucursal::class)->make();
 
-        $this->assertTrue($producto->saveWithData($params));
+        $this->assertTrue($producto->guardarNuevo($params));
 
         // Dimension
         $this->assertNotNull($producto->dimension);
@@ -559,10 +543,10 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::updateWithData
+     * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateWithDataSuccess() {
+    public function testUpdateExitoso() {
 
         $producto = factory(App\Producto::class)->create();
         $producto->dimension()->save(new App\Dimension([
@@ -592,7 +576,7 @@ class ProductoTest extends TestCase {
             'descripcion' => 'TEST_DESCRIPTION'
         ];
 
-        $this->assertTrue($producto->updateWithData($params));
+        $this->assertTrue($producto->actualizar($params));
 
         $producto = App\Producto::find($producto->id);
         $this->assertSame($params['descripcion'], $producto->descripcion);
@@ -606,10 +590,10 @@ class ProductoTest extends TestCase {
     }
 
     /**
-     * @covers ::updateWithData
+     * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateWithDataOnFailureDiscardChanges() {
+    public function testUpdateEnCasoDeFalloHaceRollback() {
 
         $producto = factory(App\Producto::class)->create();
         $producto->dimension()->save(new App\Dimension([
@@ -639,7 +623,7 @@ class ProductoTest extends TestCase {
             'descripcion' => 'TEST_DESCRIPTION'
         ];
 
-        $this->assertFalse($producto->updateWithData($params));
+        $this->assertFalse($producto->actualizar($params));
 
         $producto = App\Producto::find($producto->id);
         $this->assertNotSame($params['descripcion'], $producto->descripcion);

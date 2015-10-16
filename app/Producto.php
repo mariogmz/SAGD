@@ -277,17 +277,6 @@ class Producto extends LGGModel {
     }
 
     /**
-     * Agrega el precio a cada producto sucursal del producto
-     * @param Precio
-     */
-    public function addPrecio($precio) {
-        $productos_sucursales = $this->productosSucursales;
-        foreach ($productos_sucursales as $producto_sucursal) {
-            $producto_sucursal->precio()->save(clone $precio);
-        }
-    }
-
-    /**
      * Obtienes los precios agrupados por proveedor
      * @return \lluminate\Database\Eloquent\Collection
      */
@@ -296,16 +285,24 @@ class Producto extends LGGModel {
             ->join('precios', 'precios.producto_sucursal_id', '=', 'productos_sucursales.id')
             ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
-            ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'precios.costo', 'precios.precio_1',
+            ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'proveedores.externo', 'precios.costo', 'precios.precio_1',
                 'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
                 'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10')
             ->groupBy('proveedores.id')
             ->get();
     }
 
-    public function saveWithData($parameters) {
-        $dimension = new \App\Dimension($parameters['dimension']);
-        $precio = new \App\Precio($parameters['precio']);
+
+    /**
+     * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
+     * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
+     * los datos asociados en sus dimensiones.
+     * @param array $parameters
+     * @return bool
+     */
+    public function guardarNuevo($parameters) {
+        $dimension = new Dimension($parameters['dimension']);
+        $precio = new Precio($parameters['precio']);
         $dimension->producto_id = 0;
         $precio->producto_sucursal_id = 0;
 
@@ -313,7 +310,7 @@ class Producto extends LGGModel {
             $this->save();
             $this->attachDimension($dimension);
             $this->attachSucursales();
-            $this->addPrecio($precio);
+            $this->guardarPrecios($precio);
             $this->inicializarExistencias();
 
             return true;
@@ -325,16 +322,20 @@ class Producto extends LGGModel {
             if ($precio->errors) {
                 $this->errors->merge($precio->errors);
             }
-
             return false;
         }
     }
 
-    public function updateWithData($parameters) {
+    /**
+     * Función que hace las operaciones necesarias para la actualización de datos del producto
+     * @param array $parameters
+     * @return bool
+     */
+    public function actualizar($parameters) {
         DB::beginTransaction();
         if ($this->update($parameters)
             && $this->dimension->update($parameters['dimension'])
-            && (empty($precios_errores = $this->guardarPreciosPorProveedor($parameters)))
+            && (empty($precios_errores = $this->actualizarPreciosPorProveedor($parameters)))
         ) {
             DB::commit();
 
@@ -353,7 +354,22 @@ class Producto extends LGGModel {
         }
     }
 
-    private function guardarPreciosPorProveedor($parameters) {
+    /**
+     * @param Precio $precio_interno
+     */
+    private function guardarPrecios($precio_interno) {
+        $precio_externo = $precio_interno->calcularPrecios($precio_interno->precio_1, $precio_interno->costo, true);
+        $precio_externo = new Precio($precio_externo['precios']);
+        foreach ($this->productosSucursales as $producto_sucursal) {
+            if ($producto_sucursal->sucursal->proveedor->externo) {
+                $producto_sucursal->precio()->save(clone $precio_externo);
+            } else {
+                $producto_sucursal->precio()->save(clone $precio_interno);
+            }
+        }
+    }
+
+    private function actualizarPreciosPorProveedor($parameters) {
         $precios_proveedor = $parameters['precios'];
         $errors = [];
         foreach ($precios_proveedor as $precio_proveedor) {

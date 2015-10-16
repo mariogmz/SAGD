@@ -39,8 +39,14 @@ table.item-table {
     text-align: center;
   }
 
-  tr:hover td.with-input > input[type="text"] {
-    background-color: #F5F5F5;
+  tr:hover {
+
+    td.with-input {
+
+      > input[type="text"] {
+        background-color: #F5F5F5;
+      }
+    }
   }
 
   span.truncate {

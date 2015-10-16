@@ -66,7 +66,7 @@ class PrecioTest extends TestCase {
     public function testPreciosNoPuedenSerCeroOMenos() {
         $precio = factory(App\Precio::class, 'precioszero')->make();
         $this->assertFalse($precio->isValid());
-        for($i = 1; $i<=10; $i++){
+        for ($i = 1; $i <= 10; $i ++) {
             $var = 'precio_' . $i;
             $precio->$var = 0.1;
         }
@@ -79,9 +79,9 @@ class PrecioTest extends TestCase {
     public function testCadaPrecioDebeSerMenorOIgualQueElAnterior() {
         $model = factory(App\Precio::class, 'precioszero')->make();
 
-        for($i = 1; $i <= 9; $i++){
+        for ($i = 1; $i <= 9; $i ++) {
             $var1 = 'precio_' . $i;
-            $var2 = 'precio_' . ($i+1);
+            $var2 = 'precio_' . ($i + 1);
 
             $model->$var1 = 12 - $i;
 
@@ -119,5 +119,19 @@ class PrecioTest extends TestCase {
         $precio->productoSucursal()->associate($producto->productosSucursales[0])->save();
         $testProducto = $precio->producto;
         $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
+
+    /**
+     * @covers ::proveedor
+     * @group relaciones
+     */
+    public function testProveedor() {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+        $precio = factory(App\Precio::class)->make();
+        $precio->productoSucursal()->associate($producto->productosSucursales[0])->save();
+        $testProveedor = $precio->proveedor;
+        $this->assertInstanceOf(App\Proveedor::class, $testProveedor);
     }
 }
