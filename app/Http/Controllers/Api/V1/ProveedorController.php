@@ -15,22 +15,18 @@ class ProveedorController extends Controller
     public function __construct(Proveedor $proveedor)
     {
         $this->proveedor = $proveedor;
-        // $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**
      * Display a listing of the resource.
      *
-     * @param Request $request
      * @return Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        if($request->base){
-            return $this->proveedor->has('sucursales.productosSucursales')->get();
-        }else{
-            return $this->proveedor->all();
-        }
+        $proveedores = $this->proveedor->all();
+        return $proveedores;
     }
 
     /**
