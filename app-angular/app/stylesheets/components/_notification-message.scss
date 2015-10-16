@@ -1,0 +1,19 @@
+  .notification-message {
+
+    @include make-col();
+    @include make-col-span(9.5);
+
+    @media (max-width: 99em) {
+      @include make-col-span(9.4);
+    }
+
+    height: 50px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    p {
+
+      margin: 0;
+      padding: 0;
+    }
+  }

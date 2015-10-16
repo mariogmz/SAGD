@@ -1,0 +1,38 @@
+.notification-cell {
+
+  @include make-row();
+
+  height: 70px;
+  margin-left: 0;
+  overflow-x: none;
+  padding-left: 0;
+
+  @keyframes fading {
+    from {
+      @include transform(translateY(-60px));
+      opacity: 0;
+    }
+
+    to {
+      @include transform(translateY(0px));
+      opacity: 1;
+    }
+  }
+
+  &.deleting {
+    @include transform(translateX(100%));
+  }
+
+  &.new {
+    @include transition(all 1s ease);
+
+    animation-name: fading;
+    animation-duration: 1s;
+  }
+
+  &:hover {
+    .notification-dismiss {
+      @include transform(translateX(0));
+    }
+  }
+}

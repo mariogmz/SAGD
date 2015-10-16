@@ -1,0 +1,28 @@
+<aside class="notification-bar" id="notification-bar">
+  <section class="card card-inverse" style="background-color: #333; border-color: #333; text-align: center; height: 60px">
+    <header class="card-block">
+      <h3 class="card-title">Notificaciones</h3>
+    </header>
+  </section>
+
+  <section class="notification-card" ng-show="vm.collection.length">
+    <article class="card-block channels">
+      <div class="notification-cell" id="{{'notification-cel-'+$index}}"
+          ng-class="{new: item.isNew, deleting: item.wasDeleted}" ng-repeat="item in vm.collection">
+        <div class="notification-type" ng-class="item.level">
+          <span>&nbsp;</span>
+        </div>
+        <div class="notification-message">
+          <p>
+            {{item.message}}<br/>
+            <small>por <em>{{item.user}}</em></small> -
+            <small> {{item.timestamp}}</small>
+          </p>
+        </div>
+        <div class="notification-dismiss">
+          <a ng-click="vm.removeNotification($index, $event)"><span>&#10005;</span></a>
+        </div>
+      </div>
+    </article>
+  </section>
+</aside>

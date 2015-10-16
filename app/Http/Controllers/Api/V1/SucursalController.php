@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Sucursal;
-use Illuminate\Http\Request;
-
-use App\Http\Requests;
+use App\Events\SucursalVista;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Sucursal;
+use Event;
+use Illuminate\Http\Request;
 
 class SucursalController extends Controller
 {
