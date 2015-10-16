@@ -77,8 +77,8 @@
         key: 'base_id',
         templateOptions: {
           type: 'select',
-          label: 'Asignar precios en base a proveedor:',
-          options: [{value: 0, name: 'Seleccione un proveedor'}],
+          label: 'Asignar precios en base a sucursal:',
+          options: [{value: 0, name: 'Seleccione una sucursal'}],
           ngOptions: 'base.id as base.razon_social for base in to.options | orderBy:"razon_social"',
           required: true
         }
@@ -139,12 +139,12 @@
     }
 
     function obtenerBases() {
-      return api.get('/proveedor', [{'key': 'base', 'value': 'true'}]).then(function(response) {
+      return api.get('/sucursal', [{'key': 'base', 'value': 'true'}]).then(function(response) {
         vm.bases = response.data;
         return response;
       }).catch(function(response){
         vm.error = response.data;
-        pnotify.alert('No se pudo obtener los proveedores base', vm.error.error, 'error');
+        pnotify.alert('No se pudo obtener las sucursales', vm.error.error, 'error');
         return response;
       });
     }
