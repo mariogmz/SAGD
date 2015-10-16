@@ -30,13 +30,42 @@ class ProveedorControllerTest extends TestCase
 
     /**
      * @covers ::index
+     * @group bases
      */
     public function test_GET_index()
     {
-        $this->mock->shouldReceive('all')->once()->andReturn('[{"id":1,"clave":"DICO","razon_social":"DICOTECH MAYORISTA DE TECNOLOGIA S.A. DE C.V."}]');
+        $this->mock
+            ->shouldReceive('all')
+            ->once()
+            ->andReturn('[{"id": 1,"clave": "DICO","razon_social": "DICOTECH MAYORISTA DE TECNOLOGIA S.A. DE C.V.","externo": 0,"pagina_web": "http://www.dicotech.com.mx"},{"id": 2,"clave": "CADTON","razon_social": "COMPUTACION ADMINISTRATIVA Y DISEÑO, S.A. DE C.V.","externo": 1,"pagina_web": "http://www.cadtoner.com.mx"},{"id": 3,"clave": "INGRAM","razon_social": "INGRAM MICRO MEXICO S.A. DE C.V.","externo": 1,"pagina_web": "http://HTTP://WWW.INGRAMMIC"}]');
         $this->app->instance('App\Proveedor', $this->mock);
 
         $this->get($this->endpoint)
+            ->seeJson([
+                'clave' => 'DICO',
+                'clave' => 'INGRAM',
+                'clave' => 'CADTON'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::index
+     * @group bases
+     */
+    public function test_GET_index_with_params()
+    {
+        $endpoint = $this->endpoint . '?base=true';
+        $this->mock
+            ->shouldReceive([
+                'has' => Mockery::self(),
+                'get' => '[{"id": 1,"clave": "DICO","razon_social": "DICOTECH MAYORISTA DE TECNOLOGIA S.A. DE C.V.","externo": 0,"pagina_web": "http://www.dicotech.com.mx"},{"id": 3,"clave": "INGRAM","razon_social": "INGRAM MICRO MEXICO S.A. DE C.V.","externo": 1,"pagina_web": "http://HTTP://WWW.INGRAMMIC"}]'
+            ])
+            ->once();
+        $this->app->instance('App\Proveedor', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJsonEquals([["id" => 1,"clave" => "DICO","razon_social" => "DICOTECH MAYORISTA DE TECNOLOGIA S.A. DE C.V.","externo" => 0,"pagina_web" => "http://www.dicotech.com.mx"],["id" => 3,"clave" => "INGRAM","razon_social" => "INGRAM MICRO MEXICO S.A. DE C.V.","externo" => 1,"pagina_web" => "http://HTTP://WWW.INGRAMMIC"]])
             ->assertResponseStatus(200);
     }
 
