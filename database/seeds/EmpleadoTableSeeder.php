@@ -31,5 +31,26 @@ class EmpleadoTableSeeder extends Seeder
         ];
         $user = new App\User($data);
         $user->save();
+
+
+        $data = [
+            'nombre' => 'Omar Garcia',
+            'usuario' => 'ogarcia',
+            'activo' => 1,
+            'puesto' => 'Administrador',
+            'fecha_cambio_password' => \Carbon\Carbon::now('America/Mexico_City'),
+            'sucursal_id' => App\Sucursal::where('clave', 'DICOTAGS')->first()->id
+        ];
+        $empleado = new App\Empleado($data);
+        $empleado->save();
+
+        $data = [
+            'email' => 'ogarcia@zegucom.com.mx',
+            'password' => Hash::make('ogarcia'),
+            'morphable_id' => $empleado->id,
+            'morphable_type' => get_class($empleado)
+        ];
+        $user = new App\User($data);
+        $user->save();
     }
 }

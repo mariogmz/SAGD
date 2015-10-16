@@ -5,6 +5,7 @@ namespace App;
 
 use DB;
 use Illuminate\Support\MessageBag;
+use App\Events\ProductoActualizado;
 
 
 /**
@@ -112,6 +113,9 @@ class Producto extends LGGModel {
             $producto->updateRules['upc'] .= ',upc,' . $producto->id;
 
             return $producto->isValid('update');
+        });
+        Producto::updated(function ($producto) {
+            event(new ProductoActualizado($producto));
         });
     }
 

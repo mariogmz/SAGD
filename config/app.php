@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'debug' => env('APP_DEBUG', getenv('APP_DEBUG')),
+    'debug' => env('APP_DEBUG', 'false'),
 
     /*
     |--------------------------------------------------------------------------

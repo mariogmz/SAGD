@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Events\EmpleadoCreado;
 
 /**
  * App\Empleado
@@ -79,6 +80,9 @@ class Empleado extends LGGModel {
             $empleado->updateRules['usuario'] .= ',usuario,' . $empleado->id;
 
             return $empleado->isValid('update');
+        });
+        Empleado::created(function ($empleado) {
+            event(new EmpleadoCreado($empleado));
         });
     }
 

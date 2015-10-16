@@ -29,7 +29,8 @@ module.exports = function(grunt) {
               'proveedor',
               'subfamilia',
               'unidad'
-            ]
+            ],
+            socketEndpoint: 'ws://socket.sagd.app'
           }
         }
       },
@@ -54,7 +55,8 @@ module.exports = function(grunt) {
               'proveedor',
               'subfamilia',
               'unidad'
-            ]
+            ],
+            socketEndpoint: 'wss://zegucomarb.dyndns.info:8081'
           }
         }
       }
@@ -90,7 +92,9 @@ module.exports = function(grunt) {
           './bower_components/pnotify/src/pnotify.buttons.js',
           './bower_components/pnotify/src/pnotify.nonblock.js',
           './bower_components/pnotify/src/pnotify.callbacks.js',
-          './bower_components/lscache/lscache.js'
+          './bower_components/lscache/lscache.js',
+          './node_modules/socket.io/node_modules/socket.io-client/socket.io.js',
+          './bower_components/angular-socket-io/socket.js'
         ],
         dest: './public/libs/frontend.js'
       },
