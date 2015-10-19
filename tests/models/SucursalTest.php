@@ -214,13 +214,12 @@ class SucursalTest extends TestCase {
      * @group relaciones
      */
     public function testPrecio() {
-        $producto = factory(App\Producto::class)->create();
-        $sucursal = factory(App\Sucursal::class)->create();
-        $precio = factory(App\Precio::class, 'bare')->make();
-
-        $producto->addSucursal($sucursal);
-        $producto->addPrecio($precio);
-
+        $ps = factory(App\ProductoSucursal::class)->create();
+        factory(App\Precio::class, 'bare')->create([
+            'producto_sucursal_id' => $ps->id
+        ]);
+        $sucursal = $ps->sucursal;
+        $producto = $ps->producto;
         $this->assertInstanceOf(App\Precio::class, $sucursal->precio($producto));
     }
 
