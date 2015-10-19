@@ -216,10 +216,8 @@ class SucursalTest extends TestCase {
     public function testPrecio() {
         $producto = factory(App\Producto::class)->create();
         $sucursal = factory(App\Sucursal::class)->create();
-        $precio = factory(App\Precio::class, 'bare')->make();
-
         $producto->addSucursal($sucursal);
-        $producto->addPrecio($precio);
+        factory(App\Precio::class)->create(['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
 
         $this->assertInstanceOf(App\Precio::class, $sucursal->precio($producto));
     }
@@ -251,5 +249,81 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
         $this->assertCount(1, $pms);
+    }
+
+    /**
+     * @covers ::precios
+     */
+    public function testObtenerTodosLosPrecios()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+
+        $producto1 = factory(App\Producto::class)->create();
+        $producto2 = factory(App\Producto::class)->create();
+
+        $producto1->addSucursal($sucursal);
+        factory(App\Precio::class)->create(['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
+
+        $producto2->addSucursal($sucursal);
+        factory(App\Precio::class)->create(['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sucursal->precios);
+        $this->assertCount(2, $sucursal->precios);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group bases
+     */
+    public function testGuardarSucursalOverride()
+    {
+
+        $sucursal = factory(App\Sucursal::class)->make();
+        $this->assertTrue($sucursal->guardar(1));
+    }
+
+    /**
+     * @covers ::guardar
+     * @group bases
+     */
+    public function testGuardarSucursalDebeCrearRegistrosDeProductosSucursales()
+    {
+        $base = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+
+        $producto->addSucursal($base);
+        factory(App\Precio::class)->create(['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
+
+        $sucursal = factory(App\Sucursal::class)->make();
+        $sucursal->guardar($base->id);
+
+        $ps_base = App\ProductoSucursal::whereSucursalId($base->id)->get();
+        $ps = App\ProductoSucursal::whereSucursalId($sucursal->id)->get();
+        $this->assertCount(count($ps_base), $ps);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group bases
+     */
+    public function testGuardarSucursalDebeCopiarRegistrosDePrecios()
+    {
+        $base = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal($base);
+        factory(App\Precio::class)->create(['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
+
+        $sucursal = factory(App\Sucursal::class)->make();
+        $sucursal->guardar($base->id);
+
+        $precios_base = App\Precio::whereHas('productoSucursal', function($query) use ($base) {
+            $query->where('sucursal_id', $base->id);
+        })->get();
+
+        $precios = App\Precio::whereHas('productoSucursal', function($query) use ($sucursal) {
+            $query->where('sucursal_id', $sucursal->id);
+        })->get();
+
+        $this->assertCount(count($precios_base), $precios);
     }
 }

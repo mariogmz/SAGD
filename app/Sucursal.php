@@ -2,6 +2,9 @@
 
 namespace App;
 
+use App\Precio;
+use App\Producto;
+use Sagd\SafeTransactions;
 
 /**
  * App\Sucursal
@@ -35,6 +38,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class Sucursal extends LGGModel {
+
+    use SafeTransactions;
 
     protected $table = 'sucursales';
     public $timestamps = false;
@@ -71,6 +76,84 @@ class Sucursal extends LGGModel {
 
             return $sucursal->isValid('update');
         });
+    }
+
+    /**
+     * Save the model to the database.
+     *
+     * @param  int  $base
+     * @return bool
+     */
+    public function guardar($base)
+    {
+        $lambda = function () use ($base) {
+            if ($this->save()) {
+                $sucursal_base = Sucursal::find($base);
+                $productos = $this->obtenerProductosAsociadosConSucursal($sucursal_base);
+                return $this->asignarPrecios($productos, $sucursal_base);
+            } else {
+                return false;
+            }
+        };
+        return $this->safe_transaction($lambda);
+    }
+
+    /**
+     * @param Sucursal $sucursal
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    private function obtenerProductosAsociadosConSucursal(Sucursal $sucursal)
+    {
+        return Producto::whereHas('productosSucursales', function($query) use ($sucursal) {
+            $query->where('sucursal_id', $sucursal->id);
+        })->get();
+    }
+
+    /**
+     * @param Illuminate\Database\Eloquent\Collection $productos
+     * @param Sucursal $sucursal
+     * @return bool
+     */
+    private function asignarPrecios(\Illuminate\Database\Eloquent\Collection $productos, Sucursal $sucursal)
+    {
+        foreach ($productos as $producto) {
+            $producto->addSucursal($this);
+            $precio = $this->generarNuevoPrecio($producto, $sucursal);
+            if ( $this->agregarPrecioParaProducto($producto, $precio) ) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * @param Producto $producto
+     * @param Sucursal $sucursal
+     * @return Precio
+     */
+    private function generarNuevoPrecio(Producto $producto, Sucursal $sucursal)
+    {
+        $columns = ['costo' => 0, 'precio_1' => 0, 'precio_2' => 0, 'precio_3' => 0, 'precio_4' => 0, 'precio_5' => 0, 'precio_6' => 0, 'precio_7' => 0, 'precio_8' => 0, 'precio_9' => 0, 'precio_10' => 0];
+        $precio_base = $producto->precios()->where('sucursal_id', $sucursal->id)->first()->toArray();
+        $values = array_intersect_key($precio_base, $columns);
+        return new Precio($values);
+    }
+
+    /**
+     * @param Producto $producto
+     * @param Precio $precio
+     * @return bool
+     */
+    private function agregarPrecioParaProducto(Producto $producto, Precio $precio)
+    {
+        $producto_sucursal = $producto->productosSucursales()->where('sucursal_id', $this->id)->first();
+        if ( $precio->productoSucursal()->associate($producto_sucursal)->save() ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -191,6 +274,14 @@ class Sucursal extends LGGModel {
         return $this->productosSucursales
             ->where('producto_id', $producto->id)
             ->first()->precio;
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function precios() {
+        return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
+            'sucursal_id', 'producto_sucursal_id');
     }
 
     /**
