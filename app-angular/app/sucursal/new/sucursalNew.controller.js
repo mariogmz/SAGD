@@ -79,7 +79,7 @@
           type: 'select',
           label: 'Asignar precios en base a sucursal:',
           options: [{value: 0, name: 'Seleccione una sucursal'}],
-          ngOptions: 'base.id as base.razon_social for base in to.options | orderBy:"razon_social"',
+          ngOptions: 'base.id as base.nombre group by base.proveedor.razon_social for base in to.options | orderBy:"nombre"',
           required: true
         }
       }
