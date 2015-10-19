@@ -68,7 +68,7 @@ class Cliente extends LGGModel {
 
     protected $table = "clientes";
     public $timestamps = true;
-    protected $fillable = ['email', 'usuario', 'nombre', 'fecha_nacimiento',
+    protected $fillable = ['usuario', 'nombre', 'fecha_nacimiento',
         'sexo', 'ocupacion', 'fecha_verificacion_correo',
         'fecha_expira_club_zegucom', 'referencia_otro',
         'cliente_estatus_id', 'rol_id', 'sucursal_id', 'cliente_referencia_id',
@@ -279,21 +279,20 @@ class Cliente extends LGGModel {
     */
     public function saveWithData($parameters) {
 
-        return $this->save();
+        $cliente = new Cliente($parameters);
 
-        //$cliente = new App\Cliente($parameters);
-        //$cliente->save();
+        try{
+            $cliente->save();
+        }catch (exception $e){
+            return $cliente;
+        }
 
-        /*if(!$this->id){
-          return $this;
-        }else{
+        // Guardar tabuladores de cliente por sucursal
+        if($cliente->id) {
+            $this->guardarTabuladores($cliente->id);
+        }
 
-          if($this->guardarTabuladores($this->id)){
-            return true;
-          }else {
-            return 0;
-          }
-        }*/
+        return $cliente;
 
     }
 
