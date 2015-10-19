@@ -1,0 +1,199 @@
+<style type="text/css">
+  .css-form input.ng-invalid.ng-touched {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: red;
+  }
+</style>
+<div class="card">
+  <div class="block">
+      <section class="card">
+        <div class="header">
+          <h5>Datos para usuario</h5>
+        </div>
+        <div class="row block">
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="usuario">Usuario:</label>
+              <input type="text" name="usuario" id="usuario"
+                     ng-model="vm.model.usuario"
+                     ng-minlength=3
+                     ng-maxlength=20
+                     class="form-control" required autofocus>
+            </fieldset>
+
+            <div class="error" ng-show="form.$submitted || form.usuario.$touched">
+              <small class="error" ng-show="form.usuario.$error.required">El usuario es requerido.</small>
+              <small class="error"  ng-show="form.usuario.$error.minlength">El usuario debe tener al menos 3 caracteres</small>
+              <small class="error" ng-show="form.usuario.$error.maxlength">El usuario no puede ser mayor a 20 caracteres</small>
+              <small class="error" ng-show="form.usuario.$invalid">Invalid</small>
+            </div>
+
+          </div>
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="password">Contraseña:</label>
+              <input type="password" id="password" ng-model="vm.model.password" class="form-control">
+            </fieldset>
+          </div>
+          <div class="col-lg-3">
+            <fieldset class="form-group">
+              <label for="email">Email:</label>
+              <input type="email" name="email" id="email" class="form-control" ng-model="vm.model.email" required placeholder="">
+            </fieldset>
+
+            <div class="error" ng-show="form.$submitted || form.email.$touched">
+              <small class="error" ng-show="form.email.$error.required">El correo es requerido.</small>
+              <small class="error"  ng-show="form.email.$error.email">El correo no es válido</small>
+              <small class="error" ng-show="form.email.$invalid">*</small>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="header">
+          <h5>Datos personales</h5>
+        </div>
+        <div class="row block">
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="nombre">Nombre:</label>
+              <input type="text" id="nombre" nombre="nombre" ng-model="vm.model.nombre" class="form-control" required="" placeholder="">
+            </fieldset>
+
+            <div class="error" ng-show="form.$submitted || form.nombre.$touched">
+              <small class="error" ng-show="form.nombre.$error.required">El nombre es requerido.</small>
+              <small class="error" ng-show="form.nombre.$invalid">*</small>
+            </div>
+
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="autorizado">Autorizado:</label>
+              <input type="text" id="autorizado" ng-model="vm.model.autorizado" class="form-control" placeholder="">
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="row block">
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="sexo">Sexo:</label>
+              <select name="sexo" id="sexo" ng-model="vm.model.sexo" class="form-control">
+                <option value="HOMBRE">Hombre</option>
+                <option value="MUJER">Mujer</option>
+              </select>
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+              <input type="text" id="fecha_nacimiento" ng-model="vm.model.fecha_nacimiento" class="form-control" placeholder="">
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="nombre">Ocupación:</label>
+              <input type="text" id="ocupacion" ng-model="vm.model.ocupacion" class="form-control">
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="telefono">Teléfono:</label>
+              <input type="text" id="telefono" ng-model="vm.model.telefono" class="form-control" placeholder="">
+            </fieldset>
+          </div>
+          <div class="col-lg-4">
+            <fieldset class="form-group">
+              <label for="celular">Celular:</label>
+              <input type="text" id="celular" ng-model="vm.model.celular" class="form-control">
+            </fieldset>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="header">
+          <h5>Sistema</h5>
+        </div>
+        <div class="row block">
+          <div class="row block">
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="cliente_estatus_id">Estatus:</label>
+                <select id="cliente_estatus_id" class="form-control" required
+                        ng-model="vm.model.cliente_estatus_id"
+                        ng-options="estatus.id as estatus.nombre for estatus in vm.estatus | orderBy:'nombre'" >
+                  <option value="">Seleccione un estatus</option>
+                </select>
+
+                <div ng-show="form.$submitted || form.cliente_estatus_id.$touched">
+                  <span ng-show="form.cliente_estatus_id.$error.required">Elige el estatus.</span>
+                </div>
+
+              </fieldset>
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="rol_id">Rol:</label>
+                <select id="rol_id" class="form-control" required
+                        ng-model="vm.model.rol_id"
+                        ng-options="roles.id as roles.nombre for roles in vm.roles | orderBy:'nombre'" >
+                  <option value="">Seleccione un rol</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="empleado_id">Vendedor:</label>
+                <select id="empleado_id" class="form-control"
+                        ng-model="vm.model.empleado_id"
+                        ng-options="empleados.id as empleados.nombre for empleados in vm.empleados | orderBy:'id'">
+                  <option value="">Seleccione un vendedor</option>
+                </select>
+              </fieldset>
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="cliente_referencia_id">Referencia:</label>
+                <select id="cliente_referencia_id" class="form-control" required
+                        ng-model="vm.model.cliente_referencia_id"
+                        ng-options="referencias.id as referencias.nombre for referencias in vm.referencias | orderBy:'id'">
+                  <option value="">Seleccione una referencia</option>
+                </select>
+              </fieldset>
+
+              <div ng-show="form.$submitted || form.cliente_referencia_id.$touched">
+                <span ng-show="form.cliente_referencia_id.$error.required">Elige una referencia.</span>
+              </div>
+
+            </div>
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="sucursal_id">Sucursal:</label>
+                <select id="sucursal_id" class="form-control" required
+                        ng-model="vm.model.sucursal_id"
+                        ng-options="sucursales.id as sucursales.nombre for sucursales in vm.sucursales | orderBy:'nombre'">
+                  <option value="">Seleccione una sucursal</option>
+                </select>
+              </fieldset>
+
+              <div ng-show="form.$submitted || form.sucursal_id.$touched">
+                <span ng-show="form.sucursal_id.$error.required">Elige una sucursal predeterminada.</span>
+              </div>
+
+            </div>
+
+            <div class="col-lg-6">
+              <fieldset class="form-group">
+                <label for="fecha_expira_club_zegucom">Club Zegucom:</label>
+                <input type="text" id="fecha_expira_club_zegucom" ng-model="vm.model.fecha_expira_club_zegucom" class="form-control">
+              </fieldset>
+            </div>
+          </div>
+        </div>
+      </section>
+
+  </div>
+</div>
