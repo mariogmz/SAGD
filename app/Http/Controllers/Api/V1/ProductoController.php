@@ -22,8 +22,14 @@ class ProductoController extends Controller {
      *
      * @return Response
      */
-    public function index() {
-        return $this->producto->with('subfamilia')->get();
+    public function index(Request $request) {
+        if ($request->has('revisados')) {
+            return $this->producto->whereHas('precios', function ($query) use ($request){
+                $query->where('revisado', $request->revisados);
+            })->get();
+        }else{
+            return $this->producto->with('subfamilia')->get();
+        }
     }
 
     /**

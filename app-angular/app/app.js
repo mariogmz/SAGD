@@ -21,6 +21,7 @@
       'sagdApp.margen',
       'sagdApp.navbar',
       'sagdApp.producto',
+      'sagdApp.revisarPrecios',
       'sagdApp.proveedor',
       'sagdApp.session',
       'sagdApp.sidebar',
