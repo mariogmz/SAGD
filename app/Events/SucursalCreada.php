@@ -18,11 +18,11 @@ class SucursalCreada extends Event implements ShouldBroadcast
     /**
      * Create a new event instance.
      *
-     * @param Sucursal $sucursal
+     * @param string $sucursal
      * @param bool $jobStatus
      * @return void
      */
-    public function __construct(Sucursal $sucursal, $jobStatus)
+    public function __construct($sucursal, $jobStatus)
     {
         $this->sucursal = $sucursal;
         $this->user = "cli";
@@ -36,10 +36,12 @@ class SucursalCreada extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
+        $message = ($this->jobStatus) ? "Se terminó de crear la sucursal $this->sucursal" :
+            "No se pudo crear la sucursal $this->sucursal";
         $level = ($this->jobStatus) ? 'info' : 'warn' ;
         $this->payload = [
             'user' => $this->user,
-            'message' => "Se terminó de crear la sucursal: ".$this->sucursal->clave,
+            'message' => $message,
             'timestamp' => \Carbon\Carbon::now()->toDateTimeString(),
             'channel' => $level,
             'level' => "ws-".$level

@@ -43,7 +43,7 @@ class CrearPreciosParaSucursalNueva implements ShouldQueue
 
         $jobStatus = $this->guardar();
 
-        event(new SucursalCreada($this->sucursal, $jobStatus));
+        event(new SucursalCreada($this->sucursal->clave, $jobStatus));
     }
 
     /**
