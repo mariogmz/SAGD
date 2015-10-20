@@ -7,7 +7,7 @@ use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class SucursalSiendoGuardada extends Event
+class SucursalNueva extends Event
 {
     use SerializesModels;
     public $sucursal;

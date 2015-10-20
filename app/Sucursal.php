@@ -4,7 +4,7 @@ namespace App;
 
 use App\Precio;
 use App\Producto;
-use App\Events\SucursalSiendoGuardada;
+use App\Events\SucursalNueva;
 use Sagd\SafeTransactions;
 
 /**
@@ -88,7 +88,7 @@ class Sucursal extends LGGModel {
     public function guardar($base)
     {
         if ( $this->save() ) {
-            event(new SucursalSiendoGuardada($this, $base));
+            event(new SucursalNueva($this, $base));
             return true;
         } else {
             return false;

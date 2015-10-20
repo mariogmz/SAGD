@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\SucursalSiendoGuardada;
+use App\Events\SucursalNueva;
 use App\Precio;
 use App\Producto;
 use App\Sucursal;
@@ -32,10 +32,10 @@ class CrearPreciosParaSucursalNueva implements ShouldQueue
     /**
      * Handle the event.
      *
-     * @param  SucursalSiendoGuardada  $event
+     * @param  SucursalNueva  $event
      * @return void
      */
-    public function handle(SucursalSiendoGuardada $event)
+    public function handle(SucursalNueva $event)
     {
         $this->sucursal = $event->sucursal;
         $this->base = $event->base;
