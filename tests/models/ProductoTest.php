@@ -573,7 +573,8 @@ class ProductoTest extends TestCase {
                 ]
             ],
             'id'          => $producto->id,
-            'descripcion' => 'TEST_DESCRIPTION'
+            'descripcion' => 'TEST_DESCRIPTION',
+            'revisado'    => true
         ];
 
         $this->assertTrue($producto->actualizar($params));
@@ -620,7 +621,8 @@ class ProductoTest extends TestCase {
                 ]
             ],
             'id'          => $producto->id,
-            'descripcion' => 'TEST_DESCRIPTION'
+            'descripcion' => 'TEST_DESCRIPTION',
+            'revisado'    => false
         ];
 
         $this->assertFalse($producto->actualizar($params));
