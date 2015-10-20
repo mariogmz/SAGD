@@ -1,46 +1,91 @@
-<article class="card">
-  <section class="header">
-    <h4>Producto</h4>
-  </section>
-  <section class="block">
+<div class="product-form">
+  <article class="card">
+    <section class="header">
+      <h4>Producto {{vm.enRevision.clave}}</h4>
+    </section>
+    <section class="block">
+      <section class="row">
 
-    <!-- Nav tabs -->
-    <ul class="tabs" role="tablist">
-      <li class="nav-item">
-        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
-      </li>
-      <li class="nav-item">
-        <a href="#peso-dimensiones" role="tab" data-toggle="tab">Peso y Dimensiones</a>
-      </li>
-      <li class="nav-item">
-        <a href="#precios" role="tab" data-toggle="tab">Precios</a>
-      </li>
-      <li class="nav-item save">
-        <a role="tab" ng-click="vm.save()"><i></i> Guardar</a>
-      </li>
-      <li class="nav-item back">
-        <a ui-sref="productoIndex" role="tab"><i></i> Regresar</a>
-      </li>
-    </ul>
+        <!-- Spiff -->
+        <div class="col-sm">
+          <fieldset>
+            <label for="spiff">Spiff: </label>
 
+            <div class="with-icon">
+              <span><i class="money"></i></span>
+              <input type="text" id="spiff" ng-model="vm.producto.spiff">
+            </div>
+          </fieldset>
+        </div>
 
-    <div class="product-form">
-      <!-- Tab panes -->
-        <article class="tab-content">
-          <loader class="text-center" model="vm.producto"></loader>
-          <!-- Datos Generales -->
-          <section role="tabpanel" class="fade in active" id="datos-generales">
-            <div ui-view="datos-generales"></div>
-          </section>
-          <!-- Pesos & Dimensiones -->
-          <section role="tabpanel" class="fade" id="peso-dimensiones">
-            <div ui-view="peso-dimensiones"></div>
-          </section>
-          <!-- Precios -->
-          <section role="tabpanel" class="fade" id="precios">
-            <div ui-view="precios"></div>
-          </section>
-        </article>
-    </div>
-  </section>
-</article>
+        <!-- Margen -->
+        <div class="col-lg">
+          <fieldset>
+            <label for="margen_id">Margen: </label>
+            <select id="margen_id" ng-model="vm.producto.margen_id"
+                    ng-options="margen.id as margen.nombre for margen in vm.margenes | orderBy:'nombre'"
+                    ng-change="vm.calcularPreciosMargen()">
+              <option value="" ng-bind="vm.margenes? 'Seleccione un margen' : vm.producto.margen.nombre"></option>
+            </select>
+          </fieldset>
+        </div>
+
+        <!-- Precios Revisados -->
+        <div class="col-sm approved">
+          <fieldset>
+            <button class="ok" ng-click="vm.revisarSiguiente()"><i></i> Revisado</button>
+            <button class="back" ui-sref="revisarPreciosIndex"><i></i> Regresar</button>
+          </fieldset>
+        </div>
+
+      </section>
+    </section>
+  </article>
+
+  <!-- Precios -->
+  <div class="card">
+    <article class="header">
+      <h5>Precios por proveedor</h5>
+    </article>
+    <article class="block">
+      <div class="table-responsive">
+        <table class="item-table">
+          <thead class="sortable">
+          <tr>
+            <th class="action" ng-repeat="sortKey in vm.preciosSortKeys" ng-click="vm.sort(sortKey.key)">
+              {{sortKey.name}}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="precio in vm.producto.precios | orderBy:vm.preciosSortKeys:vm.reverse">
+            <td>{{precio.clave != 'DICO' ? precio.clave : ''}}<img ng-if="precio.clave == 'DICO'" width="90px"
+                                                                   src="/public/img/logo_dicotechSF.svg"></td>
+            <td class="with-input"><input type="text" ng-model="precio.costo" ng-blur="vm.calcularPrecios($index)"></td>
+            <td class="with-input"><input type="text" ng-model="precio.precio_1" ng-blur="vm.calcularPrecios($index)">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_2">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_3">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_4">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_5">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_6">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_7">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_8">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_9">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_10">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </div>
+</div>

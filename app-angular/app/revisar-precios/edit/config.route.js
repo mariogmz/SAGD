@@ -1,10 +1,10 @@
-// app/producto/edit/config.route.js
+// app/revisar-precios/edit/config.route.js
 
 (function (){
   'use strict';
 
   angular
-    .module('sagdApp.producto')
+    .module('sagdApp.revisarPrecios')
     .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
@@ -14,7 +14,7 @@
       .state('revisarPreciosEdit', {
         url: '',
         parent: 'revisarPrecios',
-        templateUrl: 'app/producto/edit/edit.html'
+        templateUrl: 'app/revisar-precios/edit/edit.html'
       });
   }
 })();

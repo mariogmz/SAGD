@@ -12,7 +12,6 @@
   function configureRoutes($stateProvider){
     $stateProvider
       .state('revisarPrecios', {
-        abstract: true,
         url: 'revisar-precios',
         parent: 'layout',
         templateUrl: 'app/revisar-precios/revisar-precios.html',

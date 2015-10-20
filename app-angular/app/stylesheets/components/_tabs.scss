@@ -6,6 +6,7 @@ ul.tabs {
 
     &.nav-item {
 
+
       a[data-toggle="tab"] {
         @extend .nav-link;
 
@@ -50,6 +51,7 @@ ul.tabs {
         @extend .nav-link;
         @extend .btn;
         @extend .btn-primary;
+        margin-left: 5px;
         transition: all 500ms ease-in-out;
 
         &:hover {
