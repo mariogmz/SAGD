@@ -89,13 +89,31 @@ class Sucursal extends LGGModel {
         $lambda = function () use ($base) {
             if ($this->save()) {
                 $sucursal_base = Sucursal::find($base);
-                $productos = $this->obtenerProductosAsociadosConSucursal($sucursal_base);
-                return $this->asignarPrecios($productos, $sucursal_base);
+                return $this->asignarPrecios($sucursal_base);
             } else {
                 return false;
             }
         };
         return $this->safe_transaction($lambda);
+    }
+
+    /**
+     * @param Sucursal $sucursal
+     * @return bool
+     */
+    public function asignarPrecios(Sucursal $sucursal)
+    {
+        $productos = $this->obtenerProductosAsociadosConSucursal($sucursal);
+        foreach ($productos as $producto) {
+            $producto->addSucursal($this);
+            $precio = $this->generarNuevoPrecio($producto, $sucursal);
+            if ( $this->agregarPrecioParaProducto($producto, $precio) ) {
+                continue;
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
@@ -107,25 +125,6 @@ class Sucursal extends LGGModel {
         return Producto::whereHas('productosSucursales', function($query) use ($sucursal) {
             $query->where('sucursal_id', $sucursal->id);
         })->get();
-    }
-
-    /**
-     * @param Illuminate\Database\Eloquent\Collection $productos
-     * @param Sucursal $sucursal
-     * @return bool
-     */
-    private function asignarPrecios(\Illuminate\Database\Eloquent\Collection $productos, Sucursal $sucursal)
-    {
-        foreach ($productos as $producto) {
-            $producto->addSucursal($this);
-            $precio = $this->generarNuevoPrecio($producto, $sucursal);
-            if ( $this->agregarPrecioParaProducto($producto, $precio) ) {
-                continue;
-            } else {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**

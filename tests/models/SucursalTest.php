@@ -326,4 +326,27 @@ class SucursalTest extends TestCase {
 
         $this->assertCount(count($precios_base), $precios);
     }
+
+    /**
+     * @covers ::guardar
+     * @group bases
+     * @group transactions
+     */
+    public function testGuardarSucursalHaceRollbacks()
+    {
+        $this->mock = Mockery::mock('App\Sucursal[asignarPrecios]');
+        $this->mock
+            ->shouldReceive('asignarPrecios')
+            ->withAnyArgs()
+            ->andReturn(false);
+        $this->app->instance('App\Sucursal', $this->mock);
+
+        $sucursal = App\Sucursal::whereClave('ROLLBACK')->first();
+        if ($sucursal){
+            $sucursal->forceDelete();
+        }
+        $sucursal = factory(App\Sucursal::class)->make(['clave' => 'ROLLBACK']);
+        $this->assertFalse($sucursal->guardar(1));
+        $this->assertNull(App\Sucursal::whereClave('ROLLBACK')->first());
+    }
 }
