@@ -334,25 +334,26 @@ class SucursalTest extends TestCase {
      */
     public function testGuardarSucursalHaceRollbacks()
     {
-        $this->mock = Mockery::mock('App\Sucursal[asignarPrecios]');
+        $this->mock = Mockery::mock('App\Listeners\CrearPreciosParaSucursalNueva[asignarPrecios]');
         $this->mock
             ->shouldReceive('asignarPrecios')
             ->withAnyArgs()
             ->andReturn(false);
-        $this->app->instance('App\Sucursal', $this->mock);
+        $this->app->instance('App\Listeners\CrearPreciosParaSucursalNueva', $this->mock);
 
         $sucursal = App\Sucursal::whereClave('ROLLBACK')->first();
         if ($sucursal){
             $sucursal->forceDelete();
         }
         $sucursal = factory(App\Sucursal::class)->make(['clave' => 'ROLLBACK']);
-        $this->assertFalse($sucursal->guardar(1));
+        $this->assertTrue($sucursal->guardar(1));
         $this->assertNull(App\Sucursal::whereClave('ROLLBACK')->first());
     }
 
     /**
      * @covers ::guardar
      * @group bases
+     * @group in-depth
      */
     public function testInDepthTestOfGuardar()
     {
@@ -386,6 +387,7 @@ class SucursalTest extends TestCase {
         })->first();
 
         $columns = ['costo' => 0, 'precio_1' => 0, 'precio_2' => 0, 'precio_3' => 0, 'precio_4' => 0, 'precio_5' => 0, 'precio_6' => 0, 'precio_7' => 0, 'precio_8' => 0, 'precio_9' => 0, 'precio_10' => 0];
+
 
         $precios_base = array_intersect_key($precios_base->toArray(), $columns);
         $precios = array_intersect_key($precios->toArray(), $columns);

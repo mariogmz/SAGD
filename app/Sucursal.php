@@ -4,6 +4,7 @@ namespace App;
 
 use App\Precio;
 use App\Producto;
+use App\Events\SucursalSiendoGuardada;
 use Sagd\SafeTransactions;
 
 /**
@@ -82,73 +83,12 @@ class Sucursal extends LGGModel {
      * Save the model to the database.
      *
      * @param  int  $base
-     * @return bool
+     * @return bool true
      */
     public function guardar($base)
     {
-        $lambda = function () use ($base) {
-            if ($this->save()) {
-                $sucursal_base = Sucursal::find($base);
-                return $this->asignarPrecios($sucursal_base);
-            } else {
-                return false;
-            }
-        };
-        return $this->safe_transaction($lambda);
-    }
-
-    /**
-     * @param Sucursal $sucursal
-     * @return bool
-     */
-    public function asignarPrecios(Sucursal $sucursal)
-    {
-        $productos = $this->obtenerProductosAsociadosConSucursal($sucursal);
-        foreach ($productos as $producto) {
-            $producto->addSucursal($this);
-            $precio = $this->generarNuevoPrecio($producto, $sucursal);
-            if ( $this->agregarPrecioParaProducto($producto, $precio) ) {
-                continue;
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * @param Sucursal $sucursal
-     * @return Illuminate\Database\Eloquent\Collection
-     */
-    private function obtenerProductosAsociadosConSucursal(Sucursal $sucursal)
-    {
-        return Producto::whereHas('productosSucursales', function($query) use ($sucursal) {
-            $query->where('sucursal_id', $sucursal->id);
-        })->get();
-    }
-
-    /**
-     * @param Producto $producto
-     * @param Sucursal $sucursal
-     * @return Precio
-     */
-    private function generarNuevoPrecio(Producto $producto, Sucursal $sucursal)
-    {
-        $columns = ['costo' => 0, 'precio_1' => 0, 'precio_2' => 0, 'precio_3' => 0, 'precio_4' => 0, 'precio_5' => 0, 'precio_6' => 0, 'precio_7' => 0, 'precio_8' => 0, 'precio_9' => 0, 'precio_10' => 0];
-        $precio_base = $producto->precios()->where('sucursal_id', $sucursal->id)->first()->toArray();
-        $values = array_intersect_key($precio_base, $columns);
-        return new Precio($values);
-    }
-
-    /**
-     * @param Producto $producto
-     * @param Precio $precio
-     * @return bool
-     */
-    private function agregarPrecioParaProducto(Producto $producto, Precio $precio)
-    {
-        $producto_sucursal = $producto->productosSucursales()->where('sucursal_id', $this->id)->first();
-        if ( $precio->productoSucursal()->associate($producto_sucursal)->save() ) {
+        if ( $this->save() ) {
+            event(new SucursalSiendoGuardada($this, $base));
             return true;
         } else {
             return false;
