@@ -349,4 +349,63 @@ class SucursalTest extends TestCase {
         $this->assertFalse($sucursal->guardar(1));
         $this->assertNull(App\Sucursal::whereClave('ROLLBACK')->first());
     }
+
+    /**
+     * @covers ::guardar
+     * @group bases
+     */
+    public function testInDepthTestOfGuardar()
+    {
+        $base = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+        $producto->addSucursal($base);
+        factory(App\Precio::class)->create([
+            'costo' => 1,
+            'precio_1' => 11,
+            'precio_2' => 10,
+            'precio_3' => 9,
+            'precio_4' => 8,
+            'precio_5' => 7,
+            'precio_6' => 6,
+            'precio_7' => 5,
+            'precio_8' => 4,
+            'precio_9' => 3,
+            'precio_10' => 2,
+            'producto_sucursal_id' => App\ProductoSucursal::last()->id
+        ]);
+
+        $sucursal = factory(App\Sucursal::class)->make();
+        $sucursal->guardar($base->id);
+
+        $precios_base = App\Precio::whereHas('productoSucursal', function($query) use ($base) {
+            $query->where('sucursal_id', $base->id);
+        })->first();
+
+        $precios = App\Precio::whereHas('productoSucursal', function($query) use ($sucursal) {
+            $query->where('sucursal_id', $sucursal->id);
+        })->first();
+
+        $columns = ['costo' => 0, 'precio_1' => 0, 'precio_2' => 0, 'precio_3' => 0, 'precio_4' => 0, 'precio_5' => 0, 'precio_6' => 0, 'precio_7' => 0, 'precio_8' => 0, 'precio_9' => 0, 'precio_10' => 0];
+
+        $precios_base = array_intersect_key($precios_base->toArray(), $columns);
+        $precios = array_intersect_key($precios->toArray(), $columns);
+
+        for ($i=1; $i < 11; $i++) {
+            $column = 'precio_' . $i;
+            $this->assertEquals($precios_base[$column], $precios[$column]);
+        }
+
+        $this->assertEquals(1, $precios['costo']);
+        $this->assertEquals(11, $precios['precio_1']);
+        $this->assertEquals(10, $precios['precio_2']);
+        $this->assertEquals(9, $precios['precio_3']);
+        $this->assertEquals(8, $precios['precio_4']);
+        $this->assertEquals(7, $precios['precio_5']);
+        $this->assertEquals(6, $precios['precio_6']);
+        $this->assertEquals(5, $precios['precio_7']);
+        $this->assertEquals(4, $precios['precio_8']);
+        $this->assertEquals(3, $precios['precio_9']);
+        $this->assertEquals(2, $precios['precio_10']);
+
+    }
 }
