@@ -17,7 +17,6 @@
 
     var vm = this;
     vm.sortKeys = [
-      {name: '#', key: 'id'},
       {name: 'Proveedor', key: 'clave'},
       {name: 'Costo', key: 'costo'},
       {name: 'P1', key: 'precio_1'},

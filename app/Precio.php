@@ -3,6 +3,8 @@
 namespace App;
 
 
+use Sagd\CalculadoraPrecios;
+
 /**
  * App\Precio
  *
@@ -37,6 +39,7 @@ namespace App;
  */
 class Precio extends LGGModel {
 
+    use CalculadoraPrecios;
     //
     protected $table = "precios";
     public $timestamps = false;
@@ -83,13 +86,26 @@ class Precio extends LGGModel {
 
     /**
      * Obtiene el producto sucursal/proveedor asociado
-     * @return App\ProductoSucursal
+     * @return \App\ProductoSucursal
      */
     public function productoSucursal() {
         return $this->belongsTo('App\ProductoSucursal', 'producto_sucursal_id');
     }
 
+    /**
+     * Obtiene el producto relacionado
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function producto() {
         return $this->productoSucursal->belongsTo('App\Producto', 'producto_id');
     }
+
+    /**
+     * Obtiene el proveedor al que pertenece este precio
+     * @return \App\Proveedor
+     */
+    public function proveedor() {
+        return $this->productoSucursal->sucursal->proveedor();
+    }
+
 }

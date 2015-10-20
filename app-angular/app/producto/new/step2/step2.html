@@ -15,7 +15,7 @@
           <label for="costo">Costo: </label>
           <div class="with-icon">
             <span><i class="money"></i></span>
-            <input type="text" id="costo" ng-model="parentVm.precio.costo">
+            <input type="text" id="costo" ng-model="parentVm.precio.costo" ng-blur="parentVm.calcular()">
           </div>
         </fieldset>
       </div>
@@ -37,7 +37,8 @@
         <fieldset>
           <label for="margen_id">Margen: </label>
           <select id="margen_id" ng-model="parentVm.producto.margen_id"
-                  ng-options="margen.id as margen.nombre for margen in parentVm.margenes | orderBy:'nombre'">
+                  ng-options="margen.id as margen.nombre for margen in parentVm.margenes | orderBy:'nombre'"
+                  ng-change="parentVm.calcularPrecios()">
             <option value="">Seleccione un margen</option>
           </select>
         </fieldset>
@@ -64,7 +65,7 @@
             <label>Precios ( $ )</label>
             <div class="with-icon">
               <span>1</span>
-              <input type="text" id="precio_1" ng-model="parentVm.precio.precio_1">
+              <input type="text" id="precio_1" ng-model="parentVm.precio.precio_1" ng-blur="parentVm.calcular()">
             </div>
           </fieldset>
           <fieldset>

@@ -29,6 +29,8 @@
     vm.back = goBack;
     vm.updateSubclave = updateSubclave;
     vm.updateClave = updateClave;
+    vm.calcularPrecios = calcularPrecios;
+    vm.calcular = calcular;
     vm.save = crearProducto;
 
     initialize();
@@ -73,13 +75,13 @@
 
     function initialize(){
       obtenerMarcas()
-      .then(obtenerSubfamilias)
-      .then(obtenerUnidades)
-      .then(obtenerTiposDeGarantias)
-      .then(obtenerMargenes)
-      .then(function(){
-        console.log('Datos obtenidos correctamente');
-      });
+        .then(obtenerSubfamilias)
+        .then(obtenerUnidades)
+        .then(obtenerTiposDeGarantias)
+        .then(obtenerMargenes)
+        .then(function (){
+          console.log('Datos obtenidos correctamente');
+        });
     }
 
     function updateSubclave(){
@@ -111,6 +113,29 @@
       }).catch(function (response){
         pnotify.alertList(response.data.message, response.data.error, 'error');
       });
+    }
+
+    function calcularPrecios(){
+      var params = [
+        {key: 'precio', value: vm.precio.precio_1},
+        {key: 'costo', value: vm.precio.costo},
+        {key: 'margen_id', value: vm.producto.margen_id}
+      ];
+      return api.get('/calcular-precio', params)
+        .then(function (response){
+          console.log(response.data.message);
+          vm.precio = response.data.resultado.precios;
+          vm.utilidad = response.data.resultado.utilidades;
+
+        }).catch(function (response){
+          pnotify.alertList(response.data.message, response.data.error, 'error');
+        });
+    }
+
+    function calcular(){
+      if (vm.precio.precio_1 && vm.precio.costo) {
+        calcularPrecios();
+      }
     }
 
     function goBack(){

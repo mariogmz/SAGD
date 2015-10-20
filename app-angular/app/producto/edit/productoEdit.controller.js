@@ -35,6 +35,8 @@
     vm.updateClave = updateClave;
     vm.updateSubclave = updateSubclave;
     vm.save = guardarProducto;
+    vm.calcularPrecios = calcularPrecios;
+    vm.calcularPreciosMargen = calcularPreciosMargen;
     vm.sort = sort;
     vm.back = goBack;
 
@@ -134,6 +136,7 @@
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
+          $state.go('productoShow', {id: vm.id});
           return response;
         })
         .catch(function (response){
@@ -141,6 +144,33 @@
           pnotify.alertList('No se pudo guardar el producto', vm.error.error, 'error');
           return response;
         });
+    }
+
+    function calcularPrecios(index){
+      var params = [
+        {key: 'precio', value: vm.producto.precios[index].precio_1},
+        {key: 'costo', value: vm.producto.precios[index].costo},
+        {key: 'margen_id', value: vm.producto.margen_id},
+        {key: 'externo', value: vm.producto.precios[index].externo}
+      ];
+      return api.get('/calcular-precio', params)
+        .then(function (response){
+          console.log(response.data.message);
+          for (var attr in response.data.resultado.precios) {
+            vm.producto.precios[index][attr] = response.data.resultado.precios[attr];
+          }
+          vm.utilidad = response.data.resultado.utilidades;
+
+        }).catch(function (response){
+          pnotify.alertList(response.data.message, response.data.error, 'error');
+        });
+    }
+
+    function calcularPreciosMargen(){
+      var cantidadProveedores = vm.producto.precios.length;
+      for(var i=0; i < cantidadProveedores ; i++){
+        calcularPrecios(i);
+      }
     }
 
     //////// Utils /////////
