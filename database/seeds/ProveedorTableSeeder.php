@@ -41,7 +41,7 @@ class ProveedorTableSeeder extends Seeder {
         $this->totalCount = count($proveedores);
         foreach ($proveedores as $proveedor) {
             $nuevo_proveedor = factory(App\Proveedor::class)->make((array) $proveedor);
-            if (substr($proveedor->pagina_web, 0, 7) !== 'http://' || substr($proveedor->pagina_web, 0, 8) !== 'https://') {
+            if (strtolower(substr($proveedor->pagina_web, 0, 7)) !== 'http://' || strtolower(substr($proveedor->pagina_web, 0, 8) !== 'https://')) {
                 $nuevo_proveedor->pagina_web = 'http://' . $nuevo_proveedor->pagina_web;
             }
             if (!$nuevo_proveedor->save()) {
