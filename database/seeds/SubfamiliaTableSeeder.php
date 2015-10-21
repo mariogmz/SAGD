@@ -32,12 +32,12 @@ class SubfamiliaTableSeeder extends Seeder {
     }
 
     private function getTotalData() {
-        $statement = "SELECT count(s.CLAVESUBFAM) as count FROM subfamilias s LEFT JOIN subfamilias_categoria sc ON sc.subfamilia_clave = s.CLAVESUBFAM JOIN categorias g ON sc.categoria_clave = g.clave;";
+        $statement = "SELECT count(s.CLAVESUBFAM) AS count FROM subfamilias s LEFT JOIN subfamilias_categoria sc ON sc.subfamilia_clave = s.CLAVESUBFAM LEFT JOIN categorias g ON sc.categoria_clave = g.clave;";
         $this->totalData = $this->legacy->selectOne($statement)->count;
     }
 
     private function getSubfamiliasLegacy() {
-        $statement = "SELECT s.CLAVESUBFAM as clave, s.SUBFAMILIA as nombre, s.famper as clave_familia, g.categoria as categoria FROM subfamilias s LEFT JOIN subfamilias_categoria sc ON sc.subfamilia_clave = s.CLAVESUBFAM JOIN categorias g ON sc.categoria_clave = g.clave;";
+        $statement = "SELECT s.CLAVESUBFAM AS clave, s.SUBFAMILIA AS nombre, s.famper AS clave_familia, g.categoria AS categoria FROM subfamilias s LEFT JOIN subfamilias_categoria sc ON sc.subfamilia_clave = s.CLAVESUBFAM LEFT JOIN categorias g ON sc.categoria_clave = g.clave;";
         $this->subfamiliasLegacy = $this->legacy->select($statement);
     }
 
@@ -50,15 +50,13 @@ class SubfamiliaTableSeeder extends Seeder {
             }
 
             $margen = App\Margen::where('nombre', $subfamilia->categoria)->first();
-            if (is_null($margen)) {
-                continue;
-            }
+            $margen_id = is_null($margen) ? null : $margen->id;
 
             $data = [
                 'clave'      => $subfamilia->clave,
                 'nombre'     => $subfamilia->nombre,
                 'familia_id' => $familia->id,
-                'margen_id'  => $margen->id
+                'margen_id'  => $margen_id
             ];
             DB::table('subfamilias')->insert($data);
             $this->counter ++;
