@@ -39,9 +39,10 @@
         function eliminarCliente(id) {
             return api.delete('/cliente/', id)
                 .then(function(response){
-                    obtenerClientes()
+                    pnotify.alert('Exito', response.data.message, 'success');
+                    vm.obtenerClientes()
                         .then(function(){
-                            pnotify.alert('Exito', response.data.message, 'success');
+                            //pnotify.alert('Exito', response.data.message, 'success');
                         });
                 })
                 .catch(function(response){

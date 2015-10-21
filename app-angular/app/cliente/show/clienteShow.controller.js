@@ -109,12 +109,13 @@
     initialize();
 
     function initialize(){
-      return obtenerClientes().then(function (response){
+      return obtenerCliente().then(function (response){
         console.log(response.message);
+        $state.go('clienteShow.details');
       });
     }
 
-    function obtenerClientes(){
+    function obtenerCliente(){
       return api.get('/cliente/', vm.id)
         .then(function (response){
           vm.cliente = response.data.cliente;

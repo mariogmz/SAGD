@@ -96,8 +96,6 @@
 
     function create(){
 
-      console.log(vm.form);
-
       vm.form = {
          submit: function(){
             if(vm.form.$invalid){
