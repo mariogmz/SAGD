@@ -22,6 +22,7 @@
       'sagdApp.navbar',
       'sagdApp.producto',
       'sagdApp.proveedor',
+      'sagdApp.revisarPrecios',
       'sagdApp.session',
       'sagdApp.sidebar',
       'sagdApp.subfamilia',

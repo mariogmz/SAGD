@@ -94,6 +94,50 @@ class PrecioTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     */
+    public function testRevisadoEsOpcional() {
+        $producto_sucursal = factory(App\ProductoSucursal::class)->create();
+        $precio = factory(App\Precio::class, 'revisadonull')->make([
+            'producto_sucursal_id' => $producto_sucursal->id
+        ]);
+
+        $this->assertNull($precio->revisado);
+        $this->assertTrue($precio->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testRevisadoEsBooleano() {
+        $producto_sucursal = factory(App\ProductoSucursal::class)->create();
+        $precio = factory(App\Precio::class, 'revisadonull')->make([
+            'revisado'             => 'Este precio está revisado',
+            'producto_sucursal_id' => $producto_sucursal->id
+        ]);
+
+        $this->assertFalse($precio->isValid());
+        $precio->revisado = true;
+        $this->assertTrue($precio->save());
+
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testRevisadoPorDefaultEsFalso() {
+        $producto_sucursal = factory(App\ProductoSucursal::class)->create();
+        $precio = factory(App\Precio::class, 'revisadonull')->make([
+            'producto_sucursal_id' => $producto_sucursal->id
+        ]);
+
+        $this->assertTrue($precio->save());
+        $precio = $precio->fresh();
+        $this->assertNotNull($precio->revisado);
+        $this->assertFalse(boolval($precio->revisado));
+    }
+
+    /**
      * @covers ::productoSucursal
      * @group relaciones
      */

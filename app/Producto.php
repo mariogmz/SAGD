@@ -287,7 +287,7 @@ class Producto extends LGGModel {
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
             ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'proveedores.externo', 'precios.costo', 'precios.precio_1',
                 'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
-                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10')
+                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10', DB::raw('sum(precios.revisado)>0 AS revisado'))
             ->groupBy('proveedores.id')
             ->get();
     }
@@ -373,6 +373,7 @@ class Producto extends LGGModel {
         $precios_proveedor = $parameters['precios'];
         $errors = [];
         foreach ($precios_proveedor as $precio_proveedor) {
+            $precio_proveedor['revisado'] = boolval($parameters['revisado']);
             $sucursales_id = Sucursal::whereProveedorId($precio_proveedor['proveedor_id'])->get()->pluck('id');
             $productos_sucursales = ProductoSucursal::with('precio')->whereIn('sucursal_id', $sucursales_id)->whereProductoId($parameters['id'])->get();
 

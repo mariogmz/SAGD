@@ -6,6 +6,7 @@ use App\Producto;
 use App\Events\Event;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
+use stdClass;
 
 class ProductoActualizado extends Event implements ShouldBroadcast
 {
@@ -26,7 +27,8 @@ class ProductoActualizado extends Event implements ShouldBroadcast
         try {
             $this->usuario = \JWTAuth::parseToken()->authenticate()->morphable;
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            $this->usuario = "cli";
+            $this->usuario = new StdClass;
+            $this->usuario->usuario = "cli";
         }
     }
 
