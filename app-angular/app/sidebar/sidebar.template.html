@@ -1,8 +1,15 @@
-<aside class="notification-bar" id="notification-bar">
-  <section class="card card-inverse" style="background-color: #333; border-color: #333; text-align: center; height: 60px">
-    <header class="card-block">
-      <h3 class="card-title">Notificaciones</h3>
+<aside class="notification-bar" id="notification-bar" ng-class="{collapsed: vm.collapsed}">
+
+  <section class="notification-bar-title">
+    <aside class="expand" ng-show="vm.collapsed" ng-click="vm.collapse()">
+      <span>&lt;</span>
+    </aside>
+    <header class="title">
+      <h3>Notificaciones</h3>
     </header>
+    <aside class="collapser" ng-click="vm.collapse()">
+      <span>&#10005;</span>
+    </aside>
   </section>
 
   <section class="notification-toggles">

@@ -36,14 +36,16 @@
   /* @ngInject */
   function SidebarController(notifications, session, $timeout) {
     var vm = this;
+    vm.collapsed = false;
+    vm.showError = true;
     vm.showInfo = true;
     vm.showWarn = true;
-    vm.showError = true;
     vm.collection = [];
     vm.saved = [];
     vm.removeNotification = deleteNotification;
     vm.toggle = toggle;
     vm.showable = canShow;
+    vm.collapse = collapse;
 
     notifications.emit('fetch', session.obtenerEmpleado());
 
@@ -104,6 +106,10 @@
       return  (item.channel == 'info' && vm.showInfo) ||
               (item.channel == 'warn' && vm.showWarn) ||
               (item.channel == 'error' && vm.showError);
+    }
+
+    function collapse() {
+      vm.collapsed = !vm.collapsed;
     }
   }
 })();

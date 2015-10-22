@@ -7,8 +7,9 @@
   padding: 0;
 
   button {
-    color: $white;
     border: none;
+    color: $white;
+    padding: 2px 0;
     width: 100%;
 
     &.ws-info {
