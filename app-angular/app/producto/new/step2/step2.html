@@ -10,24 +10,36 @@
     <section class="row">
 
       <!-- Costo -->
-      <div class="col-sm">
+      <div class="col-xsm">
         <fieldset>
           <label for="costo">Costo: </label>
           <div class="with-icon">
             <span><i class="money"></i></span>
-            <input type="text" id="costo" ng-model="parentVm.precio.costo" ng-blur="parentVm.calcular()">
+            <input type="text" id="costo" placeholder="0.00" ng-model="parentVm.precio.costo" ng-blur="parentVm.calcular()">
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Descuento -->
+      <div class="col-xsm">
+        <fieldset>
+          <label for="descuento">Descuento: </label>
+
+          <div class="with-icon">
+            <span>%</span>
+            <input type="text" id="descuento" placeholder="0 - 100" ng-model="parentVm.precio.descuento">
           </div>
         </fieldset>
       </div>
 
       <!-- Spiff -->
-      <div class="col-sm">
+      <div class="col-xsm">
         <fieldset>
           <label for="spiff">Spiff: </label>
 
           <div class="with-icon">
             <span><i class="money"></i></span>
-            <input type="text" id="spiff" ng-model="parentVm.producto.spiff">
+            <input type="text" id="spiff" placeholder="0.00" ng-model="parentVm.producto.spiff">
           </div>
         </fieldset>
       </div>
@@ -65,31 +77,31 @@
             <label>Precios ( $ )</label>
             <div class="with-icon">
               <span>1</span>
-              <input type="text" id="precio_1" ng-model="parentVm.precio.precio_1" ng-blur="parentVm.calcular()">
+              <input type="text" id="precio_1" placeholder="0.00" ng-model="parentVm.precio.precio_1" ng-blur="parentVm.calcular()">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>2</span>
-              <input type="text" id="precio_2" ng-model="parentVm.precio.precio_2" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_2" placeholder="0.00" ng-model="parentVm.precio.precio_2" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>3</span>
-              <input type="text" id="precio_3" ng-model="parentVm.precio.precio_3" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_3" placeholder="0.00" ng-model="parentVm.precio.precio_3" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>4</span>
-              <input type="text" id="precio_4" ng-model="parentVm.precio.precio_4" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_4" placeholder="0.00" ng-model="parentVm.precio.precio_4" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>5</span>
-              <input type="text" id="precio_5" ng-model="parentVm.precio.precio_5" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_5" placeholder="0.00" ng-model="parentVm.precio.precio_5" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
         </div>
@@ -100,31 +112,31 @@
             <label>Utilidades ( $ )</label>
             <div class="with-icon">
               <span>1</span>
-              <input type="text" id="utilidad_1" disabled ng-model="parentVm.utilidad.utilidad_1">
+              <input type="text" id="utilidad_1" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_1">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>2</span>
-              <input type="text" id="utilidad_2" disabled ng-model="parentVm.utilidad.utilidad_2">
+              <input type="text" id="utilidad_2" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_2">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>3</span>
-              <input type="text" id="utilidad_3" disabled ng-model="parentVm.utilidad.utilidad_3">
+              <input type="text" id="utilidad_3" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_3">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>4</span>
-              <input type="text" id="utilidad_4" disabled ng-model="parentVm.utilidad.utilidad_4">
+              <input type="text" id="utilidad_4" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_4">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>5</span>
-              <input type="text" id="utilidad_5" disabled ng-model="parentVm.utilidad.utilidad_5">
+              <input type="text" id="utilidad_5" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_5">
             </div>
           </fieldset>
         </div>
@@ -138,31 +150,31 @@
             <label>Precios ( $ )</label>
             <div class="with-icon">
               <span>6</span>
-              <input type="text" id="precio_6" ng-model="parentVm.precio.precio_6" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_6" placeholder="0.00" ng-model="parentVm.precio.precio_6" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>7</span>
-              <input type="text" id="precio_7" ng-model="parentVm.precio.precio_7" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_7" placeholder="0.00" ng-model="parentVm.precio.precio_7" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>8</span>
-              <input type="text" id="precio_8" ng-model="parentVm.precio.precio_8" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_8" placeholder="0.00" ng-model="parentVm.precio.precio_8" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>9</span>
-              <input type="text" id="precio_9" ng-model="parentVm.precio.precio_9" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_9" placeholder="0.00" ng-model="parentVm.precio.precio_9" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>10</span>
-              <input type="text" id="precio_10" ng-model="parentVm.precio.precio_10" ng-disabled="parentVm.producto.margen_id">
+              <input type="text" id="precio_10" placeholder="0.00" ng-model="parentVm.precio.precio_10" ng-disabled="parentVm.producto.margen_id">
             </div>
           </fieldset>
         </div>
@@ -173,31 +185,31 @@
             <label>Utilidades ( $ )</label>
             <div class="with-icon">
               <span>6</span>
-              <input type="text" id="utilidad_6" disabled ng-model="parentVm.utilidad.utilidad_6">
+              <input type="text" id="utilidad_6" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_6">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>7</span>
-              <input type="text" id="utilidad_7" disabled ng-model="parentVm.utilidad.utilidad_7">
+              <input type="text" id="utilidad_7" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_7">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>8</span>
-              <input type="text" id="utilidad_8" disabled ng-model="parentVm.utilidad.utilidad_8">
+              <input type="text" id="utilidad_8" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_8">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>9</span>
-              <input type="text" id="utilidad_9" disabled ng-model="parentVm.utilidad.utilidad_9">
+              <input type="text" id="utilidad_9" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_9">
             </div>
           </fieldset>
           <fieldset>
             <div class="with-icon">
               <span>10</span>
-              <input type="text" id="utilidad_10" disabled ng-model="parentVm.utilidad.utilidad_10">
+              <input type="text" id="utilidad_10" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_10">
             </div>
           </fieldset>
         </div>

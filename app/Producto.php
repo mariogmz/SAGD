@@ -287,7 +287,7 @@ class Producto extends LGGModel {
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
             ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'proveedores.externo', 'precios.costo', 'precios.precio_1',
                 'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
-                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10')
+                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10','precios.descuento')
             ->groupBy('proveedores.id')
             ->get();
     }
@@ -360,6 +360,7 @@ class Producto extends LGGModel {
     private function guardarPrecios($precio_interno) {
         $precio_externo = $precio_interno->calcularPrecios($precio_interno->precio_1, $precio_interno->costo, true);
         $precio_externo = new Precio($precio_externo['precios']);
+        $precio_externo->descuento = $precio_interno->descuento;
         foreach ($this->productosSucursales as $producto_sucursal) {
             if ($producto_sucursal->sucursal->proveedor->externo) {
                 $producto_sucursal->precio()->save(clone $precio_externo);

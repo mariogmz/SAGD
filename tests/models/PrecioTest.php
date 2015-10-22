@@ -55,6 +55,42 @@ class PrecioTest extends TestCase {
     /**
      * @coversNothing
      */
+    public function testDescuentoEsOpcional(){
+        $precio = factory(App\Precio::class,'sindescuento')->make();
+        $this->assertTrue($precio->save());
+        $precio->descuento = 0.1;
+        $this->assertTrue($precio->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testDescuentoEsPorcentaje(){
+        $precio = factory(App\Precio::class, 'sindescuento')->make();
+        $precio->descuento = 'DESCUENTAZAZO';
+        $this->assertFalse($precio->save());
+        $precio->descuento = -1;
+        $this->assertFalse($precio->save());
+        $precio->descuento = 1.5;
+        $this->assertFalse($precio->save());
+        $precio->descuento = 0.5;
+        $this->assertTrue($precio->save());
+    }
+
+
+    /**
+     * @coversNothing
+     */
+    public function testDescuentoPorDefaultEsCero(){
+        $precio = factory(App\Precio::class, 'sindescuento')->make();
+        $this->assertTrue($precio->save());
+        $precio = $precio->fresh();
+        $this->assertSame(0.00, floatval($precio->descuento));
+    }
+
+    /**
+     * @coversNothing
+     */
     public function testPreciosSonRequeridos() {
         $precio = factory(App\Precio::class, 'nullprecios')->make();
         $this->assertFalse($precio->isValid());

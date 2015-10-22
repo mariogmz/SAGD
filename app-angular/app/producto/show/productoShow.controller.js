@@ -28,7 +28,8 @@
       {name: 'P7', key: 'precio_7'},
       {name: 'P8', key: 'precio_8'},
       {name: 'P9', key: 'precio_9'},
-      {name: 'P10', key: 'precio_10'}
+      {name: 'P10', key: 'precio_10'},
+      {name: 'Descuento', key: 'descuento'}
     ];
 
     vm.sort = sort;
