@@ -5,10 +5,30 @@
     </header>
   </section>
 
+  <section class="notification-toggles">
+    <div class="info-toggle toggle">
+      <button class="ws-info" ng-class="{active: vm.showInfo}" ng-click="vm.toggle('info')">
+        Infos
+      </button>
+    </div>
+    <div class="warn-toggle toggle">
+      <button class="ws-warn" ng-class="{active: vm.showWarn}" ng-click="vm.toggle('warn')">
+        Alertas
+      </button>
+    </div>
+    <div class="error-toggle toggle">
+      <button class="ws-error" ng-class="{active: vm.showError}" ng-click="vm.toggle('error')">
+        Errores
+      </button>
+    </div>
+  </section>
+
   <section class="notification-card" ng-show="vm.collection.length">
     <article class="card-block channels">
       <div class="notification-cell" id="{{'notification-cel-'+$index}}"
-          ng-class="{new: item.isNew, deleting: item.wasDeleted}" ng-repeat="item in vm.collection">
+          ng-class="{new: item.isNew, deleting: item.wasDeleted}"
+          ng-repeat="item in vm.collection"
+          ng-show="vm.showable(item)">
         <div class="notification-type" ng-class="item.level">
           <span>&nbsp;</span>
         </div>
