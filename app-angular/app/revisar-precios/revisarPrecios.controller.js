@@ -74,7 +74,7 @@
           vm.producto.precios = response.data.precios_proveedor;
           return response;
         }).catch(function (response){
-          console.error(response.data);
+          console.log(response.data);
         });
     }
 
@@ -139,11 +139,13 @@
     function revisarSiguiente(){
       return guardarProducto()
         .then(function (response){
-          if(vm.productos[++vm.index]){
+          vm.productos.splice(vm.index, 1);
+          if (vm.productos[vm.index - 1] ||  vm.productos[vm.index]) {
+            vm.index = vm.productos[vm.index] ? vm.index : vm.index -1;
             vm.id = vm.productos[vm.index].id;
             obtenerProducto();
-          }else{
-            pnotify.alert('Precios Revisados','No quedan precios pendientes por revisar','info');
+          } else {
+            pnotify.alert('Precios Revisados', 'No quedan precios pendientes por revisar', 'info');
             $state.go('productoIndex');
           }
         })

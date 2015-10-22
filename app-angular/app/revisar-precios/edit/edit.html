@@ -1,9 +1,36 @@
 <div class="product-form">
   <article class="card">
     <section class="header">
-      <h4>Producto {{vm.enRevision.clave}}</h4>
+      <h4>Revisar precio</h4>
     </section>
     <section class="block">
+      <section class="row">
+
+        <!-- Descripción -->
+        <div class="col-lg">
+          <fieldset>
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" disabled ng-bind="vm.producto.descripcion"></textarea>
+          </fieldset>
+        </div>
+
+        <!-- Upc -->
+        <section class="col-sm">
+          <fieldset>
+            <label for="clave">UPC:</label>
+            <input type="text" id="upc" disabled ng-value="vm.producto.upc">
+          </fieldset>
+        </section>
+
+        <!-- Clave -->
+        <section class="col-sm">
+          <fieldset>
+            <label for="clave">Clave:</label>
+            <input type="text" id="clave" disabled ng-value="vm.producto.clave">
+          </fieldset>
+        </section>
+
+      </section>
       <section class="row">
 
         <!-- Spiff -->
@@ -32,10 +59,8 @@
 
         <!-- Precios Revisados -->
         <div class="col-sm approved">
-          <fieldset>
-            <button class="ok" ng-click="vm.revisarSiguiente()"><i></i> Revisado</button>
-            <button class="back" ui-sref="revisarPreciosIndex"><i></i> Regresar</button>
-          </fieldset>
+          <button class="revisado" ng-click="vm.revisarSiguiente()"><i></i> Revisado</button>
+          <button class="back" ui-sref="revisarPreciosIndex"><i></i> Regresar</button>
         </div>
 
       </section>

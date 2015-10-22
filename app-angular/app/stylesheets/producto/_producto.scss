@@ -20,9 +20,10 @@
     font-size: 1.5rem;
 
     button {
+
       @extend .btn;
 
-      &.ok{
+      &.revisado {
         @extend .btn-success;
 
         i{
@@ -31,7 +32,7 @@
         }
       }
 
-      &.no{
+      &.no-revisado {
         @extend .btn-danger;
 
         i{
