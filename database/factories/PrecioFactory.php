@@ -25,6 +25,7 @@ $factory->define(App\Precio::class, function ($faker) {
         'precio_9'             => $faker->randomFloat(2, 1000.00, 2000.00),
         'precio_10'            => $faker->randomFloat(2, 0.1, 1000.00),
         'descuento'            => $faker->randomFloat(2, 0.00, 1.00),
+        'revisado'             => $faker->boolean,
         'producto_sucursal_id' => $faker->randomDigit
     ];
 });
@@ -102,4 +103,29 @@ $factory->defineAs(App\Precio::class, 'sindescuento', function ($faker) use ($fa
     $precio = $factory->raw(App\Precio::class);
     unset($precio['descuento']);
     return $precio;
+});
+
+$factory->defineAs(App\Precio::class, 'norevisado', function ($faker) use ($factory) {
+    $precio = $factory->raw(App\Precio::class);
+
+    return array_merge($precio, [
+        'revisado' => false
+    ]);
+});
+
+$factory->defineAs(App\Precio::class, 'revisadonull', function ($faker) use ($factory) {
+    return [
+        'costo'                => $faker->randomFloat(2, 0.1, 9999.99),
+        'precio_1'             => $faker->randomFloat(2, 9000.00, 9999.99),
+        'precio_2'             => $faker->randomFloat(2, 8000.00, 9000.00),
+        'precio_3'             => $faker->randomFloat(2, 7000.00, 8000.00),
+        'precio_4'             => $faker->randomFloat(2, 6000.00, 7000.00),
+        'precio_5'             => $faker->randomFloat(2, 5000.00, 6000.00),
+        'precio_6'             => $faker->randomFloat(2, 4000.00, 5000.00),
+        'precio_7'             => $faker->randomFloat(2, 3000.00, 4000.00),
+        'precio_8'             => $faker->randomFloat(2, 2000.00, 3000.00),
+        'precio_9'             => $faker->randomFloat(2, 1000.00, 2000.00),
+        'precio_10'            => $faker->randomFloat(2, 0.1, 1000.00),
+        'producto_sucursal_id' => $faker->randomDigit
+    ];
 });

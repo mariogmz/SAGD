@@ -22,12 +22,18 @@ class SucursalController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $sucursales = $this->sucursal->with('proveedor', 'domicilio')->get();
-        return $sucursales;
+        $base = $request->base;
+        if( is_null($base) )
+        {
+            return $this->sucursal->with('proveedor', 'domicilio')->get();
+        } else {
+            return $this->sucursal->with('proveedor')->get();
+        }
     }
 
     /**
@@ -39,8 +45,9 @@ class SucursalController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
+        $base = $params['base_id'];
         $this->sucursal->fill($params);
-        if( $this->sucursal->save() )
+        if( $this->sucursal->guardar($base) )
         {
             return response()->json(
                 [

@@ -423,7 +423,7 @@ class ProductoTest extends TestCase {
 
         $precio = factory(App\Precio::class, 'bare')->make();
 
-        foreach($producto->productosSucursales as $ps){
+        foreach ($producto->productosSucursales as $ps) {
             $ps->precio()->save(clone $precio);
         }
 
@@ -558,7 +558,7 @@ class ProductoTest extends TestCase {
         $sucursal = factory(App\Sucursal::class)->create();
         $producto->addSucursal($sucursal);
 
-        $precio =factory(App\Precio::class)->make();
+        $precio = factory(App\Precio::class)->make();
         $precio->producto_sucursal_id = $producto->productosSucursales()->first()->id;
         $this->assertTrue($precio->save());
 
@@ -572,8 +572,9 @@ class ProductoTest extends TestCase {
                     'proveedor_id' => $sucursal->proveedor_id
                 ]
             ],
-            'id' => $producto->id,
-            'descripcion' => 'TEST_DESCRIPTION'
+            'id'          => $producto->id,
+            'descripcion' => 'TEST_DESCRIPTION',
+            'revisado'    => true
         ];
 
         $this->assertTrue($producto->actualizar($params));
@@ -605,7 +606,7 @@ class ProductoTest extends TestCase {
         $sucursal = factory(App\Sucursal::class)->create();
         $producto->addSucursal($sucursal);
 
-        $precio =factory(App\Precio::class)->make();
+        $precio = factory(App\Precio::class)->make();
         $precio->producto_sucursal_id = $producto->productosSucursales()->first()->id;
         $this->assertTrue($precio->save());
 
@@ -619,8 +620,9 @@ class ProductoTest extends TestCase {
                     'proveedor_id' => $sucursal->proveedor_id
                 ]
             ],
-            'id' => $producto->id,
-            'descripcion' => 'TEST_DESCRIPTION'
+            'id'          => $producto->id,
+            'descripcion' => 'TEST_DESCRIPTION',
+            'revisado'    => false
         ];
 
         $this->assertFalse($producto->actualizar($params));

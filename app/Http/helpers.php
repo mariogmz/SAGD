@@ -1,7 +1,7 @@
 <?php
 
-function print_debug($element) {
+function debug($var) {
     print_r("\n");
-    print_r($element);
+    var_dump($var);
     print_r("\n");
 }

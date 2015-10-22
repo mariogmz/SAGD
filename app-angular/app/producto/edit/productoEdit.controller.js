@@ -63,6 +63,10 @@
           vm.producto = response.data.producto;
           vm.subfamilia = vm.producto.subfamilia;
           vm.producto.precios = response.data.precios_proveedor;
+          vm.producto.revisado = true;
+          vm.producto.precios.forEach(function (element){
+            vm.producto.revisado = vm.producto.revisado && element.revisado;
+          });
           console.log('Producto #' + vm.id + ' obtenido.');
           $state.go('productoEdit.details');
           return response.data;
@@ -169,7 +173,7 @@
 
     function calcularPreciosMargen(){
       var cantidadProveedores = vm.producto.precios.length;
-      for(var i=0; i < cantidadProveedores ; i++){
+      for (var i = 0; i < cantidadProveedores; i++) {
         calcularPrecios(i);
       }
     }

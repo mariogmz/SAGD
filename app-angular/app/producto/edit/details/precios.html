@@ -33,7 +33,7 @@
       <!-- Precios Revisados -->
       <div class="col-sm approved">
         <fieldset>
-          <button ng-class="vm.producto.revisado ? 'ok' : 'no'"><i></i> {{vm.producto.revisado ? 'Revisado' : 'Sin revisar'}}</button>
+          <button ng-class="vm.producto.revisado ? 'revisado' : 'no-revisado'"><i></i> {{vm.producto.revisado ? 'Revisado' : 'Sin revisar'}}</button>
         </fieldset>
       </div>
 
@@ -80,8 +80,6 @@
             <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_9">
             </td>
             <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_10">
-            </td>
-            <td class="with-input"><input type="text" ng-model="precio.descuento">
             </td>
           </tr>
           </tbody>

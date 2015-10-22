@@ -4,14 +4,52 @@
     @extend .form-group;
   }
 
+  button,
   input:not([type='submit']),
   textarea,
-  select {
+  select{
     @extend .form-control
   }
 
   select {
     @extend .c-select;
+  }
+
+  .approved {
+    @extend .text-center;
+    font-size: 1.5rem;
+
+    button {
+
+      @extend .btn;
+
+      &.revisado {
+        @extend .btn-success;
+
+        i{
+          @extend .fa;
+          @extend .fa-thumbs-up;
+        }
+      }
+
+      &.no-revisado {
+        @extend .btn-danger;
+
+        i{
+          @extend .fa;
+          @extend .fa-thumbs-down;
+        }
+      }
+
+      &.back{
+        @extend .btn-secondary;
+
+        i{
+          @extend .fa;
+          @extend .fa-arrow-left;
+        }
+      }
+    }
   }
 
   .card .block {

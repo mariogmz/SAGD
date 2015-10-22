@@ -1,0 +1,116 @@
+<div class="product-form">
+  <article class="card">
+    <section class="header">
+      <h4>Revisar precio</h4>
+    </section>
+    <section class="block">
+      <section class="row">
+
+        <!-- Descripción -->
+        <div class="col-lg">
+          <fieldset>
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" disabled ng-bind="vm.producto.descripcion"></textarea>
+          </fieldset>
+        </div>
+
+        <!-- Upc -->
+        <section class="col-sm">
+          <fieldset>
+            <label for="clave">UPC:</label>
+            <input type="text" id="upc" disabled ng-value="vm.producto.upc">
+          </fieldset>
+        </section>
+
+        <!-- Clave -->
+        <section class="col-sm">
+          <fieldset>
+            <label for="clave">Clave:</label>
+            <input type="text" id="clave" disabled ng-value="vm.producto.clave">
+          </fieldset>
+        </section>
+
+      </section>
+      <section class="row">
+
+        <!-- Spiff -->
+        <div class="col-sm">
+          <fieldset>
+            <label for="spiff">Spiff: </label>
+
+            <div class="with-icon">
+              <span><i class="money"></i></span>
+              <input type="text" id="spiff" ng-model="vm.producto.spiff">
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- Margen -->
+        <div class="col-lg">
+          <fieldset>
+            <label for="margen_id">Margen: </label>
+            <select id="margen_id" ng-model="vm.producto.margen_id"
+                    ng-options="margen.id as margen.nombre for margen in vm.margenes | orderBy:'nombre'"
+                    ng-change="vm.calcularPreciosMargen()">
+              <option value="" ng-bind="vm.margenes? 'Seleccione un margen' : vm.producto.margen.nombre"></option>
+            </select>
+          </fieldset>
+        </div>
+
+        <!-- Precios Revisados -->
+        <div class="col-sm approved">
+          <button class="revisado" ng-click="vm.revisarSiguiente()"><i></i> Revisado</button>
+          <button class="back" ui-sref="revisarPreciosIndex"><i></i> Regresar</button>
+        </div>
+
+      </section>
+    </section>
+  </article>
+
+  <!-- Precios -->
+  <div class="card">
+    <article class="header">
+      <h5>Precios por proveedor</h5>
+    </article>
+    <article class="block">
+      <div class="table-responsive">
+        <table class="item-table">
+          <thead class="sortable">
+          <tr>
+            <th class="action" ng-repeat="sortKey in vm.preciosSortKeys" ng-click="vm.sort(sortKey.key)">
+              {{sortKey.name}}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="precio in vm.producto.precios | orderBy:vm.preciosSortKeys:vm.reverse">
+            <td>{{precio.clave != 'DICO' ? precio.clave : ''}}<img ng-if="precio.clave == 'DICO'" width="90px"
+                                                                   src="/public/img/logo_dicotechSF.svg"></td>
+            <td class="with-input"><input type="text" ng-model="precio.costo" ng-blur="vm.calcularPrecios($index)"></td>
+            <td class="with-input"><input type="text" ng-model="precio.precio_1" ng-blur="vm.calcularPrecios($index)">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_2">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_3">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_4">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_5">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_6">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_7">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_8">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_9">
+            </td>
+            <td class="with-input"><input type="text" ng-disabled="vm.producto.margen_id" ng-model="precio.precio_10">
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </article>
+  </div>
+</div>

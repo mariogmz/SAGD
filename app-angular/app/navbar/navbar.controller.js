@@ -51,6 +51,10 @@
                 state: 'subfamiliaIndex'
               }
             ]
+          },
+          {
+            name: 'Revisar precios',
+            state: 'revisarPreciosIndex'
           }, {
             name: 'Márgenes',
             state: 'margenIndex'
@@ -355,7 +359,9 @@
     vm.setActiveState = function (){
       var current_state = state.current_state();
       var index = searchParent(current_state);
-      if(index){vm.modules[index].active = true;}
+      if (index) {
+        vm.modules[index].active = true;
+      }
     };
     vm.setActiveState();
 

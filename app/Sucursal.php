@@ -2,6 +2,10 @@
 
 namespace App;
 
+use App\Precio;
+use App\Producto;
+use App\Events\SucursalNueva;
+use Sagd\SafeTransactions;
 
 /**
  * App\Sucursal
@@ -35,6 +39,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class Sucursal extends LGGModel {
+
+    use SafeTransactions;
 
     protected $table = 'sucursales';
     public $timestamps = false;
@@ -71,6 +77,22 @@ class Sucursal extends LGGModel {
 
             return $sucursal->isValid('update');
         });
+    }
+
+    /**
+     * Save the model to the database.
+     *
+     * @param  int  $base
+     * @return bool true
+     */
+    public function guardar($base)
+    {
+        if ( $this->save() ) {
+            event(new SucursalNueva($this, $base));
+            return true;
+        } else {
+            return false;
+        }
     }
 
     /**
@@ -191,6 +213,14 @@ class Sucursal extends LGGModel {
         return $this->productosSucursales
             ->where('producto_id', $producto->id)
             ->first()->precio;
+    }
+
+    /**
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function precios() {
+        return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
+            'sucursal_id', 'producto_sucursal_id');
     }
 
     /**

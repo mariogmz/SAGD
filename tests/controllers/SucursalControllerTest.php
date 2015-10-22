@@ -30,6 +30,7 @@ class SucursalControllerTest extends TestCase
 
     /**
      * @covers ::index
+     * @group bases
      */
     public function test_GET_index()
     {
@@ -45,6 +46,27 @@ class SucursalControllerTest extends TestCase
                 'nombre' => 'Dicotech Aguascalientes',
                 'externo' => 0,
                 'localidad' => 'Aguascalientes',
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::index
+     * @group bases
+     */
+    public function testTest_GET_index_with_parameters()
+    {
+        $endpoint = $this->endpoint . '?base=true';
+        $this->mock
+            ->shouldReceive([
+                'with' => Mockery::self(),
+                'get' => '[{"id": 1,"clave": "DICOTAGS","nombre": "Dicotech Aguascalientes","horarios": "Lunes a Viernes de 9:00am a 6:30pm, Sábados de 9:00am a 2:30pm","ubicacion": null,"proveedor_id": 1,"domicilio_id": 1}]'
+            ]);
+        $this->app->instance('App\Sucursal', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'clave' => 'DICOTAGS'
             ])
             ->assertResponseStatus(200);
     }

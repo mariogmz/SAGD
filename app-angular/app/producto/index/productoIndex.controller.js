@@ -1,4 +1,4 @@
-// app/producto/index/margenIndex.controller.js
+// app/producto/index/productoIndex.controller.js
 
 (function (){
 
