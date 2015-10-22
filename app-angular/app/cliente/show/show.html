@@ -5,18 +5,19 @@
   <section class="block">
 
     <!-- Nav tabs -->
-    <ul class="tabs" role="tablist">
+    <ul class="tabs" role="tablist" ng-init="tab = 'datos-generales'">
+
       <li class="nav-item">
-        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
+        <a ng-click="tab = 'datos-generales'" ng-class="{ active: tab === 'datos-generales' }" role="tab" data-toggle="tab">Datos Generales</a>
       </li>
       <li class="nav-item">
-        <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
+        <a ng-click="tab = 'tabuladores'" ng-class="{ active: tab === 'tabuladores' }" role="tab" data-toggle="tab">Tabuladores</a>
       </li>
       <li class="nav-item">
-        <a href="#razones-sociales" role="tab" data-toggle="tab">Razones sociales</a>
+        <a role="tab" data-toggle="tab">Razones sociales</a>
       </li>
       <li class="nav-item">
-        <a href="#movimientos" role="tab" data-toggle="tab">Movimientos</a>
+        <a role="tab" data-toggle="tab">Movimientos</a>
       </li>
       <li class="nav-item edit-tab">
         <a ui-sref="clienteEdit({id:vm.cliente.id})" role="tab"><i></i> Editar</a>
@@ -27,22 +28,25 @@
     </ul>
 
     <div class="cliente-form">
-      <fieldset disabled>
-        <!-- Tab panes -->
-        <article class="tab-content">
+      <fieldset>
+        <!-- Tab panels -->
+        <article>
 
           <!-- Datos Generales -->
-          <section role="tabpanel" class="fade in active" id="datos-generales">
-            <div ui-view="datos-generales"></div>
+          <section ng-show="tab === 'datos-generales'">
+            Datos generales
           </section>
+
           <!-- Tabuladores -->
-          <section role="tabpanel" class="fade" id="peso-dimensiones">
-            <div ui-view="tabuladores"></div>
+          <section ng-show="tab === 'tabuladores'">
+            Tabuladores
           </section>
+
           <!-- Razones Sociales -->
-          <section role="tabpanel" class="fade" id="precios">
+          <section role="tabpanel" class="fade" id="razones-sociales">
             <div ui-view="razones-sociales"></div>
           </section>
+
           <!-- Movimientos -->
           <section role="tabpanel" class="fade" id="movimientos">
             <div ui-view="movimientos"></div>
