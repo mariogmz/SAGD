@@ -40,6 +40,20 @@ class ProductoControllerTest extends TestCase {
     }
 
     /**
+     * @covers ::index
+     */
+    public function test_GET_index_precio_no_revisado() {
+        $this->mock->shouldReceive([
+            'whereHas' => Mockery::self(),
+            'get' => ['producto']
+        ])->once()->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+        $this->get($this->endpoint . '?revisados=true')
+            ->seeJson(['producto'])
+            ->assertResponseStatus(200);
+    }
+
+    /**
      * @covers ::store
      */
     public function test_POST_store() {
@@ -137,14 +151,14 @@ class ProductoControllerTest extends TestCase {
             'dimension' => [
                 'largo' => '10.00'
             ],
-            'precios' => [
+            'precios'   => [
                 [
-                    'id' => 1,
+                    'id'    => 1,
                     'clave' => 'DICO',
                     'costo' => "30.00"
                 ],
                 [
-                    'id' => 5,
+                    'id'    => 5,
                     'clave' => 'INGRAM',
                     'costo' => "90.00"
                 ]
@@ -152,7 +166,7 @@ class ProductoControllerTest extends TestCase {
         ];
 
         $this->mock->shouldReceive([
-            'find'   => Mockery::self(),
+            'find'       => Mockery::self(),
             'actualizar' => true,
         ])->withAnyArgs();
 
@@ -193,7 +207,7 @@ class ProductoControllerTest extends TestCase {
         $parameters = ['upc' => 14569];
 
         $this->mock->shouldReceive([
-            'find'   => Mockery::self(),
+            'find'       => Mockery::self(),
             'actualizar' => false
         ])->withAnyArgs();
         $this->mock->errors = ['clave' => 'La clave ya existe'];
