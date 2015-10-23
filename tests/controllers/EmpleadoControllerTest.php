@@ -50,14 +50,14 @@ class EmpleadoControllerTest extends TestCase {
         $this->mock
             ->shouldReceive([
                 'fill'  => Mockery::self(),
-                'save'  => true,
+                'guardar'  => Mockery::self(),
                 'self'  => 'self',
                 'getId' => 1
             ])
             ->withAnyArgs();
         $this->app->instance('App\Empleado', $this->mock);
 
-        $params = ['usuario' => 'ogarcia'];
+        $params = ['usuario' => 'ogarcia', 'datos_contacto' => ['email' => 'ogarcia@zegucom.com.mx']];
 
         $this->post($this->endpoint, $params)
             ->seeJson([
@@ -74,13 +74,13 @@ class EmpleadoControllerTest extends TestCase {
         $this->mock
             ->shouldReceive([
                 'fill' => Mockery::self(),
-                'save' => false
+                'guardar' => false
             ])
             ->withAnyArgs();
         $this->mock->errors = ['usuario' => 'Null'];
         $this->app->instance('App\Empleado', $this->mock);
 
-        $params = ['usuario' => '123456'];
+        $params = ['usuario' => 'ogarcia', 'datos_contacto' => ['email' => 'ogarcia@zegucom.com.mx']];
 
         $this->post($this->endpoint, $params)
             ->seeJson([
@@ -252,5 +252,30 @@ class EmpleadoControllerTest extends TestCase {
                 'error'   => 'Metodo de eliminar no se pudo ejecutar'
             ])
             ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::store
+     */
+    public function test_POST_con_parametros_de_datos_de_contacto()
+    {
+        $this->mock
+            ->shouldReceive([
+                'fill'      => Mockery::self(),
+                'guardar'   => true,
+                'self'      => 'self',
+                'getId'     => 1
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $params = ['usuario' => 'ogarcia', 'datos_contacto' => ['email' => 'ogarcia@zegucom.com.mx']];
+
+        $this->post($this->endpoint, $params)
+            ->seeJson([
+                'message' => 'Empleado creado exitosamente',
+                'empleado'  => 'self'
+            ])
+            ->assertResponseStatus(201);
     }
 }

@@ -36,8 +36,9 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
+        $datosContacto = $params['datos_contacto'];
         $this->empleado->fill($params);
-        if ($this->empleado->save()) {
+        if ($this->empleado->guardar($datosContacto)) {
             return response()->json([
                 'message' => 'Empleado creado exitosamente',
                 'empleado' => $this->empleado->self()
