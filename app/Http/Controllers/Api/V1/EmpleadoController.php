@@ -9,10 +9,12 @@ use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
 {
+    protected $empleado;
 
-    public function __construct()
+    public function __construct(Empleado $empleado)
     {
-        $this->middleware('jwt.auth');
+        $this->empleado = $empleado;
+        // $this->middleware('jwt.auth');
     }
 
     /**
@@ -22,51 +24,54 @@ class EmpleadoController extends Controller
      */
     public function index()
     {
-        $empleado = Empleado::all();
-        return $empleado;
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        //
+        return $this->empleado->all();
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param  Request  $request
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        $params = $request->all();
+        $this->empleado->fill($params);
+        if ($this->empleado->save()) {
+            return response()->json([
+                'message' => 'Empleado creado exitosamente',
+                'empleado' => $this->empleado->self()
+            ], 201, [
+                'Location' => route('api.v1.empleado.show', $this->empleado->getId())
+            ]);
+        } else {
+            return response()->json([
+                'message' => 'Empleado no creado',
+                'error' => $this->empleado->errors
+            ], 400);
+        }
     }
 
     /**
      * Display the specified resource.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return Response
-     */
-    public function edit($id)
-    {
-        //
+        $this->empleado = $this->empleado->find($id);
+        if ($this->empleado) {
+            return response()->json([
+                'message' => 'Empleado obtenido exitosamente',
+                'empleado' => $this->empleado->self()
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Empleado no encontrado o no existente',
+                'error' => 'No encontrado'
+            ], 404);
+        }
     }
 
     /**
@@ -74,21 +79,52 @@ class EmpleadoController extends Controller
      *
      * @param  Request  $request
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        //
+        $params = $request->all();
+        $this->empleado = $this->empleado->find($id);
+        if (empty($this->empleado)) {
+            return response()->json([
+                'message' => 'No se pudo realizar la actualizacion del empleado',
+                'error' => 'Empleado no encontrado'
+            ], 404);
+        } elseif ($this->empleado->update($params)) {
+            return response()->json([
+                'message' => 'Empleado se actualizo correctamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudo realizar la actualizacion del empleado',
+                'error' => $this->empleado->errors
+            ], 400);
+        }
     }
 
     /**
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $this->empleado = $this->empleado->find($id);
+        if (empty($this->empleado)) {
+            return response()->json([
+                'message' => 'No se pudo eliminar el empleado',
+                'error' => 'Empleado no encontrado'
+            ], 404);
+        } elseif ($this->empleado->delete()) {
+            return response()->json([
+                'message' => 'Empleado eliminado correctamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudo eliminar el empleado',
+                'error' => $this->empleado->errors
+            ], 400);
+        }
     }
 }

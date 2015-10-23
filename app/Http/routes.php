@@ -42,7 +42,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('rol', 'RolController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
-        Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
+        Route::resource('empleado', 'EmpleadoController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('sucursal', 'SucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
 
