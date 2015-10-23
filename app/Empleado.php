@@ -92,6 +92,25 @@ class Empleado extends LGGModel {
     }
 
     /**
+     * @param array $parametros
+     * @return bool
+     */
+    public function actualizar($parametros)
+    {
+        $datoContactoParams = $parametros['datos_contacto'];
+        if ($this->update($parametros)) {
+            $datoContacto = $this->datoContacto;
+            if ($datoContacto->update($datoContactoParams)){
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * @param array
      * @return bool
      */

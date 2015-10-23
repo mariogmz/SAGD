@@ -344,4 +344,48 @@ class EmpleadoTest extends TestCase {
         $this->assertNull($empleado);
     }
 
+    /**
+     * @covers ::actualizar
+     * @group actualizar-empleado
+     */
+    public function testActualizarConDatosDeContacto()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
+        $empleado->datoContacto()->save($datoContacto);
+
+        $params = ['puesto' => 'Debugger', 'datos_contacto' => ['telefono' => '11111']];
+
+        $this->assertTrue($empleado->actualizar($params));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group actualizar-empleado
+     */
+    public function testActualizarEmpleadoFalla()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
+        $empleado->datoContacto()->save($datoContacto);
+
+        $params = ['usuario' => null, 'datos_contacto' => ['telefono' => '11111']];
+
+        $this->assertFalse($empleado->actualizar($params));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group actualizar-empleado
+     */
+    public function testActualizarDatoContactoFalla()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
+        $empleado->datoContacto()->save($datoContacto);
+
+        $params = ['puesto' => 'Debugger', 'datos_contacto' => ['telefono' => 11111]];
+
+        $this->assertFalse($empleado->actualizar($params));
+    }
 }
