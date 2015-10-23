@@ -27,50 +27,21 @@
 
     function activate() {
       obtenerCliente()
-          .then(obtenerReferencias)
-          .then(obtenerEstatus)
-          .then(obtenerEpleados)
-          .then(obtenerRoles)
-          .then(obtenerSucursales);
+        .then(obtenerRoles)
+        .then(obtenerSucursales);
     }
 
-    function obtenerReferencias() {
-      return api.get('/cliente-referencia/', vm.cliente.referencia_id)
-          .then(function (response) {
-            vm.referencias = response.data;
-            console.log('Referencias obtenidas correctamente');
-      })
-          .catch(function (response) {
-            vm.error = response.data;
-            pnotify.alert('Hubo un problema al obtener las Referencias', vm.error.error, 'error');
-            return response;
-          });
-    }
-
-    function obtenerEstatus() {
-      return api.get('/cliente-estatus/', vm.cliente.estatus_id)
-          .then(function (response) {
-            vm.estatus = response.data;
-            console.log('Estatus obtenido correctamente');
-          })
-          .catch(function (response) {
-            vm.error = response.data;
-            pnotify.alert('Hubo un problema al obtener los Estatus', vm.error.error, 'error');
-            return response;
-          });
-    }
-
-    function obtenerEpleados() {
-      return api.get('/empleado/', vm.cliente.empleado_id)
-          .then(function (response) {
-            vm.empleados = response.data;
-            console.log('Empleado obtenido correctamente');
-          })
-          .catch(function (response) {
-            vm.error = response.data;
-            pnotify.alert('Hubo un problema al obtener los Empleados', vm.error.error, 'error');
-            return response;
-          });
+    function obtenerCliente(){
+      return api.get('/cliente/', vm.id)
+          // [{'key': 'base', 'value': 'true'}]
+        .then(function (response){
+          vm.cliente = response.data.cliente;
+          return response.data;
+        })
+        .catch(function (response){
+          vm.error = response.data;
+          return response.data;
+        });
     }
 
     function obtenerRoles() {
@@ -87,28 +58,16 @@
     }
 
     function obtenerSucursales() {
-      return api.get('/sucursal/', vm.cliente.sucursal_id)
+      return api.get('/sucursal')
           .then(function (response) {
             vm.sucursales = response.data;
-            console.log('Sucursal obtenida correctamente');
+            console.log('Sucursales obtenidas correctamente');
           })
           .catch(function (response) {
             vm.error = response.data;
             pnotify.alert('Hubo un problema al obtener las Sucursales', vm.error.error, 'error');
             return response;
           });
-    }
-
-    function obtenerCliente(){
-      return api.get('/cliente/', vm.id)
-        .then(function (response){
-          vm.cliente = response.data.cliente;
-          return response.data;
-        })
-        .catch(function (response){
-          vm.error = response.data;
-          return response.data;
-        });
     }
 
     function selectTab(tab){

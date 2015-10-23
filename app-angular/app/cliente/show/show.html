@@ -1,30 +1,19 @@
 <article class="card">
   <section class="header">
-    <h4>Cliente</h4>
+    <h4>Cliente: {{vm.cliente.nombre}} ({{vm.cliente.usuario}})</h4>
   </section>
   <div class="block">
 
+
+
     <!-- Nav tabs -->
     <ul class="tabs" role="tablist">
-
-      <li class="nav-item">
-        <a ng-click="vm.selectTab('datos-generales')" ng-class="{ active: vm.tab === 'datos-generales' }" role="tab" data-toggle="tab">Datos Generales</a>
-      </li>
-      <li class="nav-item">
-        <a ng-click="vm.selectTab('tabuladores')" ng-class="{ active: vm.tab === 'tabuladores' }" role="tab" data-toggle="tab">Tabuladores</a>
-      </li>
-      <li class="nav-item">
-        <a ng-click="vm.selectTab('razones-sociales')" ng-class="{ active: vm.tab === 'razones-sociales' }" role="tab" data-toggle="tab">Razones sociales</a>
-      </li>
-      <li class="nav-item">
-        <a ng-click="vm.selectTab('movimientos')" ng-class="{ active: vm.tab === 'movimientos' }" role="tab" data-toggle="tab">Movimientos</a>
-      </li>
-      <li class="nav-item edit-tab">
-        <a ui-sref="clienteEdit({id:vm.cliente.id})" role="tab"><i></i> Editar</a>
-      </li>
-      <li class="nav-item back">
-        <a ui-sref="clienteIndex" role="tab"><i></i> Regresar</a>
-      </li>
+      <li class="nav-item"><a href="#datos-generales" ng-click="vm.selectTab('datos-generales')" ng-class="{ active: vm.tab === 'datos-generales' }" role="tab" data-toggle="tab">Datos Generales</a></li>
+      <li class="nav-item"><a href="#tabuladores" ng-click="vm.selectTab('tabuladores')" ng-class="{ active: vm.tab === 'tabuladores' }" role="tab" data-toggle="tab">Tabuladores</a></li>
+      <li class="nav-item"><a href="#razones-sociales" ng-click="vm.selectTab('razones-sociales')" ng-class="{ active: vm.tab === 'razones-sociales' }" role="tab" data-toggle="tab">Razones sociales</a></li>
+      <li class="nav-item"><a href="#movimientos" ng-click="vm.selectTab('movimientos')" ng-class="{ active: vm.tab === 'movimientos' }" role="tab" data-toggle="tab">Movimientos</a></li>
+      <li class="nav-item edit-tab"><a ui-sref="clienteEdit({id:vm.cliente.id})" role="tab"><i></i> Editar</a></li>
+      <li class="nav-item back"><a ui-sref="clienteIndex" role="tab"><i></i> Regresar</a></li>
     </ul>
 
     <div class="cliente-form">
@@ -35,7 +24,7 @@
             <fieldset disabled>
 
               <!-- Datos Generales -->
-              <section ng-show="vm.tab === 'datos-generales'" class="card borderless">
+              <div ng-show="vm.tab === 'datos-generales'" class="card borderless">
 
                 <div class="block">
                   <div class="card">
@@ -43,17 +32,24 @@
                       <h5>Datos para usuario</h5>
                     </div>
                     <div class="row block">
-                      <div class="col-lg-3">
+                      <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="usuario">Usuario:</label>
                             <input type="text" name="usuario" id="usuario" ng-model="vm.cliente.usuario" class="form-control">
                         </fieldset>
                       </div>
 
-                      <div class="col-lg-3">
+                      <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="email">Email:</label>
                           <input type="email" name="email" id="email" class="form-control" ng-model="vm.cliente.email" required placeholder="">
+                        </fieldset>
+                      </div>
+
+                      <div class="col-lg-4">
+                        <fieldset class="form-group">
+                          <label for="email">Fecha verificó correo:</label>
+                          <input type="email" name="fecha_verificacion_correo" id="fecha_verificacion_correo" class="form-control" ng-model="vm.cliente.fecha_verificacion_correo" required placeholder="">
                         </fieldset>
                       </div>
                     </div>
@@ -85,10 +81,7 @@
                       <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="sexo">Sexo:</label>
-                          <select name="sexo" id="sexo" ng-model="vm.cliente.sexo" class="form-control">
-                            <option value="HOMBRE">Hombre</option>
-                            <option value="MUJER">Mujer</option>
-                          </select>
+                            <input type="text" name="sexo" id="sexo" ng-model="vm.cliente.sexo"
                         </fieldset>
                       </div>
                       <div class="col-lg-4">
@@ -126,58 +119,43 @@
                     </div>
                     <div class="row block">
                       <div class="row block">
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                           <fieldset class="form-group">
-                            <label for="cliente_estatus_id">Estatus:</label>
-                            <select id="cliente_estatus_id" class="form-control" required
-                                    ng-model="vm.model.cliente_estatus_id"
-                                    ng-options="estatus.id as estatus.nombre for estatus in vm.estatus | orderBy:'nombre'" >
-                              <option value="">Seleccione un estatus</option>
-                            </select>
+                            <label for="cliente_estatus_id">Estatus:</label>{{vm.estatus}}
+                              <input type="text" name="cliente_estatus_id" id="cliente_estatus_id" ng-model="vm.cliente.estatus.nombre" class="form-control">
                           </fieldset>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                           <fieldset class="form-group">
                             <label for="rol_id">Rol:</label>
-                            <select id="rol_id" class="form-control" required
-                                    ng-model="vm.model.rol_id"
-                                    ng-options="roles.id as roles.nombre for roles in vm.roles | orderBy:'nombre'" >
-                              <option value="">Seleccione un rol</option>
-                            </select>
+                              <select id="rol_id" class="form-control" required
+                                      ng-model="vm.cliente.rol_id"
+                                      ng-options="roles.id as roles.nombre for roles in vm.roles | orderBy:'nombre'">
+                                <option value="">Seleccione una sucursal</option>
+                              </select>
                           </fieldset>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                           <fieldset class="form-group">
                             <label for="empleado_id">Vendedor:</label>
-                            <select id="empleado_id" class="form-control"
-                                    ng-model="vm.model.empleado_id"
-                                    ng-options="empleados.id as empleados.nombre for empleados in vm.empleados | orderBy:'id'">
-                              <option value="">Seleccione un vendedor</option>
-                            </select>
+                              <input type="text" name="empleado_id" id="empleado_id" ng-model="vm.cliente.empleado.nombre" class="form-control">
                           </fieldset>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                           <fieldset class="form-group">
+
                             <label for="cliente_referencia_id">Referencia:</label>
-                            <select id="cliente_referencia_id" class="form-control" required
-                                    ng-model="vm.model.cliente_referencia_id"
-                                    ng-options="referencias.id as referencias.nombre for referencias in vm.referencias | orderBy:'id'">
-                              <option value="">Seleccione una referencia</option>
-                            </select>
+                              <input type="text" name="cliente_referencia_id" id="cliente_referencia_id" ng-model="vm.cliente.referencia.nombre" class="form-control">
                           </fieldset>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                           <fieldset class="form-group">
                             <label for="sucursal_id">Sucursal:</label>
-                            <select id="sucursal_id" class="form-control" required
-                                    ng-model="vm.cliente.sucursal_id"
-                                    ng-options="sucursales.id as sucursales.nombre for sucursales in vm.sucursales | orderBy:'nombre'">
-                              <option value="">Seleccione una sucursal</option>
-                            </select>
+                              <input type="text" name="sucursal_id" id="sucursal_id" ng-model="vm.cliente.sucursal.nombre" class="form-control">
                           </fieldset>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-4">
                           <fieldset class="form-group">
                             <label for="fecha_expira_club_zegucom">Club Zegucom:</label>
                             <input type="text" id="fecha_expira_club_zegucom" ng-model="vm.cliente.fecha_expira_club_zegucom" class="form-control">
@@ -187,15 +165,35 @@
                     </div>
                   </div>
                 </div>
-
-
-              </section>
-
-
+              </div>
 
               <!-- Tabuladores -->
               <section ng-show="vm.tab === 'tabuladores'" class="card borderless">
-                Tabuladores
+
+                <div class="block">
+                  <div class="card">
+                      <table class="table table-striped">
+                        <tr>
+                          <thead>
+                            <th>Sucursal</th>
+                            <th>Tabulador</th>
+                            <th>Venta Especial</th>
+                          </thead>
+                        </tr>
+                        <tr ng-repeat="tabulador in vm.cliente.tabuladores">
+                            <th ng-bind="tabulador.sucursal.nombre"></th>
+                            <td><div class="col-xs-3"><input type="text" ng-model="tabulador.tabulador"></div></td>
+                            <td class="left">
+                              <div ng-switch on="tabulador.venta_especial">
+                                <span ng-switch-when="1">Si</span>
+                                <span ng-switch-when="0">No</span>
+                              </div>
+                            </td>
+                        </tr>
+                      </table>
+                  </div>
+                </div>
+
               </section>
 
               <!-- Razones Sociales -->
@@ -212,5 +210,5 @@
         </article>
       </fieldset>
     </div>
-  </section>
+  </div>
 </article>

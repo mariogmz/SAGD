@@ -21,11 +21,12 @@ class ClienteController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param Request $request
      * @return Response
      */
     public function index()
     {
-        return $this->cliente->with('estatus')->get();
+       return $this->cliente->with('estatus')->get();
     }
 
     /**
@@ -65,7 +66,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $this->cliente = $this->cliente->find($id);
+        $this->cliente = $this->cliente->with('estatus', 'sucursal', 'referencia', 'empleado', 'vendedor', 'tabuladores.sucursal')->find($id);
+
         if( $this->cliente )
         {
             return response()->json([
