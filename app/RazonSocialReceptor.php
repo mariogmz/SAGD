@@ -8,7 +8,7 @@ namespace App;
  *
  * @property integer $id
  * @property string $rfc
- * @property string $regimen
+ * @property string $razon_social
  * @property integer $domicilio_id
  * @property integer $cliente_id
  * @property-read \App\Domicilio $domicilio
@@ -17,7 +17,7 @@ namespace App;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\NotaCredito[] $notasCreditos
  * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialReceptor whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialReceptor whereRfc($value)
- * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialReceptor whereRegimen($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialReceptor whereRazonSocial($value)
  * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialReceptor whereDomicilioId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialReceptor whereClienteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
@@ -27,11 +27,11 @@ class RazonSocialReceptor extends LGGModel {
     //
     protected $table = "razones_sociales_receptores";
     public $timestamps = false;
-    protected $fillable = ['rfc', 'regimen', 'domicilio_id', 'cliente_id'];
+    protected $fillable = ['rfc', 'razon_social', 'domicilio_id', 'cliente_id'];
 
     public static $rules = [
         'rfc'          => "min:13|max:13|regex:'[A-Z]{4}\d{6}[A-Z]\d{2}'",
-        'regimen'      => 'max:60',
+        'razon_social'      => 'max:60',
         'domicilio_id' => 'required|integer',
         'cliente_id'   => 'required|integer',
     ];

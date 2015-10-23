@@ -21,10 +21,10 @@ class RazonSocialReceptorTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $rsr = factory(App\RazonSocialReceptor::class, 'full')->create();
-        $rsr->regimen = 'MC Hammer';
+        $rsr->razon_social = 'MC Hammer';
         $this->assertTrue($rsr->isValid('update'));
         $this->assertTrue($rsr->save());
-        $this->assertSame('MC Hammer', $rsr->regimen);
+        $this->assertSame('MC Hammer', $rsr->razon_social);
     }
 
     /**
@@ -57,18 +57,18 @@ class RazonSocialReceptorTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testRegimenEsOpcional()
+    public function testRazonSocialEsOpcional()
     {
-        $rsr = factory(App\RazonSocialReceptor::class)->make(['regimen' => null]);
+        $rsr = factory(App\RazonSocialReceptor::class)->make(['razon_social' => null]);
         $this->assertTrue($rsr->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testRegimenNoPuedeSerLargo()
+    public function testRazonSocialNoPuedeSerLargo()
     {
-        $rsr = factory(App\RazonSocialReceptor::class, 'longregimen')->make();
+        $rsr = factory(App\RazonSocialReceptor::class, 'longrazonsocial')->make();
         $this->assertFalse($rsr->isValid());
     }
 

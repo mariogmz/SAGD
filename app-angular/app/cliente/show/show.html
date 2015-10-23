@@ -198,7 +198,44 @@
 
               <!-- Razones Sociales -->
               <section ng-show="vm.tab === 'razones-sociales'" class="card borderless">
-                Razones sociales
+
+                <div class="block actions">
+                  <div class="action-buttons" role="group" aria-label="Acciones">
+                    <button type="button" class="create" ui-sref="razonSocialNew"><i></i> Agregar Razón Social</button>
+                  </div>
+                </div>
+
+                <div class="block">
+                  <div class="card">
+
+                    <table class="table table-striped">
+                      <tr>
+                        <thead>
+                        <th>Razón Social</th>
+                        <th>Rfc</th>
+                        <th>Dirección</th>
+                        <th>Acciones</th>
+                        </thead>
+                      </tr>
+                      <tr ng-repeat="razon_social in vm.cliente.razones_sociales">
+                        <th ng-bind="razon_social.razon_social"></th>
+                        <td ng-bind="razon_social.rfc"></td>
+
+                        <td class="left">
+                          <div ng-switch on="tabulador.venta_especial">
+                            <span ng-switch-when="1">Si</span>
+                            <span ng-switch-when="0">No</span>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+
+                    <div class="block">
+                      <div class="block alert alert-warning" role="alert" ng-hide="vm.clientes"><i></i> No se han registrado Razones Sociales para este cliente.</div>
+                     </div>
+                  </div>
+                </div>
+
               </section>
 
               <!-- Movimientos -->

@@ -14,7 +14,7 @@ class CreateRazonesSocialesReceptoresTable extends Migration {
         Schema::create('razones_sociales_receptores', function (Blueprint $table) {
             $table->increments('id');
             $table->string('rfc', 13)->nullable();
-            $table->string('regimen', 60)->nullable();
+            $table->string('razon_social', 60)->nullable();
         });
     }
 
