@@ -5,11 +5,6 @@
  */
 class EmpleadoTest extends TestCase {
 
-    public function tearDown()
-    {
-        Mockery::close();
-    }
-
     /**
      * @coversNothing
      */
@@ -23,6 +18,8 @@ class EmpleadoTest extends TestCase {
      * @group modelo_actualizable
      */
     public function testModeloEsActualizable() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $empleado->nombre = 'Dr. Cod';
         $this->assertTrue($empleado->isValid('update'));
@@ -53,6 +50,8 @@ class EmpleadoTest extends TestCase {
      * @coversNothing
      */
     public function testCadaEmpleadoTieneUsuarioUnico() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado1 = factory(App\Empleado::class)->create();
         $empleado2 = factory(App\Empleado::class)->make([
             'usuario' => $empleado1->usuario
@@ -73,6 +72,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testLogsAccesos() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $logs_accesos = factory(App\LogAcceso::class, 5)->create([
             'empleado_id' => $empleado->id
@@ -88,6 +89,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testDatoContacto() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $dato_contacto = factory(App\DatoContacto::class)->create([
             'empleado_id' => $empleado->id
@@ -101,6 +104,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testSucursal() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $sucursal = factory(App\Sucursal::class)->create();
         $empleado = factory(App\Empleado::class)->create([
             'sucursal_id' => $sucursal->id
@@ -114,6 +119,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testServiciosSoportes() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $servicios_soportes = factory(App\ServicioSoporte::class, 5)->create([
             'empleado_id' => $empleado->id
@@ -129,6 +136,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testRmas() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         factory(App\Rma::class)->create([
             'empleado_id' => $empleado->id
@@ -143,6 +152,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testSalidas() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         factory(App\Salida::class, 'full')->create(['empleado_id' => $empleado->id]);
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->salidas);
@@ -155,6 +166,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testEntradas() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $entrada = factory(App\Entrada::class, 'full')->create(['empleado_id' => $empleado->id]);
         $entradas = $empleado->entradas;
@@ -168,6 +181,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testTransferenciasOrigen() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_origen_id' => $empleado->id]);
         $transferencias = $empleado->transferenciasOrigen;
@@ -181,6 +196,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testTransferenciasDestino() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_destino_id' => $empleado->id]);
         $transferencias = $empleado->transferenciasDestino;
@@ -194,6 +211,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testTransferenciasRevision() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $transferencia = factory(App\Transferencia::class, 'full')->create(['empleado_revision_id' => $empleado->id]);
         $transferencias = $empleado->transferenciasRevision;
@@ -207,6 +226,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testApartados() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $apartado = factory(App\Apartado::class, 'full')->create([
             'empleado_apartado_id' => $empleado->id]);
@@ -221,6 +242,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testDesapartados() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         factory(App\Apartado::class, 'full')->create([
             'empleado_desapartado_id' => $empleado->id]);
@@ -235,6 +258,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testCortes() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         factory(App\Corte::class)->create([
             'empleado_id' => $empleado->id
@@ -250,6 +275,8 @@ class EmpleadoTest extends TestCase {
      * @group relaciones
      */
     public function testVentasMovimientos() {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $parent = factory(App\Empleado::class)->create();
         factory(App\VentaMovimiento::class)->create([
             'empleado_id' => $parent->id
@@ -266,6 +293,8 @@ class EmpleadoTest extends TestCase {
      */
     public function testUser()
     {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         factory(App\User::class)->create([
             'morphable_id' => $empleado->id,
@@ -296,8 +325,6 @@ class EmpleadoTest extends TestCase {
      */
     public function testGuardarDatosEmpleadoNoSeGuarda()
     {
-        $this->expectsEvents(App\Events\EmpleadoCreado::class);
-
         $empleado = factory(App\Empleado::class)->make();
         $empleado->usuario = null;
         $datosContacto = factory(App\DatoContacto::class, 'bare')->make()->toArray();

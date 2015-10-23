@@ -100,11 +100,7 @@ class Empleado extends LGGModel {
         $datoContactoParams = $parametros['datos_contacto'];
         if ($this->update($parametros)) {
             $datoContacto = $this->datoContacto;
-            if ($datoContacto->update($datoContactoParams)){
-                return true;
-            } else {
-                return false;
-            }
+            return $datoContacto->update($datoContactoParams);
         } else {
             return false;
         }
@@ -119,11 +115,7 @@ class Empleado extends LGGModel {
         $lambda = function() use ($datosContactoParams) {
             if ($this->save()) {
                 $datoContacto = new DatoContacto($datosContactoParams);
-                if ( $this->datoContacto()->save($datoContacto) ) {
-                    return true;
-                } else {
-                    return false;
-                }
+                return $this->datoContacto()->save($datoContacto);
             } else {
                 return false;
             }
