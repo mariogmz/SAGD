@@ -63,7 +63,7 @@ class AuthenticateController extends Controller
     private function getEmpleado()
     {
         if( get_class($this->user->morphable) === 'App\Empleado' ) {
-            return $this->user->morphable;
+            return $this->user->morphable->with('user')->first();
         }
     }
 

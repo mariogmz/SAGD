@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Api\V1;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ResetsPasswords;
@@ -37,7 +37,7 @@ class PasswordController extends Controller
      */
     public function getEmail()
     {
-        return view('auth.password');
+        return view('mail.auth.password');
     }
 
     /**

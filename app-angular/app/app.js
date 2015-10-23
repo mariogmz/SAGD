@@ -20,6 +20,7 @@
       'sagdApp.marca',
       'sagdApp.margen',
       'sagdApp.navbar',
+      'sagdApp.passwords',
       'sagdApp.producto',
       'sagdApp.proveedor',
       'sagdApp.revisarPrecios',
