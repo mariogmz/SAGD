@@ -3,6 +3,9 @@
 namespace App;
 
 use App\Events\EmpleadoCreado;
+use App\DatoContacto;
+use Sagd\SafeTransactions;
+
 
 /**
  * App\Empleado
@@ -45,6 +48,8 @@ use App\Events\EmpleadoCreado;
  */
 class Empleado extends LGGModel {
 
+    use SafeTransactions;
+
     protected $table = 'empleados';
 
     public $timestamps = false;
@@ -84,6 +89,27 @@ class Empleado extends LGGModel {
         Empleado::created(function ($empleado) {
             event(new EmpleadoCreado($empleado));
         });
+    }
+
+    /**
+     * @param array
+     * @return bool
+     */
+    public function guardar($datosContactoParams)
+    {
+        $lambda = function() use ($datosContactoParams) {
+            if ($this->save()) {
+                $datoContacto = new DatoContacto($datosContactoParams);
+                if ( $this->datoContacto()->save($datoContacto) ) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else {
+                return false;
+            }
+        };
+        return $this->safe_transaction($lambda);
     }
 
     /**

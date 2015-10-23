@@ -5,6 +5,10 @@
  */
 class EmpleadoTest extends TestCase {
 
+    public function tearDown()
+    {
+        Mockery::close();
+    }
 
     /**
      * @coversNothing
@@ -268,6 +272,76 @@ class EmpleadoTest extends TestCase {
             'morphable_type' => get_class($empleado)
         ]);
         $this->assertInstanceOf(App\User::class, $empleado->user);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group guardar-empleado
+     */
+    public function testGuardarConDatosContacto()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->make();
+        $datosContacto = factory(App\DatoContacto::class, 'bare')->make()->toArray();
+
+        $this->assertTrue($empleado->guardar($datosContacto));
+        $this->assertNotNull($empleado->datoContacto);
+        $this->assertInstanceOf(App\DatoContacto::class, $empleado->datoContacto);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group guardar-empleado
+     */
+    public function testGuardarDatosEmpleadoNoSeGuarda()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->make();
+        $empleado->usuario = null;
+        $datosContacto = factory(App\DatoContacto::class, 'bare')->make()->toArray();
+
+        $this->assertFalse($empleado->guardar($datosContacto));
+    }
+
+    /**
+     * @covers ::guardar
+     * @group guardar-empleado
+     */
+    public function testGuardarDatosDatoContactoNoSeGuarda()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->make();
+        $datosContacto = factory(App\DatoContacto::class, 'bare')->make();
+        $datosContacto->telefono = 123456789;
+        $datosContacto = $datosContacto->toArray();
+
+        $this->assertFalse($empleado->guardar($datosContacto));
+    }
+
+    /**
+     * @covers ::guardar
+     * @group guardar-empleado
+     * @group guardar-empleado-rollback
+     */
+    public function testGuardarPuedeHacerRollbacks()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->make(['nombre' => 'Omar Garcia']);
+        $datosContacto = factory(App\DatoContacto::class, 'bare')->make();
+        $datosContacto->telefono = 123456789;
+        $datosContacto = $datosContacto->toArray();
+
+        if (App\Empleado::whereNombre('Omar Garcia')->first()) {
+            App\Empleado::whereNombre('Omar Garcia')->first()->forceDelete();
+        }
+
+        $this->assertFalse($empleado->guardar($datosContacto));
+        $empleado = App\Empleado::whereNombre('Omar Garcia')->first();
+        $this->assertNull($empleado);
     }
 
 }
