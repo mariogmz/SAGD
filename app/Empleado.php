@@ -92,6 +92,8 @@ class Empleado extends LGGModel {
     }
 
     /**
+     * La actualizacion del modelo puede ocurrir independientemente si se mandaron
+     * los parámetros de datos_contacto.
      * @param array $parametros
      * @return bool
      */

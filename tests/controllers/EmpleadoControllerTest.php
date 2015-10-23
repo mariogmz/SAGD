@@ -143,7 +143,7 @@ class EmpleadoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
-            'update' => true
+            'actualizar' => true
         ])->withAnyArgs();
         $this->app->instance('App\Empleado', $this->mock);
 
@@ -183,6 +183,7 @@ class EmpleadoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'find'   => Mockery::self(),
+            'actualizar' => false,
             'update' => false
         ])->withAnyArgs();
         $this->mock->errors = ['empleado' => 'Invalido'];
@@ -256,6 +257,7 @@ class EmpleadoControllerTest extends TestCase {
 
     /**
      * @covers ::store
+     * @group datos-contacto
      */
     public function test_POST_con_parametros_de_datos_de_contacto()
     {
@@ -277,5 +279,52 @@ class EmpleadoControllerTest extends TestCase {
                 'empleado'  => 'self'
             ])
             ->assertResponseStatus(201);
+    }
+
+    /**
+     * @covers ::update
+     * @group datos-contacto
+     */
+    public function test_PUT_con_parametros_de_datos_de_contacto()
+    {
+        $endpoint = $this->endpoint . '/1';
+        $parameters = ['nombre' => 'Barry', 'datos_contacto' => ['telefono' => '45185']];
+
+        $this->mock->shouldReceive([
+            'find'   => Mockery::self(),
+            'actualizar' => true,
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->put($endpoint, $parameters)
+            ->seeJson([
+                'message' => 'Empleado se actualizo correctamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::store
+     * @group datos-contacto
+     */
+    public function test_POST_tiene_que_llevar_datos_contacto()
+    {
+        $this->mock
+            ->shouldReceive([
+                'fill'      => Mockery::self(),
+                'guardar'   => Mockery::self(),
+                'self'      => 'self',
+                'getId'     => 1
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $params = ['usuario' => 'ogarcia'];
+
+        $this->post($this->endpoint, $params)
+            ->seeJson([
+                'message' => 'Empleado no creado'
+            ])
+            ->assertResponseStatus(400);
     }
 }

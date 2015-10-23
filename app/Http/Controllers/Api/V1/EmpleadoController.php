@@ -14,7 +14,7 @@ class EmpleadoController extends Controller
     public function __construct(Empleado $empleado)
     {
         $this->empleado = $empleado;
-        // $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**
@@ -29,6 +29,7 @@ class EmpleadoController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * El parametro de datos_contacto es obligatorio para crear un Empleado por medio de la API.
      *
      * @param  Request  $request
      * @return \Illuminate\Http\Response
@@ -36,9 +37,9 @@ class EmpleadoController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
-        $datosContacto = $params['datos_contacto'];
+        $datosContacto = $request->has('datos_contacto') ? $params['datos_contacto'] : null;
         $this->empleado->fill($params);
-        if ($this->empleado->guardar($datosContacto)) {
+        if (!empty($datosContacto) && $this->empleado->guardar($datosContacto)) {
             return response()->json([
                 'message' => 'Empleado creado exitosamente',
                 'empleado' => $this->empleado->self()
@@ -91,7 +92,7 @@ class EmpleadoController extends Controller
                 'message' => 'No se pudo realizar la actualizacion del empleado',
                 'error' => 'Empleado no encontrado'
             ], 404);
-        } elseif ($this->empleado->update($params)) {
+        } elseif ( $this->empleado->actualizar($params) || $this->empleado->update($params) ) {
             return response()->json([
                 'message' => 'Empleado se actualizo correctamente'
             ], 200);
