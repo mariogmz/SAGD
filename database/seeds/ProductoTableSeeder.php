@@ -1,8 +1,12 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\MessageBag;
+use Sagd\CalculadoraPrecios;
 
 class ProductoTableSeeder extends Seeder {
+
+    use CalculadoraPrecios;
 
     /**
      * Run the database seeds.
@@ -10,15 +14,15 @@ class ProductoTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-       DB::beginTransaction();
-            try {
-                $this->obtenerProductosDesdeLegacy();
-            } catch (ErrorException $ex) {
-                echo $ex->getMessage() . "\n";
-                echo $ex->getFile() . "\n";
-                echo $ex->getLine() . "\n";
-                DB::rollBack();
-            }
+        DB::beginTransaction();
+        try {
+            $this->obtenerProductosDesdeLegacy();
+        } catch (ErrorException $ex) {
+            echo $ex->getMessage() . "\n";
+            echo $ex->getFile() . "\n";
+            echo $ex->getLine() . "\n";
+            DB::rollBack();
+        }
         DB::commit();
     }
 
@@ -106,9 +110,8 @@ class ProductoTableSeeder extends Seeder {
         $unidad_id = App\Unidad::first()->id;
         foreach ($productos as &$producto) {
             $producto['marca_id'] = $marcas[strtoupper($producto['marca_clave'])]['id'];
-            if ($producto['margen_nombre']) {
-                $producto['margen_id'] = $margenes[$producto['margen_nombre']]['id'];
-            }
+            $producto['margen_id'] = $producto['margen_nombre'] ? $margenes[$producto['margen_nombre']]['id'] : null;
+
             if (!empty($subfamilias[$producto['subfamilia_clave']])) {
                 $producto['subfamilia_id'] = $subfamilias[$producto['subfamilia_clave']]['id'];
             }
@@ -144,8 +147,10 @@ class ProductoTableSeeder extends Seeder {
             'precio_9'  => null,
             'precio_10' => null
         ];
+
         $exitosos = 0;
         $con_error = 0;
+
         foreach ($productos as $producto) {
             $dimension = array_intersect_key($producto, $dimension_keys);
             $dimension = [
@@ -157,10 +162,9 @@ class ProductoTableSeeder extends Seeder {
 
             $precio = array_intersect_key($producto, $precios_keys);
             $producto = array_diff_key($producto, array_merge($dimension_keys, $precios_keys));
-            if(!is_null($producto)){
-            $producto_nuevo = new App\Producto($producto);
 
-            }
+            $precio = $this->corregirPrecio($precio, $producto['margen_id']);
+            $producto_nuevo = $this->corregirProducto($producto);
 
             if ($producto_nuevo->guardarNuevo(['dimension' => $dimension, 'precio' => $precio])) {
                 $exitosos ++;
@@ -169,5 +173,59 @@ class ProductoTableSeeder extends Seeder {
             }
             $this->command->getOutput()->write("\rSeeding Productos, <info>Successful : {$exitosos}</info>. <error> Errors : {$con_error}</error>");
         }
+    }
+
+    /**
+     * Maneja todos los escenarios que puedan provocar que el modelo de Precio no sea válido
+     * @param array $precio
+     * @param int $margen_id
+     * @return array
+     */
+    private function corregirPrecio($precio, $margen_id) {
+        // Forzar que los precios sean mayores a los costos
+        if ($precio['costo'] >= $precio['precio_1']) {
+            $precio['precio_1'] = $precio['costo'] + 1;
+        }
+        $precio = $this->calcularPrecios(floatval($precio['precio_1']), floatval($precio['costo']), null, $margen_id)['precios'];
+        $precio_nuevo = new App\Precio(array_merge($precio, ['producto_sucursal_id' => 0]));
+
+        if (!$precio_nuevo->isValid()) {
+            $multiplicador = 0;
+            for ($i = 0; $i < 100; $i ++) {
+                $multiplicador += 10;
+                $precio = $this->calcularPrecios(floatval($precio['precio_1']) + $multiplicador, floatval($precio['costo']), null, $margen_id)['precios'];
+                $precio_nuevo->fill(array_merge($precio, ['producto_sucursal_id' => 0]));
+                if ($precio_nuevo->isValid()) {
+                    break;
+                }
+            }
+
+        }
+
+        return $precio;
+    }
+
+    /**
+     * Maneja todos los escenarios que puedan provocar que el modelo de Precio no sea válido según los datos
+     * obtenidos desde la base de datos legacy
+     * @param array $producto
+     * @return \App\Producto
+     */
+    private function corregirProducto($producto){
+        $producto['numero_parte'] = str_replace("'",'-',$producto['numero_parte']);
+        $producto_nuevo = new App\Producto($producto);
+        if(!$producto_nuevo->isValid()){
+            $errors = [];
+
+            if($producto_nuevo->errors->has('numero_parte')){
+                array_push($errors, ['numero_parte' => $producto_nuevo->numero_parte, 'error' =>$producto_nuevo->errors->get('numero_parte')]);
+            }
+            if($producto_nuevo->errors->has('clave')){
+                array_push($errors, ['clave' => $producto_nuevo->clave, 'error' =>$producto_nuevo->errors->get('clave')]);
+            }
+            print_r($errors);
+
+        }
+        return $producto_nuevo;
     }
 }

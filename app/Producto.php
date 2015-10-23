@@ -78,7 +78,7 @@ class Producto extends LGGModel {
         'descripcion'       => 'required|max:300',
         'descripcion_corta' => 'max:50',
         'fecha_entrada'     => 'date',
-        'numero_parte'      => ['required','max:30','regex:`^([\w-\./#]+)\s?([\w-\./#]+)$`','unique:productos'],
+        'numero_parte'      => ['required','max:30','regex:`^([\w-_#\.\(\)/]+\s?)+$`','unique:productos'],
         'remate'            => 'required|boolean',
         'spiff'             => 'required|numeric|min:0.0',
         'subclave'          => 'required|string|max:45',
@@ -109,7 +109,7 @@ class Producto extends LGGModel {
         Producto::updating(function ($producto) {
             $producto->updateRules = self::$rules;
             $producto->updateRules['clave'] .= ',clave,' . $producto->id;
-            $producto->updateRules['numero_parte'] = ['required','max:30','regex:`^([\w-\.#/]+)\s?([\w-\.#/]+)$`','unique:productos,numero_parte,' . $producto->id];
+            $producto->updateRules['numero_parte'] = ['required','max:30','regex:`^([\w-_#\.\(\)/]+\s?)+$`','unique:productos,numero_parte,' . $producto->id];
             $producto->updateRules['upc'] .= ',upc,' . $producto->id;
 
             return $producto->isValid('update');
