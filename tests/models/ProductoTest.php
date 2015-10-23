@@ -151,6 +151,28 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
+    public function testNumeroDeParteEsMaximo30Caracteres(){
+        $producto = factory(App\Producto::class, 'longnumpart')->make();
+        $this->assertFalse($producto->save());
+        $producto->numero_parte = App\Caker::realUnique(App\Producto::class, 'numero_parte', 'regexify', '\w{30}');
+        $this->assertTrue($producto->save());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testNumeroDeParteNoContieneCaracteresInvalidos(){
+        $producto = factory(App\Producto::class)->make([
+            'numero_parte' => 'Psy12&%_  4581·$5' . rand(0.00,9999.99)
+        ]);
+        $this->assertFalse($producto->isvalid());
+        $producto->numero_parte = 'NP3-4100_F #15/' . rand(0.00,9999.99);
+        $this->assertTrue($producto->isvalid());
+    }
+
+    /**
+     * @coversNothing
+     */
     public function testRemateEsRequerido() {
         $producto = factory(App\Producto::class)->make(['remate' => null]);
         $this->assertFalse($producto->isValid());
@@ -191,7 +213,7 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::boot
      */
-    public function testSubclaveSiesVacioTomaValorDeNumeroDeParte() {
+    public function testSubclaveTomaElValorDeNumeroDeParteSiDejaVacio() {
         $producto = factory(App\Producto::class)->make(['subclave' => null]);
         $this->assertTrue($producto->save());
         $this->assertSame($producto->numero_parte, $producto->subclave);

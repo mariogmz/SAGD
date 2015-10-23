@@ -12,18 +12,21 @@
 */
 
 $factory->define(App\Producto::class, function ($faker) {
+    $marca = App\Marca::first();
+    $marca = empty($marca) ? factory(App\Marca::class)->create() : $marca;
+
     return [
         'activo'           => $faker->boolean,
         'clave'            => App\Caker::realUnique(App\Producto::class, 'clave', 'regexify', '\w{60}'),
         'descripcion'      => $faker->text(300),
         'fecha_entrada'    => $faker->dateTime,
-        'numero_parte'     => App\Caker::realUnique(App\Producto::class, 'numero_parte', 'regexify', '\w{30}'),
+        'numero_parte'     => App\Caker::realUnique(App\Producto::class, 'numero_parte', 'regexify', '\w{20}'),
         'remate'           => $faker->boolean,
         'spiff'            => $faker->randomFloat(2, 0.0, 999999.9),
         'subclave'         => $faker->text(45),
         'upc'              => App\Caker::realUnique(App\Producto::class, 'upc', 'regexify', '\d{8}'),
         'tipo_garantia_id' => factory(App\TipoGarantia::class)->create()->id,
-        'marca_id'         => factory(App\Marca::class)->create()->id,
+        'marca_id'         => $marca->id,
         'unidad_id'        => factory(App\Unidad::class)->create()->id,
         'subfamilia_id'    => factory(App\Subfamilia::class)->create()->id
     ];
@@ -58,6 +61,13 @@ $factory->defineAs(App\Producto::class, 'longdescription', function ($faker) use
 $factory->defineAs(App\Producto::class, 'longshortdesc', function ($faker) use ($factory) {
     $producto = $factory->raw(App\Producto::class);
     $producto['descripcion_corta'] = $faker->regexify('a{51}');
+
+    return $producto;
+});
+
+$factory->defineAs(App\Producto::class, 'longnumpart', function ($faker) use ($factory) {
+    $producto = $factory->raw(App\Producto::class);
+    $producto['numero_parte'] = $faker->regexify('\w{50}');
 
     return $producto;
 });
