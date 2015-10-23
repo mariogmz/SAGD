@@ -71,4 +71,18 @@ class DatoContactoTest extends TestCase {
         $this->assertInstanceOf(App\Empleado::class, $empleado_test);
     }
 
+    /**
+     * @coversNothing
+     * @group after-save
+     */
+    public function testDespuesDeGuardarCreaUnUser()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        factory(App\DatoContacto::class)->create(['empleado_id' => $empleado->id]);
+
+        $user = App\User::whereMorphableId($empleado->id)->first();
+        $this->assertNotNull($user);
+        $this->assertEquals(get_class($empleado), $user->morphable_type);
+    }
+
 }

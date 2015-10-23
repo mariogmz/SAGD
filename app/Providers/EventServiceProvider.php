@@ -16,6 +16,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\SucursalNueva' => [
             'App\Listeners\CrearPreciosParaSucursalNueva',
         ],
+        'App\Events\PostEmpleadoCreado' => [
+            'App\Listeners\CrearUser',
+        ]
     ];
 
     /**
