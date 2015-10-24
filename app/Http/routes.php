@@ -21,9 +21,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::post('authenticate', 'AuthenticateController@authenticate');
         Route::get('authenticate/empleado', 'AuthenticateController@getAuthenticatedEmpleado');
         Route::get('logout', 'AuthenticateController@logout');
-        Route::get('password/email', 'PasswordController@getEmail');
         Route::post('password/email', 'PasswordController@postEmail');
-        Route::get('password/reset/{token}', 'PasswordController@getReset');
         Route::post('password/reset', 'PasswordController@postReset');
 
         Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);

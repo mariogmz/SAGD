@@ -34,17 +34,6 @@ class PasswordController extends Controller
     }
 
     /**
-     * Display the form to request a password reset link.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function getEmail()
-    {
-        return response()->json([
-            'error' => 'No no no.'], 404);
-    }
-
-    /**
      * Send a reset link to the given user.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -52,6 +41,13 @@ class PasswordController extends Controller
      */
     public function postEmail(Request $request)
     {
+        if (!$request->has('email')) {
+            return response()->json([
+                'message' => 'No se envio el correo',
+                'error' => 'Email invalido'
+                ], 422);
+        }
+
         $this->validate($request, ['email' => 'required|email']);
 
         $response = Password::sendResetLink($request->only('email'), function (Message $message) {
@@ -72,18 +68,6 @@ class PasswordController extends Controller
     }
 
     /**
-     * Display the password reset view for the given token.
-     *
-     * @param  string  $token
-     * @return \Illuminate\Http\Response
-     */
-    public function getReset($token = null)
-    {
-        return response()->json([
-            'error' => 'No no no.'], 404);
-    }
-
-    /**
      * Reset the given user's password.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -91,6 +75,17 @@ class PasswordController extends Controller
      */
     public function postReset(Request $request)
     {
+        if (
+            !$request->has('token') &&
+            !$request->has('email') &&
+            !$request->has('password') &&
+            !$request->has('password_confirmation')
+           ) {
+            return response()->json([
+                'message' => 'No se reestablecio la contraseña',
+                'error' => 'Faltan parametros'
+                ], 422);
+        }
         $this->validate($request, [
             'token' => 'required',
             'email' => 'required|email',
