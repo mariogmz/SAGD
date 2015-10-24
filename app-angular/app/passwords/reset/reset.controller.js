@@ -11,9 +11,6 @@
 
   /* @ngInject */
   function passwordsResetController($auth, $state, $stateParams, api, session, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
 
     var vm = this;
     vm.token = $stateParams.token;

@@ -31,10 +31,10 @@
     }
   }
 
-  SidebarController.$inject = ['notifications', 'session', '$timeout'];
+  SidebarController.$inject = ['$auth', 'notifications', 'session', '$timeout'];
 
   /* @ngInject */
-  function SidebarController(notifications, session, $timeout) {
+  function SidebarController($auth, notifications, session, $timeout) {
     var vm = this;
     vm.collection = [];
     vm.saved = [];

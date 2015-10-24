@@ -8,15 +8,16 @@
     .module('sagdApp.session')
     .controller('SessionController', SessionController);
 
-  SessionController.$inject = ['session'];
+  SessionController.$inject = ['session', 'api'];
 
-  function SessionController(session){
+  function SessionController(session, api){
     var vm = this;
 
+    vm.forgotPassword = false;
     vm.login = login;
     vm.logout = logout;
     vm.clean = cleanLoginError;
-
+    vm.sendPasswordResetLink = sendLink;
 
     function login(){
       vm.loading = true;
@@ -33,6 +34,14 @@
     function cleanLoginError(evt){
       session.cleanLoginError();
       vm.loginError = session.getLoginError();
+    }
+
+    function sendLink() {
+      postEmailToEndpoint();
+    }
+
+    function postEmailToEndpoint() {
+      return api.post('/password/email', {'email': vm.passwordResetEmail});
     }
 
   }
