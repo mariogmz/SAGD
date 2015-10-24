@@ -1,4 +1,4 @@
-// app/passwords/reset/config.route.js
+// app/passwords/email/config.route.js
 
 (function() {
   'use strict';
@@ -11,11 +11,11 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-      .state('passwordsReset', {
-        url: 'passwords/reset/:token',
+      .state('passwordsEmail', {
+        url: 'passwords/email',
         parent: 'passwords',
-        templateUrl: 'app/passwords/reset/reset.html',
-        controller: 'passwordsResetController',
+        templateUrl: 'app/passwords/email/email.html',
+        controller: 'passwordsEmailController',
         controllerAs: 'vm'
       });
   }

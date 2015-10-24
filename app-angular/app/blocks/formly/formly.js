@@ -42,6 +42,12 @@
         });
 
         formlyConfigWrapper.setType({
+          name: 'hidden',
+          templateUrl: 'app/templates/fields/hidden.html',
+          wrapper: commonWrappers
+        });
+
+        formlyConfigWrapper.setType({
           name: 'textarea',
           templateUrl: 'app/templates/fields/textarea.html',
           wrapper: commonWrappers

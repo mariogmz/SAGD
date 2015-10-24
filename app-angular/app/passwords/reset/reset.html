@@ -1,10 +1,16 @@
-<section class="card">
+<section class="card passwords-card">
   <header class="header">
-    <h4>Cambiar contraseña</h4>
+    <h4>Reestablecer contraseña</h4>
   </header>
   <article class="card-block">
-    <p>
-      En breve recibirá un email con los datos requeridos para cambiar su contraseña.
-    </p>
+    <form class="item-form">
+      <fieldset>
+        <formly-form model="vm.model" fields="vm.fields">
+          <div class="pull-right">
+            <button type="submit" class="button primary" ng-click="vm.onSubmit(vm.model)">Cambiar contraseña</button>
+          </div>
+        </formly-form>
+      </fieldset>
+    </form>
   </article>
 </section>
