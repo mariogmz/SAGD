@@ -126,6 +126,21 @@ class Empleado extends LGGModel {
     }
 
     /**
+     * Esta funcion busca en App\User por el correo y regresa el morphable si es de tipo
+     * App\Empleado
+     * @param string $email
+     * @return App\Empleado
+     */
+    public static function whereEmail($email)
+    {
+        $user = User::whereEmail($email)->first();
+        if ($user && $user->morphable_type === Empleado::class) {
+            return $user->morphable;
+        }
+        return null;
+    }
+
+    /**
      * Obtiene todos los logs de acceso asociados al empleado
      * @return \Illuminate\Database\Eloquent\Collection
      */

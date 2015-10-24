@@ -90,13 +90,12 @@ class AuthenticateControllerTest extends TestCase
     {
         // Loguearse
         $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
-        // Llamar a endpoint de esta prueba
-        $response = $this->call('GET', $this->endpoint . '/empleado',[
-            'token' => $token
-        ]);
-        $empleado_json = $response->content();
-        $empleado_db = json_encode(['empleado' => App\Empleado::where('usuario','admin')->first()]);
-        $this->assertEquals($empleado_db, $empleado_json);
+
+        $this->get($this->endpoint . '/empleado',['token' => $token])
+            ->seeJson([
+                'usuario' => 'admin',
+                'email' => 'sistemas@zegucom.com.mx'])
+            ->assertResponseStatus(200);
     }
 
     private function authenticate($email, $password)

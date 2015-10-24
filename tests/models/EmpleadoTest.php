@@ -415,4 +415,40 @@ class EmpleadoTest extends TestCase {
 
         $this->assertFalse($empleado->actualizar($params));
     }
+
+    /**
+     * @covers ::whereEmail
+     * @group whereEmail
+     */
+    public function testWhereEmailEncuentraElModelo()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+
+        if ($user = App\User::whereEmail('test@test.com')){
+            $user->forceDelete();
+        }
+
+        $user = new App\User([
+            'email' => 'test@test.com',
+            'password' => Hash::make('test123'),
+            'morphable_id' => $empleado->id,
+            'morphable_type' => get_class($empleado)
+        ]);
+        $user->save();
+
+        $this->assertNotNull($empleado->user);
+
+        $this->assertInstanceOf(App\Empleado::class, App\Empleado::whereEmail('test@test.com'));
+        $this->assertNotNull(App\Empleado::whereEmail('test@test.com'));
+        $this->assertEquals($empleado->usuario, App\Empleado::whereEmail('test@test.com')->usuario);
+    }
+
+    /**
+     * @covers ::whereEmail
+     * @group whereEmail
+     */
+    public function testWhereEmailNoEncuentraElModelo()
+    {
+        $this->assertNull(App\Empleado::whereEmail('a@test.com'));
+    }
 }
