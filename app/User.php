@@ -36,7 +36,8 @@ class User extends LGGModel implements AuthenticatableContract, CanResetPassword
      *
      * @var array
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'morphable_id',
+        'morphable_type', 'updated_at', 'created_at', 'deleted_at'];
 
     public static $rules = [
         'email' => 'required|email|max:60|unique:users,email',
