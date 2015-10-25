@@ -352,22 +352,23 @@ class EmpleadoTest extends TestCase {
      * @covers ::guardar
      * @group guardar-empleado
      * @group guardar-empleado-rollback
+     * @group fix-feature-empleados
      */
     public function testGuardarPuedeHacerRollbacks()
     {
         $this->expectsEvents(App\Events\EmpleadoCreado::class);
 
-        $empleado = factory(App\Empleado::class)->make(['nombre' => 'Omar Garcia']);
+        $empleado = factory(App\Empleado::class)->make(['nombre' => 'MC Hammer']);
         $datosContacto = factory(App\DatoContacto::class, 'bare')->make();
         $datosContacto->telefono = 123456789;
         $datosContacto = $datosContacto->toArray();
 
-        if (App\Empleado::whereNombre('Omar Garcia')->first()) {
-            App\Empleado::whereNombre('Omar Garcia')->first()->forceDelete();
+        if ($e = App\Empleado::whereNombre('MC Hammer')->first()) {
+            $e->forceDelete();
         }
 
         $this->assertFalse($empleado->guardar($datosContacto));
-        $empleado = App\Empleado::whereNombre('Omar Garcia')->first();
+        $empleado = App\Empleado::whereNombre('MC Hammer')->first();
         $this->assertNull($empleado);
     }
 
