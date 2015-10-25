@@ -20,10 +20,15 @@ class EmpleadoController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * @param  Request  $request
      * @return Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        if ($request->has('sucursal')) {
+            $sucursal = $request->only('sucursal');
+            return $this->empleado->where('sucursal_id', $sucursal)->get();
+        }
         return $this->empleado->all();
     }
 

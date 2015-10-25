@@ -28,6 +28,7 @@ class EmpleadoControllerTest extends TestCase {
 
     /**
      * @covers ::index
+     * @group con-sucursal
      */
     public function test_GET_index() {
         $this->mock
@@ -326,5 +327,27 @@ class EmpleadoControllerTest extends TestCase {
                 'message' => 'Empleado no creado'
             ])
             ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::index
+     * @group con-sucursal
+     */
+    public function test_GET_index_de_una_sucursal()
+    {
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->mock
+            ->shouldReceive([
+                'where' => Mockery::self(),
+                'get' => '[{"id":1,"nombre":"Administrador","usuario":"admin","activo":1,"puesto":"Administrador","fecha_cambio_password":"2015-10-20 17:07:54","fecha_ultimo_ingreso":null,"sucursal_id":1}]'
+            ])
+            ->withAnyArgs();
+
+        $this->get($this->endpoint . "?sucursal=1")
+            ->seeJson([
+                'usuario' => 'admin'
+            ])
+            ->assertResponseStatus(200);
     }
 }
