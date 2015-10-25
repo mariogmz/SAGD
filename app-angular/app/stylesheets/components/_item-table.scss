@@ -7,6 +7,10 @@ table.item-table {
     color: $alto;
   }
 
+  tr.failed {
+    background-color: $persian-red-faded;
+  }
+
   td.actions {
     @extend .text-center;
     .action-buttons {

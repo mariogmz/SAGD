@@ -315,7 +315,7 @@
             state: 'configuracion.sucursal'
           }, {
             name: 'Logs',
-            state: 'configuracion.logs'
+            state: 'logsIndex'
           }, {
             name: 'PM',
             state: 'configuracion.pm'

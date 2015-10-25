@@ -17,6 +17,7 @@
       'sagdApp.garantia',
       'sagdApp.home',
       'sagdApp.layout',
+      'sagdApp.logs',
       'sagdApp.marca',
       'sagdApp.margen',
       'sagdApp.navbar',
