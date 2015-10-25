@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Empleado;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Password;
 
 class PasswordController extends Controller
@@ -112,5 +115,26 @@ class PasswordController extends Controller
                     'error' => ['email' => trans($response)]
                     ], 400);
         }
+    }
+
+    /**
+     * Reset the given user's password.
+     *
+     * @param  \Illuminate\Contracts\Auth\CanResetPassword  $user
+     * @param  string  $password
+     * @return void
+     */
+    protected function resetPassword($user, $password)
+    {
+        $user->password = bcrypt($password);
+
+        if ($user->morphable_type == Empleado::class) {
+            $user->morphable->fecha_cambio_password = Carbon::now();
+            $user->morphable->save();
+        }
+
+        $user->save();
+
+        Auth::login($user);
     }
 }
