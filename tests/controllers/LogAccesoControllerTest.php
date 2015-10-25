@@ -15,6 +15,7 @@ class LogAccesoControllerTest extends TestCase {
         parent::setUp();
         $this->user = $this->setUpMock('App\User');
         $this->empleado = $this->setUpMock('App\Empleado');
+        $this->mock = $this->setUpMock('App\LogAcceso');
 
         App\LogAcceso::all()->each(function($log){
             $log->forceDelete();
@@ -74,5 +75,28 @@ class LogAccesoControllerTest extends TestCase {
         $empleado = $user->morphable;
         $this->assertNotNull($empleado->logsAccesos->last());
         $this->assertEquals(1, $empleado->logsAccesos->last()->exitoso);
+    }
+
+    /**
+     * @covers ::index
+     * @group logs-controller
+     */
+    public function test_GET_index()
+    {
+        $endpoint = '/v1/logs-acceso';
+
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'get' => '[{"id":1,"exitoso":1,"created_at":"2015-10-24 16:55:44","updated_at":"2015-10-24 16:55:44","empleado_id":2,"empleado":{"id":2,"nombre":"Omar Garcia","usuario":"ogarcia","activo":1,"puesto":"Administrador","fecha_cambio_password":"2015-10-24 18:25:35","fecha_ultimo_ingreso":"2015-10-24 16:46:12","sucursal_id":1}}]'
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\LogAcceso', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'usuario' => 'admin',
+                'usuario' => 'ogarcia'
+            ])
+            ->assertResponseStatus(200);
     }
 }
