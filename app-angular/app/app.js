@@ -11,6 +11,7 @@
 
       'sagdApp.cliente',
       'sagdApp.codigo-postal',
+      'sagdApp.dato-contacto',
       'sagdApp.domicilio',
       'sagdApp.empleado',
       'sagdApp.familia',

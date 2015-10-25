@@ -198,12 +198,12 @@
         ]
       }, {
         name: 'Empleados',
-        state: 'empleado',
+        state: 'empleadoIndex',
         active: false,
         submodules: [
           {
             name: 'Consultar',
-            state: 'empleado'
+            state: 'empleadoIndex'
           }, {
             name: 'Roles',
             state: 'empleado.rol'
