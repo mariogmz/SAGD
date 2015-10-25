@@ -99,6 +99,7 @@ class EmpleadoControllerTest extends TestCase {
 
         $this->mock
             ->shouldReceive([
+                'with' => Mockery::self(),
                 'find' => Mockery::self(),
                 'self' => 'self'
             ])
@@ -122,6 +123,7 @@ class EmpleadoControllerTest extends TestCase {
 
         $this->mock
             ->shouldReceive([
+                'with' => Mockery::self(),
                 'find' => false
             ]);
         $this->app->instance('App\Empleado', $this->mock);
