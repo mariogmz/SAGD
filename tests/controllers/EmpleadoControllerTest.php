@@ -32,9 +32,10 @@ class EmpleadoControllerTest extends TestCase {
      */
     public function test_GET_index() {
         $this->mock
-            ->shouldReceive('all')
-            ->once()
-            ->andReturn('[{"id":1,"nombre":"Administrador","usuario":"admin","activo":1,"puesto":"Administrador","fecha_cambio_password":"2015-10-20 17:07:54","fecha_ultimo_ingreso":null,"sucursal_id":1}]');
+            ->shouldReceive([
+                'with' => Mockery::self(),
+                'get' => '[{"id":1,"nombre":"Administrador","usuario":"admin","activo":1,"puesto":"Administrador","fecha_cambio_password":"2015-10-20 17:07:54","fecha_ultimo_ingreso":null,"sucursal_id":1}]'])
+            ->withAnyArgs();
         $this->app->instance('App\Empleado', $this->mock);
 
         $this->get($this->endpoint)

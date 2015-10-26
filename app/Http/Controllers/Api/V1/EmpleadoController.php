@@ -29,7 +29,7 @@ class EmpleadoController extends Controller
             $sucursal = $request->only('sucursal');
             return $this->empleado->where('sucursal_id', $sucursal)->get();
         }
-        return $this->empleado->all();
+        return $this->empleado->with('sucursal')->get();
     }
 
     /**

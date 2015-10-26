@@ -1,0 +1,17 @@
+.index-checkboxes {
+
+  @extend .checkbox;
+
+  text-align: center;
+
+  label {
+
+    @extend .c-input;
+    @extend .c-checkbox;
+
+    span {
+
+      @extend .c-indicator;
+    }
+  }
+}
