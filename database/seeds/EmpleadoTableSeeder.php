@@ -11,37 +11,63 @@ class EmpleadoTableSeeder extends Seeder
      */
     public function run()
     {
-        $empleado = new App\Empleado([
-            'nombre' => 'Administrador',
-            'usuario' => 'admin',
-            'activo' => 1,
-            'puesto' => 'Administrador',
-            'fecha_cambio_password' => \Carbon\Carbon::now('America/Mexico_City'),
-            'sucursal_id' => App\Sucursal::where('clave', 'DICOTAGS')->first()->id
-        ]);
-        $empleado->save();
+        $sucursalId = App\Sucursal::where('clave', 'DICOTAGS')->first()->id;
 
-        $user = new App\User([
-            'email' => 'sistemas@zegucom.com.mx',
-            'password' => Hash::make('test123'),
-            'morphable_id' => $empleado->id,
-            'morphable_type' => get_class($empleado)
-        ]);
-        $user->save();
+        $empleados = [
+            [
+                'empleado' => [
+                    'nombre' => 'Administrador',
+                    'usuario' => 'admin',
+                    'activo' => 1,
+                    'puesto' => 'Administrador',
+                    'sucursal_id' => $sucursalId
+                ],
+                'dato_contacto' => [
+                    'email' => 'sistemas@zegucom.com.mx'
+                ]
+            ],
+            [
+                'empleado' => [
+                    'nombre' => 'Juan Carlos Lopez',
+                    'usuario' => 'jclopez',
+                    'activo' => 1,
+                    'puesto' => 'Administrador',
+                    'sucursal_id' => $sucursalId
+                ],
+                'dato_contacto' => [
+                    'email' => 'jlopez@zegucom.com.mx'
+                ]
+            ],
+            [
+                'empleado' => [
+                    'nombre' => 'Omar Garcia',
+                    'usuario' => 'ogarcia',
+                    'activo' => 1,
+                    'puesto' => 'Administrador',
+                    'sucursal_id' => $sucursalId
+                ],
+                'dato_contacto' => [
+                    'email' => 'ogarcia@zegucom.com.mx'
+                ]
+            ],
+            [
+                'empleado' => [
+                    'nombre' => 'Mario Gomez',
+                    'usuario' => 'mgomez',
+                    'activo' => 1,
+                    'puesto' => 'Administrador',
+                    'sucursal_id' => $sucursalId
+                ],
+                'dato_contacto' => [
+                    'email' => 'mgomez@zegucom.com.mx'
+                ]
+            ],
+        ];
 
-        $empleado = new App\Empleado([
-            'nombre' => 'Omar Garcia',
-            'usuario' => 'ogarcia',
-            'activo' => 1,
-            'puesto' => 'Administrador',
-            'fecha_cambio_password' => \Carbon\Carbon::now('America/Mexico_City'),
-            'sucursal_id' => App\Sucursal::where('clave', 'DICOTAGS')->first()->id
-        ]);
-        $empleado->save();
-
-        App\DatoContacto::create([
-            'email' => 'ogarcia@zegucom.com.mx',
-            'empleado_id' => $empleado->id
-        ]);
+        foreach ($empleados as $empleado) {
+            $e = new App\Empleado($empleado['empleado']);
+            $e->fecha_cambio_password = \Carbon\Carbon::now('America/Mexico_City');
+            $e->guardar($empleado['dato_contacto']);
+        }
     }
 }
