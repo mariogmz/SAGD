@@ -378,11 +378,13 @@ class EmpleadoTest extends TestCase {
      */
     public function testActualizarConDatosDeContacto()
     {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
         $empleado->datoContacto()->save($datoContacto);
 
-        $params = ['puesto' => 'Debugger', 'datos_contacto' => ['telefono' => '11111']];
+        $params = ['puesto' => 'Debugger', 'dato_contacto' => ['telefono' => '11111']];
 
         $this->assertTrue($empleado->actualizar($params));
     }
@@ -393,11 +395,13 @@ class EmpleadoTest extends TestCase {
      */
     public function testActualizarEmpleadoFalla()
     {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
         $empleado->datoContacto()->save($datoContacto);
 
-        $params = ['usuario' => null, 'datos_contacto' => ['telefono' => '11111']];
+        $params = ['usuario' => null, 'dato_contacto' => ['telefono' => '11111']];
 
         $this->assertFalse($empleado->actualizar($params));
     }
@@ -408,11 +412,13 @@ class EmpleadoTest extends TestCase {
      */
     public function testActualizarDatoContactoFalla()
     {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
         $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
         $empleado->datoContacto()->save($datoContacto);
 
-        $params = ['puesto' => 'Debugger', 'datos_contacto' => ['telefono' => 11111]];
+        $params = ['puesto' => 'Debugger', 'dato_contacto' => ['telefono' => 11111]];
 
         $this->assertFalse($empleado->actualizar($params));
     }
@@ -423,6 +429,8 @@ class EmpleadoTest extends TestCase {
      */
     public function testWhereEmailEncuentraElModelo()
     {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
         $empleado = factory(App\Empleado::class)->create();
 
         if ($user = App\User::whereEmail('test@test.com')){
