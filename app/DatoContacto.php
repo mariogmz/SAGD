@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Events\PostEmpleadoCreado;
+use App\Events\DatoContactoActualizado;
 
 /**
  * App\DatoContacto
@@ -67,6 +68,9 @@ class DatoContacto extends LGGModel {
         });
         DatoContacto::created(function ($dato_contacto) {
             event(new PostEmpleadoCreado($dato_contacto));
+        });
+        DatoContacto::updated(function ($dato_contacto) {
+            event(new DatoContactoActualizado($dato_contacto));
         });
     }
 

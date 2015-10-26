@@ -18,6 +18,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\PostEmpleadoCreado' => [
             'App\Listeners\CrearUser',
+        ],
+        'App\Events\DatoContactoActualizado' => [
+            'App\Listeners\ActualizarUser',
         ]
     ];
 
