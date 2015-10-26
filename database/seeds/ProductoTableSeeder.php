@@ -7,28 +7,40 @@ class ProductoTableSeeder extends Seeder {
 
     use CalculadoraPrecios;
 
+    protected $show_errors = 0;
+    protected $limit_to = 0;
+
+    private function setUp() {
+        $this->command->getOutput()->writeln("You're about to start product seeding, this will take a few mins to complete.");
+        $errors = $this->command->ask('Do you want to dump errors to console? [y/N]' . "\n", 'N');
+        $this->show_errors = strtolower($errors) == 'y';
+        $limit = $this->command->ask('How many records do you want to seed? (Leave 0 to seed the entire recordset): ' . "\n", 0);
+        $this->limit_to = $limit > 0 ? $limit : 0;
+        echo "\n";
+    }
+
     /**
      * Run the database seeds.
      *
      * @return void
      */
     public function run() {
+        $this->setUp();
         DB::beginTransaction();
         try {
             $this->obtenerProductosDesdeLegacy();
+            DB::commit();
         } catch (ErrorException $ex) {
             echo $ex->getMessage() . "\n";
             echo $ex->getFile() . "\n";
             echo $ex->getLine() . "\n";
             DB::rollBack();
         }
-        DB::commit();
     }
 
     private function obtenerProductosDesdeLegacy() {
         $legacy = DB::connection('mysql_legacy');
-        // Obtiene de legacy los campos normales con el formato para el sistema nuevo, no incluye foreign keys
-        $productos_legacy = $legacy->select("
+        $query = "
         SELECT
             activo,
             productos.Clave AS clave,
@@ -44,37 +56,44 @@ class ProductoTableSeeder extends Seeder {
             height AS alto,
             length AS largo,
             weight AS peso,
-        CASE
-            WHEN upper(Tiempogar) LIKE '1%MES%' THEN 6
-            WHEN upper(Tiempogar) LIKE '3%MES%' THEN 8
-            WHEN upper(Tiempogar) LIKE '4%MES%' THEN 9
-            WHEN upper(Tiempogar) LIKE '6%MES%' THEN 11
-            WHEN upper(Tiempogar) LIKE '1%ÑO%' THEN 12
-            WHEN upper(Tiempogar) LIKE '5%ÑO%' THEN 14
-            WHEN upper(Tiempogar) LIKE '7%ÑO%' THEN 14
-            WHEN upper(Tiempogar) LIKE '%SER%' THEN 2
-            WHEN upper(Tiempogar) LIKE '1%IA%' THEN 3
-            WHEN upper(Tiempogar) LIKE '1%SEM%' THEN 5
-            ELSE 1
-        END AS tipo_garantia_id,
-        Marca AS marca_clave,
-        categorias.categoria AS margen_nombre,
-        Subfamilia AS subfamilia_clave,
-        costo,
-        precio1 AS precio_1,
-        precio2 AS precio_2,
-        precio3 AS precio_3,
-        precio4 AS precio_4,
-        precio5 AS precio_5,
-        precio6 AS precio_6,
-        precio7 AS precio_7,
-        precio8 AS precio_8,
-        precio9 AS precio_9,
-        precio10 AS precio_10
-    FROM
-        productos
-    LEFT JOIN
-        categorias ON productos.categoria = categorias.clave;");
+            CASE
+                WHEN upper(Tiempogar) LIKE '1%MES%' THEN 6
+                WHEN upper(Tiempogar) LIKE '3%MES%' THEN 8
+                WHEN upper(Tiempogar) LIKE '4%MES%' THEN 9
+                WHEN upper(Tiempogar) LIKE '6%MES%' THEN 11
+                WHEN upper(Tiempogar) LIKE '1%ÑO%' THEN 12
+                WHEN upper(Tiempogar) LIKE '5%ÑO%' THEN 14
+                WHEN upper(Tiempogar) LIKE '7%ÑO%' THEN 14
+                WHEN upper(Tiempogar) LIKE '%SER%' THEN 2
+                WHEN upper(Tiempogar) LIKE '1%IA%' THEN 3
+                WHEN upper(Tiempogar) LIKE '1%SEM%' THEN 5
+                ELSE 1
+            END AS tipo_garantia_id,
+            Marca AS marca_clave,
+            categorias.categoria AS margen_nombre,
+            Subfamilia AS subfamilia_clave,
+            costo,
+            precio1 AS precio_1,
+            precio2 AS precio_2,
+            precio3 AS precio_3,
+            precio4 AS precio_4,
+            precio5 AS precio_5,
+            precio6 AS precio_6,
+            precio7 AS precio_7,
+            precio8 AS precio_8,
+            precio9 AS precio_9,
+            precio10 AS precio_10
+        FROM
+            productos
+        LEFT JOIN
+            categorias ON productos.categoria = categorias.clave
+        WHERE
+            productos.externo = 0";
+
+        $query .= $this->limit_to > 0 ? ' LIMIT ' . $this->limit_to . ';': ';';
+
+        // Obtiene de legacy los campos normales con el formato para el sistema nuevo, no incluye foreign keys
+        $productos_legacy = $legacy->select($query);
         $marcas = App\Marca::all()->toArray();
         $margenes = App\Margen::all()->toArray();
         $subfamilias = App\Subfamilia::all()->toArray();
@@ -211,22 +230,23 @@ class ProductoTableSeeder extends Seeder {
      * @return \App\Producto
      */
     private function corregirProducto($producto) {
-
+        // Eliminar caracteres basura
+        $producto['numero_parte'] = str_replace("'", '-', $producto['numero_parte']);
+        $producto['numero_parte'] = preg_replace("`[·\\\\']`", "", $producto['numero_parte']);
 
         $producto_nuevo = new App\Producto($producto);
         if (!$producto_nuevo->isValid()) {
             $errors = [];
-            // Eliminar caracteres basura
-            $producto['numero_parte'] = str_replace("'", '-', $producto['numero_parte']);
-            $producto['numero_parte'] = preg_replace("`[·\\\\']`", "", $producto['numero_parte']);
+
             if ($producto_nuevo->errors->has('numero_parte')) {
                 array_push($errors, ['numero_parte' => $producto['numero_parte'], 'error' => $producto_nuevo->errors->get('numero_parte')]);
             }
             if ($producto_nuevo->errors->has('clave')) {
                 array_push($errors, ['clave' => $producto['clave'], 'error' => $producto_nuevo->errors->get('clave')]);
             }
-            print_r($errors);
-
+            if ($this->show_errors) {
+                print_r($errors);
+            }
         }
 
         return $producto_nuevo;
