@@ -36,6 +36,7 @@
   /* @ngInject */
   function SidebarController($auth, notifications, session, $timeout) {
     var vm = this;
+    vm.auth = $auth.isAutenticated();
     vm.collection = [];
     vm.saved = [];
     vm.removeNotification = deleteNotification;
