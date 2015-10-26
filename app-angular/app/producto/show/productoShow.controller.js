@@ -50,6 +50,10 @@
         .then(function (response){
           vm.producto = response.data.producto;
           vm.precios = response.data.precios_proveedor;
+          vm.producto.revisado = true;
+          vm.producto.precios.forEach(function (element){
+            vm.producto.revisado = vm.producto.revisado && element.revisado;
+          });
           return response.data;
         })
         .catch(function (response){
