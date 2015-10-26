@@ -35,7 +35,7 @@ class CrearUser
 
         $user = new User();
         $user->email = $this->empleado->datoContacto->email;
-        $user->password = \Hash::make($this->empleado->nombre . "2015");
+        $user->password = \Hash::make($this->empleado->usuario . "2015");
         $user->morphable_id = $this->empleado->id;
         $user->morphable_type = get_class($this->empleado);
 
