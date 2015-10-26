@@ -82,7 +82,8 @@ class ProductoTableSeeder extends Seeder {
             precio7 AS precio_7,
             precio8 AS precio_8,
             precio9 AS precio_9,
-            precio10 AS precio_10
+            precio10 AS precio_10,
+            preciorevisado AS revisado
         FROM
             productos
         LEFT JOIN
@@ -163,7 +164,8 @@ class ProductoTableSeeder extends Seeder {
             'precio_7'  => null,
             'precio_8'  => null,
             'precio_9'  => null,
-            'precio_10' => null
+            'precio_10' => null,
+            'revisado' => null
         ];
 
         $exitosos = 0;
@@ -203,8 +205,11 @@ class ProductoTableSeeder extends Seeder {
         // Forzar que los precios sean mayores a los costos
         if ($precio['costo'] >= $precio['precio_1']) {
             $precio['precio_1'] = $precio['costo'] + 1;
+            $precio['revisado'] = false;
         }
+        $revisado = $precio['revisado'];
         $precio = $this->calcularPrecios(floatval($precio['precio_1']), floatval($precio['costo']), null, $margen_id)['precios'];
+        $precio['revisado'] = $revisado;
         $precio_nuevo = new App\Precio(array_merge($precio, ['producto_sucursal_id' => 0]));
 
         if (!$precio_nuevo->isValid()) {
