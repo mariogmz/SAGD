@@ -30,7 +30,6 @@
               <small class="error" ng-show="form.usuario.$error.required">El usuario es requerido.</small>
               <small class="error"  ng-show="form.usuario.$error.minlength">El usuario debe tener al menos 3 caracteres</small>
               <small class="error" ng-show="form.usuario.$error.maxlength">El usuario no puede ser mayor a 20 caracteres</small>
-              <small class="error" ng-show="form.usuario.$invalid">Invalid</small>
             </div>
 
           </div>
@@ -49,7 +48,6 @@
             <div class="error" ng-show="form.$submitted || form.email.$touched">
               <small class="error" ng-show="form.email.$error.required">El correo es requerido.</small>
               <small class="error"  ng-show="form.email.$error.email">El correo no es válido</small>
-              <small class="error" ng-show="form.email.$invalid">*</small>
             </div>
 
           </div>
@@ -76,7 +74,6 @@
 
             <div class="error" ng-show="form.$submitted || form.nombre.$touched">
               <small class="error" ng-show="form.nombre.$error.required">El nombre es requerido.</small>
-              <small class="error" ng-show="form.nombre.$invalid">*</small>
             </div>
 
           </div>
