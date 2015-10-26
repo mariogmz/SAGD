@@ -362,6 +362,7 @@ class Producto extends LGGModel {
         $precio_externo = $precio_interno->calcularPrecios($precio_interno->precio_1, $precio_interno->costo, true);
         $precio_externo = new Precio($precio_externo['precios']);
         $precio_externo->revisado = $precio_interno->revisado;
+        $precio_externo->descuento = $precio_interno->descuento;
         foreach ($this->productosSucursales as $producto_sucursal) {
             if ($producto_sucursal->sucursal->proveedor->externo) {
                 $producto_sucursal->precio()->save(clone $precio_externo);
