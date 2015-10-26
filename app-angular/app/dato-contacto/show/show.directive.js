@@ -41,7 +41,6 @@
         templateOptions: {
           type: 'email',
           label: 'Correo electrónico:',
-          placeholder: 'El correo electrónico del nuevo empleado',
           required: true
         }
       },

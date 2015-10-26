@@ -59,6 +59,7 @@
           label: 'Sucursal:',
           options: [{ value: 0, name: 'Seleccione a que sucursal pertenecerá'}],
           ngOptions: 'sucursal.id as sucursal.nombre group by sucursal.proveedor.razon_social for sucursal in to.options | orderBy:"nombre"',
+          required: true
         }
       },
       {
