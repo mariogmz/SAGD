@@ -67,7 +67,7 @@ class EmpleadoController extends Controller
      */
     public function show($id)
     {
-        $this->empleado = $this->empleado->with('datoContacto')->find($id);
+        $this->empleado = $this->empleado->with('datoContacto', 'sucursal')->find($id);
         if ($this->empleado) {
             return response()->json([
                 'message' => 'Empleado obtenido exitosamente',

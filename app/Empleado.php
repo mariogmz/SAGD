@@ -60,7 +60,7 @@ class Empleado extends LGGModel {
         'usuario'               => 'required|max:20|unique:empleados',
         'activo'                => 'required|boolean',
         'puesto'                => 'string|max:45',
-        'fecha_cambio_password' => 'required|date',
+        'fecha_cambio_password' => 'date',
         'fecha_ultimo_ingreso'  => 'date',
         'sucursal_id'           => 'required|integer'
     ];
