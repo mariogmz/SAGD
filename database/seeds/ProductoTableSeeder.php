@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\MessageBag;
 use Sagd\CalculadoraPrecios;
 
 class ProductoTableSeeder extends Seeder {
@@ -211,21 +210,25 @@ class ProductoTableSeeder extends Seeder {
      * @param array $producto
      * @return \App\Producto
      */
-    private function corregirProducto($producto){
-        $producto['numero_parte'] = str_replace("'",'-',$producto['numero_parte']);
-        $producto_nuevo = new App\Producto($producto);
-        if(!$producto_nuevo->isValid()){
-            $errors = [];
+    private function corregirProducto($producto) {
 
-            if($producto_nuevo->errors->has('numero_parte')){
-                array_push($errors, ['numero_parte' => $producto_nuevo->numero_parte, 'error' =>$producto_nuevo->errors->get('numero_parte')]);
+
+        $producto_nuevo = new App\Producto($producto);
+        if (!$producto_nuevo->isValid()) {
+            $errors = [];
+            // Eliminar caracteres basura
+            $producto['numero_parte'] = str_replace("'", '-', $producto['numero_parte']);
+            $producto['numero_parte'] = preg_replace("`[·\\\\']`", "", $producto['numero_parte']);
+            if ($producto_nuevo->errors->has('numero_parte')) {
+                array_push($errors, ['numero_parte' => $producto['numero_parte'], 'error' => $producto_nuevo->errors->get('numero_parte')]);
             }
-            if($producto_nuevo->errors->has('clave')){
-                array_push($errors, ['clave' => $producto_nuevo->clave, 'error' =>$producto_nuevo->errors->get('clave')]);
+            if ($producto_nuevo->errors->has('clave')) {
+                array_push($errors, ['clave' => $producto['clave'], 'error' => $producto_nuevo->errors->get('clave')]);
             }
             print_r($errors);
 
         }
+
         return $producto_nuevo;
     }
 }
