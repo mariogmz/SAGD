@@ -11,7 +11,7 @@ class ProductoTableSeeder extends Seeder {
     protected $limit_to = 0;
 
     private function setUp() {
-        $this->command->getOutput()->writeln("You're about to start product seeding, this will take a few mins to complete.");
+        $this->command->getOutput()->writeln("You're about to begin the product seeding, this will take a few mins to complete.");
         $errors = $this->command->ask('Do you want to dump errors to console? [y/N]' . "\n", 'N');
         $this->show_errors = strtolower($errors) == 'y';
         $limit = $this->command->ask('How many records do you want to seed? (Leave 0 to seed the entire recordset): ' . "\n", 0);
@@ -83,7 +83,8 @@ class ProductoTableSeeder extends Seeder {
             precio8 AS precio_8,
             precio9 AS precio_9,
             precio10 AS precio_10,
-            preciorevisado AS revisado
+            preciorevisado AS revisado,
+            dcto_ufinal/100 AS descuento
         FROM
             productos
         LEFT JOIN
@@ -91,7 +92,7 @@ class ProductoTableSeeder extends Seeder {
         WHERE
             productos.externo = 0";
 
-        $query .= $this->limit_to > 0 ? ' LIMIT ' . $this->limit_to . ';': ';';
+        $query .= $this->limit_to > 0 ? ' LIMIT ' . $this->limit_to . ';' : ';';
 
         // Obtiene de legacy los campos normales con el formato para el sistema nuevo, no incluye foreign keys
         $productos_legacy = $legacy->select($query);
@@ -165,7 +166,8 @@ class ProductoTableSeeder extends Seeder {
             'precio_8'  => null,
             'precio_9'  => null,
             'precio_10' => null,
-            'revisado' => null
+            'revisado'  => null,
+            'descuento' => null
         ];
 
         $exitosos = 0;
@@ -207,17 +209,21 @@ class ProductoTableSeeder extends Seeder {
             $precio['precio_1'] = $precio['costo'] + 1;
             $precio['revisado'] = false;
         }
-        $revisado = $precio['revisado'];
+        $other = [
+            'revisado'             => $precio['revisado'],
+            'descuento'            => $precio['descuento'],
+            'producto_sucursal_id' => 0
+        ];
+
         $precio = $this->calcularPrecios(floatval($precio['precio_1']), floatval($precio['costo']), null, $margen_id)['precios'];
-        $precio['revisado'] = $revisado;
-        $precio_nuevo = new App\Precio(array_merge($precio, ['producto_sucursal_id' => 0]));
+        $precio_nuevo = new App\Precio(array_merge($precio, $other));
 
         if (!$precio_nuevo->isValid()) {
             $multiplicador = 0;
             for ($i = 0; $i < 100; $i ++) {
                 $multiplicador += 10;
                 $precio = $this->calcularPrecios(floatval($precio['precio_1']) + $multiplicador, floatval($precio['costo']), null, $margen_id)['precios'];
-                $precio_nuevo->fill(array_merge($precio, ['producto_sucursal_id' => 0]));
+                $precio_nuevo->fill(array_merge($precio, $other));
                 if ($precio_nuevo->isValid()) {
                     break;
                 }
@@ -225,7 +231,7 @@ class ProductoTableSeeder extends Seeder {
 
         }
 
-        return $precio;
+        return array_merge($precio, $other);
     }
 
     /**
