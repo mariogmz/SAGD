@@ -8,6 +8,7 @@ use App\User;
 use App\Empleado;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -77,9 +78,11 @@ class AuthenticateController extends Controller
     private function setLastLoginToEmployee()
     {
         $this->empleado = $this->getEmpleado();
-        $this->empleado->fecha_ultimo_ingreso = \Carbon\Carbon::now('America/Mexico_City');
-        $this->intentoDeLogin($this->empleado->user->email, 1);
-        if(! $this->empleado->save() ) {
+        $today = Carbon::now('America/Mexico_City');
+        $this->empleado->fecha_ultimo_ingreso = $today;
+        if( $this->empleado->save() ) {
+            $this->intentoDeLogin($this->empleado->user->email, 1);
+        } else {
             return response()->json(['error' => 'Could not set last login time for employee'], 500);
         }
     }
