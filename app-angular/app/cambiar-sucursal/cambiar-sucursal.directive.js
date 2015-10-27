@@ -7,10 +7,10 @@
   .module('sagdApp.cambiar-sucursal')
   .directive('cambiarSucursal', cambiarSucursalDirective);
 
-  cambiarSucursalDirective.$inject = [];
+  cambiarSucursalDirective.$inject = ['session'];
 
   /* @ngInject */
-  function cambiarSucursalDirective() {
+  function cambiarSucursalDirective(session) {
     // Usage:
     //
     // Creates:
@@ -28,6 +28,23 @@
   return directive;
 
   function link(scope, element, attrs) {
+    var sucursal = session.obtenerEmpleado().sucursal;
+    var target = $("li.module-list-item.list-item.empleado");
+
+    switch(sucursal.clave) {
+      case "DICOTAGS":
+        target.css({'background-color': "#0073EA"});
+        break;
+      case "DICOLEON":
+        target.css({'background-color': "#FF6C00"});
+        break;
+      case "ZEGUCZAC":
+        target.css({'background-color': "#00CCCC"});
+        break;
+      default:
+        target.css({'background-color': "#D22D32"});
+        break;
+    }
   }
 }
 
