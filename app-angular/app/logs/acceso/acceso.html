@@ -26,7 +26,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="log in vm.logs.slice().reverse() | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15" ng-class="{failed: !log.exitoso}">
+    <tr dir-paginate="log in vm.logs.slice().reverse() | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15" ng-class="{'table-danger': !log.exitoso}">
       <th scope="row">{{log.id}}</th>
       <td>{{log.empleado.usuario}}</td>
       <td>{{log.created_at}}</td>
