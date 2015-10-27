@@ -65,6 +65,18 @@ class PrecioTest extends TestCase {
     /**
      * @coversNothing
      */
+    public function testDescuentoEsPositivo() {
+        $model = factory(App\Precio::class)->make([
+            'descuento' => -0.15
+        ]);
+        $this->assertFalse($model->isValid());
+        $model->descuento = 0.50;
+        $this->assertTrue($model->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
     public function testDescuentoEsPorcentaje() {
         $precio = factory(App\Precio::class, 'sindescuento')->make();
         $precio->descuento = 'DESCUENTAZAZO';
