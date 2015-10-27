@@ -1,0 +1,11 @@
+.formly-validation-messages {
+  @include make-row();
+  @extend .help-block;
+  font-size: .8rem;
+
+  .formly-message-container{
+    @include make-col(9);
+    @include make-col-offset(3);
+    padding-left: 23px;
+  }
+}

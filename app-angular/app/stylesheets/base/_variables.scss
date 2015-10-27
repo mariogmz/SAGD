@@ -19,3 +19,8 @@ $white: rgba(255, 255, 255, 1);
 
 // Color variants
 $gray-suit-faded: rgba(65, 65, 65, 0.75);
+
+// Override bootstrap colors
+$brand-danger : $persian-red;
+$brand-info : $science-blue;
+$brand-warning : $carrot-orange;
