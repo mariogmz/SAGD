@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(SubfamiliaTableSeeder::class);
         $this->call(PaqueteriaTableSeeder::class);
         $this->call(ProductoTableSeeder::class);
+        $this->call(ExistenciasTableSeeder::class);
         $this->call(PaqueteriaCoberturaTableSeeder::class);
         $this->call(ZonaTableSeeder::class);
         $this->call(GuiaTableSeeder::class);
