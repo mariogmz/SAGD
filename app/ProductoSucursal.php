@@ -9,7 +9,7 @@ namespace App;
  * @property integer $id
  * @property integer $producto_id
  * @property integer $sucursal_id
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Existencia[] $existencias
+ * @property-read \App\Existencia $existencia
  * @property-read \App\Sucursal $sucursal
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Precio[] $precios
  * @property-read \App\Producto $producto
@@ -44,7 +44,7 @@ class ProductoSucursal extends LGGModel {
 
     /**
      * Obtiene la Existencia asociado al producto sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \App\Existencia
      */
     public function existencia() {
         return $this->hasOne('App\Existencia', 'productos_sucursales_id');
@@ -52,7 +52,7 @@ class ProductoSucursal extends LGGModel {
 
     /**
      * Obtiene la Sucursal asociada al producto sucursal
-     * @return App\Sucursal
+     * @return \App\Sucursal
      */
     public function sucursal() {
         return $this->belongsTo('App\Sucursal');
@@ -69,7 +69,7 @@ class ProductoSucursal extends LGGModel {
 
     /**
      * Obtiene el producto asociado
-     * @return App\Producto
+     * @return \App\Producto
      */
     public function producto() {
         return $this->belongsTo('App\Producto', 'producto_id');
