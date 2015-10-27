@@ -1,0 +1,41 @@
+.notification-bar-title {
+
+  @extend .card;
+  @extend .card-inverse;
+
+  @include make-container();
+  @include make-row();
+
+  background-color: $gray-suit;
+  border-color: $gray-suit;
+  height: 60px;
+  margin: 0 0 10px;
+  padding: 0;
+  text-align: center;
+
+  align-items: center;
+  display: flex;
+  justify-content: center;
+
+  .expand,
+  .title,
+  .collapser {
+
+    color: $alto;
+  }
+
+  .expand,
+  .collapser {
+
+    @include make-col();
+    @include make-col-span(1);
+
+    cursor: pointer;
+  }
+
+  .title {
+
+    @include make-col();
+    @include make-col-span(10);
+  }
+}

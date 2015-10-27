@@ -37,9 +37,16 @@
   function SidebarController($auth, notifications, session, $timeout) {
     var vm = this;
     vm.auth = $auth.isAuthenticated();
+    vm.collapsed = false;
+    vm.showError = true;
+    vm.showInfo = true;
+    vm.showWarn = true;
     vm.collection = [];
     vm.saved = [];
     vm.removeNotification = deleteNotification;
+    vm.toggle = toggle;
+    vm.showable = canShow;
+    vm.collapse = collapse;
 
     notifications.emit('fetch', session.obtenerEmpleado());
 
@@ -49,6 +56,11 @@
     });
 
     notifications.on('warn', function(data) {
+      addNewToCollection(data.data.payload);
+      addToCollection(data.data.payload);
+    });
+
+    notifications.on('error', function(data) {
       addNewToCollection(data.data.payload);
       addToCollection(data.data.payload);
     });
@@ -79,6 +91,26 @@
       $timeout(1000).then(function(){
         vm.collection.splice(index, 1);
       });
+    }
+
+    function toggle(channel) {
+      if(channel === "info") {
+        vm.showInfo = !vm.showInfo;
+      } else if (channel === "warn") {
+        vm.showWarn = !vm.showWarn;
+      } else if (channel === "error") {
+        vm.showError = !vm.showError;
+      }
+    }
+
+    function canShow(item) {
+      return  (item.channel == 'info' && vm.showInfo) ||
+              (item.channel == 'warn' && vm.showWarn) ||
+              (item.channel == 'error' && vm.showError);
+    }
+
+    function collapse() {
+      vm.collapsed = !vm.collapsed;
     }
   }
 })();
