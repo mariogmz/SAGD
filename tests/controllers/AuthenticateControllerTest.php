@@ -88,6 +88,9 @@ class AuthenticateControllerTest extends TestCase
 
     /**
      * @covers ::getAuthenticatedEmpleado
+     * @covers ::getUser
+     * @covers ::getEmpleado
+     * @group get-empleado
      */
     public function test_GET_to_empleado_returns_a_valid_empleado()
     {
@@ -104,6 +107,31 @@ class AuthenticateControllerTest extends TestCase
             ->seeJson([
                 'usuario' => 'admin',
                 'email' => 'sistemas@zegucom.com.mx'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::getAuthenticatedEmpleado
+     * @covers ::getUser
+     * @covers ::getEmpleado
+     * @group get-empleado
+     */
+    public function test_GET_empleado_returns_with_sucursal()
+    {
+        $this->withoutMiddleware();
+
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => App\User::first()
+        ])
+        ->withAnyArgs();
+
+        $endpoint = $this->endpoint . '/empleado';
+
+        $this->get($endpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'usuario' => 'admin',
+                'clave' => 'DICOTAGS'
             ])
             ->assertResponseStatus(200);
     }

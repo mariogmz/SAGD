@@ -70,8 +70,13 @@ class AuthenticateController extends Controller
     private function getEmpleado()
     {
         if( get_class($this->user->morphable) === 'App\Empleado' ) {
-            $noop = $this->user->morphable->user;
-            return $this->user->morphable;
+            $user = $this->user;
+            return $this->user->morphable
+                ->with('sucursal', 'user')
+                ->whereHas('user', function($query) use ($user) {
+                    $query->where('email', $user->email);
+                })
+                ->first();
         }
     }
 
@@ -79,8 +84,7 @@ class AuthenticateController extends Controller
     {
         $this->empleado = $this->getEmpleado();
         $today = Carbon::now('America/Mexico_City');
-        $this->empleado->fecha_ultimo_ingreso = $today;
-        if( $this->empleado->save() ) {
+        if( $this->empleado->update(['fecha_ultimo_ingreso' => $today]) ) {
             $this->intentoDeLogin($this->empleado->user->email, 1);
         } else {
             return response()->json(['error' => 'Could not set last login time for employee'], 500);

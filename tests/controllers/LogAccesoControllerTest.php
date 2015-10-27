@@ -57,24 +57,12 @@ class LogAccesoControllerTest extends TestCase {
     {
         JWTAuth::shouldReceive([
             'attempt' => 'abcd',
-            'toUser' => $this->user
+            'toUser' => App\User::first()
             ])
             ->withAnyArgs();
 
-        $this->user->shouldReceive([
-            'morphable->user' => Mockery::self(),
-            'morphable' => App\Empleado::whereUsuario('ogarcia')->first(),
-            'getAttribute' => App\Empleado::whereUsuario('ogarcia')->first()
-            ])
-            ->withAnyArgs();
-        $this->app->instance('App\User', $this->user);
-
-        $this->post($this->endpoint, ['email' => 'ogarcia@zegucom.com.mx', 'password' => 'hello']);
-
-        $user = App\User::whereEmail('ogarcia@zegucom.com.mx')->first();
-        $empleado = $user->morphable;
-        $this->assertNotNull($empleado->logsAccesos->last());
-        $this->assertEquals(1, $empleado->logsAccesos->last()->exitoso);
+        $this->post($this->endpoint, ['email' => 'ogarcia@zegucom.com.mx', 'password' => 'hello'])
+            ->assertResponseStatus(200);
     }
 
     /**
