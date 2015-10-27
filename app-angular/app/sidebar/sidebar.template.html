@@ -1,14 +1,41 @@
-<aside class="notification-bar" id="notification-bar">
-  <section class="card card-inverse" style="background-color: #333; border-color: #333; text-align: center; height: 60px">
-    <header class="card-block">
-      <h3 class="card-title">Notificaciones</h3>
+<aside class="notification-bar" id="notification-bar" ng-class="{collapsed: vm.collapsed}">
+
+  <section class="notification-bar-title">
+    <aside class="expand" ng-show="vm.collapsed" ng-click="vm.collapse()">
+      <span><i class="fa fa-backward"></i></span>
+    </aside>
+    <header class="title">
+      <h3>Notificaciones</h3>
     </header>
+    <aside class="collapser" ng-click="vm.collapse()">
+      <span><i class="fa fa-forward"></i></span>
+    </aside>
+  </section>
+
+  <section class="notification-toggles">
+    <div class="info-toggle toggle">
+      <button class="ws-info" ng-class="{active: vm.showInfo}" ng-click="vm.toggle('info')">
+        Infos
+      </button>
+    </div>
+    <div class="warn-toggle toggle">
+      <button class="ws-warn" ng-class="{active: vm.showWarn}" ng-click="vm.toggle('warn')">
+        Alertas
+      </button>
+    </div>
+    <div class="error-toggle toggle">
+      <button class="ws-error" ng-class="{active: vm.showError}" ng-click="vm.toggle('error')">
+        Errores
+      </button>
+    </div>
   </section>
 
   <section class="notification-card" ng-show="vm.collection.length">
     <article class="card-block channels">
       <div class="notification-cell" id="{{'notification-cel-'+$index}}"
-          ng-class="{new: item.isNew, deleting: item.wasDeleted}" ng-repeat="item in vm.collection">
+          ng-class="{new: item.isNew, deleting: item.wasDeleted}"
+          ng-repeat="item in vm.collection"
+          ng-show="vm.showable(item)">
         <div class="notification-type" ng-class="item.level">
           <span>&nbsp;</span>
         </div>

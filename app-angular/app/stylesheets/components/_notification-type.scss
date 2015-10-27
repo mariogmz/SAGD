@@ -7,10 +7,14 @@
   padding-right: 0;
 
   &.ws-info {
-    background-color: darkcyan;
+    background-color: $endeavour;
   }
 
   &.ws-warn {
-    background-color: darkorange;
+    background-color: $carrot-orange;
+  }
+
+  &.ws-error {
+    background-color: $persian-red;
   }
 }

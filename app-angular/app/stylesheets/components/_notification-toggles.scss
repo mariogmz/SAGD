@@ -1,0 +1,7 @@
+.notification-toggles {
+
+    @include make-container();
+    @include make-row();
+
+    margin-bottom: 10px;
+}

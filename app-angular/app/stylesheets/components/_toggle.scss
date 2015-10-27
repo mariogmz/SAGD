@@ -1,0 +1,39 @@
+.toggle {
+
+  @include make-col();
+  @include make-col-push(2);
+  @include make-col-span(3);
+
+  padding: 0;
+
+  button {
+    border: none;
+    color: $white;
+    padding: 2px 0;
+    width: 100%;
+
+    &.ws-info {
+      background-color: $science-blue;
+
+      &.active {
+        background-color: $endeavour;
+      }
+    }
+
+    &.ws-warn {
+      background-color: $sandy-brown;
+
+      &.active {
+        background-color: $carrot-orange;
+      }
+    }
+
+    &.ws-error {
+      background-color: $mandy;
+
+      &.active {
+        background-color: $persian-red;
+      }
+    }
+  }
+}
