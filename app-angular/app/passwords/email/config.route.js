@@ -12,7 +12,7 @@
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('passwordsEmail', {
-        url: 'passwords/email',
+        url: 'password/email',
         parent: 'passwords',
         templateUrl: 'app/passwords/email/email.html',
         controller: 'passwordsEmailController',

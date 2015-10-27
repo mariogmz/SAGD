@@ -12,7 +12,7 @@
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('passwordsReset', {
-        url: 'passwords/reset/:token',
+        url: 'password/reset/:token',
         parent: 'passwords',
         templateUrl: 'app/passwords/reset/reset.html',
         controller: 'passwordsResetController',
