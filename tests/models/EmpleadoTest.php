@@ -424,6 +424,23 @@ class EmpleadoTest extends TestCase {
     }
 
     /**
+     * @covers ::actualizar
+     * @group actualizar-empleado
+     */
+    public function testActualizarDatoContactoFallaSinDatoContacto()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->create();
+        $datoContacto = factory(App\DatoContacto::class, 'bare')->make();
+        $empleado->datoContacto()->save($datoContacto);
+
+        $params = ['puesto' => 'Debugger'];
+
+        $this->assertFalse($empleado->actualizar($params));
+    }
+
+    /**
      * @covers ::whereEmail
      * @group whereEmail
      */

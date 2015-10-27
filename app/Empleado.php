@@ -99,7 +99,12 @@ class Empleado extends LGGModel {
      */
     public function actualizar($parametros)
     {
-        $datoContactoParams = $parametros['dato_contacto'];
+        $datoContactoParams = [];
+        try {
+            $datoContactoParams = $parametros['dato_contacto'];
+        } catch (\ErrorException $e) {
+            return false;
+        }
         if ($this->update($parametros)) {
             $datoContacto = $this->datoContacto;
             return $datoContacto->update($datoContactoParams);
