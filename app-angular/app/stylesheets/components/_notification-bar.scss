@@ -1,0 +1,24 @@
+.notification-bar {
+
+  @include make-col();
+  @include make-col-span(3);
+
+  @include transition(all 0.3s ease-in-out);
+  @include transform(translateX(0%));
+
+  max-height: 90vh;
+  overflow: hidden;
+
+  &.collapsed {
+
+    @include transform(translateX(93%));
+
+    &:hover {
+
+      .notification-bar-title {
+
+        right: 15px;
+      }
+    }
+  }
+}

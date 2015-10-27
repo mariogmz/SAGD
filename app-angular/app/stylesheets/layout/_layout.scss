@@ -12,12 +12,4 @@
     max-height: 90vh;
     overflow: auto;
   }
-
-  .notification-bar {
-    @include make-col();
-    @include make-col-span(3);
-
-    max-height: 90vh;
-    overflow: hidden;
-  }
 }
