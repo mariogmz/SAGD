@@ -1,3 +1,10 @@
 <div class="field">
-  <textarea ng-model="model[options.key]"></textarea>
+  <textarea
+    id="{{id}}"
+    formly-dynamic-name="id"
+    formly-custom-validation="options.validators"
+    placeholder="{{options.templateOptions.placeholder}}"
+    aria-describedby="{{id}}_description"
+    ng-required="options.templateOptions.required"
+    ng-model="model[options.key]"></textarea>
 </div>

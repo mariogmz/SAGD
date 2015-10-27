@@ -1,6 +1,12 @@
 <div class="field">
-  <select class="form-control c-select" ng-model="model[options.key]"
+  <select class="form-control c-select"
+          id="{{id}}"
+          formly-dynamic-name="id"
+          formly-custom-validation="options.validators"
+          aria-describedby="{{id}}_description"
+          ng-required="options.templateOptions.required"
+          ng-model="model[options.key]"
           ng-options='{{to.ngOptions? to.ngOptions : "option.value as option.name group by option.group for option in to.options | orderBy:\"name\" "}}'>
-    <option value="">Seleccione una opción</option>
+    <option value="">{{options.templateOptions.placeholder || 'Seleccione una opción'}}</option>
   </select>
 </div>
