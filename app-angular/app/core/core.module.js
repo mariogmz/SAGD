@@ -7,7 +7,7 @@
     /*
      * Angular modules
      */
-    'ngAnimate',
+    'ngAnimate', 'ngMessages',
 
     /*
      * Our reusable cross app code modules
