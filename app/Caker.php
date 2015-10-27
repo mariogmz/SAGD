@@ -88,7 +88,7 @@ class Caker {
 
     private static function refresh() {
         echo "Refreshing Faker and running DB reset...\n";
-        \Artisan::call('reset:db', ['--force' => true]);
+        \Artisan::call('db:reset', ['--force' => true]);
         static::$faker = Factory::create();
         echo "DONE!...\n";
     }

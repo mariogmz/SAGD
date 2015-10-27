@@ -28,7 +28,8 @@
       {name: 'P7', key: 'precio_7'},
       {name: 'P8', key: 'precio_8'},
       {name: 'P9', key: 'precio_9'},
-      {name: 'P10', key: 'precio_10'}
+      {name: 'P10', key: 'precio_10'},
+      {name: 'Descuento', key: 'descuento'}
     ];
 
     vm.sort = sort;
@@ -49,6 +50,10 @@
         .then(function (response){
           vm.producto = response.data.producto;
           vm.precios = response.data.precios_proveedor;
+          vm.producto.revisado = true;
+          vm.producto.precios.forEach(function (element){
+            vm.producto.revisado = vm.producto.revisado && element.revisado;
+          });
           return response.data;
         })
         .catch(function (response){

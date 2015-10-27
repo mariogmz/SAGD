@@ -69,6 +69,11 @@
     }
   }
 
+  .col-xsm {
+    @include make-col();
+    @include make-col-span(2);
+  }
+
   .col-sm {
     @include make-col();
     @include make-col-span(3);

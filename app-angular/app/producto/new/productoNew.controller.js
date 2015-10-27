@@ -24,7 +24,12 @@
       subclave: ''
     };
     vm.precio = {};
-    vm.dimension = {};
+    vm.dimension = {
+      largo : 0.1,
+      ancho : 0.1,
+      alto : 0.1,
+      peso : 0.1
+    };
 
     vm.back = goBack;
     vm.updateSubclave = updateSubclave;
@@ -103,6 +108,7 @@
     }
 
     function crearProducto(){
+      vm.precio.descuento /= 100;
       return api.post('/producto', {
         producto: vm.producto,
         dimension: vm.dimension,
@@ -124,7 +130,9 @@
       return api.get('/calcular-precio', params)
         .then(function (response){
           console.log(response.data.message);
+          var descuento = vm.precio.descuento;
           vm.precio = response.data.resultado.precios;
+          vm.precio.descuento = descuento;
           vm.utilidad = response.data.resultado.utilidades;
 
         }).catch(function (response){
