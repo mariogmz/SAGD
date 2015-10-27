@@ -26,7 +26,7 @@ a.empleado-style {
 
   &.nav {
 
-    @include normalize_link($alto);
+    @include normalize_link($white);
     position: absolute;
     text-align: center;
     text-transform: uppercase;
