@@ -10,12 +10,15 @@
 
   utils.$inject = [];
 
+  /* @ngInject */
   function utils(){
 
     return {
       pluck: pluck,
       strip: stripApiCall,
-      querify : querify
+      querify : querify,
+      formatPercentage : formatPercentage,
+      parsePercentage : parsePercentage
     };
 
 
@@ -47,6 +50,13 @@
 
     }
 
+    function formatPercentage(value){
+      return ((value || 0) * 100) + ' %';
+    }
+
+    function parsePercentage(value){
+      return (value || '').replace(/[^0-9\.]/g,'');
+    }
 
   }
 
@@ -56,5 +66,5 @@
     return function (input, decimals){
       return $filter('number')(input * 100, decimals) + '%';
     };
-  };
+  }
 }());
