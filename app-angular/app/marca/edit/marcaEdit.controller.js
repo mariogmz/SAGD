@@ -65,6 +65,7 @@
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
+          $state.go('marcaIndex');
           return response;
         })
         .catch(function (response){
