@@ -43,8 +43,7 @@
 
         formlyConfigWrapper.setType({
           name: 'hidden',
-          templateUrl: 'app/templates/fields/hidden.html',
-          wrapper: commonWrappers
+          templateUrl: 'app/templates/fields/hidden.html'
         });
 
         formlyConfigWrapper.setType({
