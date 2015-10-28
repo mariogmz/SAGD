@@ -36,7 +36,8 @@
       {name: 'P7', key: 'precio_7'},
       {name: 'P8', key: 'precio_8'},
       {name: 'P9', key: 'precio_9'},
-      {name: 'P10', key: 'precio_10'}
+      {name: 'P10', key: 'precio_10'},
+      {name: 'Dcto%', key: 'descuento'}
     ];
 
     vm.sort = sort;
@@ -72,6 +73,11 @@
         .then(function (response){
           vm.producto = response.data.producto;
           vm.producto.precios = response.data.precios_proveedor;
+          vm.producto.revisado = true;
+          vm.producto.precios.forEach(function (precio){
+            vm.producto.revisado = vm.producto.revisado && precio.revisado;
+            precio.descuento *= 100;
+          });
           return response;
         }).catch(function (response){
           console.log(response.data);
@@ -87,6 +93,9 @@
 
     function guardarProducto(){
       vm.producto.revisado = true;
+      vm.producto.precios.forEach(function (precio){
+        precio.descuento /= 100;
+      });
       return api.put('/producto/', vm.id, vm.producto)
         .then(function (response){
           vm.message = response.data.message;
