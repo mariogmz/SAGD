@@ -1,6 +1,6 @@
 // app/garantia/edit/edit.controller.js
 
-(function() {
+(function (){
   'use strict';
 
   angular
@@ -10,7 +10,7 @@
   garantiaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
 
   /* @ngInject */
-  function garantiaEditController($auth, $state, $stateParams, api, pnotify) {
+  function garantiaEditController($auth, $state, $stateParams, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -28,7 +28,8 @@
           type: 'text',
           label: 'Descripcion:',
           placeholder: 'Máximo 45 caracteres',
-          required: true
+          required: true,
+          maxlength: 45
         }
       }, {
         type: 'input',
@@ -44,9 +45,10 @@
         templateOptions: {
           type: 'select',
           label: 'Seriado:',
+          required: true,
           options: [
             {value: 0, name: 'No'},
-            {value: 1, name: 'Si'},
+            {value: 1, name: 'Si'}
           ]
         }
       }
@@ -56,40 +58,41 @@
 
     ////////////////
 
-    function activate() {
+    function activate(){
       return obtenerGarantia()
-        .then(function(response) {
+        .then(function (response){
           console.log(response.message);
         });
     }
 
-    function obtenerGarantia() {
+    function obtenerGarantia(){
       return api.get('/tipo-garantia/', vm.id)
-        .then(function(response) {
+        .then(function (response){
           vm.garantia = response.data.tipoGarantia;
           return response.data;
         })
-        .catch(function(response){
+        .catch(function (response){
           vm.error = response.data;
           return response.data;
         });
     }
 
-    function guardarGarantia() {
+    function guardarGarantia(){
       return api.put('/tipo-garantia/', vm.id, vm.garantia)
-        .then(function(response) {
+        .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
+          $state.go('tipoGarantiaIndex');
           return response;
         })
-        .catch(function(response) {
+        .catch(function (response){
           vm.error = response.data;
           pnotify.alertList('No se pudo guardar la marca', vm.error.error, 'error');
           return response;
         });
     }
 
-    function goBack() {
+    function goBack(){
       window.history.back();
     }
   }
