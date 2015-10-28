@@ -179,6 +179,11 @@ class EmpleadoTableSeeder extends Seeder
      */
     private function normalize($string)
     {
-        return ucfirst(strtolower($string));
+        $string = strtolower($string);
+        $string = explode(' ', $string);
+        $string = array_map(function($word){
+            return ucfirst($word);
+        }, $string);
+        return implode(' ', $string);
     }
 }
