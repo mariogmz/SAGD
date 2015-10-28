@@ -15,7 +15,7 @@ class LogsAccesoController extends Controller
     public function __construct(LogAcceso $logsAcceso)
     {
         $this->logsAcceso = $logsAcceso;
-        // $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**

@@ -20,7 +20,7 @@ class SucursalController extends Controller
     public function __construct(Sucursal $sucursal)
     {
         $this->sucursal = $sucursal;
-        // $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**
