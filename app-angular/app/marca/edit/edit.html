@@ -6,7 +6,7 @@
     <form class="item-form" name="marcaEditForm" ng-submit="vm.save()">
       <fieldset>
         <legend>Marca #<strong>{{vm.marca.id}}</strong></legend>
-        <formly-form model="vm.marca" fields="vm.fields">
+        <formly-form model="vm.marca" fields="vm.fields" form="marcaEditForm">
           <a ng-click="vm.back()" class="button secondary">Regresar</a>
           <input type="submit" class="button primary" ng-disabled="marcaEditForm.$invalid" value="Guardar cambios">
         </formly-form>
