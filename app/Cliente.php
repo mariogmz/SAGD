@@ -280,14 +280,15 @@ class Cliente extends LGGModel {
     public function saveWithData($parameters) {
 
         $cliente = new Cliente($parameters);
+        $email = $parameters['email'];
 
+        // Se agrega transacción al crear cliente, tabuladores y usuario
         DB::beginTransaction();
 
         if( $cliente->save() &&
             $this->guardarTabuladores($cliente->id) &&
-            $this->guardarUsuario($cliente)
+            $this->guardarUsuario($cliente, $email)
         ){
-
             DB::commit();
             return $cliente;
         }else {
@@ -305,8 +306,13 @@ class Cliente extends LGGModel {
 
         foreach ($sucursales as $sucursal) {
           try{
-            Tabulador::create(array('cliente_id'  => $cliente_id, 'sucursal_id' => $sucursal->id, 'tabulador' => 1, 'tabulador_original' => 1, 'habilitada' => 1, 'venta_especial' => 0));
-          }catch (exception $e){
+            Tabulador::create(array('cliente_id'  => $cliente_id,
+                                    'sucursal_id' => $sucursal->id,
+                                    'tabulador' => 1,
+                                    'tabulador_original' => 1,
+                                    'habilitada' => 1,
+                                    'venta_especial' => 0));
+          }catch (Exception $e){
             return false;
           }
         }
@@ -317,11 +323,15 @@ class Cliente extends LGGModel {
     /**
      * @return bool
      */
-    public function guardarUsuario($cliente) {
+    public function guardarUsuario($cliente, $email) {
 
         try{
-            User::create(array('email' => $cliente->email, 'password' => $cliente->password, 'morphable_id' => $cliente->id, 'morphable_type' => "App\Cliente"));
-        }catch (exception $e){
+            User::create(array( 'email' => $email,
+                                'password' => \Hash::make($cliente->password),
+                                'morphable_id' => $cliente->id,
+                                'morphable_type' => 'App\Cliente'));
+
+        }catch (Exception $e){
             return false;
         }
 

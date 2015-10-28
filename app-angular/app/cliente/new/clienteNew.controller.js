@@ -72,8 +72,8 @@
         return false;
       }
 
-      //vm.model.cliente_estatus_id = 1; // Cliente Nuevo
-      //vm.model.rol_id = 8;             // Ufinal
+      vm.model.cliente_estatus_id = 1; // Cliente Nuevo
+      vm.model.rol_id = 8;             // Ufinal
 
       return api.post('/cliente', vm.model)
           .then(function (response){
