@@ -16,7 +16,8 @@
     vm.token = $stateParams.token;
     vm.empleado = session.obtenerEmpleado();
     vm.email = vm.empleado ? vm.empleado.user.email : null;
-    vm.emailFieldType = vm.email ? 'hidden' : 'input';
+    vm.emailRequired = vm.email ? false : true;
+    vm.emailPlaceholder = vm.email ? vm.email : 'Ingrese su correo electrónico';
 
     vm.model = {
       token: vm.token,
@@ -28,12 +29,14 @@
         key: 'token'
       },
       {
-        type: vm.emailFieldType,
+        type: 'input',
         key: 'email',
         templateOptions: {
           type: 'email',
-          placeholder: 'Ingrese su correo electrónico',
-          required: (function(){ return vm.email ? false : true})()
+          label: 'Correo electrónico',
+          placeholder: vm.emailPlaceholder,
+          required: vm.emailRequired,
+          disabled: !vm.emailRequired
         }
       },
       {
@@ -42,6 +45,7 @@
         templateOptions: {
           type: 'password',
           label: 'Contraseña',
+          placeholder: 'Ingrese su nueva contraseña. Mímino 8 caracteres',
           required: true
         }
       },
@@ -51,6 +55,7 @@
         templateOptions: {
           type: 'password',
           label: 'Confirmar contraseña',
+          placeholder: 'Confirmar contraseña',
           required: true
         }
       }
