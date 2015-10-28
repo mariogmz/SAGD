@@ -20,6 +20,7 @@ use Sagd\CalculadoraPrecios;
  * @property float $precio_8
  * @property float $precio_9
  * @property float $precio_10
+ * @property float $descuento
  * @property boolean $revisado
  * @property integer $producto_sucursal_id
  * @property-read \App\ProductoSucursal $productoSucursal
@@ -41,12 +42,12 @@ use Sagd\CalculadoraPrecios;
 class Precio extends LGGModel {
 
     use CalculadoraPrecios;
-    //
+
     protected $table = "precios";
     public $timestamps = false;
     protected $fillable = ['costo', 'precio_1', 'precio_2', 'precio_3',
         'precio_4', 'precio_5', 'precio_6', 'precio_7', 'precio_8', 'precio_9',
-        'precio_10', 'revisado'];
+        'precio_10', 'descuento','revisado'];
 
     public static $rules = [
         'costo'                => 'required|numeric|min:0.1',
@@ -61,6 +62,7 @@ class Precio extends LGGModel {
         'precio_9'             => 'required|numeric|less_than:precio_8',
         'precio_10'            => 'required|numeric|less_than:precio_9',
         'revisado'             => 'boolean',
+		'descuento'            => 'numeric|between:0.00,1.00',
         'producto_sucursal_id' => 'required|integer'
     ];
 
