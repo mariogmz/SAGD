@@ -30,7 +30,7 @@
       <th scope="row">{{log.id}}</th>
       <td>{{log.empleado.usuario}}</td>
       <td>{{log.created_at}}</td>
-      <td>{{log.exitoso}}</td>
+      <td>{{log.exitoso ? 'Exitoso' : 'Fallido'}}</td>
     </tr>
     </tbody>
   </table>
