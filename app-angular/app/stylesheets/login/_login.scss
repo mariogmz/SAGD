@@ -36,6 +36,11 @@
   .login-card-block {
     @extend .card-block;
 
+    a {
+
+      cursor: pointer;
+    }
+
     h4 {
       @extend .card-title;
     }
@@ -78,6 +83,8 @@
     }
     img {
       @extend .card-img-top;
+
+      padding-top: 15px;
       width: 70%;
     }
   }

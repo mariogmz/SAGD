@@ -4,8 +4,11 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
+use App\User;
+use App\Empleado;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 
@@ -13,9 +16,12 @@ class AuthenticateController extends Controller
 {
 
     protected $user;
+    protected $empleado;
 
-    public function __construct()
+    public function __construct(User $user, Empleado $empleado)
     {
+        $this->user = $user;
+        $this->empleado = $empleado;
         $this->middleware('jwt.auth', ['except' => ['authenticate']]);
     }
 
@@ -25,6 +31,7 @@ class AuthenticateController extends Controller
 
         try {
             if (! $token = JWTAuth::attempt($credentials)) {
+                $this->intentoDeLogin($request->only('email'), 0);
                 return response()->json(['error' => 'invalid_credentials'], 401);
             }
         } catch (JWTException $e) {
@@ -63,16 +70,38 @@ class AuthenticateController extends Controller
     private function getEmpleado()
     {
         if( get_class($this->user->morphable) === 'App\Empleado' ) {
-            return $this->user->morphable;
+            $user = $this->user;
+            return $this->user->morphable
+                ->with('sucursal', 'user')
+                ->whereHas('user', function($query) use ($user) {
+                    $query->where('email', $user->email);
+                })
+                ->first();
         }
     }
 
     private function setLastLoginToEmployee()
     {
-        $empleado = $this->getEmpleado();
-        $empleado->fecha_ultimo_ingreso = \Carbon\Carbon::now('America/Mexico_City');
-        if(! $empleado->save() ) {
+        $this->empleado = $this->getEmpleado();
+        $today = Carbon::now('America/Mexico_City');
+        if( $this->empleado->update(['fecha_ultimo_ingreso' => $today]) ) {
+            $this->intentoDeLogin($this->empleado->user->email, 1);
+        } else {
             return response()->json(['error' => 'Could not set last login time for employee'], 500);
+        }
+    }
+
+    /**
+     * Establece un intento de login para el empleado (si fue empleado).
+     *
+     * @param string email
+     * @param bool|int $exitoso
+     * @return void
+     */
+    private function intentoDeLogin($email, $exitoso)
+    {
+        if( $this->empleado = $this->empleado->whereEmail($email) ){
+            $this->empleado->logsAccesos()->create(['exitoso' => $exitoso]);
         }
     }
 }

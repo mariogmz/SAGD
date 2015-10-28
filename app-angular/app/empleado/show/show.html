@@ -1,0 +1,16 @@
+<div class="card">
+  <div class="header">
+    <h4>Empleado ({{vm.empleado.nombre}})</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend><strong>{{vm.empleado.usuario}}</strong></legend>
+        <formly-form model="vm.empleado" fields="vm.fields"></formly-form>
+        <show-dato-contacto model="vm.empleado.dato_contacto"></show-dato-contacto>
+      </fieldset>
+    </form>
+    <a ng-click="vm.back()" class="button primary">Regresar</a>
+  </div>
+</div>
+

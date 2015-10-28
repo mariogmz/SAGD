@@ -32,7 +32,22 @@
         </button>
       </form>
       <hr>
-      <a ui-sref="forgot">¿Olvidaste tu contraseña?</a>
+      <a ng-click="vm.forgotPassword = !vm.forgotPassword">
+        ¿Olvidaste tu contraseña?
+      </a>
+      <section class="login-forgot-password" ng-class="{showing: vm.forgotPassword}">
+        <form class="item-form">
+          <fieldset>
+            <div class="with-icon">
+              <span><i class="email"></i></span>
+              <input type="email" placeholder="Correo electrónico" ng-model="vm.passwordResetEmail">
+            </div>
+            <div class="pull-right">
+              <button type="submit" class="button primary" ng-click="vm.sendPasswordResetLink()">Reestablecer contraseña</button>
+            </div>
+          </fieldset>
+        </form>
+      </section>
     </div>
   </div>
 </div>

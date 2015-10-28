@@ -45,14 +45,16 @@
         ng-mouseenter="showLogoutActions=true"
         ng-mouseleave="showLogoutActions=false">
       <a class="empleado-style nav" href="#" aria-haspopup="true" aria-expanded="false">
-        {{vm.empleado.usuario}}
+        <span class="usuario">{{vm.empleado.usuario}}</span>
+        <span class="sucursal">{{vm.empleado.sucursal.clave}}</span>
       </a>
 
       <div  class="empleado-menu menu"
             ng-class="{show: showLogoutActions}">
         <ul class="empleado-list list-item">
+          <cambiar-sucursal class="dropdown"></cambiar-sucursal>
           <li class="empleado-item">
-            <a class="empleado-style"><span>Cambiar contraseña</span></a>
+            <a class="empleado-style" ui-sref="passwordsEmail"><span>Cambiar contraseña</span></a>
           </li>
           <li class="empleado-item danger">
             <a class="empleado-style" href="#" ng-click="vm.logout()"><span>Salir</span></a>

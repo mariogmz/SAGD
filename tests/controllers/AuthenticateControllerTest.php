@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\AuthenticateController
  */
@@ -48,24 +51,24 @@ class AuthenticateControllerTest extends TestCase
     public function test_POST_with_valid_credentials()
     {
         $response = $this->call('POST', $this->endpoint, [
-            'email' => 'sistemas@zegucom.com.mx', 'password' => 'test123']);
+            'email' => 'sistemas@zegucom.com.mx', 'password' => 'admin2015']);
 
         $this->assertEquals(200, $response->status());
     }
 
     /**
      * @covers ::authenticate
+     * @group last-login
      */
     public function test_user_gets_last_login_timestamp_saved()
     {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => 'sistemas@zegucom.com.mx', 'password' => 'test123']);
+        $expectedDate = \Carbon\Carbon::now('America/Mexico_City')->toDateTimeString();
+        $this->post($this->endpoint, ['email' => 'sistemas@zegucom.com.mx', 'password' => 'admin2015'])
+            ->assertResponseStatus(200);
         $user = App\User::where('email', 'sistemas@zegucom.com.mx')->first();
         $empleado = $user->morphable;
-        $expected = substr(\Carbon\Carbon::now('America/Mexico_City')->toDateTimeString(), 0, 10);
-        $regexp = sprintf("/%s.*/", $expected);
         $this->assertNotNull($empleado->fecha_ultimo_ingreso);
-        $this->assertRegExp($regexp, $empleado->fecha_ultimo_ingreso);
+        $this->assertEquals($expectedDate, $empleado->fecha_ultimo_ingreso);
     }
 
     /**
@@ -73,7 +76,7 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_successful_logout()
     {
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
+        $token = $this->authenticate('sistemas@zegucom.com.mx', 'admin2015');
         $response = $this->call('GET', $this->logoutEndpoint, [
             'token' => $token
         ]);
@@ -85,18 +88,52 @@ class AuthenticateControllerTest extends TestCase
 
     /**
      * @covers ::getAuthenticatedEmpleado
+     * @covers ::getUser
+     * @covers ::getEmpleado
+     * @group get-empleado
      */
     public function test_GET_to_empleado_returns_a_valid_empleado()
     {
-        // Loguearse
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
-        // Llamar a endpoint de esta prueba
-        $response = $this->call('GET', $this->endpoint . '/empleado',[
-            'token' => $token
-        ]);
-        $empleado_json = $response->content();
-        $empleado_db = json_encode(['empleado' => App\Empleado::where('usuario','admin')->first()]);
-        $this->assertEquals($empleado_db, $empleado_json);
+        $this->withoutMiddleware();
+
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => App\User::where('email', 'sistemas@zegucom.com.mx')->first()
+            ])
+            ->withAnyArgs();
+
+        $endpoint = $this->endpoint . '/empleado';
+
+        $this->get($endpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'usuario' => 'admin',
+                'email' => 'sistemas@zegucom.com.mx'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::getAuthenticatedEmpleado
+     * @covers ::getUser
+     * @covers ::getEmpleado
+     * @group get-empleado
+     */
+    public function test_GET_empleado_returns_with_sucursal()
+    {
+        $this->withoutMiddleware();
+
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => App\User::first()
+        ])
+        ->withAnyArgs();
+
+        $endpoint = $this->endpoint . '/empleado';
+
+        $this->get($endpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'usuario' => 'admin',
+                'clave' => 'DICOTAGS'
+            ])
+            ->assertResponseStatus(200);
     }
 
     private function authenticate($email, $password)

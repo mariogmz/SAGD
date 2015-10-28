@@ -1,0 +1,52 @@
+.sucursales-list {
+
+  @extend .dropdown-toggle;
+
+  cursor: pointer;
+  font-style: italic;
+  text-align: right !important;
+}
+
+.sucursales-dropdown-menu {
+
+  @extend .dropdown-menu;
+
+  border: none;
+  cursor: pointer;
+  position: relative;
+  width: 100%;
+}
+
+.sucursal-item {
+
+  @extend .dropdown-item;
+
+  background-color: $white;
+  text-align: right;
+  transition: background-color 400ms ease-in-out;
+
+  &:hover {
+    background-color: $alto;
+    color: $white;
+  }
+
+  &.inactive {
+
+    @extend .disabled;
+
+    a > span {
+
+      font-weight: 700;
+    }
+  }
+
+  a {
+    @include normalize_link($gray-suit);
+
+    span {
+      @include word-wrap(break-word, pre-wrap);
+
+      font-style: italic;
+    }
+  }
+}
