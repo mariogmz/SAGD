@@ -8,9 +8,9 @@
     .module('sagdApp.session')
     .controller('SessionController', SessionController);
 
-  SessionController.$inject = ['session', 'api'];
+  SessionController.$inject = ['session', 'api', 'pnotify'];
 
-  function SessionController(session, api){
+  function SessionController(session, api, pnotify){
     var vm = this;
 
     vm.forgotPassword = false;
@@ -37,7 +37,12 @@
     }
 
     function sendLink() {
-      postEmailToEndpoint();
+      postEmailToEndpoint().then(function(){
+        pnotify.alert('Correo enviado', 'En un momento recibirá instrucciones para reestablecer su contraseña', 'success');
+      })
+      .catch(function(){
+        pnotify.alert('Correo no enviado', 'Hubo un error, intente más tarde', 'error');
+      });
     }
 
     function postEmailToEndpoint() {

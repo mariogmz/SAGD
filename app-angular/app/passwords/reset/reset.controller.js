@@ -15,9 +15,12 @@
     var vm = this;
     vm.token = $stateParams.token;
     vm.empleado = session.obtenerEmpleado();
+    vm.email = vm.empleado ? vm.empleado.user.email : null;
+    vm.emailFieldType = vm.email ? 'hidden' : 'input';
+
     vm.model = {
       token: vm.token,
-      email: vm.empleado.user.email
+      email: vm.email
     };
     vm.fields = [
       {
@@ -25,8 +28,13 @@
         key: 'token'
       },
       {
-        type: 'hidden',
-        key: 'email'
+        type: vm.emailFieldType,
+        key: 'email',
+        templateOptions: {
+          type: 'email',
+          placeholder: 'Ingrese su correo electrónico',
+          required: (function(){ return vm.email ? false : true})()
+        }
       },
       {
         type: 'input',
