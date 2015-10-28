@@ -64,9 +64,9 @@
           vm.subfamilia = vm.producto.subfamilia;
           vm.producto.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.producto.precios.forEach(function (element){
-            vm.producto.revisado = vm.producto.revisado && element.revisado;
-            element.descuento *= 100;
+          vm.producto.precios.forEach(function (precio){
+            vm.producto.revisado = vm.producto.revisado && precio.revisado;
+            precio.descuento *= 100;
           });
           console.log('Producto #' + vm.id + ' obtenido.');
           $state.go('productoEdit.details');
@@ -138,8 +138,8 @@
     }
 
     function guardarProducto(){
-      vm.producto.precios.forEach(function (element){
-        element.descuento /= 100;
+      vm.producto.precios.forEach(function (precio){
+        precio.descuento /= 100;
       });
       return api.put('/producto/', vm.id, vm.producto)
         .then(function (response){

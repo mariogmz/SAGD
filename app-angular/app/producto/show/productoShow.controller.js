@@ -51,8 +51,8 @@
           vm.producto = response.data.producto;
           vm.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.producto.precios.forEach(function (element){
-            vm.producto.revisado = vm.producto.revisado && element.revisado;
+          vm.producto.precios.forEach(function (precio){
+            vm.producto.revisado = vm.producto.revisado && precio.revisado;
           });
           return response.data;
         })
