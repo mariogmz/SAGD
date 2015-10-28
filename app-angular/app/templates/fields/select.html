@@ -4,9 +4,9 @@
           formly-dynamic-name="id"
           formly-custom-validation="options.validators"
           aria-describedby="{{id}}_description"
-          ng-required="options.templateOptions.required"
+          ng-required="to.required"
           ng-model="model[options.key]"
           ng-options='{{to.ngOptions? to.ngOptions : "option.value as option.name group by option.group for option in to.options | orderBy:\"name\" "}}'>
-    <option value="">{{options.templateOptions.placeholder || 'Seleccione una opción'}}</option>
+    <option ng-hide="to.required" value="">{{to.placeholder || 'Seleccione una opción'}}</option>
   </select>
 </div>
