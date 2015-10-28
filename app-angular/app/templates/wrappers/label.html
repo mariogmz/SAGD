@@ -1,13 +1,13 @@
-<fieldset class="inline-field" ng-class="{'with-error' : options.validation.errorExistsAndShouldBeVisible}">
+<fieldset class="inline-field" ng-class="{'with-error' : showError, 'with-success' : !showError && fc.$touched}">
   <label for="{{id}}">
     {{options.templateOptions.label}}
     {{options.templateOptions.required ? '*' : ''}}
   </label>
   <formly-transclude></formly-transclude>
-  <div class="formly-validation-messages" ng-messages="options.formControl.$error" ng-if="options.validation.errorExistsAndShouldBeVisible">
+  <div class="formly-validation-messages" ng-messages="fc.$error" ng-if="showError">
       <div ng-messages-include="app/templates/fields/messages.html"></div>
       <div ng-message="name" ng-repeat="(name, message) in options.validation.messages">
-        {{message(options.formControl.$viewValue, options.formControl.$modelValue, this)}}
+        {{message(fc.$viewValue, fc.$modelValue, this)}}
       </div>
   </div>
 </fieldset>
