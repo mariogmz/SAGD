@@ -23,9 +23,7 @@
 
     function activate() {
       obtenerReferencias()
-          .then(obtenerEstatus)
-          .then(obtenerEpleados)
-          .then(obtenerRoles)
+          .then(obtenerEmpleados)
           .then(obtenerSucursales);
     }
 
@@ -41,20 +39,7 @@
           });
     }
 
-    function obtenerEstatus() {
-      return api.get('/cliente-estatus')
-          .then(function (response) {
-            vm.estatus = response.data;
-            console.log('Estatus obtenidos correctamente');
-          })
-          .catch(function (response) {
-            vm.error = response.data;
-            pnotify.alert('Hubo un problema al obtener los Estatus', vm.error.error, 'error');
-            return response;
-          });
-    }
-
-    function obtenerEpleados() {
+    function obtenerEmpleados() {
       return api.get('/empleado')
           .then(function (response) {
             vm.empleados = response.data;
@@ -63,19 +48,6 @@
           .catch(function (response) {
             vm.error = response.data;
             pnotify.alert('Hubo un problema al obtener los Empleados', vm.error.error, 'error');
-            return response;
-          });
-    }
-
-    function obtenerRoles() {
-      return api.get('/rol')
-          .then(function (response) {
-            vm.roles = response.data;
-            return response;
-          })
-          .catch(function (response) {
-            vm.error = response.data;
-            pnotify.alert('Hubo un problema al obtener los Roles', vm.error.error, 'error');
             return response;
           });
     }
@@ -95,14 +67,13 @@
 
     function create(){
 
-      vm.form = {
-         submit: function(){
-            if(vm.form.$invalid){
-              pnotify.alert('Error', 'Error validacion', 'error');
-              return false;
-            }
-         }
-      };
+      if(vm.model.$invalid){
+        pnotify.alert('Error', 'Error validacion', 'error');
+        return false;
+      }
+
+      //vm.model.cliente_estatus_id = 1; // Cliente Nuevo
+      //vm.model.rol_id = 8;             // Ufinal
 
       return api.post('/cliente', vm.model)
           .then(function (response){

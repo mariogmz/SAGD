@@ -2,7 +2,7 @@
 
 namespace App;
 
-
+use DB;
 use Carbon\Carbon;
 
 
@@ -281,18 +281,19 @@ class Cliente extends LGGModel {
 
         $cliente = new Cliente($parameters);
 
-        try{
-            $cliente->save();
-        }catch (exception $e){
+        DB::beginTransaction();
+
+        if( $cliente->save() &&
+            $this->guardarTabuladores($cliente->id) &&
+            $this->guardarUsuario($cliente)
+        ){
+
+            DB::commit();
             return $cliente;
+        }else {
+            DB::rollback();
+            return false;
         }
-
-        // Guardar tabuladores de cliente por sucursal
-        if($cliente->id) {
-            $this->guardarTabuladores($cliente->id);
-        }
-
-        return $cliente;
 
     }
 
@@ -308,6 +309,20 @@ class Cliente extends LGGModel {
           }catch (exception $e){
             return false;
           }
+        }
+
+        return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function guardarUsuario($cliente) {
+
+        try{
+            User::create(array('email' => $cliente->email, 'password' => $cliente->password, 'morphable_id' => $cliente->id, 'morphable_type' => "App\Cliente"));
+        }catch (exception $e){
+            return false;
         }
 
         return true;

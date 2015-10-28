@@ -38,7 +38,6 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         $params = $request->all();
-        $this->cliente->fill($params);
 
         $result = $this->cliente->saveWithData($params);
         if( $result )
@@ -66,7 +65,7 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $this->cliente = $this->cliente->with('estatus', 'sucursal', 'referencia', 'empleado', 'vendedor', 'razonesSociales', 'tabuladores.sucursal')->find($id);
+        $this->cliente = $this->cliente->with('estatus', 'sucursal', 'referencia', 'empleado', 'vendedor', 'autorizaciones', 'razonesSociales', 'tabuladores.sucursal')->find($id);
 
         if( $this->cliente )
         {
@@ -92,6 +91,7 @@ class ClienteController extends Controller
     public function update(Request $request, $id)
     {
         $parameters = $request->all();
+
         $this->cliente = $this->cliente->find($id);
         if( empty($this->cliente) )
         {

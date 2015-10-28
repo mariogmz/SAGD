@@ -98,7 +98,9 @@
           <div class="col-lg-4">
             <fieldset class="form-group">
               <label for="fecha_nacimiento">Fecha de nacimiento:</label>
-              <input type="text" id="fecha_nacimiento" ng-model="vm.model.fecha_nacimiento" class="form-control" placeholder="">
+              <input type="text" id="fecha_nacimiento"
+                     ng-model="vm.model.fecha_nacimiento"
+                     class="form-control" placeholder="">
             </fieldset>
           </div>
           <div class="col-lg-4">
@@ -128,41 +130,6 @@
         </div>
         <div class="row block">
           <div class="row block">
-            <div class="col-lg-6">
-              <fieldset class="form-group">
-                <label for="cliente_estatus_id">Estatus:</label>
-                <select id="cliente_estatus_id" class="form-control" required
-                        ng-model="vm.model.cliente_estatus_id"
-                        ng-options="estatus.id as estatus.nombre for estatus in vm.estatus | orderBy:'nombre'" >
-                  <option value="">Seleccione un estatus</option>
-                </select>
-
-                <div ng-show="form.$submitted || form.cliente_estatus_id.$touched">
-                  <span ng-show="form.cliente_estatus_id.$error.required">Elige el estatus.</span>
-                </div>
-
-              </fieldset>
-            </div>
-            <div class="col-lg-6">
-              <fieldset class="form-group">
-                <label for="rol_id">Rol:</label>
-                <select id="rol_id" class="form-control" required
-                        ng-model="vm.model.rol_id"
-                        ng-options="roles.id as roles.nombre for roles in vm.roles | orderBy:'nombre'" >
-                  <option value="">Seleccione un rol</option>
-                </select>
-              </fieldset>
-            </div>
-            <div class="col-lg-6">
-              <fieldset class="form-group">
-                <label for="empleado_id">Vendedor:</label>
-                <select id="empleado_id" class="form-control"
-                        ng-model="vm.model.empleado_id"
-                        ng-options="empleados.id as empleados.nombre for empleados in vm.empleados | orderBy:'id'">
-                  <option value="">Seleccione un vendedor</option>
-                </select>
-              </fieldset>
-            </div>
             <div class="col-lg-6">
               <fieldset class="form-group">
                 <label for="cliente_referencia_id">Referencia:</label>
