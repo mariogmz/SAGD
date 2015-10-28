@@ -2,6 +2,7 @@
 
   @extend .dropdown-toggle;
 
+  cursor: pointer;
   font-style: italic;
   text-align: right !important;
 }
@@ -11,6 +12,7 @@
   @extend .dropdown-menu;
 
   border: none;
+  cursor: pointer;
   position: relative;
   width: 100%;
 }
