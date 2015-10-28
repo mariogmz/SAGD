@@ -3,13 +3,13 @@
     <h4>Editar sucursal - {{vm.sucursal.nombre}}</h4>
   </div>
   <div class="block">
-    <form class="item-form" ng-submit="vm.save()">
+    <form class="item-form" ng-submit="vm.save()" name="sucursalForm">
       <fieldset>
         <legend>Sucursal #<strong>{{vm.sucursal.id}}</strong></legend>
-        <formly-form model="vm.sucursal" fields="vm.fields" form="vm.sucursalForm">
-          <edit-domicilio model="vm.sucursal.domicilio" form="vm.sucursalForm"></edit-domicilio>
+        <formly-form model="vm.sucursal" fields="vm.fields" form="sucursalForm">
+          <edit-domicilio model="vm.sucursal.domicilio" form="sucursalForm"></edit-domicilio>
           <a ng-click="vm.back()" class="button secondary">Regresar</a>
-          <input type="submit" class="button primary" ng-disabled="vm.sucursalForm.$pristine" value="Guardar cambios">
+          <input type="submit" class="button primary" ng-disabled="sucursalForm.$invalid" value="Guardar cambios">
         </formly-form>
       </fieldset>
     </form>
