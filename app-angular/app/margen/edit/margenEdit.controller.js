@@ -27,31 +27,42 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          required: true
+          placeholder: 'Máximo 45 caracteres',
+          required: true,
+          maxlength: 45
         }
       }, {
         type: 'input',
         key: 'valor',
         templateOptions: {
-          type: 'text',
-          label: 'Valor:',
-          required: true
+          type: 'number',
+          label: 'Valor ( % ):',
+          placeholder: 'Porcentaje [0 - 100]',
+          required: true,
+          min: 0,
+          max: 100
         }
       }, {
         type: 'input',
         key: 'valor_webservice_p1',
         templateOptions: {
-          type: 'text',
-          label: 'Webservice P1:',
-          required: true
+          type: 'number',
+          label: 'Webservice P1 ( % ):',
+          placeholder: 'Porcentaje [0 - 100]',
+          required: true,
+          min: 0,
+          max: 100
         }
       }, {
         type: 'input',
         key: 'valor_webservice_p8',
         templateOptions: {
-          type: 'text',
-          label: 'Webservice P8:',
-          required: true
+          type: 'number',
+          label: 'Webservice P8 ( % ):',
+          placeholder: 'Porcentaje [0 - 100]',
+          required: true,
+          min: 0,
+          max: 100
         }
       }
     ];
@@ -67,7 +78,12 @@
     function obtenerMargen(){
       return api.get('/margen/', vm.id)
         .then(function (response){
-          vm.margen = response.data.margen;
+          vm.margen =  response.data.margen;
+          angular.merge(vm.margen, {
+            valor: vm.margen.valor * 100,
+            valor_webservice_p1: vm.margen.valor_webservice_p1 * 100,
+            valor_webservice_p8: vm.margen.valor_webservice_p8 * 100
+          });
           return response.data;
         })
         .catch(function (response){
@@ -77,10 +93,16 @@
     }
 
     function guardarMargen(){
+      angular.merge(vm.margen, {
+        valor: vm.margen.valor / 100,
+        valor_webservice_p1: vm.margen.valor_webservice_p1 / 100,
+        valor_webservice_p8: vm.margen.valor_webservice_p8 / 100
+      });
       return api.put('/margen/', vm.id, vm.margen)
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
+          $state.go('margenIndex');
           return response;
         })
         .catch(function (response){
