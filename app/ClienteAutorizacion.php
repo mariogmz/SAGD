@@ -25,15 +25,14 @@ namespace App;
  */
 class ClienteAutorizacion extends LGGModel {
 
-    //
     protected $table = "clientes_autorizaciones";
-    public $timestamps = false;
-    protected $fillable = ['nombre_autorizado', 'cliente_id', 'cliente_autorizado_id'];
+    public $timestamps = true;
+    protected $fillable = ['cliente_id', 'nombre_autorizado', 'cliente_autorizado_id'];
 
     public static $rules = [
-        'cliente_autorizado_id' => '',
-        'nombre_autorizado'     => 'max:200',
-        'cliente_id'            => 'required|integer'
+        'cliente_id'            => 'required|integer',
+        'nombre_autorizado'     => 'string|max:200',
+        'cliente_autorizado_id' => 'integer'
     ];
 
     public $updateRules = [];

@@ -13,7 +13,6 @@ class CreateClientesAutorizacionesTable extends Migration {
         //
         Schema::create('clientes_autorizaciones', function ($table) {
             $table->increments('id');
-            $table->integer('clientes_autorizado_id')->nullable();
             $table->string('nombre_autorizado', 200)->nullable();
             $table->timestamps();
         });

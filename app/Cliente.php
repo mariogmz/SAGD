@@ -257,24 +257,30 @@ class Cliente extends LGGModel {
     */
     public function saveWithData($parameters) {
 
-        $cliente = new Cliente($parameters);
+        $this->fill($parameters);
         $email = $parameters['email'];
+        $password = $parameters['password'];
+
 
         // Se inicia transacción al crear cliente, tabuladores y usuario
         DB::beginTransaction();
 
-        if( $cliente->save() &&
-            $this->guardarTabuladores($cliente->id) &&
-            $this->guardarUsuario($cliente, $email)
+        if( $this->save() &&
+            $this->guardarTabuladores($this->id) &&
+            $this->guardarUsuario($email, $password)
         ){
 
             // Agregar autorizado(s)
             if(!empty($parameters['autorizado'])){
-                $this->autorizados($cliente);
+
+                if(!$this->autoriza($parameters['autorizado'])) {
+                    DB::rollback();
+                    return false;
+                }
             }
 
             DB::commit();
-            return $cliente;
+            return true;
         }else {
             DB::rollback();
             return false;
@@ -308,19 +314,14 @@ class Cliente extends LGGModel {
     /**
      * @return bool
      */
-    public function guardarUsuario($cliente, $email) {
+    public function guardarUsuario($email, $password) {
 
-        try{
-            User::create(array( 'email' => $email,
-                                'password' => \Hash::make($cliente->password),
-                                'morphable_id' => $cliente->id,
-                                'morphable_type' => 'App\Cliente'));
+        $user = new User(['email' => $email,
+                                'password' => \Hash::make($password),
+                                'morphable_id' => $this->id,
+                                'morphable_type' => 'App\Cliente']);
 
-        }catch (Exception $e){
-            return false;
-        }
-
-        return true;
+        return $user->save();
     }
 
     /**
@@ -328,15 +329,20 @@ class Cliente extends LGGModel {
      * @param App\Cliente o String
      * @return bool
      */
-    public function autorizados($cliente) {
-        try{
-            ClienteAutorizacion::create(array('cliente_id' => $cliente->id,
-                                              'nombre_autorizado' => $cliente->autorizado
-                                        ));
-        }catch(Exception $e){
+    public function autoriza($cliente) {
+
+        $ca = new ClienteAutorizacion;
+        $ca->cliente()->associate($this);
+
+        if (is_string($cliente)) {
+            $ca->nombre_autorizado = $cliente;
+        } else {
+            $ca->cliente_autorizado_id = $cliente->id;
+        }
+        if ($ca->save()) {
+            return true;
+        } else {
             return false;
         }
-
-        return true;
     }
 }

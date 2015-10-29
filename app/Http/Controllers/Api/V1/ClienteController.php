@@ -39,13 +39,12 @@ class ClienteController extends Controller
     {
         $params = $request->all();
 
-        $result = $this->cliente->saveWithData($params);
-        if( $result )
+        if($this->cliente->saveWithData($params))
         {
             return response()->json(
                 [
                     'message' => 'Cliente creado exitosamente',
-                    'cliente' => $result
+                    'cliente' => $this->cliente->self()
                 ],
                 201,
                 ['Location' => route('api.v1.cliente.show', $this->cliente->getId())]);
