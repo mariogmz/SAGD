@@ -105,6 +105,10 @@
         @extend .fa-envelope-o;
       }
 
+      &.user {
+        @extend .fa-user;
+      }
+
       &.key {
         @extend .fa-key;
       }
