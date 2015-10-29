@@ -152,4 +152,34 @@ class AuthenticateControllerTest extends TestCase
             ])
             ->assertResponseStatus(200);
     }
+
+    /**
+     * @covers ::authenticate
+     * @covers ::intentoDeLogin
+     * @covers ::setLastLoginToEmployee
+     * @covers ::getEmpleado
+     * @covers ::attemptLogin
+     * @covers ::attemptLoginWithUsuario
+     * @group username-login
+     */
+    public function testIniciarSesionConUsuarioYPassword()
+    {
+        $this->post($this->endpoint, ['email' => 'ogarcia', 'password' => 'ogarcia2015'])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::authenticate
+     * @covers ::intentoDeLogin
+     * @covers ::setLastLoginToEmployee
+     * @covers ::getEmpleado
+     * @covers ::attemptLogin
+     * @covers ::attemptLoginWithUsuario
+     * @group username-login
+     */
+    public function testIniciarSesionConUsuarioCorrectoYPasswordIncorrecto()
+    {
+        $this->post($this->endpoint, ['email' => 'ogarcia', 'password' => 'ogarcia'])
+            ->assertResponseStatus(401);
+    }
 }
