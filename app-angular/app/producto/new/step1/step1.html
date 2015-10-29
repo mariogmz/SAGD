@@ -7,20 +7,42 @@
   </div>
   <div class="block">
     <div class="row icecat">
-      <fieldset>
+
+      <!-- Número de parte -->
+      <fieldset ng-class="{
+        'with-error' : productoNewForm.numero_parte.$touched && productoNewForm.numero_parte.$invalid,
+        'with-success' : productoNewForm.numero_parte.$touched && productoNewForm.numero_parte.$valid
+      }">
         <label for="numero_parte">Número de parte:</label>
-        <input type="text" id="numero_parte" ng-model="parentVm.producto.numero_parte"
-               ng-blur="parentVm.updateSubclave()">
+        <input type="text" id="numero_parte" name="numero_parte" ng-model="parentVm.producto.numero_parte"
+               ng-blur="parentVm.updateSubclave()"
+               maxlength="30" ng-pattern=/^([\w\-_#\.\(\)\/\+]+\s?)*$/ required>
+        <!-- Validation messages -->
+        <div ng-messages="productoNewForm.numero_parte.$error" ng-show="productoNewForm.numero_parte.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
       </fieldset>
-      <fieldset>
+
+      <!-- Marca -->
+      <fieldset ng-class="{
+              'with-error' : productoNewForm.marca_id.$touched && productoNewForm.marca_id.$invalid,
+              'with-success' : productoNewForm.marca_id.$touched && productoNewForm.marca_id.$valid
+      }">
         <label for="marca_id">Marca:</label>
-        <select id="marca_id"
+        <select id="marca_id" name="marca_id"
                 ng-model="parentVm.marca"
                 ng-options="marca.nombre for marca in parentVm.marcas | orderBy:'nombre'"
-                ng-change="parentVm.updateClave()">
+                ng-change="parentVm.updateClave()"
+                required>
           <option value="">Seleccione una marca</option>
         </select>
+        <!-- Validation messages -->
+        <div ng-messages="productoNewForm.marca_id.$error" ng-show="productoNewForm.marca_id.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
       </fieldset>
+
+      <!-- Icecat action button -->
       <span>
          <button disabled><img width="90px" src="/public/img/icecat_logo.svg"></button>
       </span>
@@ -39,32 +61,60 @@
     <div class="row">
       <!-- UPC -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.upc.$touched && productoNewForm.upc.$invalid,
+                'with-success' : productoNewForm.upc.$touched && productoNewForm.upc.$valid
+        }">
           <label for="upc">UPC:</label>
-          <input type="text" id="upc" ng-model="parentVm.producto.upc">
+          <input type="text" id="upc" name="upc" ng-model="parentVm.producto.upc"
+                 required
+                 maxlength="20">
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.upc.$error" ng-show="productoNewForm.upc.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- Subfamilia -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.subfamilia_id.$touched && productoNewForm.subfamilia_id.$invalid,
+                'with-success' : productoNewForm.subfamilia_id.$touched && productoNewForm.subfamilia_id.$valid
+        }">
           <label for="subfamilia_id">Subfamilia:</label>
-          <select id="subfamilia_id"
+          <select id="subfamilia_id" name="subfamilia_id"
                   ng-model="parentVm.subfamilia"
                   ng-options="subfamilia.nombre for subfamilia in parentVm.subfamilias | orderBy:'nombre'"
-                  ng-change="parentVm.updateClave()">
+                  ng-change="parentVm.updateClave()"
+                  required>
             <option value="">Seleccione una subfamilia</option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.subfamilia_id.$error" ng-show="productoNewForm.subfamilia_id.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
 
       <!-- Subclave -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.subclave.$touched && productoNewForm.subclave.$invalid,
+                'with-success' : productoNewForm.subclave.$touched && productoNewForm.subclave.$valid
+        }">
           <label for="subclave">Subclave:</label>
-          <input type="text" id="subclave" ng-model="parentVm.producto.subclave"
-                 ng-blur="parentVm.updateSubclave()">
+          <input type="text" id="subclave" name="subclave" ng-model="parentVm.producto.subclave"
+                 ng-blur="parentVm.updateSubclave()"
+                 maxlength="45"
+                 required>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.subclave.$error" ng-show="productoNewForm.subclave.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- Clave -->
       <div class="col-sm">
         <fieldset>
@@ -72,20 +122,32 @@
           <input type="text" id="clave" disabled ng-model="parentVm.producto.clave">
         </fieldset>
       </div>
+
     </div>
     <hr>
-    <div class="row">
 
+    <div class="row">
       <!-- Características -->
+
+      <!-- Unidad de medida -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.unidad_id.$touched && productoNewForm.unidad_id.$invalid,
+                'with-success' : productoNewForm.unidad_id.$touched && productoNewForm.unidad_id.$valid
+              }">
           <label for="unidad_id">Unidad de medida:</label>
-          <select id="unidad_id"
+          <select id="unidad_id" name="unidad_id"
                   ng-model="parentVm.producto.unidad_id"
                   ng-options="unidad.id as unidad.nombre for unidad in parentVm.unidades">
             <option value="">Seleccione una unidad de medida</option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.unidad_id.$error" ng-show="productoNewForm.unidad_id.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
+
+        <!-- En remate -->
         <fieldset class="checkbox">
           <label>
             <input type="checkbox" ng-model="parentVm.producto.remate">
@@ -95,10 +157,14 @@
         </fieldset>
       </div>
 
+      <!-- Tipo de garantía -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.tipo_garantia_id.$touched && productoNewForm.tipo_garantia_id.$invalid,
+                'with-success' : productoNewForm.tipo_garantia_id.$touched && productoNewForm.tipo_garantia_id.$valid
+        }">
           <label for="tipo_garantia_id">Tipo de garantía:</label>
-          <select id="tipo_garantia_id"
+          <select id="tipo_garantia_id" name="tipo_garantia_id"
                   ng-model="parentVm.producto.tipo_garantia_id"
                   ng-options="tipo.id as tipo.descripcion for tipo in parentVm.tiposGarantia">
             <option value="">Seleccione un tipo de garantía</option>
@@ -115,13 +181,31 @@
 
       <!-- Descripciones -->
       <div class="col-lg">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$invalid,
+                'with-success' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$invalid
+        }">
           <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion" ng-model="parentVm.producto.descripcion"></textarea>
+          <textarea id="descripcion" name="descripcion" maxlength="300"
+                    ng-model="parentVm.producto.descripcion"></textarea>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.descripcion.$error" ng-show="productoNewForm.descripcion.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
-        <fieldset>
+
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$invalid,
+                'with-success' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$invalid
+        }">
           <label for="descripcion_corta">Descripción corta:</label>
-          <input type="text" id="descripcion_corta" ng-model="parentVm.producto.descripcion_corta">
+          <input type="text" id="descripcion_corta" name="descripcion_corta" maxlength="50"
+                 ng-model="parentVm.producto.descripcion_corta">
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.descripcion_corta.$error"
+               ng-show="productoNewForm.descripcion_corta.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
     </div>
@@ -136,41 +220,76 @@
   </div>
   <div class="block">
     <div class="row">
+
       <!-- Peso -->
-      <fieldset class="col-sm">
+      <fieldset class="col-sm" ng-class="{
+              'with-error' : productoNewForm.peso.$touched && productoNewForm.peso.$invalid,
+              'with-success' : productoNewForm.peso.$touched && productoNewForm.peso.$invalid
+      }">
         <label for="peso">Peso:</label>
 
         <div class="with-icon">
           <span>kg</span>
-          <input type="text" id="peso" ng-model="parentVm.dimension.peso">
+          <input type="number" id="peso" name="peso" ng-model="parentVm.dimension.peso"
+                 required step="0.1" min="0.1" numeric>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoNewForm.peso.$error" ng-show="productoNewForm.peso.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
         </div>
       </fieldset>
+
       <!-- Longitúd -->
-      <fieldset class="col-sm">
+      <fieldset class="col-sm" ng-class="{
+              'with-error' : productoNewForm.largo.$touched && productoNewForm.largo.$invalid,
+              'with-success' : productoNewForm.largo.$touched && productoNewForm.largo.$invalid
+      }">
         <label for="largo">Largo:</label>
 
         <div class="with-icon">
           <span>cm</span>
-          <input type="text" id="largo" ng-model="parentVm.dimension.largo">
+          <input type="number" id="largo" name="largo" ng-model="parentVm.dimension.largo"
+                 required step="0.1" min="0.1" numeric>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoNewForm.largo.$error" ng-show="productoNewForm.largo.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
         </div>
       </fieldset>
 
       <!-- Ancho -->
-      <fieldset class="col-sm">
+      <fieldset class="col-sm" ng-class="{
+              'with-error' : productoNewForm.ancho.$touched && productoNewForm.ancho.$invalid,
+              'with-success' : productoNewForm.ancho.$touched && productoNewForm.ancho.$invalid
+      }">
         <label for="ancho">Ancho:</label>
 
         <div class="with-icon">
           <span>cm</span>
-          <input type="text" id="ancho" ng-model="parentVm.dimension.ancho">
+          <input type="number" id="ancho" name="ancho" ng-model="parentVm.dimension.ancho"
+                 required step="0.1" min="0.1" numeric>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoNewForm.ancho.$error" ng-show="productoNewForm.ancho.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
         </div>
       </fieldset>
+
       <!-- Altura -->
-      <fieldset class="col-sm">
+      <fieldset class="col-sm" ng-class="{
+              'with-error' : productoNewForm.alto.$touched && productoNewForm.alto.$invalid,
+              'with-success' : productoNewForm.alto.$touched && productoNewForm.alto.$invalid
+      }">
         <label for="alto">Alto:</label>
 
         <div class="with-icon">
           <span>cm</span>
-          <input type="text" id="alto" ng-model="parentVm.dimension.alto">
+          <input type="number" id="alto" name="alto" ng-model="parentVm.dimension.alto"
+                 required step="0.1" min="0.1" numeric>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoNewForm.alto.$error" ng-show="productoNewForm.alto.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
         </div>
       </fieldset>
     </div>

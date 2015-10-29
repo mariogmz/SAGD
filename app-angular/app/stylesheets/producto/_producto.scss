@@ -4,6 +4,10 @@
     @extend .form-group;
   }
 
+  label{
+    @extend .form-control-label;
+  }
+
   button,
   input:not([type='submit']),
   textarea,
