@@ -54,7 +54,7 @@ class SucursalControllerTest extends TestCase
      * @covers ::index
      * @group bases
      */
-    public function testTest_GET_index_with_parameters()
+    public function test_GET_index_with_parameters()
     {
         $endpoint = $this->endpoint . '?base=true';
         $this->mock
@@ -79,14 +79,14 @@ class SucursalControllerTest extends TestCase
         $this->mock
             ->shouldReceive([
                 'fill' => Mockery::self(),
-                'save' => true,
+                'guardar' => true,
                 'self' => 'self',
                 'getId' => 1
             ])
             ->withAnyArgs();
         $this->app->instance('App\Sucursal', $this->mock);
 
-        $this->post($this->endpoint, ['clave' => 'DICOTECH', 'nombre' => 'Dicotech Aguascalientes'])
+        $this->post($this->endpoint, ['clave' => 'DICOTECH', 'nombre' => 'Dicotech Aguascalientes', 'base_id' => 1])
             ->seeJson([
                 'message' => 'Sucursal creada exitosamente',
                 'sucursal' => 'self'
@@ -100,11 +100,11 @@ class SucursalControllerTest extends TestCase
     public function test_POST_store_bad_data()
     {
         $this->mock
-            ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
+            ->shouldReceive(['fill' => Mockery::self(), 'guardar' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
         $this->app->instance('App\Sucursal', $this->mock);
 
-        $this->post($this->endpoint, ['clave' => 'DICOTECH', 'nombre' => 'Dicotech Aguascalientes'])
+        $this->post($this->endpoint, ['clave' => 'DICOTECH', 'nombre' => 'Dicotech Aguascalientes', 'base_id' => 1])
             ->seeJson([
                 'message' => 'Sucursal no creada',
                 'error' => 'Errors'
@@ -279,5 +279,23 @@ class SucursalControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
 
+    }
+
+    /**
+     * @covers ::index
+     * @group url-parameters
+     */
+    public function testIndexConParametros()
+    {
+        $endpoint = $this->endpoint . '?proveedor_clave=DICO';
+
+        $this->get($endpoint)
+            ->seeJson([
+                "id"=> 1, "clave"=> "DICOTAGS", "nombre"=> "Dicotech Aguascalientes",
+                "id"=> 2, "clave"=> "DICOLEON", "nombre"=> "Dicotech León",
+                "id"=> 3, "clave"=> "ZEGUCZAC", "nombre"=> "Zegucom Zacatecas",
+                "id"=> 4, "clave"=> "ZEGUCARB", "nombre"=> "Zegucom Arboledas",
+            ])
+            ->assertResponseStatus(200);
     }
 }

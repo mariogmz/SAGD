@@ -3,6 +3,9 @@
 namespace App;
 
 use App\Events\EmpleadoCreado;
+use App\DatoContacto;
+use Sagd\SafeTransactions;
+
 
 /**
  * App\Empleado
@@ -45,6 +48,8 @@ use App\Events\EmpleadoCreado;
  */
 class Empleado extends LGGModel {
 
+    use SafeTransactions;
+
     protected $table = 'empleados';
 
     public $timestamps = false;
@@ -55,7 +60,7 @@ class Empleado extends LGGModel {
         'usuario'               => 'required|max:20|unique:empleados',
         'activo'                => 'required|boolean',
         'puesto'                => 'string|max:45',
-        'fecha_cambio_password' => 'required|date',
+        'fecha_cambio_password' => 'date',
         'fecha_ultimo_ingreso'  => 'date',
         'sucursal_id'           => 'required|integer'
     ];
@@ -84,6 +89,60 @@ class Empleado extends LGGModel {
         Empleado::created(function ($empleado) {
             event(new EmpleadoCreado($empleado));
         });
+    }
+
+    /**
+     * La actualizacion del modelo puede ocurrir independientemente si se mandaron
+     * los parámetros de datos_contacto.
+     * @param array $parametros
+     * @return bool
+     */
+    public function actualizar($parametros)
+    {
+        $datoContactoParams = [];
+        try {
+            $datoContactoParams = $parametros['dato_contacto'];
+        } catch (\ErrorException $e) {
+            return false;
+        }
+        if ($this->update($parametros)) {
+            $datoContacto = $this->datoContacto;
+            return $datoContacto->update($datoContactoParams);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * @param array
+     * @return bool
+     */
+    public function guardar($datosContactoParams)
+    {
+        $lambda = function() use ($datosContactoParams) {
+            if ($this->save()) {
+                $datoContacto = new DatoContacto($datosContactoParams);
+                return $this->datoContacto()->save($datoContacto);
+            } else {
+                return false;
+            }
+        };
+        return $this->safe_transaction($lambda);
+    }
+
+    /**
+     * Esta funcion busca en App\User por el correo y regresa el morphable si es de tipo
+     * App\Empleado
+     * @param string $email
+     * @return App\Empleado
+     */
+    public static function whereEmail($email)
+    {
+        $user = User::whereEmail($email)->first();
+        if ($user && $user->morphable_type === Empleado::class) {
+            return $user->morphable;
+        }
+        return null;
     }
 
     /**

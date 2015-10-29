@@ -12,11 +12,10 @@
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('empleado', {
-        url: 'empleado',
+        abstract: true,
+        url: '',
         parent: 'layout',
-        templateUrl: 'app/empleado/empleado.html',
-        controller: 'EmpleadoController',
-        controllerAs: 'vm'
+        templateUrl: 'app/empleado/empleado.html'
       });
   }
 })();

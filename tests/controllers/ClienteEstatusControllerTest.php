@@ -5,7 +5,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\ClienteEstatusController
  */
-class ClienteReferenciaControllerTest extends TestCase
+class ClienteEstatusControllerTest extends TestCase
 {
     use WithoutMiddleware;
 

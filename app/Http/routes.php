@@ -21,6 +21,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::post('authenticate', 'AuthenticateController@authenticate');
         Route::get('authenticate/empleado', 'AuthenticateController@getAuthenticatedEmpleado');
         Route::get('logout', 'AuthenticateController@logout');
+        Route::post('password/email', 'PasswordController@postEmail');
+        Route::post('password/reset', 'PasswordController@postReset');
 
         Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
@@ -42,7 +44,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('rol', 'RolController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
-        Route::resource('empleado', 'EmpleadoController', ['only' => ['index']]);
+        Route::resource('empleado', 'EmpleadoController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('sucursal', 'SucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update', 'destroy']]);
         Route::resource('tabulador', 'TabuladorController', ['only' => ['index','store','show','update', 'destroy']]);

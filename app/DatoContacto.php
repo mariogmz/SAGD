@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Events\PostEmpleadoCreado;
+use App\Events\DatoContactoActualizado;
 
 /**
  * App\DatoContacto
@@ -63,6 +65,12 @@ class DatoContacto extends LGGModel {
             $dato_contacto->updateRules['email'] .= ',email,' . $dato_contacto->id;
 
             return $dato_contacto->isValid('update');
+        });
+        DatoContacto::created(function ($dato_contacto) {
+            event(new PostEmpleadoCreado($dato_contacto));
+        });
+        DatoContacto::updated(function ($dato_contacto) {
+            event(new DatoContactoActualizado($dato_contacto));
         });
     }
 

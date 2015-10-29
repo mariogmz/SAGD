@@ -33,7 +33,7 @@
     };
 
     var getEmpleado = function (){
-      $http.get(api.endpoint + '/authenticate/empleado').then(setEmpleadoToLocalStorage);
+      api.get('/authenticate/empleado').then(setEmpleadoToLocalStorage);
     };
 
     var setEmpleadoToLocalStorage = function (response){
@@ -62,8 +62,15 @@
       state.go('login', {});
     };
 
+    function resetEmpleado() {
+      return api.get('/authenticate/empleado').then(function(response){
+        localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
+      });
+    }
+
     return {
       isAuthenticated: isAuthenticated,
+      resetEmpleado: resetEmpleado,
       obtenerEmpleado: function (){
         return JSON.parse(localStorage.getItem('empleado'));
       },
