@@ -1,3 +1,9 @@
+<style type="text/css">
+  .css-form input.ng-invalid.ng-touched {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: red;
+  }
+</style>
 <article class="card">
   <section class="header">
     <h4>Cliente: {{vm.cliente.nombre}} ({{vm.cliente.usuario}})</h4>
@@ -10,7 +16,7 @@
       <li class="nav-item"><a href="#tabuladores" ng-click="vm.selectTab('tabuladores')" ng-class="{ active: vm.tab === 'tabuladores' }" role="tab" data-toggle="tab">Tabuladores</a></li>
       <li class="nav-item"><a href="#razones-sociales" ng-click="vm.selectTab('razones-sociales')" ng-class="{ active: vm.tab === 'razones-sociales' }" role="tab" data-toggle="tab">Razones sociales</a></li>
       <li class="nav-item"><a href="#movimientos" ng-click="vm.selectTab('movimientos')" ng-class="{ active: vm.tab === 'movimientos' }" role="tab" data-toggle="tab">Movimientos</a></li>
-      <li class="nav-item save"><a role="tab" ng-click="vm.save()"><i></i> Guardar</a></li>
+      <li class="nav-item save"><a role="tab" ng-click="form.$valid && vm.save()" ng-hide="form.$pristine || form.$invalid"><i></i> Guardar</a></li>
       <li class="nav-item back"><a ui-sref="clienteIndex" role="tab"><i></i> Regresar</a></li>
     </ul>
 
@@ -18,7 +24,7 @@
       <fieldset>
         <!-- Tab panels -->
         <article>
-          <form class="item-form" novalidate>
+          <form name="form" class="item-form css-form" autocomplete="off" model="vm.cliente" novalidate ng-submit="form.$valid">
             <fieldset>
 
               <!-- Datos Generales -->
@@ -33,25 +39,47 @@
                       <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="usuario">Usuario:</label>
-                          <input type="text" name="usuario" id="usuario" ng-model="vm.cliente.usuario" class="form-control">
+                          <input type="text" name="usuario" id="usuario"
+                                 ng-model="vm.cliente.usuario"
+                                 ng-minlength=3
+                                 ng-maxlength=20
+                                 class="form-control" required autofocus>
                         </fieldset>
+
+                        <div class="error" ng-show="form.$submitted || form.usuario.$touched">
+                          <small class="error" ng-show="form.usuario.$error.required">El usuario es requerido.</small>
+                          <small class="error"  ng-show="form.usuario.$error.minlength">El usuario debe tener al menos 3 caracteres</small>
+                          <small class="error" ng-show="form.usuario.$error.maxlength">El usuario no puede ser mayor a 20 caracteres</small>
+                        </div>
+
                       </div>
 
                       <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="email">Email:</label>
-                          <input type="email" name="email" id="email" class="form-control" ng-model="vm.cliente.email" required placeholder="">
+                          <input type="email" name="email" id="email" class="form-control" ng-model="vm.cliente.user.email" required placeholder="">
                         </fieldset>
+
+                        <div class="error" ng-show="vm.cliente.$submitted || vm.cliente.user.email.$touched">
+                          <small class="error" ng-show="vm.cliente.user.email.$error.required">El correo es requerido.</small>
+                          <small class="error"  ng-show="vm.cliente.user.email.$error.email">El correo no es válido</small>
+                        </div>
+
                       </div>
 
                       <div class="col-lg-4">
                         <fieldset class="form-group">
-                          <label for="email2">Repite email:</label>
-                          <input type="email" name="email2" id="email2" class="form-control" ng-model="vm.model.email2" ng-match="email" placeholder="">
+                          <label for="email2">Confirma email:</label>
+                          <input type="email" name="email2" id="email2" class="form-control" ng-model="vm.cliente.user.email2" ng-value="vm.cliente.user.email" ng-pattern="vm.cliente.user.email" placeholder="">
                         </fieldset>
                       </div>
 
-                      <span data-ng-show="vm.model.email2.$error.match">Emails have to match!</span>
+                      <div class="error" ng-show="form.$submitted || form.email2.$touched">
+                        <small class="error" ng-show="vm.cliente.user.email2.$error.required">El correo es requerido.</small>
+                        <small class="error" ng-show="vm.cliente.user.email2.$error.email">El correo no es válido</small>
+                        <small class="error" ng-show="form.email2.$error.pattern">Los correos deben coincidir!</small>
+                      </div>
+
 
                     </div>
                   </div>
@@ -73,7 +101,7 @@
                       <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="autorizado">Autorizado:</label>
-                          <input type="text" id="autorizado" name="autorizado" ng-model="vm.cliente.autorizaciones.nombre" class="form-control" placeholder="">
+                          <input type="text" id="autorizado" name="autorizado" ng-model="vm.cliente.autorizaciones[0].nombre_autorizado" class="form-control" placeholder="">
                         </fieldset>
                       </div>
                     </div>

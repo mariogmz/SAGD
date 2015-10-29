@@ -183,28 +183,6 @@ class Cliente extends LGGModel {
     }
 
     /**
-     * Realiza el trabajo de crear la autorizacion en base al parametro
-     * @param App\Cliente o String
-     * @return bool
-     */
-    public function autoriza($cliente) {
-        $ca = new ClienteAutorizacion;
-        $ca->cliente()->associate($this);
-
-        if (is_string($cliente)) {
-            $ca->nombre_autorizado = $cliente;
-        } else {
-            $ca->cliente_autorizado_id = $cliente->id;
-        }
-        if ($ca->save()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    /**
      * Obtiene las paginas web distribuidor asociado con el Cliente
      * @return Illuminate\Database\Eloquent\Collection
      */
@@ -282,13 +260,19 @@ class Cliente extends LGGModel {
         $cliente = new Cliente($parameters);
         $email = $parameters['email'];
 
-        // Se agrega transacción al crear cliente, tabuladores y usuario
+        // Se inicia transacción al crear cliente, tabuladores y usuario
         DB::beginTransaction();
 
         if( $cliente->save() &&
             $this->guardarTabuladores($cliente->id) &&
             $this->guardarUsuario($cliente, $email)
         ){
+
+            // Agregar autorizado(s)
+            if($parameters['autorizado']){
+                $this->autorizados($cliente);
+            }
+
             DB::commit();
             return $cliente;
         }else {
@@ -313,7 +297,8 @@ class Cliente extends LGGModel {
                                     'habilitada' => 1,
                                     'venta_especial' => 0));
           }catch (Exception $e){
-            return false;
+            dd($e);
+              return 0;
           }
         }
 
@@ -332,6 +317,23 @@ class Cliente extends LGGModel {
                                 'morphable_type' => 'App\Cliente'));
 
         }catch (Exception $e){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * Realiza el trabajo de crear la autorizacion en base al parametro
+     * @param App\Cliente o String
+     * @return bool
+     */
+    public function autorizados($cliente) {
+        try{
+            ClienteAutorizacion::create(array('cliente_id' => $cliente->id,
+                                              'nombre_autorizado' => $cliente->autorizado
+                                        ));
+        }catch(Exception $e){
             return false;
         }
 
