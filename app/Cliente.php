@@ -269,7 +269,7 @@ class Cliente extends LGGModel {
         ){
 
             // Agregar autorizado(s)
-            if($parameters['autorizado']){
+            if(!empty($parameters['autorizado'])){
                 $this->autorizados($cliente);
             }
 
