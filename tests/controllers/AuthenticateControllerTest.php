@@ -28,6 +28,10 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_POST_with_no_parameters()
     {
+        JWTAuth::shouldReceive('attempt')
+            ->withAnyArgs()
+            ->andReturn(null);
+
         $this->post($this->endpoint, [])
             ->seeJsonEquals([
                 'error' => 'invalid_credentials'
@@ -39,6 +43,10 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_POST_with_invalid_credentials()
     {
+        JWTAuth::shouldReceive('attempt')
+            ->withAnyArgs()
+            ->andReturn(null);
+
         $this->post($this->endpoint, ['email' => 'a@gmail.com', 'password' => 'hello'])
             ->seeJsonEquals([
                 'error' => 'invalid_credentials'
@@ -50,10 +58,14 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_POST_with_valid_credentials()
     {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => 'sistemas@zegucom.com.mx', 'password' => 'admin2015']);
+        JWTAuth::shouldReceive([
+            'attempt' => 'abcd',
+            'toUser' => App\User::first()
+            ])
+            ->withAnyArgs();
 
-        $this->assertEquals(200, $response->status());
+        $this->post($this->endpoint, ['email' => 'sistemas@zegucom.com.mx', 'password' => 'admin2015'])
+            ->assertResponseStatus(200);
     }
 
     /**
@@ -76,14 +88,19 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_successful_logout()
     {
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'admin2015');
-        $response = $this->call('GET', $this->logoutEndpoint, [
-            'token' => $token
-        ]);
+        $this->withoutMiddleware();
 
-        $this->assertEquals(200, $response->status());
-        $decoded_response = $response->content();
-        $this->assertEquals(json_encode(['success' => 'user logged out successfuly']), $decoded_response);
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => true
+            ])->withAnyArgs();
+
+        JWTAuth::shouldReceive('invalidate')->once()->withNoArgs();
+
+        $response = $this->get($this->logoutEndpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'success' => 'user logged out successfuly'
+            ])
+            ->assertResponseStatus(200);
     }
 
     /**
@@ -134,14 +151,5 @@ class AuthenticateControllerTest extends TestCase
                 'clave' => 'DICOTAGS'
             ])
             ->assertResponseStatus(200);
-    }
-
-    private function authenticate($email, $password)
-    {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => $email,
-            'password' => $password
-        ]);
-        return json_decode($response->content())->token;
     }
 }
