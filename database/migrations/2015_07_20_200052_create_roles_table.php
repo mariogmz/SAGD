@@ -13,7 +13,7 @@ class CreateRolesTable extends Migration {
         //
         Schema::create('roles', function ($table) {
             $table->increments('id');
-            $table->char('clave', 6);
+            $table->char('clave', 20);
             $table->string('nombre', 45);
             $table->unique('clave');
         });

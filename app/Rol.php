@@ -22,7 +22,7 @@ class Rol extends LGGModel {
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave'  => 'required|max:6',
+        'clave'  => 'required|max:20',
         'nombre' => 'required|max:45'
     ];
 

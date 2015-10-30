@@ -50,7 +50,7 @@ class RolTest extends TestCase {
      */
     public function testClaveNoPuedeSerLarga()
     {
-        $rol = factory(App\Rol::class)->make(['clave' => 'AAAAAAA']);
+        $rol = factory(App\Rol::class)->make(['clave' => 'QWERYTUIOPASDFGHJKLÑZXCVBNMS']);
         $this->assertFalse($rol->isValid());
     }
 
