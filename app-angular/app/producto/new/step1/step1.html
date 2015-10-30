@@ -181,26 +181,33 @@
 
       <!-- Descripciones -->
       <div class="col-lg">
+
+        <!-- Descripción -->
         <fieldset ng-class="{
                 'with-error' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$invalid,
                 'with-success' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$valid
         }">
           <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion" name="descripcion" maxlength="300"
-                    ng-model="parentVm.producto.descripcion" required></textarea>
+          <textarea id="descripcion" name="descripcion"
+                    ng-model="parentVm.producto.descripcion"
+                    maxlength="300"
+                    required>
+          </textarea>
           <!-- Validation messages -->
           <div ng-messages="productoNewForm.descripcion.$error" ng-show="productoNewForm.descripcion.$touched">
             <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
 
+        <!-- Descripción corta -->
         <fieldset ng-class="{
                 'with-error' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$invalid,
                 'with-success' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$valid
         }">
           <label for="descripcion_corta">Descripción corta:</label>
-          <input type="text" id="descripcion_corta" name="descripcion_corta" maxlength="50"
-                 ng-model="parentVm.producto.descripcion_corta">
+          <input type="text" id="descripcion_corta" name="descripcion_corta"
+                 ng-model="parentVm.producto.descripcion_corta"
+                 maxlength="50">
           <!-- Validation messages -->
           <div ng-messages="productoNewForm.descripcion_corta.$error"
                ng-show="productoNewForm.descripcion_corta.$touched">
@@ -229,9 +236,9 @@
         <label for="peso">Peso:</label>
 
         <div class="with-icon">
-          <span>kg</span>
           <input type="number" id="peso" name="peso" ng-model="parentVm.dimension.peso"
                  min="0.1" numeric required step="0.1">
+          <span>kg</span>
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.peso.$error" ng-show="productoNewForm.peso.$touched">
@@ -247,9 +254,9 @@
         <label for="largo">Largo:</label>
 
         <div class="with-icon">
-          <span>cm</span>
           <input type="number" id="largo" name="largo" ng-model="parentVm.dimension.largo"
                  min="0.1" numeric required step="0.1">
+          <span>cm</span>
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.largo.$error" ng-show="productoNewForm.largo.$touched">
@@ -265,9 +272,9 @@
         <label for="ancho">Ancho:</label>
 
         <div class="with-icon">
-          <span>cm</span>
           <input type="number" id="ancho" name="ancho" ng-model="parentVm.dimension.ancho"
                  min="0.1" numeric required step="0.1">
+          <span>cm</span>
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.ancho.$error" ng-show="productoNewForm.ancho.$touched">
@@ -283,9 +290,9 @@
         <label for="alto">Alto:</label>
 
         <div class="with-icon">
-          <span>cm</span>
           <input type="number" id="alto" name="alto" ng-model="parentVm.dimension.alto"
                  min="0.1" numeric required step="0.1">
+          <span>cm</span>
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.alto.$error" ng-show="productoNewForm.alto.$touched">

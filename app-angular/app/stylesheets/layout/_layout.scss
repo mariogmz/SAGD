@@ -1,7 +1,6 @@
 .main-container {
   @include make-container();
   @include make-row();
-
   margin: 0;
   padding: 0;
 

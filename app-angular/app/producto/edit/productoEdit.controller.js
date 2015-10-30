@@ -35,7 +35,7 @@
 
     vm.updateClave = updateClave;
     vm.updateSubclave = updateSubclave;
-    vm.save = guardarProducto;
+    vm.save = save;
     vm.calcularPrecios = calcularPrecios;
     vm.calcularPreciosMargen = calcularPreciosMargen;
     vm.sort = sort;
@@ -64,9 +64,9 @@
           vm.subfamilia = vm.producto.subfamilia;
           vm.producto.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.producto.precios.forEach(function (element){
-            vm.producto.revisado = vm.producto.revisado && element.revisado;
-            element.descuento *= 100;
+          vm.producto.precios.forEach(function (precio){
+            vm.producto.revisado = vm.producto.revisado && precio.revisado;
+            precio.descuento *= 100;
           });
           console.log('Producto #' + vm.id + ' obtenido.');
           $state.go('productoEdit.details');
@@ -135,6 +135,12 @@
       vm.producto.clave = familia + subfamilia + marca + vm.producto.subclave;
       vm.producto.subfamilia_id = vm.subfamilia ? vm.subfamilia.id : null;
       vm.producto.marca_id = vm.marca ? vm.marca.id : null;
+    }
+
+    function save(invalidForm){
+      if(!invalidForm){
+        guardarProducto();
+      }
     }
 
     function guardarProducto(){
