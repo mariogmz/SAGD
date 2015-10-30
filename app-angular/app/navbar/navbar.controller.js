@@ -206,7 +206,7 @@
             state: 'empleadoIndex'
           }, {
             name: 'Roles',
-            state: 'empleado.rol'
+            state: 'rolIndex'
           }, {
             name: 'Permisos',
             state: 'permiso',

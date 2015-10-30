@@ -1,0 +1,53 @@
+<div class="search-card">
+  <div class="header">
+    <h4>Roles</h4>
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+      <div class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="create" ui-sref="rolNew"><i></i> Crear nuevo</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+      <tr>
+        <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+          {{sortKey.name}}
+        </th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr dir-paginate="rol in vm.roles | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+        <th scope="row">{{rol.id}}</th>
+        <td><a ui-sref="rolShow({id:rol.id})">{{rol.clave}}</a></td>
+        <td>{{rol.nombre}}</td>
+
+        <td class="actions">
+          <div class="action-buttons" role="group" aria-label="Acciones">
+            <button type="button" class="edit" ui-sref="rolEdit({id:rol.id})"><i></i></button>
+            <button type="button" class="delete" ng-click="vm.eliminarRol(rol)"><i></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <loader model="vm.roles"></loader>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+</div>
