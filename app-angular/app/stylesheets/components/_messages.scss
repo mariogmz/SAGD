@@ -4,14 +4,22 @@
   input:not([type="submit"]) {
     @extend .form-control-error;
   }
+
+  .with-icon{
+    @extend .has-error;
+  }
 }
 
 .with-success {
   @extend .has-success;
 
-  input:not([type="submit"]) {
+  input:not([type="submit"]){
     @extend .form-control-success;
   }
+  .with-icon{
+    @extend .has-success;
+  }
+
 }
 
 .with-warning {
@@ -19,6 +27,10 @@
 
   input:not([type="submit"]) {
     @extend .form-control-warning;
+  }
+
+  .with-icon{
+    @extend .has-warning;
   }
 }
 
