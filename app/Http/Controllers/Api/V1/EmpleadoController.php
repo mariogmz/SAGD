@@ -25,6 +25,7 @@ class EmpleadoController extends Controller
      */
     public function index(Request $request)
     {
+        // $this->authorize($this);
         if ($request->has('sucursal')) {
             $sucursal = $request->only('sucursal');
             return $this->empleado->where('sucursal_id', $sucursal)->get();
@@ -41,6 +42,7 @@ class EmpleadoController extends Controller
      */
     public function store(Request $request)
     {
+        // $this->authorize($this);
         $params = $request->all();
         $datosContacto = $request->has('datos_contacto') ? $params['datos_contacto'] : null;
         $this->empleado->fill($params);
@@ -67,6 +69,7 @@ class EmpleadoController extends Controller
      */
     public function show($id)
     {
+        // $this->authorize($this);
         $this->empleado = $this->empleado->with('datoContacto', 'sucursal')->find($id);
         if ($this->empleado) {
             return response()->json([
@@ -117,6 +120,7 @@ class EmpleadoController extends Controller
      */
     public function destroy($id)
     {
+        // $this->authorize($this);
         $this->empleado = $this->empleado->find($id);
         if (empty($this->empleado)) {
             return response()->json([
