@@ -26,11 +26,17 @@
         ngModel.$setValidity('numeric', valid);
         return valid ? value : undefined;
       });
+      ngModel.$parsers.push(function (value){
+        return '' + value;
+      });
 
       // For Model to DOM validation
-      ngModel.$formatters.unshift(function(value){
+      ngModel.$formatters.unshift(function (value){
         ngModel.$setValidity('numeric', /^[0-9]+(\.[0-9]{1,2})?$/.test(value));
         return value;
+      });
+      ngModel.$formatters.push(function (value){
+        return parseFloat(value, 2);
       });
     }
   }
