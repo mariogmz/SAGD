@@ -110,7 +110,10 @@
                       <div class="col-lg-4">
                         <fieldset class="form-group">
                           <label for="sexo">Sexo:</label>
-                          <input type="text" name="sexo" id="sexo" ng-model="vm.cliente.sexo">
+                          <select name="sexo" id="sexo" ng-model="vm.cliente.sexo" class="form-control">
+                            <option value="HOMBRE">Hombre</option>
+                            <option value="MUJER">Mujer</option>
+                          </select>
                         </fieldset>
                       </div>
                       <div class="col-lg-4">

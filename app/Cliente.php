@@ -288,6 +288,38 @@ class Cliente extends LGGModel {
 
     }
 
+    /**
+     * Función que Actualiza cliente y sus relaciones
+     * @param array $parameters
+     * @return bool
+     */
+    public function actualizar($parameters) {
+
+
+        DB::beginTransaction();
+
+        $this->tabuladores->update($parameters);
+
+        DB::commit();
+        return true;
+
+
+
+        if ($this->update($parameters) &&
+            $this->tabuladores->update($parameters['tabuladores'])
+
+        ){
+            DB::commit();
+
+            return true;
+        } else {
+
+            //$this->errors;
+            DB::rollback();
+            return false;
+        }
+    }
+
   /**
    * @return bool
    */

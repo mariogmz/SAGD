@@ -101,7 +101,7 @@ class ClienteController extends Controller
                 'error' => 'Cliente no encontrado'
             ], 404);
         }
-        if( $this->cliente->update($parameters) )
+        if( $this->cliente->actualizar($parameters) )
         {
             return response()->json([
                 'message' => 'Cliente se actualizo correctamente'
