@@ -183,11 +183,11 @@
       <div class="col-lg">
         <fieldset ng-class="{
                 'with-error' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$invalid,
-                'with-success' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$invalid
+                'with-success' : productoNewForm.descripcion.$touched && productoNewForm.descripcion.$valid
         }">
           <label for="descripcion">Descripción:</label>
           <textarea id="descripcion" name="descripcion" maxlength="300"
-                    ng-model="parentVm.producto.descripcion"></textarea>
+                    ng-model="parentVm.producto.descripcion" required></textarea>
           <!-- Validation messages -->
           <div ng-messages="productoNewForm.descripcion.$error" ng-show="productoNewForm.descripcion.$touched">
             <div ng-messages-include="app/templates/fields/messages.html"></div>
@@ -196,7 +196,7 @@
 
         <fieldset ng-class="{
                 'with-error' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$invalid,
-                'with-success' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$invalid
+                'with-success' : productoNewForm.descripcion_corta.$touched && productoNewForm.descripcion_corta.$valid
         }">
           <label for="descripcion_corta">Descripción corta:</label>
           <input type="text" id="descripcion_corta" name="descripcion_corta" maxlength="50"
@@ -224,14 +224,14 @@
       <!-- Peso -->
       <fieldset class="col-sm" ng-class="{
               'with-error' : productoNewForm.peso.$touched && productoNewForm.peso.$invalid,
-              'with-success' : productoNewForm.peso.$touched && productoNewForm.peso.$invalid
+              'with-success' : productoNewForm.peso.$touched && productoNewForm.peso.$valid
       }">
         <label for="peso">Peso:</label>
 
         <div class="with-icon">
           <span>kg</span>
           <input type="number" id="peso" name="peso" ng-model="parentVm.dimension.peso"
-                 required step="0.1" min="0.1" numeric>
+                 min="0.1" numeric required step="0.1">
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.peso.$error" ng-show="productoNewForm.peso.$touched">
@@ -242,14 +242,14 @@
       <!-- Longitúd -->
       <fieldset class="col-sm" ng-class="{
               'with-error' : productoNewForm.largo.$touched && productoNewForm.largo.$invalid,
-              'with-success' : productoNewForm.largo.$touched && productoNewForm.largo.$invalid
+              'with-success' : productoNewForm.largo.$touched && productoNewForm.largo.$valid
       }">
         <label for="largo">Largo:</label>
 
         <div class="with-icon">
           <span>cm</span>
           <input type="number" id="largo" name="largo" ng-model="parentVm.dimension.largo"
-                 required step="0.1" min="0.1" numeric>
+                 min="0.1" numeric required step="0.1">
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.largo.$error" ng-show="productoNewForm.largo.$touched">
@@ -260,14 +260,14 @@
       <!-- Ancho -->
       <fieldset class="col-sm" ng-class="{
               'with-error' : productoNewForm.ancho.$touched && productoNewForm.ancho.$invalid,
-              'with-success' : productoNewForm.ancho.$touched && productoNewForm.ancho.$invalid
+              'with-success' : productoNewForm.ancho.$touched && productoNewForm.ancho.$valid
       }">
         <label for="ancho">Ancho:</label>
 
         <div class="with-icon">
           <span>cm</span>
           <input type="number" id="ancho" name="ancho" ng-model="parentVm.dimension.ancho"
-                 required step="0.1" min="0.1" numeric>
+                 min="0.1" numeric required step="0.1">
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.ancho.$error" ng-show="productoNewForm.ancho.$touched">
@@ -278,14 +278,14 @@
       <!-- Altura -->
       <fieldset class="col-sm" ng-class="{
               'with-error' : productoNewForm.alto.$touched && productoNewForm.alto.$invalid,
-              'with-success' : productoNewForm.alto.$touched && productoNewForm.alto.$invalid
+              'with-success' : productoNewForm.alto.$touched && productoNewForm.alto.$valid
       }">
         <label for="alto">Alto:</label>
 
         <div class="with-icon">
           <span>cm</span>
           <input type="number" id="alto" name="alto" ng-model="parentVm.dimension.alto"
-                 required step="0.1" min="0.1" numeric>
+                 min="0.1" numeric required step="0.1">
         </div>
         <!-- Validation messages -->
         <div ng-messages="productoNewForm.alto.$error" ng-show="productoNewForm.alto.$touched">

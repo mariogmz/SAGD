@@ -4,14 +4,14 @@
     @extend .form-group;
   }
 
-  label{
+  label {
     @extend .form-control-label;
   }
 
   button,
   input:not([type='submit']),
   textarea,
-  select{
+  select {
     @extend .form-control
   }
 
@@ -30,7 +30,7 @@
       &.revisado {
         @extend .btn-success;
 
-        i{
+        i {
           @extend .fa;
           @extend .fa-thumbs-up;
         }
@@ -39,16 +39,16 @@
       &.no-revisado {
         @extend .btn-danger;
 
-        i{
+        i {
           @extend .fa;
           @extend .fa-thumbs-down;
         }
       }
 
-      &.back{
+      &.back {
         @extend .btn-secondary;
 
-        i{
+        i {
           @extend .fa;
           @extend .fa-arrow-left;
         }
@@ -86,6 +86,11 @@
   .col-lg {
     @include make-col();
     @include make-col-span(6);
+  }
+
+  .col-mlg {
+    @include make-col();
+    @include make-col-span(5);
   }
 
   .icecat {

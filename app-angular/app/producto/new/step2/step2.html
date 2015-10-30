@@ -10,47 +10,81 @@
     <section class="row">
 
       <!-- Costo -->
-      <div class="col-xsm">
+      <div class="col-sm" ng-class="{
+              'with-error' : productoNewForm.costo.$touched && productoNewForm.costo.$invalid,
+              'with-success' : productoNewForm.costo.$touched && productoNewForm.costo.$valid
+      }">
         <fieldset>
           <label for="costo">Costo: </label>
+
           <div class="with-icon">
             <span><i class="money"></i></span>
-            <input type="text" id="costo" placeholder="0.00" ng-model="parentVm.precio.costo" ng-blur="parentVm.calcular()">
+            <input type="number" id="costo" name="costo" placeholder="0.00" ng-model="parentVm.precio.costo"
+                   ng-blur="parentVm.calcular()"
+                   min="1"
+                   numeric
+                   required
+                   step="100">
+          </div>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.costo.$error" ng-show="productoNewForm.costo.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
       </div>
 
       <!-- Descuento -->
       <div class="col-xsm">
-        <fieldset>
+        <fieldset ng-class="{
+                'with-error' : productoNewForm.descuento.$touched && productoNewForm.descuento.$invalid,
+                'with-success' : productoNewForm.descuento.$touched && productoNewForm.descuento.$valid
+        }">
           <label for="descuento">Descuento: </label>
 
           <div class="with-icon">
             <span>%</span>
-            <input type="text" id="descuento" placeholder="0 - 100" ng-model="parentVm.precio.descuento">
+            <input type="number" id="descuento" name="descuento" placeholder="0 - 100"
+                   ng-model="parentVm.precio.descuento"
+                   min="0"
+                   max="100"
+                   numeric
+                   step="10">
+          </div>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.descuento.$error" ng-show="productoNewForm.descuento.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
       </div>
 
       <!-- Spiff -->
-      <div class="col-xsm">
+      <div class="col-xsm" ng-class="{
+              'with-error' : productoNewForm.spiff.$touched && productoNewForm.spiff.$invalid,
+              'with-success' : productoNewForm.spiff.$touched && productoNewForm.spiff.$valid
+      }">
         <fieldset>
           <label for="spiff">Spiff: </label>
 
           <div class="with-icon">
             <span><i class="money"></i></span>
-            <input type="text" id="spiff" placeholder="0.00" ng-model="parentVm.producto.spiff">
+            <input type="number" id="spiff" name="spiff" placeholder="0.00" ng-model="parentVm.producto.spiff"
+                   min="0"
+                   step="1">
+          </div>
+          <!-- Validation messages -->
+          <div ng-messages="productoNewForm.spiff.$error" ng-show="productoNewForm.spiff.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
       </div>
 
       <!-- Margen -->
-      <div class="col-lg">
+      <div class="col-mlg">
         <fieldset>
           <label for="margen_id">Margen: </label>
-          <select id="margen_id" ng-model="parentVm.producto.margen_id"
+          <select id="margen_id" name="margen_id" ng-model="parentVm.producto.margen_id"
                   ng-options="margen.id as margen.nombre for margen in parentVm.margenes | orderBy:'nombre'"
-                  ng-change="parentVm.calcularPrecios()">
+                  ng-change="parentVm.calular()">
             <option value="">Seleccione un margen</option>
           </select>
         </fieldset>
@@ -71,37 +105,91 @@
     <section class="row">
       <!-- izquierda -->
       <div class="col-lg">
+
         <!-- Precios del 1 al 5 -->
         <div class="col-lg">
-          <fieldset>
+
+          <!-- Precio 1 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_1.$touched && productoNewForm.precio_1.$invalid,
+                  'with-success' : productoNewForm.precio_1.$touched && productoNewForm.precio_1.$valid
+          }">
             <label>Precios ( $ )</label>
+
             <div class="with-icon">
               <span>1</span>
-              <input type="text" id="precio_1" placeholder="0.00" ng-model="parentVm.precio.precio_1" ng-blur="parentVm.calcular()">
+              <input type="number" id="precio_1" name="precio_1" placeholder="0.00" ng-model="parentVm.precio.precio_1"
+                     ng-blur="parentVm.calcular()"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_1.$error" ng-show="productoNewForm.precio_1.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+
+          <!-- Precio 2 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_2.$touched && productoNewForm.precio_2.$invalid,
+                  'with-success' : productoNewForm.precio_2.$touched && productoNewForm.precio_2.$valid
+          }">
             <div class="with-icon">
               <span>2</span>
-              <input type="text" id="precio_2" placeholder="0.00" ng-model="parentVm.precio.precio_2" ng-disabled="parentVm.producto.margen_id">
+              <input type="number" id="precio_2" name="precio_2" placeholder="0.00" ng-model="parentVm.precio.precio_2"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_2.$error" ng-show="productoNewForm.precio_2.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+          <!-- Precio 3 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_3.$touched && productoNewForm.precio_3.$invalid,
+                  'with-success' : productoNewForm.precio_3.$touched && productoNewForm.precio_3.$valid
+          }">
             <div class="with-icon">
               <span>3</span>
-              <input type="text" id="precio_3" placeholder="0.00" ng-model="parentVm.precio.precio_3" ng-disabled="parentVm.producto.margen_id">
+              <input type="number" id="precio_3" name="precio_3" placeholder="0.00" ng-model="parentVm.precio.precio_3"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_3.$error" ng-show="productoNewForm.precio_3.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+          <!-- Precio 4 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_4.$touched && productoNewForm.precio_4.$invalid,
+                  'with-success' : productoNewForm.precio_4.$touched && productoNewForm.precio_4.$valid
+          }">
             <div class="with-icon">
               <span>4</span>
-              <input type="text" id="precio_4" placeholder="0.00" ng-model="parentVm.precio.precio_4" ng-disabled="parentVm.producto.margen_id">
+              <input type="number" id="precio_4" name="precio_4" placeholder="0.00" ng-model="parentVm.precio.precio_4"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_4.$error" ng-show="productoNewForm.precio_4.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+          <!-- Precio 5 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_5.$touched && productoNewForm.precio_5.$invalid,
+                  'with-success' : productoNewForm.precio_5.$touched && productoNewForm.precio_5.$valid
+          }">
             <div class="with-icon">
               <span>5</span>
-              <input type="text" id="precio_5" placeholder="0.00" ng-model="parentVm.precio.precio_5" ng-disabled="parentVm.producto.margen_id">
+              <input type="number" id="precio_5" name="precio_5" placeholder="0.00" ng-model="parentVm.precio.precio_5"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_5.$error" ng-show="productoNewForm.precio_5.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
         </div>
@@ -110,6 +198,7 @@
         <div class="col-lg">
           <fieldset>
             <label>Utilidades ( $ )</label>
+
             <div class="with-icon">
               <span>1</span>
               <input type="text" id="utilidad_1" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_1">
@@ -144,37 +233,94 @@
 
       <!-- derecha -->
       <div class="col-lg">
+
         <!-- Precios del 6 al 10 -->
         <div class="col-lg">
-          <fieldset>
+
+          <!-- Precio 6 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_6.$touched && productoNewForm.precio_6.$invalid,
+                  'with-success' : productoNewForm.precio_6.$touched && productoNewForm.precio_6.$valid
+          }">
             <label>Precios ( $ )</label>
+
             <div class="with-icon">
-              <span>6</span>
-              <input type="text" id="precio_6" placeholder="0.00" ng-model="parentVm.precio.precio_6" ng-disabled="parentVm.producto.margen_id">
+              <span>1</span>
+              <input type="number" id="precio_6" name="precio_6" placeholder="0.00" ng-model="parentVm.precio.precio_6"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_6.$error" ng-show="productoNewForm.precio_6.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+
+          <!-- Precio 7 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_7.$touched && productoNewForm.precio_7.$invalid,
+                  'with-success' : productoNewForm.precio_7.$touched && productoNewForm.precio_7.$valid
+          }">
             <div class="with-icon">
-              <span>7</span>
-              <input type="text" id="precio_7" placeholder="0.00" ng-model="parentVm.precio.precio_7" ng-disabled="parentVm.producto.margen_id">
+              <span>2</span>
+              <input type="number" id="precio_7" name="precio_7" placeholder="0.00" ng-model="parentVm.precio.precio_7"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_7.$error" ng-show="productoNewForm.precio_7.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+
+          <!-- Precio 8 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_8.$touched && productoNewForm.precio_8.$invalid,
+                  'with-success' : productoNewForm.precio_8.$touched && productoNewForm.precio_8.$valid
+          }">
             <div class="with-icon">
-              <span>8</span>
-              <input type="text" id="precio_8" placeholder="0.00" ng-model="parentVm.precio.precio_8" ng-disabled="parentVm.producto.margen_id">
+              <span>3</span>
+              <input type="number" id="precio_8" name="precio_8" placeholder="0.00" ng-model="parentVm.precio.precio_8"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_8.$error" ng-show="productoNewForm.precio_8.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+
+          <!-- Precio 9 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_9.$touched && productoNewForm.precio_9.$invalid,
+                  'with-success' : productoNewForm.precio_9.$touched && productoNewForm.precio_9.$valid
+          }">
             <div class="with-icon">
-              <span>9</span>
-              <input type="text" id="precio_9" placeholder="0.00" ng-model="parentVm.precio.precio_9" ng-disabled="parentVm.producto.margen_id">
+              <span>4</span>
+              <input type="number" id="precio_9" name="precio_9" placeholder="0.00" ng-model="parentVm.precio.precio_9"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_9.$error" ng-show="productoNewForm.precio_9.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
-          <fieldset>
+
+          <!-- Precio 10 -->
+          <fieldset ng-class="{
+                  'with-error' : productoNewForm.precio_10.$touched && productoNewForm.precio_10.$invalid,
+                  'with-success' : productoNewForm.precio_10.$touched && productoNewForm.precio_10.$valid
+          }">
             <div class="with-icon">
-              <span>10</span>
-              <input type="text" id="precio_10" placeholder="0.00" ng-model="parentVm.precio.precio_10" ng-disabled="parentVm.producto.margen_id">
+              <span>5</span>
+              <input type="number" id="precio_10" name="precio_10" placeholder="0.00" ng-model="parentVm.precio.precio_10"
+                     ng-disabled="parentVm.producto.margen_id"
+                     min="1" numeric required step="1">
+            </div>
+            <!-- Validation messages -->
+            <div ng-messages="productoNewForm.precio_10.$error" ng-show="productoNewForm.precio_10.$touched">
+              <div ng-messages-include="app/templates/fields/messages.html"></div>
             </div>
           </fieldset>
         </div>
@@ -183,6 +329,7 @@
         <div class="col-lg">
           <fieldset>
             <label>Utilidades ( $ )</label>
+
             <div class="with-icon">
               <span>6</span>
               <input type="text" id="utilidad_6" placeholder="0.00" disabled ng-model="parentVm.utilidad.utilidad_6">
@@ -219,4 +366,4 @@
   </article>
 </div>
 <a ng-click="vm.go(1)" class="button secondary">Atrás</a>
-<input type="submit" class="button primary" value="Guardar cambios" ng-click="parentVm.save()">
+<input type="submit" class="button primary" value="Guardar cambios" ng-disabled="productoNewForm.$invalid" ng-click="parentVm.save()">

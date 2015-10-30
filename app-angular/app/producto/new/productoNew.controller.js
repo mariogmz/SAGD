@@ -10,6 +10,7 @@
 
   ProductoNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
 
+  /*@ngInject*/
   function ProductoNewController($auth, $state, api, pnotify){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
@@ -19,17 +20,15 @@
 
     var vm = this;
     vm.producto = {
-      activo: true,
+      activo: false,
       remate: false,
-      subclave: ''
+      subclave: '',
+      spiff : 0.0
     };
-    vm.precio = {};
-    vm.dimension = {
-      largo : 0.1,
-      ancho : 0.1,
-      alto : 0.1,
-      peso : 0.1
+    vm.precio = {
+      descuento : 0.0
     };
+    vm.dimension = {};
 
     vm.back = goBack;
     vm.updateSubclave = updateSubclave;
@@ -141,8 +140,12 @@
     }
 
     function calcular(){
-      if (vm.precio.precio_1 && vm.precio.costo) {
-        calcularPrecios();
+      if (vm.precio.costo && vm.precio.precio_1) {
+        if (vm.precio.costo >= vm.precio.precio_1) {
+          pnotify.alert('Advertencia', 'El precio 1 debe ser mayor al costo', 'warning');
+        } else {
+          calcularPrecios();
+        }
       }
     }
 
