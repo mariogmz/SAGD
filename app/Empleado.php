@@ -2,8 +2,9 @@
 
 namespace App;
 
-use App\Events\EmpleadoCreado;
 use App\DatoContacto;
+use App\Events\EmpleadoCreado;
+use App\Events\EmpleadoRolCreado;
 use Sagd\SafeTransactions;
 
 
@@ -88,6 +89,7 @@ class Empleado extends LGGModel {
         });
         Empleado::created(function ($empleado) {
             event(new EmpleadoCreado($empleado));
+            event(new EmpleadoRolCreado($empleado));
         });
     }
 

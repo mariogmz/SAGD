@@ -527,4 +527,33 @@ class EmpleadoTest extends TestCase {
         $this->assertNotNull($permisos);
         $this->assertGreaterThan(0, count($permisos));
     }
+
+    /**
+     * @covers ::created
+     * @group feature-permisos
+     * @group feature-permisos-events
+     */
+    public function testUnRolEsCreadoAutomaticamentePorCadaEmpleadoCreado()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+
+        $this->assertNotNull($empleado->roles);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->roles);
+        $this->assertGreaterThan(0, count($empleado->roles));
+    }
+
+    /**
+     * @covers ::created
+     * @group feature-permisos
+     * @group feature-permisos-events
+     */
+    public function testRolCreadoAutomaticamenteTienePerteneceAlEmpleado()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+
+        $roles = $empleado->roles;
+
+        $this->assertSame(strtoupper($empleado->usuario), $roles->first()->clave);
+        $this->assertSame("Rol individial de ".$empleado->nombre, $roles->first()->nombre);
+    }
 }
