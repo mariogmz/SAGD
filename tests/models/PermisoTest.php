@@ -19,44 +19,51 @@ class PermisoTest extends TestCase {
      */
     public function testModeloEsActualizable() {
         $permiso = factory(App\Permiso::class)->create();
-        $permiso->nombre = 'MC Hammer';
+        $controlador = "MCHammer".time();
+        $permiso->controlador = $controlador;
         $this->assertTrue($permiso->isValid('update'));
         $this->assertTrue($permiso->save());
-        $this->assertSame('MC Hammer', $permiso->nombre);
+        $this->assertSame($controlador, $permiso->controlador);
     }
 
     /**
      * @coversNothing
      */
-    public function testClaveEsObligatoria() {
-        $permiso = factory(App\Permiso::class)->make(['clave' => null]);
+    public function testControladorEsObligatorio() {
+        $permiso = factory(App\Permiso::class)->make(['controlador' => null]);
         $this->assertFalse($permiso->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testClaveNoPuedeTenerMasDe10Caracteres() {
-        $permiso = factory(App\Permiso::class)->make(['clave' => 'aaaaaaaaaaaa']);
+    public function testControladorNoPuedeTenerMasDe45Caracteres() {
+        $permiso = factory(App\Permiso::class, 'longcontrolador')->make();
+        $this->assertFalse($permiso->isValid());
+    }
+
+
+    /**
+     * @coversNothing
+     */
+    public function testAccionEsObligatorio() {
+        $permiso = factory(App\Permiso::class)->make(['accion' => null]);
         $this->assertFalse($permiso->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testClaveSeGuardaEnMayusculas() {
-        $permiso = factory(App\Permiso::class)->make();
-        $clave = strtolower($permiso->clave);
-        $permiso->clave = $clave;
-        $this->assertTrue($permiso->isValid());
-        $permiso->save();
-        $this->assertSame(strtoupper($clave), $permiso->clave);
+    public function testAccionNoPuedeTenerMasDe45Caracteres() {
+        $permiso = factory(App\Permiso::class, 'longcontrolador')->make();
+        $this->assertFalse($permiso->isValid());
     }
+
 
     /**
      * @coversNothing
      */
-    public function testClaveEsUnica() {
+    public function testControladorEsUnica() {
         $permiso = factory(App\Permiso::class)->make();
         $permiso_dup = clone $permiso;
         $permiso->save();
@@ -64,19 +71,19 @@ class PermisoTest extends TestCase {
     }
 
     /**
-     * @coversNothing
+     * @covers ::roles
+     * @group feature-permisos
      */
-    public function testNombreEsObligatorio() {
-        $permiso = factory(App\Permiso::class)->make(['nombre' => null]);
-        $this->assertFalse($permiso->isValid());
-    }
+    public function testRoles()
+    {
+        $permiso = factory(App\Permiso::class)->create();
+        $rol = factory(App\Rol::class)->create();
 
-    /**
-     * @coversNothing
-     */
-    public function testNombreNoPuedeSerLargo() {
-        $permiso = factory(App\Permiso::class, 'longnombre')->make();
-        $this->assertFalse($permiso->isValid());
+        $permiso->roles()->attach($rol->id);
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $permiso->roles);
+        $this->assertInstanceOf(App\Rol::class, $permiso->roles()->first());
+        $this->assertCount(1, $permiso->roles);
     }
 }
 

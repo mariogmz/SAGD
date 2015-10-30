@@ -92,6 +92,16 @@ class Empleado extends LGGModel {
     }
 
     /**
+     * Obtiene todos los Permisos de todos los Roles de un Empleado.
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function permisos()
+    {
+        return $this->roles()->with('permisos')->get()->pluck('permisos')
+            ->collapse()->unique('id')->values();
+    }
+
+    /**
      * La actualizacion del modelo puede ocurrir independientemente si se mandaron
      * los parámetros de datos_contacto.
      * @param array $parametros
@@ -272,5 +282,16 @@ class Empleado extends LGGModel {
     public function user()
     {
         return $this->morphOne('App\User', 'morphable');
+    }
+
+
+    /**
+    * Obtiene los Roles asociados con el Empleado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Rol', 'empleados_roles', 'empleado_id', 'rol_id')
+            ->withTimestamps();
     }
 }

@@ -477,4 +477,54 @@ class EmpleadoTest extends TestCase {
     {
         $this->assertNull(App\Empleado::whereEmail('a@test.com'));
     }
+
+    /**
+     * @covers ::roles
+     * @group feature-permisos
+     */
+    public function testRoles()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->create();
+        $rol = factory(App\Rol::class)->create();
+
+        $empleado->roles()->attach($rol->id);
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->roles);
+        $this->assertInstanceOf(App\Rol::class, $empleado->roles()->first());
+        $this->assertCount(1, $empleado->roles);
+    }
+
+    /**
+     * @covers ::permisos
+     * @group feature-permisos
+     */
+    public function testPuedoVerLosTodosLosPermisosDeUnEmpleado()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->create();
+
+        $rol1 = factory(App\Rol::class)->create();
+        $rol2 = factory(App\Rol::class)->create();
+
+        $permiso1 = factory(App\Permiso::class)->create();
+        $permiso2 = factory(App\Permiso::class)->create();
+        $permiso3 = factory(App\Permiso::class)->create();
+
+        $rol1->permisos()->attach($permiso1->id);
+        $rol1->permisos()->attach($permiso2->id);
+        $rol2->permisos()->attach($permiso1->id);
+        $rol2->permisos()->attach($permiso2->id);
+        $rol2->permisos()->attach($permiso3->id);
+
+        $empleado->roles()->attach($rol1->id);
+        $empleado->roles()->attach($rol2->id);
+
+        $permisos = $empleado->permisos();
+
+        $this->assertNotNull($permisos);
+        $this->assertGreaterThan(0, count($permisos));
+    }
 }

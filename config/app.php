@@ -150,6 +150,7 @@ return [
         App\Providers\ValidatorServiceProvider::class,
         Tymon\JWTAuth\Providers\JWTAuthServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
+        Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider::class,
 
         // Laravel IDE Helper
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,

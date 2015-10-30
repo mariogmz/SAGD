@@ -13,9 +13,9 @@ class CreatePermisosTable extends Migration {
         //
         Schema::create('permisos', function ($table) {
             $table->increments('id');
-            $table->char('clave', 10);
-            $table->string('nombre', 45);
-            $table->unique('clave');
+            $table->string('controlador', 45);
+            $table->string('accion', 45);
+            $table->unique(['controlador', 'accion']);
         });
     }
 
