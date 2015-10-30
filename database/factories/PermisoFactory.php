@@ -16,6 +16,7 @@ $factory->define(App\Permiso::class, function ($faker)
     return [
         'controlador' => $faker->text(45),
         'accion' => $faker->text(45),
+        'descripcion' => $faker->text(140),
     ];
 });
 
@@ -28,5 +29,11 @@ $factory->defineAs(App\Permiso::class, 'longcontrolador', function ($faker) use 
 $factory->defineAs(App\Permiso::class, 'longaccion', function ($faker) use ($factory){
     $permiso = $factory->raw(App\Permiso::class);
     $permiso['accion'] = $faker->regexify('[a]{46}');
+    return $permiso;
+});
+
+$factory->defineAs(App\Permiso::class, 'longdesc', function ($faker) use ($factory){
+    $permiso = $factory->raw(App\Permiso::class);
+    $permiso['descripcion'] = $faker->regexify('[a]{141}');
     return $permiso;
 });

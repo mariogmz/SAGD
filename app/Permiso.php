@@ -18,11 +18,12 @@ class Permiso extends LGGModel
 {
     protected $table = "permisos";
     public $timestamps = false;
-    protected $fillable = ['controlador', 'accion'];
+    protected $fillable = ['controlador', 'accion', 'descripcion'];
 
     public static $rules = [
         'controlador'   => 'required|max:45|unique_with:permisos,accion',
-        'accion'        => 'required|max:45'
+        'accion'        => 'required|max:45',
+        'descripcion'   => 'required|max:140',
     ];
     public $updateRules = [];
 

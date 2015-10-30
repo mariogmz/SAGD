@@ -15,6 +15,7 @@ class CreatePermisosTable extends Migration {
             $table->increments('id');
             $table->string('controlador', 45);
             $table->string('accion', 45);
+            $table->string('descripcion', 140);
             $table->unique(['controlador', 'accion']);
         });
     }

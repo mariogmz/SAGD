@@ -55,7 +55,23 @@ class PermisoTest extends TestCase {
      * @coversNothing
      */
     public function testAccionNoPuedeTenerMasDe45Caracteres() {
-        $permiso = factory(App\Permiso::class, 'longcontrolador')->make();
+        $permiso = factory(App\Permiso::class, 'longaccion')->make();
+        $this->assertFalse($permiso->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testDescripcionEsObligatorio() {
+        $permiso = factory(App\Permiso::class)->make(['descripcion' => null]);
+        $this->assertFalse($permiso->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testDescripcionNoPuedeTenerMasDe45Caracteres() {
+        $permiso = factory(App\Permiso::class, 'longdesc')->make();
         $this->assertFalse($permiso->isValid());
     }
 
