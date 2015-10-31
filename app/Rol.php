@@ -19,11 +19,12 @@ class Rol extends LGGModel {
     //
     protected $table = "roles";
     public $timestamps = false;
-    protected $fillable = ['clave', 'nombre'];
+    protected $fillable = ['clave', 'nombre', 'individual'];
 
     public static $rules = [
         'clave'  => 'required|max:20',
-        'nombre' => 'required|max:45'
+        'nombre' => 'required|max:45',
+        'individual' => 'required|boolean'
     ];
 
     public $updateRules = [];

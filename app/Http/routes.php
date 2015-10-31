@@ -42,6 +42,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('/codigo-postal/find/{id}', 'CodigoPostalController@find');
         Route::resource('domicilio', 'DomicilioController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('rol', 'RolController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('permiso', 'PermisoController', ['only' => ['index','store','show','update','destroy']]);
+        Route::get('/permiso/roles', 'PermisoController@roles');
+        Route::get('/permiso/individuales', 'PermisoController@individuales');
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);

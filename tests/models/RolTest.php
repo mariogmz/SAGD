@@ -75,6 +75,16 @@ class RolTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     * @group feature-permisos
+     */
+    public function testIndividualEsObligatorio()
+    {
+        $rol = factory(App\Rol::class)->make(['individual' => null]);
+        $this->assertFalse($rol->isValid());
+    }
+
+    /**
      * @covers ::empleados
      * @group feature-permisos
      */

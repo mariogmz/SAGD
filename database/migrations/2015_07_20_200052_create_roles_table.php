@@ -15,6 +15,7 @@ class CreateRolesTable extends Migration {
             $table->increments('id');
             $table->char('clave', 20);
             $table->string('nombre', 45);
+            $table->boolean('individual');
             $table->unique('clave');
         });
     }

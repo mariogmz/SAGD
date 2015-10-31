@@ -36,7 +36,8 @@ class CrearRol
 
         $this->rol = new $this->rol([
             'clave' => $this->empleado->usuario,
-            'nombre' => "Rol individial de ".$this->empleado->nombre
+            'nombre' => "Rol individual de ".$this->empleado->nombre,
+            'individual' => true
         ]);
 
         if ($this->rol->save()) {

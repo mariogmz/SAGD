@@ -52,4 +52,12 @@ class Permiso extends LGGModel
     {
         return $this->belongsToMany('App\Rol', 'roles_permisos', 'permiso_id', 'rol_id');
     }
+
+    /**
+     * Obtiene los Permisos donde sus Roles no sean los individuales
+     */
+    public static function permisosRoles()
+    {
+        return Rol::whereIndividual(false)->with('permisos')->get();
+    }
 }
