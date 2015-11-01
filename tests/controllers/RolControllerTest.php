@@ -235,6 +235,50 @@ class RolControllerTest extends TestCase {
                 'error'   => 'Metodo de eliminar no se pudo ejecutar'
             ])
             ->assertResponseStatus(400);
+    }
 
+
+    /**
+     * @covers ::generales
+     * @group feature-permisos
+     */
+    public function testGenerales()
+    {
+        $endpoint = '/v1/permiso/generales';
+
+        $this->mock->shouldReceive([
+            'permisosRoles' => ['controlador' => 'AuthenticateController', 'accion' => 'authenticate']
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'controlador' => 'AuthenticateController',
+                'accion' => 'authenticate'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::individuales
+     * @group feature-permisos
+     */
+    public function testIndividuales()
+    {
+        $endpoint = '/v1/permiso/individuales';
+
+        $this->mock->shouldReceive([
+            'permisosIndividuales' => ['controlador' => 'AuthenticateController', 'accion' => 'authenticate']
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'controlador' => 'AuthenticateController',
+                'accion' => 'authenticate'
+            ])
+            ->assertResponseStatus(200);
     }
 }

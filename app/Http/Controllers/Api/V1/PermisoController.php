@@ -122,22 +122,4 @@ class PermisoController extends Controller {
             ], 400);
         }
     }
-
-    /**
-     * Regresa todos los Permisos que tienen los Roles por default
-     *
-     * @return Response
-     */
-    public function roles() {
-        return $this->permiso->permisosRoles();
-    }
-
-    /**
-     * Regresa todos los Permisos de todos los Empleados
-     *
-     * @return Response
-     */
-    public function individuales() {
-        return $this->permiso->permisosIndividuales();
-    }
 }

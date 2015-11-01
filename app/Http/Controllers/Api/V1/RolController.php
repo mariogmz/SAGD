@@ -123,5 +123,23 @@ class RolController extends Controller
             ], 400);
         }
     }
+
+    /**
+     * Regresa todos los Permisos que tienen los Roles generales
+     *
+     * @return Response
+     */
+    public function generales() {
+        return $this->rol->permisosRoles();
+    }
+
+    /**
+     * Regresa todos los Permisos de todos los Empleados
+     *
+     * @return Response
+     */
+    public function individuales() {
+        return $this->rol->permisosIndividuales();
+    }
 }
 
