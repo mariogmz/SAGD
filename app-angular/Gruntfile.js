@@ -88,6 +88,7 @@ module.exports = function(grunt) {
           './bower_components/satellizer/satellizer.js',
           './bower_components/angular-formly/dist/formly.js',
           './bower_components/angularUtils-pagination/dirPagination.js',
+          './bower_components/angular-filter/dist/angular-filter.js',
           './bower_components/bootstrap/dist/js/bootstrap.js',
           './bower_components/pnotify/src/pnotify.core.js',
           './bower_components/pnotify/src/pnotify.desktop.js',

@@ -1,0 +1,34 @@
+.permisos-row-actions {
+
+  .action-buttons {
+
+    position: absolute;
+    right: 0;
+
+    .attach,
+    .detach {
+
+      @extend .btn;
+      @extend .btn-primary;
+
+      i {
+
+        @extend .fa;
+      }
+    }
+
+    .attach {
+      i {
+
+        @extend .fa-plus-square;
+      }
+    }
+
+    .detach {
+      i {
+
+        @extend .fa-minus-square;
+      }
+    }
+  }
+}

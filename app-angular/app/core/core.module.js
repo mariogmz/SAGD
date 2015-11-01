@@ -23,6 +23,7 @@
     'ui.router',
     'satellizer',
     'angularUtils.directives.dirPagination',
-    'formly'
+    'formly',
+    'angular.filter',
   ]);
 })();

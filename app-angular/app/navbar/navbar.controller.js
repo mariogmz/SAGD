@@ -209,14 +209,14 @@
             state: 'rolIndex'
           }, {
             name: 'Permisos',
-            state: 'permiso',
+            state: 'permisoIndex',
             actions: [
               {
                 name: 'Individuales',
-                state: 'permiso.individual'
+                state: 'permisoIndividuales'
               }, {
                 name: 'Roles',
-                state: 'permiso.rol'
+                state: 'permisoRoles'
               }
             ]
           }
