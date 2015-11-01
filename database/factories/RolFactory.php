@@ -16,7 +16,7 @@ $factory->define(App\Rol::class, function ($faker)
     return [
         'clave' => App\Caker::realUnique(App\Rol::class, 'clave', 'regexify', '[A-Z]{6}'),
         'nombre' => $faker->text(45),
-        'individual' => true,
+        'individual' => false,
     ];
 });
 

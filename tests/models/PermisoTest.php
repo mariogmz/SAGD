@@ -101,23 +101,5 @@ class PermisoTest extends TestCase {
         $this->assertInstanceOf(App\Rol::class, $permiso->roles()->first());
         $this->assertCount(1, $permiso->roles);
     }
-
-    /**
-     * @covers ::permisosRoles
-     * @group feature-permisos
-     */
-    public function testPermisosRoles()
-    {
-        $permisoGeneral = factory(App\Permiso::class)->create();
-        $permisoEmpleado = factory(App\Permiso::class)->create();
-        $rolGeneral = factory(App\Rol::class)->create();
-        $rolEmpleado = factory(App\Rol::class)->create();
-        $empleado = factory(App\Empleado::class)->create();
-
-        $rolGeneral->agregarPermisos([$permisoGeneral]);
-        $rolEmpleado->agregarPermisos([$permisoEmpleado]);
-
-        $permisos = App\Permiso::permisosRoles();
-    }
 }
 

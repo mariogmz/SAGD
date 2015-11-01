@@ -51,6 +51,23 @@ class Rol extends LGGModel {
         });
     }
 
+    /**
+     * Obtiene los Permisos de los Roles que no son individuales
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function permisosRoles()
+    {
+        return self::whereIndividual(false)->with('permisos')->get();
+    }
+
+    /**
+     * Obtiene los Permisos de los Roles que son individuales
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public static function permisosIndividuales()
+    {
+        return self::whereIndividual(true)->with('permisos')->get();
+    }
 
     /**
      * Agrega los Permisos al Rol
