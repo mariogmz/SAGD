@@ -144,8 +144,8 @@
     }
 
     function guardarProducto(){
-      vm.producto.precios.forEach(function (element){
-        element.descuento /= 100;
+      vm.producto.precios.forEach(function (precio){
+        precio.descuento /= 100;
       });
       return api.put('/producto/', vm.id, vm.producto)
         .then(function (response){

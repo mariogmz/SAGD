@@ -12,8 +12,7 @@ class ProductoTableSeeder extends Seeder {
 
     private function setUp() {
         $this->command->getOutput()->writeln("You're about to begin the product seeding, this will take a few mins to complete.");
-        $errors = $this->command->ask('Do you want to dump errors to console? [y/N]' . "\n", 'N');
-        $this->show_errors = strtolower($errors) == 'y';
+        $this->show_errors = $this->command->confirm('Do you want to dump errors to console?' . "\n", false);
         $limit = $this->command->ask('How many records do you want to seed? (Leave 0 to seed the entire recordset): ' . "\n", 0);
         $this->limit_to = $limit > 0 ? $limit : 0;
         echo "\n";
@@ -99,24 +98,12 @@ class ProductoTableSeeder extends Seeder {
         $marcas = App\Marca::all()->toArray();
         $margenes = App\Margen::all()->toArray();
         $subfamilias = App\Subfamilia::all()->toArray();
-        $this->reindexar('upc', $productos_legacy);
-        $this->reindexar('clave', $marcas);
-        $this->reindexar('nombre', $margenes);
-        $this->reindexar('clave', $subfamilias);
+        reindexar('upc', $productos_legacy);
+        reindexar('clave', $marcas);
+        reindexar('nombre', $margenes);
+        reindexar('clave', $subfamilias);
         $this->foreignKeys($productos_legacy, $marcas, $margenes, $subfamilias);
         $this->crearProductos($productos_legacy);
-    }
-
-    /**
-     * Reindexa un array usando el valor de uno de sus campos
-     * @param String $key
-     * @param array $result_set
-     */
-    private function reindexar($key, &$result_set) {
-        $reindexed = array_map(function ($element) {
-            return (array) $element;
-        }, $result_set);
-        $result_set = array_column($reindexed, null, $key);
     }
 
     /**
