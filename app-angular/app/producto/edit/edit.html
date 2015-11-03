@@ -15,7 +15,7 @@
       <li class="nav-item">
         <a href="#precios" role="tab" data-toggle="tab">Precios</a>
       </li>
-      <li class="nav-item save" ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty}">
+      <li class="nav-item save" ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
         <a role="tab" ng-click="vm.save(productoEditForm.$invalid && productoEditForm.$dirty)"><i></i> Guardar</a>
       </li>
       <li class="nav-item save">
