@@ -52,18 +52,32 @@
       })
     }
 
+    function attach(rolId, permisoId) {
+      var endpoint = '/rol/attach/' + rolId + '/' + permisoId;
+      return api.post(endpoint);
+    }
+
+    function detach(rolId, permisoId) {
+      var endpoint = '/rol/detach/' + rolId + '/' + permisoId;
+      return api.delete(endpoint);
+    }
+
     function attachToRole(permiso) {
-      vm.rolSeleccionado.permisos.push(permiso);
+      attach(vm.rolSeleccionado.id, permiso.id).then(function(repsonse) {
+        vm.rolSeleccionado.permisos.push(permiso);
+      });
     }
 
     function detachFromRole(permiso) {
-      for (var i = vm.rolSeleccionado.permisos.length - 1; i >= 0; i--) {
-        var permisoRol = vm.rolSeleccionado.permisos[i];
-        if (permisoRol.id === permiso.id) {
-          vm.rolSeleccionado.permisos.splice(i,1);
-          return;
-        };
-      };
+      detach(vm.rolSeleccionado.id, permiso.id).then(function(response) {
+        for (var i = vm.rolSeleccionado.permisos.length - 1; i >= 0; i--) {
+          var permisoRol = vm.rolSeleccionado.permisos[i];
+          if (permisoRol.id === permiso.id) {
+            vm.rolSeleccionado.permisos.splice(i,1);
+            return;
+          }
+        }
+      });
     }
 
     function selectRole(role) {
