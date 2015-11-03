@@ -1,4 +1,4 @@
-// app/blocks/validators/alpha.directive.js
+// app/blocks/validators/alphanum.directive.js
 
 (function (){
   'use strict';
