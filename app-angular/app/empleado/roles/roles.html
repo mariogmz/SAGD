@@ -1,0 +1,31 @@
+<section class="search-card">
+  <div class="header">
+    <h4>Roles de {{vm.empleado.nombre}}</h4>
+  </div>
+</section>
+
+<div class="empleados-roles">
+    <div class="roles-list">
+        <table class="roles-table">
+          <thead>
+            <tr><th>Rol</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            <tr class="roles-row"
+                dir-paginate="rol in vm.roles | orderBy:['individual','clave'] | itemsPerPage:10">
+              <td>{{rol.nombre}}</td>
+              <td class="roles-actions">
+                <div class="action-buttons">
+                  <button type="button" class="attach"><i></i></button>
+                  <button type="button" class="detach"><i></i></button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <loader model="vm.roles"></loader>
+    </div>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+</div>

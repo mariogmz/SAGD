@@ -5,11 +5,12 @@
     @extend .fa;
   }
 
-  .create,
-  .edit,
-  .delete,
   .attach,
-  .detach {
+  .create,
+  .delete,
+  .detach,
+  .edit,
+  .roles {
 
     @extend .btn;
 
@@ -77,6 +78,16 @@
     i {
 
       @extend .fa-times;
+    }
+  }
+
+  .roles {
+
+    @extend .btn-primary;
+
+    i {
+
+      @extend .fa-users;
     }
   }
 }
