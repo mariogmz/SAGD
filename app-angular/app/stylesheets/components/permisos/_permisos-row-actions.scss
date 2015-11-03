@@ -6,17 +6,28 @@
   .name {
 
     @include make-col();
-    @include make-col-span(6);
+    @include make-col-span(8.52);
 
     align-items: center;
     display: flex;
     min-height: 38px;
+
+    .module-info {
+
+      @include normalize_link($mine-shaft);
+      cursor: pointer;
+
+      i {
+
+        @extend .fa;
+        @extend .fa-info-circle;
+      }
+    }
   }
 
   .action-buttons {
 
     @include make-col();
-    @include make-col-span(4);
-    @include make-col-push(2);
+    @include make-col-span(3.48);
   }
 }

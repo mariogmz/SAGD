@@ -65,13 +65,15 @@ module.exports = function(grunt) {
     },
     copy: {
       main: {
-        files: [{
-          expand: true,
-          flatten: true,
-          src: ['./bower_components/font-awesome/fonts/*'],
-          dest: './public/fonts/',
-          filter: 'isFile'
-        }]
+        files: [
+          {
+            expand: true,
+            flatten: true,
+            src: ['./bower_components/font-awesome/fonts/*'],
+            dest: './public/fonts/',
+            filter: 'isFile'
+          }
+        ]
       }
     },
     concat: {
@@ -89,7 +91,7 @@ module.exports = function(grunt) {
           './bower_components/angular-formly/dist/formly.js',
           './bower_components/angularUtils-pagination/dirPagination.js',
           './bower_components/angular-filter/dist/angular-filter.js',
-          './bower_components/tether/dist/js/tether.js',
+          './bower_components/angular-tooltips/src/js/angular-tooltips.js',
           './bower_components/bootstrap/dist/js/bootstrap.js',
           './bower_components/pnotify/src/pnotify.core.js',
           './bower_components/pnotify/src/pnotify.desktop.js',
@@ -181,9 +183,9 @@ module.exports = function(grunt) {
     grunt.task.run([
       'ngconstant:development',
       'copy',
+      'sass',
       'concat',
-      'uglify',
-      'sass'
+      'uglify'
     ]);
   });
 
@@ -191,9 +193,9 @@ module.exports = function(grunt) {
     grunt.task.run([
       'ngconstant:stage',
       'copy',
+      'sass',
       'concat',
-      'uglify',
-      'sass'
+      'uglify'
     ]);
   });
 

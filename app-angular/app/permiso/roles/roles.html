@@ -66,6 +66,14 @@
             ng-repeat="permiso in vm.acciones | orderBy:'accion'">
           <td class="permisos-row-actions">
             <div class="name">
+              <a class="module-info" href="#"
+                  tooltips
+                  tooltip-side="bottom"
+                  tooltip-speed="fast"
+                  tooltip-view-model="permiso"
+                  tooltip-view="app/permiso/roles/tooltip.html">
+                <i></i>
+              </a>&nbsp;
               {{permiso.accion}}
             </div>
             <div class="action-buttons" role="group" aria-label="Acciones">
