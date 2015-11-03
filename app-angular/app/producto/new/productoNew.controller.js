@@ -141,7 +141,7 @@
 
     function calcular(){
       if (vm.precio.costo && vm.precio.precio_1) {
-        if (vm.precio.costo >= vm.precio.precio_1) {
+        if (parseFloat(vm.precio.precio_1) <= parseFloat(vm.precio.costo)) {
           pnotify.alert('Advertencia', 'El precio 1 debe ser mayor al costo', 'warning');
         } else {
           calcularPrecios();
