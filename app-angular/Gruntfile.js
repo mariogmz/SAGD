@@ -28,6 +28,7 @@ module.exports = function(grunt) {
               'margen',
               'proveedor',
               'subfamilia',
+              'sucursal?proveedor_clave=DICO',
               'unidad'
             ],
             socketEndpoint: 'ws://socket.sagd.app'
@@ -54,6 +55,7 @@ module.exports = function(grunt) {
               'margen',
               'proveedor',
               'subfamilia',
+              'sucursal?proveedor_clave=DICO',
               'unidad'
             ],
             socketEndpoint: 'wss://zegucomarb.dyndns.info:8081'

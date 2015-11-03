@@ -1,0 +1,19 @@
+<section class="card passwords-card">
+  <header class="header">
+    <h4>Reestablecer contraseña</h4>
+  </header>
+  <article class="card-block">
+    <p>
+      Para reestablecer su contraseña
+      <ol>
+        <li>Haga click en el botón de <em>Reestablecer contraseña</em></li>
+        <li>En unos momentos recibira un correo electrónico</li>
+        <li>En el correo se encontrara un link para reestablecer su contraseña</li>
+        <li>Dar click en el link y seguir las instrucciones que se mostrarán posteriormente</li>
+      </ol>
+    </p>
+    <p>
+      <button ng-click="vm.sendEmail()" ng-class="{disabled: vm.disabled}">Reestablecer contraseña</button>
+    </p>
+  </article>
+</section>

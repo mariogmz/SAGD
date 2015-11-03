@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Foundation\Testing\WithoutMiddleware;
+
+
 /**
  * @coversDefaultClass \App\Http\Controllers\Api\V1\AuthenticateController
  */
@@ -25,6 +28,10 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_POST_with_no_parameters()
     {
+        JWTAuth::shouldReceive('attempt')
+            ->withAnyArgs()
+            ->andReturn(null);
+
         $this->post($this->endpoint, [])
             ->seeJsonEquals([
                 'error' => 'invalid_credentials'
@@ -36,6 +43,10 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_POST_with_invalid_credentials()
     {
+        JWTAuth::shouldReceive('attempt')
+            ->withAnyArgs()
+            ->andReturn(null);
+
         $this->post($this->endpoint, ['email' => 'a@gmail.com', 'password' => 'hello'])
             ->seeJsonEquals([
                 'error' => 'invalid_credentials'
@@ -47,25 +58,29 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_POST_with_valid_credentials()
     {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => 'sistemas@zegucom.com.mx', 'password' => 'test123']);
+        JWTAuth::shouldReceive([
+            'attempt' => 'abcd',
+            'toUser' => App\User::first()
+            ])
+            ->withAnyArgs();
 
-        $this->assertEquals(200, $response->status());
+        $this->post($this->endpoint, ['email' => 'sistemas@zegucom.com.mx', 'password' => 'admin2015'])
+            ->assertResponseStatus(200);
     }
 
     /**
      * @covers ::authenticate
+     * @group last-login
      */
     public function test_user_gets_last_login_timestamp_saved()
     {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => 'sistemas@zegucom.com.mx', 'password' => 'test123']);
+        $expectedDate = \Carbon\Carbon::now('America/Mexico_City')->toDateTimeString();
+        $this->post($this->endpoint, ['email' => 'sistemas@zegucom.com.mx', 'password' => 'admin2015'])
+            ->assertResponseStatus(200);
         $user = App\User::where('email', 'sistemas@zegucom.com.mx')->first();
         $empleado = $user->morphable;
-        $expected = substr(\Carbon\Carbon::now('America/Mexico_City')->toDateTimeString(), 0, 10);
-        $regexp = sprintf("/%s.*/", $expected);
         $this->assertNotNull($empleado->fecha_ultimo_ingreso);
-        $this->assertRegExp($regexp, $empleado->fecha_ultimo_ingreso);
+        $this->assertEquals($expectedDate, $empleado->fecha_ultimo_ingreso);
     }
 
     /**
@@ -73,38 +88,98 @@ class AuthenticateControllerTest extends TestCase
      */
     public function test_successful_logout()
     {
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
-        $response = $this->call('GET', $this->logoutEndpoint, [
-            'token' => $token
-        ]);
+        $this->withoutMiddleware();
 
-        $this->assertEquals(200, $response->status());
-        $decoded_response = $response->content();
-        $this->assertEquals(json_encode(['success' => 'user logged out successfuly']), $decoded_response);
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => true
+            ])->withAnyArgs();
+
+        JWTAuth::shouldReceive('invalidate')->once()->withNoArgs();
+
+        $response = $this->get($this->logoutEndpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'success' => 'user logged out successfuly'
+            ])
+            ->assertResponseStatus(200);
     }
 
     /**
      * @covers ::getAuthenticatedEmpleado
+     * @covers ::getUser
+     * @covers ::getEmpleado
+     * @group get-empleado
      */
     public function test_GET_to_empleado_returns_a_valid_empleado()
     {
-        // Loguearse
-        $token = $this->authenticate('sistemas@zegucom.com.mx', 'test123');
-        // Llamar a endpoint de esta prueba
-        $response = $this->call('GET', $this->endpoint . '/empleado',[
-            'token' => $token
-        ]);
-        $empleado_json = $response->content();
-        $empleado_db = json_encode(['empleado' => App\Empleado::where('usuario','admin')->first()]);
-        $this->assertEquals($empleado_db, $empleado_json);
+        $this->withoutMiddleware();
+
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => App\User::where('email', 'sistemas@zegucom.com.mx')->first()
+            ])
+            ->withAnyArgs();
+
+        $endpoint = $this->endpoint . '/empleado';
+
+        $this->get($endpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'usuario' => 'admin',
+                'email' => 'sistemas@zegucom.com.mx'
+            ])
+            ->assertResponseStatus(200);
     }
 
-    private function authenticate($email, $password)
+    /**
+     * @covers ::getAuthenticatedEmpleado
+     * @covers ::getUser
+     * @covers ::getEmpleado
+     * @group get-empleado
+     */
+    public function test_GET_empleado_returns_with_sucursal()
     {
-        $response = $this->call('POST', $this->endpoint, [
-            'email' => $email,
-            'password' => $password
-        ]);
-        return json_decode($response->content())->token;
+        $this->withoutMiddleware();
+
+        JWTAuth::shouldReceive([
+            'parseToken->authenticate' => App\User::first()
+        ])
+        ->withAnyArgs();
+
+        $endpoint = $this->endpoint . '/empleado';
+
+        $this->get($endpoint, ['token' => 'abcd'])
+            ->seeJson([
+                'usuario' => 'admin',
+                'clave' => 'DICOTAGS'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::authenticate
+     * @covers ::intentoDeLogin
+     * @covers ::setLastLoginToEmployee
+     * @covers ::getEmpleado
+     * @covers ::attemptLogin
+     * @covers ::attemptLoginWithUsuario
+     * @group username-login
+     */
+    public function testIniciarSesionConUsuarioYPassword()
+    {
+        $this->post($this->endpoint, ['email' => 'ogarcia', 'password' => 'ogarcia2015'])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::authenticate
+     * @covers ::intentoDeLogin
+     * @covers ::setLastLoginToEmployee
+     * @covers ::getEmpleado
+     * @covers ::attemptLogin
+     * @covers ::attemptLoginWithUsuario
+     * @group username-login
+     */
+    public function testIniciarSesionConUsuarioCorrectoYPasswordIncorrecto()
+    {
+        $this->post($this->endpoint, ['email' => 'ogarcia', 'password' => 'ogarcia'])
+            ->assertResponseStatus(401);
     }
 }

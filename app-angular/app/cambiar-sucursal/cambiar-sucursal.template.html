@@ -1,0 +1,8 @@
+<li class="empleado-item sucursales-list" id="sucursales-dropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  Cambiar sucursal
+</li>
+<section class="sucursales-dropdown-menu" aria-labelledby="sucursales-dropdown">
+  <li class="sucursal-item" ng-repeat="sucursal in vm.sucursales" ng-class="{inactive: vm.isCurrent(sucursal)}">
+    <a href="#" ng-click="vm.cambiarSucursal(sucursal)"><span>{{sucursal.clave}}</span></a>
+  </li>
+</section>

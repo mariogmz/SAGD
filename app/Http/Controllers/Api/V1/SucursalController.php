@@ -8,9 +8,13 @@ use App\Http\Requests;
 use App\Sucursal;
 use Event;
 use Illuminate\Http\Request;
+use Sagd\ParameterFilter;
 
 class SucursalController extends Controller
 {
+
+    use ParameterFilter;
+
     protected $sucursal;
 
     public function __construct(Sucursal $sucursal)
@@ -27,10 +31,11 @@ class SucursalController extends Controller
      */
     public function index(Request $request)
     {
-        $base = $request->base;
-        if( is_null($base) )
-        {
+        $params = $request->all();
+        if( array_key_exists('base', $params) ) {
             return $this->sucursal->with('proveedor', 'domicilio')->get();
+        } elseif ($params) {
+            return $this->filter($this->sucursal, $request);
         } else {
             return $this->sucursal->with('proveedor')->get();
         }

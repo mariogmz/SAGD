@@ -74,4 +74,28 @@ class UserTest extends TestCase {
         $this->assertTrue($user->save());
         $this->assertInstanceOf(App\Empleado::class, $user->morphable);
     }
+
+    /**
+     * @coversNothing
+     * @group updateDatoContacto
+     */
+    public function testEmailSeActualizaDespuesDeActualizacionDeDatoContacto()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        $datoContacto = factory(App\DatoContacto::class)->make(['empleado_id' => $empleado->id]);
+        $empleado->datoContacto()->save($datoContacto);
+        $oldEmail = $datoContacto->email;
+
+
+        $user = $empleado->user;
+        $this->assertNotNull($user);
+        $this->assertNotNull($user->email);
+        $this->assertEquals($oldEmail, $user->email);
+
+        $newEmail = "test".time()."@zegucom.com.mx";
+        $this->assertTrue( $datoContacto->update(['email' => $newEmail]) );
+
+        $user = App\User::find($user->id);
+        $this->assertEquals($newEmail, $user->email);
+    }
 }

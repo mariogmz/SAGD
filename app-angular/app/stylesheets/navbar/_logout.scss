@@ -26,11 +26,21 @@ a.empleado-style {
 
   &.nav {
 
-    @include normalize_link($alto);
+    @include normalize_link($white);
     position: absolute;
     text-align: center;
     text-transform: uppercase;
-    top: 25%;
+    padding: 3px;
+
+    .usuario {
+
+      font-style: normal;
+    }
+
+    .sucursal {
+
+      font-size: 0.9rem;
+    }
   }
 }
 

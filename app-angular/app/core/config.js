@@ -25,14 +25,15 @@
     }
   }
 
-  updateState.$inject = ['$rootScope', '$state', 'state', 'lscache'];
+  updateState.$inject = ['$rootScope', '$state', 'state', 'session', 'lscache'];
 
-  function updateState($rootScope, $state, state){
+  function updateState($rootScope, $state, state, session){
     $rootScope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams){
       state.setNewState(fromState.name, toState.name);
     });
 
     lscache.flush();
+    session.resetEmpleado();
   }
 
 })();
