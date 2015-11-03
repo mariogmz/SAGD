@@ -62,7 +62,7 @@ class PermisoTableSeeder extends Seeder {
                     'data' => $data
                 ]);
             }
-            $this->progressBar->start();
+            $this->progressBar->advance();
         }
         $this->progressBar->finish();
         $this->printErrors();
