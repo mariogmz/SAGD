@@ -48,21 +48,35 @@
 
   .attach {
 
-    @extend .btn-primary;
+    @extend .btn-primary-outline;
+
+    &.selected {
+
+      @extend .btn-primary;
+
+
+    }
 
     i {
 
-      @extend .fa-plus-square;
+      @extend .fa-check;
     }
   }
 
   .detach {
 
-    @extend .btn-danger;
+    @extend .btn-danger-outline;
+
+    &.selected {
+
+      @extend .btn-danger;
+
+
+    }
 
     i {
 
-      @extend .fa-minus-square;
+      @extend .fa-times;
     }
   }
 }

@@ -63,7 +63,7 @@
       <table class="permisos-table">
         <tbody>
         <tr class="permisos-row"
-            ng-repeat="permiso in vm.acciones | orderBy:'accion'">
+            ng-repeat="permiso in vm.permisosDisponibles | orderBy:'accion'">
           <td class="permisos-row-actions">
             <div class="name">
               <a class="module-info" href="#"
@@ -77,8 +77,12 @@
               <span class="ellipsis">{{permiso.accion}}</span>
             </div>
             <div class="action-buttons" role="group" aria-label="Acciones">
-              <button type="button" class="attach"><i></i></button>
-              <button type="button" class="detach"><i></i></button>
+              <button type="button" class="attach" aria-pressed="false"
+                      ng-class="{selected: vm.able(permiso)}"
+                      ng-click="vm.attach(permiso)"><i></i></button>
+              <button type="button" class="detach" aria-pressed="false"
+                      ng-class="{selected: vm.notAble(permiso)}"
+                      ng-click="vm.detach(permiso)"><i></i></button>
             </div>
           </td>
         </tr>
