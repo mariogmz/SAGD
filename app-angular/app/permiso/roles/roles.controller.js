@@ -29,8 +29,9 @@
     ////////////////
 
     function activate() {
-      obtenerPermisos();
-      return obtenerPermisosRoles();
+      obtenerPermisosRoles().then(function(){
+        obtenerPermisos();
+      });
     }
 
     function obtenerPermisosRoles() {
@@ -49,11 +50,13 @@
 
     function selectController(controlador) {
       vm.controladorSeleccionado = controlador;
+      if (vm.rolSeleccionado.length === 0) { return };
+
       vm.acciones = [];
       for (var i = vm.permisos.length - 1; i >= 0; i--) {
         var permisoActual = vm.permisos[i];
         if (permisoActual.controlador === vm.controladorSeleccionado) {
-          vm.acciones.push({'nombre': permisoActual.accion});
+          vm.acciones.push(permisoActual);
         };
       };
     }

@@ -1,34 +1,22 @@
 .permisos-row-actions {
 
+  @include make-container();
+  @include make-row();
+
+  .name {
+
+    @include make-col();
+    @include make-col-span(6);
+
+    align-items: center;
+    display: flex;
+    min-height: 38px;
+  }
+
   .action-buttons {
 
-    position: absolute;
-    right: 0;
-
-    .attach,
-    .detach {
-
-      @extend .btn;
-      @extend .btn-primary;
-
-      i {
-
-        @extend .fa;
-      }
-    }
-
-    .attach {
-      i {
-
-        @extend .fa-plus-square;
-      }
-    }
-
-    .detach {
-      i {
-
-        @extend .fa-minus-square;
-      }
-    }
+    @include make-col();
+    @include make-col-span(4);
+    @include make-col-push(2);
   }
 }

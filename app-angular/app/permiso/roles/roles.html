@@ -63,9 +63,11 @@
       <table class="permisos-table">
         <tbody>
         <tr class="permisos-row"
-            ng-repeat="accion in vm.acciones | orderBy:'nombre'">
+            ng-repeat="permiso in vm.acciones | orderBy:'accion'">
           <td class="permisos-row-actions">
-            {{accion.nombre}}
+            <div class="name">
+              {{permiso.accion}}
+            </div>
             <div class="action-buttons" role="group" aria-label="Acciones">
               <button type="button" class="attach"><i></i></button>
               <button type="button" class="detach"><i></i></button>

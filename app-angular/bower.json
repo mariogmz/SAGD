@@ -24,7 +24,8 @@
     "satellizer": "~0.12.2",
     "lscache": "~1.0.5",
     "angular-socket-io": "~0.7.0",
-    "angular-filter": "~0.5.7"
+    "angular-filter": "~0.5.7",
+    "tether": "~1.1.1"
   },
   "resolutions": {
     "bootstrap": "v4-dev"
