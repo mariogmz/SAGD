@@ -12,6 +12,11 @@
     display: flex;
     min-height: 38px;
 
+    .ellipsis {
+
+      @include ellipsis();
+    }
+
     .module-info {
 
       @include normalize_link($mine-shaft);
@@ -29,5 +34,12 @@
 
     @include make-col();
     @include make-col-span(3.48);
+
+    @media screen and (min-width: 84rem) and (max-width: 116.65rem) {
+      button {
+
+        padding: 0.375rem;
+      }
+    }
   }
 }
