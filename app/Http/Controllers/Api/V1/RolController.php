@@ -18,7 +18,7 @@ class RolController extends Controller
     {
         $this->rol = $rol;
         $this->permiso = $permiso;
-        // $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**
