@@ -44,6 +44,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('rol', 'RolController', ['only' => ['index','store','show','update','destroy']]);
         Route::get('permiso/generales', 'RolController@generales');
         Route::get('permiso/individuales', 'RolController@individuales');
+        Route::post('rol/attach/{rol}/{permiso}', 'RolController@attach');
+        Route::delete('rol/detach/{rol}/{permiso}', 'RolController@detach');
         Route::resource('permiso', 'PermisoController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 

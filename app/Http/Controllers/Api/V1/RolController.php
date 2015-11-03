@@ -6,16 +6,19 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Permiso;
 use App\Rol;
 
 class RolController extends Controller
 {
     protected $rol;
+    protected $permiso;
 
-    public function __construct(Rol $rol)
+    public function __construct(Rol $rol, Permiso $permiso)
     {
         $this->rol = $rol;
-        $this->middleware('jwt.auth');
+        $this->permiso = $permiso;
+        // $this->middleware('jwt.auth');
     }
 
     /**
@@ -140,6 +143,52 @@ class RolController extends Controller
      */
     public function individuales() {
         return $this->rol->permisosIndividuales();
+    }
+
+    /**
+     * Agrega un Permiso a un Rol
+     * @param Request $request
+     * @param int $rol
+     * @param int $permiso
+     * @return Response
+     */
+    public function attach(Request $request, $rol, $permiso) {
+        $this->rol = $this->rol->find($rol);
+        $this->permiso = $this->permiso->find($permiso);
+        if ($this->rol && $this->permiso) {
+            $this->rol->permisos()->attach($this->permiso->id);
+            return response()->json([
+                'message' => 'Permiso asignado a rol exitosamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Rol o Permiso no encontrado, intente nuevamente',
+                'error' => 'No se asigno permiso a rol'
+            ], 400);
+        }
+    }
+
+    /**
+     * Remueve un Permiso de un Rol
+     * @param Request $request
+     * @param int $rol
+     * @param int $permiso
+     * @return Response
+     */
+    public function detach(Request $request, $rol, $permiso) {
+        $this->rol = $this->rol->find($rol);
+        $this->permiso = $this->permiso->find($permiso);
+        if ($this->rol && $this->permiso) {
+            $this->rol->permisos()->detach($this->permiso->id);
+            return response()->json([
+                'message' => 'Permiso removido del rol exitosamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Rol o Permiso no encontrado, intente nuevamente',
+                'error' => 'No se removio permiso del rol'
+            ], 400);
+        }
     }
 }
 

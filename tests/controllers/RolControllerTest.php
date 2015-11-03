@@ -281,4 +281,170 @@ class RolControllerTest extends TestCase {
             ])
             ->assertResponseStatus(200);
     }
+
+    /**
+     * @covers ::attach
+     * @group feature-permisos
+     */
+    public function testAttachPermisoARol()
+    {
+        $endpoint = $this->endpoint . '/attach/1/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'permisos->attach' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->permiso = Mockery::mock('App\Permiso');
+        $this->permiso->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => 1
+        ])->withAnyArgs();
+        $this->app->instance('App\Permiso', $this->permiso);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Permiso asignado a rol exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::attach
+     * @group feature-permisos
+     */
+    public function testAttachRolNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/attach/1/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->permiso = Mockery::mock('App\Permiso');
+        $this->permiso->shouldReceive([
+            'find' => Mockery::self()
+        ])->withAnyArgs();
+        $this->app->instance('App\Permiso', $this->permiso);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Permiso no encontrado, intente nuevamente',
+                'error' => 'No se asigno permiso a rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::attach
+     * @group feature-permisos
+     */
+    public function testAttachPermisoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/attach/1/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'permisos->attach' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->permiso = Mockery::mock('App\Permiso');
+        $this->permiso->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Permiso', $this->permiso);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Permiso no encontrado, intente nuevamente',
+                'error' => 'No se asigno permiso a rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::detach
+     * @group feature-permisos
+     */
+    public function testDetachPermisoDeRol()
+    {
+        $endpoint = $this->endpoint . '/detach/1/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'permisos->detach' => 1
+            ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->permiso = Mockery::mock('App\Permiso');
+        $this->permiso->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => 1
+        ])->withAnyArgs();
+        $this->app->instance('App\Permiso', $this->permiso);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Permiso removido del rol exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::detach
+     * @group feature-permisos
+     */
+    public function testDetachRolNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/detach/1/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+            ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->permiso = Mockery::mock('App\Permiso');
+        $this->permiso->shouldReceive([
+            'find' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Permiso', $this->permiso);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Permiso no encontrado, intente nuevamente',
+                'error' => 'No se removio permiso del rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::detach
+     * @group feature-permisos
+     */
+    public function testDetachPermisoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/detach/1/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'permisos->detach' => 1
+            ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->permiso = Mockery::mock('App\Permiso');
+        $this->permiso->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Permiso', $this->permiso);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Permiso no encontrado, intente nuevamente',
+                'error' => 'No se removio permiso del rol'
+            ])
+            ->assertResponseStatus(400);
+    }
 }
