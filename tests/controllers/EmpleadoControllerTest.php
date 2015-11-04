@@ -519,4 +519,46 @@ class EmpleadoControllerTest extends TestCase {
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::roles
+     * @group feature-permisos
+     */
+    public function testObtenerRolesDeEmpleado()
+    {
+        $endpoint = $this->endpoint . '/1/roles';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'roles' => []
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::roles
+     * @group feature-permisos
+     */
+    public function testObtenerRolesDeEmpleadoNoExistente()
+    {
+        $endpoint = $this->endpoint . '/1/roles';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar el empleado',
+                'error' => 'Empleado no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
 }

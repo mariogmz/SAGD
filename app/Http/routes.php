@@ -50,6 +50,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::get('empleado/{id}/roles', 'EmpleadoController@roles');
         Route::post('empleado/{id}/roles/attach/{rol}', 'EmpleadoController@attach');
         Route::delete('empleado/{id}/roles/detach/{rol}', 'EmpleadoController@detach');
         Route::resource('sucursal', 'SucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);

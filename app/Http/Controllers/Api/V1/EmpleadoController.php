@@ -143,6 +143,25 @@ class EmpleadoController extends Controller
     }
 
     /**
+     * Obtiene los roles del Empleado especificado
+     * @param int $id
+     * @return Response
+     */
+    public function roles($id) {
+        $this->empleado = $this->empleado->find($id);
+        if ($this->empleado) {
+            return response()->json([
+                'roles' => $this->empleado->roles
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar el empleado',
+                'error' => 'Empleado no existente'
+            ], 404);
+        }
+    }
+
+    /**
      * Agrega un Rol a un Empleado
      * @param Request $request
      * @param int $empleado
