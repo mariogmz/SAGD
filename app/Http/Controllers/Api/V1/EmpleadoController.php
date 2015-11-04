@@ -5,15 +5,18 @@ namespace App\Http\Controllers\Api\V1;
 use App\Empleado;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Rol;
 use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
 {
     protected $empleado;
+    protected $rol;
 
-    public function __construct(Empleado $empleado)
+    public function __construct(Empleado $empleado, Rol $rol)
     {
         $this->empleado = $empleado;
+        $this->rol = $rol;
         $this->middleware('jwt.auth');
     }
 
@@ -135,6 +138,52 @@ class EmpleadoController extends Controller
             return response()->json([
                 'message' => 'No se pudo eliminar el empleado',
                 'error' => $this->empleado->errors
+            ], 400);
+        }
+    }
+
+    /**
+     * Agrega un Rol a un Empleado
+     * @param Request $request
+     * @param int $empleado
+     * @param int $rol
+     * @return Response
+     */
+    public function attach(Request $request, $empleado, $rol) {
+        $this->empleado = $this->empleado->find($empleado);
+        $this->rol = $this->rol->find($rol);
+        if ($this->empleado && $this->rol) {
+            $this->empleado->roles()->attach($this->rol->id);
+            return response()->json([
+                'message' => 'Rol asignado a empleado exitosamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se asigno rol a empleado'
+            ], 400);
+        }
+    }
+
+    /**
+     * Remueve un Rol de un Empleado
+     * @param Request $request
+     * @param int $empleado
+     * @param int $rol
+     * @return Response
+     */
+    public function detach(Request $request, $empleado, $rol) {
+        $this->empleado = $this->empleado->find($empleado);
+        $this->rol = $this->rol->find($rol);
+        if ($this->empleado && $this->rol) {
+            $this->empleado->roles()->detach($this->rol->id);
+            return response()->json([
+                'message' => 'Rol removido del empleado exitosamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se removio el rol del empleado'
             ], 400);
         }
     }
