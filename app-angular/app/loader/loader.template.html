@@ -1,4 +1,4 @@
-<div class="loader" ng-hide="vm.model">
+<div class="loader" ng-hide="vm.model || vm.acl.getUnauthorizedAccess()">
     <div class="spinner">
       <i class="fa fa-spinner fa-spin fa-4x"></i>
     </div>

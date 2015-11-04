@@ -8,9 +8,10 @@
     .config(configure)
     .run(updateState);
 
-  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', 'apiProvider', 'paginationTemplateProvider'];
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', '$httpProvider', 'apiProvider', 'paginationTemplateProvider', 'apiObserverProvider'];
 
-  function configure($urlRouterProvider, $authProvider, $locationProvider, api, paginationTemplateProvider){
+  function configure($urlRouterProvider, $authProvider, $locationProvider, $httpProvider, api, paginationTemplateProvider, apiObserver){
+    $httpProvider.interceptors.push('apiObserver');
     $authProvider.loginUrl = api.$get().endpoint + '/authenticate';
     $authProvider.withCredentials = true;
 

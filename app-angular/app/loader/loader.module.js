@@ -5,6 +5,7 @@
 
   angular
     .module('sagdApp.loader', [
-      'sagdApp.core'
+      'sagdApp.core',
+      'blocks.acl'
     ]);
 })();

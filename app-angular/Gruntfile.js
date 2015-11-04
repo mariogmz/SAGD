@@ -107,6 +107,7 @@ module.exports = function(grunt) {
       js: {
         src: [
           './app/**/*module*.js',
+          './app/**/*factory*.js',
           './app/**/*.js'
         ],
         dest: './public/js/all.js'
