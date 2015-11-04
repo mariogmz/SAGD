@@ -1,6 +1,6 @@
 <section class="search-card">
   <div class="header">
-    <h4>Roles de {{vm.empleado.nombre}}</h4>
+    <h4>Empleados del rol {{vm.rol.nombre}}</h4>
   </div>
   <div class="block">
     <div class="row">
@@ -21,30 +21,30 @@
         <table class="roles-table">
           <thead>
             <tr>
-              <th>Clave</th>
-              <th>Nombre del Rol</th>
+              <th>Usuario</th>
+              <th>Nombre del Empleado</th>
               <th>Acciones</th>
             </tr>
           </thead>
           <tbody>
             <tr class="roles-row"
-                dir-paginate="rol in vm.roles | orderBy:['individual','nombre'] | filter:vm.search | itemsPerPage:10">
-              <td>{{rol.clave}}</td>
-              <td>{{rol.nombre}}</td>
+                dir-paginate="empleado in vm.empleados | orderBy:'nombre' | filter:vm.search | itemsPerPage:10">
+              <td>{{empleado.usuario}}</td>
+              <td>{{empleado.nombre}}</td>
               <td class="roles-actions">
                 <div class="action-buttons">
                   <button type="button" class="attach"
-                          ng-class="{selected: vm.empleadoHas(rol)}"
-                          ng-click="vm.attach(rol)"><i></i></button>
+                          ng-class="{selected: vm.rolHas(empleado)}"
+                          ng-click="vm.attach(empleado)"><i></i></button>
                   <button type="button" class="detach"
-                          ng-class="{selected: vm.empleadoDoesntHave(rol)}"
-                          ng-click="vm.detach(rol)"><i></i></button>
+                          ng-class="{selected: vm.rolDoesntHave(empleado)}"
+                          ng-click="vm.detach(empleado)"><i></i></button>
                 </div>
               </td>
             </tr>
           </tbody>
         </table>
-        <loader model="vm.roles"></loader>
+        <loader model="vm.empleados"></loader>
     </div>
 </div>
 <div class="paginator">

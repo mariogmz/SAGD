@@ -24,6 +24,7 @@
     vm.empleadoDoesntHave = empleadoDoesntHave;
     vm.attach = attachLocal;
     vm.detach = detachLocal;
+    vm.back = back;
 
     activate();
 
@@ -95,6 +96,10 @@
 
     function empleadoDoesntHave(rol) {
       return !empleadoHas(rol);
+    }
+
+    function back() {
+      window.history.back();
     }
   }
 })();
