@@ -297,9 +297,16 @@ class Cliente extends LGGModel {
 
         DB::beginTransaction();
 
+
+        $parameters['tabuladores'];
+
+        $tabuladores = $this->tabuladores($parameters['tabuladores']);
+
+
         $this->fill($parameters);
-        if($this->save() &&
-           $this->autorizaciones()->first()->update(['nombre_autorizado' => $parameters['autorizaciones'][0]['nombre_autorizado']])
+        if( $this->save() &&
+            $this->autorizaciones()->first()->update(['nombre_autorizado' => $parameters['autorizaciones'][0]['nombre_autorizado']]) &&
+            $this->actualizarTabuladores($parameters['tabuladores'])
         ){
             DB::commit();
             return true;
@@ -307,6 +314,7 @@ class Cliente extends LGGModel {
         } else {
 
             DB::rollback();
+            $this->errors(['Error test']);
             return false;
         }
     }
@@ -331,6 +339,28 @@ class Cliente extends LGGModel {
         }
 
         return true;
+    }
+
+    /**
+     * @return bool
+     */
+    public function actualizarTabuladores($tabuladores)
+    {
+
+       foreach($tabuladores as $tabulador)
+       {
+
+           $tab = Tabulador::findOrFail($tabulador['id']);
+
+           if($tab) {
+               $tab->tabulador = $tabulador['tabulador'];
+               $tab->save();
+           }else{
+               return false;
+           }
+       }
+
+       return true;
     }
 
     /**
