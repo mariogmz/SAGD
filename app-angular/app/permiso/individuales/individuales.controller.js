@@ -63,12 +63,14 @@
     }
 
     function attachToRole(permiso) {
+      if (isAble(permiso)) {return};
       attach(vm.rolSeleccionado.id, permiso.id).then(function(repsonse) {
         vm.rolSeleccionado.permisos.push(permiso);
       });
     }
 
     function detachFromRole(permiso) {
+      if (isntAble(permiso)) {return};
       detach(vm.rolSeleccionado.id, permiso.id).then(function(response) {
         for (var i = vm.rolSeleccionado.permisos.length - 1; i >= 0; i--) {
           var permisoRol = vm.rolSeleccionado.permisos[i];

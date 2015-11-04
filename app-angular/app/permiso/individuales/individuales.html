@@ -20,7 +20,7 @@
         <tbody>
         <tr class="permisos-row"
             ng-class="{selected: rol===vm.rolSeleccionado}"
-            ng-repeat="rol in vm.roles | orderBy:'clave'"
+            ng-repeat="rol in vm.roles | orderBy:'nombre'"
             ng-click="vm.selectRole(rol)">
           <td>{{rol.nombre}}</td>
         </tr>

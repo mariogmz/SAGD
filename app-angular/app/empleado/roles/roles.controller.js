@@ -66,12 +66,14 @@
     }
 
     function attachLocal(rol) {
+      if (empleadoHas(rol)) {return};
       attach(rol.id).then(function(){
         vm.rolesEmpleado.push(rol);
       });
     }
 
     function detachLocal(rol) {
+      if (empleadoDoesntHave(rol)) {return};
       detach(rol.id).then(function() {
         for (var i = vm.rolesEmpleado.length - 1; i >= 0; i--) {
           if (vm.rolesEmpleado[i].id === rol.id){
