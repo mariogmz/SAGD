@@ -10,6 +10,15 @@
             <label>Buscar:</label>
             <input type="text" ng-model="vm.search" autofocus>
           </div>
+          <form>
+            <div class="index-checkboxes">
+              <label>
+                Mostrar activos
+                <input type="checkbox" ng-model="vm.active" ng-click="vm.toggleActives()">
+                <span></span>
+              </label>
+            </div>
+          </form>
         </form>
       </div>
     </div>

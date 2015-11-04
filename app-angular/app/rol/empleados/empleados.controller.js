@@ -19,12 +19,14 @@
     vm.rolId = $stateParams.rol;
     vm.rol = [];
     vm.empleados = [];
+    vm.empleadosOriginal = [];
     vm.empleadosRol = [];
     vm.rolHas = rolHas;
     vm.rolDoesntHave = rolDoesntHave;
     vm.attach = attachLocal;
     vm.detach = detachLocal;
     vm.back = back;
+    vm.toggleActives = toggleActives;
 
     activate();
 
@@ -47,6 +49,7 @@
     function obtenerEmpleados() {
       return api.get('/empleado').then(function(response) {
         vm.empleados = response.data;
+        vm.empleadosOriginal = vm.empleados;
       });
     }
 
@@ -100,6 +103,10 @@
 
     function back() {
       window.history.back();
+    }
+
+    function toggleActives() {
+      vm.empleados = vm.active ? vm.empleadosRol : vm.empleadosOriginal;
     }
   }
 })();
