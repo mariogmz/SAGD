@@ -12,12 +12,16 @@
           </thead>
           <tbody>
             <tr class="roles-row"
-                dir-paginate="rol in vm.roles | orderBy:['individual','clave'] | itemsPerPage:10">
+                dir-paginate="rol in vm.roles | orderBy:['individual','nombre'] | itemsPerPage:10">
               <td>{{rol.nombre}}</td>
               <td class="roles-actions">
                 <div class="action-buttons">
-                  <button type="button" class="attach"><i></i></button>
-                  <button type="button" class="detach"><i></i></button>
+                  <button type="button" class="attach"
+                          ng-class="{selected: vm.empleadoHas(rol)}"
+                          ng-click="vm.attach(rol)"><i></i></button>
+                  <button type="button" class="detach"
+                          ng-class="{selected: vm.empleadoDoesntHave(rol)}"
+                          ng-click="vm.detach(rol)"><i></i></button>
                 </div>
               </td>
             </tr>
