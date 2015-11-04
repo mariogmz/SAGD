@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
+use App\Empleado;
 use App\Http\Controllers\Controller;
 use App\Permiso;
 use App\Rol;
@@ -14,10 +15,11 @@ class RolController extends Controller
     protected $rol;
     protected $permiso;
 
-    public function __construct(Rol $rol, Permiso $permiso)
+    public function __construct(Rol $rol, Permiso $permiso, Empleado $empleado)
     {
         $this->rol = $rol;
         $this->permiso = $permiso;
+        $this->empleado = $empleado;
         $this->middleware('jwt.auth');
     }
 
@@ -188,6 +190,72 @@ class RolController extends Controller
                 'message' => 'Rol o Permiso no encontrado, intente nuevamente',
                 'error' => 'No se removio permiso del rol'
             ], 400);
+        }
+    }
+
+    /**
+     * Agrega un Empleado a un Rol
+     * @param Request $request
+     * @param int $id
+     * @param int $empleado
+     * @return Response
+     */
+    public function attachEmpleado(Request $request, $id, $empleado) {
+        $this->rol = $this->rol->find($id);
+        $this->empleado = $this->empleado->find($empleado);
+        if ($this->rol && $this->empleado) {
+            $this->rol->empleados()->attach($this->empleado->id);
+            return response()->json([
+                'message' => 'Empleado asignado a rol exitosamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se asigno empleado a rol'
+            ], 400);
+        }
+    }
+
+    /**
+     * Remueve un Empleado de un Rol
+     * @param Request $request
+     * @param int $rol
+     * @param int $empleado
+     * @return Response
+     */
+    public function detachEmpleado(Request $request, $rol, $empleado) {
+        $this->rol = $this->rol->find($rol);
+        $this->empleado = $this->empleado->find($empleado);
+        if ($this->rol && $this->empleado) {
+            $this->rol->empleados()->detach($this->empleado->id);
+            return response()->json([
+                'message' => 'Empleado removido del rol exitosamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se removio empleado del rol'
+            ], 400);
+        }
+    }
+
+    /**
+     * Regresa los empleados del rol especificado
+     * @param Request $request
+     * @param int $id
+     * @return Response
+     */
+    public function empleados(Request $request, $id) {
+        $this->rol = $this->rol->find($id);
+        if ($this->rol) {
+            return response()->json([
+                'empleados' => $this->rol->empleados
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar el rol',
+                'error' => 'Rol no existente'
+            ], 404);
         }
     }
 }

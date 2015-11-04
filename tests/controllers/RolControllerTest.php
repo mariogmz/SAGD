@@ -447,4 +447,212 @@ class RolControllerTest extends TestCase {
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::attachEmpleado
+     * @group feature-permisos
+     */
+    public function testAttachEmpleadoARol()
+    {
+        $endpoint = $this->endpoint . '/1/empleados/attach/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'empleados->attach' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->empleado = Mockery::mock('App\Empleado');
+        $this->empleado->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => 1
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->empleado);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Empleado asignado a rol exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::attachEmpleado
+     * @group feature-permisos
+     */
+    public function testAttachEmpleadoRolNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/empleados/attach/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->empleado = Mockery::mock('App\Empleado');
+        $this->empleado->shouldReceive([
+            'find' => Mockery::self()
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->empleado);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se asigno empleado a rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::attachEmpleado
+     * @group feature-permisos
+     */
+    public function testAttachEmpleadoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/empleados/attach/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'empleados->attach' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->empleado = Mockery::mock('App\Empleado');
+        $this->empleado->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->empleado);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se asigno empleado a rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::detachEmpleado
+     * @group feature-permisos
+     */
+    public function testDetachEmpleadoDeRol()
+    {
+        $endpoint = $this->endpoint . '/1/empleados/detach/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'empleados->detach' => 1
+            ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->empleado = Mockery::mock('App\Empleado');
+        $this->empleado->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => 1
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->empleado);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Empleado removido del rol exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::detachEmpleado
+     * @group feature-permisos
+     */
+    public function testDetachEmpleadoRolNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/empleados/detach/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+            ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->empleado = Mockery::mock('App\Empleado');
+        $this->empleado->shouldReceive([
+            'find' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->empleado);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se removio empleado del rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::detachEmpleado
+     * @group feature-permisos
+     */
+    public function testDetachEmpleadoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/empleados/detach/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'empleados->detach' => 1
+            ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->empleado = Mockery::mock('App\Empleado');
+        $this->empleado->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->empleado);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Rol o Empleado no encontrado, intente nuevamente',
+                'error' => 'No se removio empleado del rol'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::empleados
+     * @group feature-permisos
+     */
+    public function testObtenerEmpleadosDeRol()
+    {
+        $endpoint = $this->endpoint . '/1/empleados';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'empleados' => []
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::empleados
+     * @group feature-permisos
+     */
+    public function testObtenerEmpleadosDeRolNoExistente()
+    {
+        $endpoint = $this->endpoint . '/1/empleados';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar el rol',
+                'error' => 'Rol no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
 }
