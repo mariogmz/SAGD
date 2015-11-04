@@ -31,6 +31,7 @@ class SucursalController extends Controller
      */
     public function index(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         if( array_key_exists('base', $params) ) {
             return $this->sucursal->with('proveedor', 'domicilio')->get();
@@ -49,6 +50,7 @@ class SucursalController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $base = $params['base_id'];
         $this->sucursal->fill($params);
@@ -77,6 +79,7 @@ class SucursalController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->sucursal = $this->sucursal->with('proveedor', 'domicilio.codigoPostal')->find($id);
         if( $this->sucursal )
         {
@@ -101,6 +104,7 @@ class SucursalController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->sucursal = $this->sucursal->find($id);
         if( empty($this->sucursal) )
@@ -129,7 +133,9 @@ class SucursalController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->sucursal = $this->sucursal->find($id);
         if (empty($this->sucursal)) {
             return response()->json([

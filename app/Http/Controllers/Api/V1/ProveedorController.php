@@ -25,6 +25,7 @@ class ProveedorController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         $proveedores = $this->proveedor->all();
         return $proveedores;
     }
@@ -37,6 +38,7 @@ class ProveedorController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->proveedor->fill($params);
         if( $this->proveedor->save() )
@@ -64,6 +66,7 @@ class ProveedorController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->proveedor = $this->proveedor->find($id);
         if( $this->proveedor )
         {
@@ -88,6 +91,7 @@ class ProveedorController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->proveedor = $this->proveedor->find($id);
         if( empty($this->proveedor) )

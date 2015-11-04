@@ -25,6 +25,7 @@ class LogsAccesoController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         return $this->logsAcceso->with('empleado')->get();
     }
 }

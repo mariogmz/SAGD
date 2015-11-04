@@ -25,6 +25,7 @@ class MargenController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         $margenes = $this->margen->all();
         return $margenes;
     }
@@ -37,6 +38,7 @@ class MargenController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->margen->fill($params);
         if( $this->margen->save() )
@@ -64,6 +66,7 @@ class MargenController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->margen = $this->margen->find($id);
         if( $this->margen )
         {
@@ -88,6 +91,7 @@ class MargenController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->margen = $this->margen->find($id);
         if( empty($this->margen) )
@@ -118,6 +122,7 @@ class MargenController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize($this);
         $this->margen = $this->margen->find($id);
         if( empty($this->margen) )
         {

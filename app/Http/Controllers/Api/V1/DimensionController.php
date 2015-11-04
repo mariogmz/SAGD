@@ -22,7 +22,9 @@ class DimensionController extends Controller {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
+        $this->authorize($this);
         return $this->dimension->all();
     }
 
@@ -32,7 +34,9 @@ class DimensionController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->dimension->fill($params);
         if ($this->dimension->save()) {
@@ -55,7 +59,9 @@ class DimensionController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $this->authorize($this);
         $this->dimension = $this->dimension->find($id);
         if ($this->dimension) {
             return response()->json([
@@ -78,7 +84,9 @@ class DimensionController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->dimension = $this->dimension->find($id);
         if (empty($this->dimension)) {
@@ -104,7 +112,9 @@ class DimensionController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->dimension = $this->dimension->find($id);
         if (empty($this->dimension)) {
             return response()->json([

@@ -25,6 +25,7 @@ class CodigoPostalController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         return $this->codigoPostal->all();
     }
 
@@ -36,6 +37,7 @@ class CodigoPostalController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->codigoPostal->fill($params);
         if ($this->codigoPostal->save())
@@ -62,6 +64,7 @@ class CodigoPostalController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->codigoPostal = $this->codigoPostal->find($id);
         if ($this->codigoPostal)
         {
@@ -86,6 +89,7 @@ class CodigoPostalController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->codigoPostal = $this->codigoPostal->find($id);
         if( empty($this->codigoPostal) )
@@ -114,6 +118,7 @@ class CodigoPostalController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize($this);
         $this->codigoPostal = $this->codigoPostal->find($id);
         if( empty($this->codigoPostal) )
         {
@@ -141,6 +146,7 @@ class CodigoPostalController extends Controller
      */
     public function find($id)
     {
+        $this->authorize($this);
         $this->codigoPostal = $this->codigoPostal->where(['codigo_postal' => $id])->first();
         if ($this->codigoPostal)
         {

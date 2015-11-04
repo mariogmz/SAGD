@@ -18,10 +18,7 @@ class AuthenticateControllerPolicy
      */
     public function authenticate(User $user, AuthenticateController $controller)
     {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'authenticate')->first();
-        return !empty($permiso);
+        return true;
     }
 
     /**
@@ -33,10 +30,7 @@ class AuthenticateControllerPolicy
      */
     public function getAuthenticatedEmpleado(User $user, AuthenticateController $controller)
     {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'getAuthenticatedEmpleado')->first();
-        return !empty($permiso);
+        return true;
     }
 
     /**
@@ -48,10 +42,7 @@ class AuthenticateControllerPolicy
      */
     public function logout(User $user, AuthenticateController $controller)
     {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'logout')->first();
-        return !empty($permiso);
+        return true;
     }
 
     /**

@@ -84,6 +84,51 @@ class EmpleadoControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede eliminar un empleado
+     *
+     * @param  User  $user
+     * @param  EmpleadoController $controller
+     * @return bool
+     */
+    public function roles(User $user, EmpleadoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'roles')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un empleado
+     *
+     * @param  User  $user
+     * @param  EmpleadoController $controller
+     * @return bool
+     */
+    public function attach(User $user, EmpleadoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'attach')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un empleado
+     *
+     * @param  User  $user
+     * @param  EmpleadoController $controller
+     * @return bool
+     */
+    public function detach(User $user, EmpleadoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'detach')->first();
+        return !empty($permiso);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

@@ -84,6 +84,111 @@ class RolControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function generales(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'generales')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function individuales(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'individuales')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function attach(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'attach')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function detach(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'detach')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function attachEmpleado(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'attachEmpleado')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function detachEmpleado(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'detachEmpleado')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede eliminar un Rol
+     *
+     * @param  User  $user
+     * @param  RolController $controller
+     * @return bool
+     */
+    public function empleados(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'empleados')->first();
+        return !empty($permiso);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

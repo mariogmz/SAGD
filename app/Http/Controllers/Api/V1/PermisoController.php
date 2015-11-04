@@ -22,7 +22,9 @@ class PermisoController extends Controller {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
+        $this->authorize($this);
         return $this->permiso->all();
     }
 
@@ -32,7 +34,9 @@ class PermisoController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->permiso->fill($params);
         if ($this->permiso->save()) {
@@ -56,7 +60,9 @@ class PermisoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $this->authorize($this);
         $this->permiso = $this->permiso->find($id);
         if ($this->permiso) {
             return response()->json([
@@ -78,7 +84,9 @@ class PermisoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->permiso = $this->permiso->find($id);
         if (empty($this->permiso)) {
@@ -104,7 +112,9 @@ class PermisoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->permiso = $this->permiso->find($id);
         if (empty($this->permiso)) {
             return response()->json([

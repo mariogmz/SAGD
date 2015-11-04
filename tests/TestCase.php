@@ -22,4 +22,13 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
 
         return $app;
     }
+
+    public function setUp()
+    {
+        parent::setUp();
+        Gate::shouldReceive([
+            'check' => true
+            ])
+            ->withAnyArgs();
+    }
 }
