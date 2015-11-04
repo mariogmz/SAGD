@@ -23,6 +23,7 @@
             <tr>
               <th>Usuario</th>
               <th>Nombre del Empleado</th>
+              <th>Sucursal</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -31,6 +32,7 @@
                 dir-paginate="empleado in vm.empleados | orderBy:'nombre' | filter:vm.search | itemsPerPage:10">
               <td>{{empleado.usuario}}</td>
               <td>{{empleado.nombre}}</td>
+              <td>{{empleado.sucursal.clave}}</td>
               <td class="roles-actions">
                 <div class="action-buttons">
                   <button type="button" class="attach"
