@@ -18,7 +18,10 @@ class AuthenticateControllerPolicy
      */
     public function authenticate(User $user, AuthenticateController $controller)
     {
-        return true;
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'authenticate')->first();
+        return !empty($permiso);
     }
 
     /**
@@ -30,7 +33,10 @@ class AuthenticateControllerPolicy
      */
     public function getAuthenticatedEmpleado(User $user, AuthenticateController $controller)
     {
-        return true;
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'getAuthenticatedEmpleado')->first();
+        return !empty($permiso);
     }
 
     /**
@@ -42,6 +48,22 @@ class AuthenticateControllerPolicy
      */
     public function logout(User $user, AuthenticateController $controller)
     {
-        return true;
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'logout')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Normaliza el nombre del controlador a su nombre de clase unicamente
+     * @param $controller
+     * @return string
+     */
+    private function normalizeControllerName($controller)
+    {
+        $className = get_class($controller);
+        $controllerName = [];
+        preg_match('/(\w+)$/', $className, $controllerName);
+        return $controllerName[0];
     }
 }
