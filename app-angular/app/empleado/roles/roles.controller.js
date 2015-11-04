@@ -55,17 +55,31 @@
       });
     }
 
+    function attach(rol) {
+      var endpoint = '/empleado/'+vm.empleadoId+'/roles/attach/'+rol;
+      return api.post(endpoint);
+    }
+
+    function detach(rol) {
+      var endpoint = '/empleado/'+vm.empleadoId+'/roles/detach/'+rol;
+      return api.delete(endpoint);
+    }
+
     function attachLocal(rol) {
-      vm.rolesEmpleado.push(rol);
+      attach(rol.id).then(function(){
+        vm.rolesEmpleado.push(rol);
+      });
     }
 
     function detachLocal(rol) {
-      for (var i = vm.rolesEmpleado.length - 1; i >= 0; i--) {
-        if (vm.rolesEmpleado[i].id === rol.id){
-          vm.rolesEmpleado.splice(i,1);
-          return;
+      detach(rol.id).then(function() {
+        for (var i = vm.rolesEmpleado.length - 1; i >= 0; i--) {
+          if (vm.rolesEmpleado[i].id === rol.id){
+            vm.rolesEmpleado.splice(i,1);
+            return;
+          }
         }
-      };
+      });
     }
 
     function empleadoHas(rol) {
