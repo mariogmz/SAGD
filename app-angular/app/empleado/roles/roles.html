@@ -2,17 +2,34 @@
   <div class="header">
     <h4>Roles de {{vm.empleado.nombre}}</h4>
   </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" autofocus>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </section>
 
 <div class="empleados-roles">
     <div class="roles-list">
         <table class="roles-table">
           <thead>
-            <tr><th>Rol</th><th>Acciones</th></tr>
+            <tr>
+              <th>Clave</th>
+              <th>Nombre del Rol</th>
+              <th>Acciones</th>
+            </tr>
           </thead>
           <tbody>
             <tr class="roles-row"
-                dir-paginate="rol in vm.roles | orderBy:['individual','nombre'] | itemsPerPage:10">
+                dir-paginate="rol in vm.roles | orderBy:['individual','nombre'] | filter:vm.search | itemsPerPage:10">
+              <td>{{rol.clave}}</td>
               <td>{{rol.nombre}}</td>
               <td class="roles-actions">
                 <div class="action-buttons">
