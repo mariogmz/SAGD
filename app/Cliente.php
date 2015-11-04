@@ -295,26 +295,17 @@ class Cliente extends LGGModel {
      */
     public function actualizar($parameters) {
 
-
         DB::beginTransaction();
 
-        $this->tabuladores->update($parameters);
-
-        DB::commit();
-        return true;
-
-
-
-        if ($this->update($parameters) &&
-            $this->tabuladores->update($parameters['tabuladores'])
-
+        $this->fill($parameters);
+        if($this->save() &&
+           $this->autorizaciones()->first()->update(['nombre_autorizado' => $parameters['autorizaciones'][0]['nombre_autorizado']])
         ){
             DB::commit();
-
             return true;
+
         } else {
 
-            //$this->errors;
             DB::rollback();
             return false;
         }
@@ -335,8 +326,7 @@ class Cliente extends LGGModel {
                                     'habilitada' => 1,
                                     'venta_especial' => 0));
           }catch (Exception $e){
-            dd($e);
-              return 0;
+            return false;
           }
         }
 

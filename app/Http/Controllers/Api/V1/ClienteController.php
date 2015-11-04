@@ -94,6 +94,7 @@ class ClienteController extends Controller
         $parameters = $request->all();
 
         $this->cliente = $this->cliente->find($id);
+
         if( empty($this->cliente) )
         {
             return response()->json([
@@ -101,6 +102,7 @@ class ClienteController extends Controller
                 'error' => 'Cliente no encontrado'
             ], 404);
         }
+
         if( $this->cliente->actualizar($parameters) )
         {
             return response()->json([
