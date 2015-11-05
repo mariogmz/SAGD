@@ -15,8 +15,8 @@
       responseError: function (errorResponse) {
         if (errorResponse.status === 403) {
           acl.setUnauthorizedAccess();
-          return $q.reject(errorResponse);
         }
+        return $q.reject(errorResponse);
       },
       response: function (response) {
         acl.clearUnauthorizedAccess();
