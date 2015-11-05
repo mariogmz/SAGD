@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoEditController', ProductoEditController);
 
-  ProductoEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  ProductoEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify', 'utils'];
 
-  function ProductoEditController($auth, $state, $stateParams, api, pnotify){
+  function ProductoEditController($auth, $state, $stateParams, api, pnotify, utils){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -38,6 +38,7 @@
     vm.save = save;
     vm.calcularPrecios = calcularPrecios;
     vm.calcularPreciosMargen = calcularPreciosMargen;
+    vm.setClass = utils.setClass;
     vm.sort = sort;
     vm.back = goBack;
 

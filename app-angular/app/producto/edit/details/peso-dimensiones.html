@@ -6,10 +6,7 @@
     <div class="row">
 
       <!-- Peso -->
-      <fieldset class="col-sm" ng-class="{
-              'with-error' : productoEditForm.peso.$touched && productoEditForm.peso.$invalid,
-              'with-success' : productoEditForm.peso.$touched && productoEditForm.peso.$valid
-      }">
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.peso)">
         <label for="peso">Peso:</label>
 
         <div class="with-icon">
@@ -24,10 +21,7 @@
       </fieldset>
 
       <!-- Longitúd -->
-      <fieldset class="col-sm" ng-class="{
-              'with-error' : productoEditForm.largo.$touched && productoEditForm.largo.$invalid,
-              'with-success' : productoEditForm.largo.$touched && productoEditForm.largo.$valid
-      }">
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.largo)">
         <label for="largo">Largo:</label>
 
         <div class="with-icon">
@@ -42,10 +36,7 @@
       </fieldset>
 
       <!-- Ancho -->
-      <fieldset class="col-sm" ng-class="{
-              'with-error' : productoEditForm.ancho.$touched && productoEditForm.ancho.$invalid,
-              'with-success' : productoEditForm.ancho.$touched && productoEditForm.ancho.$valid
-      }">
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.ancho)">
         <label for="ancho">Ancho:</label>
 
         <div class="with-icon">
@@ -60,10 +51,7 @@
       </fieldset>
 
       <!-- Altura -->
-      <fieldset class="col-sm" ng-class="{
-              'with-error' : productoEditForm.alto.$touched && productoEditForm.alto.$invalid,
-              'with-success' : productoEditForm.alto.$touched && productoEditForm.alto.$valid
-      }">
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.alto)">
         <label for="alto">Alto:</label>
 
         <div class="with-icon">

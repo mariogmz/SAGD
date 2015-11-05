@@ -8,10 +8,10 @@
     .module('sagdApp.producto')
     .controller('productoNewController', ProductoNewController);
 
-  ProductoNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  ProductoNewController.$inject = ['$auth', '$state', 'api', 'pnotify', 'utils'];
 
   /*@ngInject*/
-  function ProductoNewController($auth, $state, api, pnotify){
+  function ProductoNewController($auth, $state, api, pnotify, utils){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     } else {
@@ -36,6 +36,7 @@
     vm.calcularPrecios = calcularPrecios;
     vm.calcular = calcular;
     vm.save = crearProducto;
+    vm.setClass = utils.setClass;
 
     initialize();
 

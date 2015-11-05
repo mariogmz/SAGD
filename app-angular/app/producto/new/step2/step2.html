@@ -10,10 +10,7 @@
     <section class="row">
 
       <!-- Costo -->
-      <div class="col-sm" ng-class="{
-              'with-error' : productoNewForm.costo.$touched && productoNewForm.costo.$invalid,
-              'with-success' : productoNewForm.costo.$touched && productoNewForm.costo.$valid
-      }">
+      <div class="col-sm" ng-class="parentVm.setClass(productoNewForm.costo)">
         <fieldset>
           <label for="costo">Costo: </label>
 
@@ -35,10 +32,7 @@
 
       <!-- Descuento -->
       <div class="col-xsm">
-        <fieldset ng-class="{
-                'with-error' : productoNewForm.descuento.$touched && productoNewForm.descuento.$invalid,
-                'with-success' : productoNewForm.descuento.$touched && productoNewForm.descuento.$valid
-        }">
+        <fieldset ng-class="parentVm.setClass(productoNewForm.descuento)">
           <label for="descuento">Descuento: </label>
 
           <div class="with-icon">
@@ -58,10 +52,7 @@
       </div>
 
       <!-- Spiff -->
-      <div class="col-xsm" ng-class="{
-              'with-error' : productoNewForm.spiff.$touched && productoNewForm.spiff.$invalid,
-              'with-success' : productoNewForm.spiff.$touched && productoNewForm.spiff.$valid
-      }">
+      <div class="col-xsm" ng-class="parentVm.setClass(productoNewForm.spiff)">
         <fieldset>
           <label for="spiff">Spiff: </label>
 
@@ -110,10 +101,7 @@
         <div class="col-lg">
 
           <!-- Precio 1 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_1.$touched && productoNewForm.precio_1.$invalid,
-                  'with-success' : productoNewForm.precio_1.$touched && productoNewForm.precio_1.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_1)">
             <label>Precios ( $ )</label>
 
             <div class="with-icon">
@@ -129,10 +117,7 @@
           </fieldset>
 
           <!-- Precio 2 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_2.$touched && productoNewForm.precio_2.$invalid,
-                  'with-success' : productoNewForm.precio_2.$touched && productoNewForm.precio_2.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_2)">
             <div class="with-icon">
               <span>2</span>
               <input type="number" id="precio_2" name="precio_2" placeholder="0.00" ng-model="parentVm.precio.precio_2"
@@ -145,10 +130,7 @@
             </div>
           </fieldset>
           <!-- Precio 3 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_3.$touched && productoNewForm.precio_3.$invalid,
-                  'with-success' : productoNewForm.precio_3.$touched && productoNewForm.precio_3.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_3)">
             <div class="with-icon">
               <span>3</span>
               <input type="number" id="precio_3" name="precio_3" placeholder="0.00" ng-model="parentVm.precio.precio_3"
@@ -161,10 +143,7 @@
             </div>
           </fieldset>
           <!-- Precio 4 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_4.$touched && productoNewForm.precio_4.$invalid,
-                  'with-success' : productoNewForm.precio_4.$touched && productoNewForm.precio_4.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_4)">
             <div class="with-icon">
               <span>4</span>
               <input type="number" id="precio_4" name="precio_4" placeholder="0.00" ng-model="parentVm.precio.precio_4"
@@ -177,10 +156,7 @@
             </div>
           </fieldset>
           <!-- Precio 5 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_5.$touched && productoNewForm.precio_5.$invalid,
-                  'with-success' : productoNewForm.precio_5.$touched && productoNewForm.precio_5.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_5)">
             <div class="with-icon">
               <span>5</span>
               <input type="number" id="precio_5" name="precio_5" placeholder="0.00" ng-model="parentVm.precio.precio_5"
@@ -238,10 +214,7 @@
         <div class="col-lg">
 
           <!-- Precio 6 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_6.$touched && productoNewForm.precio_6.$invalid,
-                  'with-success' : productoNewForm.precio_6.$touched && productoNewForm.precio_6.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_6)">
             <label>Precios ( $ )</label>
 
             <div class="with-icon">
@@ -257,10 +230,7 @@
           </fieldset>
 
           <!-- Precio 7 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_7.$touched && productoNewForm.precio_7.$invalid,
-                  'with-success' : productoNewForm.precio_7.$touched && productoNewForm.precio_7.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_7)">
             <div class="with-icon">
               <span>2</span>
               <input type="number" id="precio_7" name="precio_7" placeholder="0.00" ng-model="parentVm.precio.precio_7"
@@ -274,10 +244,7 @@
           </fieldset>
 
           <!-- Precio 8 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_8.$touched && productoNewForm.precio_8.$invalid,
-                  'with-success' : productoNewForm.precio_8.$touched && productoNewForm.precio_8.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_8)">
             <div class="with-icon">
               <span>3</span>
               <input type="number" id="precio_8" name="precio_8" placeholder="0.00" ng-model="parentVm.precio.precio_8"
@@ -291,10 +258,7 @@
           </fieldset>
 
           <!-- Precio 9 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_9.$touched && productoNewForm.precio_9.$invalid,
-                  'with-success' : productoNewForm.precio_9.$touched && productoNewForm.precio_9.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_9)">
             <div class="with-icon">
               <span>4</span>
               <input type="number" id="precio_9" name="precio_9" placeholder="0.00" ng-model="parentVm.precio.precio_9"
@@ -308,10 +272,7 @@
           </fieldset>
 
           <!-- Precio 10 -->
-          <fieldset ng-class="{
-                  'with-error' : productoNewForm.precio_10.$touched && productoNewForm.precio_10.$invalid,
-                  'with-success' : productoNewForm.precio_10.$touched && productoNewForm.precio_10.$valid
-          }">
+          <fieldset ng-class="parentVm.setClass(productoNewForm.precio_10)">
             <div class="with-icon">
               <span>5</span>
               <input type="number" id="precio_10" name="precio_10" placeholder="0.00" ng-model="parentVm.precio.precio_10"

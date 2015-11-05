@@ -18,7 +18,8 @@
       strip: stripApiCall,
       querify : querify,
       formatPercentage : formatPercentage,
-      parsePercentage : parsePercentage
+      parsePercentage : parsePercentage,
+      setClass : setClass
     };
 
 
@@ -56,6 +57,21 @@
 
     function parsePercentage(value){
       return (value || '').replace(/[^0-9\.]/g,'');
+    }
+
+    function setClass(field) {
+      return {
+        'with-error' : checkWithError(field),
+        'with-success' : checkWithSuccess(field)
+      };
+    }
+
+    function checkWithError(field) {
+      return field.$touched && field.$invalid;
+    }
+
+    function checkWithSuccess(field) {
+      return field.$touched && field.$valid;
     }
 
   }

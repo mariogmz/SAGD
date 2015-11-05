@@ -8,10 +8,7 @@
 
       <!-- Spiff -->
       <div class="col-sm">
-        <fieldset ng-class="{
-                'with-error' : productoEditForm.spiff.$touched && productoEditForm.spiff.$invalid,
-                'with-success' : productoEditForm.spiff.$touched && productoEditForm.spiff.$valid
-        }">
+        <fieldset ng-class="vm.setClass(productoEditForm.spiff)">
           <label for="spiff">Spiff: </label>
 
           <div class="with-icon">
@@ -31,10 +28,7 @@
 
       <!-- Margen -->
       <div class="col-lg">
-        <fieldset ng-class="{
-                'with-error' : productoEditForm.margen_id.$touched && productoEditForm.margen_id.$invalid,
-                'with-success' : productoEditForm.margen_id.$touched && productoEditForm.margen_id.$valid
-        }">
+        <fieldset ng-class="vm.setClass(productoEditForm.margen_id)">
           <label for="margen_id">Margen: </label>
           <select id="margen_id" ng-model="vm.producto.margen_id"
                   ng-options="margen.id as margen.nombre for margen in vm.margenes | orderBy:'nombre'"
