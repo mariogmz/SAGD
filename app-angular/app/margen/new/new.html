@@ -3,12 +3,12 @@
     <h4>Crear nuevo margen</h4>
   </div>
   <div class="block">
-    <form class="item-form" ng-submit="vm.create()">
+    <form class="item-form" name="margenNewForm" ng-submit="vm.create()">
       <fieldset>
         <legend>Ingrese los datos para crear el nuevo margen</legend>
-        <formly-form model="vm.margen" fields="vm.fields">
+        <formly-form model="vm.margen" fields="vm.fields" form="margenNewForm">
           <a ng-click="vm.back()" class="button secondary">Regresar</a>
-          <input type="submit" class="button primary" value="Guardar cambios">
+          <input type="submit" class="button primary" ng-disabled="margenNewForm.$invalid" value="Guardar cambios">
         </formly-form>
       </fieldset>
     </form>

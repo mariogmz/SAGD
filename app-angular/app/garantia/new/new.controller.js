@@ -47,6 +47,7 @@
         templateOptions: {
           type: 'select',
           label: 'Seriado:',
+          placeholder : 'Si/No',
           options: [
             {value: 0, name: 'No'},
             {value: 1, name: 'Si'}

@@ -26,7 +26,8 @@
           type: 'text',
           label: 'Clave:',
           placeholder: 'Máximo 3 caracteres alfanuméricos',
-          required: true
+          required: true,
+          maxlength: 3
         }
       }, {
         type: 'input',
@@ -35,7 +36,8 @@
           type: 'text',
           label: 'Nombre:',
           placeholder: 'Máximo 25 caracteres',
-          required: true
+          required: true,
+          maxlength: 25
         }
       }];
 
