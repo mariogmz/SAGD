@@ -40,7 +40,7 @@ table.item-table {
   }
 
   th:last-child {
-    text-align: center;
+    @extend .text-center;
   }
 
   tr:hover {
