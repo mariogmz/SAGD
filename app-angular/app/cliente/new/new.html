@@ -45,10 +45,9 @@
               <input type="email" name="email" id="email" class="form-control" ng-model="vm.model.email" required placeholder="">
             </fieldset>
 
-            {{vm.model.email.$error}}
             <div class="error" ng-show="form.$submitted || form.email.$touched">
               <small class="error" ng-show="form.email.$error.required">El correo es requerido.</small>
-              <small class="error" ng-show="form.email.$error.email">El correo no es válido</small>
+              <small class="error" qqng-show="form.email.$error.email">El correo no es válido</small>
             </div>
 
           </div>

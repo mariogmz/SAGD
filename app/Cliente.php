@@ -255,12 +255,11 @@ class Cliente extends LGGModel {
     /**
      * Crea cliente nuevo con tabuladores
     */
-    public function saveWithData($parameters) {
+    public function saveWithData($params) {
 
         $this->fill($parameters);
         $email = $parameters['email'];
         $password = $parameters['password'];
-
 
         // Se inicia transacción al crear cliente, tabuladores y usuario
         DB::beginTransaction();
@@ -269,6 +268,9 @@ class Cliente extends LGGModel {
             $this->guardarTabuladores($this->id) &&
             $this->guardarUsuario($email, $password)
         ){
+
+            $cliente = new Cliente($params);
+            $cliente->save();
 
             // Agregar autorizado(s)
             if(!empty($parameters['autorizado'])){
@@ -281,6 +283,7 @@ class Cliente extends LGGModel {
 
             DB::commit();
             return true;
+        
         }else {
             DB::rollback();
             return false;
