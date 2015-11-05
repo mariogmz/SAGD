@@ -49,9 +49,14 @@
       return api.get('/producto/', vm.id)
         .then(function (response){
           vm.producto = response.data.producto;
+          if(!vm.producto.margen){
+            vm.producto.margen = {
+              nombre : 'Libre'
+            }
+          }
           vm.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.producto.precios.forEach(function (precio){
+          vm.precios.forEach(function (precio){
             vm.producto.revisado = vm.producto.revisado && precio.revisado;
           });
           return response.data;

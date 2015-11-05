@@ -15,8 +15,8 @@
       <li class="nav-item">
         <a href="#precios" role="tab" data-toggle="tab">Precios</a>
       </li>
-      <li class="nav-item save">
-        <a role="tab" ng-click="vm.save()"><i></i> Guardar</a>
+      <li class="nav-item save" ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
+        <a role="tab" ng-click="vm.save(productoEditForm.$invalid && productoEditForm.$dirty)"><i></i> Guardar</a>
       </li>
       <li class="nav-item save">
         <a role="tab"><img width="70px" src="/public/img/icecat_logo.svg"></a>
@@ -28,6 +28,7 @@
 
 
     <div class="product-form">
+      <form name="productoEditForm" novalidate>
       <!-- Tab panes -->
         <article class="tab-content">
           <loader class="text-center" model="vm.producto"></loader>
@@ -44,6 +45,7 @@
             <div ui-view="precios"></div>
           </section>
         </article>
+      </form>
     </div>
   </section>
 </article>
