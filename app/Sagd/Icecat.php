@@ -35,7 +35,7 @@ Class Icecat {
 
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoriesList.xml.gz" to
-     * a PHP associative array.
+     * a PHP associative array and the saves it to a .json file
      * @return array
      */
     public function getCategories() {
@@ -62,8 +62,8 @@ Class Icecat {
 
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
-     * a PHP associative array.
-     * @return array
+     * a PHP associative array and then saves it to a .json file
+     * @return int
      */
     public function getFeatures() {
         $icecat_features = [];
@@ -85,6 +85,31 @@ Class Icecat {
         }
 
         return file_put_contents('Icecat/features.json', json_encode($icecat_features, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Parse the xml from "https://data.icecat.biz/export/level4/refs/FeatureGroupList.xml.gz" to
+     * a PHP associative array and then saves it to a .json file
+     * @return int
+     */
+    public function getFeatureGroups() {
+        $icecat_feature_groups = [];
+        $stream = new Stream\File('Icecat/feature_groups.xml', 1024);
+        $parser = new Parser\StringWalker([
+            'captureDepth' => 4
+        ]);
+
+        $streamer = new XmlStringStreamer($parser, $stream);
+
+        while ($node = $streamer->getNode()) {
+            $group = simplexml_load_string($node);
+            $result = $this->parseFeatureGroupNode($group);
+            if ($result) {
+                array_push($icecat_feature_groups, $result);
+            }
+        }
+
+        return file_put_contents('Icecat/feaure_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
@@ -158,6 +183,23 @@ Class Icecat {
     }
 
     /**
+     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
+     * friendly object
+     * @param \SimpleXMLElement $group_node
+     * @return array
+     */
+    private function parseFeatureGroupNode(\SimpleXMLElement $group_node) {
+        $icecat_id = (int) $group_node->attributes()['ID'];
+
+        if (!empty($name = $this->getLangValue($group_node->Name))) {
+
+            return compact('icecat_id', 'name');
+        } else {
+            return null;
+        }
+    }
+
+    /**
      * Iterates over each one of the values for one field, and returns the value attribute of the one which
      * has the desired lang_id, by default this is equals to 6 (Spanish for Icecat)
      * @param Array $field_array
@@ -185,7 +227,7 @@ Class Icecat {
      */
     private function getLangText($field_array, $lang_id = '6') {
         $field_text = '';
-        if (count($field_array)>0) {
+        if (count($field_array) > 0) {
             foreach ($field_array as $element) {
                 $found_lang_id = $element->attributes()['langid'];
                 if ($found_lang_id == $lang_id || $found_lang_id == '1') {
