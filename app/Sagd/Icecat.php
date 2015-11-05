@@ -57,8 +57,7 @@ Class Icecat {
             }
         }
 
-//        return $icecat_categories;
-        file_put_contents('Icecat/categories.json', json_encode($icecat_categories, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return file_put_contents('Icecat/categories.json', json_encode($icecat_categories, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
@@ -85,9 +84,7 @@ Class Icecat {
             }
         }
 
-//        return $icecat_features;
-        file_put_contents('Icecat/features.json', json_encode($icecat_features, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-
+        return file_put_contents('Icecat/features.json', json_encode($icecat_features, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
