@@ -26,11 +26,10 @@
     return directive;
   }
 
-  loaderController.$inject = ['acl'];
+  loaderController.$inject = [];
 
   /* @ngInject */
-  function loaderController(acl) {
+  function loaderController() {
     var vm = this;
-    vm.acl = acl;
   }
 })();

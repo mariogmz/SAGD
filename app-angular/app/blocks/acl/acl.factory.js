@@ -5,33 +5,27 @@
 
   angular
     .module('blocks.acl')
-    .factory('acl', acl);
+    .factory('aclFactory', aclFactory);
 
-  acl.$inject = [];
+  aclFactory.$inject = ['$injector'];
 
   /* @ngInject */
-  function acl() {
-    var acl = false;
+  function aclFactory($injector) {
     var service = {
-      setUnauthorizedAccess: setUnauthorizedAccess,
-      clearUnauthorizedAccess: clearUnauthorizedAccess,
-      getUnauthorizedAccess: getUnauthorizedAccess
+      redirect: redirect,
+      login: login,
     };
 
     return service;
 
     ////////////////
 
-    function setUnauthorizedAccess() {
-      acl = true;
+    function redirect() {
+      $injector.get('$state').go('unauthorized', {});
     }
 
-    function clearUnauthorizedAccess() {
-      acl = false;
-    }
-
-    function getUnauthorizedAccess() {
-      return acl;
+    function login() {
+      $injector.get('$state').go('login', {});
     }
   }
 })();

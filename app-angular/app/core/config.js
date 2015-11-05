@@ -8,9 +8,9 @@
     .config(configure)
     .run(updateState);
 
-  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', '$httpProvider', 'apiProvider', 'paginationTemplateProvider', 'apiObserverProvider'];
+  configure.$inject = ['$urlRouterProvider', '$authProvider', '$locationProvider', '$httpProvider', 'apiProvider', 'paginationTemplateProvider'];
 
-  function configure($urlRouterProvider, $authProvider, $locationProvider, $httpProvider, api, paginationTemplateProvider, apiObserver){
+  function configure($urlRouterProvider, $authProvider, $locationProvider, $httpProvider, api, paginationTemplateProvider){
     $httpProvider.interceptors.push('apiObserver');
     $authProvider.loginUrl = api.$get().endpoint + '/authenticate';
     $authProvider.withCredentials = true;
@@ -34,7 +34,9 @@
     });
 
     lscache.flush();
-    session.resetEmpleado();
+    if (session.isAuthenticated()) {
+      session.resetEmpleado();
+    }
   }
 
 })();

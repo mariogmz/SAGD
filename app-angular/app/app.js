@@ -9,6 +9,7 @@
       'sagdApp.core',
       'sagdApp.loader',
 
+      'sagdApp.acl',
       'sagdApp.cambiar-sucursal',
       'sagdApp.cliente',
       'sagdApp.codigo-postal',
