@@ -255,7 +255,7 @@ class Cliente extends LGGModel {
     /**
      * Crea cliente nuevo con tabuladores
     */
-    public function saveWithData($params) {
+    public function saveWithData($parameters) {
 
         $this->fill($parameters);
         $email = $parameters['email'];
@@ -269,7 +269,7 @@ class Cliente extends LGGModel {
             $this->guardarUsuario($email, $password)
         ){
 
-            $cliente = new Cliente($params);
+            $cliente = new Cliente($parameters);
             $cliente->save();
 
             // Agregar autorizado(s)
