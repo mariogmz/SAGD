@@ -33,6 +33,7 @@ class UpdateAcl extends Command
     Existen varios modos de usarlo:\n
     \t1 => Roles-Permisos. Asigna todos los permisos a un rol especifico.\n
     \t2 => Empleados-Roles. Asigna un rol a un empleado especifico\n
+    \t3 => Permisos. Crea nuevos permisos basados en route:list
     Por default el modo es 1, rol es SISTEM, empleado es 0 y permisos es ALL";
 
     protected $force;
@@ -86,6 +87,9 @@ class UpdateAcl extends Command
             case 2:
                 $this->modeTwo();
                 break;
+            case 3:
+                $this->modeThree();
+                break;
             default:
                 return;
                 break;
@@ -122,6 +126,42 @@ class UpdateAcl extends Command
             $message = sprintf("\n<info>Agregando el empleado</info> %s <info>al rol</info> %s", $empleado->usuario, $this->rol);
             $this->getOutput()->write($message);
             $empleado->roles()->attach($rol->id);
+        }
+        $this->line("");
+    }
+
+    private function modeThree()
+    {
+        $routes = \Route::getRoutes();
+        $permisosData = [];
+        foreach ($routes as $route) {
+            $controllerFullPath = $route->getActionName();
+            $match = [];
+            if ( preg_match('/(\w+)@(\w+)/', $controllerFullPath, $match) > 0 ) {
+                $controlador = $match[1];
+                $accion = $match[2];
+                $descripcion = "Este permiso autoriza en ".$controlador." a la accion ".$accion;
+                $data = [
+                    'controlador'   => $controlador,
+                    'accion'        => $accion,
+                    'descripcion'   => $descripcion
+                ];
+                array_push($permisosData, $data);
+            }
+        }
+
+        foreach ($permisosData as $data) {
+            $permiso = new Permiso($data);
+            if ($permiso->isValid()) {
+                if ($permiso->save()) {
+                    $message = sprintf("\n<info>El permiso</info> <error>%s</error> <info>se agrego</info>\n", $permiso->controlador."@".$permiso->accion);
+                    $this->getOutput()->write($message);
+                }
+            } else {
+                $perm = str_pad($permiso->controlador."@".$permiso->accion, 40);
+                $message = sprintf("\r<info>El permiso</info> <error>%s</error> <info>ya existe</info>", $perm);
+                $this->getOutput()->write($message);
+            }
         }
         $this->line("");
     }
