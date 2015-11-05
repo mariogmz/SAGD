@@ -139,8 +139,12 @@ class AuthenticateController extends Controller
     private function attemptLoginWithUsuario($credentials)
     {
         if ($this->empleado = Empleado::whereUsuario($credentials['email'])->first()) {
-            $credentials['email'] = $this->empleado->user->email;
-            return $this->attemptLoginWithEmail($credentials);
+            if ($user = $this->empleado->user) {
+                $credentials['email'] = $user->email;
+                return $this->attemptLoginWithEmail($credentials);
+            } else {
+                return false;
+            }
         } else {
             return false;
         }
