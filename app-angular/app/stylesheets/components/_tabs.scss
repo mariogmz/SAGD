@@ -6,7 +6,6 @@ ul.tabs {
 
     &.nav-item {
 
-
       a[data-toggle="tab"] {
         @extend .nav-link;
 
@@ -42,6 +41,15 @@ ul.tabs {
         @extend .fa-arrow-left;
       }
 
+    }
+
+    &.disabled-tab {
+      a {
+        @extend .btn-warning;
+        &:hover {
+          cursor: no-drop;
+        }
+      }
     }
 
     &.save {

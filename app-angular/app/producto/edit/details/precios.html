@@ -8,32 +8,46 @@
 
       <!-- Spiff -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="vm.setClass(productoEditForm.spiff)">
           <label for="spiff">Spiff: </label>
 
           <div class="with-icon">
             <span><i class="money"></i></span>
-            <input type="text" id="spiff" ng-model="vm.producto.spiff">
+            <input type="number" id="spiff" name="spiff" ng-model="vm.producto.spiff"
+                   min="0"
+                   numeric
+                   required
+                   step="1">
+          </div>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.spiff.$error" ng-show="productoEditForm.spiff.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
       </div>
 
       <!-- Margen -->
       <div class="col-lg">
-        <fieldset>
+        <fieldset ng-class="vm.setClass(productoEditForm.margen_id)">
           <label for="margen_id">Margen: </label>
-          <select id="margen_id" ng-model="vm.producto.margen_id"
+          <select id="margen_id" name="margen_id" ng-model="vm.producto.margen_id"
                   ng-options="margen.id as margen.nombre for margen in vm.margenes | orderBy:'nombre'"
                   ng-change="vm.calcularPreciosMargen()">
             <option value="" ng-bind="vm.margenes? 'Seleccione un margen' : vm.producto.margen.nombre"></option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.margen_id.$error" ng-show="productoEditForm.margen_id.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
 
       <!-- Precios Revisados -->
       <div class="col-sm approved">
         <fieldset>
-          <button ng-class="vm.producto.revisado ? 'revisado' : 'no-revisado'"><i></i> {{vm.producto.revisado ? 'Revisado' : 'Sin revisar'}}</button>
+          <button ng-class="vm.producto.revisado ? 'revisado' : 'no-revisado'"><i></i> {{vm.producto.revisado ?
+            'Revisado' : 'Sin revisar'}}
+          </button>
         </fieldset>
       </div>
 

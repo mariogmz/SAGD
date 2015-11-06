@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoEditController', ProductoEditController);
 
-  ProductoEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  ProductoEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify', 'utils'];
 
-  function ProductoEditController($auth, $state, $stateParams, api, pnotify){
+  function ProductoEditController($auth, $state, $stateParams, api, pnotify, utils){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
@@ -35,9 +35,10 @@
 
     vm.updateClave = updateClave;
     vm.updateSubclave = updateSubclave;
-    vm.save = guardarProducto;
+    vm.save = save;
     vm.calcularPrecios = calcularPrecios;
     vm.calcularPreciosMargen = calcularPreciosMargen;
+    vm.setClass = utils.setClass;
     vm.sort = sort;
     vm.back = goBack;
 
@@ -135,6 +136,12 @@
       vm.producto.clave = familia + subfamilia + marca + vm.producto.subclave;
       vm.producto.subfamilia_id = vm.subfamilia ? vm.subfamilia.id : null;
       vm.producto.marca_id = vm.marca ? vm.marca.id : null;
+    }
+
+    function save(formIsValid){
+      if(formIsValid){
+        guardarProducto();
+      }
     }
 
     function guardarProducto(){

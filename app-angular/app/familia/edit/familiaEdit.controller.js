@@ -27,7 +27,16 @@
         templateOptions: {
           type: 'text',
           label: 'Clave:',
-          required: true
+          required: true,
+          maxlength: 5
+        },
+        validators: {
+          validKey: {
+            expression: function ($viewValue, $modelValue, scope){
+              return /^[\w]+$/.test($viewValue || $modelValue);
+            },
+            message: '$viewValue + " contiene caracteres inválidos"'
+          }
         }
       }, {
         type: 'input',
@@ -35,7 +44,16 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          required: true
+          required: true,
+          maxlength: 45
+        }
+      }, {
+        type: 'textarea',
+        key: 'descripcion',
+        templateOptions: {
+          label: 'Descripción:',
+          placeholder: 'Máximo 100 caracteres',
+          maxlength: 100
         }
       }
     ];
@@ -74,7 +92,7 @@
         });
     }
 
-    function goBack() {
+    function goBack(){
       window.history.back();
     }
   }
