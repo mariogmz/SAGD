@@ -27,7 +27,7 @@ form.item-form {
     @include make-col-span(6);
   }
 
-  .block-field{
+  .block-field {
     @extend .form-group;
     text-align: left;
   }
@@ -52,4 +52,41 @@ form.item-form {
       @extend .col-sm-3;
     }
   }
+
+  .with-error {
+    @extend .has-error;
+
+    input:not([type="submit"]) {
+      @extend .form-control-error;
+    }
+
+    .field{
+      @extend .has-error;
+    }
+  }
+
+  .with-success {
+    @extend .has-success;
+
+    input:not([type="submit"]) {
+      @extend .form-control-success;
+    }
+
+    .field{
+      @extend .has-success;
+    }
+  }
+
+  .with-warning {
+    @extend .has-warning;
+
+    input:not([type="submit"]) {
+      @extend .form-control-warning;
+    }
+
+    .field{
+      @extend .has-warning;
+    }
+  }
+
 }

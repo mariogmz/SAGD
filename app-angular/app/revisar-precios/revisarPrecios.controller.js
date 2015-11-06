@@ -8,9 +8,9 @@
     .module('sagdApp.revisarPrecios')
     .controller('revisarPreciosController', RevisarPreciosController);
 
-  RevisarPreciosController.$inject = ['api', 'pnotify'];
+  RevisarPreciosController.$inject = ['$state', 'api', 'pnotify'];
 
-  function RevisarPreciosController(api, pnotify){
+  function RevisarPreciosController($state, api, pnotify){
 
     var vm = this;
     vm.sortKeys = [

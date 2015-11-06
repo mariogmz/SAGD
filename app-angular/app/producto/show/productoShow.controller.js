@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoShowController', ProductoShowController);
 
-  ProductoShowController.$inject = ['$stateParams', 'api'];
+  ProductoShowController.$inject = ['$state', '$stateParams', 'api'];
 
-  function ProductoShowController($stateParams, api){
+  function ProductoShowController($state, $stateParams, api){
 
     var vm = this;
     vm.sortKeys = [
@@ -46,9 +46,14 @@
       return api.get('/producto/', vm.id)
         .then(function (response){
           vm.producto = response.data.producto;
+          if(!vm.producto.margen){
+            vm.producto.margen = {
+              nombre : 'Libre'
+            }
+          }
           vm.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.producto.precios.forEach(function (precio){
+          vm.precios.forEach(function (precio){
             vm.producto.revisado = vm.producto.revisado && precio.revisado;
           });
           return response.data;

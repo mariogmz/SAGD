@@ -7,10 +7,10 @@
     .module('sagdApp.sucursal')
     .controller('sucursalNewController', sucursalNewController);
 
-  sucursalNewController.$inject = ['api', 'pnotify'];
+  sucursalNewController.$inject = ['$state', 'api', 'pnotify'];
 
   /* @ngInject */
-  function sucursalNewController(api, pnotify) {
+  function sucursalNewController($state, api, pnotify) {
 
     var vm = this;
     vm.back = goBack;

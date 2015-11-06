@@ -8,9 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenNewController', MargenNewController);
 
-  MargenNewController.$inject = ['api', 'pnotify'];
+  MargenNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function MargenNewController(api, pnotify){
+  function MargenNewController($state, api, pnotify){
 
     var vm = this;
 
@@ -23,34 +23,41 @@
           type: 'text',
           label: 'Nombre:',
           placeholder: 'Máximo 45 caracteres',
-          required: true
+          required: true,
+          maxlength: 45
         }
       }, {
         type: 'input',
         key: 'valor',
         templateOptions: {
-          type: 'text',
-          label: 'Valor:',
-          placeholder: 'Porcentaje. [0.00 - 1.00]',
-          required: true
+          type: 'number',
+          label: 'Valor ( % ):',
+          placeholder: 'Porcentaje [0 - 100]',
+          required: true,
+          min: 0,
+          max: 100
         }
       }, {
         type: 'input',
         key: 'valor_webservice_p1',
         templateOptions: {
-          type: 'text',
-          label: 'Webservice P1:',
-          placeholder: 'Porcentaje. [0.00 - 1.00]',
-          required: true
+          type: 'number',
+          label: 'Webservice P1 ( % ):',
+          placeholder: 'Porcentaje [0 - 100]',
+          required: true,
+          min: 0,
+          max: 100
         }
       }, {
         type: 'input',
         key: 'valor_webservice_p8',
         templateOptions: {
-          type: 'text',
-          label: 'Webservice P8:',
-          placeholder: 'Porcentaje. [0.00 - 1.00]',
-          required: true
+          type: 'number',
+          label: 'Webservice P8 ( % ):',
+          placeholder: 'Porcentaje [0 - 100]',
+          required: true,
+          min: 0,
+          max: 100
         }
       }
     ];
@@ -58,6 +65,11 @@
     vm.create = create;
 
     function create(){
+      angular.merge(vm.margen, {
+        valor: vm.margen.valor / 100,
+        valor_webservice_p1: vm.margen.valor_webservice_p1 / 100,
+        valor_webservice_p8: vm.margen.valor_webservice_p8 / 100
+      });
       api.post('/margen', vm.margen)
         .then(function (response){
           pnotify.alert('¡Exito!', response.data.message, 'success');
@@ -68,7 +80,7 @@
         });
     }
 
-    function goBack() {
+    function goBack(){
       window.history.back();
     }
   }

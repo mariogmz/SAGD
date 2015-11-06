@@ -8,9 +8,9 @@
     .module('sagdApp.proveedor')
     .controller('proveedorEditController', ProveedorEditController);
 
-  ProveedorEditController.$inject = ['$stateParams', '$location', 'api', 'pnotify'];
+  ProveedorEditController.$inject = ['$state', '$stateParams', '$location', 'api', 'pnotify'];
 
-  function ProveedorEditController($stateParams, $location, api, pnotify){
+  function ProveedorEditController($state, $stateParams, $location, api, pnotify){
 
     var vm = this;
 

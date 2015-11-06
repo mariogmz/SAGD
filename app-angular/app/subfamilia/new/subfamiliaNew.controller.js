@@ -8,9 +8,9 @@
     .module('sagdApp.subfamilia')
     .controller('subfamiliaNewController', SubfamiliaNewController);
 
-  SubfamiliaNewController.$inject = ['api', 'pnotify'];
+  SubfamiliaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function SubfamiliaNewController(api, pnotify){
+  function SubfamiliaNewController($state, api, pnotify){
 
     var vm = this;
     vm.back = goBack;
@@ -23,7 +23,16 @@
           type: 'text',
           label: 'Clave:',
           required: true,
-          placeholder: 'Máximo 4 caracteres alfanuméricos'
+          placeholder: 'Máximo 4 caracteres alfanuméricos',
+          maxlength: 4
+        },
+        validators: {
+          validKey: {
+            expression: function ($formValue, $modelValue, scope){
+              return /^[\w]+$/.test($formValue || $modelValue);
+            },
+            message: '$viewValue + " contiene caracteres inválidos"'
+          }
         }
       }, {
         type: 'input',
@@ -31,8 +40,9 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
+          placeholder: 'Máximo 45 caracteres',
           required: true,
-          placeholder: 'Máximo 45 caracteres'
+          maxlength: 45
         }
       }, {
         type: 'select',
@@ -48,6 +58,7 @@
         key: 'margen_id',
         templateOptions: {
           label: 'Margen:',
+          placeholder: 'Seleccione un margen',
           options: [],
           ngOptions: 'margen.id as margen.nombre for margen in to.options | orderBy:"nombre"'
         }
@@ -58,9 +69,9 @@
 
     activate();
 
-    function activate() {
-      obtenerFamilias().then(function(response) {
-        obtenerMargenes().then(function(response) {
+    function activate(){
+      obtenerFamilias().then(function (response){
+        obtenerMargenes().then(function (response){
           assignFields();
         })
       })
@@ -77,42 +88,42 @@
         });
     }
 
-    function obtenerFamilias() {
+    function obtenerFamilias(){
       return api.get('/familia')
-      .then(function(response) {
-        vm.familias = response.data;
-        return response;
-      })
-      .catch(function(response) {
-        vm.error = response.data;
-        pnotify.alert('No se pudo obtener las familias', vm.error.error, 'error');
-        return response;
-      });
+        .then(function (response){
+          vm.familias = response.data;
+          return response;
+        })
+        .catch(function (response){
+          vm.error = response.data;
+          pnotify.alert('No se pudo obtener las familias', vm.error.error, 'error');
+          return response;
+        });
     }
 
-    function obtenerMargenes() {
+    function obtenerMargenes(){
       return api.get('/margen')
-      .then(function(response) {
-        vm.margenes = response.data;
-        return response;
-      })
-      .catch(function(response) {
-        vm.error = response.data;
-        pnotify.alert('No se pudo obtener los margenes', vm.error.error, 'error');
-        return response;
-      });
+        .then(function (response){
+          vm.margenes = response.data;
+          return response;
+        })
+        .catch(function (response){
+          vm.error = response.data;
+          pnotify.alert('No se pudo obtener los margenes', vm.error.error, 'error');
+          return response;
+        });
     }
 
-    function goBack() {
+    function goBack(){
       window.history.back();
     }
 
-    function assignFields() {
-      vm.fields = vm.fields.map(function(field) {
-        if(field.key == "familia_id") {
+    function assignFields(){
+      vm.fields = vm.fields.map(function (field){
+        if (field.key == "familia_id") {
           field.templateOptions.options = vm.familias;
         }
-        if(field.key == "margen_id") {
+        if (field.key == "margen_id") {
           field.templateOptions.options = vm.margenes;
         }
         return field;

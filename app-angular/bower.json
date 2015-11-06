@@ -24,6 +24,7 @@
     "satellizer": "~0.12.2",
     "lscache": "~1.0.5",
     "angular-socket-io": "~0.7.0",
+    "angular-messages": "~1.4.7",
     "angular-filter": "~0.5.7",
     "angular-tooltips": "~0.1.25"
   },

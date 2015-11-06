@@ -8,9 +8,9 @@
     .module('sagdApp.marca')
     .controller('marcaNewController', MarcaNewController);
 
-  MarcaNewController.$inject = ['api', 'pnotify'];
+  MarcaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function MarcaNewController(api, pnotify){
+  function MarcaNewController($state, api, pnotify){
 
     var vm = this;
     vm.back = goBack;
@@ -23,7 +23,8 @@
           type: 'text',
           label: 'Clave:',
           placeholder: 'Máximo 3 caracteres alfanuméricos',
-          required: true
+          required: true,
+          maxlength: 3
         }
       }, {
         type: 'input',
@@ -32,7 +33,8 @@
           type: 'text',
           label: 'Nombre:',
           placeholder: 'Máximo 25 caracteres',
-          required: true
+          required: true,
+          maxlength: 25
         }
       }];
 

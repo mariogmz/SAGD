@@ -23,7 +23,7 @@ trait CalculadoraPrecios {
      */
     public function calcularPrecios($precio_1, $costo, $externo = false, $margen_id = null) {
         $this->precio_1 = $precio_1;
-        $this->costo = $costo;
+        $this->costo = $costo <= 0 ? 0.1 : $costo;
         $this->margen_id = $margen_id;
 
         // Calcular utilidad 1

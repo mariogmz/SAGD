@@ -8,9 +8,9 @@
     .module('sagdApp.proveedor')
     .controller('proveedorNewController', ProveedorNewController);
 
-  ProveedorNewController.$inject = ['api', 'pnotify'];
+  ProveedorNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function ProveedorNewController(api, pnotify){
+  function ProveedorNewController($state, api, pnotify){
 
     var vm = this;
 

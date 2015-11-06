@@ -8,9 +8,9 @@
     .module('sagdApp.marca')
     .controller('marcaEditController', MarcaEditController);
 
-  MarcaEditController.$inject = ['$stateParams', 'api', 'pnotify'];
+  MarcaEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
 
-  function MarcaEditController($stateParams, api, pnotify){
+  function MarcaEditController($state, $stateParams, api, pnotify){
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -62,6 +62,7 @@
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
+          $state.go('marcaIndex');
           return response;
         })
         .catch(function (response){

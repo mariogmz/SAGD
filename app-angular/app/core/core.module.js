@@ -7,7 +7,7 @@
     /*
      * Angular modules
      */
-    'ngAnimate',
+    'ngAnimate', 'ngMessages',
 
     /*
      * Our reusable cross app code modules
@@ -15,7 +15,7 @@
     'blocks.session', 'blocks.state', 'blocks.utils',
     'blocks.api', 'blocks.formly', 'blocks.pnotify',
     'blocks.env', 'blocks.lscache', 'blocks.modal',
-    'blocks.notifications', 'blocks.acl',
+    'blocks.notifications', 'blocks.validators', 'blocks.acl',
 
     /*
      * 3rd party app modules

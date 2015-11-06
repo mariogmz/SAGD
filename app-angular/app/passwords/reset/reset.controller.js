@@ -7,10 +7,10 @@
     .module('sagdApp.passwords')
     .controller('passwordsResetController', passwordsResetController);
 
-  passwordsResetController.$inject = ['$stateParams', 'api', 'session', 'pnotify'];
+  passwordsResetController.$inject = ['$state', '$stateParams', 'api', 'session', 'pnotify'];
 
   /* @ngInject */
-  function passwordsResetController($stateParams, api, session, pnotify) {
+  function passwordsResetController($state, $stateParams, api, session, pnotify) {
 
     var vm = this;
     vm.token = $stateParams.token;

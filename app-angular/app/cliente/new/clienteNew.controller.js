@@ -8,9 +8,9 @@
       .module('sagdApp.cliente')
       .controller('clienteNewController', ClienteNewController);
 
-  ClienteNewController.$inject = ['api', 'pnotify'];
+  ClienteNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function ClienteNewController(api, pnotify){
+  function ClienteNewController($state, api, pnotify){
 
     var vm = this;
 

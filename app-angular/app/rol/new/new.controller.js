@@ -7,10 +7,10 @@
     .module('sagdApp.rol')
     .controller('rolNewController', rolNewController);
 
-  rolNewController.$inject = ['api', 'pnotify'];
+  rolNewController.$inject = ['$state', 'api', 'pnotify'];
 
   /* @ngInject */
-  function rolNewController(api, pnotify) {
+  function rolNewController($state, api, pnotify) {
 
     var vm = this;
 

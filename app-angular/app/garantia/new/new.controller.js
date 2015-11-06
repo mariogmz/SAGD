@@ -7,10 +7,10 @@
     .module('sagdApp.garantia')
     .controller('garantiaNewController', garantiaNewController);
 
-  garantiaNewController.$inject = ['api', 'pnotify'];
+  garantiaNewController.$inject = ['$state', 'api', 'pnotify'];
 
   /* @ngInject */
-  function garantiaNewController(api, pnotify) {
+  function garantiaNewController($state, api, pnotify) {
 
     var vm = this;
     vm.create = create;
@@ -44,6 +44,7 @@
         templateOptions: {
           type: 'select',
           label: 'Seriado:',
+          placeholder : 'Si/No',
           options: [
             {value: 0, name: 'No'},
             {value: 1, name: 'Si'}
