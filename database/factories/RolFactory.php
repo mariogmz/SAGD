@@ -22,7 +22,7 @@ $factory->define(App\Rol::class, function ($faker)
 
 $factory->defineAs(App\Rol::class, 'longname', function($faker) use ($factory){
     $rol = $factory->raw(App\Rol::class);
-    $rol['nombre'] = $faker->regexify('[a]{46}');
+    $rol['nombre'] = $faker->regexify('[a]{141}');
     return $rol;
 });
 
