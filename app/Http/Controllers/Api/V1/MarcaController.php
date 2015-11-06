@@ -14,7 +14,6 @@ class MarcaController extends Controller
 
     public function __construct(Marca $marca)
     {
-        $this->authorize($this);
         $this->marca = $marca;
         $this->middleware('jwt.auth');
     }
@@ -27,8 +26,7 @@ class MarcaController extends Controller
     public function index()
     {
         $this->authorize($this);
-        $marcas = $this->marca->all();
-        return $marcas;
+        return $this->marca->all();
     }
 
     /**
