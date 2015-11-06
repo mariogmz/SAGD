@@ -1,63 +1,57 @@
-<style type="text/css">
-  .css-form input.ng-invalid.ng-touched {
-    background-color: rgba(255, 0, 0, 0.1);
-    border-color: red;
-  }
-</style>
 <div class="card">
   <div class="header">
     <h4>Crear nuevo cliente</h4>
-  </div>
-  <div class="block">
+  </div>  
+  <div class="block">    
     <form name="form" class="item-form css-form" autocomplete="off" model="vm.model" ng-submit="form.$valid && vm.create(vm.model)" novalidate>
-
       <section class="card">
         <div class="header">
           <h5>Datos para usuario</h5>
         </div>
         <div class="row block">
-          <div class="col-lg-3">
-            <fieldset class="form-group">
+          <div class="col-lg-3">                        
+            <fieldset ng-class="vm.setClass(form.usuario)">
               <label for="usuario">Usuario:</label>
               <input type="text" name="usuario" id="usuario"
                      ng-model="vm.model.usuario"
                      ng-minlength=3
                      ng-maxlength=20
                      class="form-control" required autofocus>
+              <!-- Validation messages -->
+              <div ng-messages="form.usuario.$error" ng-show="form.usuario.$touched">
+                <div ng-messages-include="app/templates/fields/messages.html"></div>
+              </div>
             </fieldset>
-
-            <div class="error" ng-show="form.$submitted || form.usuario.$touched">
-              <small class="error" ng-show="form.usuario.$error.required">El usuario es requerido.</small>
-              <small class="error"  ng-show="form.usuario.$error.minlength">El usuario debe tener al menos 3 caracteres</small>
-              <small class="error" ng-show="form.usuario.$error.maxlength">El usuario no puede ser mayor a 20 caracteres</small>
-            </div>
-
           </div>
+          
           <div class="col-lg-3">
-            <fieldset class="form-group">
+            <fieldset>
               <label for="password">Contraseña:</label>
               <input type="password" id="password" ng-model="vm.model.password" class="form-control">
             </fieldset>
           </div>
+
           <div class="col-lg-3">
-            <fieldset class="form-group">
+            <fieldset ng-class="vm.setClass(form.email)">
               <label for="email">Email:</label>
-              <input type="email" name="email" id="email" class="form-control" ng-model="vm.model.email" required placeholder="">
-            </fieldset>
-
-            <div class="error" ng-show="form.$submitted || form.email.$touched">
-              <small class="error" ng-show="form.email.$error.required">El correo es requerido.</small>
-              <small class="error" qqng-show="form.email.$error.email">El correo no es válido</small>
-            </div>
-
+              <input type="email" name="email" id="email" class="form-control" ng-model="vm.model.email" required placeholder="ejemplo@gmail.com">
+              <!-- Validation messages -->
+              <div ng-messages="form.email.$error" ng-show="form.email.$touched">
+                <div ng-messages-include="app/templates/fields/messages.html"></div>
+              </div>
+            </fieldset>              
           </div>
+
           <div class="col-lg-3">
-            <fieldset class="form-group">
+            <fieldset ng-class="vm.setClass(form.email2)">
               <label for="email2">Repite email:</label>
-              <input type="email" name="email2" id="email2" class="form-control" ng-model="vm.model.email2" placeholder="">
+              <input type="email" name="email2" id="email2" class="form-control" ng-model="vm.model.email2" required placeholder="ejemplo@gmail.com">
+              <!-- Validation messages -->              
+              <div ng-messages="form.email2.$error" ng-show="form.email2.$touched">
+                <div ng-messages-include="app/templates/fields/messages.html"></div>
+              </div>
             </fieldset>
           </div>
-
         </div>
       </section>
 
@@ -66,21 +60,21 @@
           <h5>Datos personales</h5>
         </div>
         <div class="row block">
-          <div class="col-lg-4">
-            <fieldset class="form-group">
+          <div class="col-lg-4">            
+            <fieldset ng-class="vm.setClass(form.nombre)">
               <label for="nombre">Nombre:</label>
-              <input type="text" id="nombre" nombre="nombre" ng-model="vm.model.nombre" class="form-control" required="" placeholder="">
+              <input type="text" id="nombre" name="nombre" ng-model="vm.model.nombre" class="form-control" required>
+              <!-- Validation messages -->              
+              <div ng-messages="form.nombre.$error" ng-show="form.nombre.$touched">
+                <div ng-messages-include="app/templates/fields/messages.html"></div>
+              </div>
             </fieldset>
-
-            <div class="error" ng-show="form.$submitted || form.nombre.$touched">
-              <small class="error" ng-show="form.nombre.$error.required">El nombre es requerido.</small>
-            </div>
-
           </div>
+
           <div class="col-lg-4">
             <fieldset class="form-group">
               <label for="autorizado">Autorizado:</label>
-              <input type="text" id="autorizado" ng-model="vm.model.autorizado" class="form-control" placeholder="">
+              <input type="text" id="autorizado" ng-model="vm.model.autorizado" class="form-control">
             </fieldset>
           </div>
         </div>
@@ -131,19 +125,14 @@
         <div class="row block">
           <div class="row block">
             <div class="col-lg-6">
-              <fieldset class="form-group">
+              <fieldset ng-class="vm.setClass(form.cliente_referencia_id)">
                 <label for="cliente_referencia_id">Referencia:</label>
-                <select id="cliente_referencia_id" class="form-control" required
+                <select id="cliente_referencia_id" name="cliente_referencia_id" class="form-control" required
                         ng-model="vm.model.cliente_referencia_id"
                         ng-options="referencias.id as referencias.nombre for referencias in vm.referencias | orderBy:'id'">
-                  <option value="">Seleccione una referencia</option>
+                  <option value="">Seleccione una referencia...</option>
                 </select>
               </fieldset>
-
-              <div ng-show="form.$submitted || form.cliente_referencia_id.$touched">
-                <span ng-show="form.cliente_referencia_id.$error.required">Elige una referencia.</span>
-              </div>
-
             </div>
             <div class="col-lg-6">
               <fieldset class="form-group">
@@ -151,14 +140,9 @@
                 <select id="sucursal_id" class="form-control" required
                         ng-model="vm.model.sucursal_id"
                         ng-options="sucursales.id as sucursales.nombre for sucursales in vm.sucursales | orderBy:'nombre'">
-                  <option value="">Seleccione una sucursal</option>
+                  <option value="">Seleccione una sucursal...</option>
                 </select>
               </fieldset>
-
-              <div ng-show="form.$submitted || form.sucursal_id.$touched">
-                <span ng-show="form.sucursal_id.$error.required">Elige una sucursal predeterminada.</span>
-              </div>
-
             </div>
 
             <div class="col-lg-6">

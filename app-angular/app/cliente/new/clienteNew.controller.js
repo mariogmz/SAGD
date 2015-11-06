@@ -8,20 +8,22 @@
       .module('sagdApp.cliente')
       .controller('clienteNewController', ClienteNewController);
 
-  ClienteNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  ClienteNewController.$inject = ['$auth', '$state', 'api', 'pnotify', 'utils', 'session'];
 
-  function ClienteNewController($auth, $state, api, pnotify){
+  function ClienteNewController($auth, $state, api, pnotify, utils, session){
     if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
 
     var vm = this;
     vm.create = create;
+    vm.setClass = utils.setClass;
     vm.model = {};
-
+    //vm.empleado = session.obtenerEmpleado;
+    
     activate();
 
-    function activate() {
+    function activate() {    
       obtenerReferencias()
           .then(obtenerEmpleados)
           .then(obtenerSucursales);
@@ -74,6 +76,7 @@
 
       vm.model.cliente_estatus_id = 1; // Cliente Nuevo
       vm.model.rol_id = 8;             // Ufinal
+//      vm.model.sucursal_id = session.obtenerEmpleado'
 
       return api.post('/cliente', vm.model)
           .then(function (response){
