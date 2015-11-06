@@ -1,9 +1,9 @@
 <!-- app/layout/layout.html-->
 
 <!-- Navigation Bar-->
-<div ng-controller="NavbarController as vm" nav-bar></div>
+<div nav-bar></div>
 <!-- Main Container -->
-<div class="main-container">
+<div class="main-container" ng-if="vm.isAuthenticated()">
     <!-- Module view -->
     <section class="module-container">
       <section ui-view>

@@ -9,6 +9,10 @@
     .controller('NavbarController', NavbarController)
     .directive('navBar', function (){
       return {
+        bindToController: true,
+        controller: NavbarController,
+        controllerAs: 'vm',
+        restrict: 'A',
         templateUrl: 'app/navbar/navbar.html'
       };
     });
