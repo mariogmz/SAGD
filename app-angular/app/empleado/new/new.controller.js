@@ -7,13 +7,10 @@
     .module('sagdApp.empleado')
     .controller('empleadoNewController', empleadoNewController);
 
-  empleadoNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  empleadoNewController.$inject = ['api', 'pnotify'];
 
   /* @ngInject */
-  function empleadoNewController($auth, $state, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function empleadoNewController(api, pnotify) {
 
     var vm = this;
     vm.back = goBack;

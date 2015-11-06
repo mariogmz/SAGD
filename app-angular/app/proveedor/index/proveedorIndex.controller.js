@@ -7,12 +7,9 @@
         .module('sagdApp.proveedor')
         .controller("proveedorIndexController", ProveedorIndexController);
 
-    ProveedorIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+    ProveedorIndexController.$inject = ['api', 'pnotify'];
 
-    function ProveedorIndexController($auth, $state, api, pnotify) {
-        if (!$auth.isAuthenticated()) {
-            $state.go('login', {});
-        }
+    function ProveedorIndexController(api, pnotify) {
 
         var vm = this;
         vm.sort = sort;

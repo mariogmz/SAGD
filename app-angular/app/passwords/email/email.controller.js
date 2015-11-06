@@ -7,13 +7,10 @@
     .module('sagdApp.passwords')
     .controller('passwordsEmailController', passwordsEmailController);
 
-  passwordsEmailController.$inject = ['$auth', '$state', 'api', 'session', 'pnotify'];
+  passwordsEmailController.$inject = ['api', 'session', 'pnotify'];
 
   /* @ngInject */
-  function passwordsEmailController($auth, $state, api, session, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function passwordsEmailController(api, session, pnotify) {
 
     var vm = this;
     vm.disabled = false;

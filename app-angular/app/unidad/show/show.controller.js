@@ -7,13 +7,10 @@
     .module('sagdApp.unidad')
     .controller('unidadShowController', unidadShowController);
 
-  unidadShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  unidadShowController.$inject = ['$stateParams', 'api'];
 
   /* @ngInject */
-  function unidadShowController($auth, $state, $stateParams, api) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function unidadShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;

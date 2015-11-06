@@ -8,12 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenIndexController', MargenIndexController);
 
-  MargenIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  MargenIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function MargenIndexController($auth, $state, api, pnotify, modal){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MargenIndexController(api, pnotify, modal){
 
     var vm = this;
     vm.sort = sort;

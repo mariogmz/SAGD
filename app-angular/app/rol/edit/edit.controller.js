@@ -7,13 +7,10 @@
     .module('sagdApp.rol')
     .controller('rolEditController', rolEditController);
 
-  rolEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  rolEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
   /* @ngInject */
-  function rolEditController($auth, $state, $stateParams, api, pnotify) {
-    if(!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function rolEditController($stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;

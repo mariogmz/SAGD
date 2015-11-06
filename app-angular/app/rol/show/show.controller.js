@@ -7,13 +7,10 @@
     .module('sagdApp.rol')
     .controller('rolShowController', rolShowController);
 
-  rolShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  rolShowController.$inject = ['$stateParams', 'api'];
 
   /* @ngInject */
-  function rolShowController($auth, $state, $stateParams, api) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function rolShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;

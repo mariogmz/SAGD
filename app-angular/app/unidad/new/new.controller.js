@@ -7,13 +7,10 @@
     .module('sagdApp.unidad')
     .controller('unidadNewController', unidadNewController);
 
-  unidadNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  unidadNewController.$inject = ['api', 'pnotify'];
 
   /* @ngInject */
-  function unidadNewController($auth, $state, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function unidadNewController(api, pnotify) {
 
     var vm = this;
 

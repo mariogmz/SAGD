@@ -7,13 +7,10 @@
     .module('sagdApp.rol')
     .controller('rolNewController', rolNewController);
 
-  rolNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  rolNewController.$inject = ['api', 'pnotify'];
 
   /* @ngInject */
-  function rolNewController($auth, $state, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function rolNewController(api, pnotify) {
 
     var vm = this;
 

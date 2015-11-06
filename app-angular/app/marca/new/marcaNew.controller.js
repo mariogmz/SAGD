@@ -8,12 +8,9 @@
     .module('sagdApp.marca')
     .controller('marcaNewController', MarcaNewController);
 
-  MarcaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  MarcaNewController.$inject = ['api', 'pnotify'];
 
-  function MarcaNewController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MarcaNewController(api, pnotify){
 
     var vm = this;
     vm.back = goBack;

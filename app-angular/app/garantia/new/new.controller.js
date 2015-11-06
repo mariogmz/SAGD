@@ -7,13 +7,10 @@
     .module('sagdApp.garantia')
     .controller('garantiaNewController', garantiaNewController);
 
-  garantiaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  garantiaNewController.$inject = ['api', 'pnotify'];
 
   /* @ngInject */
-  function garantiaNewController($auth, $state, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function garantiaNewController(api, pnotify) {
 
     var vm = this;
     vm.create = create;

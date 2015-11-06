@@ -8,12 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoEditController', ProductoEditController);
 
-  ProductoEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  ProductoEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
-  function ProductoEditController($auth, $state, $stateParams, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function ProductoEditController($stateParams, api, pnotify){
 
     var vm = this;
     vm.id = $stateParams.id;

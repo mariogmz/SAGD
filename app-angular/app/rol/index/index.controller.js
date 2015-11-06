@@ -7,13 +7,10 @@
     .module('sagdApp.rol')
     .controller('rolIndexController', rolIndexController);
 
-  rolIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  rolIndexController.$inject = ['api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function rolIndexController($auth, $state, api, pnotify, modal) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function rolIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;

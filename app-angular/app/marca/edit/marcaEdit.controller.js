@@ -8,12 +8,9 @@
     .module('sagdApp.marca')
     .controller('marcaEditController', MarcaEditController);
 
-  MarcaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  MarcaEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
-  function MarcaEditController($auth, $state, $stateParams, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MarcaEditController($stateParams, api, pnotify){
 
     var vm = this;
     vm.id = $stateParams.id;

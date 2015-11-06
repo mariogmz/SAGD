@@ -7,12 +7,9 @@
         .module('sagdApp.cliente')
         .controller("clienteIndexController", ClienteIndexController);
 
-    ClienteIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+    ClienteIndexController.$inject = ['api', 'pnotify'];
 
     function ClienteIndexController($auth, $state, api, pnotify) {
-        if (!$auth.isAuthenticated()) {
-            $state.go('login', {});
-        }
 
         var vm = this;
         vm.eliminarCliente = eliminarCliente;

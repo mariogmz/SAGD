@@ -8,12 +8,9 @@
     .module('sagdApp.proveedor')
     .controller('proveedorEditController', ProveedorEditController);
 
-  ProveedorEditController.$inject = ['$auth', '$state', '$stateParams', '$location', 'api', 'pnotify'];
+  ProveedorEditController.$inject = ['$stateParams', '$location', 'api', 'pnotify'];
 
-  function ProveedorEditController($auth, $state, $stateParams, $location, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function ProveedorEditController($stateParams, $location, api, pnotify){
 
     var vm = this;
 

@@ -7,13 +7,10 @@
     .module('sagdApp.permiso')
     .controller('permisoRolesController', permisoRolesController);
 
-  permisoRolesController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  permisoRolesController.$inject = ['api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function permisoRolesController($auth, $state, api, pnotify, modal) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function permisoRolesController(api, pnotify, modal) {
 
     var vm = this;
     vm.controladorSeleccionado = "";
