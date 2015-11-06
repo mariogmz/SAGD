@@ -84,6 +84,21 @@ class SucursalControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede listar las Sucursales con cierto Proveedor
+     *
+     * @param  User  $user
+     * @param  SucursalController $controller
+     * @return bool
+     */
+    public function conProveedor(User $user, SucursalController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'conProveedor')->first();
+        return !empty($permiso);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

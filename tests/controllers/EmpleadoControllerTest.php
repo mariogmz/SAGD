@@ -561,4 +561,115 @@ class EmpleadoControllerTest extends TestCase {
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::cambiarSucursal
+     * @group feature-permisos
+     */
+    public function testCambiarSucursal()
+    {
+        $endpoint = $this->endpoint . '/1/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'setAttribute' => Mockery::self(),
+            'save' => true,
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->sucursal = Mockery::mock('App\Sucursal');
+        $this->sucursal->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => 1
+            ])->withAnyArgs();
+        $this->app->instance('App\Sucursal', $this->sucursal);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Empleado cambiado de sucursal exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::cambiarSucursal
+     * @group feature-permisos
+     */
+    public function testCambiarSucursalEmpleadoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar el empleado',
+                'error' => 'Empleado no encontrado'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::cambiarSucursal
+     * @group feature-permisos
+     */
+    public function testCambiarSucursalSucursalNoEncontrada()
+    {
+        $endpoint = $this->endpoint . '/1/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self()
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->sucursal = Mockery::mock('App\Sucursal');
+        $this->sucursal->shouldReceive([
+            'find' => false
+            ])->withAnyArgs();
+        $this->app->instance('App\Sucursal', $this->sucursal);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar la sucursal',
+                'error' => 'Sucursal no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::cambiarSucursal
+     * @group feature-permisos
+     */
+    public function testCambiarSucursalEmpleadoNoActualizo()
+    {
+        $endpoint = $this->endpoint . '/1/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'setAttribute' => Mockery::self(),
+            'save' => false
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Empleado', $this->mock);
+
+        $this->sucursal = Mockery::mock('App\Sucursal');
+        $this->sucursal->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => 1
+            ])->withAnyArgs();
+        $this->app->instance('App\Sucursal', $this->sucursal);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Empleado no se pudo cambiar de sucursal',
+                'error' => 'Empleado no actualizado'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

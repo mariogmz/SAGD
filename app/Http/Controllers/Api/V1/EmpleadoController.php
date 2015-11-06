@@ -6,17 +6,20 @@ use App\Empleado;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Rol;
+use App\Sucursal;
 use Illuminate\Http\Request;
 
 class EmpleadoController extends Controller
 {
     protected $empleado;
     protected $rol;
+    protected $user;
 
-    public function __construct(Empleado $empleado, Rol $rol)
+    public function __construct(Empleado $empleado, Rol $rol, Sucursal $sucursal)
     {
         $this->empleado = $empleado;
         $this->rol = $rol;
+        $this->sucursal = $sucursal;
         $this->middleware('jwt.auth');
     }
 
@@ -208,6 +211,46 @@ class EmpleadoController extends Controller
                 'message' => 'Rol o Empleado no encontrado, intente nuevamente',
                 'error' => 'No se removio el rol del empleado'
             ], 400);
+        }
+    }
+
+    /**
+     * Cambia la sucursal predeterminada del empleado
+     * @param int $empleadoId
+     * @param int $sucursalId
+     * @return Response
+     */
+    public function cambiarSucursal($empleadoId, $sucursalId)
+    {
+        $this->empleado = $this->empleado->find($empleadoId);
+        $this->authorize([$this, $this->empleado]);
+        if ($this->empleado) {
+
+            $this->sucursal = $this->sucursal->find($sucursalId);
+            if ($this->sucursal) {
+
+                $this->empleado->sucursal_id = $this->sucursal->id;
+                if ($this->empleado->save()) {
+                    return response()->json([
+                        'message' => 'Empleado cambiado de sucursal exitosamente'
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'message' => 'Empleado no se pudo cambiar de sucursal',
+                        'error' => 'Empleado no actualizado'
+                        ], 400);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'No se pudo encontrar la sucursal',
+                    'error' => 'Sucursal no encontrada'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar el empleado',
+                'error' => 'Empleado no encontrado'
+            ], 404);
         }
     }
 }

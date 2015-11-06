@@ -56,7 +56,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('empleado/{id}/roles', 'EmpleadoController@roles');
         Route::post('empleado/{id}/roles/attach/{rol}', 'EmpleadoController@attach');
         Route::delete('empleado/{id}/roles/detach/{rol}', 'EmpleadoController@detach');
+        Route::post('empleado/{empleadoId}/sucursal/{sucursalId}', 'EmpleadoController@cambiarSucursal');
         Route::resource('sucursal', 'SucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::get('sucursal/proveedor/{clave}', 'SucursalController@conProveedor');
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
         Route::get('logs-acceso', 'LogsAccesoController@index');
     });

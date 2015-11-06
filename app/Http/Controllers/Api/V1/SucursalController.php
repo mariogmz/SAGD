@@ -35,8 +35,6 @@ class SucursalController extends Controller
         $params = $request->all();
         if( array_key_exists('base', $params) ) {
             return $this->sucursal->with('proveedor', 'domicilio')->get();
-        } elseif ($params) {
-            return $this->filter($this->sucursal, $request);
         } else {
             return $this->sucursal->with('proveedor')->get();
         }
@@ -152,5 +150,18 @@ class SucursalController extends Controller
                 'error'   => $this->sucursal->errors
             ], 400);
         }
+    }
+
+    /**
+     * Busca las sucursales que tengan provedor igual al parametro
+     * @param string $clave
+     * @return Response
+     */
+    public function conProveedor($clave)
+    {
+        $this->authorize($this);
+        return $this->sucursal->whereHas('proveedor', function($query) use ($clave) {
+            $query->where('clave', $clave);
+        })->get();
     }
 }

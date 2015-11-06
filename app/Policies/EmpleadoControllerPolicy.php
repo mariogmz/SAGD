@@ -129,6 +129,22 @@ class EmpleadoControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede cambiar la sucursal de su empleado
+     *
+     * @param  User  $user
+     * @param  EmpleadoController $controller
+     * @param  Empleado $empleado
+     * @return bool
+     */
+    public function cambiarSucursal(User $user, EmpleadoController $controller, Empleado $empleado)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'cambiarSucursal')->first();
+        return !empty($permiso) && ($empleado->user->id === $user->id);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

@@ -31,6 +31,7 @@ class SucursalControllerTest extends TestCase
     /**
      * @covers ::index
      * @group bases
+     * @group feature-permisos
      */
     public function test_GET_index()
     {
@@ -53,6 +54,7 @@ class SucursalControllerTest extends TestCase
     /**
      * @covers ::index
      * @group bases
+     * @group feature-permisos
      */
     public function test_GET_index_with_parameters()
     {
@@ -282,12 +284,18 @@ class SucursalControllerTest extends TestCase
     }
 
     /**
-     * @covers ::index
-     * @group url-parameters
+     * @covers ::conProveedor
+     * @group feature-permisos
      */
-    public function testIndexConParametros()
+    public function testConProveedorExistente()
     {
-        $endpoint = $this->endpoint . '?proveedor_clave=DICO';
+        $endpoint = $this->endpoint . '/proveedor/DICO';
+
+        $this->mock->shouldReceive([
+            'whereHas->get' => '[{"id": 1,"clave": "DICOTAGS","nombre": "Dicotech Aguascalientes"},{"id": 2,"clave": "DICOLEON","nombre": "Dicotech León"},{"id": 3,"clave": "ZEGUCZAC","nombre": "Zegucom Zacatecas"},{"id": 4,"clave": "ZEGUCARB","nombre": "Zegucom Arboledas"}]'
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Sucursal', $this->mock);
 
         $this->get($endpoint)
             ->seeJson([
@@ -296,6 +304,24 @@ class SucursalControllerTest extends TestCase
                 "id"=> 3, "clave"=> "ZEGUCZAC", "nombre"=> "Zegucom Zacatecas",
                 "id"=> 4, "clave"=> "ZEGUCARB", "nombre"=> "Zegucom Arboledas",
             ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::conProveedor
+     * @group feature-permisos
+     */
+    public function testConProveedorNoExistente()
+    {
+        $endpoint = $this->endpoint . '/proveedor/DICO';
+
+        $this->mock->shouldReceive([
+            'whereHas->get' => '[]'
+            ])
+            ->withAnyArgs();
+        $this->app->instance('App\Sucursal', $this->mock);
+
+        $this->get($endpoint)
             ->assertResponseStatus(200);
     }
 }
