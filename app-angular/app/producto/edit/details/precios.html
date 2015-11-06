@@ -30,7 +30,7 @@
       <div class="col-lg">
         <fieldset ng-class="vm.setClass(productoEditForm.margen_id)">
           <label for="margen_id">Margen: </label>
-          <select id="margen_id" ng-model="vm.producto.margen_id"
+          <select id="margen_id" name="margen_id" ng-model="vm.producto.margen_id"
                   ng-options="margen.id as margen.nombre for margen in vm.margenes | orderBy:'nombre'"
                   ng-change="vm.calcularPreciosMargen()">
             <option value="" ng-bind="vm.margenes? 'Seleccione un margen' : vm.producto.margen.nombre"></option>

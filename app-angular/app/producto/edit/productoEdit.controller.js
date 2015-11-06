@@ -138,8 +138,8 @@
       vm.producto.marca_id = vm.marca ? vm.marca.id : null;
     }
 
-    function save(invalidForm){
-      if(!invalidForm){
+    function save(formIsValid){
+      if(formIsValid){
         guardarProducto();
       }
     }
