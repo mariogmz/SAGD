@@ -44,9 +44,8 @@
 
     echo "Recompilando front-end"
     cd app-angular
-    nvm use 0.12
     npm install
     bower install
     grunt stage
-    bash ~/.gzipper.sh
+    bash ../bin/gzipper.sh
 @endtask
