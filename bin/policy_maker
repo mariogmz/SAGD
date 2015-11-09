@@ -1,0 +1,14 @@
+#!/bin/bash
+
+CONTROLLERS=`ls ~/Code/sagd/app/Http/Controllers/Api/V1/ | grep -o -P "\w+(?=\.php)"`
+
+for CONTROLLER in $CONTROLLERS
+do
+	if [ ! -e "~/Code/sagd/app/Policies/${CONTROLLER}Policy.php" ]
+	then
+		php ~/Code/sagd/artisan make:policy "${CONTROLLER}Policy"
+		MODEL=`grep -o -P "\w+(?=Controller)" <<< $CONTROLLER`
+		sed -i "s/DummyController/${CONTROLLER}/g" ~/Code/sagd/app/Policies/${CONTROLLER}Policy.php
+		sed -i "s/DummyModel/${MODEL}/g" ~/Code/sagd/app/Policies/${CONTROLLER}Policy.php
+	fi
+done

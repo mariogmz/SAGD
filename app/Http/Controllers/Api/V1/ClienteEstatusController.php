@@ -25,6 +25,7 @@ class ClienteEstatusController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         return $this->clienteEstatus->all();
     }
 
@@ -36,6 +37,7 @@ class ClienteEstatusController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->clienteEstatus->fill($params);
         if( $this->clienteEstatus->save() )
@@ -63,6 +65,7 @@ class ClienteEstatusController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->clienteEstatus= $this->clienteEstatus->find($id);
         if( $this->clienteEstatus )
         {
@@ -87,6 +90,7 @@ class ClienteEstatusController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->clienteEstatus= $this->clienteEstatus->find($id);
         if( empty($this->clienteEstatus) )
@@ -115,7 +119,9 @@ class ClienteEstatusController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->clienteEstatus = $this->clienteEstatus->find($id);
         if (empty($this->clienteEstatus)) {
             return response()->json([

@@ -22,7 +22,9 @@ class PrecioController extends Controller {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
+        $this->authorize($this);
         return $this->precio->all();
     }
 
@@ -31,7 +33,9 @@ class PrecioController extends Controller {
      * @param Request $request
      * @return Response
      */
-    public function calcular(Request $request) {
+    public function calcular(Request $request)
+    {
+        $this->authorize($this);
         $precio = $request->precio;
         $costo = $request->costo;
         $externo = $request->has('externo') ? $request->externo : null;
@@ -74,7 +78,9 @@ class PrecioController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->precio->fill($params);
         if ($this->precio->save()) {
@@ -97,7 +103,9 @@ class PrecioController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $this->authorize($this);
         $this->precio = $this->precio->find($id);
         if ($this->precio) {
             return response()->json([
@@ -119,7 +127,9 @@ class PrecioController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->precio = $this->precio->find($id);
         if (empty($this->precio)) {
@@ -145,7 +155,9 @@ class PrecioController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->precio = $this->precio->find($id);
         if (empty($this->precio)) {
             return response()->json([

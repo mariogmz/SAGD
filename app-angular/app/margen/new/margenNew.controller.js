@@ -8,13 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenNewController', MargenNewController);
 
-  MargenNewController.$inject = ['$auth', '$state', 'api', 'pnotify', 'utils'];
+  MargenNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  /* @ngInject */
-  function MargenNewController($auth, $state, api, pnotify, utils){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MargenNewController($state, api, pnotify){
 
     var vm = this;
 

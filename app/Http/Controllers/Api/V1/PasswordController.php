@@ -44,6 +44,7 @@ class PasswordController extends Controller
      */
     public function postEmail(Request $request)
     {
+        $this->authorize($this);
         if (!$request->has('email')) {
             return response()->json([
                 'message' => 'No se envio el correo',
@@ -78,6 +79,7 @@ class PasswordController extends Controller
      */
     public function postReset(Request $request)
     {
+        $this->authorize($this);
         if (
             !$request->has('token') &&
             !$request->has('email') &&

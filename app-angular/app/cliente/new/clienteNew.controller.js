@@ -8,13 +8,9 @@
       .module('sagdApp.cliente')
       .controller('clienteNewController', ClienteNewController);
 
-  ClienteNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  ClienteNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function ClienteNewController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-      exit();
-    }
+  function ClienteNewController($state, api, pnotify){
 
     var vm = this;
 
@@ -98,7 +94,7 @@
           .then(obtenerEstatus)
           .then(obtenerSucursales)
           .then(assignFields);
-     
+
     }
 
 

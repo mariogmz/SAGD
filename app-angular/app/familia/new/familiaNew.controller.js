@@ -8,12 +8,9 @@
     .module('sagdApp.familia')
     .controller('familiaNewController', FamiliaNewController);
 
-  FamiliaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  FamiliaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function FamiliaNewController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function FamiliaNewController($state, api, pnotify){
 
     var vm = this;
     vm.back = goBack;

@@ -8,12 +8,9 @@
     .module('sagdApp.subfamilia')
     .controller('subfamiliaNewController', SubfamiliaNewController);
 
-  SubfamiliaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  SubfamiliaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function SubfamiliaNewController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function SubfamiliaNewController($state, api, pnotify){
 
     var vm = this;
     vm.back = goBack;

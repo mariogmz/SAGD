@@ -25,6 +25,7 @@ class ClienteReferenciaController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         return $this->clienteReferencia->all();
     }
 
@@ -36,6 +37,7 @@ class ClienteReferenciaController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->clienteReferencia->fill($params);
         if( $this->clienteReferencia->save() )
@@ -63,6 +65,7 @@ class ClienteReferenciaController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->clienteReferencia = $this->clienteReferencia->find($id);
         if( $this->clienteReferencia )
         {
@@ -87,6 +90,7 @@ class ClienteReferenciaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->clienteReferencia = $this->clienteReferencia->find($id);
         if( empty($this->clienteReferencia) )
@@ -115,7 +119,9 @@ class ClienteReferenciaController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->clienteReferencia = $this->clienteReferencia->find($id);
         if (empty($this->clienteReferencia)) {
             return response()->json([

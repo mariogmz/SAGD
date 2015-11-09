@@ -7,13 +7,10 @@
     .module('sagdApp.sucursal')
     .controller('sucursalEditController', sucursalEditController);
 
-  sucursalEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  sucursalEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
   /* @ngInject */
-  function sucursalEditController($auth, $state, $stateParams, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function sucursalEditController($stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;

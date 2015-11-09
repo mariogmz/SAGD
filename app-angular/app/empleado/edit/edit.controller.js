@@ -7,13 +7,10 @@
     .module('sagdApp.empleado')
     .controller('empleadoEditController', empleadoEditController);
 
-  empleadoEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  empleadoEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
   /* @ngInject */
-  function empleadoEditController($auth, $state, $stateParams, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function empleadoEditController($stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;

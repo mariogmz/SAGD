@@ -2,7 +2,15 @@
 
 use Illuminate\Database\Seeder;
 
+use App\Permiso;
+use Symfony\Component\Console\Helper\ProgressBar;
+
 class PermisoTableSeeder extends Seeder {
+
+    protected $routes;
+    protected $permisosData;
+    protected $progressBar;
+    protected $errorBag;
 
     /**
      * Run the database seeds.
@@ -10,131 +18,71 @@ class PermisoTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        foreach ($this->prepararDatos() as $permiso) {
-            $nuevo_permiso = new App\Permiso($permiso);
-            if (!$nuevo_permiso->save()) {
-                // Errors
+        $this->permisosData = [];
+        $this->errorBag = [];
+
+        $this->getRoutes();
+        $this->parseRoutes();
+        $this->guardarPermisos();
+    }
+
+    private function getRoutes()
+    {
+        $this->routes = Route::getRoutes();
+        $this->setUpProgressBar();
+    }
+
+    private function parseRoutes()
+    {
+        foreach ($this->routes as $route) {
+            $controllerFullPath = $route->getActionName();
+            $match = [];
+            if ( preg_match('/(\w+)@(\w+)/', $controllerFullPath, $match) > 0 ) {
+                $controlador = $match[1];
+                $accion = $match[2];
+                $descripcion = "Este permiso autoriza en ".$controlador." a la accion ".$accion;
+                $data = [
+                    'controlador'   => $controlador,
+                    'accion'        => $accion,
+                    'descripcion'   => $descripcion
+                ];
+                array_push($this->permisosData, $data);
             }
+            $this->progressBar->advance();
         }
     }
 
-    private function prepararDatos() {
-        return [
-            [
-                'clave'  => 'ANTADMIN',
-                'nombre' => 'Administrar anticipos.',
-            ], [
-                'clave'  => 'ANTREGIS',
-                'nombre' => 'Administrar anticipos.',
-            ], [
-                'clave'  => 'CLILISTA',
-                'nombre' => 'Listar clientes',
-            ], [
-                'clave'  => 'CLIMODIF',
-                'nombre' => 'Modificar cliente',
-            ], [
-                'clave'  => 'CLIAGREG',
-                'nombre' => 'Agregar cliente nuevo.',
-            ], [
-                'clave'  => 'CLIELIMI',
-                'nombre' => 'Eliminar clientes.',
-            ], [
-                'clave'  => 'CLITABUL',
-                'nombre' => 'Modificar tabulador a clientes.',
-            ], [
-                'clave'  => 'CLIATRIB',
-                'nombre' => 'Modificar atributos especiales a clientes.',
-            ], [
-                'clave'  => 'CLICAMPAN',
-                'nombre' => 'Enviar campaña de correo a clientes.',
-            ], [
-                'clave'  => 'EMPLISTA',
-                'nombre' => 'Listar empleados.',
-            ], [
-                'clave'  => 'EMPMODIF',
-                'nombre' => 'Modificar empleados.',
-            ], [
-                'clave'  => 'EMPPERMI',
-                'nombre' => 'Modificar permisos de empleados.',
-            ], [
-                'clave'  => 'EMPAGREG',
-                'nombre' => 'Agregar nuevos empleados.',
-            ], [
-                'clave'  => 'EMPELIMI',
-                'nombre' => 'Eliminar empleados.',
-            ], [
-                'clave'  => 'EMPROLES',
-                'nombre' => 'Modificar roles de los empleados.',
-            ], [
-                'clave'  => 'ROLAGREG',
-                'nombre' => 'Agregar roles.',
-            ], [
-                'clave'  => 'ROLMODIF',
-                'nombre' => 'Modificar roles.',
-            ], [
-                'clave'  => 'ROLELIMI',
-                'nombre' => 'Eliminar roles.',
-            ], [
-                'clave'  => 'ROLLISTA',
-                'nombre' => 'Listar roles.',
-            ], [
-                'clave'  => 'FACVENTA',
-                'nombre' => 'Generar facturas al momento de vender.',
-            ], [
-                'clave'  => 'FACREFAC',
-                'nombre' => 'Generar nuevamente una factura que ya había sido generada.',
-            ], [
-                'clave'  => 'FACCANCE',
-                'nombre' => 'Cancelar factura.',
-            ], [
-                'clave'  => 'INVCONTA',
-                'nombre' => 'Contar inventarios.',
-            ], [
-                'clave'  => 'INVCORRE',
-                'nombre' => 'Corregir inventario.',
-            ], [
-                'clave'  => 'INVENTRA',
-                'nombre' => 'Gestionar entradas al inventario.',
-            ], [
-                'clave'  => 'INVSALID',
-                'nombre' => 'Gestionar salidas del inventario.',
-            ], [
-                'clave'  => 'INVAPART',
-                'nombre' => 'Apartar y desapartar productos.',
-            ], [
-                'clave'  => 'INVTRANS',
-                'nombre' => 'Gestionar transferencias de productos en el inventario.',
-            ], [
-                'clave'  => 'PAQLISTA',
-                'nombre' => 'Listar y ver detalles de paqueterías.',
-            ], [
-                'clave'  => 'PAQAGREG',
-                'nombre' => 'Agregar nuevas paqueterías.',
-            ], [
-                'clave'  => 'PAQMODIF',
-                'nombre' => 'Modificar las paqueterías.',
-            ], [
-                'clave'  => 'PAQELIMI',
-                'nombre' => 'Eliminar paqueterías.',
-            ], [
-                'clave'  => 'PROLISTA',
-                'nombre' => 'Ver listado de productos y sus características.',
-            ], [
-                'clave'  => 'PROAGREG',
-                'nombre' => 'Agregar nuevos productos.',
-            ], [
-                'clave'  => 'PROMODIF',
-                'nombre' => 'Modificar productos y sus características.',
-            ], [
-                'clave'  => 'PROELIMI',
-                'nombre' => 'Eliminar productos.',
-            ], [
-                'clave'  => 'PROPRECI',
-                'nombre' => 'Modificar precios de productos.',
-            ], [
-                'clave'  => 'PROMARGE',
-                'nombre' => 'Gestionar los márgenes de ganancia para productos.',
-            ],
-        ];
+    private function guardarPermisos()
+    {
+        foreach ($this->permisosData as $data) {
+            $permiso = new Permiso($data);
+            if (!$permiso->save()) {
+                array_push($this->errorBag, [
+                    'errors' => $permiso->errors->all(),
+                    'data' => $data
+                ]);
+            }
+            $this->progressBar->advance();
+        }
+        $this->progressBar->finish();
+        $this->printErrors();
+    }
+
+    private function setUpProgressBar()
+    {
+        $elements = count($this->routes) * 2;
+        $this->progressBar = new ProgressBar($this->command->getOutput(), $elements);
+        $this->progressBar->setFormat("<info>Seeding:</info> Permisos : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+        $this->progressBar->start();
+    }
+
+    private function printErrors()
+    {
+        if (count($this->errorBag) > 0) {
+            $messages = [];
+            array_push($messages, "<error>Se encontraron ".count($this->errorBag)." errores</error>");
+            array_push($messages, "<info>Seguramente son updates, esto es normal</info>");
+            $this->command->getOutput()->writeln($messages);
+        }
     }
 }

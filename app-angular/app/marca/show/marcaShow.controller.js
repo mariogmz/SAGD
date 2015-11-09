@@ -8,12 +8,9 @@
     .module('sagdApp.marca')
     .controller('marcaShowController', MarcaShowController);
 
-  MarcaShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  MarcaShowController.$inject = ['$stateParams', 'api'];
 
-  function MarcaShowController($auth, $state, $stateParams, api){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MarcaShowController($stateParams, api){
 
     var vm = this;
     vm.id = $stateParams.id;

@@ -7,13 +7,10 @@
     .module('sagdApp.unidad')
     .controller('unidadIndexController', unidadIndexController);
 
-  unidadIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  unidadIndexController.$inject = ['api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function unidadIndexController($auth, $state, api, pnotify, modal) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function unidadIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;

@@ -63,6 +63,9 @@
 
     function alertList(title, list, type){
       var html = '<ul>';
+      if (typeof list == "string") {
+        return alert(title, list, type);
+      };
       angular.forEach(list, function (value, key){
         html += '<li><strong>' + key + '</strong><ul>';
         angular.forEach(value, function (value){

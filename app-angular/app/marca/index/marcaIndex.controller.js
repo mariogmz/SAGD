@@ -8,12 +8,9 @@
     .module('sagdApp.marca')
     .controller('marcaIndexController', MarcaIndexController);
 
-  MarcaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  MarcaIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function MarcaIndexController($auth, $state, api, pnotify, modal){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MarcaIndexController(api, pnotify, modal){
 
     var vm = this;
     vm.sort = sort;

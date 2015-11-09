@@ -8,12 +8,9 @@
     .module('sagdApp.familia')
     .controller('familiaEditController', FamiliaEditController);
 
-  FamiliaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  FamiliaEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
-  function FamiliaEditController($auth, $state, $stateParams, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function FamiliaEditController($stateParams, api, pnotify){
 
     var vm = this;
     vm.id = $stateParams.id;

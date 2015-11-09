@@ -8,12 +8,9 @@
     .module('sagdApp.revisarPrecios')
     .controller('revisarPreciosController', RevisarPreciosController);
 
-  RevisarPreciosController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  RevisarPreciosController.$inject = ['$state', 'api', 'pnotify'];
 
-  function RevisarPreciosController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function RevisarPreciosController($state, api, pnotify){
 
     var vm = this;
     vm.sortKeys = [

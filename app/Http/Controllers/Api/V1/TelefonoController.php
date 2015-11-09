@@ -25,6 +25,7 @@ class TelefonoController extends Controller
      */
     public function index()
     {
+        $this->authorize($this);
         return $this->telefono->with('domicilio.codigoPostal')->get();
     }
 
@@ -36,6 +37,7 @@ class TelefonoController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->telefono->fill($params);
         if ($this->telefono->save()) {
@@ -61,6 +63,7 @@ class TelefonoController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->telefono = $this->telefono->with('domicilio.codigoPostal')->find($id);
         if ($this->telefono)
         {
@@ -85,6 +88,7 @@ class TelefonoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->telefono = $this->telefono->find($id);
         if( empty($this->telefono) )
@@ -113,6 +117,7 @@ class TelefonoController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize($this);
         $this->telefono = $this->telefono->find($id);
         if( empty($this->telefono) )
         {

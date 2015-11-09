@@ -8,15 +8,10 @@
     .module('sagdApp.producto')
     .controller('productoNewController', ProductoNewController);
 
-  ProductoNewController.$inject = ['$auth', '$state', 'api', 'pnotify', 'utils'];
+  ProductoNewController.$inject = ['$state', 'api', 'pnotify', 'utils'];
 
-  /*@ngInject*/
-  function ProductoNewController($auth, $state, api, pnotify, utils){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    } else {
-      $state.go('productoNew.step1');
-    }
+  function ProductoNewController($state, api, pnotify, utils){
+    $state.go('productoNew.step1');
 
     var vm = this;
     vm.producto = {

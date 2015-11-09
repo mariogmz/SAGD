@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(ClienteEstatusTableSeeder::class);
         $this->call(ClienteReferenciaTableSeeder::class);
         $this->call(EmpleadoTableSeeder::class);
+        $this->call(PermisosInicialesSeeder::class);
         $this->call(MarcaTableSeeder::class);
         $this->call(TipoGarantiaTableSeeder::class);
         $this->call(UnidadTableSeeder::class);

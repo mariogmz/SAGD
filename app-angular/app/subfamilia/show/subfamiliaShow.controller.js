@@ -8,12 +8,9 @@
     .module('sagdApp.subfamilia')
     .controller('subfamiliaShowController', SubfamiliaShowController);
 
-  SubfamiliaShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  SubfamiliaShowController.$inject = ['$stateParams', 'api'];
 
-  function SubfamiliaShowController($auth, $state, $stateParams, api){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function SubfamiliaShowController($stateParams, api){
 
     var vm = this;
     vm.id = $stateParams.id;

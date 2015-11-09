@@ -1,0 +1,9 @@
+.permisos-roles,
+.permisos-modulos,
+.permisos-acciones {
+
+  @include make-col();
+  @include make-col-span(4);
+
+  padding: 0;
+}

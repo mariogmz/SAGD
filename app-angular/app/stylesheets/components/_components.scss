@@ -1,8 +1,11 @@
+@import 'acl';
 @import 'action-buttons';
 @import 'alert';
 @import 'card';
 @import 'channels';
+@import 'empleados-roles';
 @import 'file';
+@import 'history';
 @import 'index-checkboxes';
 @import 'item-checkbox';
 @import 'item-form';
@@ -18,6 +21,7 @@
 @import 'notification-type';
 @import 'pagination-control';
 @import 'passwords';
+@import 'permisos';
 @import 'pnotify-custom';
 @import 'search-card';
 @import 'search-card';
@@ -25,3 +29,4 @@
 @import 'table-responsive';
 @import 'tabs';
 @import 'toggle';
+@import 'tooltips';

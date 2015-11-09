@@ -1,0 +1,12 @@
+.empleados-roles {
+
+  @include make-container();
+  @include make-row();
+
+  .roles-list {
+
+    @include make-col();
+    @include make-col-span(8);
+    @include make-col-push(2);
+  }
+}

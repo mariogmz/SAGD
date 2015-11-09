@@ -25,8 +25,8 @@ class MarcaController extends Controller
      */
     public function index()
     {
-        $marcas = $this->marca->all();
-        return $marcas;
+        $this->authorize($this);
+        return $this->marca->all();
     }
 
     /**
@@ -37,6 +37,7 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->marca->fill($params);
         if( $this->marca->save() )
@@ -64,6 +65,7 @@ class MarcaController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->marca = $this->marca->find($id);
         if( $this->marca )
         {
@@ -88,6 +90,7 @@ class MarcaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->marca = $this->marca->find($id);
         if( empty($this->marca) )
@@ -118,6 +121,7 @@ class MarcaController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize($this);
         $this->marca = $this->marca->find($id);
         if( empty($this->marca) )
         {
