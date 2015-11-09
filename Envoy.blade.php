@@ -47,5 +47,5 @@
     npm install
     bower install
     grunt stage
-    bash ../bin/gzipper.sh
+    bash /var/www/sagd/bin/gzipper
 @endtask
