@@ -1,62 +1,52 @@
 @servers(['stage' => 'deploy@192.168.100.6'])
 
-@macro('deploy', ['on' => 'stage'])
-    change-dir
-    git-update
+@setup
+    $cleanAndSeedDb = isset($reset) ? true : false;
+    $migrateDb = isset($migrate) ? true : false;
+    $composerUpdate = isset($composer) ? true : false;
+    $remoteBranch = isset($branch) ? $branch : 'develop';
+@endsetup
 
-    @if ($reset)
-        artisan-clean
-        artisan-seed
-    @endif
-
-    @if ($migrate)
-        artisan-migrate
-    @endif
-
-    clear-cache
-    artisan-optimize
-    artisan-queues-restart
-    update-frontend
-@endmacro
-
-@task('change-dir')
+@task('deploy', ['on' => 'stage'])
     cd /var/www/sagd
-@endtask
 
-@task('git-update')
-    git checkout develop
+    echo "Actualizando código"
+    git checkout {{ $remoteBranch }}
     git pull origin develop
     git branch -D stage
     git checkout -b stage
-@endtask
 
-@task('artisan-clean')
-    php artisan db:clean --force
-@endtask
+    echo "Actualizando dependencias"
+    @if ($composerUpdate)
+        rm composer.lock
+        composer install
+    @endif
 
-@task('artisan-seed')
-    php artisan db:seed
-@endtask
+    @if ($cleanAndSeedDb)
+        echo "Limpiando base de datos y estableciendo seed inicial"
+        php artisan db:clean mysql sagd_local --force
+        php artisan db:seed
+    @endif
 
-@task('artisan-migrate')
-    php artisan migrate
-@endtask
+    @if ($migrateDb)
+        echo "Migrando base de datos"
+        php artisan migrate
+    @endif
 
-@task('clear-cache')
-    curl http://opcache.stache:8082/\?reset\=1
-@endtask
-
-@task('artisan-optimize')
+    echo "Optimizando codigo"
     php artisan optimize
-@endtask
 
-@task('artisan-queues-restart')
+    echo "Reiniciando queues"
     php artisan queue:restart
-@endtask
 
-@task('update-frontend')
+    echo "Limpiando cache"
+    curl http://opcache.stache:8082/\?reset\=1
+
+    echo "Recompilando front-end"
     cd app-angular
     nvm use 0.12
+    npm install
+    bower install
     grunt stage
     bash ~/.gzipper.sh
 @endtask

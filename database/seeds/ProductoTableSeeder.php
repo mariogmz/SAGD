@@ -13,8 +13,8 @@ class ProductoTableSeeder extends Seeder {
     private function setUp() {
         $this->command->getOutput()->writeln("You're about to begin the product seeding, this will take a few mins to complete.");
         $this->show_errors = $this->command->confirm('Do you want to dump errors to console?' . "\n", false);
-        $limit = $this->command->ask('How many records do you want to seed? (Leave 0 to seed the entire recordset): ' . "\n", 0);
-        $this->limit_to = $limit > 0 ? $limit : 0;
+        $limit = $this->command->ask('How many records do you want to seed? (Leave 0 to seed the entire recordset): ' . "\n", 1);
+        $this->limit_to = $limit >= 0 ? $limit : 1;
         echo "\n";
     }
 
