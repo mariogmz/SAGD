@@ -1,0 +1,14 @@
+.history {
+
+  float: right;
+
+  .button {
+
+    @extend .btn;
+  }
+
+  .primary {
+
+    @extend .btn-primary;
+  }
+}

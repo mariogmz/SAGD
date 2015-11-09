@@ -26,6 +26,8 @@
     return directive;
   }
 
+  loaderController.$inject = [];
+
   /* @ngInject */
   function loaderController() {
     var vm = this;

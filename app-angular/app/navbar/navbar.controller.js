@@ -9,6 +9,10 @@
     .controller('NavbarController', NavbarController)
     .directive('navBar', function (){
       return {
+        bindToController: true,
+        controller: NavbarController,
+        controllerAs: 'vm',
+        restrict: 'A',
         templateUrl: 'app/navbar/navbar.html'
       };
     });
@@ -206,17 +210,17 @@
             state: 'empleadoIndex'
           }, {
             name: 'Roles',
-            state: 'empleado.rol'
+            state: 'rolIndex'
           }, {
             name: 'Permisos',
-            state: 'permiso',
+            state: 'permisoIndex',
             actions: [
               {
                 name: 'Individuales',
-                state: 'permiso.individual'
+                state: 'permisoIndividuales'
               }, {
                 name: 'Roles',
-                state: 'permiso.rol'
+                state: 'permisoRoles'
               }
             ]
           }

@@ -8,12 +8,9 @@
     .module('sagdApp.proveedor')
     .controller('proveedorShowController', ProveedorShowController);
 
-  ProveedorShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  ProveedorShowController.$inject = ['$stateParams', 'api'];
 
-  function ProveedorShowController($auth, $state, $stateParams, api){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function ProveedorShowController($stateParams, api){
 
     var vm = this;
     vm.id = $stateParams.id;

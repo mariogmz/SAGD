@@ -7,13 +7,10 @@
     .module('sagdApp.sucursal')
     .controller('sucursalShowController', sucursalShowController);
 
-  sucursalShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  sucursalShowController.$inject = ['$stateParams', 'api'];
 
   /* @ngInject */
-  function sucursalShowController($auth, $state, $stateParams, api) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function sucursalShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;

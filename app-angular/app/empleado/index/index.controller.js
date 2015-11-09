@@ -8,12 +8,9 @@
     .module('sagdApp.empleado')
     .controller('empleadoIndexController', EmpleadoIndexController);
 
-  EmpleadoIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal', 'session'];
+  EmpleadoIndexController.$inject = ['api', 'pnotify', 'modal', 'session'];
 
-  function EmpleadoIndexController($auth, $state, api, pnotify, modal, session){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function EmpleadoIndexController(api, pnotify, modal, session){
 
     var vm = this;
     vm.showInactive = false;

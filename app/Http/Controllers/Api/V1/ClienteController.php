@@ -26,7 +26,8 @@ class ClienteController extends Controller
      */
     public function index()
     {
-       return $this->cliente->with('estatus')->get();
+        $this->authorize($this);
+        return $this->cliente->with('estatus')->get();
     }
 
     /**
@@ -37,6 +38,7 @@ class ClienteController extends Controller
      */
     public function store(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
 
 
@@ -66,8 +68,8 @@ class ClienteController extends Controller
      */
     public function show($id)
     {
-        $this->cliente = $this->cliente->with('user', 'estatus', 'sucursal', 'referencia', 'empleado', 'vendedor', 'autorizaciones', 'razonesSociales', 'tabuladores.sucursal')->find($id);
-
+        $this->authorize($this);
+        $this->cliente = $this->cliente->find($id);
         if( $this->cliente )
         {
             return response()->json([
@@ -91,6 +93,7 @@ class ClienteController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
 
         $this->cliente = $this->cliente->find($id);
@@ -124,6 +127,7 @@ class ClienteController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize($this);
         $this->cliente = $this->cliente->find($id);
         if( empty($this->cliente) )
         {

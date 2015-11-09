@@ -1,0 +1,23 @@
+.acl-root {
+
+  @include make-container();
+  @include make-row();
+}
+
+.acl {
+
+  @include make-col();
+  @include make-col-span(12);
+
+  header {
+
+    text-align: center;
+  }
+
+  article {
+
+    @include make-col();
+    @include make-col-span(6);
+    @include make-col-push(3);
+  }
+}

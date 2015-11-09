@@ -12,7 +12,8 @@
         "tymon/jwt-auth": "0.5.*",
         "barryvdh/laravel-ide-helper": "^2.1",
         "barryvdh/laravel-cors": "0.7.*",
-        "predis/predis": "1.*"
+        "predis/predis": "1.*",
+        "felixkiss/uniquewith-validator": "2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "dev-master",

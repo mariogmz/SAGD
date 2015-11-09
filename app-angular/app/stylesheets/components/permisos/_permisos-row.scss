@@ -1,0 +1,11 @@
+.permisos-row {
+
+  text-transform: capitalize;
+
+  &.selected {
+
+    @extend .table-warning;
+
+    font-weight: 700;
+  }
+}

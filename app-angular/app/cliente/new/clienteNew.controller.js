@@ -32,7 +32,7 @@
     function obtenerReferencias() {
       return api.get('/cliente-referencia').then(function (response) {
             vm.referencias = response.data;
-            console.log('Referencias obtenidas correctamente');
+            return response;
           })
           .catch(function (response) {
             vm.error = response.data;

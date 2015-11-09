@@ -48,6 +48,12 @@ class Handler extends ExceptionHandler
             return response()->json(['token_invalid'], $e->getStatusCode(), $headers);
         } else if ($e instanceof Tymon\JWTAuth\Exceptions\JWTException) {
             return response()->json(['token_absent'], $e->getStatusCode(), $headers);
+        } else if ($e instanceof HttpException) {
+            if ($e->getStatusCode() == 403) {
+                return response()->json([
+                    'error' => 'No estas autorizado para realizar esta acción'
+                ], 403);
+            }
         }
         return parent::render($request, $e);
     }

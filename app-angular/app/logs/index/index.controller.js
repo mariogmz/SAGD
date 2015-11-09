@@ -8,12 +8,9 @@
     .module('sagdApp.logs')
     .controller('logsIndexController', logsIndexController);
 
-  logsIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  logsIndexController.$inject = ['api', 'pnotify'];
 
-  function logsIndexController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function logsIndexController(api, pnotify){
 
     var vm = this;
 

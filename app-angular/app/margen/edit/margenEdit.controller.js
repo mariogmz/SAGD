@@ -8,12 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenEditController', MargenEditController);
 
-  MargenEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  MargenEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
 
-  function MargenEditController($auth, $state, $stateParams, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MargenEditController($state, $stateParams, api, pnotify){
 
     var vm = this;
     vm.id = $stateParams.id;

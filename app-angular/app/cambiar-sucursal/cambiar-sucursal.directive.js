@@ -69,7 +69,7 @@
     }
 
     function obtenerSucursales() {
-      return api.get('/sucursal?proveedor_clave=DICO').then(function(response){
+      return api.get('/sucursal/proveedor/DICO').then(function(response){
         vm.sucursales = response.data;
         return response;
       });
@@ -80,19 +80,18 @@
     }
 
     function cambiarSucursal(sucursal) {
-      vm.empleadoActual.sucursal_id = sucursal.id;
-      guardarEmpleado().then(function(){
+      cambiarSucursalDeEmpleado(vm.empleadoActual.id, sucursal.id).then(function(){
         session.resetEmpleado().then(function() {
           location.reload();
         });
       })
       .catch(function(response){
-        pnotify.alert('Error', response.data.message, 'error');
+        pnotify.alert('Error', response.data.error, 'error');
       });
     }
 
-    function guardarEmpleado() {
-      return api.put('/empleado/', vm.empleadoActual.id, vm.empleadoActual);
+    function cambiarSucursalDeEmpleado(empleadoId, sucursalId) {
+      return api.post('/empleado/' + empleadoId + '/sucursal/' + sucursalId);
     }
   }
 })();

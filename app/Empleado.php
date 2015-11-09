@@ -2,8 +2,9 @@
 
 namespace App;
 
-use App\Events\EmpleadoCreado;
 use App\DatoContacto;
+use App\Events\EmpleadoCreado;
+use App\Events\EmpleadoRolCreado;
 use Sagd\SafeTransactions;
 
 
@@ -88,7 +89,18 @@ class Empleado extends LGGModel {
         });
         Empleado::created(function ($empleado) {
             event(new EmpleadoCreado($empleado));
+            event(new EmpleadoRolCreado($empleado));
         });
+    }
+
+    /**
+     * Obtiene todos los Permisos de todos los Roles de un Empleado.
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function permisos()
+    {
+        return $this->roles()->with('permisos')->get()->pluck('permisos')
+            ->collapse()->unique('id')->values();
     }
 
     /**
@@ -272,5 +284,16 @@ class Empleado extends LGGModel {
     public function user()
     {
         return $this->morphOne('App\User', 'morphable');
+    }
+
+
+    /**
+    * Obtiene los Roles asociados con el Empleado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function roles()
+    {
+        return $this->belongsToMany('App\Rol', 'empleados_roles', 'empleado_id', 'rol_id')
+            ->withTimestamps();
     }
 }

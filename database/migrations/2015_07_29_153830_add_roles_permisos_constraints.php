@@ -13,7 +13,10 @@ class AddRolesPermisosConstraints extends Migration {
         //
         Schema::table('roles_permisos', function ($table) {
             $table->integer('rol_id')->unsigned();
+            $table->integer('permiso_id')->unsigned();
+
             $table->foreign('rol_id')->references('id')->on('roles');
+            $table->foreign('permiso_id')->references('id')->on('permisos');
         });
     }
 
@@ -26,7 +29,9 @@ class AddRolesPermisosConstraints extends Migration {
         //
         Schema::table('roles_permisos', function ($table) {
             $table->dropForeign('roles_permisos_rol_id_foreign');
-            $table->dropColumn('rol_id');
+            $table->dropForeign('roles_permisos_permiso_id_foreign');
+
+            $table->dropColumn(['rol_id', 'permiso_id']);
         });
     }
 }

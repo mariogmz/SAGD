@@ -7,13 +7,10 @@
     .module('sagdApp.garantia')
     .controller('garantiaEditController', garantiaEditController);
 
-  garantiaEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  garantiaEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
 
   /* @ngInject */
-  function garantiaEditController($auth, $state, $stateParams, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function garantiaEditController($state, $stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;

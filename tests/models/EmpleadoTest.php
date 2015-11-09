@@ -477,4 +477,83 @@ class EmpleadoTest extends TestCase {
     {
         $this->assertNull(App\Empleado::whereEmail('a@test.com'));
     }
+
+    /**
+     * @covers ::roles
+     * @group feature-permisos
+     */
+    public function testRoles()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->create();
+        $rol = factory(App\Rol::class)->create();
+
+        $empleado->roles()->attach($rol->id);
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->roles);
+        $this->assertInstanceOf(App\Rol::class, $empleado->roles()->first());
+        $this->assertCount(1, $empleado->roles);
+    }
+
+    /**
+     * @covers ::permisos
+     * @group feature-permisos
+     */
+    public function testPuedoVerLosTodosLosPermisosDeUnEmpleado()
+    {
+        $this->expectsEvents(App\Events\EmpleadoCreado::class);
+
+        $empleado = factory(App\Empleado::class)->create();
+
+        $rol1 = factory(App\Rol::class)->create();
+        $rol2 = factory(App\Rol::class)->create();
+
+        $permiso1 = factory(App\Permiso::class)->create();
+        $permiso2 = factory(App\Permiso::class)->create();
+        $permiso3 = factory(App\Permiso::class)->create();
+
+        $rol1->permisos()->attach($permiso1->id);
+        $rol1->permisos()->attach($permiso2->id);
+        $rol2->permisos()->attach($permiso1->id);
+        $rol2->permisos()->attach($permiso2->id);
+        $rol2->permisos()->attach($permiso3->id);
+
+        $empleado->roles()->attach($rol1->id);
+        $empleado->roles()->attach($rol2->id);
+
+        $permisos = $empleado->permisos();
+
+        $this->assertNotNull($permisos);
+        $this->assertGreaterThan(0, count($permisos));
+    }
+
+    /**
+     * @covers ::created
+     * @group feature-permisos
+     * @group feature-permisos-events
+     */
+    public function testUnRolEsCreadoAutomaticamentePorCadaEmpleadoCreado()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+
+        $this->assertNotNull($empleado->roles);
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $empleado->roles);
+        $this->assertGreaterThan(0, count($empleado->roles));
+    }
+
+    /**
+     * @covers ::created
+     * @group feature-permisos
+     * @group feature-permisos-events
+     */
+    public function testRolCreadoAutomaticamenteTienePerteneceAlEmpleado()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+
+        $roles = $empleado->roles;
+
+        $this->assertSame(strtoupper($empleado->usuario), $roles->first()->clave);
+        $this->assertSame("Rol individial de ".$empleado->nombre, $roles->first()->nombre);
+    }
 }

@@ -7,13 +7,10 @@
     .module('sagdApp.sucursal')
     .controller('sucursalNewController', sucursalNewController);
 
-  sucursalNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  sucursalNewController.$inject = ['$state', 'api', 'pnotify'];
 
   /* @ngInject */
-  function sucursalNewController($auth, $state, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function sucursalNewController($state, api, pnotify) {
 
     var vm = this;
     vm.back = goBack;

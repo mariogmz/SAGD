@@ -8,12 +8,9 @@
     .module('sagdApp.familia')
     .controller('familiaIndexController', FamiliaIndexController);
 
-  FamiliaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  FamiliaIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function FamiliaIndexController($auth, $state, api, pnotify, modal){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function FamiliaIndexController(api, pnotify, modal){
 
     var vm = this;
     vm.sort = sort;

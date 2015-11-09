@@ -1,0 +1,95 @@
+<section class="search-card">
+  <div class="header">
+    <h4>Permisos por Roles generales</h4>
+  </div>
+</section>
+
+<section class="permisos">
+
+<div class="permisos-module">
+  <div class="permisos-roles">
+    <table class="permisos-table">
+      <thead>
+        <tr>
+          <th>Roles</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="permisos-list">
+      <table class="permisos-table">
+        <tbody>
+        <tr class="permisos-row"
+            ng-class="{selected: rol===vm.rolSeleccionado}"
+            ng-repeat="rol in vm.roles | orderBy:'clave'"
+            ng-click="vm.selectRole(rol)">
+          <td>{{rol.nombre}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="permisos-modulos">
+    <table class="permisos-table">
+      <thead>
+        <tr>
+          <th>Módulo</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="permisos-list">
+      <table class="permisos-table">
+        <tbody>
+          <tr class="permisos-row"
+              ng-class="{selected: value[0].controlador==vm.controladorSeleccionado}"
+              ng-repeat="(key, value) in vm.permisos | orderBy:'controlador' | groupBy:'controlador'"
+              ng-click="vm.selectModule(value[0].controlador)">
+            <td>{{value[0].controlador | normalizeControllerName }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="permisos-acciones">
+    <table class="permisos-table">
+      <thead>
+        <tr>
+          <th>Permiso</th>
+        </tr>
+      </thead>
+    </table>
+    <div class="permisos-list">
+      <table class="permisos-table">
+        <tbody>
+        <tr class="permisos-row"
+            ng-repeat="permiso in vm.permisosDisponibles | orderBy:'accion'">
+          <td class="permisos-row-actions">
+            <div class="name">
+              <a class="module-info" href="#"
+                  tooltips
+                  tooltip-side="bottom"
+                  tooltip-speed="fast"
+                  tooltip-view-model="permiso"
+                  tooltip-view="app/permiso/tooltip.html">
+                <i></i>
+              </a>&nbsp;
+              <span class="ellipsis">{{permiso.accion}}</span>
+            </div>
+            <div class="action-buttons" role="group" aria-label="Acciones">
+              <button type="button" class="attach" aria-pressed="false"
+                      ng-class="{selected: vm.able(permiso)}"
+                      ng-click="vm.attach(permiso)"><i></i></button>
+              <button type="button" class="detach" aria-pressed="false"
+                      ng-class="{selected: vm.notAble(permiso)}"
+                      ng-click="vm.detach(permiso)"><i></i></button>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+</section>

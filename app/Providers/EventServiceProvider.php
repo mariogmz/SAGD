@@ -21,7 +21,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\DatoContactoActualizado' => [
             'App\Listeners\ActualizarUser',
-        ]
+        ],
+        'App\Events\EmpleadoRolCreado' => [
+            'App\Listeners\CrearRol',
+        ],
     ];
 
     /**
