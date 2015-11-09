@@ -44,7 +44,6 @@
 
     echo "Recompilando front-end"
     cd app-angular
-    echo $PATH
     nvm use 0.12
     npm install
     bower install
