@@ -12,6 +12,7 @@
     "disallowSpacesInFunctionDeclaration": {
         "beforeOpeningRoundBrace": true
     },
+    "disallowCommaBeforeLineBreak": false,
     "disallowEmptyBlocks": true,
     "disallowSpacesInCallExpression": true,
     "disallowSpacesInsideArrayBrackets": true,
@@ -25,7 +26,7 @@
     ],
     "disallowMixedSpacesAndTabs": true,
     "disallowTrailingWhitespace": true,
-    "requireTrailingComma": { "ignoreSingleLine": true },
+    "requireTrailingComma": false,
     "requireSpaceAfterComma": true,
     "disallowYodaConditions": true,
     "disallowKeywords": [ "with" ],
