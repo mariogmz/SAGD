@@ -11,10 +11,10 @@
     cd /var/www/sagd
 
     echo "Actualizando código"
-    git checkout {{ $remoteBranch }}
-    git pull origin develop
+    git checkout develop
+    git pull
     git branch -D stage
-    git checkout -b stage
+    git checkout -b stage origin/{{$remoteBranch}}
 
     echo "Actualizando dependencias"
     @if ($composerUpdate)
@@ -40,10 +40,11 @@
     php artisan queue:restart
 
     echo "Limpiando cache"
-    curl http://opcache.stache:8082/\?reset\=1
+    curl http://opcache.stage:8082/\?reset\=1 > /dev/null
 
     echo "Recompilando front-end"
     cd app-angular
+    echo $PATH
     nvm use 0.12
     npm install
     bower install
