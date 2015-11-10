@@ -140,6 +140,28 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
+    public function testNumeroDeParteMaximo30Caracteres(){
+        $producto = factory(App\Producto::class,'longnumpart')->make();
+        $this->assertFalse($producto->isValid());
+        $producto->numero_parte = 'HelloWorld';
+        $this->assertTrue($producto->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testNumeroDeParteNoContieneEspaciosEnBlanco(){
+        $producto = factory(App\Producto::class)->make(
+            ['numero_parte' => ' Esp_ac1ios en b1la-nco ']
+        );
+        $this->assertFalse($producto->isValid());
+        $producto->numero_parte = preg_replace('/\s+/','', $producto->numero_parte);
+        $this->assertTrue($producto->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
     public function testNumeroDeParteEsUnico() {
         $producto = factory(App\Producto::class)->create();
         $segundoProducto = factory(App\Producto::class)->make([

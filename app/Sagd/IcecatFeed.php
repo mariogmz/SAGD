@@ -10,7 +10,7 @@ use Prewk\XmlStringStreamer\Parser;
 use Prewk\XmlStringStreamer\Stream;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
-Class Icecat {
+Class IcecatFeed {
 
     private $username;
     private $password;
@@ -20,16 +20,17 @@ Class Icecat {
     public function __construct() {
         $this->username = getenv('ICECAT_USERNAME');
         $this->password = getenv('ICECAT_PASSWORD');
-        $this->refs_endpoint = "https://{$this->username}:{$this->password}@data.icecat.biz/export/level4/refs";
+        $this->refs_endpoint = "https://{$this->username}:{$this->password}@data.icecat.biz/export/level4/refs/";
         $this->refs = [
             'categories'        => 'CategoriesList.xml.gz',
             'category_features' => 'CategoryFeaturesList.xml.gz',
             'features'          => 'FeaturesList.xml.gz',
-            'feature_groups'    => 'FeatureGroupList.xml.gz',
+            'feature_groups'    => 'FeatureGroupsList.xml.gz',
             'languages'         => 'LanguageList.xml.gz',
             'measures'          => 'MeasuresLists.xml.gz',
             'relations'         => 'RelationsList.xml',
-            'suppliers'         => 'SuppliersList.xml.gz'
+            'suppliers'         => 'SuppliersList.xml.gz',
+            'not_found'         => 'file.xml'
         ];
     }
 
@@ -109,7 +110,7 @@ Class Icecat {
             }
         }
 
-        return file_put_contents('Icecat/feaure_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return file_put_contents('Icecat/feature_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
@@ -161,36 +162,6 @@ Class Icecat {
         }
 
         return file_put_contents('Icecat/feaure_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    }
-
-    /**
-     * Downloads and decodes a requested file from https://data.icecat.biz/export/level4/refs/ , if file
-     * was encoded with gzip, this method decodes it and saves the output into a file under the next path:
-     *      /Icecat/{$ref_name}.xml
-     * If the ref_name is not defined this method will throw an ErrorException
-     * @param string $ref_name
-     * @throws ErrorException | FileNotFoundException
-     */
-    private function downloadAndDecode($ref_name) {
-        if (isset($this->refs[$ref_name])) {
-            $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
-
-            if ($xml === false) {
-                throw new FileNotFoundException('File ' . $this->refs_endpoint . $this->refs[$ref_name] . ' does not exists.');
-            } else {
-
-                if (strpos($ref_name, '.gz') !== - 1) {
-                    $xml = gzdecode($xml);
-                }
-                if (!file_exists('Icecat')) {
-                    mkdir('Icecat', 0777, true);
-                }
-                file_put_contents("Icecat/{$ref_name}.xml", $xml);
-            }
-
-        } else {
-            throw new ErrorException("Unknown Icecat reference file, not found on index: {$ref_name}.");
-        }
     }
 
     /**
@@ -287,9 +258,38 @@ Class Icecat {
     }
 
     /**
+     * Downloads and decodes a requested file from https://data.icecat.biz/export/level4/refs/ , if file
+     * was encoded with gzip, this method decodes it and saves the output into a file under the next path:
+     *      /Icecat/{$ref_name}.xml
+     * If the ref_name is not defined this method will throw an ErrorException
+     * @param string $ref_name
+     * @throws ErrorException | FileNotFoundException
+     */
+    public function downloadAndDecode($ref_name) {
+        if (isset($this->refs[$ref_name])) {
+            $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
+
+            if ($xml === false) {
+                throw new FileNotFoundException('File ' . $this->refs_endpoint . $this->refs[$ref_name] . ' does not exists.');
+            } else {
+                if (strpos($this->refs[$ref_name], '.gz')) {
+                    $xml = gzdecode($xml);
+                }
+                if (!file_exists('Icecat')) {
+                    mkdir('Icecat', 0777, true);
+                }
+                file_put_contents("Icecat/{$ref_name}.xml", $xml);
+            }
+
+        } else {
+            throw new ErrorException("Unknown Icecat reference file, not found on index: {$ref_name}.");
+        }
+    }
+
+    /**
      * Iterates over each one of the values for one field, and returns the value attribute of the one which
      * has the desired lang_id, by default this is equals to 6 (Spanish for Icecat)
-     * @param Array $field_array
+     * @param array $field_array
      * @param string $lang_id
      * @return string
      */
@@ -308,7 +308,7 @@ Class Icecat {
     /**
      * Iterates over each one of the values for one field, and returns the text of which
      * has the desired lang_id, by default this is equals to 6 (Spanish for Icecat)
-     * @param Array $field_array
+     * @param array $field_array
      * @param string $lang_id
      * @return string
      */
