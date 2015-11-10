@@ -11,10 +11,10 @@ class CreateSubfamiliasIcecatCategoriesTable extends Migration {
      * @return void
      */
     public function up() {
-        Schema::table('subfamilias_icecat_categories', function (Blueprint $table) {
+        Schema::create('subfamilias_icecat_categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('subfamilia_id');
-            $table->integer('icecat_categories_id');
+            $table->integer('subfamilia_id')->unsigned();
+            $table->integer('icecat_category_id')->unsigned();
         });
     }
 

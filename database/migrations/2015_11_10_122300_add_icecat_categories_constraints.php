@@ -13,7 +13,7 @@ class AddIcecatCategoriesConstraints extends Migration {
     public function up() {
         Schema::table('icecat_categories', function (Blueprint $table) {
             $table->unique('icecat_id');
-            $table->foreign('icecat_parent_category_id')->references('icecat_id')->on('iceca_categories');
+            $table->foreign('icecat_parent_category_id')->references('icecat_id')->on('icecat_categories');
         });
     }
 
