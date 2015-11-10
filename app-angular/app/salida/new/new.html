@@ -3,12 +3,40 @@
     <h4>Crear nueva salida</h4>
   </div>
   <div class="block">
-    <form class="item-form" name="salidaNewForm" ng-submit="vm.create()">
+    <form class="item-form salida-form" name="salidaNewForm" ng-submit="vm.create()" novalidate>
       <legend>Ingrese los datos para crear la nueva salida</legend>
-      <formly-form model="vm.salida" fields="vm.fields">
+
+      <div class="salida-datos">
+        <fieldset class="salida-fieldset">
+          <label for="motivo">Motivo:</label>
+          <textarea rows="2" type="text" id="motivo" name="motivo" maxlength="140" ng-model="vm.salida.motivo" required></textarea>
+        </fieldset>
+
+        <fieldset class="salida-fieldset">
+          <label for="fecha_salida">Fecha salida:</label>
+          <input type="date" id="fecha_salida" name="fecha_salida" ng-model="vm.salida.fecha_salida" >
+        </fieldset>
+      </div>
+
+      <section ng-repeat="salidaDetalle in vm.salida.salidas_detalles">
+        <div class="salida-datos">
+          <fieldset class="salida-fieldset">
+              <label for="cantidad">Cantidad:</label>
+              <input type="number" id="cantidad" name="cantidad" min="0" ng-model="salidaDetalle.cantidad">
+          </fieldset>
+
+          <fieldset class="salida-fieldset">
+              <label for="upc">UPC:</label>
+              <input type="text" id="upc" name="upc" ng-model="salidaDetalle.upc">
+          </fieldset>
+        </div>
+      </section>
+
+      <div class="actions">
+        <a ng-click="vm.agregarSalidaDetalle()" class="button primary">Agregar producto</a>
         <a ng-click="vm.back()" class="button secondary">Regresar</a>
         <input type="submit" class="button primary" ng-disabled="salidaNewForm.$invalid" value="Guardar cambios">
-      </formly-form>
+      </div>
     </form>
   </div>
 </div>
