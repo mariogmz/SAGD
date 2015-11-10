@@ -49,4 +49,44 @@ class LGGModelTest extends TestCase {
         $this->assertNull($model->deleted_at);
         $this->assertFalse($model->trashed());
     }
+
+    /**
+     * @covers ::bulkUpdate
+     * @covers ::checkCorrectArrayForBulkUpdate
+     * @covers ::preparevaluesForBulkInsert
+     * @covers ::performBulkUpdateWith
+     * @group feature/bulk-updates
+     */
+    public function testBulkUpdateDeUnaMarca()
+    {
+        factory(App\Marca::class, 5)->create();
+        $marca = new App\Marca;
+        $time = "Z".time();
+        $lastId = App\Marca::last()->id;
+
+        $ret_value = $marca->bulkUpdate('nombre', 'id', [
+            $lastId => $time,
+            $lastId-1 => 'Computo',
+            $lastId-2 => 'Woot'
+        ]);
+
+        $this->assertGreaterThan(0, $ret_value);
+        $this->assertEquals($time, App\Marca::find($lastId)->nombre);
+        $this->assertEquals('Computo', App\Marca::find($lastId-1)->nombre);
+        $this->assertEquals('Woot', App\Marca::find($lastId-2)->nombre);
+    }
+
+    /**
+     * @covers ::bulkUpdate
+     * @covers ::checkCorrectArrayForBulkUpdate
+     * @group feature/bulk-updates
+     */
+    public function testBulkUpdateArrayVacioRegresaNegativo()
+    {
+        $marca = new App\Marca;
+
+        $badArray = [];
+
+        $this->assertFalse($marca->bulkUpdate('nombre', 'id', $badArray));
+    }
 }

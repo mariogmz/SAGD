@@ -2,7 +2,7 @@
 
 namespace App;
 
-
+use Sagd\BulkUpdates;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Validator;
@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Validator;
  *
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
-class LGGModel extends Model {
+class LGGModel extends Model implements BulkUpdates {
 
     use SoftDeletes;
 
@@ -70,5 +70,63 @@ class LGGModel extends Model {
         {
             return false;
         }
+    }
+
+    /**
+     * Realiza un query que ejecuta un update masivo usando CASE-END
+     * @param $updatableField
+     * @param $searchableField
+     * @param array $values
+     * @return bool
+     */
+    public function bulkUpdate($updatableField, $searchableField, array $values)
+    {
+        if ($this->checkCorrectArrayForBulkUpdate($values) < 0) {
+            return false;
+        }
+
+        $collection = collect($values);
+        $collection = $this->prepareValuesForBulkUpdate($collection);
+
+        $statement = sprintf("UPDATE %s SET %s = (CASE %s %s END) WHERE %s IN ( %s );",
+            $this->table, $updatableField, $searchableField, $collection->implode(' '),
+            $searchableField, $collection->keys()->implode(','));
+        return $this->performBulkUpdateWith($statement);
+    }
+
+    /**
+     * Revisa que el array que se envio sea apropiado para el bulk insert
+     * @param $value
+     * @return void
+     * @throws InvalidArrayForBulkUpdateException
+     */
+    protected function checkCorrectArrayForBulkUpdate($values)
+    {
+        if (count($values) === 0) {
+            return -1;
+        }
+    }
+
+    /**
+     * Modifica la colección de valores para que tengan en formato de SQL que se necesita
+     * @param $collection
+     * @return Collection
+     */
+    protected function prepareValuesForBulkUpdate($collection)
+    {
+        return $collection->map(function ($item, $key){
+            return "WHEN $key THEN \"$item\"";
+        });
+    }
+
+    /**
+     * Realiza la llamada en la base de datos
+     * @param $statement
+     * @return int
+     */
+    protected function performBulkUpdateWith($statement)
+    {
+        $connection = $this->getConnection();
+        return $connection->update($statement);
     }
 }
