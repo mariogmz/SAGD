@@ -22,7 +22,9 @@ class ProductoController extends Controller {
      *
      * @return Response
      */
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
+        $this->authorize($this);
         if ($request->has('revisados')) {
             $productos = $this->producto->whereHas('precios', function ($query) use ($request){
                 $query->where('revisado', $request->revisados);
@@ -39,8 +41,9 @@ class ProductoController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request) {
-
+    public function store(Request $request)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->producto->fill($params['producto']);
         if ($this->producto->guardarNuevo($params)) {
@@ -63,7 +66,9 @@ class ProductoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $this->authorize($this);
         $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension')->find($id);
         if ($this->producto) {
             return response()->json([
@@ -86,7 +91,9 @@ class ProductoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
@@ -117,7 +124,9 @@ class ProductoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
             return response()->json([

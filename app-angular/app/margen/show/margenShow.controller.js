@@ -8,12 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenShowController', MargenShowController);
 
-  MargenShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  MargenShowController.$inject = ['$stateParams', 'api'];
 
-  function MargenShowController($auth, $state, $stateParams, api){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function MargenShowController($stateParams, api){
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -33,21 +30,24 @@
         templateOptions: {
           type: 'text',
           label: 'Valor:'
-        }
+        },
+        formatters: [utils.formatPercentage]
       }, {
         type: 'input',
         key: 'valor_webservice_p1',
         templateOptions: {
           type: 'text',
           label: 'Webservice P1:'
-        }
+        },
+        formatters: [utils.formatPercentage]
       }, {
         type: 'input',
         key: 'valor_webservice_p8',
         templateOptions: {
           type: 'text',
           label: 'Webservice P8:'
-        }
+        },
+        formatters: [utils.formatPercentage]
       }
     ];
     initialize();
@@ -70,7 +70,7 @@
         });
     }
 
-    function goBack() {
+    function goBack(){
       window.history.back();
     }
   }

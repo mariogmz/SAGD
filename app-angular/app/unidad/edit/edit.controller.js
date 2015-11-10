@@ -7,13 +7,10 @@
     .module('sagdApp.unidad')
     .controller('unidadEditController', unidadEditController);
 
-  unidadEditController.$inject = ['$auth', '$state', '$stateParams', 'api', 'pnotify'];
+  unidadEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
 
   /* @ngInject */
-  function unidadEditController($auth, $state, $stateParams, api, pnotify) {
-    if(!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function unidadEditController($state, $stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -28,6 +25,14 @@
           type: 'text',
           label: 'Clave:',
           required: true
+        },
+        validators : {
+          validKey : {
+            expression : function($viewValue, $modelValue, $scope){
+              return /^[a-zA-Z]{1,4}$/.test($modelValue || $viewValue);
+            },
+            message : '$viewValue + " no es una clave válida"'
+          }
         }
       }, {
         type: 'input',
@@ -35,7 +40,8 @@
         templateOptions: {
           type: 'text',
           label: 'Nombre:',
-          required: true
+          required: true,
+          maxlength: 45
         }
       }
     ];
@@ -68,6 +74,7 @@
         .then(function (response){
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
+          $state.go('unidadIndex');
           return response;
         })
         .catch(function(response){

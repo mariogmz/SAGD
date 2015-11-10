@@ -15,7 +15,8 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         \App\Console\Commands\Inspire::class,
         \App\Console\Commands\ResetDatabase::class,
-        \App\Console\Commands\CleanDatabase::class
+        \App\Console\Commands\CleanDatabase::class,
+        \App\Console\Commands\UpdateAcl::class
     ];
 
     /**

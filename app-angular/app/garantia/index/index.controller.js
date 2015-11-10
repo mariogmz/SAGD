@@ -7,13 +7,10 @@
     .module('sagdApp.garantia')
     .controller('garantiaIndexController', garantiaIndexController);
 
-  garantiaIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  garantiaIndexController.$inject = ['api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function garantiaIndexController($auth, $state, api, pnotify, modal) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function garantiaIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;

@@ -7,13 +7,10 @@
     .module('sagdApp.sucursal')
     .controller('sucursalIndexController', sucursalIndexController);
 
-  sucursalIndexController.$inject = ['$auth', '$state', 'api', 'pnotify', 'modal'];
+  sucursalIndexController.$inject = ['api', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function sucursalIndexController($auth, $state, api, pnotify, modal) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function sucursalIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;

@@ -22,7 +22,9 @@ class TipoGarantiaController extends Controller {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
+        $this->authorize($this);
         return $this->tipoGarantia->all();
     }
 
@@ -32,7 +34,9 @@ class TipoGarantiaController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->tipoGarantia = $this->tipoGarantia->fill($params);
         if ($this->tipoGarantia->save()) {
@@ -55,7 +59,9 @@ class TipoGarantiaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $this->authorize($this);
         $this->tipoGarantia = $this->tipoGarantia->find($id);
         if ($this->tipoGarantia) {
             return response()->json([
@@ -78,7 +84,9 @@ class TipoGarantiaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->tipoGarantia = $this->tipoGarantia->find($id);
         if (empty($this->tipoGarantia)) {
@@ -104,7 +112,9 @@ class TipoGarantiaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->tipoGarantia = $this->tipoGarantia->find($id);
         if (empty($this->tipoGarantia)) {
             return response()->json([

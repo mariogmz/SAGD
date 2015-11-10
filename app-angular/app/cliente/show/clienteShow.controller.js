@@ -8,12 +8,9 @@
     .module('sagdApp.cliente')
     .controller('clienteShowController', ClienteShowController);
 
-  ClienteShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  ClienteShowController.$inject = ['$stateParams', 'api'];
 
-  function ClienteShowController($auth, $state, $stateParams, api){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function ClienteShowController($stateParams, api){
 
     var vm = this;
     vm.id = $stateParams.id;

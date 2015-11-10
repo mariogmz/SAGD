@@ -7,13 +7,10 @@
     .module('sagdApp.unidad')
     .controller('unidadNewController', unidadNewController);
 
-  unidadNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  unidadNewController.$inject = ['$state', 'api', 'pnotify'];
 
   /* @ngInject */
-  function unidadNewController($auth, $state, api, pnotify) {
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function unidadNewController($state, api, pnotify) {
 
     var vm = this;
 
@@ -29,6 +26,14 @@
           label: 'Clave:',
           placeholder: 'Máximo 4 letras',
           required: true
+        },
+        validators : {
+          validKey : {
+            expression : function($viewValue, $modelValue, $scope){
+              return /^[a-zA-Z]{1,4}$/.test($modelValue || $viewValue);
+            },
+            message : '$viewValue + " no es una clave válida"'
+          }
         }
       }, {
         type: 'input',
@@ -37,7 +42,8 @@
           type: 'text',
           label: 'Nombre:',
           placeholder: 'Máximo 45 caracteres',
-          required: true
+          required: true,
+          maxlength: 45
         }
       }
     ];

@@ -1,4 +1,50 @@
-## Current `.env` file
+Sistema Administrativo Grupo Dicotech (SAGD)
+===========
+
+> Para el setup inicial es recomendable, o mejor dicho __obligatorio__ tener una máquina virtual usando vagrant.
+
+> Información y pasos para instalarlo puedes encontrarlo aquí: [Homestead](http://laravel.com/docs/5.1/homestead)
+
+## Homestead
+
+Homestead ya viene con muchas cosas instaladas como _redis_ y _nodejs_. Pero hay que instalar **PM2** para ejecutar el server de Node.js que se encarga de los _sockets_.
+
+Para esto hay que leer [esta entrada en el wiki](https://bitbucket.org/zegucomcomputo/sagd/wiki/Preparaci%C3%B3n%20e%20instalaci%C3%B3n%20de%20server%20Node.js%20y%20Redis).
+
+Resulta que **PM2** no inicia los servicios cuando inicia la máquina. Así que cada vez que inicias tu vm, si no la suspendiste y le diste **halt**, tendrás que iniciarlo manualmente con `pm2 start socket.js` desde la carpeta de `sagd`.
+
+Creo que no viene con _supervisor_. Asi que a darle. Info [aquí](https://bitbucket.org/zegucomcomputo/sagd/wiki/Instalando%20Supervisor%20para%20persisitir%20el%20queue%3Aworker%20de%20Laravel).
+
+`Supervisor` es para auto-iniciar los `queues` de la aplicación. Es como `pm2` pero en lugar de servers de node, este corre cualquier shell script o comando. En este caso es para inicar el `queue` de laravel. El wiki tiene más información de esto.
+
+## sagd/
+
+En la carpeta de `sagd` o de tu código, hay cosas que correr antes de empezar a usar la aplicación.
+
+En tu termial tienes que correr estos comandos en el root de la aplicación.
+
+```
+composer install
+npm install
+```
+
+Después nos cambiamos a la carpeta de `app-angular` y corremos los siguientes:
+
+```
+sudo npm install -g grunt
+npm install
+bower install
+grunt dev
+```
+
+
+
+## `.env` file
+
+Este archivo no esta versionado y solo será visible aquí. Hay que copiar y pegarlo localmente en tu archivo `.env`. Si no existe, crealo.
+
+> Cualquier cambio futuro a las variables de env se tienen que comentar con el equipo y anotar aqui abajo.
+
 ```
 APP_ENV=local
 APP_DEBUG=true
@@ -19,20 +65,27 @@ DB_DATABASE_LEGACY=sazcentralizado
 DB_USERNAME_LEGACY=development
 DB_PASSWORD_LEGACY=test123!
 
+BROADCAST_DRIVER=redis
 CACHE_DRIVER=file
 SESSION_DRIVER=file
-QUEUE_DRIVER=sync
+QUEUE_DRIVER=redis
 
-MAIL_DRIVER=smtp
-MAIL_HOST=mailtrap.io
-MAIL_PORT=2525
-MAIL_USERNAME=null
-MAIL_PASSWORD=null
-MAIL_ENCRYPTION=null
+MAIL_DRIVER=log
+MAIL_HOST=www.zegucom.com.mx
+MAIL_PORT=995
+MAIL_USERNAME=correo@zegucom.com.mx
+MAIL_PASSWORD=
+MAIL_ENCRYPTION=tls
+FRONTEND_URL="http://sagd.app/password/reset/"
+
+TOKEN_TTL=20160
 
 ```
 
-## Correr estos queries
+## Set-up de la base de datos
+
+Hay un archivo `create_schemas_users_permissions.sql`. Que contiene lo siguiente:
+
 ```
 CREATE SCHEMA `sagd_local` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 CREATE USER 'sagd_local'@'localhost' IDENTIFIED BY 'zegucomlocal';
@@ -41,33 +94,27 @@ GRANT ALL ON sagd_local.* TO 'sagd_local'@'localhost';
 CREATE SCHEMA `sagd_test` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
 CREATE USER 'sagd_test'@'localhost' IDENTIFIED BY 'zegucomtest';
 GRANT ALL ON sagd_test.* TO 'sagd_test'@'localhost';
+
+CREATE SCHEMA `sagd_prod` DEFAULT CHARACTER SET utf8 COLLATE utf8_spanish_ci;
+CREATE USER 'sagd_prod'@'localhost' IDENTIFIED BY 'zegucomprod';
+GRANT ALL ON sagd_prod.* TO 'sagd_prod'@'localhost';
+
 ```
 
+Esto hay que ejecutarlo en la base de datos de nuestra máquina virtual de Homestead.
 
-## Laravel PHP Framework
+Después de esto ya podemos iniciar la base de datos con las migraciones y datos iniciales.
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/d/total.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Para eso se ejecutan los siguientes comandos: 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, queueing, and caching.
+```
+php artisan migrate
+php artisan db:seed
+```
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+Para `testing` y poder correr las pruebas son los siguientes comandos:
 
-## Official Documentation
-
-Documentation for the framework can be found on the [Laravel website](http://laravel.com/docs).
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](http://laravel.com/docs/contributions).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell at taylor@laravel.com. All security vulnerabilities will be promptly addressed.
-
-### License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+```
+php artisan migrate --env=testing
+php artisan db:seed --env=testing
+```

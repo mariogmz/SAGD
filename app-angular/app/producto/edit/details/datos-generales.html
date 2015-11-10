@@ -3,52 +3,86 @@
 <div class="card borderless">
   <div class="block">
     <div class="row">
+
       <!-- Subfamilia -->
       <div class="col-lg">
-        <fieldset>
+        <fieldset ng-class="vm.setClass(productoEditForm.subfamilia)">
           <label for="subfamilia">Subfamilia</label>
-          <select id="subfamilia"
+          <select id="subfamilia" name="subfamilia"
                   ng-model="vm.subfamilia"
                   ng-options="subfamilia.nombre for subfamilia in vm.subfamilias | orderBy:'nombre'"
-                  ng-change="vm.updateClave()">
-            <option value="" ng-bind="vm.subfamilias? 'Seleccione una subfamilia' : vm.producto.subfamilia.nombre"></option>
+                  ng-change="vm.updateClave()"
+                  required>
+            <option value=""
+                    ng-bind="vm.subfamilias? 'Seleccione una subfamilia' : vm.producto.subfamilia.nombre"></option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.subfamilia.$error" ng-show="productoEditForm.subfamilia.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- Marca -->
       <div class="col-lg">
-        <fieldset>
-          <label for="marca_id">Marca:</label>
-          <select id="marca_id"
+        <fieldset ng-class="vm.setClass(productoEditForm.marca)">
+          <label for="marca">Marca:</label>
+          <select id="marca" name="marca"
                   ng-model="vm.marca"
                   ng-options="marca.nombre for marca in vm.marcas | orderBy:'nombre'"
-                  ng-change="vm.updateClave()">
+                  ng-change="vm.updateClave()"
+                  required>
             <option value="" ng-bind="vm.marcas? 'Seleccione una marca' : vm.producto.marca.nombre"></option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.marca.$error" ng-show="productoEditForm.marca.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- UPC -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="vm.setClass(productoEditForm.upc)">
           <label for="upc">UPC:</label>
-          <input type="text" id="upc" ng-model="vm.producto.upc">
+          <input type="text" id="upc" name="upc" ng-model="vm.producto.upc"
+                 maxlength="20" required>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.upc.$error" ng-show="productoEditForm.upc.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- Número de parte -->
       <div class="col-sm">
-        <fieldset>
+        <fieldset ng-class="vm.setClass(productoEditForm.numero_parte)">
           <label for=numero_parte>Número de parte:</label>
-          <input type="text" id="numero_parte" ng-model="vm.producto.numero_parte" ng-blur="vm.updateSubclave()">
-          </select>
+          <input type="text" id="numero_parte" name="numero_parte" ng-model="vm.producto.numero_parte"
+                 ng-blur="vm.updateSubclave()"
+                 maxlength="30" ng-pattern=/^([\w\-_#\.\(\)\/\+]+\s?)*$/ required>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.upc.$error" ng-show="productoEditForm.upc.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- Subclave -->
-      <div class="col-sm">
+      <div class="col-sm" ng-class="vm.setClass(productoEditForm.subclave)">
         <fieldset>
           <label for="subclave">Subclave:</label>
-          <input type="text" id="subclave" ng-model="vm.producto.subclave" ng-blur="vm.updateSubclave()">
+          <input type="text" id="subclave" name="subclave" ng-model="vm.producto.subclave"
+                 ng-blur="vm.updateSubclave()"
+                 maxlength="45"
+                 required>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.subclave.$error" ng-show="productoEditForm.subclave.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
+
       <!-- Clave -->
       <div class="col-sm">
         <fieldset>
@@ -63,26 +97,52 @@
 
       <!-- Descripciones -->
       <div class="col-lg">
-        <fieldset>
+
+        <!-- Descripcion -->
+        <fieldset ng-class="vm.setClass(productoEditForm.descripcion)">
           <label for="descripcion">Descripción:</label>
-          <textarea id="descripcion" ng-model="vm.producto.descripcion"></textarea>
+          <textarea id="descripcion" name="descripcion" ng-model="vm.producto.descripcion"
+                    maxlength="300"
+                    required>
+          </textarea>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.descripcion.$error" ng-show="productoEditForm.descripcion.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
-        <fieldset>
+
+        <!-- Descripcion corta -->
+        <fieldset ng-class="vm.setClass(productoEditForm.descripcion_corta)">
           <label for="descripcion_corta">Descripción corta:</label>
-          <input type="text" id="descripcion_corta" ng-model="vm.producto.descripcion_corta">
+          <input type="text" id="descripcion_corta" name="descripcion_corta" ng-model="vm.producto.descripcion_corta"
+                 maxlength="50">
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.descripcion_corta.$error"
+               ng-show="productoEditForm.descripcion_corta.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
       </div>
 
       <!-- Características -->
       <div class="col-sm">
-        <fieldset>
+
+        <!-- Unidad de medida -->
+        <fieldset ng-class="vm.setClass(productoEditForm.unidad_id)">
           <label for="unidad_id">Unidad de medida:</label>
-          <select id="unidad_id"
+          <select id="unidad_id" name="unidad_id"
                   ng-model="vm.producto.unidad_id"
-                  ng-options="unidad.id as unidad.nombre for unidad in vm.unidades">
+                  ng-options="unidad.id as unidad.nombre for unidad in vm.unidades"
+                  required>
             <option ng-bind="vm.unidades? 'Seleccione una unidad de medida' : vm.producto.unidad.nombre"></option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.unidad_id.$error" ng-show="productoEditForm.unidad_id.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
+
+        <!-- En Remate -->
         <fieldset class="checkbox">
           <label>
             <input type="checkbox" ng-model="vm.producto.remate" ng-true-value="1" ng-false-value="0">
@@ -93,13 +153,19 @@
       </div>
 
       <div class="col-sm">
-        <fieldset>
+        <!-- Tipo de garantía -->
+        <fieldset ng-class="vm.setClass(productoEditForm.tipo_garantia_id)">
           <label for="tipo_garantia_id">Tipo de garantía:</label>
-          <select id="tipo_garantia_id"
+          <select id="tipo_garantia_id" name="tipo_garantia_id"
                   ng-model="vm.producto.tipo_garantia_id"
                   ng-options="tipo.id as tipo.descripcion for tipo in vm.tiposGarantia">
-            <option value="" ng-bind="vm.tiposGarantia? 'Seleccione un tipo de garantía' : vm.producto.tipo_garantia.descripcion"></option>
+            <option value=""
+                    ng-bind="vm.tiposGarantia? 'Seleccione un tipo de garantía' : vm.producto.tipo_garantia.descripcion"></option>
           </select>
+          <!-- Validation messages -->
+          <div ng-messages="productoEditForm.tipo_garantia_id.$error" ng-show="productoEditForm.tipo_garantia_id.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
         </fieldset>
         <fieldset class="checkbox">
           <label>

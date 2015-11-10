@@ -8,12 +8,9 @@
     .module('sagdApp.familia')
     .controller('familiaNewController', FamiliaNewController);
 
-  FamiliaNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  FamiliaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function FamiliaNewController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function FamiliaNewController($state, api, pnotify){
 
     var vm = this;
     vm.back = goBack;
@@ -25,7 +22,16 @@
           type: 'text',
           label: 'Clave:',
           placeholder: 'Máximo 5 caracteres alfanuméricos',
-          required: true
+          required: true,
+          maxlength: 5
+        },
+        validators: {
+          validKey: {
+            expression: function ($viewValue, $modelValue, scope){
+              return /^[\w]+$/.test($viewValue || $modelValue);
+            },
+            message: '$viewValue + " contiene caracteres inválidos"'
+          }
         }
       }, {
         type: 'input',
@@ -34,14 +40,16 @@
           type: 'text',
           label: 'Nombre:',
           placeholder: 'Máximo 45 caracteres',
-          required: true
+          required: true,
+          maxlength: 45
         }
       }, {
         type: 'textarea',
         key: 'descripcion',
         templateOptions: {
           label: 'Descripción:',
-          placeholder: 'Máximo 100 caracteres'
+          placeholder: 'Máximo 100 caracteres',
+          maxlength: 100
         }
       }];
 
@@ -58,7 +66,7 @@
         });
     }
 
-    function goBack() {
+    function goBack(){
       window.history.back();
     }
   }

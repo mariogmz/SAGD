@@ -8,12 +8,9 @@
     .module('sagdApp.familia')
     .controller('familiaShowController', FamiliaShowController);
 
-  FamiliaShowController.$inject = ['$auth', '$state', '$stateParams', 'api'];
+  FamiliaShowController.$inject = ['$stateParams', 'api'];
 
-  function FamiliaShowController($auth, $state, $stateParams, api){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function FamiliaShowController($stateParams, api){
 
     var vm = this;
     vm.id = $stateParams.id;

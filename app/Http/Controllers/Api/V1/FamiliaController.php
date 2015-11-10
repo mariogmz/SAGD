@@ -22,7 +22,9 @@ class FamiliaController extends Controller {
      *
      * @return Response
      */
-    public function index() {
+    public function index()
+    {
+        $this->authorize($this);
         return $this->familia->all();
     }
 
@@ -32,7 +34,9 @@ class FamiliaController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request) {
+    public function store(Request $request)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->familia->fill($params);
         if ($this->familia->save()) {
@@ -55,7 +59,9 @@ class FamiliaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id) {
+    public function show($id)
+    {
+        $this->authorize($this);
         $this->familia = $this->familia->find($id);
         if ($this->familia) {
             return response()->json([
@@ -77,7 +83,9 @@ class FamiliaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id) {
+    public function update(Request $request, $id)
+    {
+        $this->authorize($this);
         $params = $request->all();
         $this->familia = $this->familia->find($id);
         if (empty($this->familia)) {
@@ -103,7 +111,9 @@ class FamiliaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id) {
+    public function destroy($id)
+    {
+        $this->authorize($this);
         $this->familia = $this->familia->find($id);
         if (empty($this->familia)) {
             return response()->json([

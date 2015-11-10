@@ -1,8 +1,15 @@
 <div class="item-checkbox">
   <label>
-    <input type="checkbox" ng-model="model[options.key]">
+    <input type="checkbox"
+           id="{{id}}"
+           formly-dynamic-name="id"
+           formly-custom-validation="options.validators"
+           aria-describedby="{{id}}_description"
+           ng-required="options.templateOptions.required"
+           ng-disabled="options.templateOptions.disabled"
+           ng-model="model[options.key]">
     <span></span>
-    {{options.templateOptions.label}}
+    {{options.templateOptions.label || 'Si/No'}}
     {{options.templateOptions.required ? '*' : ''}}
   </label>
 </div>

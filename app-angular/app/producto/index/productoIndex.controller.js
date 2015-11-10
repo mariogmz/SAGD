@@ -8,12 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoIndexController', ProductoIndexController);
 
-  ProductoIndexController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  ProductoIndexController.$inject = ['$state', 'api', 'pnotify'];
 
-  function ProductoIndexController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    }
+  function ProductoIndexController($state, api, pnotify){
 
     var vm = this;
     vm.sort = sort;

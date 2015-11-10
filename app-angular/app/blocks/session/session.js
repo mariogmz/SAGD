@@ -64,6 +64,7 @@
 
     function resetEmpleado() {
       return api.get('/authenticate/empleado').then(function(response){
+        if (typeof response == "undefined") {return};
         localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
       });
     }

@@ -15,13 +15,14 @@ $factory->define(App\Rol::class, function ($faker)
 {
     return [
         'clave' => App\Caker::realUnique(App\Rol::class, 'clave', 'regexify', '[A-Z]{6}'),
-        'nombre' => $faker->text(45)
+        'nombre' => $faker->text(45),
+        'individual' => false,
     ];
 });
 
 $factory->defineAs(App\Rol::class, 'longname', function($faker) use ($factory){
     $rol = $factory->raw(App\Rol::class);
-    $rol['nombre'] = $faker->regexify('[a]{46}');
+    $rol['nombre'] = $faker->regexify('[a]{141}');
     return $rol;
 });
 

@@ -13,7 +13,8 @@
         "barryvdh/laravel-ide-helper": "^2.1",
         "barryvdh/laravel-cors": "0.7.*",
         "predis/predis": "1.*",
-        "prewk/xml-string-streamer": "^0.7.1"
+        "prewk/xml-string-streamer": "^0.7.1",
+		"felixkiss/uniquewith-validator": "2.*"
     },
     "require-dev": {
         "fzaninotto/faker": "dev-master",

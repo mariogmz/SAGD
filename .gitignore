@@ -39,6 +39,7 @@ app-angular/tests/reports/*.html
 app-angular/tests/reports/screenshots/*.png
 app-angular/public/fonts/*
 !app-angular/public/fonts/.gitkeep
+app-angular/app/blocks/env/env.js
 *.iml
 
 ## Directory-based project format:

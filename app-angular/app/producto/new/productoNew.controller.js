@@ -8,28 +8,22 @@
     .module('sagdApp.producto')
     .controller('productoNewController', ProductoNewController);
 
-  ProductoNewController.$inject = ['$auth', '$state', 'api', 'pnotify'];
+  ProductoNewController.$inject = ['$state', 'api', 'pnotify', 'utils'];
 
-  function ProductoNewController($auth, $state, api, pnotify){
-    if (!$auth.isAuthenticated()) {
-      $state.go('login', {});
-    } else {
-      $state.go('productoNew.step1');
-    }
+  function ProductoNewController($state, api, pnotify, utils){
+    $state.go('productoNew.step1');
 
     var vm = this;
     vm.producto = {
-      activo: true,
+      activo: false,
       remate: false,
-      subclave: ''
+      subclave: '',
+      spiff : 0.0
     };
-    vm.precio = {};
-    vm.dimension = {
-      largo : 0.1,
-      ancho : 0.1,
-      alto : 0.1,
-      peso : 0.1
+    vm.precio = {
+      descuento : 0.0
     };
+    vm.dimension = {};
 
     vm.back = goBack;
     vm.updateSubclave = updateSubclave;
@@ -37,6 +31,7 @@
     vm.calcularPrecios = calcularPrecios;
     vm.calcular = calcular;
     vm.save = crearProducto;
+    vm.setClass = utils.setClass;
 
     initialize();
 
@@ -141,8 +136,12 @@
     }
 
     function calcular(){
-      if (vm.precio.precio_1 && vm.precio.costo) {
-        calcularPrecios();
+      if (vm.precio.costo && vm.precio.precio_1) {
+        if (parseFloat(vm.precio.precio_1) <= parseFloat(vm.precio.costo)) {
+          pnotify.alert('Advertencia', 'El precio 1 debe ser mayor al costo', 'warning');
+        } else {
+          calcularPrecios();
+        }
       }
     }
 
