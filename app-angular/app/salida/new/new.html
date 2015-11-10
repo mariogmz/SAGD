@@ -18,19 +18,29 @@
         </fieldset>
       </div>
 
-      <section ng-repeat="salidaDetalle in vm.salida.salidas_detalles">
-        <div class="salida-datos">
-          <fieldset class="salida-fieldset">
-              <label for="cantidad">Cantidad:</label>
-              <input type="number" id="cantidad" name="cantidad" min="0" ng-model="salidaDetalle.cantidad">
-          </fieldset>
-
-          <fieldset class="salida-fieldset">
-              <label for="upc">UPC:</label>
-              <input type="text" id="upc" name="upc" ng-model="salidaDetalle.upc">
-          </fieldset>
-        </div>
-      </section>
+      <table class="item-table">
+        <thead>
+          <tr>
+            <th class="thin">Cantidad</th>
+            <th>UPC</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="salidaDetalle in vm.salida.salidas_detalles"
+              ng-class="{valid: vm.isValid(salidaDetalle), invalid: vm.isInvalid(salidaDetalle)}">
+            <td>
+              <fieldset>
+                <input type="number" id="cantidad" name="cantidad" min="0" ng-model="salidaDetalle.cantidad">
+              </fieldset>
+            </td>
+            <td>
+              <fieldset>
+                <input type="text" id="upc" name="upc" ng-model="salidaDetalle.upc">
+              </fieldset>
+            </td>
+          </tr>
+        </tbody>
+      </table>
 
       <div class="actions">
         <a ng-click="vm.agregarSalidaDetalle()" class="button primary">Agregar producto</a>

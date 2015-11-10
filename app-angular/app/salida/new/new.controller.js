@@ -18,6 +18,8 @@
     vm.setClass = utils.setClass;
     vm.back = goBack;
     vm.agregarSalidaDetalle = agregarSalidaDetalle;
+    vm.isValid = isValid;
+    vm.isInvalid = isInvalid;
     vm.salida = {
       fecha_salida: new Date(),
       salidas_detalles: [
@@ -63,6 +65,20 @@
       }
 
       return true;
+    }
+
+    function isValid(salidaDetalle) {
+      if (salidaDetalle.cantidad <= 0) {
+        return false;
+      }
+
+      return true;
+
+      // TODO checar en la API si la el producto con el UPC existe y si las existencias son mayores a cantidad
+    }
+
+    function isInvalid(salidaDetalle) {
+      return !isValid(salidaDetalle);
     }
 
     function goBack() {
