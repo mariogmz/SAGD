@@ -16,6 +16,7 @@ class CreateIcecatSuppliersTable extends Migration {
             $table->integer('icecat_id')->unsigned();
             $table->string('name', 50);
             $table->string('logo_url', 100)->nullable();
+            $table->timestamps();
         });
     }
 

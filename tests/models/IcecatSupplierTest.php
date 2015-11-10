@@ -1,124 +1,67 @@
 <?php
 
 /**
- * @coversDefaultClass \App\Familia
+ * @coversDefaultClass \App\IcecatSupplier
  */
-class FamiliaTest extends TestCase
-{
-    protected $familia;
+class IcecatSupplierTest extends TestCase {
 
     /**
      * @coversNothing
+     * @group icecat
      */
-    public function testModeloEsValido()
-    {
-        $familia = factory(App\Familia::class)->make();
-        $this->assertTrue($familia->isValid());
-        $this->assertTrue($familia->save());
-    }
-
-    /**
-     * @coversNothing
-     * @group modelo_actualizable
-     */
-    public function testModeloEsActualizable()
-    {
-        $familia = factory(App\Familia::class)->create();
-        $familia->nombre = 'MC Hammer';
-        $this->assertTrue($familia->isValid('update'));
-        $this->assertTrue($familia->save());
-        $this->assertSame('MC Hammer', $familia->nombre);
+    public function testIceCatIdEsRequerido() {
+        $icecat_supplier = factory(App\IcecatSupplier::class)->make();
+        unset($icecat_supplier->icecat_id);
+        $this->assertFalse($icecat_supplier->isValid());
+        $icecat_supplier->icecat_id = round(rand(1,99999999));
+        $this->assertTrue($icecat_supplier->isValid());
     }
 
     /**
      * @coversNothing
+     * @group icecat
      */
-    public function testClaveNoPuedeSerDuplicada()
-    {
-        $familia = factory(App\Familia::class)->create();
-        $dup = clone $familia;
-        $this->assertFalse($dup->isValid());
+    public function testIcecatIdEsEntero() {
+        $icecat_supplier = factory(App\IcecatSupplier::class)->make([
+            'icecat_id' => 'hello_again_potatoe'
+        ]);
+        $this->assertFalse($icecat_supplier->isValid());
+        $icecat_supplier->icecat_id = round(rand(1,99999999));
+        $this->assertTrue($icecat_supplier->isValid());
     }
 
     /**
      * @coversNothing
+     * @group icecat
      */
-    public function testClaveNoPuedeSerNula()
-    {
-        $fam = factory(App\Familia::class)->make(['clave' => '']);
-        $this->assertFalse($fam->isValid());
-        $this->assertFalse($fam->save());
+    public function testIceCatIdEsUnico() {
+        $primer_ics = factory(App\IcecatSupplier::class)->create();
+        $segundo_ics = factory(App\IcecatSupplier::class)->make([
+            'icecat_id' => $primer_ics->icecat_id
+        ]);
+        $this->assertFalse($segundo_ics->isValid());
+        $segundo_ics->icecat_id = round(rand(0, 1000)) + $primer_ics->icecat_id;
+        $this->assertTrue($segundo_ics->isValid());
     }
 
     /**
      * @coversNothing
+     * @group icecat
      */
-    public function testClaveEsMenorDeCuatroCaracteres()
-    {
-        $fam = factory(App\Familia::class)->make(['clave' => 'ABCDE']);
-        $this->assertFalse($fam->isValid());
-        $this->assertFalse($fam->save());
+    public function testNameEsRequerido() {
+        $icecat_supplier = factory(App\IcecatSupplier::class)->make();
+        unset($icecat_supplier->name);
+        $this->assertFalse($icecat_supplier->isValid());
     }
 
     /**
      * @coversNothing
+     * @group icecat
      */
-    public function testClaveEsSoloMayusculas()
-    {
-        $fam = factory(App\Familia::class, 'minclave')->make();
-        $clave = strtoupper($fam->clave);
-        $this->assertTrue($fam->isValid());
-        $this->assertTrue($fam->save());
-        $this->assertSame($clave, $fam->clave);
+    public function test_logo_url_es_opcional() {
+        $icecat_supplier = factory(App\IcecatSupplier::class)->make();
+        unset($icecat_supplier->logo_url);
+        $this->assertTrue($icecat_supplier->isValid());
     }
 
-    /**
-     * @coversNothing
-     */
-    public function testNombreNoPuedeSerNulo()
-    {
-        $fam = factory(App\Familia::class)->make(['nombre' => '']);
-        $this->assertFalse($fam->isValid());
-        $this->assertFalse($fam->save());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testNombreNoPuedeSerMuyLargo()
-    {
-        $fam = factory(App\Familia::class, 'longname')->make();
-        $this->assertFalse($fam->isValid());
-        $this->assertFalse($fam->save());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testDescripcionPuedeSerNulo()
-    {
-        $fam = factory(App\Familia::class)->make(['descripcion' => null]);
-        $this->assertTrue($fam->isValid());
-    }
-
-    /**
-     * @coversNothing
-     */
-    public function testDescripcionNoPuedeSerMuyLargo()
-    {
-        $fam = factory(App\Familia::class, 'longdesc')->make();
-        $this->assertFalse($fam->isValid());
-    }
-
-    /**
-     * @covers ::subfamilias
-     * @group relaciones
-    */
-    public function testSubfamilias()
-    {
-        $subfamilia = factory(App\Subfamilia::class)->create();
-        $familia = $subfamilia->familia;
-        $subfamilia = $familia->subfamilias[0];
-        $this->assertInstanceOf(App\Subfamilia::class, $subfamilia);
-    }
 }

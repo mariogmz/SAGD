@@ -11,29 +11,10 @@
 |
 */
 
-$factory->define(App\Anticipo::class, function ($faker) {
+$factory->define(App\IcecatSupplier::class, function ($faker) {
     return [
-        'venta_id'         => factory(App\Venta::class)->create()->id,
-        'venta_entrega_id' => null,
-        'concepto'         => $faker->text(45),
-        'monto'            => $faker->randomFloat(2, 1.00, 10000.99),
-        'cobrado'          => 0
+        'icecat_id' => $faker->randomNumber(8),
+        'name' => $faker->text(50),
+        'logo_url' => $faker->optional()->url
     ];
-});
-
-$factory->defineAs(App\Anticipo::class, 'cobrado', function ($faker) use ($factory) {
-    $anticipo = $factory->raw(App\Anticipo::class);
-
-    return array_merge($anticipo, [
-        'cobrado'          => 1,
-        'venta_entraga_id' => $anticipo->venta_entrega_id
-    ]);
-});
-
-$factory->defineAs(App\Anticipo::class, 'conceptolargo', function ($faker) use ($factory) {
-    $anticipo = $factory->raw(App\Anticipo::class);
-
-    return array_merge($anticipo, [
-        'concepto' => $faker->text(200),
-    ]);
 });

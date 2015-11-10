@@ -3,7 +3,7 @@
 /**
  * @coversDefaultClass \Sagd\IcecatFeed
  */
-class IcecatFeedest extends TestCase {
+class IcecatFeedTest extends TestCase {
 
     protected $icecat_feed;
 
