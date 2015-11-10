@@ -1,0 +1,13 @@
+.salida-datos {
+
+  @include make-container();
+  @include make-row();
+
+  .salida-fieldset {
+
+    @include make-col();
+    @include make-col-span(6);
+
+    label { float: left; }
+  }
+}
