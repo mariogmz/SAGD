@@ -9,11 +9,14 @@ namespace App;
  * @property integer $id
  * @property string $clave
  * @property string $nombre
+ * @property integer $icecat_supplier_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereClave($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Marca whereDeletedAt($value)
  */
 class Marca extends LGGModel {
 
@@ -24,8 +27,9 @@ class Marca extends LGGModel {
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave'  => ['required', 'max:3', 'alpha_num', 'unique:marcas'],
-        'nombre' => 'required|max:25'
+        'clave'              => ['required', 'max:3', 'alpha_num', 'unique:marcas'],
+        'nombre'             => 'required|max:25',
+        'icecat_supplier_id' => 'integer'
     ];
 
     public $updateRules = [];
