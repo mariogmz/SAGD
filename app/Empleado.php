@@ -46,6 +46,9 @@ use Sagd\SafeTransactions;
  * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereAccessToken($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rol[] $roles
+ * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereDeletedAt($value)
  */
 class Empleado extends LGGModel {
 

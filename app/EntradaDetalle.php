@@ -31,6 +31,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\EntradaDetalle whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\EntradaDetalle whereProductoMovimientoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\EntradaDetalle whereDeletedAt($value)
  */
 class EntradaDetalle extends LGGModel {
 

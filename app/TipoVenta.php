@@ -12,6 +12,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\TipoVenta whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\TipoVenta whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoVenta whereDeletedAt($value)
  */
 class TipoVenta extends LGGModel {
 

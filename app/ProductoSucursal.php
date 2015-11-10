@@ -17,6 +17,10 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\Precio $precio
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoMovimiento[] $movimientos
+ * @method static \Illuminate\Database\Query\Builder|\App\ProductoSucursal whereDeletedAt($value)
  */
 class ProductoSucursal extends LGGModel {
 

@@ -19,6 +19,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Margen whereValorWebserviceP1($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Margen whereValorWebserviceP8($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Margen whereDeletedAt($value)
  */
 class Margen extends LGGModel {
 

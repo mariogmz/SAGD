@@ -23,6 +23,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Guia wherePaqueteriaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Guia whereEstatusActivoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Guia whereDeletedAt($value)
  */
 class Guia extends LGGModel {
 

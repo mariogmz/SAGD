@@ -13,6 +13,12 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Rol whereClave($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Rol whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property boolean $individual
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Empleado[] $empleados
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Permiso[] $permisos
+ * @method static \Illuminate\Database\Query\Builder|\App\Rol whereIndividual($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Rol whereDeletedAt($value)
  */
 class Rol extends LGGModel {
 

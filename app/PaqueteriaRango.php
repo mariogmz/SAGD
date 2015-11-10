@@ -20,6 +20,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\PaqueteriaRango whereDistribuidor($value)
  * @method static \Illuminate\Database\Query\Builder|\App\PaqueteriaRango wherePaqueteriaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\PaqueteriaRango whereDeletedAt($value)
  */
 class PaqueteriaRango extends LGGModel {
 

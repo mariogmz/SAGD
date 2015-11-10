@@ -22,6 +22,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\PaginaWebDistribuidor whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\PaginaWebDistribuidor whereClienteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\PaginaWebDistribuidor whereDeletedAt($value)
  */
 class PaginaWebDistribuidor extends LGGModel {
 

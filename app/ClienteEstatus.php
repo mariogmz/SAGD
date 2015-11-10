@@ -6,6 +6,7 @@ namespace App;
 /**
  * Definicion de estatus:
  * 1 => Nuevo. Cliente se acaba de registrar pero aun no verifica su cuenta via email.
+ * 
  * 2 => Activo. Cliente verifico su cuenta y ya puede realizar operaciones.
  * 3 => Inactivo. Cliente dado de baja (logicamente).
  *
@@ -15,6 +16,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteEstatus whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteEstatus whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteEstatus whereDeletedAt($value)
  */
 
 class ClienteEstatus extends LGGModel {

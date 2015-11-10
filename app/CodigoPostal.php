@@ -18,6 +18,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\CodigoPostal whereMunicipio($value)
  * @method static \Illuminate\Database\Query\Builder|\App\CodigoPostal whereCodigoPostal($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\CodigoPostal whereDeletedAt($value)
  */
 class CodigoPostal extends LGGModel {
 

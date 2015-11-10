@@ -18,6 +18,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereValor($value)
  * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereMetodoPagoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPagoRango whereDeletedAt($value)
  */
 class MetodoPagoRango extends LGGModel {
 

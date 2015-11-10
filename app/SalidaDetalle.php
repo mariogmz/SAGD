@@ -24,6 +24,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\SalidaDetalle whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\SalidaDetalle whereProductoMovimientoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\SalidaDetalle whereDeletedAt($value)
  */
 class SalidaDetalle extends LGGModel {
 

@@ -13,6 +13,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\EstatusActivo whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\EstatusActivo whereEstatus($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\EstatusActivo whereDeletedAt($value)
  */
 class EstatusActivo extends LGGModel {
 

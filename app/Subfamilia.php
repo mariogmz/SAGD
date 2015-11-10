@@ -20,6 +20,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereFamiliaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereMargenId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereDeletedAt($value)
  */
 class Subfamilia extends LGGModel {
 

@@ -63,6 +63,8 @@ use Carbon\Carbon;
  * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereVendedorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereRolId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereDeletedAt($value)
  */
 class Cliente extends LGGModel {
 

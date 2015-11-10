@@ -14,6 +14,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\EstadoSoporte whereClave($value)
  * @method static \Illuminate\Database\Query\Builder|\App\EstadoSoporte whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoSoporte whereDeletedAt($value)
  */
 class EstadoSoporte extends LGGModel {
 

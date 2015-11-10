@@ -38,6 +38,10 @@ use Sagd\CalculadoraPrecios;
  * @method static \Illuminate\Database\Query\Builder|\App\Precio wherePrecio10($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Precio whereProductoSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Precio whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Precio whereRevisado($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Precio whereDescuento($value)
  */
 class Precio extends LGGModel {
 

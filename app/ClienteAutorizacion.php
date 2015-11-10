@@ -22,6 +22,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereClienteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereClienteAutorizadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteAutorizacion whereDeletedAt($value)
  */
 class ClienteAutorizacion extends LGGModel {
 
