@@ -61,5 +61,6 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('sucursal/proveedor/{clave}', 'SucursalController@conProveedor');
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
         Route::get('logs-acceso', 'LogsAccesoController@index');
+        Route::resource('salida', 'SalidaController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
     });
 });
