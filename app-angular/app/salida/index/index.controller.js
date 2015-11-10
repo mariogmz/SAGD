@@ -17,10 +17,10 @@
     vm.eliminarUnidad = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
-      {name: 'Fecha', key: 'clave'},
-      {name: 'Motivo', key: 'nombre'},
-      {name: 'Empleado', key: 'nombre'},
-      {name: 'Estado', key: 'nombre'},
+      {name: 'Fecha', key: 'fecha_salida'},
+      {name: 'Motivo', key: 'motivo'},
+      {name: 'Empleado', key: 'empleado_id'},
+      {name: 'Estado', key: 'estado_salida_id'},
     ];
 
     activate();
@@ -29,7 +29,7 @@
 
     function activate() {
       return obtenerSalidas().then(function() {
-        console.log('Unidades obtenidas');
+        console.log('Salidas obtenidas');
       });
     }
 
