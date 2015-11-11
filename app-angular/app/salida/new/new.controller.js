@@ -22,12 +22,7 @@
     vm.isInvalid = isInvalid;
     vm.salida = {
       fecha_salida: new Date(),
-      salidas_detalles: [
-        {
-          cantidad: 0,
-          upc: ''
-        }
-      ]
+      salidas_detalles: []
     };
 
     activate();
