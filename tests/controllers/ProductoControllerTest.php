@@ -279,4 +279,49 @@ class ProductoControllerTest extends TestCase {
             ->assertResponseStatus(400);
 
     }
+
+    /**
+     * @covers ::buscarUpc
+     * @group feature-salidas
+     */
+    public function testBuscarPorUpc()
+    {
+        $endpoint = $this->endpoint . '/buscar/upc/123123';
+
+        $this->mock->shouldReceive([
+            'where->get' => Mockery::self(),
+            'count' => 1,
+            'first' => []
+        ]);
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Producto encontrado',
+                'producto' => []
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscarUpc
+     * @group feature-salidas
+     */
+    public function testBuscarPorUpcInvalido()
+    {
+        $endpoint = $this->endpoint . '/buscar/upc/123123';
+
+        $this->mock->shouldReceive([
+            'where->get' => Mockery::self(),
+            'count' => 0
+        ]);
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Producto no encontrado',
+                'error' => 'Producto no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
 }

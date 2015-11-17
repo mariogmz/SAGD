@@ -144,4 +144,21 @@ class ProductoController extends Controller {
             ], 400);
         }
     }
+
+    public function buscarUpc($upc)
+    {
+        $this->authorize($this);
+        $this->producto = $this->producto->where('upc', $upc)->get();
+        if ($this->producto->count() === 1) {
+            return response()->json([
+                'message' => 'Producto encontrado',
+                'producto' => $this->producto->first()
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Producto no encontrado',
+                'error' => 'Producto no existente'
+            ], 404);
+        }
+    }
 }
