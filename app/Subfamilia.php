@@ -61,7 +61,7 @@ class Subfamilia extends LGGModel {
     }
 
     /**
-     * Get the Familia associated with Subfamilia
+     * Obtiene el Familia asociada con Subfamilia
      * @return App\Familia
      */
     public function familia() {
@@ -69,7 +69,7 @@ class Subfamilia extends LGGModel {
     }
 
     /**
-     * Get the Margen associated with Subfamilia
+     * Obtiene el Margen asociado con Subfamilia
      * @return App\Margen
      */
     public function margen() {
@@ -77,7 +77,7 @@ class Subfamilia extends LGGModel {
     }
 
     /**
-     * Get the Productos associated with Subfamilia
+     * Obtiene los Productos asociados con Subfamilia
      * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos() {
