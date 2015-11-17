@@ -12,7 +12,7 @@ class AddMarcasToIcecatSuppliersForeingKey extends Migration {
      */
     public function up() {
         Schema::table('marcas', function (Blueprint $table) {
-            $table->integer('icecat_supplier_id')->unsigned();
+            $table->integer('icecat_supplier_id')->unsigned()->nullable();
             $table->foreign('icecat_supplier_id')->references('id')->on('icecat_suppliers');
         });
     }

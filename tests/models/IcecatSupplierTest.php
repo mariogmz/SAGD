@@ -13,7 +13,7 @@ class IcecatSupplierTest extends TestCase {
         $icecat_supplier = factory(App\IcecatSupplier::class)->make();
         unset($icecat_supplier->icecat_id);
         $this->assertFalse($icecat_supplier->isValid());
-        $icecat_supplier->icecat_id = round(rand(1,99999999));
+        $icecat_supplier->icecat_id = round(rand(1, 99999999));
         $this->assertTrue($icecat_supplier->isValid());
     }
 
@@ -26,7 +26,7 @@ class IcecatSupplierTest extends TestCase {
             'icecat_id' => 'hello_again_potatoe'
         ]);
         $this->assertFalse($icecat_supplier->isValid());
-        $icecat_supplier->icecat_id = round(rand(1,99999999));
+        $icecat_supplier->icecat_id = round(rand(1, 99999999));
         $this->assertTrue($icecat_supplier->isValid());
     }
 
@@ -42,6 +42,19 @@ class IcecatSupplierTest extends TestCase {
         $this->assertFalse($segundo_ics->isValid());
         $segundo_ics->icecat_id = round(rand(0, 1000)) + $primer_ics->icecat_id;
         $this->assertTrue($segundo_ics->isValid());
+    }
+
+    /**
+     * @coversNothing
+     * @group icecat
+     */
+    public function testModeloEsActualizable() {
+        $icecat_supplier = factory(App\IcecatSupplier::class)->create();
+        $icecat_supplier->logo_url = 'http://images.google.com/algo';
+        $this->assertTrue($icecat_supplier->isValid('update'));
+        $this->assertTrue($icecat_supplier->save());
+        $icecat_supplier->fresh();
+        $this->assertSame('http://images.google.com/algo', $icecat_supplier->logo_url);
     }
 
     /**

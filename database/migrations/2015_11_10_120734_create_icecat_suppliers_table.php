@@ -17,6 +17,7 @@ class CreateIcecatSuppliersTable extends Migration {
             $table->string('name', 50);
             $table->string('logo_url', 100)->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

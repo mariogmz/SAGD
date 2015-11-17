@@ -19,6 +19,7 @@ class CreateIcecatCategoriesTable extends Migration {
             $table->string('keyword', 100)->nullable();
             $table->integer('icecat_parent_category_id')->unsigned()->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

@@ -34,7 +34,7 @@ class IcecatSupplier extends LGGModel {
         });
         IcecatSupplier::updating(function ($icecat_supplier) {
             $icecat_supplier->updateRules = self::$rules;
-            $icecat_supplier->updateRules['icecat_id'] .= ',icecat_id,' . $icecat_supplier->icecat_id;
+            $icecat_supplier->updateRules['icecat_id'] .= ',icecat_id,' . $icecat_supplier->id;
 
             return $icecat_supplier->isValid('update');
         });

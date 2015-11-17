@@ -15,6 +15,8 @@ class CreateSubfamiliasIcecatCategoriesTable extends Migration {
             $table->increments('id');
             $table->integer('subfamilia_id')->unsigned();
             $table->integer('icecat_category_id')->unsigned();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

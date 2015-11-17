@@ -16,7 +16,7 @@ class IcecatCategory extends LGGModel {
     ];
 
     public static $rules = [
-        'icecat_id'                 => 'integer|required|unique:icecat_category',
+        'icecat_id'                 => 'integer|required|unique:icecat_categories',
         'name'                      => 'string|required|max:100',
         'description'               => 'string|max:300',
         'keyword'                   => 'string|max:100',
@@ -36,7 +36,7 @@ class IcecatCategory extends LGGModel {
         });
         IcecatCategory::updating(function ($icecat_category) {
             $icecat_category->updateRules = self::$rules;
-            $icecat_category->updateRules['icecat_id'] .= ',icecat_id,' . $icecat_category->icecat_id;
+            $icecat_category->updateRules['icecat_id'] = "integer|required|unique:icecat_categories,icecat_id,{$icecat_category->id}";
 
             return $icecat_category->isValid('update');
         });
