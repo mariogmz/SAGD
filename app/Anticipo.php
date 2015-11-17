@@ -25,6 +25,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereVentaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereVentaEntregaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Anticipo whereDeletedAt($value)
  */
 class Anticipo extends LGGModel {
 

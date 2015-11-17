@@ -30,6 +30,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialEmisor whereDomicilioId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialEmisor whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\RazonSocialEmisor whereDeletedAt($value)
  */
 class RazonSocialEmisor extends LGGModel {
 

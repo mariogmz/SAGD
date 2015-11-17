@@ -16,6 +16,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereTipo($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereDomicilioId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Telefono whereDeletedAt($value)
  */
 class Telefono extends LGGModel {
 

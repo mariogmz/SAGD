@@ -36,6 +36,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Transferencia whereEmpleadoRevisionId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Transferencia whereEstadoTransferenciaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Transferencia whereDeletedAt($value)
  */
 class Transferencia extends LGGModel {
 

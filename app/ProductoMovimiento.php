@@ -31,6 +31,11 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoMovimiento whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoMovimiento whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property integer $producto_sucursal_id
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\ProductoSucursal $productoSucursal
+ * @method static \Illuminate\Database\Query\Builder|\App\ProductoMovimiento whereProductoSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\ProductoMovimiento whereDeletedAt($value)
  */
 class ProductoMovimiento extends LGGModel {
 

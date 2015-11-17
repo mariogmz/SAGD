@@ -13,6 +13,13 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Permiso whereClave($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Permiso whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property string $descripcion
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rol[] $roles
+ * @method static \Illuminate\Database\Query\Builder|\App\Permiso whereControlador($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Permiso whereAccion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Permiso whereDescripcion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Permiso whereDeletedAt($value)
  */
 class Permiso extends LGGModel
 {

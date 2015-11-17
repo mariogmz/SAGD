@@ -19,6 +19,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\SucursalConfiguracion whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\SucursalConfiguracion whereConfiguracionId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\SucursalConfiguracion whereDeletedAt($value)
  */
 class SucursalConfiguracion extends LGGModel {
 

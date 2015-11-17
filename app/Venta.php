@@ -54,6 +54,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Venta whereSucursalEntregaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Venta whereEmpleadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Venta whereDeletedAt($value)
  */
 class Venta extends LGGModel {
 

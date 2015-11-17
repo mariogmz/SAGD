@@ -46,6 +46,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\NotaCredito whereRazonSocialReceptorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\NotaCredito whereFacturaStatusId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\NotaCredito whereDeletedAt($value)
  */
 class NotaCredito extends LGGModel {
 

@@ -28,6 +28,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ApartadoDetalle whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ApartadoDetalle whereProductoMovimientoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\ApartadoDetalle whereDeletedAt($value)
  */
 class ApartadoDetalle extends LGGModel {
 

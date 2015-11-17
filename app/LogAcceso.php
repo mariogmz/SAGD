@@ -18,6 +18,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereEmpleadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\LogAcceso whereDeletedAt($value)
  */
 class LogAcceso extends LGGModel {
 

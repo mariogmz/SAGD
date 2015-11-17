@@ -32,6 +32,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Apartado whereEmpleadoApartadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Apartado whereEmpleadoDesapartadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Apartado whereDeletedAt($value)
  */
 class Apartado extends LGGModel {
 

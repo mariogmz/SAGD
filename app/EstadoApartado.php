@@ -15,6 +15,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\EstadoApartado whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\EstadoApartado whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoApartado whereDeletedAt($value)
  */
 
 class EstadoApartado extends LGGModel {

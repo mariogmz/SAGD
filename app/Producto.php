@@ -62,6 +62,8 @@ use Illuminate\Support\MessageBag;
  * @method static \Illuminate\Database\Query\Builder|\App\Producto whereUnidadId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Producto whereSubfamiliaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Producto whereDeletedAt($value)
  */
 class Producto extends LGGModel {
 

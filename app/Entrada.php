@@ -34,6 +34,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Entrada whereRazonSocialId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Entrada whereEmpleadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Entrada whereDeletedAt($value)
  */
 class Entrada extends LGGModel {
 

@@ -17,6 +17,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\PaqueteriaCobertura wherePaqueteriaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\PaqueteriaCobertura whereCodigoPostalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\PaqueteriaCobertura whereDeletedAt($value)
  */
 class PaqueteriaCobertura extends LGGModel {
 

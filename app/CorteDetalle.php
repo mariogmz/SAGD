@@ -17,6 +17,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereCorteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereCorteConceptoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\CorteDetalle whereDeletedAt($value)
  */
 class CorteDetalle extends LGGModel {
 

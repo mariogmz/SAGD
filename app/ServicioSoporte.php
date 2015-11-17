@@ -31,6 +31,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereEmpleadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereClienteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\ServicioSoporte whereDeletedAt($value)
  */
 class ServicioSoporte extends LGGModel {
 
