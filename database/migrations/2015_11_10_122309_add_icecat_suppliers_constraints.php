@@ -14,6 +14,7 @@ class AddIcecatSuppliersConstraints extends Migration {
         Schema::table('icecat_suppliers', function (Blueprint $table) {
             $table->unique('icecat_id');
             $table->unique('name');
+            $table->foreign('marca_id')->references('id')->on('marcas');
         });
     }
 
@@ -25,6 +26,8 @@ class AddIcecatSuppliersConstraints extends Migration {
     public function down() {
         Schema::table('icecat_suppliers', function (Blueprint $table) {
             $table->dropUnique('icecat_id');
+            $table->dropUnique('name');
+            $table->dropForeign('icecat_suppliers_marca_id_foreign');
         });
     }
 }

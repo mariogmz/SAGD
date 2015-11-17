@@ -77,4 +77,19 @@ class IcecatSupplierTest extends TestCase {
         $this->assertTrue($icecat_supplier->isValid());
     }
 
+    /**
+     * @covers ::marca
+     * @group relaciones
+     * @group icecat
+     */
+    public function testMarca(){
+        $marca = factory(App\Marca::class)->create();
+        $icecat_supplier = factory(App\IcecatSupplier::class)->create([
+            'marca_id' => $marca->id
+        ]);
+        $marcaTest = $icecat_supplier->marca;
+        $this->assertInstanceOf('App\Marca', $marcaTest);
+        $this->assertSame($marca->id, $icecat_supplier->marca->id);
+    }
+
 }

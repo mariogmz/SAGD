@@ -28,8 +28,7 @@ class Marca extends LGGModel {
 
     public static $rules = [
         'clave'              => ['required', 'max:3', 'alpha_num', 'unique:marcas'],
-        'nombre'             => 'required|max:25',
-        'icecat_supplier_id' => 'integer'
+        'nombre'             => 'required|max:25'
     ];
 
     public $updateRules = [];
@@ -59,11 +58,18 @@ class Marca extends LGGModel {
     }
 
     /**
-     * Return the products associated with Marca
-     *
-     * @return array
+     * Obtiene los productos asociados con la Marca
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos() {
         return $this->hasMany('App\Producto', 'marca_id');
+    }
+
+    /**
+     * Obtiene los suppliers de icecat asociados con la Marca
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function icecatSuppliers() {
+        return $this->hasMany('App\IcecatSupplier', 'marca_id');
     }
 }

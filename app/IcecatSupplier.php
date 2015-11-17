@@ -12,13 +12,14 @@ class IcecatSupplier extends LGGModel {
     protected $table = 'icecat_suppliers';
     public $timestamps = true;
     protected $fillable = [
-        'icecat_id', 'name', 'logo_url'
+        'icecat_id', 'name', 'logo_url','marca_id'
     ];
 
     public static $rules = [
         'icecat_id' => 'integer|required|unique:icecat_suppliers',
         'name'      => 'string|required|max:50',
-        'logo_url'  => 'url|max:100'
+        'logo_url'  => 'url|max:100',
+        'marca_id'  => 'integer'
     ];
 
     public $updateRules = [];
@@ -38,5 +39,13 @@ class IcecatSupplier extends LGGModel {
 
             return $icecat_supplier->isValid('update');
         });
+    }
+
+    /**
+     * Obtiene la marca a la cual pertenece el supplier de Icecat
+     * @return \App\Marca
+     */
+    public function marca(){
+        return $this->belongsTo('App\Marca');
     }
 }

@@ -84,31 +84,6 @@ class MarcaTest extends TestCase {
     }
 
     /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testIcecatSupplierIdDebeSerEntero() {
-        $marca = factory(App\Marca::class)->make([
-            'icecat_supplier_id' => 'hello_parking_meter'
-        ]);
-        $this->assertFalse($marca->isValid());
-        $marca->icecat_supplier_id = 1;
-        $this->assertTrue($marca->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testIcecatSupplierIdEsOpcional() {
-        $marca = factory(App\Marca::class)->make([
-            'icecat_supplier_id' => 1
-        ]);
-        unset($marca->icecat_supplier_id);
-        $this->assertTrue($marca->isValid());
-    }
-
-    /**
      * @covers ::productos
      * @group relaciones
      */
@@ -117,5 +92,19 @@ class MarcaTest extends TestCase {
         $producto = factory(App\Producto::class)->create(['marca_id' => $marca->id]);
         $testProducto = $marca->productos[0];
         $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
+
+    /**
+     * @covers ::icecatSuppliers
+     * @group relaciones
+     * @group icecat
+     */
+    public function testIcecatSuppliers() {
+        $marca = factory(App\Marca::class)->create();
+        factory(App\IcecatSupplier::class)->create(
+            ['marca_id' => $marca->id]
+        );
+        $testIcecatSupplier = $marca->icecatSuppliers[0];
+        $this->assertInstanceOf(App\IcecatSupplier::class, $testIcecatSupplier);
     }
 }
