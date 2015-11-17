@@ -78,9 +78,17 @@ class Subfamilia extends LGGModel {
 
     /**
      * Get the Productos associated with Subfamilia
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos() {
         return $this->hasMany('App\Producto');
+    }
+
+    /**
+     * Obtiene las categorias de Icecat que pertencen a la subfamilia
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function icecatCategories(){
+        return $this->hasMany('App\IcecatCategory');
     }
 }

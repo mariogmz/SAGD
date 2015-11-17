@@ -20,10 +20,17 @@ $factory->define(App\IcecatCategory::class, function ($faker) {
     ];
 });
 
-$factory->defineAs(App\IcecatCategory::class, 'withParent', function ($faker) use ($factory) {
+$factory->defineAs(App\IcecatCategory::class, 'withparent', function ($faker) use ($factory) {
     return array_merge(
         $factory->raw(App\IcecatCategory::class),
         ['icecat_parent_category_id' => factory(App\IcecatCategory::class)->create()->id]
+    );
+});
+
+$factory->defineAs(App\IcecatCategory::class, 'withsubfamilia', function ($faker) use ($factory) {
+    return array_merge(
+        $factory->raw(App\IcecatCategory::class),
+        ['subfamilia_id' => factory(App\Subfamilia::class)->create()->id]
     );
 });
 

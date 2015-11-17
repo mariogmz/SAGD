@@ -12,7 +12,7 @@ class IcecatCategory extends LGGModel {
     protected $table = 'icecat_categories';
     public $timestamps = true;
     protected $fillable = [
-        'icecat_id', 'name', 'description', 'keyword'
+        'icecat_id', 'name', 'description', 'keyword', 'subfamilia_id'
     ];
 
     public static $rules = [
@@ -20,7 +20,8 @@ class IcecatCategory extends LGGModel {
         'name'                      => 'string|required|max:100',
         'description'               => 'string|max:300',
         'keyword'                   => 'string|max:100',
-        'icecat_parent_category_id' => 'integer'
+        'icecat_parent_category_id' => 'integer',
+        'subfamilia_id'             => 'integer'
     ];
 
     public $updateRules = [];
@@ -40,5 +41,13 @@ class IcecatCategory extends LGGModel {
 
             return $icecat_category->isValid('update');
         });
+    }
+
+    /**
+     * Obtiene la subfamilia a la que pertenece la categoría de Icecat
+     * @return \App\Subfamilia
+     */
+    public function subfamilia(){
+        return $this->belongsTo('App\Subfamilia');
     }
 }

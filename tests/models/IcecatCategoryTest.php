@@ -136,4 +136,30 @@ class IcecatCategoryTest extends TestCase {
         $this->assertTrue($icecat_category->isValid());
     }
 
+    /**
+     * @coversNothing
+     * @group icecat
+     */
+    public function testSubfamiliaIdEsOpcional() {
+        $icecat_category = factory(App\IcecatCategory::class)->make();
+        $this->assertTrue($icecat_category->isValid());
+        $icecat_category->subfamilia_id = 1;
+        $this->assertTrue($icecat_category->isValid());
+    }
+
+    /**
+     * @covers ::subfamilia
+     * @group relaciones
+     * @group icecat
+     */
+    public function testSubfamilia() {
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        $icecat_category = factory(App\IcecatCategory::class)->create([
+            'subfamilia_id' => $subfamilia->id
+        ]);
+        $testSubfamilia = $icecat_category->subfamilia;
+        $this->assertInstanceOf('App\Subfamilia', $testSubfamilia);
+        $this->assertSame($subfamilia->id, $icecat_category->subfamilia->id);
+    }
+
 }
