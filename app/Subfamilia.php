@@ -30,8 +30,8 @@ class Subfamilia extends LGGModel {
     protected $fillable = ['clave', 'nombre', 'familia_id', 'margen_id'];
 
     public static $rules = [
-        'clave'      => 'required|max:4|alpha|unique:subfamilias',
-        'nombre'     => 'required|max:45',
+        'clave'      => 'required|string|max:4|alpha|unique:subfamilias',
+        'nombre'     => 'required|string|max:45',
         'familia_id' => 'required|integer',
         'margen_id'  => 'integer'
     ];
