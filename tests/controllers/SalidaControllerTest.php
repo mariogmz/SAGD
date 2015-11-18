@@ -52,7 +52,7 @@ class SalidaControllerTest extends TestCase
         $this->mock
             ->shouldReceive([
                 'fill' => Mockery::self(),
-                'save' => true,
+                'guardar' => Mockery::self(),
                 'self' => 'self',
                 'getId' => 1
             ])
@@ -76,7 +76,7 @@ class SalidaControllerTest extends TestCase
     public function test_POST_store_bad_data()
     {
         $this->mock
-            ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
+            ->shouldReceive(['fill' => Mockery::self(), 'guardar' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
         $this->app->instance('App\Salida', $this->mock);
 

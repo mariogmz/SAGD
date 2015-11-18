@@ -38,8 +38,9 @@ class SalidaController extends Controller
     {
         $this->authorize($this);
         $params = $request->all();
+        $salidasDetalles = $request->only('salidas_detalles');
         $this->salida->fill($params);
-        if( $this->salida->save() )
+        if( $this->salida->guardar($salidasDetalles) )
         {
             return response()->json(
                 [
