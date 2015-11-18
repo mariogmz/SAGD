@@ -302,6 +302,60 @@ class SalidaTest extends TestCase {
         $this->rollbackTests([$before, $after]);
     }
 
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoLaCantidadDeUnProductoExcedeSusExistencias()
+    {
+        $this->setUpProducto();
+
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salidaDetalle = [
+            'cantidad' => 105,
+            'producto' => $producto->toArray()
+        ];
+
+        $this->assertFalse($salida->guardar([$salidaDetalle]));
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoLaCantidadFueMayorAExistenciaHizoRollback()
+    {
+        $this->setUpProducto();
+
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salidaDetalle = [
+            'cantidad' => 105,
+            'producto' => $producto->toArray()
+        ];
+
+        $antes = Salida::all()->count();
+
+        $salida->guardar([$salidaDetalle]);
+
+        $this->assertEquals($antes, Salida::all()->count());
+    }
+
     private function crearConteoAntesDespues($model)
     {
         $before = function() use ($model) {
