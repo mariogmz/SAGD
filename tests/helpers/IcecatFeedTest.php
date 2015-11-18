@@ -20,6 +20,7 @@ class IcecatFeedTest extends TestCase {
 
     /**
      * @covers ::downloadAndDecode
+     * @group icecat
      */
     public function testDownloadAndDecodeUndecoded() {
         $this->icecat_feed->downloadAndDecode('relations');
@@ -28,6 +29,7 @@ class IcecatFeedTest extends TestCase {
 
     /**
      * @covers ::downloadAndDecode
+     * @group icecat
      */
     public function testDownloadAndDecodeGzipped() {
         $this->icecat_feed->downloadAndDecode('suppliers');
@@ -36,6 +38,7 @@ class IcecatFeedTest extends TestCase {
 
     /**
      * @covers ::downloadAndDecode
+     * @group icecat
      * @expectedException ErrorException
      */
     public function testDownloadAndDecodeOnUndefinedRefThrowsErrorException() {
@@ -44,6 +47,7 @@ class IcecatFeedTest extends TestCase {
 
     /**
      * @covers ::downloadAndDecode
+     * @group icecat
      * @expectedException ErrorException
      */
     public function testDownloadAndDecodeOnFileNotFound() {
@@ -52,21 +56,23 @@ class IcecatFeedTest extends TestCase {
 
     /**
      * @covers ::getCategories
+     * @group icecat
      * @covers ::parseCategoryNode
      */
     public function testGetCategories() {
         $this->icecat_feed->downloadAndDecode('categories');
-        $this->assertGreaterThan(0,$this->icecat_feed->getCategories('categories'));
+        $this->assertGreaterThan(0, $this->icecat_feed->getCategories());
         $this->assertFileExists('Icecat/categories.json');
     }
 
     /**
      * @covers ::getFeature
+     * @group icecat
      * @covers ::parseFeatureNode
      */
     public function testGetFeatures() {
         $this->icecat_feed->downloadAndDecode('features');
-        $this->assertGreaterThan(0,$this->icecat_feed->getFeatures('features'));
+        $this->assertGreaterThan(0, $this->icecat_feed->getFeatures());
         $this->assertFileExists('Icecat/features.json');
     }
 
@@ -76,17 +82,18 @@ class IcecatFeedTest extends TestCase {
      */
     public function testGetFeatureGroups() {
         $this->icecat_feed->downloadAndDecode('feature_groups');
-        $this->assertGreaterThan(0,$this->icecat_feed->getFeatureGroups('feature_groups'));
+        $this->assertGreaterThan(0, $this->icecat_feed->getFeatureGroups());
         $this->assertFileExists('Icecat/feature_groups.json');
     }
 
     /**
      * @covers ::getSuppliers
+     * @group icecat
      * @covers ::parseSupplierNode
      */
     public function testGetSuppliers() {
         $this->icecat_feed->downloadAndDecode('suppliers');
-        $this->assertGreaterThan(0,$this->icecat_feed->getSuppliers('suppliers'));
+        $this->assertGreaterThan(0, $this->icecat_feed->getSuppliers());
         $this->assertFileExists('Icecat/suppliers.json');
     }
 
