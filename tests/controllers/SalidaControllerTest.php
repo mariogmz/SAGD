@@ -269,7 +269,7 @@ class SalidaControllerTest extends TestCase
 
         $this->mock->shouldReceive([
             'find' => Mockery::self(),
-            'createDetalleFrom' => true
+            'crearDetalle' => true
         ])->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
 
@@ -321,7 +321,7 @@ class SalidaControllerTest extends TestCase
 
         $this->mock->shouldReceive([
             'find' => Mockery::self(),
-            'createDetalleFrom' => false
+            'crearDetalle' => false
         ])->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
 
