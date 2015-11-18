@@ -25,7 +25,7 @@ class SalidaController extends Controller
     public function index(Salida $salida)
     {
         $this->authorize($this);
-        return $this->salida->all();
+        return $this->salida->with('empleado', 'estado')->get();
     }
 
     /**

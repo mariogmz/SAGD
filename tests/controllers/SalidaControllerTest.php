@@ -35,7 +35,7 @@ class SalidaControllerTest extends TestCase
      */
     public function test_GET_index() {
         $this->mock->shouldReceive([
-            'all' => []
+            'with->get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
 
