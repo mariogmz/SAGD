@@ -52,7 +52,7 @@ class SalidaControllerTest extends TestCase
         $this->mock
             ->shouldReceive([
                 'fill' => Mockery::self(),
-                'guardar' => Mockery::self(),
+                'save' => Mockery::self(),
                 'self' => 'self',
                 'getId' => 1
             ])
@@ -76,7 +76,7 @@ class SalidaControllerTest extends TestCase
     public function test_POST_store_bad_data()
     {
         $this->mock
-            ->shouldReceive(['fill' => Mockery::self(), 'guardar' => false])->withAnyArgs();
+            ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
         $this->app->instance('App\Salida', $this->mock);
 
@@ -253,4 +253,85 @@ class SalidaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::saveDetalle
+     * @group feature-salidas
+     */
+    public function test_POST_saveDetalle()
+    {
+        $endpoint = $this->endpoint . '/1/detalles';
+        $detalles = [
+            'cantidad' => 5,
+            'upc' => 'xyz',
+            'producto_id' => 1
+        ];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'createDetalleFrom' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->post($endpoint, $detalles)
+            ->seeJson([
+                'message' => 'Detalle agregado a Salida exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::saveDetalle
+     * @group feature-salidas
+     */
+    public function test_POST_saveDetalle_salida_no_encontrada()
+    {
+        $endpoint = $this->endpoint . '/1/detalles';
+        $detalles = [
+            'cantidad' => 5,
+            'upc' => 'xyz',
+            'producto_id' => 1
+        ];
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->post($endpoint, $detalles)
+            ->seeJson([
+                'message' => 'No se pudo encontrar la salida',
+                'error' => 'Salida no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::saveDetalle
+     * @group feature-salidas
+     */
+    public function test_POST_saveDetalle_detalle_no_creado()
+    {
+        $endpoint = $this->endpoint . '/1/detalles';
+        $detalles = [
+            'cantidad' => 5,
+            'upc' => 'xyz',
+            'producto_id' => 1
+        ];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'createDetalleFrom' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->post($endpoint, $detalles)
+            ->seeJson([
+                'message' => 'Detalle no se pudo agregar a Salida',
+                'error' => 'Detalle no creado'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+
 }

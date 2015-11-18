@@ -40,7 +40,7 @@ class SalidaController extends Controller
         $params = $request->all();
         $salidasDetalles = $request->only('salidas_detalles');
         $this->salida->fill($params);
-        if( $this->salida->guardar($salidasDetalles) )
+        if( $this->salida->save() )
         {
             return response()->json(
                 [
@@ -141,5 +141,36 @@ class SalidaController extends Controller
                 'error' => 'El metodo de eliminar no se pudo ejecutar'
             ], 400);
         }
+    }
+
+    /**
+     * Agrega un detalle a la salida
+     * @param int $id
+     * @param Request
+     * @return Response
+     */
+    public function saveDetalle($id, Request $request)
+    {
+        $this->authorize($this);
+        $this->salida = $this->salida->find($id);
+        if ($this->salida) {
+            $detalle = $request->all();
+            if ($this->salida->createDetalleFrom($detalle)) {
+                return response()->json([
+                    'message' => 'Detalle agregado a Salida exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Detalle no se pudo agregar a Salida',
+                    'error' => 'Detalle no creado'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar la salida',
+                'error' => 'Salida no existente'
+            ], 404);
+        }
+
     }
 }

@@ -63,5 +63,6 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
         Route::get('logs-acceso', 'LogsAccesoController@index');
         Route::resource('salida', 'SalidaController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::post('salida/{id}/detalles', 'SalidaController@saveDetalle');
     });
 });
