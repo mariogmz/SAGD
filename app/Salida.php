@@ -2,6 +2,10 @@
 
 namespace App;
 
+use App\Producto;
+use App\ProductoMovimiento;
+use App\Sucursal;
+use Sagd\SafeTransactions;
 
 /**
  * App\Salida
@@ -27,6 +31,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Salida whereDeletedAt($value)
  */
 class Salida extends LGGModel {
+
+    use SafeTransactions;
 
     //
     protected $table = "salidas";
@@ -59,6 +65,31 @@ class Salida extends LGGModel {
         });
     }
 
+    /**
+     * Guardar la salida con sus salidas detalles
+     * @param array $salidasDetalles
+     * @return bool
+     */
+    public function guardar($salidasDetalles)
+    {
+        $lambda = function() use ($salidasDetalles) {
+            if ($this->save()) {
+                foreach ($salidasDetalles as $salidaDetalle) {
+                    $salida_detalle = new SalidaDetalle([
+                        'cantidad' => $salidaDetalle['cantidad'],
+                        'producto_id' => $salidaDetalle['producto']['id']
+                    ]);
+                    if(! $this->detalles()->save($salida_detalle) ) {
+                        return false;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
+        };
+        return $this->safe_transaction($lambda);
+    }
 
     /**
      * Obtiene el Empleado asociado con la Salida

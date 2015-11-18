@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Event;
+use App\Events\CreandoSalidaDetalle;
+use App\ProductoMovimiento;
 
 /**
  * App\SalidaDetalle
@@ -49,13 +52,21 @@ class SalidaDetalle extends LGGModel {
      */
     public static function boot() {
         parent::boot();
-        SalidaDetalle::creating(function ($model) {
-            return $model->isValid();
+        SalidaDetalle::creating(function ($sd) {
+            $salida = $sd->salida;
+            $result = Event::fire(new CreandoSalidaDetalle($salida, $sd))[0];
+            if($result['success']) {
+                $productoMovimiento = ProductoMovimiento::find($result['producto_movimiento']['id']);
+                $sd->producto_movimiento_id = $productoMovimiento->id;
+                return $sd->isValid();
+            } else {
+                return false;
+            }
         });
-        SalidaDetalle::updating(function ($model) {
-            $model->updateRules = self::$rules;
+        SalidaDetalle::updating(function ($sd) {
+            $sd->updateRules = self::$rules;
 
-            return $model->isValid('update');
+            return $sd->isValid('update');
         });
     }
 

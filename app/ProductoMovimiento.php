@@ -2,6 +2,10 @@
 
 namespace App;
 
+use Event;
+use App\ProductoSucursal;
+use App\Existencia;
+use App\Events\CreandoProductoMovimiento;
 
 /**
  * App\ProductoMovimiento
@@ -43,7 +47,7 @@ class ProductoMovimiento extends LGGModel {
     protected $table = "productos_movimientos";
     public $timestamps = true;
     protected $fillable = ['movimiento', 'entraron', 'salieron',
-        'existencias_antes', 'existencias_despues', 'producto_id'];
+        'existencias_antes', 'existencias_despues', 'producto_id', 'producto_sucursal_id'];
 
     public static $rules = [
         'movimiento'          => 'required|max:100',
@@ -64,21 +68,18 @@ class ProductoMovimiento extends LGGModel {
         ProductoMovimiento::creating(function ($pm) {
             $pm->entraron || $pm->entraron = 0;
             $pm->salieron || $pm->salieron = 0;
-            $pm->existencias_antes || $pm->existencias_antes = 0;
-            $pm->existencias_despues || $pm->existencias_despues = 0;
-            if (!$pm->isValid()) {
+
+            $result = Event::fire(new CreandoProductoMovimiento($pm))[0];
+            if ($result['success']) {
+                $pm->existencias_antes || $pm->existencias_antes = $result['antes'];
+                $pm->existencias_despues || $pm->existencias_despues = $result['despues'];
+                return $pm->isValid();
+            } else {
                 return false;
             }
-
-            return true;
         });
         ProductoMovimiento::updating(function ($pm) {
             $pm->updateRules = self::$rules;
-            $pm->entraron || $pm->entraron = 0;
-            $pm->salieron || $pm->salieron = 0;
-            $pm->existencias_antes || $pm->existencias_antes = 0;
-            $pm->existencias_despues || $pm->existencias_despues = 0;
-
             return $pm->isValid('update');
         });
     }
