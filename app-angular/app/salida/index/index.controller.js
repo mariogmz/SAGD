@@ -19,8 +19,8 @@
       {name: '#', key: 'id'},
       {name: 'Fecha', key: 'fecha_salida'},
       {name: 'Motivo', key: 'motivo'},
-      {name: 'Empleado', key: 'empleado_id'},
-      {name: 'Estado', key: 'estado_salida_id'},
+      {name: 'Empleado', key: 'empleado.usuario'},
+      {name: 'Estado', key: 'estado.nombre'},
     ];
 
     activate();
