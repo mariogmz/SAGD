@@ -38,9 +38,10 @@ Class IcecatFeed {
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoriesList.xml.gz" to
      * a PHP associative array and the saves it to a .json file
      * @param bool $get_array
+     * @param bool $with_parent
      * @return array
      */
-    public function getCategories($get_array = false) {
+    public function getCategories($get_array = false, $with_parent = false) {
         $icecat_categories = [];
         $stream = new Stream\File('Icecat/categories.xml', 1024);
         $parser = new Parser\StringWalker([
@@ -53,7 +54,7 @@ Class IcecatFeed {
         // each $node is in fact a category
         while ($node = $streamer->getNode()) {
             $category = simplexml_load_string($node);
-            $result = $this->parseCategoryNode($category);
+            $result = $this->parseCategoryNode($category, $with_parent);
             if ($result) {
                 array_push($icecat_categories, $result);
             }
@@ -178,9 +179,13 @@ Class IcecatFeed {
         $icecat_id = (int) $category_node->attributes()['ID'];
 
         if (!empty($name = $this->getLangValue($category_node->Name))) {
-            $description = $this->getLangValue($category_node->Description) ?: 'null';
-            $keyword = $this->getLangValue($category_node->Keywords) ?: 'null';
-            $icecat_parent_category_id = (int) $category_node->ParentCategory->attributes()['ID'] && $with_parent ?: 'null';
+            $description = $this->getLangValue($category_node->Description);
+            $keyword = $this->getLangValue($category_node->Keywords);
+            if ($with_parent) {
+                $icecat_parent_category_id = (int) $category_node->ParentCategory->attributes()['ID'];
+            } else {
+                $icecat_parent_category_id = null;
+            }
 
             return compact('icecat_id', 'description', 'keyword', 'name', 'icecat_parent_category_id');
         } else {
