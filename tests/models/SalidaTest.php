@@ -1,9 +1,20 @@
 <?php
 
+use App\Salida;
+use App\SalidaDetalle;
+use App\ProductoMovimiento;
+use App\Existencia;
+use Carbon\Carbon;
+
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
+
 /**
  * @coversDefaultClass \App\Salida
  */
 class SalidaTest extends TestCase {
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing
@@ -141,5 +152,216 @@ class SalidaTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sds);
         $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
         $this->assertCount(1, $sds);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidasDetalles()
+    {
+        $producto = $this->setUpProducto();
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => App\Sucursal::last()->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => App\Sucursal::last()->id
+        ]);
+        $salidaDetalle = [
+            'cantidad' => 5,
+            'producto' => $producto->toArray()
+        ];
+
+        $this->assertTrue($salida->guardar([$salidaDetalle]));
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidasGuardaUnMovimientoDeProducto()
+    {
+        $this->setUpProducto();
+        $this->setUpGuardarSalidaConDetalle();
+
+        $productoMovimiento = App\Producto::last()->movimientos(App\Sucursal::last());
+        $this->assertCount(1, $productoMovimiento);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidasActualizaLasExistenciasDelProducto()
+    {
+        $this->setUpProducto();
+        $this->setUpGuardarSalidaConDetalle();
+
+        $existencia = App\Producto::last()->existencias(App\Sucursal::last());
+        $this->assertEquals(95, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaAntesYDespuesCorrectos()
+    {
+        $this->setUpProducto();
+        $this->setUpGuardarSalidaConDetalle();
+
+        $movimiento = App\Producto::last()->movimientos->last();
+        $this->assertEquals(100, $movimiento->existencias_antes);
+        $this->assertEquals(95, $movimiento->existencias_despues);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaDeUnProductoMultiplesVecesActualizaCorrectamenteExistencias()
+    {
+        $this->setUpProducto();
+        for ($i=0; $i < 10; $i++) {
+            $this->setUpGuardarSalidaConDetalle();
+        }
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+        $existencia = $producto->existencias($sucursal);
+        $this->assertEquals(50, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoNoPuedeGuardarLaSalidaRegresaFalso()
+    {
+        $producto = $this->setUpProducto();
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => App\Sucursal::last()->id
+        ]);
+
+        $this->assertFalse($salida->guardar([]));
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoFallaHaceRollbackDeSalidas()
+    {
+        $funciones = $this->crearConteoAntesDespues(new Salida);
+
+        $this->rollbackTests($funciones);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoFallaHaceRollbackDeDetalles()
+    {
+        $funciones = $this->crearConteoAntesDespues(new SalidaDetalle);
+
+        $this->rollbackTests($funciones);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoFallaHaceRollbackDeProductosMovimientos()
+    {
+        $funciones = $this->crearConteoAntesDespues(new ProductoMovimiento);
+
+        $this->rollbackTests($funciones);
+    }
+
+    /**
+     * @covers ::guardar
+     * @group feature-salidas
+     */
+    public function testGuardarSalidaCuandoFallaHaceRollbackDeExistencias()
+    {
+        $before = function() {
+            $producto = App\Producto::last();
+            $sucursal = App\Sucursal::last();
+            $existencia = $producto->existencias($sucursal);
+            return $existencia->cantidad;
+        };
+        $after = function($antes) {
+            $producto = App\Producto::last();
+            $sucursal = App\Sucursal::last();
+            $existencia = $producto->existencias($sucursal);
+            $this->assertEquals($antes, $existencia->cantidad);
+        };
+
+        $this->rollbackTests([$before, $after]);
+    }
+
+    private function crearConteoAntesDespues($model)
+    {
+        $before = function() use ($model) {
+            return $model::all()->count();
+        };
+        $after = function($antes) use ($model) {
+            $this->assertEquals($antes, $model::all()->count());
+        };
+        return [$before, $after];
+    }
+
+    private function rollbackTests($funciones)
+    {
+        $this->setUpProducto();
+
+        $antes = call_user_func($funciones[0]);
+
+        Event::shouldReceive([
+            'fire' => [['success' => false]]
+        ])->withAnyArgs();
+
+        $this->setUpGuardarSalidaConDetalle();
+
+        call_user_func($funciones[1], $antes);
+    }
+
+    private function setUpGuardarSalidaConDetalle()
+    {
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salidaDetalle = [
+            'cantidad' => 5,
+            'producto' => $producto->toArray()
+        ];
+
+        return $salida->guardar([$salidaDetalle]);
+    }
+
+    private function setUpProducto()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 100,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+        return $producto;
     }
 }
