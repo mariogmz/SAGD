@@ -43,14 +43,15 @@ class DatabaseSeeder extends Seeder {
         $this->call(MargenTableSeeder::class);
         $this->call(FamiliaTableSeeder::class);
         $this->call(SubfamiliaTableSeeder::class);
+        $this->call(IcecatCategoryTableSeeder::class);
         $this->call(PaqueteriaTableSeeder::class);
         $this->call(ProductoTableSeeder::class);
         $this->call(ExistenciasTableSeeder::class);
-        // $this->call(PaqueteriaCoberturaTableSeeder::class);
-        // $this->call(ZonaTableSeeder::class);
-        // $this->call(GuiaTableSeeder::class);
-        // $this->call(GuiaZonaTableSeeder::class);
-        // $this->call(PaqueteriaRangoTableSeeder::class);
+        $this->call(PaqueteriaCoberturaTableSeeder::class);
+        $this->call(ZonaTableSeeder::class);
+        $this->call(GuiaTableSeeder::class);
+        $this->call(GuiaZonaTableSeeder::class);
+        $this->call(PaqueteriaRangoTableSeeder::class);
 
         Model::reguard();
     }
