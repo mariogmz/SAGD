@@ -66,31 +66,15 @@ class Salida extends LGGModel {
     }
 
     /**
-     * Guardar la salida con sus salidas detalles
-     * @param array $salidasDetalles
-     * @return bool
+     * Crear un detalle asociado a la salida
+     * @param array $detalle
+     * @return SalidaDetalle | false
      */
-    public function guardar($salidasDetalles)
+    public function crearDetalle($detalle)
     {
-        $salidasDetalles = empty($salidasDetalles['salidas_detalles']) ?
-            ['salidas_detalles' => []] : $salidasDetalles['salidas_detalles'];
-        $lambda = function() use ($salidasDetalles) {
-            if ($this->save()) {
-                foreach ($salidasDetalles as $salidaDetalle) {
-                    $salida_detalle = new SalidaDetalle([
-                        'cantidad' => $salidaDetalle['cantidad'],
-                        'producto_id' => $salidaDetalle['producto']['id']
-                    ]);
-                    if(! $this->detalles()->save($salida_detalle) ) {
-                        return false;
-                    }
-                }
-                return true;
-            } else {
-                return false;
-            }
-        };
-        return $this->safe_transaction($lambda);
+        $salida_detalle = new SalidaDetalle();
+        $salida_detalle->fill($detalle);
+        return $this->detalles()->save($salida_detalle);
     }
 
     /**

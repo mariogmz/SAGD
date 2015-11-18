@@ -2,8 +2,6 @@
 
 namespace App;
 
-use Event;
-use App\Events\CreandoSalidaDetalle;
 use App\ProductoMovimiento;
 
 /**
@@ -41,7 +39,7 @@ class SalidaDetalle extends LGGModel {
     public static $rules = [
         'cantidad'               => 'required|integer',
         'producto_id'            => 'required|integer',
-        'producto_movimiento_id' => 'required|integer',
+        'producto_movimiento_id' => 'integer',
         'salida_id'              => 'required|integer',
     ];
     public $updateRules = [];
@@ -53,15 +51,7 @@ class SalidaDetalle extends LGGModel {
     public static function boot() {
         parent::boot();
         SalidaDetalle::creating(function ($sd) {
-            $salida = $sd->salida;
-            $result = Event::fire(new CreandoSalidaDetalle($salida, $sd))[0];
-            if($result['success']) {
-                $productoMovimiento = ProductoMovimiento::find($result['producto_movimiento']['id']);
-                $sd->producto_movimiento_id = $productoMovimiento->id;
-                return $sd->isValid();
-            } else {
-                return false;
-            }
+            return $sd->isValid();
         });
         SalidaDetalle::updating(function ($sd) {
             $sd->updateRules = self::$rules;
