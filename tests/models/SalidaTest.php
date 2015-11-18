@@ -172,7 +172,7 @@ class SalidaTest extends TestCase {
             'producto' => $producto->toArray()
         ];
 
-        $this->assertTrue($salida->guardar([$salidaDetalle]));
+        $this->assertTrue($salida->guardar(['salidas_detalles' => [$salidaDetalle]]));
     }
 
     /**
@@ -324,7 +324,7 @@ class SalidaTest extends TestCase {
             'producto' => $producto->toArray()
         ];
 
-        $this->assertFalse($salida->guardar([$salidaDetalle]));
+        $this->assertFalse($salida->guardar(['salidas_detalles' => [$salidaDetalle]]));
     }
 
     /**
@@ -351,7 +351,7 @@ class SalidaTest extends TestCase {
 
         $antes = Salida::all()->count();
 
-        $salida->guardar([$salidaDetalle]);
+        $salida->guardar(['salidas_detalles' => [$salidaDetalle]]);
 
         $this->assertEquals($antes, Salida::all()->count());
     }
@@ -398,7 +398,7 @@ class SalidaTest extends TestCase {
             'producto' => $producto->toArray()
         ];
 
-        return $salida->guardar([$salidaDetalle]);
+        return $salida->guardar(['salidas_detalles' => [$salidaDetalle]]);
     }
 
     private function setUpProducto()

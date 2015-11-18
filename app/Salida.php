@@ -72,6 +72,8 @@ class Salida extends LGGModel {
      */
     public function guardar($salidasDetalles)
     {
+        $salidasDetalles = empty($salidasDetalles['salidas_detalles']) ?
+            ['salidas_detalles' => []] : $salidasDetalles['salidas_detalles'];
         $lambda = function() use ($salidasDetalles) {
             if ($this->save()) {
                 foreach ($salidasDetalles as $salidaDetalle) {
