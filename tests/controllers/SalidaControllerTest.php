@@ -96,7 +96,13 @@ class SalidaControllerTest extends TestCase
     {
         $endpoint = $this->endpoint . '/1';
 
-        $this->mock->shouldReceive('find')->with(1)->andReturn(true);
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'with' => Mockery::self(),
+            'where' => Mockery::self(),
+            'first' => []
+            ])
+            ->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
 
 

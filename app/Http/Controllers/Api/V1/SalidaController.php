@@ -71,7 +71,7 @@ class SalidaController extends Controller
         {
             return response()->json([
                 'message' => 'Salida obtenida exitosamente',
-                'salida' => $this->salida
+                'salida' => $this->salida->with('detalles.producto', 'detalles.productoMovimiento')->where('id', $id)->first()
             ], 200);
         } else {
             return response()->json([
