@@ -14,8 +14,17 @@ class IcecatCategoryTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        $icecat_categories = $this->buildNewRelationships();
-        $this->insertIntoDB($icecat_categories);
+        DB::beginTransaction();
+        try {
+            $icecat_categories = $this->buildNewRelationships();
+            $this->insertIntoDB($icecat_categories);
+            DB::commit();
+        } catch (ErrorException $ex) {
+            $this->command->getOutput()->writeln($ex->getMessage());
+            $this->command->getOutput()->writeln($ex->getFile() . ' ' . $ex->getLine());
+            $this->command->getOutput()->writeln($ex->getTraceAsString());
+            DB::rollBack();
+        }
     }
 
     /**
@@ -23,10 +32,12 @@ class IcecatCategoryTableSeeder extends Seeder {
      * @return array
      */
     private function getLegacyRelationships() {
+        $this->command->getOutput()->writeln('Fetching legacy icecat relationships...');
         $this->legacy_connection = DB::connection('mysql_legacy');
         $legacy_icecat_categories = $this->legacy_connection
             ->table('producto_icecat_relacion')
-            ->select(['categoria_icecat AS icecat_category_name', 'subfamilia_nueva as subfamilia_clave']);
+            ->select(['categoria_icecat AS icecat_category_name', 'subfamilia_nueva as subfamilia_clave'])
+            ->get();
 
         return (array) $legacy_icecat_categories;
     }
@@ -37,10 +48,22 @@ class IcecatCategoryTableSeeder extends Seeder {
      * @throws ErrorException
      */
     private function getIcecatCategories() {
+        $this->command->getOutput()->writeln('Getting Icecat Categories from Endpoint...');
         $this->icecat_feed = new \Sagd\IcecatFeed();
         $this->icecat_feed->downloadAndDecode('categories');
 
-        return $this->icecat_feed->getCategories(true);
+        $this->command->getOutput()->writeln('Parsing...');
+        $icecat_categories = $this->icecat_feed->getCategories(true, true);
+        array_unshift($icecat_categories, [
+            'icecat_id'                 => 1,
+            'description'               => 'Icecat Master Category',
+            'name'                      => 'Icecat Master Category',
+            'keyword'                   => 'null',
+            'icecat_parent_category_id' => 'null'
+        ]);
+        $this->command->getOutput()->writeln('Parsed!');
+
+        return $icecat_categories;
     }
 
     /**
@@ -49,18 +72,19 @@ class IcecatCategoryTableSeeder extends Seeder {
      * @return array
      */
     private function buildNewRelationships() {
+        $this->command->getOutput()->writeln('Building new relationships...');
         $legacy_relationships = $this->getLegacyRelationships();
         $icecat_source = $this->getIcecatCategories();
-        $subfamilias = App\Subfamilia::all(['id', 'clave']);
+        $subfamilias = App\Subfamilia::all(['id', 'clave'])->toArray();
 
         reindexar('name', $icecat_source);
         reindexar('clave', $subfamilias);
 
         foreach ($legacy_relationships as $legacy_relationship) {
-            if (isset($icecat_source[$legacy_relationship['icecat_category_name']])
-                && isset($subfamilias[$legacy_relationship['subfamilia_clave']])
+            if (array_key_exists($legacy_relationship->icecat_category_name, $icecat_source) &&
+                array_key_exists($legacy_relationship->subfamilia_clave, $subfamilias)
             ) {
-                $subfamilia_id = $subfamilias[$legacy_relationship['subfamilia_clave']]->id;
+                $subfamilia_id = $subfamilias[$legacy_relationship->subfamilia_clave]['id'];
                 $icecat_source[$legacy_relationship->icecat_category_name]['subfamilia_id'] = $subfamilia_id;
             }
         }
@@ -69,19 +93,17 @@ class IcecatCategoryTableSeeder extends Seeder {
     }
 
     /**
-     * Insert all the categories into database using a chunk algorithm
+     * Insert all the categories into database
      * @param array $categories
-     * @param int $chunk_size
      */
-    private function insertIntoDB($categories, $chunk_size = 500) {
+    private function insertIntoDB($categories) {
         $total = count($categories);
         $progress_bar = new ProgressBar($this->command->getOutput(), $total);
         $progress_bar->setFormat("<info>Seeding:</info> Icecat Categories : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $progress_bar->start();
-        $categoriesChunks = array_chunk($categories, $chunk_size);
-        foreach ($categoriesChunks as $chunk) {
-            DB::table('icecat_categories')->insert($chunk);
-            $progress_bar->advance($chunk_size);
+        foreach ($categories as $category) {
+            App\IcecatCategory::create($category);
+            $progress_bar->advance();
         }
         $progress_bar->finish();
     }
