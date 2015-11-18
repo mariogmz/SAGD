@@ -171,15 +171,16 @@ Class IcecatFeed {
      * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
      * friendly object
      * @param \SimpleXMLElement $category_node
+     * @param boolean $with_parent
      * @return array
      */
-    private function parseCategoryNode(\SimpleXMLElement $category_node) {
+    private function parseCategoryNode(\SimpleXMLElement $category_node, $with_parent = false) {
         $icecat_id = (int) $category_node->attributes()['ID'];
 
         if (!empty($name = $this->getLangValue($category_node->Name))) {
             $description = $this->getLangValue($category_node->Description) ?: 'null';
             $keyword = $this->getLangValue($category_node->Keywords) ?: 'null';
-            $icecat_parent_category_id = (int) $category_node->ParentCategory->attributes()['ID'] ?: 'null';
+            $icecat_parent_category_id = (int) $category_node->ParentCategory->attributes()['ID'] && $with_parent ?: 'null';
 
             return compact('icecat_id', 'description', 'keyword', 'name', 'icecat_parent_category_id');
         } else {
