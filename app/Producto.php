@@ -205,7 +205,7 @@ class Producto extends LGGModel {
      */
     public function sucursales() {
         return $this->belongsToMany('App\Sucursal', 'productos_sucursales',
-            'producto_id', 'sucursal_id');
+            'producto_id', 'sucursal_id')->withPivot('id');
     }
 
     /**
