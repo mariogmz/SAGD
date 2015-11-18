@@ -37,9 +37,10 @@ Class IcecatFeed {
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoriesList.xml.gz" to
      * a PHP associative array and the saves it to a .json file
+     * @param bool $get_array
      * @return array
      */
-    public function getCategories() {
+    public function getCategories($get_array = false) {
         $icecat_categories = [];
         $stream = new Stream\File('Icecat/categories.xml', 1024);
         $parser = new Parser\StringWalker([
@@ -58,15 +59,16 @@ Class IcecatFeed {
             }
         }
 
-        return file_put_contents('Icecat/categories.json', json_encode($icecat_categories, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return $get_array ? $icecat_categories : file_put_contents('Icecat/categories.json', json_encode($icecat_categories, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
      * a PHP associative array and then saves it to a .json file
+     * @param bool $get_array
      * @return int
      */
-    public function getFeatures() {
+    public function getFeatures($get_array = false) {
         $icecat_features = [];
         $stream = new Stream\File('Icecat/features.xml', 1024);
         $parser = new Parser\StringWalker([
@@ -85,7 +87,7 @@ Class IcecatFeed {
             }
         }
 
-        return file_put_contents('Icecat/features.json', json_encode($icecat_features, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return $get_array ? $icecat_features : file_put_contents('Icecat/features.json', json_encode($icecat_features, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
     /**
@@ -116,9 +118,10 @@ Class IcecatFeed {
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/SuppliersList.xml.gz" to
      * a PHP associative array and then saves it to a .json file
+     * @param bool $get_array
      * @return int
      */
-    public function getSuppliers() {
+    public function getSuppliers($get_array = false) {
         $icecat_suppliers = [];
         $stream = new Stream\File('Icecat/suppliers.xml', 1024);
         $parser = new Parser\UniqueNode([
@@ -136,7 +139,7 @@ Class IcecatFeed {
             }
         }
 
-        return file_put_contents('Icecat/suppliers.json', json_encode($icecat_suppliers, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return $get_array ? $icecat_suppliers : file_put_contents('Icecat/suppliers.json', json_encode($icecat_suppliers, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
 
@@ -174,11 +177,11 @@ Class IcecatFeed {
         $icecat_id = (int) $category_node->attributes()['ID'];
 
         if (!empty($name = $this->getLangValue($category_node->Name))) {
-            $description = $this->getLangValue($category_node->Description);
-            $keyword = $this->getLangValue($category_node->Keywords);
-            $parent_category_id = (int) $category_node->ParentCategory->attributes()['ID'];
+            $description = $this->getLangValue($category_node->Description) ?: 'null';
+            $keyword = $this->getLangValue($category_node->Keywords) ?: 'null';
+            $icecat_parent_category_id = (int) $category_node->ParentCategory->attributes()['ID'] ?: 'null';
 
-            return compact('icecat_id', 'description', 'keyword', 'name', 'parent_category_id');
+            return compact('icecat_id', 'description', 'keyword', 'name', 'icecat_parent_category_id');
         } else {
             return null;
         }
@@ -194,8 +197,8 @@ Class IcecatFeed {
         $icecat_id = (int) $feature_node->attributes()['ID'];
 
         if (!empty($name = $this->getLangText($feature_node->Names->Name))) {
-            $type = (string) $feature_node->attributes()['Type'];
-            $description = $this->getLangValue($feature_node->Descriptions);
+            $type = (string) $feature_node->attributes()['Type'] ?: 'null';
+            $description = $this->getLangValue($feature_node->Descriptions) ?: 'null';
             $measure = $feature_node->Measure ? (string) $feature_node->Measure->attributes()['Sign'] : '';
 
             return compact('icecat_id', 'type', 'name', 'description', 'measure');

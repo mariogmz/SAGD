@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class IcecatCategorySeeder extends Seeder
+class IcecatSupplierTableSeeder extends Seeder
 {
     /**
      * Run the database seeds.
