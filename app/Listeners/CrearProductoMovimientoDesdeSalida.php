@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\CreandoSalidaDetalle;
+use App\Events\CargandoSalida;
 use App\Producto;
 use App\ProductoMovimiento;
 use App\ProductoSucursal;
@@ -43,10 +43,10 @@ class CrearProductoMovimientoDesdeSalida
     /**
      * Handle the event.
      *
-     * @param  CreandoSalidaDetalle  $event
+     * @param  CargandoSalida  $event
      * @return bool|model
      */
-    public function handle(CreandoSalidaDetalle $event)
+    public function handle(CargandoSalida $event)
     {
         $this->salida = $event->salida;
         $this->salidaDetalle = $event->salidaDetalle;
@@ -60,15 +60,6 @@ class CrearProductoMovimientoDesdeSalida
         $this->productoSucursal = $this->producto->productosSucursales()
             ->where('sucursal_id', $this->sucursal->id)->first();
 
-        if( $this->productoSucursal->movimientos()->save($this->productoMovimiento) ) {
-            return [
-                'success' => true,
-                'producto_movimiento' => $this->productoMovimiento
-            ];
-        } else {
-            return [
-                'success' => false
-            ];
-        }
+        return $this->productoSucursal->movimientos()->save($this->productoMovimiento);
     }
 }

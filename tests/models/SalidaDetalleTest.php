@@ -113,4 +113,83 @@ class SalidaDetalleTest extends TestCase {
         $sd->salida()->associate($salida);
         $this->assertInstanceOf(App\Salida::class, $sd->salida);
     }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargar()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $this->assertTrue($detalle->cargar());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarInvalido()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $this->mock = Mockery::mock('App\Listeners\CrearProductoMovimientoDesdeSalida');
+        $this->mock->shouldReceive([
+            'handle' => [false]
+        ])->withAnyArgs();
+        $this->app->instance('App\Listeners\CrearProductoMovimientoDesdeSalida', $this->mock);
+
+        $this->assertFalse($detalle->cargar());
+    }
+
+    private function setUpProducto()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 100,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+        return $producto;
+    }
+
+    private function setUpSalida()
+    {
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+        $salida = new App\Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salida->save();
+        return $salida;
+    }
+
+    private function setUpDetalle()
+    {
+        $producto = App\Producto::last();
+        $salida = App\Salida::last();
+
+        $detalle = [
+            'cantidad' => 5,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+
+        return $salida->crearDetalle($detalle);
+    }
 }

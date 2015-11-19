@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\EstadoSalida;
 use App\Producto;
 use App\ProductoMovimiento;
 use App\Sucursal;
@@ -85,6 +86,30 @@ class Salida extends LGGModel {
     public function quitarDetalle($detalle_id)
     {
         return (SalidaDetalle::destroy($detalle_id) > 0);
+    }
+
+    /**
+     *
+     * @return bool
+     */
+    public function cargar()
+    {
+        $lambda = function() {
+            foreach ($this->detalles as $detalle) {
+                if (! $detalle->cargar()) {
+                    return false;
+                }
+            }
+            $this->finalizarCarga();
+            return true;
+        };
+        return $this->safe_transaction($lambda);
+    }
+
+    public function finalizarCarga()
+    {
+        $this->estado_salida_id = EstadoSalida::cargado()->id;
+        $this->save();
     }
 
     /**

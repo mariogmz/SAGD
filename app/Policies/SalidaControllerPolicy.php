@@ -85,7 +85,7 @@ class SalidaControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede eliminar un Salida
+     * Determinar si el usuario puede crear un detalle de una Salida
      *
      * @param  User  $user
      * @param  SalidaController $controller
@@ -100,7 +100,7 @@ class SalidaControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede eliminar un Salida
+     * Determinar si el usuario puede eliminar un detalle de una Salida
      *
      * @param  User  $user
      * @param  SalidaController $controller
@@ -111,6 +111,21 @@ class SalidaControllerPolicy
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
         $permiso = $permisos->where('controlador', $controller)->where('accion', 'unsaveDetalle')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede cargar un Salida
+     *
+     * @param  User  $user
+     * @param  SalidaController $controller
+     * @return bool
+     */
+    public function cargarSalida(User $user, SalidaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'cargarSalida')->first();
         return !empty($permiso);
     }
 

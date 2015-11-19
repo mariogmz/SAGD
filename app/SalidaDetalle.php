@@ -2,7 +2,9 @@
 
 namespace App;
 
+use Event;
 use App\ProductoMovimiento;
+use App\Events\CargandoSalida;
 
 /**
  * App\SalidaDetalle
@@ -60,6 +62,14 @@ class SalidaDetalle extends LGGModel {
         });
     }
 
+    public function cargar()
+    {
+        if ($pm = Event::fire(new CargandoSalida($this, $this->salida))) {
+            $this->productoMovimiento()->associate($pm[0]);
+            return $this->save();
+        }
+        return false;
+    }
 
     /**
      * Obtiene el Producto asociado con la Salida Detalle

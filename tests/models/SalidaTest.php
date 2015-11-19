@@ -160,18 +160,9 @@ class SalidaTest extends TestCase {
      */
     public function testCrearDetalleConParametrosDeDetalleEsExitoso()
     {
-        $this->setUpProducto();
-        $producto = App\Producto::last();
-        $sucursal = App\Sucursal::last();
+        $producto = $this->setUpProducto();
 
-        $salida = new Salida([
-            'motivo' => 'Test',
-            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
-            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
-            'sucursal_id' => $sucursal->id
-        ]);
-
-        $salida->save();
+        $salida = $this->setUpSalida();
 
         $detalles = [
             'cantidad' => 5,
@@ -188,18 +179,8 @@ class SalidaTest extends TestCase {
      */
     public function testCrearDetalleConParametrosIncorrectosNoEsExitoso()
     {
-        $this->setUpProducto();
-        $producto = App\Producto::last();
-        $sucursal = App\Sucursal::last();
-
-        $salida = new Salida([
-            'motivo' => 'Test',
-            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
-            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
-            'sucursal_id' => $sucursal->id
-        ]);
-
-        $salida->save();
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
 
         $detalles = [
             'cantidad' => 5,
@@ -215,23 +196,9 @@ class SalidaTest extends TestCase {
      */
     public function testQuitarDetalleConDetalleCorrectoEsExitoso()
     {
-        $this->setUpProducto();
-        $producto = App\Producto::last();
-        $sucursal = App\Sucursal::last();
-
-        $salida = new Salida([
-            'motivo' => 'Test',
-            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
-            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
-            'sucursal_id' => $sucursal->id
-        ]);
-        $salida->save();
-        $detalle = [
-            'cantidad' => 5,
-            'producto_id' => $producto->id,
-            'upc' => $producto->upc
-        ];
-        $salida->crearDetalle($detalle);
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
 
         $detalle_id = SalidaDetalle::last()->id;
 
@@ -244,27 +211,193 @@ class SalidaTest extends TestCase {
      */
     public function testQuitarDetalleConDetalleIncorrectoNoEsExitoso()
     {
-        $this->setUpProducto();
-        $producto = App\Producto::last();
-        $sucursal = App\Sucursal::last();
-
-        $salida = new Salida([
-            'motivo' => 'Test',
-            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
-            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
-            'sucursal_id' => $sucursal->id
-        ]);
-        $salida->save();
-        $detalle = [
-            'cantidad' => 5,
-            'producto_id' => $producto->id,
-            'upc' => $producto->upc
-        ];
-        $salida->crearDetalle($detalle);
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
 
         $detalle_id = SalidaDetalle::last()->id + 1;
 
         $this->assertFalse($salida->quitarDetalle($detalle_id));
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $this->assertTrue($salida->cargar());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarCreaProductosMovimientos()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $movimientos = ProductoMovimiento::count();
+        $salida->cargar();
+
+        $this->assertGreaterThan($movimientos, ProductoMovimiento::count());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarActualizaLasExistenciasDelProducto()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $salida->cargar();
+
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(95, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarMultiplesVecesAtualizaLasExistenciasDelProducto()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        for ($i=0; $i < 10; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $salida->cargar();
+
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(50, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarEstableceBienLasExistenciasAnteriores()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $salida->cargar();
+
+        $pm = $producto->movimientos(App\Sucursal::last())->last();
+        $this->assertEquals(100, $pm->existencias_antes);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarEstableceBienLasExistenciasPosteriores()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $salida->cargar();
+
+        $pm = $producto->movimientos(App\Sucursal::last())->last();
+        $this->assertEquals(95, $pm->existencias_despues);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testTodosLosDetallesTienenUnProductoMovimientoDespuesDeLaCarga()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
+
+        $salida->cargar();
+
+        $detalle = $salida->detalles->first();
+
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $detalle->productoMovimiento);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarCuandoActualizarExistenciasFallaLasExistenciasPermanecenIntactas()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
+
+        $this->mock = Mockery::mock('App\Listeners\ActualizarExistencias');
+        $this->mock->shouldReceive([
+            'handle' => ['success' => false]
+        ]);
+        $this->app->instance('App\Listeners\ActualizarExistencias', $this->mock);
+
+        $salida->cargar();
+
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(100, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     * @group feature-salidas-rollbacks
+     */
+    public function testCargarRollbackVerificarExistencias()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $detalle = [
+            'cantidad' => 5000,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+
+        $salida->crearDetalle($detalle);
+
+        $salida->cargar();
+
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(100, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarActualizaElEstadoDeLaSalida()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
+
+        $estado = $salida->estado_salida_id;
+
+        $salida->cargar();
+
+        $salida = $salida->fresh();
+
+        $this->assertFalse( $estado === $salida->estado_salida_id );
     }
 
     private function setUpProducto()
@@ -283,5 +416,47 @@ class SalidaTest extends TestCase {
             'cantidad_garantia_zegucom' => 0
         ]);
         return $producto;
+    }
+
+    private function setUpSalida()
+    {
+        $this->setUpEstados();
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => App\EstadoSalida::creando()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salida->save();
+        return $salida;
+    }
+
+    private function setUpDetalle()
+    {
+        $producto = App\Producto::last();
+        $salida = Salida::last();
+
+        $detalle = [
+            'cantidad' => 5,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+
+        return $salida->crearDetalle($detalle);
+    }
+
+    private function setUpEstados()
+    {
+        $estadoSalidaCreando = new App\EstadoSalida(['nombre' => 'Creando']);
+        $estadoSalidaCargando = new App\EstadoSalida(['nombre' => 'Cargando']);
+        $estadoSalidaCargado = new App\EstadoSalida(['nombre' => 'Cargado']);
+
+        $estadoSalidaCreando->save();
+        $estadoSalidaCargando->save();
+        $estadoSalidaCargado->save();
     }
 }
