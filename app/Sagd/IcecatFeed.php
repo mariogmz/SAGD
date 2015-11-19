@@ -64,6 +64,33 @@ Class IcecatFeed {
     }
 
     /**
+     * Parse the xml from "https://data.icecat.biz/export/level4/refs/SuppliersList.xml.gz" to
+     * a PHP associative array and then saves it to a .json file
+     * @param bool $get_array
+     * @return int
+     */
+    public function getSuppliers($get_array = false) {
+        $icecat_suppliers = [];
+        $stream = new Stream\File('Icecat/suppliers.xml', 1024);
+        $parser = new Parser\UniqueNode([
+            'uniqueNode'        => 'Supplier',
+            'checkShortClosing' => true
+        ]);
+
+        $streamer = new XmlStringStreamer($parser, $stream);
+
+        while ($node = $streamer->getNode()) {
+            $group = simplexml_load_string($node);
+            $result = $this->parseSupplierNode($group);
+            if ($result) {
+                array_push($icecat_suppliers, $result);
+            }
+        }
+
+        return $get_array ? $icecat_suppliers : file_put_contents('Icecat/suppliers.json', json_encode($icecat_suppliers, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
      * a PHP associative array and then saves it to a .json file
      * @param bool $get_array
@@ -116,57 +143,6 @@ Class IcecatFeed {
         return file_put_contents('Icecat/feature_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
-    /**
-     * Parse the xml from "https://data.icecat.biz/export/level4/refs/SuppliersList.xml.gz" to
-     * a PHP associative array and then saves it to a .json file
-     * @param bool $get_array
-     * @return int
-     */
-    public function getSuppliers($get_array = false) {
-        $icecat_suppliers = [];
-        $stream = new Stream\File('Icecat/suppliers.xml', 1024);
-        $parser = new Parser\UniqueNode([
-            'uniqueNode'        => 'Supplier',
-            'checkShortClosing' => true
-        ]);
-
-        $streamer = new XmlStringStreamer($parser, $stream);
-
-        while ($node = $streamer->getNode()) {
-            $group = simplexml_load_string($node);
-            $result = $this->parseSupplierNode($group);
-            if ($result) {
-                array_push($icecat_suppliers, $result);
-            }
-        }
-
-        return $get_array ? $icecat_suppliers : file_put_contents('Icecat/suppliers.json', json_encode($icecat_suppliers, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    }
-
-
-    /**
-     * Parse the xml from "https://data.icecat.biz/export/level4/refs/FeatureGroupList.xml.gz" to
-     * a PHP associative array and then saves it to a .json file
-     * @return int
-     */
-    public function getCategoryFeature() {
-        $stream = new Stream\File('Icecat/category_features.xml', 1024);
-        $parser = new Parser\StringWalker([
-            'captureDepth' => 4
-        ]);
-
-        $streamer = new XmlStringStreamer($parser, $stream);
-
-        while ($node = $streamer->getNode()) {
-            $relation = simplexml_load_string($node);
-            $result = $this->parseCategoryFeatureNode($relation);
-            if ($result) {
-                array_push($icecat_feature_groups, $result);
-            }
-        }
-
-        return file_put_contents('Icecat/feaure_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
-    }
 
     /**
      * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
@@ -196,6 +172,23 @@ Class IcecatFeed {
     /**
      * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
      * friendly object
+     * @param \SimpleXMLElement $supplier_node
+     * @return array
+     */
+    private function parseSupplierNode(\SimpleXMLElement $supplier_node) {
+        $icecat_id = (int) $supplier_node->attributes()['ID'];
+        if (!empty($name = (string) $supplier_node->attributes()['Name'])) {
+            $logo_url = $supplier_node->attributes()['LogoPic'] ? (string) $supplier_node->attributes()['LogoPic'] : '';
+
+            return compact('icecat_id', 'name', 'logo_url');
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
+     * friendly object
      * @param \SimpleXMLElement $feature_node
      * @return array
      */
@@ -213,22 +206,6 @@ Class IcecatFeed {
         }
     }
 
-    /**
-     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
-     * friendly object
-     * @param \SimpleXMLElement $supplier_node
-     * @return array
-     */
-    private function parseSupplierNode(\SimpleXMLElement $supplier_node) {
-        $icecat_id = (int) $supplier_node->attributes()['ID'];
-        if (!empty($name = (string) $supplier_node->attributes()['Name'])) {
-            $logo_url = $supplier_node->attributes()['LogoPic'] ? (string) $supplier_node->attributes()['LogoPic'] : '';
-
-            return compact('icecat_id', 'name', 'logo_url');
-        } else {
-            return null;
-        }
-    }
 
 
     /**
@@ -245,24 +222,6 @@ Class IcecatFeed {
             return compact('icecat_id', 'name');
         } else {
             return null;
-        }
-    }
-
-    /**
-     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
-     * friendly object
-     * @param \SimpleXMLElement $category_feature_node
-     * @return array
-     */
-    private function parseCategoryFeatureNode(\SimpleXMLElement $category_feature_node) {
-        $category_id = (int) $category_feature_node->attributes()['ID'];
-        $category_feature_group_ids = [];
-        $feature_ids = [];
-        foreach ($category_feature_node->CategoryFeatureGroup as $category_feature_group) {
-            array_push($category_feature_group_ids, (int) $category_feature_group->attributes()['ID']);
-        }
-        foreach ($category_feature_node->Feature as $feature) {
-            array_push($feature_ids, (int) $feature->attributes()['ID']);
         }
     }
 
