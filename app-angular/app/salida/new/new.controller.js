@@ -81,6 +81,7 @@
         salidaDetalle.producto_id = responseProducto.data.producto.id;
         saveSalidaDetalle(salidaDetalle).then(function(responseDetalle) {
           vm.salida.salidas_detalles.push({
+            id: responseDetalle.data.detalle.id,
             cantidad: salidaDetalle.cantidad,
             producto: responseProducto.data.producto
           });
@@ -99,13 +100,19 @@
     }
 
     function removerSalidaDetalle(salidaDetalle) {
-      for (var i = vm.salida.salidas_detalles.length - 1; i >= 0; i--) {
-        var sd = vm.salida.salidas_detalles[i];
-        if (sd === salidaDetalle) {
-          vm.salida.salidas_detalles.splice(i, 1);
-          break;
+      unsaveSalidaDetalle(salidaDetalle).then(function(response) {
+        for (var i = vm.salida.salidas_detalles.length - 1; i >= 0; i--) {
+          var sd = vm.salida.salidas_detalles[i];
+          if (sd === salidaDetalle) {
+            vm.salida.salidas_detalles.splice(i, 1);
+            break;
+          }
         }
-      }
+      });
+    }
+
+    function unsaveSalidaDetalle(salidaDetalle) {
+      return api.delete('/salida/' + vm.salida.id + '/detalles/' + salidaDetalle.id);
     }
 
     function goBack() {
