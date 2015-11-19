@@ -89,26 +89,43 @@ class Salida extends LGGModel {
     }
 
     /**
-     *
+     * Carga los detalles para actualizar existencias
      * @return bool
      */
     public function cargar()
     {
         $lambda = function() {
-            foreach ($this->detalles as $detalle) {
-                if (! $detalle->cargar()) {
-                    return false;
+            if($this->noCargado()) {
+                foreach ($this->detalles as $detalle) {
+                    if (! $detalle->cargar()) {
+                        return false;
+                    }
                 }
+                $this->finalizarCarga();
+                return true;
+            } else {
+                return false;
             }
-            $this->finalizarCarga();
-            return true;
         };
         return $this->safe_transaction($lambda);
     }
 
+    /**
+     * Verifica que el estado no se encuentre como Cargado
+     * @return bool
+     */
+    public function noCargado()
+    {
+        return $this->estado->nombre != 'Cargado';
+    }
+
+    /**
+     * Establece el Estado de la Salida a Cargado
+     * @return bool
+     */
     public function finalizarCarga()
     {
-        $this->estado_salida_id = EstadoSalida::cargado()->id;
+        $this->estado()->associate(EstadoSalida::cargado());
         $this->save();
     }
 

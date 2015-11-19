@@ -400,6 +400,20 @@ class SalidaTest extends TestCase {
         $this->assertFalse( $estado === $salida->estado_salida_id );
     }
 
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testSalidaSoloPuedeSerCargadaUnaVez()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
+
+        $this->assertTrue($salida->cargar());
+        $this->assertFalse($salida->cargar());
+    }
+
     private function setUpProducto()
     {
         $producto = factory(App\Producto::class)->create();
