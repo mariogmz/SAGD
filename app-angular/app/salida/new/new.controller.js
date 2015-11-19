@@ -22,6 +22,7 @@
     vm.empleado = session.obtenerEmpleado();
     vm.salida = {
       fecha_salida: new Date(),
+      motivo: 'Motivo de salida',
       salidas_detalles: [],
       estado_salida_id: 1,
       empleado_id: vm.empleado.id,
@@ -33,18 +34,38 @@
     ////////////////
 
     function activate() {
+      saveSalida().then(function(response) {
+        vm.salida.id = response.data.salida.id;
+        console.log('Salida preguardada');
+      }).catch(function(response) {
+        pnotify.alert('Error', 'No se pudo pre-guardar la salida', 'error');
+        $state.go('salidaIndex');
+      });
+    }
+
+    function saveSalida() {
+      return api.post('/salida', vm.salida);
     }
 
     function create() {
-      (vm.salida.salidas_detalles.length > 0) &&
-      api.post('/salida', vm.salida)
-        .then(function(response) {
-          pnotify.alert('Exito', response.data.message, 'success');
-          $state.go('salidaShow', {id: response.data.salida.id});
-        })
-        .catch(function(response) {
-          pnotify.alertList(response.data.message, response.data.error, 'error');
-        });
+      verifyMotivo() &&
+      api.put('/salida/', vm.salida.id, vm.salida)
+      .then(function(response) {
+        pnotify.alert('Exito', response.data.message, 'success');
+        $state.go('salidaShow', {id: response.data.salida.id});
+      })
+      .catch(function(response) {
+        pnotify.alertList(response.data.message, response.data.error, 'error');
+      });
+    }
+
+    function verifyMotivo() {
+      if (vm.salida.motivo === 'Motivo de salida') {
+        pnotify.alert('Error', 'Motivo de salida permaneció intacto', 'error');
+        return false;
+      } else {
+        return true;
+      }
     }
 
     function agregarSalidaDetalle(salidaDetalle) {
@@ -52,18 +73,17 @@
     }
 
     function checkIsSalidaDetalleIsValid(salidaDetalle) {
-      if (salidaDetalle.cantidad <= 0 || salidaDetalle.upc.length <= 0) {
-        return false;
-      }
-
-      return true;
+      return (salidaDetalle.cantidad > 0 || salidaDetalle.upc.length > 0);
     }
 
     function appendSalidaDetalle(salidaDetalle) {
-      buscarProducto(salidaDetalle.upc).then(function(response) {
-        vm.salida.salidas_detalles.push({
-          cantidad: salidaDetalle.cantidad,
-          producto: response.data.producto
+      buscarProducto(salidaDetalle.upc).then(function(responseProducto) {
+        salidaDetalle.producto_id = responseProducto.data.producto.id;
+        saveSalidaDetalle(salidaDetalle).then(function(responseDetalle) {
+          vm.salida.salidas_detalles.push({
+            cantidad: salidaDetalle.cantidad,
+            producto: responseProducto.data.producto
+          });
         });
       }).catch(function(response) {
         pnotify.alert('Detalle no agregado', response.data.error, 'error');
@@ -72,6 +92,10 @@
 
     function buscarProducto(upc) {
       return api.get('/producto/buscar/upc/', upc);
+    }
+
+    function saveSalidaDetalle(salidaDetalle) {
+      return api.post('/salida/' + vm.salida.id + '/detalles', salidaDetalle);
     }
 
     function removerSalidaDetalle(salidaDetalle) {

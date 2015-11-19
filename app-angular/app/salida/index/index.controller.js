@@ -14,7 +14,7 @@
 
     var vm = this;
     vm.sort = sort;
-    vm.eliminarUnidad = eliminar;
+    vm.eliminarSalida = eliminar;
     vm.sortKeys = [
       {name: '#', key: 'id'},
       {name: 'Fecha', key: 'fecha_salida'},
@@ -58,7 +58,7 @@
     }
 
     function eliminarSalida(id) {
-      return api.delete('/unidad/', id)
+      return api.delete('/salida/', id)
         .then(function(response) {
           obtenerSalidas().then(function() {
             pnotify.alert('¡Éxito!', response.data.message, 'success');
