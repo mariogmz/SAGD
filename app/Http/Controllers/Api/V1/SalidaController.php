@@ -103,7 +103,8 @@ class SalidaController extends Controller
         if( $this->salida->update($parameters) )
         {
             return response()->json([
-                'message' => 'Salida se actualizo correctamente'
+                'message' => 'Salida se actualizo correctamente',
+                'salida' => $this->salida->self()
             ], 200);
         } else {
             return response()->json([

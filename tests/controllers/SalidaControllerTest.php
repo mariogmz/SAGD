@@ -143,7 +143,11 @@ class SalidaControllerTest extends TestCase
         $parameters = ['motivo' => 'Useless'];
 
         $this->mock
-            ->shouldReceive(['find' => Mockery::self(), 'update' => true])->withAnyArgs();
+            ->shouldReceive([
+                'find' => Mockery::self(),
+                'update' => Mockery::self(),
+                'self' => []
+            ])->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
 
         $this->put($endpoint, $parameters)
