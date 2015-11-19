@@ -7,10 +7,10 @@
     .module('sagdApp.salida')
     .controller('salidaShowController', salidaShowController);
 
-  salidaShowController.$inject = ['$stateParams', 'api'];
+  salidaShowController.$inject = ['$state', '$stateParams', 'api'];
 
   /* @ngInject */
-  function salidaShowController($stateParams, api) {
+  function salidaShowController($state, $stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -38,7 +38,7 @@
     }
 
     function goBack() {
-      window.history.back();
+      $state.go('salidaIndex');
     }
   }
 })();

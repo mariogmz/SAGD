@@ -41,6 +41,7 @@
     }
 
     function eliminar(salida) {
+      (salida.estado_salida_id == 1) &&
       modal.confirm({
         title: 'Eliminar Salida',
         content: 'Estas a punto de eliminar una salida. ¿Estás seguro?',
