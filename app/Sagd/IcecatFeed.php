@@ -141,7 +141,33 @@ Class IcecatFeed {
             }
         }
 
-        return  $get_array ? $icecat_feature_groups : file_put_contents('Icecat/feature_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return $get_array ? $icecat_feature_groups : file_put_contents('Icecat/feature_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
+     * and obtains the relationship between categories and feature groups from Icecat
+     * @param bool $get_array
+     * @return int | array
+     */
+    public function getCategoryFeatureGroups($get_array = false) {
+        $icecat_category_feature_groups = [];
+        $stream = new Stream\File('Icecat/category_features.xml', 1024);
+        $parser = new Parser\StringWalker([
+            'captureDepth' => 4
+        ]);
+
+        $streamer = new XmlStringStreamer($parser, $stream);
+
+        while ($node = $streamer->getNode()) {
+            $category = simplexml_load_string($node);
+            $result = $this->parseCategoryFeatureGroupNode($category);
+            if ($result) {
+                $icecat_category_feature_groups = array_merge($icecat_category_feature_groups, $result);
+            }
+        }
+
+        return $get_array ? $icecat_category_feature_groups : file_put_contents('Icecat/category_feature_groups.json', json_encode($icecat_category_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
 
@@ -208,6 +234,26 @@ Class IcecatFeed {
     }
 
 
+    /**
+     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
+     * friendly object
+     * @param \SimpleXMLElement $category_node
+     * @return array
+     */
+    private function parseCategoryFeatureGroupNode(\SimpleXMLElement $category_node) {
+        $icecat_category_id = (int) $category_node->attributes()['ID'];
+        $category_feature_groups = [];
+        foreach ($category_node->CategoryFeatureGroup as $category_feature_group_node) {
+            if (!empty($category_feature_group_node->FeatureGroup)) {
+                array_push($category_feature_groups, [
+                    'icecat_id'               => (int) $category_feature_group_node->attributes()['ID'],
+                    'icecat_category_id'      => $icecat_category_id,
+                    'icecat_feature_group_id' => (int) $category_feature_group_node->FeatureGroup->attributes()['ID']
+                ]);
+            }
+        }
+        return count($category_feature_groups) > 0 ? $category_feature_groups : null;
+    }
 
     /**
      * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more

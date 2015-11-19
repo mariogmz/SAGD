@@ -66,6 +66,17 @@ class IcecatFeedTest extends TestCase {
     }
 
     /**
+     * @covers ::getSuppliers
+     * @group icecat
+     * @covers ::parseSupplierNode
+     */
+    public function testGetSuppliers() {
+        $this->icecat_feed->downloadAndDecode('suppliers');
+        $this->assertGreaterThan(0, $this->icecat_feed->getSuppliers());
+        $this->assertFileExists('Icecat/suppliers.json');
+    }
+
+    /**
      * @covers ::getFeature
      * @group icecat
      * @covers ::parseFeatureNode
@@ -86,15 +97,15 @@ class IcecatFeedTest extends TestCase {
         $this->assertFileExists('Icecat/feature_groups.json');
     }
 
+
     /**
-     * @covers ::getSuppliers
+     * @covers ::getCategoryFeatureGroups
      * @group icecat
-     * @covers ::parseSupplierNode
+     * @covers ::parseCategoryFeatureGroupNode
      */
-    public function testGetSuppliers() {
-        $this->icecat_feed->downloadAndDecode('suppliers');
-        $this->assertGreaterThan(0, $this->icecat_feed->getSuppliers());
-        $this->assertFileExists('Icecat/suppliers.json');
+    public function testGetCategoryFeatureGroups() {
+        $this->assertGreaterThan(0, $this->icecat_feed->getCategoryFeatureGroups());
+        $this->assertFileExists('Icecat/category_feature_groups.json');
     }
 
 }
