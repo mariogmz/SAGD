@@ -203,4 +203,32 @@ class SalidaController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * Carga la salida usando sus detalles
+     * @param int $id
+     * @return Response
+     */
+    public function cargarSalida($id)
+    {
+        $this->authorize($this);
+        $this->salida = $this->salida->find($id);
+        if ($this->salida) {
+            if ($this->salida->cargar()) {
+                return response()->json([
+                    'message' => 'Salida cargada exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Salida no pudo ser cargada',
+                    'error' => 'Salida no cargada'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'Salida no cargada',
+                'error' => 'Salida no se encontro o no existe'
+            ], 404);
+        }
+    }
 }

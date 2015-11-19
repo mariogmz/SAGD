@@ -273,6 +273,8 @@ class SalidaControllerTest extends TestCase
 
         $this->mock->shouldReceive([
             'find' => Mockery::self(),
+            'getAttribute' => Mockery::self(),
+            'last' => [],
             'crearDetalle' => true
         ])->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
@@ -401,4 +403,67 @@ class SalidaControllerTest extends TestCase
             ->assertResponseStatus(400);
     }
 
+    /**
+     * @covers ::cargarSalida
+     * @group feature-salidas
+     */
+    public function test_GET_cargarSalida_exitosa()
+    {
+        $endpoint = $this->endpoint . '/1/cargar';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'cargar' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Salida cargada exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::cargarSalida
+     * @group feature-salida
+     */
+    public function test_GET_cargarSalida_salida_invalida()
+    {
+        $endpoint = $this->endpoint . '/1/cargar';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Salida no cargada',
+                'error' => 'Salida no se encontro o no existe'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::cargarSalida
+     * @group feature-salida
+     */
+    public function test_GET_cargarSalida_cargar_invalido()
+    {
+        $endpoint = $this->endpoint . '/1/cargar';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'cargar' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Salida no pudo ser cargada',
+                'error' => 'Salida no cargada'
+            ])
+            ->assertResponseStatus(400);
+    }
 }
