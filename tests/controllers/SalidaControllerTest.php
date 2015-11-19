@@ -337,5 +337,68 @@ class SalidaControllerTest extends TestCase
             ->assertResponseStatus(400);
     }
 
+    /**
+     * @covers ::unsaveDetalle
+     * @group feature-salidas
+     */
+    public function test_DELETE_unsaveDetalle()
+    {
+        $endpoint = $this->endpoint . '/1/detalles/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'quitarDetalle' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Detalle removido de la Salida exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::unsaveDetalle
+     * @group feature-salidas
+     */
+    public function test_DELETE_unsaveDetalle_salida_invalida()
+    {
+        $endpoint = $this->endpoint . '/1/detalles/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar la salida',
+                'error' => 'Salida no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::unsaveDetalle
+     * @group feature-salidas
+     */
+    public function test_DELETE_unsaveDetalle_quitarDetalle_invalido()
+    {
+        $endpoint = $this->endpoint . '/1/detalles/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'quitarDetalle' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Detalle no se pudo remover de la Salida',
+                'error' => 'Detalle no removido'
+            ])
+            ->assertResponseStatus(400);
+    }
 
 }

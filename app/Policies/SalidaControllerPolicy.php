@@ -100,6 +100,21 @@ class SalidaControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede eliminar un Salida
+     *
+     * @param  User  $user
+     * @param  SalidaController $controller
+     * @return bool
+     */
+    public function unsaveDetalle(User $user, SalidaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'unsaveDetalle')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string

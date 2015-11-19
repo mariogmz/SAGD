@@ -172,6 +172,34 @@ class SalidaController extends Controller
                 'error' => 'Salida no existente'
             ], 404);
         }
+    }
 
+    /**
+     * Agrega un detalle a la salida
+     * @param int $id
+     * @param int $detalle_id
+     * @return Response
+     */
+    public function unsaveDetalle($id, $detalle_id)
+    {
+        $this->authorize($this);
+        $this->salida = $this->salida->find($id);
+        if ($this->salida) {
+            if ($this->salida->quitarDetalle($detalle_id)) {
+                return response()->json([
+                    'message' => 'Detalle removido de la Salida exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Detalle no se pudo remover de la Salida',
+                    'error' => 'Detalle no removido'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar la salida',
+                'error' => 'Salida no existente'
+            ], 404);
+        }
     }
 }
