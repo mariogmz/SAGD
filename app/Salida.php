@@ -78,6 +78,16 @@ class Salida extends LGGModel {
     }
 
     /**
+     * Quita un detalle asociado a la salida
+     * @param int $detalle_id
+     * @return bool
+     */
+    public function quitarDetalle($detalle_id)
+    {
+        return (SalidaDetalle::destroy($detalle_id) > 0);
+    }
+
+    /**
      * Obtiene el Empleado asociado con la Salida
      * @return App\Empleado
      */

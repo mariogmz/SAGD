@@ -209,6 +209,64 @@ class SalidaTest extends TestCase {
         $this->assertFalse($salida->crearDetalle($detalles));
     }
 
+    /**
+     * @covers ::quitarDetalle
+     * @group feature-salidas
+     */
+    public function testQuitarDetalleConDetalleCorrectoEsExitoso()
+    {
+        $this->setUpProducto();
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salida->save();
+        $detalle = [
+            'cantidad' => 5,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+        $salida->crearDetalle($detalle);
+
+        $detalle_id = SalidaDetalle::last()->id;
+
+        $this->assertTrue($salida->quitarDetalle($detalle_id));
+    }
+
+    /**
+     * @covers ::quitarDetalle
+     * @group feature-salidas
+     */
+    public function testQuitarDetalleConDetalleIncorrectoNoEsExitoso()
+    {
+        $this->setUpProducto();
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+        $salida = new Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salida->save();
+        $detalle = [
+            'cantidad' => 5,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+        $salida->crearDetalle($detalle);
+
+        $detalle_id = SalidaDetalle::last()->id + 1;
+
+        $this->assertFalse($salida->quitarDetalle($detalle_id));
+    }
+
     private function setUpProducto()
     {
         $producto = factory(App\Producto::class)->create();
