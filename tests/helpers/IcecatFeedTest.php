@@ -99,12 +99,22 @@ class IcecatFeedTest extends TestCase {
 
 
     /**
-     * @covers ::getCategoryFeatureGroups
+     * @covers ::getCategoriesFeatureGroups
      * @group icecat
      * @covers ::parseCategoryFeatureGroupNode
      */
-    public function testGetCategoryFeatureGroups() {
-        $this->assertGreaterThan(0, $this->icecat_feed->getCategoryFeatureGroups());
+    public function testGetCategoriesFeatureGroups() {
+        $this->assertGreaterThan(0, $this->icecat_feed->getCategoriesFeatureGroups());
+        $this->assertFileExists('Icecat/category_feature_groups.json');
+    }
+
+    /**
+     * @covers ::getCategoriesFeatures
+     * @group icecat
+     * @covers ::parseCategoryFeatureNode
+     */
+    public function testgetCategoriesFeatures() {
+        $this->assertGreaterThan(0, $this->icecat_feed->getCategoriesFeatures());
         $this->assertFileExists('Icecat/category_feature_groups.json');
     }
 

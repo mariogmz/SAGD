@@ -150,7 +150,7 @@ Class IcecatFeed {
      * @param bool $get_array
      * @return int | array
      */
-    public function getCategoryFeatureGroups($get_array = false) {
+    public function getCategoriesFeatureGroups($get_array = false) {
         $icecat_category_feature_groups = [];
         $stream = new Stream\File('Icecat/category_features.xml', 1024);
         $parser = new Parser\StringWalker([
@@ -168,6 +168,69 @@ Class IcecatFeed {
         }
 
         return $get_array ? $icecat_category_feature_groups : file_put_contents('Icecat/category_feature_groups.json', json_encode($icecat_category_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
+     * and obtains the relationship between categories and features from Icecat
+     * @param bool $get_array
+     * @return int | array
+     */
+    public function getCategoriesFeatures($get_array = false) {
+        $icecat_category_feature_groups = [];
+        $stream = new Stream\File('Icecat/category_features.xml', 1024);
+        $parser = new Parser\StringWalker([
+            'captureDepth' => 4
+        ]);
+
+        $streamer = new XmlStringStreamer($parser, $stream);
+
+        while ($node = $streamer->getNode()) {
+            $category = simplexml_load_string($node);
+            $result = $this->parseCategoryFeatureNode($category);
+            if ($result) {
+                $icecat_category_feature_groups = array_merge($icecat_category_feature_groups, $result);
+            }
+        }
+
+        return $get_array ? $icecat_category_feature_groups : file_put_contents('Icecat/categories_features.json', json_encode($icecat_category_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+    }
+
+    /**
+     * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
+     * and obtains the relationship between features and their groups from Icecat
+     * @param bool $get_array
+     * @return int | array
+     */
+    public function getFeatureGroupsFeatures($get_array = false) {
+        $icecat_category_feature_groups = [];
+        $stream = new Stream\File('Icecat/category_features.xml', 1024);
+        $parser = new Parser\StringWalker([
+            'captureDepth' => 4
+        ]);
+
+        $streamer = new XmlStringStreamer($parser, $stream);
+
+        if (file_exists('Icecat/category_feature_groups.json')) {
+            $categories_feature_groups = json_decode(file_get_contents('Icecat/category_feature_groups.json'));
+        } else {
+            $categories_feature_groups = $this->getCategoryFeatureGroups(true);
+        }
+
+        if (count($categories_feature_groups) > 0) {
+            reindexar('icecat_id', $categories_feature_groups);
+
+            while ($node = $streamer->getNode()) {
+                $category = simplexml_load_string($node);
+                $result = $this->parseFeatureGroupFeatureNode($category, $categories_feature_groups);
+                if ($result) {
+                    $icecat_category_feature_groups = array_merge($icecat_category_feature_groups, $result);
+                }
+            }
+
+        }
+
+        return $get_array ? $icecat_category_feature_groups : file_put_contents('Icecat/feature_groups_features.json', json_encode($icecat_category_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
 
@@ -252,7 +315,51 @@ Class IcecatFeed {
                 ]);
             }
         }
+
         return count($category_feature_groups) > 0 ? $category_feature_groups : null;
+    }
+
+    /**
+     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
+     * friendly object
+     * @param \SimpleXMLElement $category_node
+     * @return array
+     */
+    private function parseCategoryFeatureNode(\SimpleXMLElement $category_node) {
+        $icecat_category_id = (int) $category_node->attributes()['ID'];
+        $categories_features = [];
+
+        foreach ($category_node->Feature as $feature_node) {
+            array_push($categories_features, [
+                'icecat_id'                        => (int) $feature_node->attributes()['CategoryFeature_ID'],
+                'icecat_category_id'               => $icecat_category_id,
+                'icecat_feature_id'                => (int) $feature_node->attributes()['ID'],
+                'icecat_category_feature_group_id' => (int) $feature_node->attributes()['CategoryFeatureGroup_ID']
+            ]);
+        }
+
+        return count($categories_features) > 0 ? $categories_features : null;
+    }
+
+    /**
+     * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
+     * friendly object
+     * @param \SimpleXMLElement $category_node
+     * @param array $categories_feature_groups
+     * @return array
+     */
+    private function parseFeatureGroupFeatureNode(\SimpleXMLElement $category_node, $categories_feature_groups) {
+        $feature_group_feature = [];
+
+        foreach ($category_node->Feature as $feature_node) {
+            $categories_feature_group_id = (int) $feature_node->attributes()['CategoryFeatureGroup_ID'];
+            array_push($feature_group_feature, [
+                'icecat_feature_group_id' => $categories_feature_groups[$categories_feature_group_id]['icecat_feature_group_id'],
+                'icecat_feature_id'       => (int) $feature_node->attributes()['ID'],
+            ]);
+        }
+
+        return count($feature_group_feature) > 0 ? $feature_group_feature : null;
     }
 
     /**
@@ -271,6 +378,7 @@ Class IcecatFeed {
             return null;
         }
     }
+
 
     /**
      * Downloads and decodes a requested file from https://data.icecat.biz/export/level4/refs/ , if file
