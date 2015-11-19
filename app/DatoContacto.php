@@ -24,6 +24,8 @@ use App\Events\DatoContactoActualizado;
  * @method static \Illuminate\Database\Query\Builder|\App\DatoContacto whereSkype($value)
  * @method static \Illuminate\Database\Query\Builder|\App\DatoContacto whereFotografiaUrl($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\DatoContacto whereDeletedAt($value)
  */
 class DatoContacto extends LGGModel {
 

@@ -27,7 +27,7 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
     {
         parent::setUp();
         Gate::shouldReceive([
-            'check' => true
+            'authorize' => true
             ])
             ->withAnyArgs();
     }

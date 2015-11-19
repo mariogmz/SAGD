@@ -24,6 +24,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereGarantiaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereProveedorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Reposicion whereDeletedAt($value)
  */
 class Reposicion extends LGGModel {
 

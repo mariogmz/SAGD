@@ -32,6 +32,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Rma whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Rma whereNotaCreditoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Rma whereDeletedAt($value)
  */
 class Rma extends LGGModel {
 

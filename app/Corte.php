@@ -29,6 +29,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Corte whereCajaId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Corte whereCorteGlobalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Corte whereDeletedAt($value)
  */
 class Corte extends LGGModel {
 

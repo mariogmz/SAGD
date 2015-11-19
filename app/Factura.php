@@ -45,6 +45,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Factura whereRazonSocialReceptorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Factura whereFacturaStatusId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Factura whereDeletedAt($value)
  */
 class Factura extends LGGModel {
 

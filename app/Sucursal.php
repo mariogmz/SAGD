@@ -37,6 +37,9 @@ use Sagd\SafeTransactions;
  * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereProveedorId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereDomicilioId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoSucursal[] $productosSucursales
+ * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereDeletedAt($value)
  */
 class Sucursal extends LGGModel {
 

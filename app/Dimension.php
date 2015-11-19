@@ -20,6 +20,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Dimension wherePeso($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Dimension whereProductoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Dimension whereDeletedAt($value)
  */
 class Dimension extends LGGModel {
 

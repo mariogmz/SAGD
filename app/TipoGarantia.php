@@ -16,6 +16,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereDescripcion($value)
  * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereDias($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\TipoGarantia whereDeletedAt($value)
  */
 class TipoGarantia extends LGGModel {
 

@@ -15,6 +15,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Zona whereClave($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Zona whereKmMaximos($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Zona whereDeletedAt($value)
  */
 class Zona extends LGGModel {
 

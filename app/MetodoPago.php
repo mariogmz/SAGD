@@ -24,6 +24,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereInformacionAdicional($value)
  * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereEstatusActivoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\MetodoPago whereDeletedAt($value)
  */
 class MetodoPago extends LGGModel {
 

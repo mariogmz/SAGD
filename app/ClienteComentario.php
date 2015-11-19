@@ -21,6 +21,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteComentario whereClienteId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteComentario whereEmpleadoId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteComentario whereDeletedAt($value)
  */
 class ClienteComentario extends LGGModel {
 

@@ -14,6 +14,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereClave($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Marca whereDeletedAt($value)
  */
 class Marca extends LGGModel {
 

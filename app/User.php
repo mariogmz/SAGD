@@ -14,6 +14,26 @@ use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 /**
  * App\User
  *
+ * @property integer $id
+ * @property string $email
+ * @property string $password
+ * @property string $remember_token
+ * @property integer $morphable_id
+ * @property string $morphable_type
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \ $morphable
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereEmail($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User wherePassword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereRememberToken($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereMorphableId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereMorphableType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\User whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class User extends LGGModel implements AuthenticatableContract, AuthorizableContract, CanResetPasswordContract
 {

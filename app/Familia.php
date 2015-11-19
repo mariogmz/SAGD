@@ -16,6 +16,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Familia whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Familia whereDescripcion($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Familia whereDeletedAt($value)
  */
 class Familia extends LGGModel {
 

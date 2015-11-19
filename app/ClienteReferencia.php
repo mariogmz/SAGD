@@ -12,6 +12,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteReferencia whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ClienteReferencia whereNombre($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\ClienteReferencia whereDeletedAt($value)
  */
 class ClienteReferencia extends LGGModel {
 

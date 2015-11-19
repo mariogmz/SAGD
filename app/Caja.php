@@ -26,6 +26,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Caja whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Caja whereSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Caja whereDeletedAt($value)
  */
 class Caja extends LGGModel {
 
