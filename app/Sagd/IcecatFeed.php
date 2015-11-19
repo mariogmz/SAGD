@@ -67,7 +67,7 @@ Class IcecatFeed {
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/SuppliersList.xml.gz" to
      * a PHP associative array and then saves it to a .json file
      * @param bool $get_array
-     * @return int
+     * @return int | array
      */
     public function getSuppliers($get_array = false) {
         $icecat_suppliers = [];
@@ -94,7 +94,7 @@ Class IcecatFeed {
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoryFeaturesList.xml.gz" to
      * a PHP associative array and then saves it to a .json file
      * @param bool $get_array
-     * @return int
+     * @return int | array
      */
     public function getFeatures($get_array = false) {
         $icecat_features = [];
@@ -121,9 +121,10 @@ Class IcecatFeed {
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/FeatureGroupList.xml.gz" to
      * a PHP associative array and then saves it to a .json file
-     * @return int
+     * @param bool $get_array
+     * @return int | array
      */
-    public function getFeatureGroups() {
+    public function getFeatureGroups($get_array = false) {
         $icecat_feature_groups = [];
         $stream = new Stream\File('Icecat/feature_groups.xml', 1024);
         $parser = new Parser\StringWalker([
@@ -140,7 +141,7 @@ Class IcecatFeed {
             }
         }
 
-        return file_put_contents('Icecat/feature_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        return  $get_array ? $icecat_feature_groups : file_put_contents('Icecat/feature_groups.json', json_encode($icecat_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
 
@@ -196,8 +197,8 @@ Class IcecatFeed {
         $icecat_id = (int) $feature_node->attributes()['ID'];
 
         if (!empty($name = $this->getLangText($feature_node->Names->Name))) {
-            $type = (string) $feature_node->attributes()['Type'] ?: 'null';
-            $description = $this->getLangValue($feature_node->Descriptions) ?: 'null';
+            $type = (string) $feature_node->attributes()['Type'];
+            $description = $this->getLangValue($feature_node->Descriptions);
             $measure = $feature_node->Measure ? (string) $feature_node->Measure->attributes()['Sign'] : '';
 
             return compact('icecat_id', 'type', 'name', 'description', 'measure');
