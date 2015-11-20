@@ -73,9 +73,14 @@ class Salida extends LGGModel {
      */
     public function crearDetalle($detalle)
     {
-        $salida_detalle = new SalidaDetalle();
-        $salida_detalle->fill($detalle);
-        return $this->detalles()->save($salida_detalle);
+        $salidaDetalle = new SalidaDetalle();
+        $salidaDetalle->fill($detalle);
+        if ($this->detalles->contains('producto_id', $salidaDetalle->producto_id)) {
+            $salidaDetalleOriginal = $this->detalles()->where('producto_id', $salidaDetalle->producto_id)->first();
+            $salidaDetalleOriginal->cantidad += $salidaDetalle->cantidad;
+            return $salidaDetalleOriginal->save() ? $salidaDetalleOriginal : false;
+        }
+        return $this->detalles()->save($salidaDetalle);
     }
 
     /**
@@ -96,7 +101,7 @@ class Salida extends LGGModel {
     {
         $lambda = function() {
             if($this->noCargado()) {
-                foreach ($this->detalles as $detalle) {
+                foreach ($this->detalles()->get() as $detalle) {
                     if (! $detalle->cargar()) {
                         return false;
                     }

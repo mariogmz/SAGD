@@ -246,7 +246,7 @@ class SalidaTest extends TestCase {
         $movimientos = ProductoMovimiento::count();
         $salida->cargar();
 
-        $this->assertGreaterThan($movimientos, ProductoMovimiento::count());
+        $this->assertGreaterThanOrEqual($movimientos, ProductoMovimiento::count());
     }
 
     /**
@@ -372,7 +372,6 @@ class SalidaTest extends TestCase {
             'producto_id' => $producto->id,
             'upc' => $producto->upc
         ];
-
         $salida->crearDetalle($detalle);
 
         $salida->cargar();
@@ -412,6 +411,71 @@ class SalidaTest extends TestCase {
 
         $this->assertTrue($salida->cargar());
         $this->assertFalse($salida->cargar());
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-salidas
+     */
+    public function testCargarDosVecesUnDetalleConMismoUpcLoAgrupaEnUnSoloDetalle()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
+        $this->setUpDetalle();
+
+        $this->assertCount(1, $salida->detalles);
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-salidas
+     */
+    public function testCargarMismoDetalleActualizaCorrectamenteLaCantidad()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $this->assertEquals(25, $salida->detalles->first()->cantidad);
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-salidas
+     */
+    public function testCargarMismoDetalleVariasVecesActualizaCorrectamenteExistencias()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $salida->cargar();
+
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(75, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-salidas
+     */
+    public function testCargarMismoDetalleVariasVecesSoloCreaUnProductoMovimiento()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $salida->cargar();
+
+        $movimientos = $producto->movimientos->count();
+        $this->assertEquals(1, $movimientos);
     }
 
     private function setUpProducto()
