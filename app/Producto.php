@@ -225,7 +225,7 @@ class Producto extends LGGModel {
             return $this->hasManyThrough('App\Existencia', 'App\ProductoSucursal',
                 'producto_id', 'productos_sucursales_id');
         } else {
-            return $this->productosSucursales->where('sucursal_id', $sucursal->id)->first()->existencia;
+            return $this->productosSucursales()->where('sucursal_id', $sucursal->id)->first()->existencia;
         }
     }
 
