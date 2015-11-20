@@ -4,7 +4,9 @@ namespace App;
 
 
 use App\Events\ProductoActualizado;
+use App\Events\ProductoCreado;
 use DB;
+use Event;
 use Illuminate\Support\MessageBag;
 
 
@@ -118,6 +120,9 @@ class Producto extends LGGModel {
         });
         Producto::updated(function ($producto) {
             event(new ProductoActualizado($producto));
+        });
+        Producto::created(function ($producto) {
+            Event::fire(new ProductoCreado($producto));
         });
     }
 
@@ -311,9 +316,7 @@ class Producto extends LGGModel {
         if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
             $this->save();
             $this->attachDimension($dimension);
-            $this->attachSucursales();
             $this->guardarPrecios($precio);
-            $this->inicializarExistencias();
 
             return true;
         } else {

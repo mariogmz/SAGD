@@ -30,6 +30,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\CreandoProductoMovimiento' => [
             'App\Listeners\ActualizarExistencias',
+        ],
+        'App\Events\ProductoCreado' => [
+            'App\Listeners\AttachSucursales',
+            'App\Listeners\InicializarExistencias',
         ]
     ];
 
