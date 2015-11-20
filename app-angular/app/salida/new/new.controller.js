@@ -80,11 +80,7 @@
       buscarProducto(salidaDetalle.upc).then(function(responseProducto) {
         salidaDetalle.producto_id = responseProducto.data.producto.id;
         saveSalidaDetalle(salidaDetalle).then(function(responseDetalle) {
-          vm.salida.salidas_detalles.push({
-            id: responseDetalle.data.detalle.id,
-            cantidad: salidaDetalle.cantidad,
-            producto: responseProducto.data.producto
-          });
+          pushSalidaDetalle(responseDetalle.data.detalle, responseProducto.data.producto);
         });
       }).catch(function(response) {
         pnotify.alert('Detalle no agregado', response.data.error, 'error');
@@ -97,6 +93,21 @@
 
     function saveSalidaDetalle(salidaDetalle) {
       return api.post('/salida/' + vm.salida.id + '/detalles', salidaDetalle);
+    }
+
+    function pushSalidaDetalle(responseDetalle, responseProducto) {
+      for (var i = vm.salida.salidas_detalles.length - 1; i >= 0; i--) {
+        if (vm.salida.salidas_detalles[i].producto.id === responseDetalle.producto_id) {
+          vm.salida.salidas_detalles[i].cantidad = responseDetalle.cantidad;
+          return;
+        }
+      }
+
+      vm.salida.salidas_detalles.push({
+        id: responseDetalle.id,
+        cantidad: responseDetalle.cantidad,
+        producto: responseProducto
+      });
     }
 
     function removerSalidaDetalle(salidaDetalle) {
