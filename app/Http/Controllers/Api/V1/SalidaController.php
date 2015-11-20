@@ -219,10 +219,17 @@ class SalidaController extends Controller
                     'message' => 'Salida cargada exitosamente'
                 ], 200);
             } else {
-                return response()->json([
-                    'message' => 'Salida no pudo ser cargada',
-                    'error' => 'Salida no cargada'
-                ], 400);
+                if ($this->salida->sobrepasaExistencias()) {
+                    return response()->json([
+                        'message' => 'Algunas partidas de la salida tienen cantidad superior a las existencias del producto',
+                        'error' => 'Cantidad es invalida en algunas partidas'
+                    ], 400);
+                } else {
+                    return response()->json([
+                        'message' => 'Salida no pudo ser cargada',
+                        'error' => 'Salida no cargada'
+                    ], 400);
+                }
             }
         } else {
             return response()->json([

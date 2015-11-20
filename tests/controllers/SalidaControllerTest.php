@@ -426,7 +426,7 @@ class SalidaControllerTest extends TestCase
 
     /**
      * @covers ::cargarSalida
-     * @group feature-salida
+     * @group feature-salidas
      */
     public function test_GET_cargarSalida_salida_invalida()
     {
@@ -447,7 +447,7 @@ class SalidaControllerTest extends TestCase
 
     /**
      * @covers ::cargarSalida
-     * @group feature-salida
+     * @group feature-salidas
      */
     public function test_GET_cargarSalida_cargar_invalido()
     {
@@ -455,7 +455,8 @@ class SalidaControllerTest extends TestCase
 
         $this->mock->shouldReceive([
             'find' => Mockery::self(),
-            'cargar' => false
+            'cargar' => false,
+            'sobrepasaExistencias' => false
         ])->withAnyArgs();
         $this->app->instance('App\Salida', $this->mock);
 
@@ -463,6 +464,29 @@ class SalidaControllerTest extends TestCase
             ->seeJson([
                 'message' => 'Salida no pudo ser cargada',
                 'error' => 'Salida no cargada'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::cargarSalida
+     * @group feature-salidas
+     */
+    public function test_GET_cargarSalida_cargar_invalido_con_existencia_invalida()
+    {
+        $endpoint = $this->endpoint . '/1/cargar';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'cargar' => false,
+            'sobrepasaExistencias' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Salida', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Algunas partidas de la salida tienen cantidad superior a las existencias del producto',
+                'error' => 'Cantidad es invalida en algunas partidas'
             ])
             ->assertResponseStatus(400);
     }
