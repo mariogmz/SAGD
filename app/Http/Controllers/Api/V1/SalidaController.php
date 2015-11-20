@@ -156,10 +156,10 @@ class SalidaController extends Controller
         $this->salida = $this->salida->find($id);
         if ($this->salida) {
             $detalle = $request->all();
-            if ($this->salida->crearDetalle($detalle)) {
+            if ($detalle = $this->salida->crearDetalle($detalle)) {
                 return response()->json([
                     'message' => 'Detalle agregado a Salida exitosamente',
-                    'detalle' => $this->salida->detalles->last()
+                    'detalle' => $detalle
                 ], 200);
             } else {
                 return response()->json([
