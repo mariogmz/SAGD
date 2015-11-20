@@ -66,6 +66,8 @@ class SalidaDetalle extends LGGModel {
     {
         if ($pm = Event::fire(new CargandoSalida($this, $this->salida))) {
             $this->productoMovimiento()->associate($pm[0]);
+            debug($this);
+            debug($this->productoMovimiento);
             return $this->save();
         }
         return false;

@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\SalidaDetalle
  */
 class SalidaDetalleTest extends TestCase {
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing
@@ -20,11 +24,13 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testModeloEsActualizable()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->create();
-        $sd->cantidad = 1991;
-        $this->assertTrue($sd->isValid('update'));
-        $this->assertTrue($sd->save());
-        $this->assertSame(1991, $sd->cantidad);
+        $this->setUpProducto();
+        $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $detalle->cantidad = 1991;
+        $this->assertTrue($detalle->isValid('update'));
+        $this->assertTrue($detalle->save());
+        $this->assertSame(1991, $detalle->cantidad);
     }
 
     /**
@@ -57,38 +63,18 @@ class SalidaDetalleTest extends TestCase {
     }
 
     /**
-     * @covers ::producto
-     * @group relaciones
-     */
-    public function testProductoAssociate()
-    {
-        $sd = factory(App\SalidaDetalle::class, 'noproducto')->make();
-        $producto = factory(App\Producto::class)->create();
-        $sd->producto()->associate($producto);
-        $this->assertInstanceOf(App\Producto::class, $sd->producto);
-    }
-
-    /**
      * @covers ::productoMovimiento
      * @group relaciones
      */
     public function testProductoMovimiento()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->make();
-        $pm = $sd->productoMovimiento;
-        $this->assertInstanceOf(App\ProductoMovimiento::class, $pm);
-    }
+        $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $salida->cargar();
 
-    /**
-     * @covers ::productoMovimiento
-     * @group relaciones
-     */
-    public function testProductoMovimientoAssociate()
-    {
-        $sd = factory(App\SalidaDetalle::class, 'noproductomovimiento')->make();
-        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
-        $sd->productoMovimiento()->associate($pm);
-        $this->assertInstanceOf(App\ProductoMovimiento::class, $sd->productoMovimiento);
+        $pm = $detalle->productoMovimiento;
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pm);
     }
 
     /**
@@ -100,18 +86,6 @@ class SalidaDetalleTest extends TestCase {
         $sd = factory(App\SalidaDetalle::class, 'full')->make();
         $salida = $sd->salida;
         $this->assertInstanceOf(App\Salida::class, $salida);
-    }
-
-    /**
-     * @covers ::salida
-     * @group relaciones
-     */
-    public function testSalidaAssociate()
-    {
-        $sd = factory(App\SalidaDetalle::class, 'nosalida')->make();
-        $salida = factory(App\Salida::class, 'full')->create();
-        $sd->salida()->associate($salida);
-        $this->assertInstanceOf(App\Salida::class, $sd->salida);
     }
 
     /**
@@ -166,30 +140,43 @@ class SalidaDetalleTest extends TestCase {
 
     private function setUpSalida()
     {
+        $this->setUpEstados();
         $producto = App\Producto::last();
         $sucursal = App\Sucursal::last();
+
 
         $salida = new App\Salida([
             'motivo' => 'Test',
             'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
-            'estado_salida_id' => factory(App\EstadoSalida::class)->create()->id,
+            'estado_salida_id' => App\EstadoSalida::creando()->id,
             'sucursal_id' => $sucursal->id
         ]);
         $salida->save();
         return $salida;
     }
 
-    private function setUpDetalle()
+    private function setUpDetalle($cantidad = 5)
     {
         $producto = App\Producto::last();
         $salida = App\Salida::last();
 
         $detalle = [
-            'cantidad' => 5,
+            'cantidad' => $cantidad,
             'producto_id' => $producto->id,
             'upc' => $producto->upc
         ];
 
         return $salida->crearDetalle($detalle);
+    }
+
+    private function setUpEstados()
+    {
+        $estadoSalidaCreando = new App\EstadoSalida(['nombre' => 'Creando']);
+        $estadoSalidaCargando = new App\EstadoSalida(['nombre' => 'Cargando']);
+        $estadoSalidaCargado = new App\EstadoSalida(['nombre' => 'Cargado']);
+
+        $estadoSalidaCreando->save();
+        $estadoSalidaCargando->save();
+        $estadoSalidaCargado->save();
     }
 }
