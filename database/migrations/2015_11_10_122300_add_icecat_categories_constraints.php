@@ -25,9 +25,9 @@ class AddIcecatCategoriesConstraints extends Migration {
      */
     public function down() {
         Schema::table('icecat_categories', function (Blueprint $table) {
-            $table->dropUnique('icecat_id');
             $table->dropForeign('icecat_categories_icecat_parent_category_id_foreign');
             $table->dropForeign('icecat_categories_subfamilia_id_foreign');
+            $table->dropUnique('icecat_categories_icecat_id_unique');
         });
     }
 }

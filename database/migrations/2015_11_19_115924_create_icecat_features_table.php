@@ -20,6 +20,9 @@ class CreateIcecatFeaturesTable extends Migration {
             $table->string('measure', 10)->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique('icecat_id');
+
         });
     }
 
@@ -29,6 +32,9 @@ class CreateIcecatFeaturesTable extends Migration {
      * @return void
      */
     public function down() {
+        Schema::table('icecat_features', function (Blueprint $table) {
+            $table->dropUnique('icecat_features_icecat_id_unique');
+        });
         Schema::drop('icecat_features');
     }
 }

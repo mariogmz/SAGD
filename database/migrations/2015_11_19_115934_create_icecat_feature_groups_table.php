@@ -17,6 +17,8 @@ class CreateIcecatFeatureGroupsTable extends Migration {
             $table->string('name', 70);
             $table->timestamps();
             $table->softDeletes();
+
+            $table->unique('icecat_id');
         });
     }
 
@@ -26,6 +28,9 @@ class CreateIcecatFeatureGroupsTable extends Migration {
      * @return void
      */
     public function down() {
+        Schema::table('icecat_feature_groups', function (Blueprint $table) {
+            $table->dropUnique('icecat_feature_groups_icecat_id_unique');
+        });
         Schema::drop('icecat_feature_groups');
     }
 }

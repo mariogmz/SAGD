@@ -45,6 +45,8 @@ class DatabaseSeeder extends Seeder {
         $this->call(FamiliaTableSeeder::class);
         $this->call(SubfamiliaTableSeeder::class);
         $this->call(IcecatCategoryTableSeeder::class);
+        $this->call(IcecatFeatureTableSeeder::class);
+        $this->call(IcecatFeatureGroupTableSeeder::class);
         $this->call(PaqueteriaTableSeeder::class);
         $this->call(ProductoTableSeeder::class);
         $this->call(ExistenciasTableSeeder::class);
