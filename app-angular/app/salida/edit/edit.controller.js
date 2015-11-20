@@ -22,6 +22,9 @@
     vm.id = $stateParams.id;
     vm.empleado = session.obtenerEmpleado();
     vm.salida = {};
+    vm.salidaDetalle = {
+      cantidad: 0
+    };
 
     activate();
 
@@ -65,10 +68,8 @@
       buscarProducto(salidaDetalle.upc).then(function(responseProducto) {
         salidaDetalle.producto_id = responseProducto.data.producto.id;
         saveSalidaDetalle(salidaDetalle).then(function(responseDetalle) {
-          vm.salida.detalles.push({
-            cantidad: salidaDetalle.cantidad,
-            producto: responseProducto.data.producto
-          });
+          pushSalidaDetalle(responseDetalle.data.detalle, responseProducto.data.producto);
+          limpiarInputSalidaDetalle();
         });
       }).catch(function(response) {
         pnotify.alert('Detalle no agregado', response.data.error, 'error');
@@ -81,6 +82,26 @@
 
     function saveSalidaDetalle(salidaDetalle) {
       return api.post('/salida/' + vm.salida.id + '/detalles', salidaDetalle);
+    }
+
+    function pushSalidaDetalle(responseDetalle, responseProducto) {
+      for (var i = vm.salida.detalles.length - 1; i >= 0; i--) {
+        if (vm.salida.detalles[i].producto.id === responseDetalle.producto_id) {
+          vm.salida.detalles[i].cantidad = responseDetalle.cantidad;
+          return;
+        }
+      }
+
+      vm.salida.detalles.push({
+        id: responseDetalle.id,
+        cantidad: responseDetalle.cantidad,
+        producto: responseProducto
+      });
+    }
+
+    function limpiarInputSalidaDetalle() {
+      vm.salidaDetalle.cantidad = 0;
+      vm.salidaDetalle.upc = '';
     }
 
     function removerSalidaDetalle(salidaDetalle) {

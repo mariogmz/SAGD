@@ -51,8 +51,8 @@
         cargarSalida().then(function() {
           pnotify.alert('¡Éxito!', 'La salida fue cargada exitosamente', 'success');
           activate();
-        }).catch(function() {
-          pnotify.alert('Error', 'La salida no fue cargada', 'error');
+        }).catch(function(response) {
+          pnotify.alert(response.data.error, response.data.message, 'error');
         });
       }).catch(function() {
         modal.hide('confirm');

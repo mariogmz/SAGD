@@ -28,6 +28,9 @@
       empleado_id: vm.empleado.id,
       sucursal_id: vm.empleado.sucursal_id
     };
+    vm.salidaDetalle = {
+      cantidad: 0
+    };
 
     activate();
 
@@ -81,6 +84,7 @@
         salidaDetalle.producto_id = responseProducto.data.producto.id;
         saveSalidaDetalle(salidaDetalle).then(function(responseDetalle) {
           pushSalidaDetalle(responseDetalle.data.detalle, responseProducto.data.producto);
+          limpiarInputSalidaDetalle();
         });
       }).catch(function(response) {
         pnotify.alert('Detalle no agregado', response.data.error, 'error');
@@ -108,6 +112,11 @@
         cantidad: responseDetalle.cantidad,
         producto: responseProducto
       });
+    }
+
+    function limpiarInputSalidaDetalle() {
+      vm.salidaDetalle.cantidad = 0;
+      vm.salidaDetalle.upc = '';
     }
 
     function removerSalidaDetalle(salidaDetalle) {
