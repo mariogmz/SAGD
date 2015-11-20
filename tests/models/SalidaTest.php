@@ -478,6 +478,34 @@ class SalidaTest extends TestCase {
         $this->assertEquals(1, $movimientos);
     }
 
+    /**
+     * @covers ::sobrepasaExistencias
+     * @group feature-salidas
+     * @group sobrepasa-existencias
+     */
+    public function testSobrepasaExistenciasConCantidadValida()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle();
+
+        $this->assertFalse($salida->sobrepasaExistencias());
+    }
+
+    /**
+     * @covers ::sobrepasaExistencias
+     * @group feature-salidas
+     * @group sobrepasa-existencias
+     */
+    public function testSobrepasaExistenciasConCantidadInvalida()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $this->setUpDetalle(1000);
+
+        $this->assertTrue($salida->sobrepasaExistencias());
+    }
+
     private function setUpProducto()
     {
         $producto = factory(App\Producto::class)->create();
@@ -513,13 +541,13 @@ class SalidaTest extends TestCase {
         return $salida;
     }
 
-    private function setUpDetalle()
+    private function setUpDetalle($cantidad = 5)
     {
         $producto = App\Producto::last();
         $salida = Salida::last();
 
         $detalle = [
-            'cantidad' => 5,
+            'cantidad' => $cantidad,
             'producto_id' => $producto->id,
             'upc' => $producto->upc
         ];

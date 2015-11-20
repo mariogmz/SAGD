@@ -135,6 +135,21 @@ class Salida extends LGGModel {
     }
 
     /**
+     * Verifica que ningun detalle tenga cantidad mayor a sus existencias
+     * @return bool
+     */
+    public function sobrepasaExistencias()
+    {
+        foreach ($this->detalles()->get() as $detalle) {
+            $existencia = $detalle->producto->existencias($this->sucursal)->cantidad;
+            if ($detalle->cantidad > $existencia) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Obtiene el Empleado asociado con la Salida
      * @return App\Empleado
      */
