@@ -17,6 +17,8 @@ class CreateIcecatCategoriesFeaturesTable extends Migration
             $table->integer('icecat_category_feature_group_id')->unsigned();
             $table->integer('icecat_category_id')->unsigned();
             $table->integer('icecat_feature_id')->unsigned();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 

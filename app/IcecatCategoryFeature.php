@@ -3,7 +3,7 @@
 namespace App;
 
 
-class IcecatFeature extends LGGModel {
+class IcecatCategoryFeature extends LGGModel {
 
     protected $table = 'icecat_features';
     public $timestamps = true;
@@ -27,10 +27,10 @@ class IcecatFeature extends LGGModel {
      */
     public static function boot() {
         parent::boot();
-        IcecatFeature::creating(function ($icecat_feature) {
+        IcecatCategoryFeature::creating(function ($icecat_feature) {
             return $icecat_feature->isValid();
         });
-        IcecatFeature::updating(function ($icecat_feature) {
+        IcecatCategoryFeature::updating(function ($icecat_feature) {
             $icecat_feature->updateRules = self::$rules;
             $icecat_feature->updateRules['icecat_id'] = "integer|required|unique:icecat_features,icecat_id,{$icecat_feature->id}";
 

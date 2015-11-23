@@ -3,20 +3,18 @@
 namespace App;
 
 
-class IcecatFeature extends LGGModel {
+class IcecatCategoryFeatureGroup extends LGGModel {
 
-    protected $table = 'icecat_features';
+    protected $table = 'icecat_categories_feature_groups';
     public $timestamps = true;
     protected $fillable = [
-        'icecat_id', 'type', 'name', 'description', 'measure'
+        'icecat_id', 'icecat_category_id', 'icecat_feature_group_id'
     ];
 
     public static $rules = [
-        'icecat_id'   => 'integer|required|unique:icecat_features',
-        'type'        => 'string|max:45',
-        'name'        => 'string|required|max:70',
-        'description' => 'string|max:100',
-        'measure'     => 'string|max:10'
+        'icecat_id'               => 'integer|required|unique:icecat_categories_feature_groups',
+        'icecat_category_id'      => 'integer|required',
+        'icecat_feature_group_id' => 'integer|required'
     ];
 
     public $updateRules = [];
@@ -27,12 +25,12 @@ class IcecatFeature extends LGGModel {
      */
     public static function boot() {
         parent::boot();
-        IcecatFeature::creating(function ($icecat_feature) {
+        IcecatCategoryFeatureGroup::creating(function ($icecat_feature) {
             return $icecat_feature->isValid();
         });
-        IcecatFeature::updating(function ($icecat_feature) {
+        IcecatCategoryFeatureGroup::updating(function ($icecat_feature) {
             $icecat_feature->updateRules = self::$rules;
-            $icecat_feature->updateRules['icecat_id'] = "integer|required|unique:icecat_features,icecat_id,{$icecat_feature->id}";
+            $icecat_feature->updateRules['icecat_id'] = "integer|required|unique:icecat_categories_feature_groups,icecat_id,{$icecat_feature->id}";
 
             return $icecat_feature->isValid('update');
         });

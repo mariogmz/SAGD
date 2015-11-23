@@ -10,12 +10,12 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @group icecat
      */
     public function testIcecatIdEsRequerido() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        $icecat_id = $icecat_feature->icecat_id;
-        unset($icecat_feature->icecat_id);
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->icecat_id = $icecat_id;
-        $this->assertTrue($icecat_feature->isValid());
+        $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->make();
+        $icecat_id = $icecat_category_feature_group->icecat_id;
+        unset($icecat_category_feature_group->icecat_id);
+        $this->assertFalse($icecat_category_feature_group->isValid());
+        $icecat_category_feature_group->icecat_id = $icecat_id;
+        $this->assertTrue($icecat_category_feature_group->isValid());
     }
 
     /**
@@ -23,12 +23,12 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @group icecat
      */
     public function testIcecatIdEsEntero() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        $icecat_id = $icecat_feature->icecat_id;
-        $icecat_feature->icecat_id = 'Shut up woman and get on my horse';
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->icecat_id = $icecat_id;
-        $this->assertTrue($icecat_feature->isValid());
+        $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->make();
+        $icecat_id = $icecat_category_feature_group->icecat_id;
+        $icecat_category_feature_group->icecat_id = 'Shut up woman and get on my horse';
+        $this->assertFalse($icecat_category_feature_group->isValid());
+        $icecat_category_feature_group->icecat_id = $icecat_id;
+        $this->assertTrue($icecat_category_feature_group->isValid());
     }
 
     /**
@@ -49,92 +49,26 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @coversNothing
      * @group icecat
      */
-    public function testTypeEsOpcional() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        unset($icecat_feature->descripcion);
-        $this->assertTrue($icecat_feature->isValid());
-        $icecat_feature->descripcion = 'Bitchbox';
-        $this->assertTrue($icecat_feature->isValid());
+    public function testIcecatCategoryIdEsEntero() {
+        $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->make();
+        $icecat_category_id = $icecat_category_feature_group->icecat_category_id;
+        $icecat_category_feature_group->icecat_category_id = 'Shut up woman and get on my horse';
+        $this->assertFalse($icecat_category_feature_group->isValid());
+        $icecat_category_feature_group->icecat_category_id = $icecat_category_id;
+        $this->assertTrue($icecat_category_feature_group->isValid());
     }
 
     /**
      * @coversNothing
      * @group icecat
      */
-    public function testTypeEsMaximo45Caracteres() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class, 'longtype')->make();
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->type = 'Bitchbox';
-        $this->assertTrue($icecat_feature->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testNameEsRequerido() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        unset($icecat_feature->name);
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->name = 'Anthony Hoskins';
-        $this->assertTrue($icecat_feature->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testNameEsMaximo70Caracteres() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class, 'longname')->make();
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->name = 'Anthony Hoskins';
-        $this->assertTrue($icecat_feature->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testDescriptionEsOpcional() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        unset($icecat_feature->description);
-        $this->assertTrue($icecat_feature->isValid());
-        $icecat_feature->description = 'Icecat sucks';
-        $this->assertTrue($icecat_feature->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testDescriptionEsMaximo100Caracteres() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class, 'longdescription')->make();
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->description = 'Icecat Sucks';
-        $this->assertTrue($icecat_feature->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testMeasureEsOpcional() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        unset($icecat_feature->measure);
-        $this->assertTrue($icecat_feature->isValid());
-        $icecat_feature->measure = 'cms';
-        $this->assertTrue($icecat_feature->isValid());
-    }
-
-    /**
-     * @coversNothing
-     * @group icecat
-     */
-    public function testMeasureEsMaximo10Caracteres() {
-        $icecat_feature = factory(App\IcecatCategoryFeatureGroup::class, 'longmeasure')->make();
-        $this->assertFalse($icecat_feature->isValid());
-        $icecat_feature->measure = 'cm';
-        $this->assertTrue($icecat_feature->isValid());
+    public function testIcecatFeatureGroupIdEsEntero() {
+        $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->make();
+        $icecat_feature_group_id  = $icecat_category_feature_group->icecat_feature_group_id ;
+        $icecat_category_feature_group->icecat_feature_group_id  = 'Shut up woman and get on my horse';
+        $this->assertFalse($icecat_category_feature_group->isValid());
+        $icecat_category_feature_group->icecat_feature_group_id  = $icecat_feature_group_id ;
+        $this->assertTrue($icecat_category_feature_group->isValid());
     }
 
 }
