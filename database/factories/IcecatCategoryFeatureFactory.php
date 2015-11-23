@@ -13,18 +13,9 @@
 
 $factory->define(App\IcecatCategoryFeature::class, function ($faker) {
     return [
-        'icecat_id'   => $faker->randomNumber(8),
-        'type'        => $faker->optional()->text(45),
-        'name'        => $faker->text(70),
-        'description' => $faker->optional()->text(100),
-        'measure'     => $faker->optional()->text(10)
+        'icecat_id'                        => $faker->randomNumber(8),
+        'icecat_category_feature_group_id' => factory(App\IcecatCategoryFeatureGroup::class)->create()->icecat_id,
+        'icecat_category_id'               => factory(App\IcecatCategory::class)->create()->icecat_id,
+        'icecat_feature_id'                => factory(App\IcecatFeature::class)->create()->icecat_id
     ];
 });
-
-$factory->defineAs(App\IcecatCategoryFeature::class, 'longtype', function ($faker) use ($factory) {
-    return array_merge(
-        $factory->raw(App\IcecatCategoryFeature::class),
-        ['type' => $faker->text(100)]
-    );
-});
-
