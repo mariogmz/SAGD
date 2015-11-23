@@ -123,4 +123,33 @@ class IcecatCategoryFeatureTest extends TestCase {
         $this->assertTrue($icecat_category_feature->isValid());
     }
 
+    /**
+     * @coversNothing
+     * @group icecat
+     */
+    public function testCombinacionForeignKeysUnica() {
+        $icecat_category_feature1 = factory(App\IcecatCategoryFeature::class)->create();
+        $icecat_category_feature2 = factory(App\IcecatCategoryFeature::class)->make([
+            'icecat_category_feature_group_id' => $icecat_category_feature1->icecat_category_feature_group_id,
+            'icecat_category_id'               => $icecat_category_feature1->icecat_category_id,
+            'icecat_feature_id'                => $icecat_category_feature1->icecat_feature_id
+        ]);
+        $this->assertFalse($icecat_category_feature2->isValid());
+        $icecat_category_feature2 = factory(App\IcecatCategoryFeature::class)->make([
+            'icecat_category_id' => $icecat_category_feature1->icecat_category_id,
+            'icecat_feature_id'  => $icecat_category_feature1->icecat_feature_id
+        ]);
+        $this->assertTrue($icecat_category_feature2->isValid());
+        $icecat_category_feature2 = factory(App\IcecatCategoryFeature::class)->make([
+            'icecat_category_feature_group_id' => $icecat_category_feature1->icecat_category_feature_group_id,
+            'icecat_feature_id'                => $icecat_category_feature1->icecat_feature_id
+        ]);
+        $this->assertTrue($icecat_category_feature2->isValid());
+        $icecat_category_feature2 = factory(App\IcecatCategoryFeature::class)->make([
+            'icecat_category_feature_group_id' => $icecat_category_feature1->icecat_category_feature_group_id,
+            'icecat_category_id'               => $icecat_category_feature1->icecat_category_id,
+        ]);
+        $this->assertTrue($icecat_category_feature2->isValid());
+    }
+
 }
