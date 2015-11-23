@@ -590,7 +590,7 @@ class ProductoTest extends TestCase {
     {
         $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
@@ -643,7 +643,7 @@ class ProductoTest extends TestCase {
     {
         $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
@@ -709,7 +709,7 @@ class ProductoTest extends TestCase {
     {
         $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
@@ -772,7 +772,7 @@ class ProductoTest extends TestCase {
     {
         $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
@@ -788,7 +788,7 @@ class ProductoTest extends TestCase {
     {
         $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
@@ -815,7 +815,7 @@ class ProductoTest extends TestCase {
     {
         $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
