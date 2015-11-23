@@ -36,4 +36,28 @@ class IcecatCategoryFeatureGroup extends LGGModel {
             return $icecat_feature->isValid('update');
         });
     }
+
+    /**
+     * Obtiene los categories_features relacionados con este category_feature_group
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function categoriesFeatures() {
+        return $this->hasMany('App\IcecatCategoryFeature', 'icecat_category_feature_group_id', 'icecat_id');
+    }
+
+    /**
+     * Obtiene el category asociado a este category_feature_group
+     * @return \App\IcecatCategory
+     */
+    public function category() {
+        return $this->belongsTo('App\IcecatCategory', 'icecat_category_id', 'icecat_id');
+    }
+
+    /**
+     * Obtiene el feature_group asociado a este category_feature_group
+     * @return \App\IcecatFeature
+     */
+    public function featureGroup() {
+        return $this->belongsTo('App\IcecatFeatureGroup', 'icecat_feature_group_id', 'icecat_id');
+    }
 }

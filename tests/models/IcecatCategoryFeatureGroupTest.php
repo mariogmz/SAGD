@@ -96,7 +96,7 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @coversNothing
      * @group icecat
      */
-    public function testModeloEsActualizable(){
+    public function testModeloEsActualizable() {
         $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->create();
         $icecat_category_feature_group_stub = factory(App\IcecatCategoryFeatureGroup::class)->make();
         $icecat_category_feature_group->icecat_id = $icecat_category_feature_group_stub->icecat_id;
@@ -111,8 +111,15 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @group icecat
      * @group relaciones
      */
-    public function testCategoriesFeatures(){
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testCategoriesFeatures() {
+        $category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->create();
+        factory(App\IcecatCategoryFeature::class, 5)->create([
+            'icecat_category_feature_group_id' => $category_feature_group->icecat_id
+        ]);
+        $result = $category_feature_group->categoriesFeatures;
+        $this->assertCount(5, $result);
+        $this->assertInstanceOf('App\IcecatCategoryFeature', $result[0]);
+        $this->assertSame($category_feature_group->icecat_id, $result[0]->icecat_category_feature_group_id);
     }
 
     /**
@@ -120,8 +127,13 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @group icecat
      * @group relaciones
      */
-    public function testCategory(){
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testCategory() {
+        $category = factory(App\IcecatCategory::class)->create();
+        $category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->create([
+            'icecat_category_id' => $category->icecat_id
+        ]);
+        $this->assertInstanceOf('App\IcecatCategory', $category_feature_group->category);
+        $this->assertSame($category->icecat_id, $category_feature_group->category->icecat_id);
     }
 
     /**
@@ -129,8 +141,13 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      * @group icecat
      * @group relaciones
      */
-    public function testFeatureGroup(){
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testFeatureGroup() {
+        $feature_group = factory(App\IcecatFeatureGroup::class)->create();
+        $category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->create([
+            'icecat_feature_group_id' => $feature_group->icecat_id
+        ]);
+        $this->assertInstanceOf('App\IcecatFeatureGroup', $category_feature_group->featureGroup);
+        $this->assertSame($feature_group->icecat_id, $category_feature_group->featureGroup->icecat_id);
     }
 
 }
