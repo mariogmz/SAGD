@@ -73,6 +73,8 @@ class Salida extends LGGModel {
      */
     public function crearDetalle($detalle)
     {
+        if (! is_null($detalle['upc'])) { unset($detalle['upc']); }
+
         $salidaDetalle = new SalidaDetalle();
         $salidaDetalle->fill($detalle);
         if ($this->detalles->contains('producto_id', $salidaDetalle->producto_id)) {

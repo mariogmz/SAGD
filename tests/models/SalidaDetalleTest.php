@@ -57,8 +57,13 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testProducto()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->make();
-        $producto = $sd->producto;
+        $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $salida->cargar();
+        $detalle = App\SalidaDetalle::last();
+
+        $producto = $detalle->producto;
         $this->assertInstanceOf(App\Producto::class, $producto);
     }
 
@@ -84,8 +89,13 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testSalida()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->make();
-        $salida = $sd->salida;
+        $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $salida->cargar();
+        $detalle = App\SalidaDetalle::last();
+
+        $salida = $detalle->salida;
         $this->assertInstanceOf(App\Salida::class, $salida);
     }
 
