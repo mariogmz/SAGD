@@ -72,6 +72,7 @@ class SalidaDetalleTest extends TestCase {
         $salida = $this->setUpSalida();
         $detalle = $this->setUpDetalle();
         $salida->cargar();
+        $detalle = App\SalidaDetalle::last();
 
         $pm = $detalle->productoMovimiento;
         $this->assertInstanceOf(App\ProductoMovimiento::class, $pm);
@@ -141,7 +142,6 @@ class SalidaDetalleTest extends TestCase {
     private function setUpSalida()
     {
         $this->setUpEstados();
-        $producto = App\Producto::last();
         $sucursal = App\Sucursal::last();
 
 
