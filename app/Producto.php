@@ -308,6 +308,7 @@ class Producto extends LGGModel {
      * @return bool
      */
     public function guardarNuevo($parameters) {
+        $this->fill($parameters['producto']);
         $dimension = new Dimension($parameters['dimension']);
         $precio = new Precio($parameters['precio']);
         $dimension->producto_id = 0;
@@ -321,6 +322,9 @@ class Producto extends LGGModel {
             return true;
         } else {
             $this->errors || $this->errors = new MessageBag();
+            \Log::info("");
+            \Log::info($this->errors);
+            \Log::info("");
             if ($dimension->errors) {
                 $this->errors->merge($dimension->errors);
             }
@@ -383,7 +387,7 @@ class Producto extends LGGModel {
         foreach ($precios_proveedor as $precio_proveedor) {
             $precio_proveedor['revisado'] = boolval($parameters['revisado']);
             $sucursales_id = Sucursal::whereProveedorId($precio_proveedor['proveedor_id'])->get()->pluck('id');
-            $productos_sucursales = ProductoSucursal::with('precio')->whereIn('sucursal_id', $sucursales_id)->whereProductoId($parameters['id'])->get();
+            $productos_sucursales = $this->productosSucursales()->with('precio')->whereIn('sucursal_id', $sucursales_id)->get();
 
             foreach ($productos_sucursales as $producto_sucursal) {
                 if (!$producto_sucursal->precio->update($precio_proveedor)) {
