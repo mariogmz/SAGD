@@ -14,16 +14,18 @@
 $factory->define(App\ProductoMovimiento::class, function ($faker) {
     return [
         'movimiento' => $faker->text(100),
-        'entraron' => $faker->randomDigit,
-        'salieron' => $faker->randomDigit,
-        'existencias_antes' => $faker->randomDigit,
-        'existencias_despues' => $faker->randomDigit,
+        'entraron' => 0,
+        'salieron' => 0,
+        'existencias_antes' => 0,
+        'existencias_despues' => 0,
     ];
 });
 
 $factory->defineAs(App\ProductoMovimiento::class, 'withproductosucursal', function($faker) use ($factory){
     $pm = $factory->raw(App\ProductoMovimiento::class);
-    return array_merge($pm, ['producto_sucursal_id' => factory(App\ProductoSucursal::class)->create()->id]);
+    factory(App\Sucursal::class)->create();
+    factory(App\Producto::class)->create();
+    return array_merge($pm, ['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
 });
 
 $factory->defineAs(App\ProductoMovimiento::class, 'longmovimiento', function($faker) use ($factory){
