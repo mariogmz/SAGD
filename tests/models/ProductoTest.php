@@ -616,47 +616,115 @@ class ProductoTest extends TestCase {
      * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateExitoso() {
-
+    public function testActualizarExitoso()
+    {
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
         $sucursal = factory(App\Sucursal::class)->create();
-        $producto = factory(App\Producto::class)->create();
-        $producto->dimension()->save(new App\Dimension([
-            'largo' => 1,
-            'ancho' => 1,
-            'alto'  => 1,
-            'peso'  => 1
-        ]));
-
-        $precio = factory(App\Precio::class)->make();
-        $precio->producto_sucursal_id = $producto->productosSucursales()->first()->id;
-        $this->assertTrue($precio->save());
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
 
         $params = [
-            'dimension'   => [
-                'peso' => 2.00
-            ],
-            'precios'     => [
-                [
-                    'costo'        => 100.00,
-                    'proveedor_id' => $sucursal->proveedor_id
-                ]
-            ],
-            'id'          => $producto->id,
+            'dimension'   => ['peso' => 2.00],
+            'precios'     => [[
+                'costo'        => 100.00,
+                'proveedor_id' => $sucursal->proveedor_id
+            ]],
             'descripcion' => 'TEST_DESCRIPTION',
+            'id'          => $producto->id,
             'revisado'    => true
         ];
 
         $this->assertTrue($producto->actualizar($params));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     */
+    public function testActualizarPrecioExitoso()
+    {
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
+
+        $params = [
+            'dimension'   => ['peso' => 2.00],
+            'precios'     => [[
+                'costo'        => 100.00,
+                'proveedor_id' => $sucursal->proveedor_id
+            ]],
+            'descripcion' => 'TEST_DESCRIPTION',
+            'id'          => $producto->id,
+            'revisado'    => true
+        ];
+
+        $producto->actualizar($params);
+        $producto = App\Producto::find($producto->id);
+        $precio = $producto->precios()->first();
+
+        $this->assertSame(100.00, floatval($precio->costo));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     */
+    public function testActualizarDimensionExitoso()
+    {
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
+        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
+
+
+        $params = [
+            'dimension' => ['peso' => 2.00],
+            'precios' => [],
+        ];
+        $producto->actualizar($params);
 
         $producto = App\Producto::find($producto->id);
-        $this->assertSame($params['descripcion'], $producto->descripcion);
-        $this->assertSame($params['dimension']['peso'], floatval($producto->dimension->peso));
+        $this->assertSame(2.00, floatval($producto->dimension->peso));
+    }
 
-        foreach (App\ProductoSucursal::whereProductoId($producto->id)->whereSucursalId($sucursal->id)->get() as $producto_sucursal) {
-            $precio = $producto_sucursal->precio;
-            $this->assertSame($params['precios'][0]['costo'], floatval($precio->costo));
-        }
+    /**
+     * @covers ::actualizar
+     * @group saves
+     */
+    public function testActualizarDetallesExitoso()
+    {
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
+        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
 
+
+        $params = [
+            'dimension' => ['peso' => 2.00],
+            'precios' => [],
+            'descripcion' => 'TEST'
+        ];
+        $producto->actualizar($params);
+
+        $producto = App\Producto::find($producto->id);
+        $this->assertSame('TEST', $producto->descripcion);
     }
 
     /**
