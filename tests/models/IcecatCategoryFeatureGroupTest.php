@@ -64,11 +64,46 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
      */
     public function testIcecatFeatureGroupIdEsEntero() {
         $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->make();
-        $icecat_feature_group_id  = $icecat_category_feature_group->icecat_feature_group_id ;
-        $icecat_category_feature_group->icecat_feature_group_id  = 'Shut up woman and get on my horse';
+        $icecat_feature_group_id = $icecat_category_feature_group->icecat_feature_group_id;
+        $icecat_category_feature_group->icecat_feature_group_id = 'Shut up woman and get on my horse';
         $this->assertFalse($icecat_category_feature_group->isValid());
-        $icecat_category_feature_group->icecat_feature_group_id  = $icecat_feature_group_id ;
+        $icecat_category_feature_group->icecat_feature_group_id = $icecat_feature_group_id;
         $this->assertTrue($icecat_category_feature_group->isValid());
+    }
+
+    /**
+     * @coversNothing
+     * @group icecat
+     */
+    public function testCombinacionForeignKeysUnica() {
+        $icecat_category_feature_group1 = factory(App\IcecatCategoryFeatureGroup::class)->create();
+        $icecat_category_feature_group2 = factory(App\IcecatCategoryFeatureGroup::class)->make([
+            'icecat_category_id'      => $icecat_category_feature_group1->icecat_category_id,
+            'icecat_feature_group_id' => $icecat_category_feature_group1->icecat_feature_group_id,
+        ]);
+        $this->assertFalse($icecat_category_feature_group2->isValid());
+        $icecat_category_feature_group2 = factory(App\IcecatCategoryFeatureGroup::class)->make([
+            'icecat_feature_group_id' => $icecat_category_feature_group1->icecat_feature_group_id,
+        ]);
+        $this->assertTrue($icecat_category_feature_group2->isValid());
+        $icecat_category_feature_group2 = factory(App\IcecatCategoryFeatureGroup::class)->make([
+            'icecat_category_id' => $icecat_category_feature_group1->icecat_category_id,
+        ]);
+        $this->assertTrue($icecat_category_feature_group2->isValid());
+    }
+
+    /**
+     * @coversNothing
+     * @group icecat
+     */
+    public function testModeloEsActualizable(){
+        $icecat_category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->create();
+        $icecat_category_feature_group_stub = factory(App\IcecatCategoryFeatureGroup::class)->make();
+        $icecat_category_feature_group->icecat_id = $icecat_category_feature_group_stub->icecat_id;
+        $this->assertTrue($icecat_category_feature_group->save());
+        $icecat_category_feature_group->icecat_category_id = $icecat_category_feature_group_stub->icecat_category_id;
+        $icecat_category_feature_group->icecat_feature_group_id = $icecat_category_feature_group_stub->icecat_feature_group_id;
+        $this->assertTrue($icecat_category_feature_group->save());
     }
 
 }

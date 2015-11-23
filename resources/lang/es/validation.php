@@ -75,7 +75,8 @@ return [
     'string'               => ':attribute debe de ser texto.',
     'timezone'             => ':attribute debe de ser una zona valida.',
     'unique'               => ':attribute ya existe.',
-    'url'                  => 'El formato :attribute es invalido.',
+    'unique_with'          => ':attribute ya existe en combinación con otros campos.',
+    'url'                  => 'El formato :attribute es inválido.',
 
     /*
     |--------------------------------------------------------------------------

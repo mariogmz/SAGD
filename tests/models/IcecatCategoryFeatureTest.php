@@ -152,4 +152,21 @@ class IcecatCategoryFeatureTest extends TestCase {
         $this->assertTrue($icecat_category_feature2->isValid());
     }
 
+    /**
+     * @coversNothing
+     * @group icecat
+     */
+    public function testModeloEsActualizable(){
+        $icecat_category_feature = factory(App\IcecatCategoryFeature::class)->create();
+        $icecat_category_feature_stub = factory(App\IcecatCategoryFeature::class)->make();
+
+        $icecat_category_feature->icecat_id = $icecat_category_feature_stub->icecat_id;
+        $this->assertTrue($icecat_category_feature->save());
+
+        $icecat_category_feature->icecat_category_feature_group_id = $icecat_category_feature_stub->icecat_category_feature_group_id;
+        $icecat_category_feature->icecat_category_id = $icecat_category_feature_stub->icecat_category_id;
+        $icecat_category_feature->icecat_feature_id = $icecat_category_feature_stub->icecat_feature_id;
+        $this->assertTrue($icecat_category_feature->save());
+    }
+
 }
