@@ -137,4 +137,20 @@ class IcecatFeatureTest extends TestCase {
         $this->assertTrue($icecat_feature->isValid());
     }
 
+    /**
+     * @covers ::categoriesFeatures
+     * @group icecat
+     * @group relaciones
+     */
+    public function testCategoriesFeatures() {
+        $icecat_feature = factory(App\IcecatFeature::class)->create();
+        factory(App\IcecatCategoryFeature::class, 5)->create([
+            'icecat_feature_id' => $icecat_feature->icecat_id
+        ]);
+        $icecat_categories_features = $icecat_feature->categoriesFeatures;
+        $this->assertCount(5, $icecat_categories_features);
+        $this->assertInstanceOf('App\IcecatCategoryFeature', $icecat_categories_features[0]);
+        $this->assertSame($icecat_feature->icecat_id, $icecat_categories_features[0]->icecat_feature_id);
+    }
+
 }

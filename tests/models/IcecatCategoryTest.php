@@ -162,4 +162,20 @@ class IcecatCategoryTest extends TestCase {
         $this->assertSame($subfamilia->id, $icecat_category->subfamilia->id);
     }
 
+    /**
+     * @covers ::categoriesFeatures
+     * @group icecat
+     * @grpup relaciones
+     */
+    public function testCategoriesFeatures() {
+        $category = factory(App\IcecatCategory::class)->create();
+        factory(App\IcecatCategoryFeature::class, 5)->create([
+            'icecat_category_id' => $category->icecat_id
+        ]);
+        $this->assertCount(5, $category->categoriesFeatures);
+        $this->assertInstanceOf('App\IcecatCategoryFeature', $category->categoriesFeatures[0]);
+        $this->assertSame($category->icecat_id, $category->categoriesFeatures[0]->icecat_category_id);
+    }
+
+
 }

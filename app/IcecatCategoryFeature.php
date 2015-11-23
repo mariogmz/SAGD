@@ -38,4 +38,28 @@ class IcecatCategoryFeature extends LGGModel {
             return $icecat_category_feature->isValid('update');
         });
     }
+
+    /**
+     * Obtiene el feature asociado a este category_feature
+     * @return \App\IcecatFeature
+     */
+    public function feature() {
+        return $this->belongsTo('App\IcecatFeature', 'icecat_feature_id', 'icecat_id');
+    }
+
+    /**
+     * Obtiene el category asociado a este category_feature
+     * @return \App\IcecatCategory
+     */
+    public function category() {
+        return $this->belongsTo('App\IcecatCategory', 'icecat_category_id', 'icecat_id');
+    }
+
+    /**
+     * Obtiene el category_feature_group asociado a este category_feature
+     * @return \App\IcecatCategoryFeatureGroup
+     */
+    public function categoryFeatureGroup() {
+        return $this->belongsTo('App\IcecatCategoryFeatureGroup', 'icecat_category_feature_group_id', 'icecat_id');
+    }
 }

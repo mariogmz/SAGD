@@ -37,4 +37,13 @@ class IcecatFeature extends LGGModel {
             return $icecat_feature->isValid('update');
         });
     }
+
+    /**
+     * Obtiene los IcecatCategoryFeature asociados a este feature
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function categoriesFeatures() {
+        return $this->hasMany('App\IcecatCategoryFeature', 'icecat_feature_id', 'icecat_id');
+    }
+
 }

@@ -156,7 +156,7 @@ class IcecatCategoryFeatureTest extends TestCase {
      * @coversNothing
      * @group icecat
      */
-    public function testModeloEsActualizable(){
+    public function testModeloEsActualizable() {
         $icecat_category_feature = factory(App\IcecatCategoryFeature::class)->create();
         $icecat_category_feature_stub = factory(App\IcecatCategoryFeature::class)->make();
 
@@ -168,5 +168,51 @@ class IcecatCategoryFeatureTest extends TestCase {
         $icecat_category_feature->icecat_feature_id = $icecat_category_feature_stub->icecat_feature_id;
         $this->assertTrue($icecat_category_feature->save());
     }
+
+    /**
+     * @covers ::feature
+     * @group icecat
+     * @group relaciones
+     */
+    public function testFeature() {
+        $feature = factory(App\IcecatFeature::class)->create();
+        $icecat_category_feature = factory(App\IcecatCategoryFeature::class)->create([
+            'icecat_feature_id' => $feature->icecat_id
+        ]);
+        $result = $icecat_category_feature->feature;
+        $this->assertInstanceOf('App\IcecatFeature', $result);
+        $this->assertSame($feature->icecat_id, $result->icecat_id);
+    }
+
+    /**
+     * @covers ::category
+     * @group icecat
+     * @group relaciones
+     */
+    public function testCategory() {
+        $category = factory(App\IcecatCategory::class)->create();
+        $icecat_category_feature = factory(App\IcecatCategoryFeature::class)->create([
+            'icecat_category_id' => $category->icecat_id
+        ]);
+        $result = $icecat_category_feature->category;
+        $this->assertInstanceOf('App\IcecatCategory', $result);
+        $this->assertSame($category->icecat_id, $result->icecat_id);
+    }
+
+    /**
+     * @covers ::categoryFeatureGroup
+     * @group icecat
+     * @group relaciones
+     */
+    public function testCategoryFeatureGroup() {
+        $category_feature_group = factory(App\IcecatCategoryFeatureGroup::class)->create();
+        $icecat_category_feature = factory(App\IcecatCategoryFeature::class)->create([
+            'icecat_category_feature_group_id' => $category_feature_group->icecat_id
+        ]);
+        $result = $icecat_category_feature->categoryFeatureGroup;
+        $this->assertInstanceOf('App\IcecatCategoryFeatureGroup', $result);
+        $this->assertSame($category_feature_group->icecat_id, $result->icecat_id);
+    }
+
 
 }

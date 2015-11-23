@@ -50,4 +50,12 @@ class IcecatCategory extends LGGModel {
     public function subfamilia(){
         return $this->belongsTo('App\Subfamilia');
     }
+
+    /**
+     * Obtiene las asociaciones de icecat_categories_features para este category
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function categoriesFeatures(){
+        return $this->hasMany('App\IcecatCategoryFeature','icecat_category_id','icecat_id');
+    }
 }
