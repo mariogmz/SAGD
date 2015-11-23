@@ -177,5 +177,23 @@ class IcecatCategoryTest extends TestCase {
         $this->assertSame($category->icecat_id, $category->categoriesFeatures[0]->icecat_category_id);
     }
 
+    /**
+     * @covers ::categoriesFeatureGroups
+     * @group icecat
+     * @grouo relaciones
+     */
+    public function testCategoriesFeatureGroups(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * @covers ::parentCategory
+     * @group icecat
+     * @group relaciones
+     */
+    public function testParentCategory(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
 
 }

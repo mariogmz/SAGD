@@ -106,4 +106,31 @@ class IcecatCategoryFeatureGroupTest extends TestCase {
         $this->assertTrue($icecat_category_feature_group->save());
     }
 
+    /**
+     * @covers ::categoriesFeatures
+     * @group icecat
+     * @group relaciones
+     */
+    public function testCategoriesFeatures(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * @covers ::category
+     * @group icecat
+     * @group relaciones
+     */
+    public function testCategory(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
+    /**
+     * @covers ::featureGroup
+     * @group icecat
+     * @group relaciones
+     */
+    public function testFeatureGroup(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
 }

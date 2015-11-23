@@ -68,4 +68,13 @@ class IcecatFeatureGroupTest extends TestCase {
         $this->assertTrue($icecat_feature->isValid());
     }
 
+    /**
+     * @covers ::categoriesFeatureGroups
+     * @group icecat
+     * @group relaciones
+     */
+    public function testCategoriesFeatureGroups(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
+
 }
