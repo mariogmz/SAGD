@@ -308,7 +308,9 @@ class Producto extends LGGModel {
      * @return bool
      */
     public function guardarNuevo($parameters) {
-        $this->fill($parameters['producto']);
+        if (! empty($parameters['producto'])) {
+            $this->fill($parameters['producto']);
+        }
         $dimension = new Dimension($parameters['dimension']);
         $precio = new Precio($parameters['precio']);
         $dimension->producto_id = 0;
