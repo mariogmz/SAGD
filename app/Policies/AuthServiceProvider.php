@@ -20,6 +20,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Http\Controllers\Api\V1\CodigoPostalController'        => 'App\Policies\CodigoPostalControllerPolicy',
         'App\Http\Controllers\Api\V1\DimensionController'           => 'App\Policies\DimensionControllerPolicy',
         'App\Http\Controllers\Api\V1\DomicilioController'           => 'App\Policies\DomicilioControllerPolicy',
+        'App\Http\Controllers\Api\V1\EntradaController'             => 'App\Policies\EntradaControllerPolicy',
         'App\Http\Controllers\Api\V1\EmpleadoController'            => 'App\Policies\EmpleadoControllerPolicy',
         'App\Http\Controllers\Api\V1\FamiliaController'             => 'App\Policies\FamiliaControllerPolicy',
         'App\Http\Controllers\Api\V1\LogsAccesoEmpleadoController'  => 'App\Policies\LogsAccesoEmpleadoControllerPolicy',
