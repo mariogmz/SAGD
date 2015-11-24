@@ -47,7 +47,7 @@ class IcecatCategory extends LGGModel {
      * Obtiene la subfamilia a la que pertenece la categoría de Icecat
      * @return \App\Subfamilia
      */
-    public function subfamilia(){
+    public function subfamilia() {
         return $this->belongsTo('App\Subfamilia');
     }
 
@@ -55,7 +55,32 @@ class IcecatCategory extends LGGModel {
      * Obtiene las asociaciones de icecat_categories_features para este category
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function categoriesFeatures(){
-        return $this->hasMany('App\IcecatCategoryFeature','icecat_category_id','icecat_id');
+    public function categoriesFeatures() {
+        return $this->hasMany('App\IcecatCategoryFeature', 'icecat_category_id', 'icecat_id');
     }
+
+    /**
+     * Obtiene los categories_feature_groups asociados a este category
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function categoriesFeatureGroups() {
+        return $this->hasMany('App\IcecatCategoryFeatureGroup', 'icecat_category_id', 'icecat_id');
+    }
+
+    /**
+     * Obtiene el category padre asociado a este category
+     * @return \App\IcecatCategory
+     */
+    public function parentCategory() {
+        return $this->belongsTo('App\IcecatCategory', 'icecat_parent_category_id', 'icecat_id');
+    }
+
+    /**
+     * Obtiene los categories hijos de este category
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function childrenCategories() {
+        return $this->hasMany('App\IcecatCategory', 'icecat_parent_category_id', 'icecat_id');
+    }
+
 }

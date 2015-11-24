@@ -182,8 +182,14 @@ class IcecatCategoryTest extends TestCase {
      * @group icecat
      * @grouo relaciones
      */
-    public function testCategoriesFeatureGroups(){
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testCategoriesFeatureGroups() {
+        $category = factory(App\IcecatCategory::class)->create();
+        factory(App\IcecatCategoryFeatureGroup::class, 5)->create([
+            'icecat_category_id' => $category->icecat_id
+        ]);
+        $this->assertCount(5, $category->categoriesFeatureGroups);
+        $this->assertInstanceOf('App\IcecatCategoryFeatureGroup', $category->categoriesFeatureGroups[0]);
+        $this->assertSame($category->icecat_id, $category->categoriesFeatureGroups[0]->icecat_category_id);
     }
 
     /**
@@ -191,8 +197,30 @@ class IcecatCategoryTest extends TestCase {
      * @group icecat
      * @group relaciones
      */
-    public function testParentCategory(){
-        $this->markTestIncomplete('Not implemented yet.');
+    public function testParentCategory() {
+        $parent_category = factory(App\IcecatCategory::class)->create();
+        $category = factory(App\IcecatCategory::class)->create([
+            'icecat_parent_category_id' => $parent_category->icecat_id
+        ]);
+        $result = $category->parentCategory;
+        $this->assertInstanceOf('App\IcecatCategory', $result);
+        $this->assertSame($parent_category->icecat_id, $result->icecat_id);
+    }
+
+    /**
+     * @covers ::childrenCategories
+     * @group icecat
+     * @group relaciones
+     */
+    public function testChildCategories() {
+        $parent_category = factory(App\IcecatCategory::class)->create();
+        factory(App\IcecatCategory::class, 5)->create([
+            'icecat_parent_category_id' => $parent_category->icecat_id
+        ]);
+        $result = $parent_category->childrenCategories;
+        $this->assertCount(5, $result);
+        $this->assertInstanceOf('App\IcecatCategory', $result[0]);
+        $this->assertSame($parent_category->icecat_id, $result[0]->icecat_parent_category_id);
     }
 
 
