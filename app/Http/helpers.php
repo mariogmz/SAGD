@@ -46,3 +46,19 @@ function recursive_array_search($needle, $haystack) {
 
     return false;
 }
+
+function curlDownload($sourceURL, $outputfilePath) {
+    $fp = fopen($outputfilePath, 'w');
+    $options = [
+        CURLOPT_FILE           => $fp,
+        CURLOPT_TIMEOUT        => 2880,
+        CURLOPT_URL            => $sourceURL,
+    ];
+
+    $ch = curl_init();
+    curl_setopt_array($ch, $options);
+    $contents = curl_exec($ch);
+    curl_close($ch);
+    fclose($fp);;
+    return $contents;
+}

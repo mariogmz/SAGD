@@ -152,7 +152,7 @@ Class IcecatFeed {
      */
     public function getCategoriesFeatureGroups($get_array = false) {
         $icecat_category_feature_groups = [];
-        $stream = new Stream\File('Icecat/category_features.xml', 1024);
+        $stream = new Stream\File('Icecat/categories_features.xml', 1024);
         $parser = new Parser\StringWalker([
             'captureDepth' => 4
         ]);
@@ -178,7 +178,7 @@ Class IcecatFeed {
      */
     public function getCategoriesFeatures($get_array = false) {
         $icecat_category_feature_groups = [];
-        $stream = new Stream\File('Icecat/category_features.xml', 1024);
+        $stream = new Stream\File('Icecat/categories_features.xml', 1024);
         $parser = new Parser\StringWalker([
             'captureDepth' => 4
         ]);
@@ -204,7 +204,7 @@ Class IcecatFeed {
      */
     public function getFeatureGroupsFeatures($get_array = false) {
         $icecat_category_feature_groups = [];
-        $stream = new Stream\File('Icecat/category_features.xml', 1024);
+        $stream = new Stream\File('Icecat/categories_features.xml', 1024);
         $parser = new Parser\StringWalker([
             'captureDepth' => 4
         ]);
@@ -390,20 +390,22 @@ Class IcecatFeed {
      */
     public function downloadAndDecode($ref_name) {
         if (isset($this->refs[$ref_name])) {
-            $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
-
-            if ($xml === false) {
-                throw new FileNotFoundException('File ' . $this->refs_endpoint . $this->refs[$ref_name] . ' does not exists.');
+            if ($ref_name == 'category_features') {
+                $this->downloadAndDecodeCategoriesFeatures();
             } else {
-                if (strpos($this->refs[$ref_name], '.gz')) {
-                    $xml = gzdecode($xml);
+                $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
+                if ($xml === false) {
+                    throw new FileNotFoundException('File ' . $this->refs_endpoint . $this->refs[$ref_name] . ' does not exists.');
+                } else {
+                    if (strpos($this->refs[$ref_name], '.gz')) {
+                        $xml = gzdecode($xml);
+                    }
+                    if (!file_exists('Icecat')) {
+                        mkdir('Icecat', 0777, true);
+                    }
+                    file_put_contents("Icecat/{$ref_name}.xml", $xml);
                 }
-                if (!file_exists('Icecat')) {
-                    mkdir('Icecat', 0777, true);
-                }
-                file_put_contents("Icecat/{$ref_name}.xml", $xml);
             }
-
         } else {
             throw new ErrorException("Unknown Icecat reference file, not found on index: {$ref_name}.");
         }
@@ -448,5 +450,19 @@ Class IcecatFeed {
         }
 
         return $field_text;
+    }
+
+    private function downloadAndDecodeCategoriesFeatures() {
+        curlDownload($this->refs_endpoint . $this->refs['category_features'], 'Icecat/categories_features.xml.gz');
+        $file_name = 'Icecat/categories_features.xml.gz';
+        $buffer_size = 4096;
+        $out_file_name = str_replace('.gz', '', $file_name);
+        $file = gzopen($file_name, 'rb');
+        $out_file = fopen($out_file_name, 'wb');
+        while( !gzeof($file) ){
+            fwrite($out_file, gzread($file, $buffer_size));
+        }
+        fclose($out_file);
+        gzclose($file);
     }
 }

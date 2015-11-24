@@ -104,6 +104,9 @@ class IcecatFeedTest extends TestCase {
      * @covers ::parseCategoryFeatureGroupNode
      */
     public function testGetCategoriesFeatureGroups() {
+        if (!file_exists('Icecat/category_features.xml')) {
+            $this->icecat_feed->downloadAndDecode('category_features');
+        }
         $this->assertGreaterThan(0, $this->icecat_feed->getCategoriesFeatureGroups());
         $this->assertFileExists('Icecat/category_feature_groups.json');
     }
@@ -113,9 +116,12 @@ class IcecatFeedTest extends TestCase {
      * @group icecat
      * @covers ::parseCategoryFeatureNode
      */
-    public function testgetCategoriesFeatures() {
+    public function testGetCategoriesFeatures() {
+        if (!file_exists('Icecat/category_features.xml')) {
+            $this->icecat_feed->downloadAndDecode('category_features');
+        }
         $this->assertGreaterThan(0, $this->icecat_feed->getCategoriesFeatures());
-        $this->assertFileExists('Icecat/category_feature_groups.json');
+        $this->assertFileExists('Icecat/categories_features.json');
     }
 
 }
