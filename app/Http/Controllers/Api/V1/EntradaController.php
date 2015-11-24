@@ -220,17 +220,10 @@ class EntradaController extends Controller
                     'message' => 'Entrada cargada exitosamente'
                 ], 200);
             } else {
-                if ($this->entrada->sobrepasaExistencias()) {
-                    return response()->json([
-                        'message' => 'Algunas partidas de la entrada tienen cantidad superior a las existencias del producto',
-                        'error' => 'Cantidad es invalida en algunas partidas'
-                    ], 400);
-                } else {
-                    return response()->json([
-                        'message' => 'Entrada no pudo ser cargada',
-                        'error' => 'Entrada no cargada'
-                    ], 400);
-                }
+                return response()->json([
+                    'message' => 'Entrada no pudo ser cargada',
+                    'error' => 'Entrada no cargada'
+                ], 400);
             }
         } else {
             return response()->json([

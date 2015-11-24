@@ -455,8 +455,7 @@ class EntradaControllerTest extends TestCase
 
         $this->mock->shouldReceive([
             'find' => Mockery::self(),
-            'cargar' => false,
-            'sobrepasaExistencias' => false
+            'cargar' => false
         ])->withAnyArgs();
         $this->app->instance('App\Entrada', $this->mock);
 
@@ -464,29 +463,6 @@ class EntradaControllerTest extends TestCase
             ->seeJson([
                 'message' => 'Entrada no pudo ser cargada',
                 'error' => 'Entrada no cargada'
-            ])
-            ->assertResponseStatus(400);
-    }
-
-    /**
-     * @covers ::cargarEntrada
-     * @group feature-entradas
-     */
-    public function test_GET_cargarEntrada_cargar_invalido_con_existencia_invalida()
-    {
-        $endpoint = $this->endpoint . '/1/cargar';
-
-        $this->mock->shouldReceive([
-            'find' => Mockery::self(),
-            'cargar' => false,
-            'sobrepasaExistencias' => true
-        ])->withAnyArgs();
-        $this->app->instance('App\Entrada', $this->mock);
-
-        $this->get($endpoint)
-            ->seeJson([
-                'message' => 'Algunas partidas de la entrada tienen cantidad superior a las existencias del producto',
-                'error' => 'Cantidad es invalida en algunas partidas'
             ])
             ->assertResponseStatus(400);
     }
