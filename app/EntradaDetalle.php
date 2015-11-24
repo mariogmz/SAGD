@@ -49,7 +49,7 @@ class EntradaDetalle extends LGGModel {
         'entrada_id'             => 'required|integer',
         'producto_id'            => 'required|integer',
         'sucursal_id'            => 'required|integer',
-        'producto_movimiento_id' => 'required|integer',
+        'producto_movimiento_id' => 'integer',
     ];
     public $updateRules = [];
 
