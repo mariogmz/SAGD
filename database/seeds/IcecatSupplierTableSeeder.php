@@ -57,5 +57,6 @@ class IcecatSupplierTableSeeder extends Seeder {
             $progress_bar->advance();
         }
         $progress_bar->finish();
+        $this->command->getOutput()->writeln('');
     }
 }

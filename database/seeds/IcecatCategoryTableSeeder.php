@@ -101,11 +101,14 @@ class IcecatCategoryTableSeeder extends Seeder {
         $progress_bar = new ProgressBar($this->command->getOutput(), $total);
         $progress_bar->setFormat("<info>Seeding:</info> Icecat Categories : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $progress_bar->start();
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach ($categories as $category) {
             App\IcecatCategory::create($category);
             $progress_bar->advance();
         }
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         $progress_bar->finish();
+        $this->command->getOutput()->writeln('');
     }
 
 }

@@ -13,7 +13,16 @@ class IcecatFeatureGroupTableSeeder extends Seeder
      */
     public function run()
     {
-        $this->insertIntoDB($this->getFeaturesFromIcecat());
+        DB::beginTransaction();
+        try {
+            $this->insertIntoDB($this->getFeaturesFromIcecat());
+            DB::commit();
+        }catch(ErrorException $ex){
+            $this->command->getOutput()->writeln($ex->getMessage());
+            $this->command->getOutput()->writeln($ex->getFile() . ' ' . $ex->getLine());
+            $this->command->getOutput()->writeln($ex->getTraceAsString());
+            DB::rollBack();
+        }
     }
 
     /**
@@ -22,6 +31,9 @@ class IcecatFeatureGroupTableSeeder extends Seeder
     private function getFeaturesFromIcecat(){
         $this->icecat_feed = new Sagd\IcecatFeed();
         $this->command->getOutput()->writeln('Fetching Icecat Feature Groups...');
+        if(!file_exists('Icecat/feature_groups.xml')){
+            $this->icecat_feed->downloadAndDecode('feature_groups');
+        }
         return $this->icecat_feed->getFeatureGroups(true);
     }
 
@@ -35,5 +47,6 @@ class IcecatFeatureGroupTableSeeder extends Seeder
             $progress_bar->advance();
         }
         $progress_bar->finish();
+        $this->command->getOutput()->writeln('');
     }
 }
