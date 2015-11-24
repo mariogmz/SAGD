@@ -1,6 +1,6 @@
 // app.js
 
-(function () {
+(function() {
 
   'use strict';
 
@@ -30,6 +30,7 @@
       'sagdApp.proveedor',
       'sagdApp.revisarPrecios',
       'sagdApp.rol',
+      'sagdApp.salida',
       'sagdApp.session',
       'sagdApp.sidebar',
       'sagdApp.subfamilia',

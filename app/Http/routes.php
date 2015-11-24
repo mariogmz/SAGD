@@ -25,6 +25,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::post('password/reset', 'PasswordController@postReset');
 
         Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);
+        Route::get('producto/buscar/upc/{upc}', 'ProductoController@buscarUpc');
         Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('unidad', 'UnidadController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('tipo-garantia', 'TipoGarantiaController', ['only' => ['index','store','show','update','destroy']]);
@@ -61,5 +62,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('sucursal/proveedor/{clave}', 'SucursalController@conProveedor');
         Route::resource('proveedor', 'ProveedorController', ['only' => ['index','store','show','update']]);
         Route::get('logs-acceso', 'LogsAccesoController@index');
+        Route::resource('salida', 'SalidaController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::post('salida/{id}/detalles', 'SalidaController@saveDetalle');
+        Route::delete('salida/{id}/detalles/{detalle_id}', 'SalidaController@unsaveDetalle');
+        Route::get('salida/{id}/cargar', 'SalidaController@cargarSalida');
     });
 });

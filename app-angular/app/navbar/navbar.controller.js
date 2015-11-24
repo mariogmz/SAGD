@@ -74,7 +74,7 @@
                 state: 'inventario.entrada'
               }, {
                 name: 'Salidas',
-                state: 'inventario.salida'
+                state: 'salidaIndex'
               }, {
                 name: 'Transferencias',
                 state: 'inventario.transferencia'

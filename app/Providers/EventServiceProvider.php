@@ -25,6 +25,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\EmpleadoRolCreado' => [
             'App\Listeners\CrearRol',
         ],
+        'App\Events\CargandoSalida' => [
+            'App\Listeners\CrearProductoMovimientoDesdeSalida',
+        ],
+        'App\Events\CreandoProductoMovimiento' => [
+            'App\Listeners\ActualizarExistencias',
+        ],
+        'App\Events\ProductoCreado' => [
+            'App\Listeners\AttachSucursales',
+            'App\Listeners\InicializarExistencias',
+        ]
     ];
 
     /**

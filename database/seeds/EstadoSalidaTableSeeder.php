@@ -10,9 +10,12 @@ class EstadoSalidaTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        //
-        factory(App\EstadoSalida::class)->create(['nombre' => 'Creando']);
-        factory(App\EstadoSalida::class)->create(['nombre' => 'Cargando']);
-        factory(App\EstadoSalida::class)->create(['nombre' => 'Cargado']);
+        $estadoSalidaCreando = new App\EstadoSalida(['nombre' => 'Creando']);
+        $estadoSalidaCargando = new App\EstadoSalida(['nombre' => 'Cargando']);
+        $estadoSalidaCargado = new App\EstadoSalida(['nombre' => 'Cargado']);
+
+        $estadoSalidaCreando->save();
+        $estadoSalidaCargando->save();
+        $estadoSalidaCargado->save();
     }
 }

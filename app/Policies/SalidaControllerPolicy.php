@@ -5,18 +5,18 @@ namespace App\Policies;
 use App\User;
 use App\Empleado;
 use App\Cliente;
-use App\Http\Controllers\Api\V1\ProductoController;
+use App\Http\Controllers\Api\V1\SalidaController;
 
-class ProductoControllerPolicy
+class SalidaControllerPolicy
 {
     /**
-     * Determinar si el usuario puede listar los Productos
+     * Determinar si el usuario puede listar los Salidas
      *
      * @param  User  $user
-     * @param  ProductoController $controller
+     * @param  SalidaController $controller
      * @return bool
      */
-    public function index(User $user, ProductoController $controller)
+    public function index(User $user, SalidaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
@@ -25,13 +25,13 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede guardar un Producto
+     * Determinar si el usuario puede guardar un Salida
      *
      * @param  User  $user
-     * @param  ProductoController $controller
+     * @param  SalidaController $controller
      * @return bool
      */
-    public function store(User $user, ProductoController $controller)
+    public function store(User $user, SalidaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
@@ -40,13 +40,13 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede ver un Producto
+     * Determinar si el usuario puede ver un Salida
      *
      * @param  User  $user
-     * @param  ProductoController $controller
+     * @param  SalidaController $controller
      * @return bool
      */
-    public function show(User $user, ProductoController $controller)
+    public function show(User $user, SalidaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
@@ -55,13 +55,13 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede actualizar un Producto
+     * Determinar si el usuario puede actualizar un Salida
      *
      * @param  User  $user
-     * @param  ProductoController $controller
+     * @param  SalidaController $controller
      * @return bool
      */
-    public function update(User $user, ProductoController $controller)
+    public function update(User $user, SalidaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
@@ -70,13 +70,13 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede eliminar un Producto
+     * Determinar si el usuario puede eliminar un Salida
      *
      * @param  User  $user
-     * @param  ProductoController $controller
+     * @param  SalidaController $controller
      * @return bool
      */
-    public function destroy(User $user, ProductoController $controller)
+    public function destroy(User $user, SalidaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
@@ -85,20 +85,49 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede eliminar un Producto
+     * Determinar si el usuario puede crear un detalle de una Salida
      *
      * @param  User  $user
-     * @param  ProductoController $controller
+     * @param  SalidaController $controller
      * @return bool
      */
-    public function buscarUpc(User $user, ProductoController $controller)
+    public function saveDetalle(User $user, SalidaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'buscarUpc')->first();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'saveDetalle')->first();
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede eliminar un detalle de una Salida
+     *
+     * @param  User  $user
+     * @param  SalidaController $controller
+     * @return bool
+     */
+    public function unsaveDetalle(User $user, SalidaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'unsaveDetalle')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede cargar un Salida
+     *
+     * @param  User  $user
+     * @param  SalidaController $controller
+     * @return bool
+     */
+    public function cargarSalida(User $user, SalidaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'cargarSalida')->first();
+        return !empty($permiso);
+    }
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
