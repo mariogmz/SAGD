@@ -66,5 +66,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::post('salida/{id}/detalles', 'SalidaController@saveDetalle');
         Route::delete('salida/{id}/detalles/{detalle_id}', 'SalidaController@unsaveDetalle');
         Route::get('salida/{id}/cargar', 'SalidaController@cargarSalida');
+        Route::resource('entrada', 'EntradaController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::post('entrada/{id}/detalles', 'EntradaController@saveDetalle');
+        Route::delete('entrada/{id}/detalles/{detalle_id}', 'EntradaController@unsaveDetalle');
+        Route::get('entrada/{id}/cargar', 'EntradaController@cargarEntrada');
     });
 });
