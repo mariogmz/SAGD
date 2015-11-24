@@ -212,4 +212,164 @@ class EntradaTest extends TestCase {
         $this->assertInstanceOf(App\EntradaDetalle::class, $detalles[0]);
         $this->assertCount(1, $detalles);
     }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCrearDetalleConParametrosDeDetalleEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $sucursal = App\Sucursal::last();
+        $entrada = $this->setUpEntrada();
+        $detalle = [
+            'costo' => 1.0,
+            'cantidad' => 1,
+            'importe' => 1.0,
+            'producto_id' => $producto->id,
+            'sucursal_id' => $sucursal->id,
+            'upc' => $producto->upc
+        ];
+
+        $this->assertInstanceOf(App\EntradaDetalle::class, $entrada->crearDetalle($detalle));
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCrearDetalleConParametroIncorrectoNoEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $sucursal = App\Sucursal::last();
+        $entrada = $this->setUpEntrada();
+        $detalle = [
+            'costo' => 1.0,
+            'cantidad' => -1,
+            'importe' => 1.0,
+            'producto_id' => $producto->id,
+            'sucursal_id' => $sucursal->id,
+            'upc' => $producto->upc
+        ];
+
+        $this->assertFalse($entrada->crearDetalle($detalle));
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCrearDetalleConParametrosFaltantesNoExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $sucursal = App\Sucursal::last();
+        $entrada = $this->setUpEntrada();
+        $detalle = [
+            'costo' => 1.0,
+            'importe' => 1.0,
+            'producto_id' => $producto->id,
+            'sucursal_id' => $sucursal->id,
+            'upc' => $producto->upc
+        ];
+
+        $this->assertFalse($entrada->crearDetalle($detalle));
+    }
+
+    /**
+     * @covers ::quitarDetalle
+     * @group feature-entradas
+     */
+    public function testQuitarDetalleConDetalleCorrectoEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $this->setUpDetalle();
+
+        $detalle = App\EntradaDetalle::last()->id;
+
+        $this->assertTrue($entrada->quitarDetalle($detalle));
+    }
+
+    /**
+     * @covers ::quitarDetalle
+     * @group feature-entradas
+     */
+    public function testQuitarDetalleConDetalleIncorrectoNoEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $this->setUpDetalle();
+
+        $detalle = App\EntradaDetalle::last()->id + 1;
+
+        $this->assertFalse($entrada->quitarDetalle($detalle));
+    }
+
+    private function setUpProducto()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 100,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+        return $producto;
+    }
+
+    private function setUpEntrada()
+    {
+        $this->setUpEstados();
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+
+
+        $entrada = new App\Entrada([
+            'factura_externa_numero' => 'ABDC-1234-XXXX',
+            'moneda' => 'PESOS',
+            'tipo_cambio' => 1.00,
+            'estado_entrada_id' => App\EstadoEntrada::creando()->id,
+            'proveedor_id' => $sucursal->proveedor_id,
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'razon_social_id' => factory(App\RazonSocialEmisor::class, 'full')->create()->id
+        ]);
+        $entrada->save();
+        return $entrada;
+    }
+
+    private function setUpDetalle($cantidad = 5, $costo = 1, $importe = null)
+    {
+        $producto = App\Producto::last();
+        $sucursal = App\Sucursal::last();
+        $entrada = App\Entrada::last();
+        $importe = floatval($cantidad * $costo);
+
+        $detalle = [
+            'costo' => $costo,
+            'cantidad' => $cantidad,
+            'importe' => $importe,
+            'producto_id' => $producto->id,
+            'sucursal_id' => $sucursal->id,
+            'upc' => $producto->upc
+        ];
+
+        return $entrada->crearDetalle($detalle);
+    }
+
+    private function setUpEstados()
+    {
+        $estadoEntradaCreando = new App\EstadoEntrada(['nombre' => 'Creando']);
+        $estadoEntradaCargando = new App\EstadoEntrada(['nombre' => 'Cargando']);
+        $estadoEntradaCargado = new App\EstadoEntrada(['nombre' => 'Cargado']);
+
+        $estadoEntradaCreando->save();
+        $estadoEntradaCargando->save();
+        $estadoEntradaCargado->save();
+    }
 }

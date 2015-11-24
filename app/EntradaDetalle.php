@@ -60,6 +60,9 @@ class EntradaDetalle extends LGGModel {
     public static function boot() {
         parent::boot();
         EntradaDetalle::creating(function ($model) {
+            $model->costo || $model->costo = 0.0;
+            $model->cantidad || $model->cantidad = 0;
+            $model->importe || $model->importe = $model->costo * $model->cantidad;
             return $model->isValid();
         });
         EntradaDetalle::updating(function ($model) {

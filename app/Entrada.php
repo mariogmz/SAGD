@@ -2,6 +2,11 @@
 
 namespace App;
 
+use App\EstadoEntrada;
+use App\Producto;
+use App\ProductoMovimiento;
+use App\Sucursal;
+use Sagd\SafeTransactions;
 
 /**
  * App\Entrada
@@ -39,6 +44,8 @@ namespace App;
  */
 class Entrada extends LGGModel {
 
+    use SafeTransactions;
+
     //
     protected $table = "entradas";
     public $timestamps = true;
@@ -73,6 +80,75 @@ class Entrada extends LGGModel {
         });
     }
 
+    /**
+     * Crear un detalle asociado a la entrada
+     * @param array $detalle
+     * @return EntradaDetalle | false
+     */
+    public function crearDetalle($detalle)
+    {
+        if (! is_null($detalle['upc'])) { unset($detalle['upc']); }
+
+        $entradaDetalle = new EntradaDetalle();
+        $entradaDetalle->fill($detalle);
+        if ($this->detalles->contains('producto_id', $entradaDetalle->producto_id)) {
+            $entradaDetalleOriginal = $this->detalles()->where('producto_id', $entradaDetalle->producto_id)->first();
+            $entradaDetalleOriginal->cantidad += $entradaDetalle->cantidad;
+            return $entradaDetalleOriginal->save() ? $entradaDetalleOriginal : false;
+        }
+        return $this->detalles()->save($entradaDetalle);
+    }
+
+    /**
+     * Quita un detalle asociado a la entrada
+     * @param int $detalle_id
+     * @return bool
+     */
+    public function quitarDetalle($detalle_id)
+    {
+        return (EntradaDetalle::destroy($detalle_id) > 0);
+    }
+
+    /**
+     * Carga los detalles para actualizar existencias
+     * @return bool
+     */
+    public function cargar()
+    {
+        $lambda = function() {
+            if($this->noCargado()) {
+                foreach ($this->detalles()->get() as $detalle) {
+                    if (! $detalle->cargar()) {
+                        return false;
+                    }
+                }
+                $this->finalizarCarga();
+                return true;
+            } else {
+                return false;
+            }
+        };
+        return $this->safe_transaction($lambda);
+    }
+
+    /**
+     * Verifica que el estado no se encuentre como Cargado
+     * @return bool
+     */
+    public function noCargado()
+    {
+        return $this->estado->nombre != 'Cargado';
+    }
+
+    /**
+     * Establece el Estado de la Salida a Cargado
+     * @return bool
+     */
+    public function finalizarCarga()
+    {
+        $this->estado()->associate(EstadoEntrada::cargado());
+        $this->save();
+    }
 
     /**
      * Obtiene el Estado asociado con la Entrada
