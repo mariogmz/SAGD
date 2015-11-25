@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\Entrada
  */
 class EntradaTest extends TestCase {
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing
@@ -316,6 +320,280 @@ class EntradaTest extends TestCase {
         $this->assertFalse($entrada->quitarDetalle($detalle));
     }
 
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $this->assertTrue($entrada->cargar());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarCreaProductosMovimientos()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $movimientos = App\ProductoMovimiento::count();
+        $entrada->cargar();
+
+        $this->assertGreaterThan($movimientos, App\ProductoMovimiento::count());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarActualizaLasExistenciasDelProducto()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $entrada->cargar();
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(105, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarMultiplesvecesActualizaLasExistenciasDelProducto()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        for ($i=0; $i < 10; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $entrada->cargar();
+        $existencia = $producto->existencias(App\Sucursal::last());
+        $this->assertEquals(150, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarEstableceBienLasExistenciasAnteriores()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $entrada->cargar();
+        $pm = $producto->movimientos(App\Sucursal::last())->last();
+
+        $this->assertEquals(100, $pm->existencias_antes);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarEstableceBienLasExistenciasPosteriores()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $entrada->cargar();
+        $pm = $producto->movimientos(App\Sucursal::last())->last();
+
+        $this->assertEquals(105, $pm->existencias_despues);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testTodosLosDetallesTienenUnProductoMovimientoDespuesDeLaCarga()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $entrada->cargar();
+        $detalle = $entrada->detalles()->first();
+
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $detalle->productoMovimiento);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     * @group feature-entradas-rollback
+     */
+    public function testCargarCuandoActualizarExistenciasFallaLasExistenciasPermanecenIntactas()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $this->mock = Mockery::mock('App\Listeners\ActualizarExistencias');
+        $this->mock->shouldReceive([
+            'handle' => ['success' => false]
+        ]);
+        $this->app->instance('App\Listeners\ActualizarExistencias', $this->mock);
+
+        $entrada->cargar();
+        $existencia = $producto->existencias(App\Sucursal::last());
+
+        $this->assertEquals(100, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     * @group feature-entradas-rollback
+     */
+    public function testCargarRollbackVerificarExistencias()
+    {
+        $firstProduct = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $this->setUpDetalle();
+
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = App\Sucursal::last();
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 100,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+
+        $detalle = [
+            'costo' => 1.0,
+            'cantidad' => 5,
+            'importe' => 5.0,
+            'producto_id' => $producto->id,
+            'sucursal_id' => $sucursal->id,
+            'upc' => $producto->upc
+        ];
+        $entrada->crearDetalle($detalle);
+
+        $this->mock = Mockery::mock('App\Listeners\ActualizarExistencias');
+        $this->mock->shouldReceive('handle')->twice()->withAnyArgs()->andReturn(
+            ['success' => true, 'antes' => 100, 'despues' => 105],
+            ['success' => false]
+        );
+        $this->app->instance('App\Listeners\ActualizarExistencias', $this->mock);
+
+        $entrada->cargar();
+        $existencia = $firstProduct->existencias($sucursal);
+
+        $this->assertEquals(100, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testCargarActualizaElEstadoDeLaEntrada()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $estado = $entrada->estado_entrada_id;
+        $entrada->cargar();
+        $entrada = $entrada->fresh();
+
+        $this->assertFalse($estado === $entrada->estado_entrada_id);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-entradas
+     */
+    public function testEntradaSoloPuedeSerCargadaUnaVez()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $detalle = $this->setUpDetalle();
+
+        $this->assertTrue($entrada->cargar());
+        $this->assertFalse($entrada->cargar());
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCargarDosVecesUnDetalleConMismoUpcLoAgrupaEnUnSoloDetalle()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        $this->setUpDetalle();
+        $this->setUpDetalle();
+
+        $this->assertCount(1, $entrada->detalles);
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCargarMismoDetalleActualizaCorrectamenteLaCantidad()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $this->assertEquals(25, $entrada->detalles()->first()->cantidad);
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCargarMismoDetalleVariasVecesActualizarCorrectamenteExistencias()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $entrada->cargar();
+        $existencia = $producto->existencias(App\Sucursal::last());
+
+        $this->assertEquals(125, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::crearDetalle
+     * @group feature-entradas
+     */
+    public function testCargarMismoDetalleVariasVecesSoloCreaUnProductoMovimiento()
+    {
+        $producto = $this->setUpProducto();
+        $entrada = $this->setUpEntrada();
+        for ($i=0; $i < 5; $i++) {
+            $this->setUpDetalle();
+        }
+
+        $entrada->cargar();
+        $movimientos = $producto->movimientos->count();
+
+        $this->assertEquals(1, $movimientos);
+    }
+
     private function setUpProducto()
     {
         $producto = factory(App\Producto::class)->create();
@@ -355,12 +633,11 @@ class EntradaTest extends TestCase {
         return $entrada;
     }
 
-    private function setUpDetalle($cantidad = 5, $costo = 1, $importe = null)
+    private function setUpDetalle($cantidad = 5, $costo = 1.0, $importe = null)
     {
         $producto = App\Producto::last();
         $sucursal = App\Sucursal::last();
         $entrada = App\Entrada::last();
-        $importe = floatval($cantidad * $costo);
 
         $detalle = [
             'costo' => $costo,

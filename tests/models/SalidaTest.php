@@ -271,7 +271,7 @@ class SalidaTest extends TestCase {
      * @covers ::cargar
      * @group feature-salidas
      */
-    public function testCargarMultiplesVecesAtualizaLasExistenciasDelProducto()
+    public function testCargarMultiplesVecesActualizaLasExistenciasDelProducto()
     {
         $producto = $this->setUpProducto();
         $salida = $this->setUpSalida();

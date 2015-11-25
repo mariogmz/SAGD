@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Event;
+use App\Events\CargandoEntrada;
 
 /**
  * App\EntradaDetalle
@@ -71,6 +73,19 @@ class EntradaDetalle extends LGGModel {
         });
     }
 
+    public function cargar()
+    {
+        if ($pm = Event::fire(new CargandoEntrada($this, $this->entrada))) {
+            $this->productoMovimiento()->associate($pm[0]);
+            return $this->save();
+        }
+        return false;
+    }
+
+    public function recalcularImporte()
+    {
+        $this->importe = (float) ($this->costo * $this->cantidad);
+    }
 
     /**
      * Obtiene la Entrada asociada con la Entrada Detalle

@@ -95,6 +95,7 @@ class Entrada extends LGGModel {
         if ($this->detalles->contains('producto_id', $entradaDetalle->producto_id)) {
             $entradaDetalleOriginal = $this->detalles()->where('producto_id', $entradaDetalle->producto_id)->first();
             $entradaDetalleOriginal->cantidad += $entradaDetalle->cantidad;
+            $entradaDetalleOriginal->recalcularImporte();
             return $entradaDetalleOriginal->save() ? $entradaDetalleOriginal : false;
         }
         return $this->detalles()->save($entradaDetalle);
