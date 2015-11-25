@@ -22,6 +22,7 @@ $factory->define(App\Entrada::class, function ($faker)
         'proveedor_id' => $faker->randomDigit,
         'razon_social_id' => $faker->randomDigit,
         'empleado_id' => $faker->randomDigit,
+        'sucursal_id' => $faker->randomDigit,
     ];
 });
 
@@ -31,6 +32,7 @@ $factory->defineAs(App\Entrada::class, 'full', function($faker) use ($factory){
     $entrada['proveedor_id'] = factory(App\Proveedor::class)->create()->id;
     $entrada['razon_social_id'] = factory(App\RazonSocialEmisor::class, 'full')->create()->id;
     $entrada['empleado_id'] = factory(App\Empleado::class)->create()->id;
+    $entrada['sucursal_id'] = App\Caker::getSucursal()->id;
     return $entrada;
 });
 
@@ -39,6 +41,7 @@ $factory->defineAs(App\Entrada::class, 'noestado', function($faker) use ($factor
     $entrada['proveedor_id'] = factory(App\Proveedor::class)->create()->id;
     $entrada['razon_social_id'] = factory(App\RazonSocialEmisor::class, 'full')->create()->id;
     $entrada['empleado_id'] = factory(App\Empleado::class)->create()->id;
+    $entrada['sucursal_id'] = App\Caker::getSucursal()->id;
     return $entrada;
 });
 
@@ -47,6 +50,7 @@ $factory->defineAs(App\Entrada::class, 'noproveedor', function($faker) use ($fac
     $entrada['estado_entrada_id'] = factory(App\EstadoEntrada::class)->create()->id;
     $entrada['razon_social_id'] = factory(App\RazonSocialEmisor::class, 'full')->create()->id;
     $entrada['empleado_id'] = factory(App\Empleado::class)->create()->id;
+    $entrada['sucursal_id'] = App\Caker::getSucursal()->id;
     return $entrada;
 });
 
@@ -55,6 +59,7 @@ $factory->defineAs(App\Entrada::class, 'norazonsocial', function($faker) use ($f
     $entrada['estado_entrada_id'] = factory(App\EstadoEntrada::class)->create()->id;
     $entrada['proveedor_id'] = factory(App\Proveedor::class)->create()->id;
     $entrada['empleado_id'] = factory(App\Empleado::class)->create()->id;
+    $entrada['sucursal_id'] = App\Caker::getSucursal()->id;
     return $entrada;
 });
 
@@ -63,6 +68,7 @@ $factory->defineAs(App\Entrada::class, 'noempleado', function($faker) use ($fact
     $entrada['estado_entrada_id'] = factory(App\EstadoEntrada::class)->create()->id;
     $entrada['proveedor_id'] = factory(App\Proveedor::class)->create()->id;
     $entrada['razon_social_id'] = factory(App\RazonSocialEmisor::class, 'full')->create()->id;
+    $entrada['sucursal_id'] = App\Caker::getSucursal()->id;
     return $entrada;
 });
 

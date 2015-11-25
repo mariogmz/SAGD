@@ -50,7 +50,7 @@ class Entrada extends LGGModel {
     protected $table = "entradas";
     public $timestamps = true;
     protected $fillable = ['factura_externa_numero', 'factura_fecha', 'moneda', 'tipo_cambio',
-        'estado_entrada_id', 'proveedor_id', 'razon_social_id', 'empleado_id'];
+        'estado_entrada_id', 'proveedor_id', 'razon_social_id', 'empleado_id', 'sucursal_id'];
 
     public static $rules = [
         'factura_externa_numero' => 'required|max:45',
@@ -61,6 +61,7 @@ class Entrada extends LGGModel {
         'proveedor_id'           => 'required|integer',
         'razon_social_id'        => 'required|integer',
         'empleado_id'            => 'required|integer',
+        'sucursal_id'            => 'required|integer',
     ];
     public $updateRules = [];
 
@@ -185,6 +186,13 @@ class Entrada extends LGGModel {
         return $this->belongsTo('App\Empleado', 'empleado_id');
     }
 
+    /**
+     * Obtiene la Sucursal asociada con la Entrada
+     * @return App\Sucursal
+     */
+    public function sucursal() {
+        return $this->belongsTo('App\Sucursal', 'sucursal_id');
+    }
 
     /**
      * Obtiene los Detalles asociados con la Entrada

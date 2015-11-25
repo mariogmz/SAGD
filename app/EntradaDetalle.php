@@ -48,7 +48,6 @@ class EntradaDetalle extends LGGModel {
         'importe'                => 'required|numeric|min:0.0|mult:costo,cantidad',
         'entrada_id'             => 'required|integer',
         'producto_id'            => 'required|integer',
-        'sucursal_id'            => 'required|integer',
         'producto_movimiento_id' => 'integer',
     ];
     public $updateRules = [];
@@ -81,7 +80,6 @@ class EntradaDetalle extends LGGModel {
         return $this->belongsTo('App\Entrada', 'entrada_id');
     }
 
-
     /**
      * Obtiene el Producto asociado con la Entrada Detalle
      * @return App\Producto
@@ -89,16 +87,6 @@ class EntradaDetalle extends LGGModel {
     public function producto() {
         return $this->belongsTo('App\Producto', 'producto_id');
     }
-
-
-    /**
-     * Obtiene la Sucursal asociada con la Entrada Detalle
-     * @return App\Sucursal
-     */
-    public function sucursal() {
-        return $this->belongsTo('App\Sucursal', 'sucursal_id');
-    }
-
 
     /**
      * Obtiene el Movimiento del Producto asociado con la Entrada Detalle

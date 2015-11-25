@@ -19,7 +19,6 @@ class AddEntradasDetallesConstraints extends Migration {
             // Constraints
             $table->foreign('entrada_id')->references('id')->on('entradas')->onDelete('cascade');
             $table->foreign('producto_id')->references('id')->on('productos');
-            $table->foreign('sucursal_id')->references('id')->on('sucursales');
         });
     }
 
@@ -33,7 +32,7 @@ class AddEntradasDetallesConstraints extends Migration {
             $table->dropForeign('entradas_detalles_entrada_id_foreign');
             $table->dropForeign('entradas_detalles_producto_id_foreign');
             $table->dropForeign('entradas_detalles_sucursal_id_foreign');
-            $table->dropColumn(['entrada_id', 'producto_id', 'sucursal_id']);
+            $table->dropColumn(['entrada_id', 'producto_id']);
         });
     }
 }

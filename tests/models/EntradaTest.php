@@ -200,6 +200,17 @@ class EntradaTest extends TestCase {
     }
 
     /**
+     * @covers ::sucursal
+     * @group relaciones
+     */
+    public function testSucursal()
+    {
+        $entrada = factory(App\Entrada::class, 'full')->make();
+        $sucursal = $entrada->sucursal;
+        $this->assertInstanceOf(App\Sucursal::class, $sucursal);
+    }
+
+    /**
      * @covers ::detalles
      * @group relaciones
      */
@@ -336,8 +347,9 @@ class EntradaTest extends TestCase {
             'tipo_cambio' => 1.00,
             'estado_entrada_id' => App\EstadoEntrada::creando()->id,
             'proveedor_id' => $sucursal->proveedor_id,
+            'razon_social_id' => factory(App\RazonSocialEmisor::class, 'full')->create()->id,
             'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
-            'razon_social_id' => factory(App\RazonSocialEmisor::class, 'full')->create()->id
+            'sucursal_id' => $sucursal->id
         ]);
         $entrada->save();
         return $entrada;

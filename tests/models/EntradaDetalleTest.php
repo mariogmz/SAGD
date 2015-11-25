@@ -167,30 +167,6 @@ class EntradaDetalleTest extends TestCase {
     }
 
     /**
-     * @covers ::sucursal
-     * @group relaciones
-     */
-    public function testSucursal()
-    {
-        $ed = factory(App\EntradaDetalle::class, 'full')->make();
-        $sucursal = $ed->sucursal;
-        $this->assertInstanceOf(App\Sucursal::class, $sucursal);
-    }
-
-    /**
-     * @covers ::sucursal
-     * @group relaciones
-     */
-    public function testSucursalAssociate()
-    {
-        $ed = factory(App\EntradaDetalle::class, 'nosucursal')->make();
-        $sucursal = factory(App\Sucursal::class)->create();
-        $ed->sucursal()->associate($sucursal);
-        $ed->save();
-        $this->assertInstanceOf(App\Sucursal::class, $ed->sucursal);
-    }
-
-    /**
      * @covers ::productoMovimiento
      * @group relaciones
      */
