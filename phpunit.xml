@@ -16,6 +16,13 @@
         <testsuite name="Models">
             <directory>./tests/models/</directory>
         </testsuite>
+        <testsuite name="entradas">
+            <file>./tests/models/EntradaTest.php</file>
+            <file>./tests/models/EntradaDetalleTest.php</file>
+            <file>./tests/models/ProductoTest.php</file>
+            <file>./tests/models/ProductoMovimientoTest.php</file>
+            <file>./tests/controllers/EntradaControllerTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>
