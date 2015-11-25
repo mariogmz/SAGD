@@ -15,7 +15,7 @@ class EntradaController extends Controller
     public function __construct(Entrada $entrada)
     {
         $this->entrada = $entrada;
-        // $this->middleware('jwt.auth');
+        $this->middleware('jwt.auth');
     }
 
     /**
@@ -26,7 +26,7 @@ class EntradaController extends Controller
     public function index(Entrada $entrada)
     {
         $this->authorize($this);
-        return $this->entrada->with('empleado', 'estado')->get();
+        return $this->entrada->with('empleado', 'estado', 'proveedor', 'razonSocial')->get();
     }
 
     /**

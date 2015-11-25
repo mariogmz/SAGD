@@ -4,6 +4,10 @@ namespace App\Policies;
 
 use Illuminate\Auth\Access\HandlesAuthorization;
 
+use App\User;
+use App\Http\Requests;
+use App\Http\Controllers\Api\V1\EntradaController;
+
 class EntradaControllerPolicy
 {
     use HandlesAuthorization;
@@ -126,5 +130,18 @@ class EntradaControllerPolicy
         $permisos = $user->morphable->permisos();
         $permiso = $permisos->where('controlador', $controller)->where('accion', 'cargarEntrada')->first();
         return !empty($permiso);
+    }
+
+    /**
+     * Normaliza el nombre del controlador a su nombre de clase unicamente
+     * @param $controller
+     * @return string
+     */
+    private function normalizeControllerName($controller)
+    {
+        $className = get_class($controller);
+        $controllerName = [];
+        preg_match('/(\w+)$/', $className, $controllerName);
+        return $controllerName[0];
     }
 }
