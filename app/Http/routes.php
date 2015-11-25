@@ -70,5 +70,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::post('entrada/{id}/detalles', 'EntradaController@saveDetalle');
         Route::delete('entrada/{id}/detalles/{detalle_id}', 'EntradaController@unsaveDetalle');
         Route::get('entrada/{id}/cargar', 'EntradaController@cargarEntrada');
+        Route::resource('razon-social-emisor', 'RazonSocialEmisorController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
+        Route::get('emisor/entrada', 'RazonSocialEmisorController@emisoresEntrada');
     });
 });
