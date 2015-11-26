@@ -21,10 +21,10 @@ class RazonSocialEmisorTest extends TestCase {
     public function testModeloEsActualizable()
     {
         $rse = factory(App\RazonSocialEmisor::class, 'full')->create();
-        $rse->regimen = 'MC Hammer';
+        $rse->razon_social = 'MC Hammer';
         $this->assertTrue($rse->isValid('update'));
         $this->assertTrue($rse->save());
-        $this->assertSame('MC Hammer', $rse->regimen);
+        $this->assertSame('MC Hammer', $rse->razon_social);
     }
 
     /**
@@ -61,7 +61,7 @@ class RazonSocialEmisorTest extends TestCase {
      */
     public function testRegimenEsObligatorio()
     {
-        $rse = factory(App\RazonSocialEmisor::class)->make(['regimen' => null]);
+        $rse = factory(App\RazonSocialEmisor::class)->make(['razon_social' => null]);
         $this->assertFalse($rse->isValid());
     }
 
@@ -70,7 +70,7 @@ class RazonSocialEmisorTest extends TestCase {
      */
     public function testRegimenNoPuedeSerLargo()
     {
-        $rse = factory(App\RazonSocialEmisor::class, 'longregimen')->make();
+        $rse = factory(App\RazonSocialEmisor::class, 'longrazon_social')->make();
         $this->assertFalse($rse->isValid());
     }
 
