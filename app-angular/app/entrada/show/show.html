@@ -1,0 +1,44 @@
+<div class="card">
+  <div class="header">
+    <h4>Entrada ({{vm.entrada.id}})</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend><strong>{{vm.entrada.motivo}}</strong></legend>
+
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th>UPC</th>
+              <th>Clave</th>
+              <th>Descripción</th>
+              <th>Sucursal</th>
+              <th>Cantidad</th>
+              <th>Costo</th>
+              <th>Importe</th>
+              <th>Exis. Antes</th>
+              <th>Exis. Después</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="entradaDetalle in vm.entrada.detalles">
+              <td>{{entradaDetalle.producto.upc}}</td>
+              <td>{{entradaDetalle.producto.clave}}</td>
+              <td>{{entradaDetalle.producto.descripcion}}</td>
+              <td>{{vm.entrada.sucursal.nombre}}</td>
+              <td>{{entradaDetalle.cantidad}}</td>
+              <td>{{entradaDetalle.costo}}</td>
+              <td>{{entradaDetalle.importe}}</td>
+              <td>{{entradaDetalle.producto_movimiento.existencias_antes}}</td>
+              <td>{{entradaDetalle.producto_movimiento.existencias_despues}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </form>
+    <a ng-click="vm.back()" class="button secondary">Regresar</a>
+    <input ng-click="vm.cargar()" type="submit" class="button primary" ng-disabled="vm.cargado()" value="Cargar">
+  </div>
+</div>
+

@@ -72,7 +72,7 @@ class EntradaController extends Controller
         {
             return response()->json([
                 'message' => 'Entrada obtenida exitosamente',
-                'entrada' => $this->entrada->with('detalles.producto', 'detalles.productoMovimiento')->where('id', $id)->first()
+                'entrada' => $this->entrada->with('sucursal', 'detalles.producto', 'detalles.productoMovimiento')->where('id', $id)->first()
             ], 200);
         } else {
             return response()->json([
