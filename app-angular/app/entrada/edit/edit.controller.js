@@ -42,6 +42,7 @@
           obtenerEntrada().then(function(response) {
             vm.entrada = response.data.entrada;
             vm.entrada.tipo_cambio = parseFloat(vm.entrada.tipo_cambio);
+            vm.entrada.factura = Boolean(vm.entrada.factura);
             vm.entrada.factura_fecha = new Date(vm.entrada.factura_fecha);
             console.log('Entrada obtenida');
           }).catch(function(response) {

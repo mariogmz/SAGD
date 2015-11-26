@@ -8,7 +8,6 @@
   .entrada-fieldset {
 
     @include make-col();
-    @include make-col-span(4);
 
     label { float: left; }
 
@@ -18,4 +17,20 @@
       width: 100%;
     }
   }
+
+  .factura {
+    @include make-col-span(12);
+
+    text-align: center;
+  }
+
+  .factura-select {
+    @include make-col-span(12);
+
+    text-align: center;
+  }
+
+  .entrada-fieldset-3 { @include make-col-span(4); }
+  .entrada-fieldset-4 { @include make-col-span(3); }
+
 }

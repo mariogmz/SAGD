@@ -25,6 +25,7 @@
       factura_fecha: new Date(),
       moneda: 'PESOS',
       tipo_cambio: 1.0,
+      factura: true,
       entradas_detalles: [],
       estado_entrada_id: 1,
       empleado_id: vm.empleado.id,

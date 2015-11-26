@@ -7,7 +7,7 @@
       <legend>Ingrese los datos para crear la nueva entrada</legend>
 
       <div class="entrada-datos">
-        <fieldset class="entrada-fieldset">
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
           <label for="proveedor">Proveedor:</label>
           <select ng-model="vm.entrada.proveedor_id">
             <option ng-repeat="proveedor in vm.proveedores" value="{{proveedor.id}}"
@@ -17,19 +17,29 @@
           </select>
         </fieldset>
 
-        <fieldset class="entrada-fieldset">
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
           <label for="factura_externa_numero">Número factura:</label>
           <input type="text" id="factura_externa_numero" name="factura_externa_numero" ng-model="vm.entrada.factura_externa_numero" required>
         </fieldset>
 
-        <fieldset class="entrada-fieldset">
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
           <label for="factura_fecha">Fecha factura:</label>
           <input type="date" id="factura_fecha" name="factura_fecha" ng-model="vm.entrada.factura_fecha">
+        </fieldset>
+
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
+          <label for="factura" class="factura">Factura?</label>
+          <div class="factura-select">
+            <div class="action-buttons" role="group" aria-label="Factura">
+              <button type="button" class="attach" ng-class="{selected: vm.entrada.factura}" ng-click="vm.entrada.factura = true"><i></i></button>
+              <button type="button" class="detach" ng-class="{selected: !vm.entrada.factura}" ng-click="vm.entrada.factura = false"><i></i></button>
+            </div>
+          </div>
         </fieldset>
       </div>
 
       <div class="entrada-datos">
-        <fieldset class="entrada-fieldset">
+        <fieldset class="entrada-fieldset entrada-fieldset-3">
           <label for="moneda">Moneda:</label>
           <select ng-model="vm.entrada.moneda">
             <option value="PESOS">PESOS</option>
@@ -37,12 +47,12 @@
           </select>
         </fieldset>
 
-        <fieldset class="entrada-fieldset">
+        <fieldset class="entrada-fieldset entrada-fieldset-3">
           <label for="tipo_cambio">Tipo cambio:</label>
           <input type="number" step="0.01" min="1.0" id="tipo_cambio" name="tipo_cambio" ng-model="vm.entrada.tipo_cambio">
         </fieldset>
 
-        <fieldset class="entrada-fieldset">
+        <fieldset class="entrada-fieldset entrada-fieldset-3">
           <label for="razon_social_id">Factura para:</label>
           <select ng-model="vm.entrada.razon_social_id">
             <option ng-repeat="razon_social in vm.razones_sociales" value="{{razon_social.id}}"
