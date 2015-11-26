@@ -1,0 +1,21 @@
+.entrada-datos {
+
+  @include make-container();
+  @include make-row();
+
+  padding-bottom: 1rem;
+
+  .entrada-fieldset {
+
+    @include make-col();
+    @include make-col-span(4);
+
+    label { float: left; }
+
+    select {
+      @extend .c-select;
+
+      width: 100%;
+    }
+  }
+}
