@@ -17,6 +17,7 @@
     vm.back = goBack;
     vm.cargar = cargar;
     vm.cargado = cargado;
+    vm.subtotal = 0;
 
     activate();
 
@@ -25,6 +26,7 @@
     function activate() {
       return obtenerEntrada().then(function(response) {
           console.log(response.message);
+          calcularSubtotal();
         });
     }
 
@@ -37,6 +39,13 @@
         vm.error = response.data;
         return response.data;
       });
+    }
+
+    function calcularSubtotal() {
+      for (var i = vm.entrada.detalles.length - 1; i >= 0; i--) {
+        var detalle = vm.entrada.detalles[i];
+        vm.subtotal += detalle.importe;
+      };
     }
 
     function cargar() {

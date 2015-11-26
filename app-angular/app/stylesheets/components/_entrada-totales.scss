@@ -1,0 +1,25 @@
+.entrada-totales {
+
+  @include make-container();
+
+  margin-bottom: 20px;
+
+  .line {
+    @include make-row();
+  }
+
+  .concepto,
+  .valor {
+    @include make-col();
+  }
+
+  .concepto {
+    @include make-col-span(10);
+  }
+
+  .valor {
+    @include make-col-span(2);
+
+    text-align: left;
+  }
+}
