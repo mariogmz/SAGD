@@ -18,6 +18,7 @@ $factory->define(App\Entrada::class, function ($faker)
         'factura_fecha' => $faker->dateTime,
         'moneda' => $faker->regexify('(DOLAR|PESOS)'),
         'tipo_cambio' => $faker->randomFloat(2, 0.0, 99.99),
+        'factura' => $faker->boolean(),
         'estado_entrada_id' => $faker->randomDigit,
         'proveedor_id' => $faker->randomDigit,
         'razon_social_id' => $faker->randomDigit,

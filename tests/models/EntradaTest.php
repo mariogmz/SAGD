@@ -104,6 +104,17 @@ class EntradaTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     */
+    public function testFacturaDefaultEsFalse()
+    {
+        $entrada = factory(App\Entrada::class, 'full')->make(['factura' => null]);
+        $entrada->save();
+        $entrada = $entrada->fresh();
+        $this->assertFalse((bool) $entrada->factura);
+    }
+
+    /**
      * @covers ::estado
      * @group relaciones
      */

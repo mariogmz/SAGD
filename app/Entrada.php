@@ -49,14 +49,16 @@ class Entrada extends LGGModel {
     //
     protected $table = "entradas";
     public $timestamps = true;
-    protected $fillable = ['factura_externa_numero', 'factura_fecha', 'moneda', 'tipo_cambio',
-        'estado_entrada_id', 'proveedor_id', 'razon_social_id', 'empleado_id', 'sucursal_id'];
+    protected $fillable = ['factura_externa_numero', 'factura_fecha', 'moneda',
+        'tipo_cambio', 'factura', 'estado_entrada_id', 'proveedor_id',
+        'razon_social_id', 'empleado_id', 'sucursal_id'];
 
     public static $rules = [
         'factura_externa_numero' => 'required|max:45',
         'factura_fecha'          => 'date',
         'moneda'                 => 'required|max:45',
         'tipo_cambio'            => 'required|numeric',
+        'factura'                => 'boolean',
         'estado_entrada_id'      => 'required|integer',
         'proveedor_id'           => 'required|integer',
         'razon_social_id'        => 'required|integer',
@@ -72,6 +74,7 @@ class Entrada extends LGGModel {
     public static function boot() {
         parent::boot();
         Entrada::creating(function ($model) {
+            $model->factura = is_null($model->factura) ? false : $model->factura;
             return $model->isValid();
         });
         Entrada::updating(function ($model) {

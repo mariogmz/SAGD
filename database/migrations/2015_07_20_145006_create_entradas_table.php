@@ -17,6 +17,7 @@ class CreateEntradasTable extends Migration {
             $table->timestamp('factura_fecha')->nullable();
             $table->string('moneda', 45);
             $table->decimal('tipo_cambio', 4, 2)->unsigned();
+            $table->boolean('factura')->default(false);
             $table->timestamps();
 
         });
