@@ -10,7 +10,10 @@
         <fieldset class="entrada-fieldset">
           <label for="proveedor">Proveedor:</label>
           <select ng-model="vm.entrada.proveedor_id">
-            <option ng-repeat="proveedor in vm.proveedores" value="{{proveedor.id}}">{{proveedor.razon_social}}</option>
+            <option ng-repeat="proveedor in vm.proveedores" value="{{proveedor.id}}"
+                    ng-selected="vm.entrada.proveedor_id === proveedor.id">
+              {{proveedor.razon_social}}
+            </option>
           </select>
         </fieldset>
 
@@ -42,7 +45,10 @@
         <fieldset class="entrada-fieldset">
           <label for="razon_social_id">Factura para:</label>
           <select ng-model="vm.entrada.razon_social_id">
-            <option ng-repeat="razon_social in vm.razones_sociales" value="{{razon_social.id}}">{{razon_social.razon_social}}</option>
+            <option ng-repeat="razon_social in vm.razones_sociales" value="{{razon_social.id}}"
+                    ng-selected="vm.entrada.razon_social_id === razon_social.id">
+              {{razon_social.razon_social}}
+            </option>
           </select>
         </fieldset>
       </div>
