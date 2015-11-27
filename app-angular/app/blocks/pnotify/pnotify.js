@@ -11,16 +11,16 @@
 
   function pNotifyProvider() {
     // Set default style to bootstrap3, I hope someday this changes to bootstrap4
-    PNotify.prototype.options.styling = 'bootstrap3';
+    setStyling();
 
     // Defaults
     var stack_context = {
-      "dir1": "down",
-      "dir2": "left",
-      "push": "bottom",
-      "spacing1": 15,
-      "spacing2": 15,
-      context: $("body")
+      dir1: 'down',
+      dir2: 'left',
+      push: 'bottom',
+      spacing1: 15,
+      spacing2: 15,
+      context: $('body')
     };
 
     var delay = 4000;
@@ -33,7 +33,23 @@
 
     return pnotify;
 
-    function alert(title, text, type, sticky){
+    function setStyling() {
+      var theme = 'sagd';
+      PNotify.prototype.options.styling = theme;
+      $.extend(PNotify, {
+        styling: {
+          sagd: {
+            container: 'sagd-alert',
+            notice: 'sagd-alert-warning',
+            info: 'sagd-alert-info',
+            success: 'sagd-alert-success',
+            error: 'sagd-alert-danger',
+          }
+        }
+      });
+    }
+
+    function alert(title, text, type, sticky) {
       new PNotify({
         title: title,
         text: text,
