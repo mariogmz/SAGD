@@ -16,10 +16,10 @@ class RazonSocialEmisorSeeder extends Seeder
 
         $rseDicotech = new App\RazonSocialEmisor([
             'sucursal_id' => $sucursal->id,
-            'rfc' => 'ABCD123456X00',
-            'razon_social' => 'Dicotech',
-            'serie' => 'AAA',
-            'ultimo_folio' => 0,
+            'rfc' => 'DMT0911105L5',
+            'razon_social' => 'DICOTECH MAYORISTAS DE TECNOLOGIA S.A. DE C.V.',
+            'serie' => 'B',
+            'ultimo_folio' => 82757,
             'numero_certificado' => 1,
             'numero_certificado_sat' => 1,
             'domicilio_id' => $domicilio_id
@@ -27,10 +27,10 @@ class RazonSocialEmisorSeeder extends Seeder
 
         $rseJorge = new App\RazonSocialEmisor([
             'sucursal_id' => $sucursal->id,
-            'rfc' => 'ABCD123456X00',
-            'razon_social' => 'Jorge',
-            'serie' => 'AAA',
-            'ultimo_folio' => 0,
+            'rfc' => 'ZEGJ790704QK4',
+            'razon_social' => 'JORGE HUMBERTO ZERMEÑO GUTIERREZ',
+            'serie' => 'AR',
+            'ultimo_folio' => 84124,
             'numero_certificado' => 1,
             'numero_certificado_sat' => 1,
             'domicilio_id' => $domicilio_id
