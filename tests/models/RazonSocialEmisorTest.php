@@ -39,16 +39,25 @@ class RazonSocialEmisorTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testRfcDebeTenerFormatoCorrecto()
+    public function testRfcPrimerFormaDebeTenerFormatoCorrecto()
     {
-        $rse = factory(App\RazonSocialEmisor::class)->make(['rfc' => 'asd']);
-        $this->assertFalse($rse->isValid());
+        $rse = factory(App\RazonSocialEmisor::class)->make(['rfc' => 'TMD0191150L5']);
+        $this->assertTrue($rse->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testRfcEsExactamenteDe13Caracteres()
+    public function testRfcSegundaFormaDebeTenerFormatoCorrecto()
+    {
+        $rse = factory(App\RazonSocialEmisor::class)->make(['rfc' => 'ZEGJ911201QK1']);
+        $this->assertTrue($rse->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testRfcEsComoDe13Caracteres()
     {
         $rse = factory(App\RazonSocialEmisor::class)->make(['rfc' => 'a']);
         $this->assertFalse($rse->isValid());

@@ -42,7 +42,7 @@ class RazonSocialEmisor extends LGGModel {
         'numero_certificado', 'numero_certificado_sat'];
 
     public static $rules = [
-        'rfc'                    => "required|min:13|max:13|regex:'[A-Z]{4}\d{6}[A-Z]\d{2}'",
+        'rfc'                    => "required|min:12|max:13|regex:'[A-Z]{3,4}\d{6}\w{3}'",
         'razon_social'           => 'required|max:60',
         'serie'                  => 'required|max:3',
         'ultimo_folio'           => 'required|integer',
