@@ -1,6 +1,6 @@
 // app/blocks/pnotify/pnotify.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -9,7 +9,7 @@
 
   pNotifyProvider.$inject = [];
 
-  function pNotifyProvider(){
+  function pNotifyProvider() {
     // Set default style to bootstrap3, I hope someday this changes to bootstrap4
     PNotify.prototype.options.styling = 'bootstrap3';
 
@@ -48,7 +48,7 @@
       });
     }
 
-    function desktopAlert(title, text, type, sticky){
+    function desktopAlert(title, text, type, sticky) {
       new PNotify({
         title: title,
         text: text,
@@ -61,18 +61,21 @@
       });
     }
 
-    function alertList(title, list, type){
+    function alertList(title, list, type) {
       var html = '<ul>';
-      if (typeof list == "string") {
+      if (typeof list == 'string') {
         return alert(title, list, type);
       };
-      angular.forEach(list, function (value, key){
+
+      angular.forEach(list, function(value, key) {
         html += '<li><strong>' + key + '</strong><ul>';
-        angular.forEach(value, function (value){
+        angular.forEach(value, function(value) {
           html += '<li>' + value + '</li>';
         });
+
         html += '</ul></li>';
       });
+
       html += '</ul>';
       alert(title, html, type, false);
     }
