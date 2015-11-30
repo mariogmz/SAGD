@@ -202,7 +202,24 @@ class TransferenciaController extends Controller
      */
     public function unsaveDetalle($id, $detalle)
     {
-
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            if ($this->transferencia->quitarDetalle($detalle)) {
+                return response()->json([
+                    'message' => 'Detalle removido de la transferencia exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Detalle no se pudo remover de la transferencia',
+                    'error' => 'Detalle no removido'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ], 404);
+        }
     }
 
     /**

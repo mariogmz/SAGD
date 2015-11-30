@@ -443,4 +443,65 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::unsaveDetalle
+     */
+    public function testDeleteUnsaveDetalle()
+    {
+        $endpoint = $this->endpoint . '/salidas/1/detalle/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'quitarDetalle' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Detalle removido de la transferencia exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::unsaveDetalle
+     */
+    public function testDeleteUnsaveDetalleFindFails()
+    {
+        $endpoint = $this->endpoint . '/salidas/1/detalle/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::unsaveDetalle
+     */
+    public function testDeleteUnsaveDetalleQuitarDetalleFails()
+    {
+        $endpoint = $this->endpoint . '/salidas/1/detalle/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'quitarDetalle' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Detalle no se pudo remover de la transferencia',
+                'error' => 'Detalle no removido'
+            ])
+            ->assertResponseStatus(400);
+    }
 }
