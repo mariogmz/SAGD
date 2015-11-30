@@ -192,8 +192,8 @@ class ProductoTableSeeder extends Seeder {
      */
     private function corregirPrecio($precio, $margen_id) {
         // Forzar que los precios sean mayores a los costos
-        if ($precio['costo'] >= $precio['precio_1']) {
-            $precio['precio_1'] = $precio['costo'] + 1;
+        if (floatval($precio['costo']) >= floatval($precio['precio_1'])) {
+            $precio['precio_1'] = floatval($precio['costo']) + 1;
             $precio['revisado'] = false;
         }
         $other = [
@@ -203,6 +203,10 @@ class ProductoTableSeeder extends Seeder {
         ];
 
         $precio = $this->calcularPrecios(floatval($precio['precio_1']), floatval($precio['costo']), null, $margen_id)['precios'];
+        if(is_null($precio)){
+            $precio = $this->calcularPrecios(floatval($precio['precio_1'] + 1000), floatval($precio['costo']), null, $margen_id)['precios'];
+            $other['revisado'] = false;
+        }
         $precio_nuevo = new App\Precio(array_merge($precio, $other));
 
         if (!$precio_nuevo->isValid()) {

@@ -16,6 +16,7 @@ Class IcecatFeed {
     private $password;
     private $refs_endpoint;
     private $refs;
+    private $sheet_endpoint;
 
     public function __construct() {
         $this->username = getenv('ICECAT_USERNAME');
@@ -32,7 +33,12 @@ Class IcecatFeed {
             'suppliers'         => 'SuppliersList.xml.gz',
             'not_found'         => 'file.xml'
         ];
+        $this->sheet_endpoint = "https://{$this->username}:{$this->password}@data.icecat.biz/xml_s3/xml_server3.cgi?prod_id={numero_parte};vendor={marca};lang=es;output=productxml";
     }
+
+    /**
+     * ************************************* GET METHODS *************************************************
+     */
 
     /**
      * Parse the xml from "https://data.icecat.biz/export/level4/refs/CategoriesList.xml.gz" to
@@ -233,6 +239,104 @@ Class IcecatFeed {
         return $get_array ? $icecat_category_feature_groups : file_put_contents('Icecat/feature_groups_features.json', json_encode($icecat_category_feature_groups, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
     }
 
+    /**
+     * Downloads and decodes a requested file from https://data.icecat.biz/export/level4/refs/ , if file
+     * was encoded with gzip, this method decodes it and saves the output into a file under the next path:
+     *      /Icecat/{$ref_name}.xml
+     * If the ref_name is not defined this method will throw an ErrorException
+     * @param string $ref_name
+     * @throws ErrorException | FileNotFoundException
+     */
+    public function downloadAndDecode($ref_name) {
+        if (isset($this->refs[$ref_name])) {
+            if ($ref_name == 'category_features') {
+                $this->downloadAndDecodeCategoriesFeatures();
+            } else {
+                $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
+                if ($xml === false) {
+                    throw new FileNotFoundException('File ' . $this->refs_endpoint . $this->refs[$ref_name] . ' does not exists.');
+                } else {
+                    if (strpos($this->refs[$ref_name], '.gz')) {
+                        $xml = gzdecode($xml);
+                    }
+                    if (!file_exists('Icecat')) {
+                        mkdir('Icecat', 0777, true);
+                    }
+                    file_put_contents("Icecat/{$ref_name}.xml", $xml);
+                }
+            }
+        } else {
+            throw new ErrorException("Unknown Icecat reference file, not found on index: {$ref_name}.");
+        }
+    }
+
+    /**
+     * *********************************** PRODUCT METHODS ***********************************************
+     */
+
+    /**
+     * @param App\Producto $product
+     * @param bool|false $save
+     * @return array|bool
+     */
+    public function getProductSheet(App\Producto $product, $save = false) {
+        if (!empty($xml = $this->downloadSheet($product, $save))) {
+            return $this->parseProductSheet($xml);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * This method searchs for the sheet from Icecat from a provided eloquent product instance, it tries to find the sheet
+     * searching by all the icecat_suppliers associated to the product brand (App\Marca), if the sheet exists, this
+     * method returns a string object containing the xml, if it not, this method returns false.
+     *
+     * @param App\Producto $product
+     * @param bool|false $save
+     * @return string|bool
+     */
+    private function downloadSheet(App\Producto $product, $save) {
+        $endpoint = $this->sheet_endpoint;
+        $endpoint = str_replace('{numero_parte}', $product->numero_parte, $endpoint);
+
+        $suppliers = $product->marca->icecatSuppliers;
+
+        foreach ($suppliers as $supplier) {
+            $file = file_get_contents(str_replace('{marca}', $supplier->name, $endpoint));
+            $simple_xml = simplexml_load_string($file);
+            if (empty((string) $simple_xml->Product[0]->attributes()['ErrorMessage'])) {
+                $xml = $file;
+                if ($save) {
+                    file_put_contents('Icecat/' . $product->numero_parte . '.xml', $file);
+                }
+                break;
+            }
+        }
+
+        return empty($xml) ? false : $xml;
+    }
+
+    public function downloadSheetRaw($part_number, $brand, $save = false) {
+        $endpoint = $this->sheet_endpoint;
+        $endpoint = str_replace('{numero_parte}', $part_number, $endpoint);
+        $endpoint = str_replace('{marca}', $brand, $endpoint);
+
+        $xml = file_get_contents($endpoint);
+
+        if ($save && !empty($xml)) {
+            if (!file_exists('Icecat')) {
+                mkdir('Icecat', 0777, true);
+            }
+            file_put_contents("Icecat/{$part_number}.xml", $xml);
+        }
+
+        return $xml ?: false;
+    }
+
+    /**
+     * ************************************ PARSE METHODS ************************************************
+     */
 
     /**
      * This method takes a simple node and parses its values like [langid=6] (Spanish) and build a more
@@ -381,35 +485,8 @@ Class IcecatFeed {
 
 
     /**
-     * Downloads and decodes a requested file from https://data.icecat.biz/export/level4/refs/ , if file
-     * was encoded with gzip, this method decodes it and saves the output into a file under the next path:
-     *      /Icecat/{$ref_name}.xml
-     * If the ref_name is not defined this method will throw an ErrorException
-     * @param string $ref_name
-     * @throws ErrorException | FileNotFoundException
+     * *************************************** HELPERS ***************************************************
      */
-    public function downloadAndDecode($ref_name) {
-        if (isset($this->refs[$ref_name])) {
-            if ($ref_name == 'category_features') {
-                $this->downloadAndDecodeCategoriesFeatures();
-            } else {
-                $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
-                if ($xml === false) {
-                    throw new FileNotFoundException('File ' . $this->refs_endpoint . $this->refs[$ref_name] . ' does not exists.');
-                } else {
-                    if (strpos($this->refs[$ref_name], '.gz')) {
-                        $xml = gzdecode($xml);
-                    }
-                    if (!file_exists('Icecat')) {
-                        mkdir('Icecat', 0777, true);
-                    }
-                    file_put_contents("Icecat/{$ref_name}.xml", $xml);
-                }
-            }
-        } else {
-            throw new ErrorException("Unknown Icecat reference file, not found on index: {$ref_name}.");
-        }
-    }
 
     /**
      * Iterates over each one of the values for one field, and returns the value attribute of the one which
@@ -452,6 +529,10 @@ Class IcecatFeed {
         return $field_text;
     }
 
+    /**
+     * This method performs a download using CURL for CategoriesFeatures, because Icecat XML file size is too big
+     * for normal file_get_contents, also XML must be decoded in chunks instead.
+     */
     private function downloadAndDecodeCategoriesFeatures() {
         curlDownload($this->refs_endpoint . $this->refs['category_features'], 'Icecat/categories_features.xml.gz');
         $file_name = 'Icecat/categories_features.xml.gz';
@@ -459,10 +540,80 @@ Class IcecatFeed {
         $out_file_name = str_replace('.gz', '', $file_name);
         $file = gzopen($file_name, 'rb');
         $out_file = fopen($out_file_name, 'wb');
-        while( !gzeof($file) ){
+        while (!gzeof($file)) {
             fwrite($out_file, gzread($file, $buffer_size));
         }
         fclose($out_file);
         gzclose($file);
+    }
+
+    /**
+     * This method receives the XML as string and returns the relevant data as an associative array
+     * @param string $xml
+     * @return array
+     */
+    private function parseProductSheet($xml) {
+        $xml = simplexml_load_string($xml);
+        $product = $xml->Product;
+
+        // Quality
+        $quality = (string) $product->attributes()['Quality'];
+
+        // Product Information
+        $icecat_product_id = (int) $product->attributes()['ID'];
+        $high_pic_url = (string) $product->attributes()['HighPic'];
+        $low_pic_url = (string) $product->attributes()['LowPic'];
+        $thumb_pic_url = (string) $product->attributes()['ThumbPic'];
+        $title = (string) $product->attributes()['Title'];
+
+        // Category
+        $icecat_category_id = (int) $product->Category->attributes()['ID'];
+
+        // Product Features
+        $features = [];
+        $product_features = $product->ProductFeature;
+        foreach ($product_features as $product_feature) {
+            $value = (string) $product_feature->attributes()['Value'];
+            $presentation_value = (string) $product_feature->attributes()['Presentation_Value'];
+            $icecat_feature_id = (int) $product_feature->Feature->attributes()['ID'];
+            array_push($features, compact('icecat_feature_id', 'value', 'presentation_value'));
+        }
+
+        // Product Supplier
+        $icecat_supplier_id = (int) $product->Supplier[0]->attributes()['ID'];
+
+        // Product Gallery
+        $gallery = [];
+        $gallery_products = $product->ProductGallery;
+        if ($gallery_products->count() > 0) {
+            foreach ($gallery_products->ProductPicture as $gallery_product) {
+                $pic_url = (string) $gallery_product->attributes()['Pic']; // Pic because HighPic is not defined on this chunk
+                $low_pic_url = (string) $gallery_product->attributes()['LowPic'];
+                $thumb_pic_url = (string) $gallery_product->attributes()['ThumbPic'];
+                // In most of the cases, Pic500x500 is empty, so I'm not adding it
+                array_push($gallery, compact('pic_url', 'low_pic_url', 'thumb_pic_url'));
+            }
+        }
+
+        // Summary Description
+        $long_summary_description = '';
+        $short_summary_description = '';
+
+        if ($product->SummaryDescription->count() > 0) {
+            $long_summary_description = (string) $product->SummaryDescription->LongSummaryDescription;
+            $short_summary_description = (string) $product->SummaryDescription->ShortSummaryDescription;
+        }
+
+        // Related Products
+        $related = [];
+        $related_products = $product->ProductRelated;
+        if ((bool) $product->ProductRelated[0]) {
+            foreach ($related_products as $related_product) {
+                array_push($related, (int) $related_product->Product->attributes()['ID']);
+            }
+        }
+
+        return compact('quality', 'icecat_product_id', 'high_pic_url', 'low_pic_url', 'thumb_pic_url',
+            'title', 'icecat_category_id', 'icecat_supplier_id', 'long_summary_description', 'short_summary_description', 'features', 'gallery', 'related');
     }
 }

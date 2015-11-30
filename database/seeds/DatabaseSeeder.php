@@ -38,17 +38,12 @@ class DatabaseSeeder extends Seeder {
         $this->call(EmpleadoTableSeeder::class);
         $this->call(PermisosInicialesSeeder::class);
         $this->call(MarcaTableSeeder::class);
-        $this->call(IcecatSupplierTableSeeder::class);
         $this->call(TipoGarantiaTableSeeder::class);
         $this->call(UnidadTableSeeder::class);
         $this->call(MargenTableSeeder::class);
         $this->call(FamiliaTableSeeder::class);
         $this->call(SubfamiliaTableSeeder::class);
-        $this->call(IcecatCategoryTableSeeder::class);
-        $this->call(IcecatFeatureTableSeeder::class);
-        $this->call(IcecatFeatureGroupTableSeeder::class);
-        $this->call(IcecatCategoryFeatureGroupTableSeeder::class);
-        $this->call(IcecatCategoryFeatureTableSeeder::class);
+        $this->seedIcecat();
         $this->call(PaqueteriaTableSeeder::class);
         $this->call(ProductoTableSeeder::class);
         $this->call(ExistenciasTableSeeder::class);
@@ -59,5 +54,17 @@ class DatabaseSeeder extends Seeder {
         $this->call(PaqueteriaRangoTableSeeder::class);
 
         Model::reguard();
+    }
+
+    private function seedIcecat(){
+        if($this->command->confirm('Do you want to seed Icecat database? This may take a very long time to complete.', false)){
+            $this->call(IcecatSupplierTableSeeder::class);
+            $this->call(IcecatCategoryTableSeeder::class);
+            $this->call(IcecatFeatureTableSeeder::class);
+            $this->call(IcecatFeatureGroupTableSeeder::class);
+            $this->call(IcecatCategoryFeatureGroupTableSeeder::class);
+            $this->call(IcecatCategoryFeatureTableSeeder::class);
+        }
+
     }
 }

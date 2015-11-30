@@ -124,4 +124,90 @@ class IcecatFeedTest extends TestCase {
         $this->assertFileExists('Icecat/categories_features.json');
     }
 
+    /**
+     * @covers ::getProductSheet
+     * @covers ::downloadSheet
+     * @covers ::parseProductSheet
+     * @group icecat
+     */
+    public function testGetProductSheet() {
+        if (empty($marca = App\Marca::whereNombre('hp')->first())) {
+            $marca = factory(App\Marca::class)->create([
+                'nombre' => 'hp'
+            ]);
+        }
+        if (empty($supplier = App\IcecatSupplier::whereName('hp')->first())) {
+            factory(App\IcecatSupplier::class)->create([
+                'name'     => 'hp',
+                'marca_id' => $marca->id
+            ]);
+        }
+
+        $producto = factory(App\Producto::class)->create([
+            'numero_parte' => 'CB049A',
+            'marca_id'     => $marca->id
+        ]);
+        $sheet_data = $this->icecat_feed->getProductSheet($producto);
+        $this->assertNotFalse($sheet_data);
+    }
+
+    /**
+     * @covers ::getProductSheet
+     * @covers ::downloadSheet
+     * @covers ::parseProductSheet
+     * @group icecat
+     */
+    public function testGetProductSheetNotExists() {
+        $marca = factory(App\Marca::class)->create([
+            'nombre' => 'wiu'
+        ]);
+        factory(App\IcecatSupplier::class)->create([
+            'marca_id' => $marca->id
+        ]);
+        $producto = factory(App\Producto::class)->create([
+            'numero_parte' => 'aaaa',
+            'marca_id'     => $marca->id
+        ]);
+        $sheet_data = $this->icecat_feed->getProductSheet($producto);
+        $this->assertFalse($sheet_data);
+    }
+
+    /**
+     * @covers ::getProductSheet
+     * @covers ::downloadSheet
+     * @covers ::parseProductSheet
+     * @group icecat
+     */
+    public function testGetProductSheetOnDisk() {
+        if (empty($marca = App\Marca::whereNombre('hp')->first())) {
+            $marca = factory(App\Marca::class)->create([
+                'nombre' => 'hp'
+            ]);
+        }
+        if (empty($supplier = App\IcecatSupplier::whereName('hp')->first())) {
+            factory(App\IcecatSupplier::class)->create([
+                'name'     => 'hp',
+                'marca_id' => $marca->id
+            ]);
+        }
+
+        $producto = factory(App\Producto::class)->create([
+            'numero_parte' => 'CB049A',
+            'marca_id'     => $marca->id
+        ]);
+        $sheet_data = $this->icecat_feed->getProductSheet($producto, true);
+        $this->assertNotFalse($sheet_data);
+        $this->assertFileExists('Icecat/CB049A.xml');
+    }
+
+    /**
+     * @covers ::downloadSheetRaw
+     * @group icecat
+     */
+    public function testDownloadSheetRaw() {
+        $xml = $this->icecat_feed->downloadSheetRaw('CB049A','hp', true);
+        $this->assertFileExists('Icecat/CB049A.xml');
+        $this->assertXmlStringEqualsXmlFile('Icecat/CB049A.xml',$xml);
+    }
+
 }

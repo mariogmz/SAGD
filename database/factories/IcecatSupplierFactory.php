@@ -14,7 +14,16 @@
 $factory->define(App\IcecatSupplier::class, function ($faker) {
     return [
         'icecat_id' => $faker->randomNumber(8),
-        'name' => $faker->text(50),
-        'logo_url' => $faker->optional()->url
+        'name'      => $faker->text(50),
+        'logo_url'  => $faker->optional()->url
     ];
+});
+
+$factory->defineAs(App\IcecatSupplier::class, 'withBrand', function ($faker) use ($factory) {
+    $marca = $factory(App\Marca::class)->create();
+
+    return array_merge($factory->raw(App\IcecatSupplier::class),
+        [
+            'marca_id' => $marca->id
+        ]);
 });
