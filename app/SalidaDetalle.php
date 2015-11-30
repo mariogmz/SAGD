@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Event;
+use App\ProductoMovimiento;
+use App\Events\CargandoSalida;
 
 /**
  * App\SalidaDetalle
@@ -38,7 +41,7 @@ class SalidaDetalle extends LGGModel {
     public static $rules = [
         'cantidad'               => 'required|integer',
         'producto_id'            => 'required|integer',
-        'producto_movimiento_id' => 'required|integer',
+        'producto_movimiento_id' => 'integer',
         'salida_id'              => 'required|integer',
     ];
     public $updateRules = [];
@@ -49,16 +52,24 @@ class SalidaDetalle extends LGGModel {
      */
     public static function boot() {
         parent::boot();
-        SalidaDetalle::creating(function ($model) {
-            return $model->isValid();
+        SalidaDetalle::creating(function ($sd) {
+            return $sd->isValid();
         });
-        SalidaDetalle::updating(function ($model) {
-            $model->updateRules = self::$rules;
+        SalidaDetalle::updating(function ($sd) {
+            $sd->updateRules = self::$rules;
 
-            return $model->isValid('update');
+            return $sd->isValid('update');
         });
     }
 
+    public function cargar()
+    {
+        if ($pm = Event::fire(new CargandoSalida($this, $this->salida))) {
+            $this->productoMovimiento()->associate($pm[0]);
+            return $this->save();
+        }
+        return false;
+    }
 
     /**
      * Obtiene el Producto asociado con la Salida Detalle

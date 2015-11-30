@@ -1,21 +1,22 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\ProductoMovimiento
  */
 class ProductoMovimientoTest extends TestCase
 {
-    protected $productoMovimiento;
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing
-     * @expectedException PDOException
      */
     public function testModeloEsValido()
     {
         $pm = factory(App\ProductoMovimiento::class)->make();
         $this->assertTrue($pm->isValid());
-        $this->assertFalse($pm->save());
     }
 
    /**
@@ -24,7 +25,10 @@ class ProductoMovimientoTest extends TestCase
      */
     public function testModeloEsActualizable()
     {
-        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create([
+            'entraron' => 0,
+            'salieron' => 0
+        ]);
         $pm->movimiento = 'MC Hammer';
         $this->assertTrue($pm->isValid('update'));
         $this->assertTrue($pm->save());
@@ -72,9 +76,10 @@ class ProductoMovimientoTest extends TestCase
     public function testExistenciasSonDefaultACero()
     {
         $pm = factory(App\ProductoMovimiento::class, 'nullEX')->make();
-        $this->assertTrue($pm->isValid());
+        factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        $producto->addSucursal(factory(App\Sucursal::class)->create());
+
+
         $pm['producto_sucursal_id'] = $producto->productosSucursales()->first()->id;
         $this->assertTrue($pm->save());
         $exAntes = $pm->existencias_antes;
@@ -144,10 +149,8 @@ class ProductoMovimientoTest extends TestCase
     {
         $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
         $sd = factory(App\SalidaDetalle::class, 'full')->create(['producto_movimiento_id' => $pm->id]);
-        $sds = $pm->salidasDetalles;
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $sds);
-        $this->assertInstanceOf(App\SalidaDetalle::class, $sds[0]);
-        $this->assertCount(1, $sds);
+        $sds = $pm->salidaDetalle;
+        $this->assertInstanceOf(App\SalidaDetalle::class, $sds);
     }
 
     /**

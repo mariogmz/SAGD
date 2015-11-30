@@ -1,9 +1,9 @@
 // app/blocks/notifications/notifications.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('blocks.notifications', [
-      'btford.socket-io'
-    ]);
+  angular.module('blocks.notifications', [
+    'btford.socket-io'
+  ]);
 })();

@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\SalidaDetalle
  */
 class SalidaDetalleTest extends TestCase {
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing
@@ -20,11 +24,13 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testModeloEsActualizable()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->create();
-        $sd->cantidad = 1991;
-        $this->assertTrue($sd->isValid('update'));
-        $this->assertTrue($sd->save());
-        $this->assertSame(1991, $sd->cantidad);
+        $this->setUpProducto();
+        $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $detalle->cantidad = 1991;
+        $this->assertTrue($detalle->isValid('update'));
+        $this->assertTrue($detalle->save());
+        $this->assertSame(1991, $detalle->cantidad);
     }
 
     /**
@@ -51,21 +57,14 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testProducto()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->make();
-        $producto = $sd->producto;
-        $this->assertInstanceOf(App\Producto::class, $producto);
-    }
+        $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $salida->cargar();
+        $detalle = App\SalidaDetalle::last();
 
-    /**
-     * @covers ::producto
-     * @group relaciones
-     */
-    public function testProductoAssociate()
-    {
-        $sd = factory(App\SalidaDetalle::class, 'noproducto')->make();
-        $producto = factory(App\Producto::class)->create();
-        $sd->producto()->associate($producto);
-        $this->assertInstanceOf(App\Producto::class, $sd->producto);
+        $producto = $detalle->producto;
+        $this->assertInstanceOf(App\Producto::class, $producto);
     }
 
     /**
@@ -74,21 +73,14 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testProductoMovimiento()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->make();
-        $pm = $sd->productoMovimiento;
-        $this->assertInstanceOf(App\ProductoMovimiento::class, $pm);
-    }
+        $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $salida->cargar();
+        $detalle = App\SalidaDetalle::last();
 
-    /**
-     * @covers ::productoMovimiento
-     * @group relaciones
-     */
-    public function testProductoMovimientoAssociate()
-    {
-        $sd = factory(App\SalidaDetalle::class, 'noproductomovimiento')->make();
-        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
-        $sd->productoMovimiento()->associate($pm);
-        $this->assertInstanceOf(App\ProductoMovimiento::class, $sd->productoMovimiento);
+        $pm = $detalle->productoMovimiento;
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pm);
     }
 
     /**
@@ -97,20 +89,104 @@ class SalidaDetalleTest extends TestCase {
      */
     public function testSalida()
     {
-        $sd = factory(App\SalidaDetalle::class, 'full')->make();
-        $salida = $sd->salida;
+        $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+        $salida->cargar();
+        $detalle = App\SalidaDetalle::last();
+
+        $salida = $detalle->salida;
         $this->assertInstanceOf(App\Salida::class, $salida);
     }
 
     /**
-     * @covers ::salida
-     * @group relaciones
+     * @covers ::cargar
+     * @group feature-salidas
      */
-    public function testSalidaAssociate()
+    public function testCargar()
     {
-        $sd = factory(App\SalidaDetalle::class, 'nosalida')->make();
-        $salida = factory(App\Salida::class, 'full')->create();
-        $sd->salida()->associate($salida);
-        $this->assertInstanceOf(App\Salida::class, $sd->salida);
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $this->assertTrue($detalle->cargar());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-salidas
+     */
+    public function testCargarInvalido()
+    {
+        $producto = $this->setUpProducto();
+        $salida = $this->setUpSalida();
+        $detalle = $this->setUpDetalle();
+
+        $this->mock = Mockery::mock('App\Listeners\CrearProductoMovimientoDesdeSalida');
+        $this->mock->shouldReceive([
+            'handle' => [false]
+        ])->withAnyArgs();
+        $this->app->instance('App\Listeners\CrearProductoMovimientoDesdeSalida', $this->mock);
+
+        $this->assertFalse($detalle->cargar());
+    }
+
+    private function setUpProducto()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursal);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 100,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+        return $producto;
+    }
+
+    private function setUpSalida()
+    {
+        $this->setUpEstados();
+        $sucursal = App\Sucursal::last();
+
+
+        $salida = new App\Salida([
+            'motivo' => 'Test',
+            'empleado_id' => factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id])->id,
+            'estado_salida_id' => App\EstadoSalida::creando()->id,
+            'sucursal_id' => $sucursal->id
+        ]);
+        $salida->save();
+        return $salida;
+    }
+
+    private function setUpDetalle($cantidad = 5)
+    {
+        $producto = App\Producto::last();
+        $salida = App\Salida::last();
+
+        $detalle = [
+            'cantidad' => $cantidad,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+
+        return $salida->crearDetalle($detalle);
+    }
+
+    private function setUpEstados()
+    {
+        $estadoSalidaCreando = new App\EstadoSalida(['nombre' => 'Creando']);
+        $estadoSalidaCargando = new App\EstadoSalida(['nombre' => 'Cargando']);
+        $estadoSalidaCargado = new App\EstadoSalida(['nombre' => 'Cargado']);
+
+        $estadoSalidaCreando->save();
+        $estadoSalidaCargando->save();
+        $estadoSalidaCargado->save();
     }
 }

@@ -31,7 +31,7 @@ class Proveedor extends LGGModel {
 
     protected $fillable = ['clave', 'razon_social', 'externo', 'pagina_web'];
     public static $rules = [
-        'clave'        => 'required|max:6|alpha|unique:proveedores',
+        'clave'        => 'required|max:7|unique:proveedores',
         'razon_social' => 'required',
         'externo'      => 'required|boolean',
         'pagina_web'   => 'url'

@@ -1,0 +1,130 @@
+<div class="card">
+  <div class="header">
+    <h4>Crear nueva entrada</h4>
+  </div>
+  <div class="block">
+    <form class="item-form entrada-form" name="entradaNewForm" ng-submit="vm.create()" novalidate>
+      <legend>Ingrese los datos para crear la nueva entrada</legend>
+
+      <div class="entrada-datos">
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
+          <label for="proveedor">Proveedor:</label>
+          <select ng-model="vm.entrada.proveedor_id">
+            <option ng-repeat="proveedor in vm.proveedores" value="{{proveedor.id}}"
+                    ng-selected="vm.entrada.proveedor_id === proveedor.id">
+              {{proveedor.razon_social}}
+            </option>
+          </select>
+        </fieldset>
+
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
+          <label for="factura_externa_numero">Número factura:</label>
+          <input type="text" id="factura_externa_numero" name="factura_externa_numero" ng-model="vm.entrada.factura_externa_numero" required>
+        </fieldset>
+
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
+          <label for="factura_fecha">Fecha factura:</label>
+          <input type="date" id="factura_fecha" name="factura_fecha" ng-model="vm.entrada.factura_fecha">
+        </fieldset>
+
+        <fieldset class="entrada-fieldset entrada-fieldset-4">
+          <label for="factura" class="factura">Factura?</label>
+          <div class="factura-select">
+            <div class="action-buttons" role="group" aria-label="Factura">
+              <button type="button" class="attach" ng-class="{selected: vm.entrada.factura}" ng-click="vm.entrada.factura = true"><i></i></button>
+              <button type="button" class="detach" ng-class="{selected: !vm.entrada.factura}" ng-click="vm.entrada.factura = false"><i></i></button>
+            </div>
+          </div>
+        </fieldset>
+      </div>
+
+      <div class="entrada-datos">
+        <fieldset class="entrada-fieldset entrada-fieldset-3">
+          <label for="moneda">Moneda:</label>
+          <select ng-model="vm.entrada.moneda">
+            <option value="PESOS">PESOS</option>
+            <option value="DOLAR">DOLAR</option>
+          </select>
+        </fieldset>
+
+        <fieldset class="entrada-fieldset entrada-fieldset-3">
+          <label for="tipo_cambio">Tipo cambio:</label>
+          <input type="number" step="0.01" min="1.0" id="tipo_cambio" name="tipo_cambio" ng-model="vm.entrada.tipo_cambio">
+        </fieldset>
+
+        <fieldset class="entrada-fieldset entrada-fieldset-3">
+          <label for="razon_social_id">Factura para:</label>
+          <select ng-model="vm.entrada.razon_social_id">
+            <option ng-repeat="razon_social in vm.razones_sociales" value="{{razon_social.id}}"
+                    ng-selected="vm.entrada.razon_social_id === razon_social.id">
+              {{razon_social.razon_social}}
+            </option>
+          </select>
+        </fieldset>
+      </div>
+
+      <div class="entrada-detalle-datos">
+        <div class="entrada-detalle-props">
+          <div class="entrada-detalle-props-minor">
+            <fieldset>
+              <label for="cantidad">Cantidad:</label>
+              <input type="number" id="cantidad" name="cantidad" min="0" ng-model="vm.entradaDetalle.cantidad">
+            </fieldset>
+
+            <fieldset>
+              <label for="costo">Costo:</label>
+              <input type="number" step="0.1" id="costo" name="costo" min="0" ng-model="vm.entradaDetalle.costo">
+            </fieldset>
+          </div>
+
+          <div class="entrada-detalle-props-major">
+            <fieldset>
+              <label for="upc">UPC:</label>
+              <input type="text" id="upc" name="upc" ng-model="vm.entradaDetalle.upc">
+            </fieldset>
+          </div>
+        </div>
+
+        <div class="entrada-detalle-acciones">
+          <fieldset>
+            <a ng-click="vm.agregarEntradaDetalle(vm.entradaDetalle)" class="button primary">Agregar</a>
+          </fieldset>
+        </div>
+      </div>
+
+      <table class="item-table">
+        <thead>
+          <tr>
+            <th class="right">UPC</th>
+            <th class="right">Clave</th>
+            <th class="right">Descripción</th>
+            <th class="thin right">Cantidad</th>
+            <th class="thin right">Costo</th>
+            <th class="thin right">Importe</th>
+            <th class="right">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="entradaDetalle in vm.entrada.detalles">
+            <td>{{entradaDetalle.producto.upc}}</td>
+            <td>{{entradaDetalle.producto.clave}}</td>
+            <td>{{entradaDetalle.producto.descripcion}}</td>
+            <td>{{entradaDetalle.cantidad}}</td>
+            <td>{{entradaDetalle.costo}}</td>
+            <td>{{entradaDetalle.importe}}</td>
+            <td class="actions">
+              <div class="action-buttons" role="group" aria-label="Acciones">
+                <button type="button" class="delete" ng-click="vm.removerEntradaDetalle(entradaDetalle)"><i></i></button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="actions">
+        <a ng-click="vm.back()" class="button secondary">Regresar</a>
+        <input type="submit" class="button primary" ng-disabled="entradaNewForm.$invalid" value="Guardar cambios">
+      </div>
+    </form>
+  </div>
+</div>

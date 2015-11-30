@@ -84,6 +84,21 @@ class ProductoControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede eliminar un Producto
+     *
+     * @param  User  $user
+     * @param  ProductoController $controller
+     * @return bool
+     */
+    public function buscarUpc(User $user, ProductoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'buscarUpc')->first();
+        return !empty($permiso);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

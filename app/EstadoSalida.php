@@ -44,6 +44,29 @@ class EstadoSalida extends LGGModel {
         });
     }
 
+    /**
+     * Obtiene la relacion del Estado de Cargado
+     * @return App\EstadoSalida
+     */
+    public static function creando() {
+        return EstadoSalida::where('nombre', 'Creando')->first();
+    }
+
+    /**
+     * Obtiene la relacion del Estado de Cargando
+     * @return App\EstadoSalida
+     */
+    public static function cargando() {
+        return EstadoSalida::where('nombre', 'Cargando')->first();
+    }
+
+    /**
+     * Obtiene la relacion del Estado de Cargado
+     * @return App\EstadoSalida
+     */
+    public static function cargado() {
+        return EstadoSalida::where('nombre', 'Cargado')->first();
+    }
 
     /**
      * Obtiene las Salidas asociadas con el Estado

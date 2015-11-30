@@ -2,6 +2,8 @@
 
 namespace App;
 
+use Event;
+use App\Events\CargandoEntrada;
 
 /**
  * App\EntradaDetalle
@@ -48,8 +50,7 @@ class EntradaDetalle extends LGGModel {
         'importe'                => 'required|numeric|min:0.0|mult:costo,cantidad',
         'entrada_id'             => 'required|integer',
         'producto_id'            => 'required|integer',
-        'sucursal_id'            => 'required|integer',
-        'producto_movimiento_id' => 'required|integer',
+        'producto_movimiento_id' => 'integer',
     ];
     public $updateRules = [];
 
@@ -60,6 +61,9 @@ class EntradaDetalle extends LGGModel {
     public static function boot() {
         parent::boot();
         EntradaDetalle::creating(function ($model) {
+            $model->costo || $model->costo = 0.0;
+            $model->cantidad || $model->cantidad = 0;
+            $model->importe || $model->importe = $model->costo * $model->cantidad;
             return $model->isValid();
         });
         EntradaDetalle::updating(function ($model) {
@@ -69,6 +73,19 @@ class EntradaDetalle extends LGGModel {
         });
     }
 
+    public function cargar()
+    {
+        if ($pm = Event::fire(new CargandoEntrada($this, $this->entrada))) {
+            $this->productoMovimiento()->associate($pm[0]);
+            return $this->save();
+        }
+        return false;
+    }
+
+    public function recalcularImporte()
+    {
+        $this->importe = (float) ($this->costo * $this->cantidad);
+    }
 
     /**
      * Obtiene la Entrada asociada con la Entrada Detalle
@@ -78,7 +95,6 @@ class EntradaDetalle extends LGGModel {
         return $this->belongsTo('App\Entrada', 'entrada_id');
     }
 
-
     /**
      * Obtiene el Producto asociado con la Entrada Detalle
      * @return App\Producto
@@ -86,16 +102,6 @@ class EntradaDetalle extends LGGModel {
     public function producto() {
         return $this->belongsTo('App\Producto', 'producto_id');
     }
-
-
-    /**
-     * Obtiene la Sucursal asociada con la Entrada Detalle
-     * @return App\Sucursal
-     */
-    public function sucursal() {
-        return $this->belongsTo('App\Sucursal', 'sucursal_id');
-    }
-
 
     /**
      * Obtiene el Movimiento del Producto asociado con la Entrada Detalle

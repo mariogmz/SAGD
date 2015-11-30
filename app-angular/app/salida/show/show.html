@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="header">
+    <h4>Salida ({{vm.salida.id}})</h4>
+  </div>
+  <div class="block">
+    <form class="item-form" novalidate disabled>
+      <fieldset disabled>
+        <legend><strong>{{vm.salida.motivo}}</strong></legend>
+
+        <table class="item-table">
+          <thead>
+            <tr>
+              <th>UPC</th>
+              <th>Clave</th>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+              <th>Exis. Antes</th>
+              <th>Exis. Después</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="salidaDetalle in vm.salida.detalles">
+              <td>{{salidaDetalle.producto.upc}}</td>
+              <td>{{salidaDetalle.producto.clave}}</td>
+              <td>{{salidaDetalle.producto.descripcion}}</td>
+              <td>{{salidaDetalle.cantidad}}</td>
+              <td>{{salidaDetalle.producto_movimiento.existencias_antes}}</td>
+              <td>{{salidaDetalle.producto_movimiento.existencias_despues}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </fieldset>
+    </form>
+    <a ng-click="vm.back()" class="button secondary">Regresar</a>
+    <input ng-click="vm.cargar()" type="submit" class="button primary" ng-disabled="vm.cargado()" value="Cargar">
+  </div>
+</div>
+
