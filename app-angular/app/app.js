@@ -16,6 +16,7 @@
       'sagdApp.dato-contacto',
       'sagdApp.domicilio',
       'sagdApp.empleado',
+      'sagdApp.entrada',
       'sagdApp.familia',
       'sagdApp.garantia',
       'sagdApp.home',

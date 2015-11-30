@@ -1,6 +1,6 @@
 // app/core/core.module.js
 
-(function (){
+(function() {
   'use strict';
 
   angular.module('sagdApp.core', [

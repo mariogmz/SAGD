@@ -1,0 +1,39 @@
+.entrada-detalle-datos {
+
+  @include make-container();
+  @include make-row();
+
+  .entrada-detalle-props {
+
+    @include make-col();
+    @include make-col-span(10);
+
+    .entrada-detalle-props-minor {
+
+      @include make-col();
+      @include make-col-span(6);
+
+      fieldset {
+
+        @include make-col();
+        @include make-col-span(5);
+      }
+    }
+
+    .entrada-detalle-props-major {
+
+      @include make-col();
+      @include make-col-span(6);
+
+      label { float: left; }
+    }
+  }
+
+  .entrada-detalle-acciones {
+
+    @include make-col();
+    @include make-col-span(2);
+
+    fieldset { padding-top: 36px; }
+  }
+}

@@ -1,0 +1,36 @@
+.entrada-datos {
+
+  @include make-container();
+  @include make-row();
+
+  padding-bottom: 1rem;
+
+  .entrada-fieldset {
+
+    @include make-col();
+
+    label { float: left; }
+
+    select {
+      @extend .c-select;
+
+      width: 100%;
+    }
+  }
+
+  .factura {
+    @include make-col-span(12);
+
+    text-align: center;
+  }
+
+  .factura-select {
+    @include make-col-span(12);
+
+    text-align: center;
+  }
+
+  .entrada-fieldset-3 { @include make-col-span(4); }
+  .entrada-fieldset-4 { @include make-col-span(3); }
+
+}

@@ -37,15 +37,31 @@ class ProveedorTableSeeder extends Seeder {
         // Crear conexión a la base de datos legacy
         $legacy = DB::connection('mysql_legacy');
         // Obtener los proveedores desde la base de datos antigua, en el formato deseado para la nueva base de datos.
-        $proveedores = $legacy->select("select upper(substr(clave,1,6)) as clave, Razonsocial as razon_social, 1 as externo, if(Pagina='NULL' OR Pagina like 'X%' OR Pagina = '1',null,Pagina) as pagina_web from proveedor;");
+        $proveedores = $legacy->select("select upper(substr(clave,1,7)) as clave, Razonsocial as razon_social, 1 as externo, if(Pagina='NULL' OR Pagina like 'X%' OR Pagina like 'C%' OR Pagina = '1',null,LOWER(Pagina)) as pagina_web from proveedor;");
         $this->totalCount = count($proveedores);
         foreach ($proveedores as $proveedor) {
-            $nuevo_proveedor = factory(App\Proveedor::class)->make((array) $proveedor);
-            if (strtolower(substr($proveedor->pagina_web, 0, 7)) !== 'http://' || strtolower(substr($proveedor->pagina_web, 0, 8) !== 'https://')) {
-                $nuevo_proveedor->pagina_web = 'http://' . $nuevo_proveedor->pagina_web;
+            $nuevo_proveedor = new App\Proveedor((array) $proveedor);
+            if (empty($nuevo_proveedor->pagina_web)) {
+                $nuevo_proveedor->pagina_web = '';
+            } else {
+                $protocol = [];
+                $tld = [];
+                preg_match('/^http(s):\/\//', $nuevo_proveedor->pagina_web, $protocol);
+                preg_match('/\.(com|org|net|biz|co|mx)(\.mx.?)?$/', $nuevo_proveedor->pagina_web, $tld);
+
+                if (empty($protocol)) {
+                    $nuevo_proveedor->pagina_web = 'http://' . $nuevo_proveedor->pagina_web;
+                }
+
+                if (empty($tld)) {
+                    $nuevo_proveedor->pagina_web .= '.com';
+                }
             }
             if (!$nuevo_proveedor->save()) {
-                $errors ++;
+                $nuevo_proveedor->clave .= '1';
+                if (!$nuevo_proveedor->save()) {
+                    $errors ++;
+                }
             }
             $output = sprintf("%01.2f%%", ($current / $this->totalCount) * 100);
             $current ++;

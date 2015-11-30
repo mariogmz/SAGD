@@ -20,9 +20,9 @@ class ProveedorTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testClaveNoDebeTenerMasDe4Digitos()
+    public function testClaveNoDebeTenerMasDe7Digitos()
     {
-        $proveedor = factory(App\Proveedor::class)->make(['clave' => 'AAAAB']);
+        $proveedor = factory(App\Proveedor::class)->make(['clave' => 'ABAAASCD']);
         $this->assertFalse($proveedor->isValid());
 
     }

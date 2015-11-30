@@ -58,14 +58,11 @@
       }
     }
 
-    &.thin {
+    &.right { text-align: right; }
 
-      width: 20%;
-    }
+    &.thin { width: 20%; }
 
-    &:last-child {
-      text-align: center;
-    }
+    &:last-child { text-align: center; }
 
     &:hover {
 

@@ -71,7 +71,7 @@
                 state: 'producto.existencia'
               }, {
                 name: 'Entradas',
-                state: 'inventario.entrada'
+                state: 'entradaIndex'
               }, {
                 name: 'Salidas',
                 state: 'salidaIndex'

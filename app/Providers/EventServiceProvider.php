@@ -28,6 +28,9 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\CargandoSalida' => [
             'App\Listeners\CrearProductoMovimientoDesdeSalida',
         ],
+        'App\Events\CargandoEntrada' => [
+            'App\Listeners\CrearProductoMovimientoDesdeEntrada',
+        ],
         'App\Events\CreandoProductoMovimiento' => [
             'App\Listeners\ActualizarExistencias',
         ],

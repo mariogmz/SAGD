@@ -42,7 +42,7 @@ class SucursalTableSeeder extends Seeder {
         ];
         $sucursales = [];
         // Dicotech Aguascalientes
-        array_push($sucursales, factory(App\Sucursal::class)->make([
+        array_push($sucursales, new App\Sucursal([
             'clave'        => 'DICOTAGS',
             'nombre'       => 'Dicotech Aguascalientes',
             'horarios'     => 'Lunes a Viernes de 9:00am a 6:30pm, Sábados de 9:00am a 2:30pm',
@@ -55,7 +55,7 @@ class SucursalTableSeeder extends Seeder {
             'ubicacion'    => null
         ]));
         // Dicotech León
-        array_push($sucursales, factory(App\Sucursal::class)->make([
+        array_push($sucursales, new App\Sucursal([
             'clave'        => 'DICOLEON',
             'nombre'       => 'Dicotech León',
             'horarios'     => 'Lunes a Viernes de 9:00am a 7:00pm, Sábados de 9:00am a 3:00pm',
@@ -68,7 +68,7 @@ class SucursalTableSeeder extends Seeder {
             'ubicacion'    => null
         ]));
         // Zegucom Zacatecas
-        array_push($sucursales, factory(App\Sucursal::class)->make([
+        array_push($sucursales, new App\Sucursal([
             'clave'        => 'ZEGUCZAC',
             'nombre'       => 'Zegucom Zacatecas',
             'horarios'     => 'Lunes a Viernes de 9:00am a 7:00pm, Sábados de 9:00am a 3:00pm',
@@ -81,7 +81,7 @@ class SucursalTableSeeder extends Seeder {
             'ubicacion'    => null
         ]));
         // Zegucom Arboledas
-        array_push($sucursales, factory(App\Sucursal::class)->make([
+        array_push($sucursales, new App\Sucursal([
             'clave'        => 'ZEGUCARB',
             'nombre'       => 'Zegucom Arboledas',
             'horarios'     => 'Lunes a Viernes de 9:00am a 7:00pm, Sábados de 9:00am a 3:00pm',
@@ -94,7 +94,7 @@ class SucursalTableSeeder extends Seeder {
             'ubicacion'    => null
         ]));
         // Ingram León
-        array_push($sucursales, factory(App\Sucursal::class)->make([
+        array_push($sucursales, new App\Sucursal([
             'clave'        => 'INGRLEON',
             'nombre'       => 'INGRAM León',
             'horarios'     => 'Lunes a Viernes de 9:00am a 2:00pm, 4:00pm a 7:00pm',
@@ -107,7 +107,7 @@ class SucursalTableSeeder extends Seeder {
             'ubicacion'    => null
         ]));
         // Ingram DF
-        array_push($sucursales, factory(App\Sucursal::class)->make([
+        array_push($sucursales, new App\Sucursal([
             'clave'        => 'INGRAMDF',
             'nombre'       => 'INGRAM D.F.',
             'horarios'     => 'Lunes a Viernes de 9:00am a 2:00pm, 4:00pm a 7:00pm',
