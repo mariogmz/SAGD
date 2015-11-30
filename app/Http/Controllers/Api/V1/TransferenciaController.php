@@ -58,11 +58,25 @@ class TransferenciaController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $params = $request->all();
+        $this->transferencia = $this->transferencia->fill($params);
+        if ($this->transferencia->save()) {
+            return response()->json([
+                'message' => 'Transferencia pre-guardada exitosamente',
+                'transferencia' => $this->transferencia->self(),
+                ], 201,
+                ['Location' => route('api.v1.transferencias.salidas.ver', $this->transferencia->getId())]);
+        } else {
+            return response()->json([
+                'message' => 'Transferencia no creada',
+                'error' => 'La transferencia no pudo ser pre-guardada'
+                ], 400);
+        }
     }
 
     /**

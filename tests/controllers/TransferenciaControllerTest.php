@@ -15,7 +15,6 @@ class TransferenciaControllerTest extends TestCase
     {
         parent::setUp();
         $this->mock = $this->setUpMock('App\Transferencia');
-        $this->user = $this->setUpMock('App\User');
     }
 
     public function setUpMock($class)
@@ -36,6 +35,7 @@ class TransferenciaControllerTest extends TestCase
     {
         $endpoint = $this->endpoint . '/salidas';
 
+        $this->user = $this->setUpMock('App\User');
         $this->user->shouldReceive([
             'getAttribute' => Mockery::self(),
             'setAttribute' => Mockery::self(),
@@ -66,6 +66,7 @@ class TransferenciaControllerTest extends TestCase
     {
         $endpoint = $this->endpoint . '/entradas';
 
+        $this->user = $this->setUpMock('App\User');
         $this->user->shouldReceive([
             'getAttribute' => Mockery::self(),
             'setAttribute' => Mockery::self(),
@@ -137,5 +138,51 @@ class TransferenciaControllerTest extends TestCase
                 'error' => 'No se pudo encontrar el empleado que realizo esta peticion'
             ])
             ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::create
+     */
+    public function test_post_create()
+    {
+        $endpoint = $this->endpoint . '/salidas/crear';
+
+        $this->mock->shouldReceive([
+            'fill' => Mockery::self(),
+            'save' => true,
+            'self' => [],
+            'getId' => 1
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia pre-guardada exitosamente',
+                'transferencia' => []
+            ])
+            ->assertResponseStatus(201);
+    }
+
+    /**
+     * @covers ::create
+     */
+    public function test_post_create_fail()
+    {
+        $endpoint = $this->endpoint . '/salidas/crear';
+
+        $this->mock->shouldReceive([
+            'fill' => Mockery::self(),
+            'save' => false
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia no creada',
+                'error' => 'La transferencia no pudo ser pre-guardada'
+            ])
+            ->assertResponseStatus(400);
     }
 }
