@@ -72,5 +72,22 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('entrada/{id}/cargar', 'EntradaController@cargarEntrada');
         Route::resource('razon-social-emisor', 'RazonSocialEmisorController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::get('emisor/entrada', 'RazonSocialEmisorController@emisorEntrada');
+
+        Route::group(['prefix' => 'transferencias'], function(){
+            Route::delete('eliminar/{id}', 'TransferenciaController@delete');
+            Route::group(['prefix' => 'salidas'], function() {
+                Route::get('/', 'TransferenciaController@indexSalidas');
+                Route::get('ver/{id}', 'TransferenciaController@show');
+                Route::post('crear', 'TransferenciaController@create');
+                Route::post('transferir/{id}', 'TransferenciaController@transferir');
+                Route::put('/{id}', 'TransferenciaController@update');
+            });
+            Route::group(['prefix' => 'entradas'], function() {
+                Route::get('/', 'TransferenciaController@indexEntradas');
+                Route::get('ver/{id}', 'TransferenciaController@show');
+                Route::post('cargar/{id}', 'TransferenciaController@cargar');
+                Route::put('/{id}', 'TransferenciaController@update');
+            });
+        });
     });
 });
