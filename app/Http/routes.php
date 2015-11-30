@@ -74,7 +74,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('emisor/entrada', 'RazonSocialEmisorController@emisorEntrada');
 
         Route::group(['prefix' => 'transferencias', 'as' => 'api.v1.transferencias'], function(){
-            Route::delete('eliminar/{id}', 'TransferenciaController@delete')->name('.delete');
+            Route::delete('eliminar/{id}', 'TransferenciaController@destroy')->name('.delete');
             Route::group(['prefix' => 'salidas', 'as' => '.salidas'], function() {
                 Route::get('/', 'TransferenciaController@indexSalidas');
                 Route::get('ver/{id}', 'TransferenciaController@show')->name('.ver');

@@ -141,7 +141,25 @@ class TransferenciaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $this->transferencia = $this->transferencia->find($id);
+        if( empty($this->transferencia) )
+        {
+            return response()->json([
+                'message' => 'No se pudo eliminar la transferencia',
+                'error' => 'Transferencia no encontrada'
+            ], 404);
+        }
+        if( $this->transferencia->delete() )
+        {
+            return response()->json([
+                'message' => 'Transferencia eliminada correctamente'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudo eliminar la transferencia',
+                'error' => 'El metodo de eliminar no se pudo ejecutar'
+            ], 400);
+        }
     }
 
     /**

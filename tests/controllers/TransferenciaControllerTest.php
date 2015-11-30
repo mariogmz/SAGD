@@ -317,4 +317,65 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::destroy
+     */
+    public function test_delete_transferencia()
+    {
+        $endpoint = $this->endpoint . '/eliminar/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'delete' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia eliminada correctamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::destroy
+     */
+    public function test_delete_transferencia_find_fail()
+    {
+        $endpoint = $this->endpoint . '/eliminar/1';
+
+        $this->mock->shouldReceive([
+            'find' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo eliminar la transferencia',
+                'error' => 'Transferencia no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::destroy
+     */
+    public function test_delete_transferencia_delete_fail()
+    {
+        $endpoint = $this->endpoint . '/eliminar/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'delete' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo eliminar la transferencia',
+                'error' => 'El metodo de eliminar no se pudo ejecutar'
+            ])
+            ->assertResponseStatus(400);
+    }
 }
