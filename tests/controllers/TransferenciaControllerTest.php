@@ -248,4 +248,73 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::update
+     */
+    public function test_put_update()
+    {
+        $endpoint = $this->endpoint . '/salidas/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'update' => true,
+            'self' => []
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->put($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia se actualizo correctamente',
+                'transferencia' => []
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::update
+     */
+    public function test_put_find_fail()
+    {
+        $endpoint = $this->endpoint . '/salidas/1';
+
+        $this->mock->shouldReceive([
+            'find' => null
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->put($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo realizar la actualizacion de la transferencia',
+                'error' => 'Transferencia no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::update
+     */
+    public function test_put_update_fail()
+    {
+        $endpoint = $this->endpoint . '/salidas/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'update' => false,
+            'getAttribute' => Mockery::self(),
+            'errors' => []
+            ])
+        ->withAnyArgs();
+        $this->mock->errors = [];
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->put($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo realizar la actualizacion de la transferencia',
+                'error' => []
+            ])
+            ->assertResponseStatus(400);
+    }
 }

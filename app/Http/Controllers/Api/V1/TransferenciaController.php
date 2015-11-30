@@ -110,7 +110,27 @@ class TransferenciaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $parameters = $request->all();
+        $this->transferencia = $this->transferencia->find($id);
+        if( empty($this->transferencia) )
+        {
+            return response()->json([
+                'message' => 'No se pudo realizar la actualizacion de la transferencia',
+                'error' => 'Transferencia no encontrada'
+            ], 404);
+        }
+        if( $this->transferencia->update($parameters) )
+        {
+            return response()->json([
+                'message' => 'Transferencia se actualizo correctamente',
+                'transferencia' => $this->transferencia->self()
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudo realizar la actualizacion de la transferencia',
+                'error' => $this->transferencia->errors
+            ], 400);
+        }
     }
 
     /**
