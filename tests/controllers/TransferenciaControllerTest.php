@@ -185,4 +185,67 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::show
+     */
+    public function test_get_show_salida()
+    {
+        $endpoint = $this->endpoint . '/salidas/ver/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'self' => []
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia obtenida exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::entrada
+     */
+    public function test_get_show_entrada()
+    {
+        $endpoint = $this->endpoint . '/entradas/ver/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'self' => []
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia obtenida exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::show
+     */
+    public function test_get_show_fail()
+    {
+        $endpoint = $this->endpoint . '/salidas/ver/1000';
+
+        $this->mock->shouldReceive([
+            'find' => null
+            ])
+        ->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia no encontrada o no existente',
+                'error' => 'La transferencia no pudo ser encontrada. Quizas no existe'
+            ])
+            ->assertResponseStatus(404);
+    }
 }

@@ -87,7 +87,18 @@ class TransferenciaController extends Controller
      */
     public function show($id)
     {
-        //
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            return response()->json([
+                'message' => 'Transferencia obtenida exitosamente',
+                'transferencia' => $this->transferencia->self()
+                ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Transferencia no encontrada o no existente',
+                'error' => 'La transferencia no pudo ser encontrada. Quizas no existe'
+                ], 404);
+        }
     }
 
     /**
