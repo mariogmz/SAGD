@@ -76,10 +76,12 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::group(['prefix' => 'transferencias', 'as' => 'api.v1.transferencias'], function(){
             Route::delete('eliminar/{id}', 'TransferenciaController@destroy')->name('.delete');
             Route::group(['prefix' => 'salidas', 'as' => '.salidas'], function() {
+                Route::delete('{id}/detalle/{detalle}', 'TransferenciaController@unsaveDetalle');
                 Route::get('/', 'TransferenciaController@indexSalidas');
                 Route::get('ver/{id}', 'TransferenciaController@show')->name('.ver');
                 Route::post('crear', 'TransferenciaController@create');
                 Route::post('transferir/{id}', 'TransferenciaController@transferir');
+                Route::post('{id}/detalle', 'TransferenciaController@saveDetalle');
                 Route::put('/{id}', 'TransferenciaController@update');
             });
             Route::group(['prefix' => 'entradas', 'as' => '.entradas'], function() {

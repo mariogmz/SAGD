@@ -163,12 +163,44 @@ class TransferenciaController extends Controller
     }
 
     /**
-     * Actualiza la transferencia al estado de Cargado
+     * Agrega un detalle a la Transferencia
      *
+     * @param Request $request
      * @param int $id
      * @return Response
      */
-    public function cargar($id)
+    public function saveDetalle(Request $request, $id)
+    {
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            $detalle = $request->all();
+            if ($detalle = $this->transferencia->agregarDetalle($detalle)) {
+                return response()->json([
+                    'message' => 'Detalle agregado a la transferencia exitosamente',
+                    'detalle' => $detalle
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Detalle no se pudo agregar a la transferencia',
+                    'error' => 'Detalle no creado'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ], 404);
+        }
+    }
+
+    /**
+     * Remueve un detalle de la Transferencia
+     *
+     * @param int $id
+     * @param int $detalle
+     * @return Response
+     */
+    public function unsaveDetalle($id, $detalle)
     {
 
     }
@@ -180,6 +212,17 @@ class TransferenciaController extends Controller
      * @return Response
      */
     public function transferir($id)
+    {
+
+    }
+
+    /**
+     * Actualiza la transferencia al estado de Cargado
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function cargar($id)
     {
 
     }

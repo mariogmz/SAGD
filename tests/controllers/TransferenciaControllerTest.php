@@ -378,4 +378,69 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::saveDetalle
+     */
+    public function testPostSaveDetalle()
+    {
+        $endpoint = $this->endpoint . '/salidas/1/detalle';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'agregarDetalle' => ['a']
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'Detalle agregado a la transferencia exitosamente',
+                'detalle' => ['a']
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::saveDetalle
+     */
+    public function testPostSaveDetalleFindFails()
+    {
+        $endpoint = $this->endpoint . '/salidas/1/detalle';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::saveDetalle
+     */
+    public function testPostSaveDetalleAgregarDetalleFails()
+    {
+        $endpoint = $this->endpoint . '/salidas/1/detalle';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'agregarDetalle' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'Detalle no se pudo agregar a la transferencia',
+                'error' => 'Detalle no creado'
+            ])
+            ->assertResponseStatus(400);
+    }
 }
