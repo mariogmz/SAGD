@@ -317,6 +317,15 @@ Class IcecatFeed {
         return empty($xml) ? false : $xml;
     }
 
+    /**
+     * This method downloads a product sheet from Icecat (spanish) using product part number (icecat prod id)
+     * and icecat supplier name, if save flag is TRUE, it saves its contents to a file
+     *
+     * @param $part_number
+     * @param $brand
+     * @param bool|false $save
+     * @return bool
+     */
     public function downloadSheetRaw($part_number, $brand, $save = false) {
         $endpoint = $this->sheet_endpoint;
         $endpoint = str_replace('{numero_parte}', $part_number, $endpoint);
