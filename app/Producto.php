@@ -136,7 +136,7 @@ class Producto extends LGGModel {
 
     /**
      * Gets the Tipo Garantia associated with Producto
-     * @return App\TipoGarantia
+     * @return \App\TipoGarantia
      */
     public function tipoGarantia() {
         return $this->belongsTo('App\TipoGarantia', 'tipo_garantia_id');
@@ -144,7 +144,7 @@ class Producto extends LGGModel {
 
     /**
      * Gets the Marca associated with Producto
-     * @return App\Marca
+     * @return \App\Marca
      */
     public function marca() {
         return $this->belongsTo('App\Marca', 'marca_id');
@@ -152,7 +152,7 @@ class Producto extends LGGModel {
 
     /**
      * Gets the Marge associated with Producto
-     * @return App\Margen
+     * @return \App\Margen
      */
     public function margen() {
         return $this->belongsTo('App\Margen', 'margen_id');
@@ -160,7 +160,7 @@ class Producto extends LGGModel {
 
     /**
      * Get the Unidad associated with Producto
-     * @return App\Unidad
+     * @return \App\Unidad
      */
     public function unidad() {
         return $this->belongsTo('App\Unidad');
@@ -168,7 +168,7 @@ class Producto extends LGGModel {
 
     /**
      * Get the Subfamilia associated with Producto
-     * @return App\Subfamilia
+     * @return \App\Subfamilia
      */
     public function subfamilia() {
         return $this->belongsTo('App\Subfamilia');
@@ -176,7 +176,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene la Dimension de Producto
-     * @return App\Dimension
+     * @return \App\Dimension
      */
     public function dimension() {
         return $this->hasOne('App\Dimension');
@@ -184,7 +184,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los productos_movimientos de todas las sucursales relacionados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function movimientos(Sucursal $sucursal = null) {
         if (is_null($sucursal)) {
@@ -197,7 +197,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los productos_sucursales relacionados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productosSucursales() {
         return $this->hasMany('App\ProductoSucursal');
@@ -205,7 +205,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las sucursales relacionadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function sucursales() {
         return $this->belongsToMany('App\Sucursal', 'productos_sucursales',
@@ -214,7 +214,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los proveedores relacionados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function proveedores() {
         return $this->sucursales()->with('proveedor')->get()->pluck('proveedor')->unique();
@@ -222,7 +222,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las existencias relacionadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function existencias(Sucursal $sucursal = null) {
         if (is_null($sucursal)) {
@@ -249,7 +249,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las Entradas Detalles asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function entradasDetalles() {
         return $this->hasMany('App\EntradaDetalle', 'producto_id');
@@ -258,7 +258,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las Salidas Detalles asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function salidasDetalles() {
         return $this->hasMany('App\SalidaDetalle', 'producto_id');
@@ -267,7 +267,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las Transferencias Detalles asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function transferenciasDetalles() {
         return $this->hasMany('App\TransferenciaDetalle', 'producto_id');
@@ -276,7 +276,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los Apartados Detalles asociados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function apartadosDetalles() {
         return $this->hasMany('App\ApartadoDetalle', 'producto_id');
@@ -292,7 +292,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtienes los precios agrupados por proveedor
-     * @return \lluminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function preciosProveedor() {
         return $this->productosSucursales()
