@@ -22,6 +22,9 @@
           },
           'precios': {
             templateUrl: 'app/producto/edit/details/precios.html'
+          },
+          existencias: {
+            templateUrl: 'app/producto/edit/details/existencias.html'
           }
         }
       });

@@ -51,6 +51,7 @@
           obtenerUnidades();
           obtenerTiposDeGarantias();
           obtenerMargenes();
+          obtenerExistencias();
         });
 
     }
@@ -114,6 +115,12 @@
       return api.get('/margen').then(function (response){
         vm.margenes = response.data;
         console.log('Margenes obtenidos correctamente');
+      });
+    }
+
+    function obtenerExistencias() {
+      return api.get('/producto/' + vm.id + '/existencias').then(function(response) {
+        vm.producto_existencias = response.data.productos;
       });
     }
 
