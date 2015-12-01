@@ -85,7 +85,7 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede eliminar un Producto
+     * Determinar si el usuario puede buscar un Producto
      *
      * @param  User  $user
      * @param  ProductoController $controller
@@ -96,6 +96,21 @@ class ProductoControllerPolicy
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
         $permiso = $permisos->where('controlador', $controller)->where('accion', 'buscarUpc')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede listar existencias de un Producto
+     *
+     * @param  User  $user
+     * @param  ProductoController $controller
+     * @return bool
+     */
+    public function indexExistencias(User $user, ProductoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'indexExistencias')->first();
         return !empty($permiso);
     }
 

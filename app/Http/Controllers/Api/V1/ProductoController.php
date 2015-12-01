@@ -167,4 +167,32 @@ class ProductoController extends Controller {
             ], 404);
         }
     }
+
+    /**
+     * Obtener las existencias en todas las sucursales del producto
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function indexExistencias($id)
+    {
+        $this->authorize($this);
+        $this->producto = $this->producto->leftJoin('productos_sucursales', 'productos.id', '=', 'productos_sucursales.producto_id')
+                ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
+                ->join('existencias', 'productos_sucursales.id', '=', 'existencias.id')
+                ->where('sucursales.proveedor_id', '1')
+                ->where('productos.id', $id)
+                ->get();
+        if ($this->producto) {
+            return response()->json([
+                'message' => 'Productos con existencias obtenidas exitosamente',
+                'productos' => $this->producto
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Producto no encontrado',
+                'error' => 'Las existencias del producto que solicitaste no se encontraron.'
+            ], 404);
+        }
+    }
 }

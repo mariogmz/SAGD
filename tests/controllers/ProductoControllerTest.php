@@ -324,4 +324,46 @@ class ProductoControllerTest extends TestCase {
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::indexExistencias
+     * @group feature-transferencias
+     */
+    public function testGetIndexExistencias()
+    {
+        $endpoint = $this->endpoint . '/1/existencias';
+
+        $this->mock->shouldReceive([
+            'leftJoin->join->join->where->where->get' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Productos con existencias obtenidas exitosamente',
+                'productos' => true
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::indexExistencias
+     * @group feature-transferencias
+     */
+    public function testGetIndexExistenciasProductoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/existencias';
+
+        $this->mock->shouldReceive([
+            'leftJoin->join->join->where->where->get' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Producto no encontrado',
+                'error' => 'Las existencias del producto que solicitaste no se encontraron.'
+            ])
+            ->assertResponseStatus(404);
+    }
 }
