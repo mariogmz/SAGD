@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\Producto
  */
 class ProductoTest extends TestCase {
+
+    use DatabaseTransactions;
 
     protected $producto;
 
@@ -323,29 +327,45 @@ class ProductoTest extends TestCase {
      * @covers ::movimientos
      * @group relaciones
      * @group movimientos
+     * @group feature-salidas-unit-errors
      */
     public function testMovimientos() {
-        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
-        $producto = $pm->productoSucursal->producto;
-        $pms = $producto->movimientos;
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+
+        $productoMovimiento = new App\ProductoMovimiento([
+            'movimiento' => 'Test'
+        ]);
+        $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first()
+            ->movimientos()->save($productoMovimiento);
+
+
+        $pms = $producto->movimientos()->get();
+
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
-        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms->first());
     }
 
     /**
      * @covers ::movimientos
      * @group relaciones
      * @group movimientos
+     * @group feature-salidas-unit-errors
      */
     public function testMovimientosConSucursal() {
-        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
-        $producto = $pm->productoSucursal->producto;
-        $sucursal = $pm->productoSucursal->sucursal;
-        $producto->addSucursal(factory(App\Sucursal::class)->create());
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+
+        $productoMovimiento = new App\ProductoMovimiento([
+            'movimiento' => 'Test'
+        ]);
+        $producto->productosSucursales()->where('sucursal_id', $sucursal->id)->first()
+            ->movimientos()->save($productoMovimiento);
+
         $pms = $producto->movimientos($sucursal);
+
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
-        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
-        $this->assertCount(1, $pms);
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $pms->first());
     }
 
     /**
@@ -386,10 +406,11 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::productosSucursales
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testProductosSucursales() {
+        $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        $producto->addSucursal(factory(App\Sucursal::class)->create());
         $ps = $producto->productosSucursales;
         $this->assertInstanceOf(App\ProductoSucursal::class, $ps[0]);
     }
@@ -397,11 +418,12 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::existencias
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testExistencias() {
+        $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        $producto->addSucursal(factory(App\Sucursal::class)->create());
-        $ps = $producto->productosSucursales[0];
+        $ps = $producto->productosSucursales()->first();
         $existencia = factory(App\Existencia::class)->make();
         $existencia->productoSucursal()->associate($ps)->save();
         $existencias = $producto->existencias;
@@ -412,13 +434,12 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::existencias
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testExistenciasConSucursal() {
-        $producto = factory(App\Producto::class)->create();
         $sucursal1 = factory(App\Sucursal::class)->create();
         $sucursal2 = factory(App\Sucursal::class)->create();
-        $producto->addSucursal($sucursal1);
-        $producto->addSucursal($sucursal2);
+        $producto = factory(App\Producto::class)->create();
 
         $ps = $producto->productosSucursales[0];
         factory(App\Existencia::class)->make()->productoSucursal()->associate($ps)->save();
@@ -434,11 +455,12 @@ class ProductoTest extends TestCase {
      * @covers ::precios
      * @group relaciones
      * @group precios
+     * @group feature-salidas-unit-errors
      */
     public function testPrecios() {
-        $producto = factory(App\Producto::class)->create();
         $sucursal = factory(App\Sucursal::class)->create();
-        $producto->addSucursal($sucursal);
+        $producto = factory(App\Producto::class)->create();
+
         $precio = factory(App\Precio::class)->make();
         $precio->productoSucursal()->associate($producto->productosSucursales[0])->save();
         $precios = $producto->precios;
@@ -452,7 +474,6 @@ class ProductoTest extends TestCase {
      * @group precios
      */
     public function testPreciosConProveedor() {
-        $producto = factory(App\Producto::class)->create();
         $dico = factory(App\Proveedor::class)->create();
         $pch = factory(App\Proveedor::class)->create();
         $za = factory(App\Sucursal::class, 'noprov')->create(['proveedor_id' => $dico->id]);
@@ -460,10 +481,7 @@ class ProductoTest extends TestCase {
         $pg = factory(App\Sucursal::class, 'noprov')->create(['proveedor_id' => $pch->id]);
         $pl = factory(App\Sucursal::class, 'noprov')->create(['proveedor_id' => $pch->id]);
 
-        $producto->addSucursal($za);
-        $producto->addSucursal($zz);
-        $producto->addSucursal($pg);
-        $producto->addSucursal($pl);
+        $producto = factory(App\Producto::class)->create();
 
         $precio = factory(App\Precio::class, 'bare')->make();
 
@@ -483,21 +501,33 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::entradasDetalles
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testEntradasDetalles() {
+        $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        $ed = factory(App\EntradaDetalle::class, 'full')->create(['producto_id' => $producto->id]);
-        $eds = $producto->entradasDetalles;
+        $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create([
+            'producto_sucursal_id' => $producto->productosSucursales()->first()->id
+        ]);
+
+        $ed = factory(App\EntradaDetalle::class)->create([
+            'producto_id' => $producto->id,
+            'sucursal_id' => $sucursal->id,
+            'entrada_id' => factory(App\Entrada::class, 'full')->create()->id,
+            'producto_movimiento_id' => $pm->id
+        ]);
+        $eds = $producto->entradasDetalles()->get();
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $eds);
-        $this->assertInstanceOf(App\EntradaDetalle::class, $eds[0]);
-        $this->assertCount(1, $eds);
+        $this->assertInstanceOf(App\EntradaDetalle::class, $eds->first());
     }
 
     /**
      * @covers ::salidasDetalles
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testSalidasDetalles() {
+        factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
         $producto->addSucursal(factory(App\Sucursal::class)->create());
         $pm = factory(App\ProductoMovimiento::class)->create([
@@ -517,11 +547,20 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::transferenciasDetalles
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testTransferenciasDetalles() {
+        $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        $td = factory(App\TransferenciaDetalle::class, 'full')->create([
-            'producto_id' => $producto->id]);
+
+        $td = factory(App\TransferenciaDetalle::class)->create([
+            'producto_id' => $producto->id,
+            'transferencia_id' => factory(App\Transferencia::class, 'full')->create()->id,
+            'producto_movimiento_id' => factory(App\ProductoMovimiento::class)->create([
+                'producto_sucursal_id' => $producto->productosSucursales()->first()->id
+            ])->id
+        ]);
+
         $tds = $producto->transferenciasDetalles;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tds);
         $this->assertInstanceOf(App\TransferenciaDetalle::class, $tds[0]);
@@ -531,14 +570,23 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::apartadosDetalles
      * @group relaciones
+     * @group feature-salidas-unit-errors
      */
     public function testApartadosDetalles() {
+        $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        factory(App\ApartadoDetalle::class, 'full')->create(['producto_id' => $producto->id]);
-        $ads = $producto->apartadosDetalles;
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $ads);
-        $this->assertInstanceOf(App\ApartadoDetalle::class, $ads[0]);
-        $this->assertCount(1, $ads);
+        $pm = factory(App\ProductoMovimiento::class)->create([
+            'producto_sucursal_id' => $producto->productosSucursales()->first()->id
+        ]);
+
+        factory(App\ApartadoDetalle::class)->create([
+            'apartado_id' => factory(App\Apartado::class, 'full')->create()->id,
+            'producto_id' => $producto->id,
+            'producto_movimiento_id' => $pm->id
+        ]);
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->apartadosDetalles()->get());
+        $this->assertInstanceOf(App\ApartadoDetalle::class, $producto->apartadosDetalles()->first());
     }
 
     /**
@@ -560,124 +608,254 @@ class ProductoTest extends TestCase {
      * @covers ::guardarNuevo
      * @group saves
      */
-    public function testSaveWithData() {
+    public function testGuardarNuevoEsExitoso()
+    {
+        $unique = "A".time();
         $params = [
-            "producto"  => ["activo" => 1, "clave" => "ALIBABA", "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => "jiji", "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => 2, "tipo_garantia_id" => 1, "marca_id" => 1, "margen_id" => 1, "unidad_id" => 1, "subfamilia" => 1],
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
             "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
         ];
+        factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->make();
-        factory(App\Sucursal::class)->make();
 
         $this->assertTrue($producto->guardarNuevo($params));
+    }
 
-        // Dimension
-        $this->assertNotNull($producto->dimension);
+    /**
+     * @covers ::guardarNuevo
+     * @group saves
+     */
+    public function testGuardarNuevoCreaLaDimension()
+    {
+        $producto = $this->setUpGuardarNuevoExitoso();
+
         $this->assertInstanceOf(App\Dimension::class, $producto->dimension);
-        // ProductoSucursal
-        $this->assertGreaterThan(0, count($producto->productosSucursales));
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->productosSucursales);
+        $this->assertEquals(4.0, $producto->dimension->peso);
+    }
 
-        $this->assertNotNull($producto->precios);
-        $this->assertNotNull($producto->preciosProveedor());
+    /**
+     * @covers ::guardarNuevo
+     * @group saves
+     */
+    public function testGuardarNuevoCreaElPrecio()
+    {
+        $producto = $this->setUpGuardarNuevoExitoso();
 
-        $this->assertNotNull($producto->existencias);
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->existencias);
-        $this->assertGreaterThan(0, count($producto->existencias));
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->precios);
+        $this->assertEquals(2.5, $producto->precios()->first()->costo);
+    }
+
+    /**
+     * @covers ::guardarNuevo
+     * @group saves
+     */
+    public function testGuardarNuevoGuardaParametrosDelModelo()
+    {
+        $producto = $this->setUpGuardarNuevoExitoso();
+
+        $this->assertEquals('jijiji', $producto->descripcion);
     }
 
     /**
      * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateExitoso() {
-
-        $producto = factory(App\Producto::class)->create();
-        $producto->dimension()->save(new App\Dimension([
-            'largo' => 1,
-            'ancho' => 1,
-            'alto'  => 1,
-            'peso'  => 1
-        ]));
+    public function testActualizarExitoso()
+    {
+        $unique = "A".time();
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
         $sucursal = factory(App\Sucursal::class)->create();
-        $producto->addSucursal($sucursal);
-
-        $precio = factory(App\Precio::class)->make();
-        $precio->producto_sucursal_id = $producto->productosSucursales()->first()->id;
-        $this->assertTrue($precio->save());
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
 
         $params = [
-            'dimension'   => [
-                'peso' => 2.00
-            ],
-            'precios'     => [
-                [
-                    'costo'        => 100.00,
-                    'proveedor_id' => $sucursal->proveedor_id
-                ]
-            ],
-            'id'          => $producto->id,
+            'dimension'   => ['peso' => 2.00],
+            'precios'     => [[
+                'costo'        => 100.00,
+                'proveedor_id' => $sucursal->proveedor_id
+            ]],
             'descripcion' => 'TEST_DESCRIPTION',
+            'id'          => $producto->id,
             'revisado'    => true
         ];
 
         $this->assertTrue($producto->actualizar($params));
-
-        $producto = App\Producto::find($producto->id);
-        $this->assertSame($params['descripcion'], $producto->descripcion);
-        $this->assertSame($params['dimension']['peso'], floatval($producto->dimension->peso));
-
-        foreach (App\ProductoSucursal::whereProductoId($producto->id)->whereSucursalId($sucursal->id)->get() as $producto_sucursal) {
-            $precio = $producto_sucursal->precio;
-            $this->assertSame($params['precios'][0]['costo'], floatval($precio->costo));
-        }
-
     }
 
     /**
      * @covers ::actualizar
      * @group saves
      */
-    public function testUpdateEnCasoDeFalloHaceRollback() {
+    public function testActualizarPrecioExitoso()
+    {
+        $producto = $this->setUpActualizarExitoso();
+        $sucursal = App\Sucursal::last();
+        $productoSucursal = $producto->productosSucursales()->whereSucursalId($sucursal->id)->first();
+        $precio = $productoSucursal->precio;
 
-        $producto = factory(App\Producto::class)->create();
-        $producto->dimension()->save(new App\Dimension([
-            'largo' => 1,
-            'ancho' => 1,
-            'alto'  => 1,
-            'peso'  => 1
-        ]));
+        $this->assertSame(100.00, floatval($precio->costo));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     */
+    public function testActualizarDimensionExitoso()
+    {
+        $producto = $this->setUpActualizarExitoso();
+
+        $this->assertSame(2.00, floatval($producto->dimension->peso));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     */
+    public function testActualizarDetallesExitoso()
+    {
+        $producto = $this->setUpActualizarExitoso();
+
+        $this->assertSame('TEST_DESCRIPTION', $producto->descripcion);
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     */
+    public function testActualizarEnCasoDeFalloHaceRollback()
+    {
+        $unique = "A".time();
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
         $sucursal = factory(App\Sucursal::class)->create();
-        $producto->addSucursal($sucursal);
-
-        $precio = factory(App\Precio::class)->make();
-        $precio->producto_sucursal_id = $producto->productosSucursales()->first()->id;
-        $this->assertTrue($precio->save());
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
 
         $params = [
-            'dimension'   => [
-                'peso' => 2.00
-            ],
-            'precios'     => [
-                [
-                    'costo'        => 'ABC',
-                    'proveedor_id' => $sucursal->proveedor_id
-                ]
-            ],
-            'id'          => $producto->id,
+            'dimension'   => ['peso' => 2.00],
+            'precios'     => [[
+                'costo'        => 'ABC',
+                'proveedor_id' => $sucursal->proveedor_id
+            ]],
             'descripcion' => 'TEST_DESCRIPTION',
-            'revisado'    => false
+            'id'          => $producto->id,
+            'revisado'    => true
         ];
 
         $this->assertFalse($producto->actualizar($params));
+    }
 
-        $producto = App\Producto::find($producto->id);
-        $this->assertNotSame($params['descripcion'], $producto->descripcion);
-        $this->assertNotSame($params['dimension']['peso'], floatval($producto->dimension->peso));
+    /**
+     * @covers ::actualizar
+     * @group saves
+     * @group rollbacks
+     */
+    public function testActualizarIncorrectoHaceRollbackDePrecios()
+    {
+        $producto = $this->setUpActualizarIncorrecto();
+        $precio = $producto->precios()->first();
 
-        foreach (App\ProductoSucursal::whereProductoId($producto->id)->whereSucursalId($sucursal->id)->get() as $producto_sucursal) {
-            $precio = $producto_sucursal->precio;
-            $this->assertNotSame($params['precios'][0]['costo'], floatval($precio->costo));
-        }
+        $this->assertSame(2.5, floatval($precio->costo));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     * @group rollbacks
+     */
+    public function testActualizarIncorrectoHaceRollbackDeDimension()
+    {
+        $producto = $this->setUpActualizarIncorrecto();
+
+        $this->assertSame(4.00, floatval($producto->dimension->peso));
+    }
+
+    /**
+     * @covers ::actualizar
+     * @group saves
+     * @group rollbacks
+     */
+    public function testActualizarIncorrectoHaceRollbackDeDetalles()
+    {
+        $producto = $this->setUpActualizarIncorrecto();
+
+        $this->assertSame('jijiji', $producto->descripcion);
+    }
+
+    private function setUpGuardarNuevoExitoso()
+    {
+        $unique = "A".time();
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
+        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+
+        $producto->guardarNuevo($params);
+
+        return $producto;
+    }
+
+    private function setUpActualizarExitoso()
+    {
+        $unique = "A".time();
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
+
+        $params = [
+            'dimension'   => ['peso' => 2.00],
+            'precios'     => [[
+                'costo'        => 100.00,
+                'proveedor_id' => $sucursal->proveedor_id
+            ]],
+            'descripcion' => 'TEST_DESCRIPTION',
+            'id'          => $producto->id,
+            'revisado'    => true
+        ];
+
+        $producto->actualizar($params);
+        return App\Producto::find($producto->id);
+    }
+
+    private function setUpActualizarIncorrecto()
+    {
+        $unique = "A".time();
+        $params = [
+            "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
+            "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
+            "precio"    => ["costo" => 2.5, "precio_1" => 90.5, "precio_2" => 90.4, "precio_3" => 90.3, "precio_4" => 90.2, "precio_5" => 90.1, "precio_6" => 90, "precio_7" => 89.09, "precio_8" => 88.00, "precio_9" => 70, "precio_10" => 65.50]
+        ];
+        $sucursal = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->make();
+        $producto->guardarNuevo($params);
+
+        $params = [
+            'dimension'   => ['peso' => 2.00],
+            'precios'     => [[
+                'costo'        => 'ABC',
+                'proveedor_id' => $sucursal->proveedor_id
+            ]],
+            'descripcion' => 'TEST_DESCRIPTION',
+            'id'          => $producto->id,
+            'revisado'    => true
+        ];
+        $producto->actualizar($params);
+        return App\Producto::find($producto->id);
     }
 }

@@ -1,0 +1,32 @@
+.sagd-alert {
+  @include border-radius(1px);
+  border: $alert-border-width solid transparent;
+  margin-bottom: $spacer-y;
+  padding: $alert-padding;
+
+  // Improve alignment and spacing of inner content
+  > p,
+  > ul {
+    margin-bottom: 0;
+  }
+
+  > p + p {
+    margin-top: 5px;
+  }
+}
+
+.sagd-alert-success {
+  @include alert-variant($white, $alert-success-border, $alert-success-text);
+}
+
+.sagd-alert-info {
+  @include alert-variant($white, $alert-info-border, $alert-info-text);
+}
+
+.sagd-alert-warning {
+  @include alert-variant($white, $alert-warning-border, $alert-warning-text);
+}
+
+.sagd-alert-danger {
+  @include alert-variant($white, $alert-danger-border, $alert-danger-text);
+}

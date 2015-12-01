@@ -25,7 +25,7 @@
       modal = $('#confirm-modal');
       configureModal(modal, config);
       modal.modal('show');
-      setTimeout(function(){
+      setTimeout(function() {
         modal.find('#modal-dismiss').focus();
       }, 400);
 
@@ -41,7 +41,7 @@
     }
 
     function hide(type) {
-      modal = $('#'+ type +'-modal');
+      modal = $('#' + type + '-modal');
       modal.modal('hide');
     }
 
@@ -50,7 +50,7 @@
       config.content    ? modal.find('#modal-content').text(config.content)         : '';
       config.dismiss    ? modal.find('#modal-dismiss').text(config.dismiss)         : '';
       config.accept     ? modal.find('#modal-accept').text(config.accept)           : '';
-      config.type       ? modal.find('#modal-accept').addClass('btn btn-'+config.type) : '';
+      config.type       ? modal.find('#modal-accept').addClass('btn btn-' + config.type) : '';
     }
   }
 })();

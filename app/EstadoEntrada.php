@@ -46,6 +46,30 @@ class EstadoEntrada extends LGGModel {
 
 
     /**
+     * Obtiene la relacion del Estado de Cargado
+     * @return App\EstadoEntrada
+     */
+    public static function creando() {
+        return EstadoEntrada::where('nombre', 'Creando')->first();
+    }
+
+    /**
+     * Obtiene la relacion del Estado de Cargando
+     * @return App\EstadoEntrada
+     */
+    public static function cargando() {
+        return EstadoEntrada::where('nombre', 'Cargando')->first();
+    }
+
+    /**
+     * Obtiene la relacion del Estado de Cargado
+     * @return App\EstadoEntrada
+     */
+    public static function cargado() {
+        return EstadoEntrada::where('nombre', 'Cargado')->first();
+    }
+
+    /**
      * Obtiene las Entradas asociadas con el Estatus
      * @return Illuminate\Database\Eloquent\Collection
      */

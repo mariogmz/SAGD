@@ -71,10 +71,10 @@
                 state: 'producto.existencia'
               }, {
                 name: 'Entradas',
-                state: 'inventario.entrada'
+                state: 'entradaIndex'
               }, {
                 name: 'Salidas',
-                state: 'inventario.salida'
+                state: 'salidaIndex'
               }, {
                 name: 'Transferencias',
                 state: 'inventario.transferencia'

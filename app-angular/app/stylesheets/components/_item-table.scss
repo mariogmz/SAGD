@@ -1,4 +1,4 @@
-table.item-table {
+.item-table {
   @extend .table;
   @extend .table-hover;
 
@@ -7,53 +7,78 @@ table.item-table {
     color: $alto;
   }
 
-  tr.failed {
-    background-color: $persian-red-faded;
-  }
+  tr {
+    &.failed {
+      background-color: $persian-red-faded;
+    }
 
-  td.actions {
-    @extend .text-center;
-    .action-buttons {
-      min-width: 100px;
+    &.valid {
+      @extend .table-success;
+    }
+
+    &.invalid {
+      @extend .table-danger;
     }
   }
 
-  td.with-input {
-    padding-left: 3px;
-    padding-right: 3px;
-
-    & > input[type="text"] {
+  td {
+    &.actions {
       @extend .text-center;
-      padding-left: 2px;
-      padding-right: 2px;
+
+      .action-buttons {
+        min-width: 100px;
+      }
     }
-  }
 
-  th.action {
-    transition: all 500ms ease-in-out;
-    &:hover {
-      background-color: $mine-shaft;
-      color: $white;
-      cursor: pointer;
-      transition: all 500ms ease-in-out;
-    }
-  }
+    &.with-input {
+      padding-left: 3px;
+      padding-right: 3px;
 
-  th:last-child {
-    text-align: center;
-  }
+      & > input {
 
-  tr:hover {
-
-    td.with-input {
-
-      > input[type="text"] {
-        background-color: #F5F5F5;
+        [type='text'] {
+          @extend .text-center;
+          padding-left: 2px;
+          padding-right: 2px;
+        }
       }
     }
   }
 
-  span.truncate {
+  th {
+    &.action {
+      transition: all 500ms ease-in-out;
+
+      &:hover {
+
+        background-color: $mine-shaft;
+        color: $white;
+        cursor: pointer;
+        transition: all 500ms ease-in-out;
+      }
+    }
+
+    &.right { text-align: right; }
+
+    &.thin { width: 20%; }
+
+    &:last-child { text-align: center; }
+
+    &:hover {
+
+      .with-input {
+
+        > input {
+          [type='text'] {
+            background-color: #F5F5F5;
+          }
+        }
+      }
+    }
+  }
+
+
+  .truncate {
     @include transition('all 0.5s ease-in-out');
 
     display: inline-block;

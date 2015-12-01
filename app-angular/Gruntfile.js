@@ -93,6 +93,7 @@ module.exports = function(grunt) {
           './bower_components/angularUtils-pagination/dirPagination.js',
           './bower_components/angular-filter/dist/angular-filter.js',
           './bower_components/angular-tooltips/src/js/angular-tooltips.js',
+          './bower_components/tether/dist/js/tether.js',
           './bower_components/bootstrap/dist/js/bootstrap.js',
           './bower_components/pnotify/src/pnotify.core.js',
           './bower_components/pnotify/src/pnotify.desktop.js',

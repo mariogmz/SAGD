@@ -1,8 +1,8 @@
 // Font size and format
-$font-family-sans-serif: "Roboto";
+$font-family-sans-serif: 'Roboto';
 
 // Font-Awesome fonts directory
-$fa-font-path: "../fonts";
+$fa-font-path: '../fonts';
 
 // Color variables
 $alto: rgba(210, 210, 210, 1);
@@ -18,12 +18,11 @@ $science-blue: rgba(2, 117, 216, 1);
 $white: rgba(255, 255, 255, 1);
 
 // Color variants
-$gray-suit-faded: rgba(65, 65, 65, 0.75);
-$mine-shaft-faded: rgba(35, 35, 35, 0.75);
-$persian-red-faded: rgba(210,45,50, 0.75);
+$gray-suit-faded: rgba(65, 65, 65, .75);
+$mine-shaft-faded: rgba(35, 35, 35, .75);
+$persian-red-faded: rgba(210, 45, 50, .75);
 
 // Override bootstrap colors
-$brand-danger : $persian-red;
-$brand-info : $science-blue;
-$brand-warning : $carrot-orange;
-
+$brand-danger: $persian-red;
+$brand-info: $science-blue;
+$brand-warning: $carrot-orange;

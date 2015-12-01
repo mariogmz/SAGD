@@ -8,7 +8,7 @@ namespace App;
  *
  * @property integer $id
  * @property string $rfc
- * @property string $regimen
+ * @property string $razon_social
  * @property string $serie
  * @property integer $ultimo_folio
  * @property integer $numero_certificado
@@ -38,12 +38,12 @@ class RazonSocialEmisor extends LGGModel {
     //
     protected $table = "razones_sociales_emisores";
     public $timestamps = false;
-    protected $fillable = ['sucursal_id', 'domicilio_id', 'rfc', 'regimen', 'serie', 'ultimo_folio',
+    protected $fillable = ['sucursal_id', 'domicilio_id', 'rfc', 'razon_social', 'serie', 'ultimo_folio',
         'numero_certificado', 'numero_certificado_sat'];
 
     public static $rules = [
-        'rfc'                    => "required|min:13|max:13|regex:'[A-Z]{4}\d{6}[A-Z]\d{2}'",
-        'regimen'                => 'required|max:60',
+        'rfc'                    => "required|min:12|max:13|regex:'[A-Z]{3,4}\d{6}\w{3}'",
+        'razon_social'           => 'required|max:60',
         'serie'                  => 'required|max:3',
         'ultimo_folio'           => 'required|integer',
         'numero_certificado'     => 'required|integer',

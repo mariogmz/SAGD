@@ -21,7 +21,6 @@ $factory->define(App\EntradaDetalle::class, function ($faker)
         'importe' => $costo * $cantidad,
         'entrada_id' => $faker->randomDigit,
         'producto_id' => $faker->randomDigit,
-        'sucursal_id' => $faker->randomDigit,
         'producto_movimiento_id' => $faker->randomDigit,
     ];
 });
@@ -33,7 +32,6 @@ $factory->defineAs(App\EntradaDetalle::class, 'full', function($faker) use ($fac
     $producto = factory(App\Producto::class)->create();
     $ed['entrada_id'] = factory(App\Entrada::class, 'full')->create()->id;
     $ed['producto_id'] = $producto->id;
-    $ed['sucursal_id'] = App\Caker::getSucursal()->id;
     $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
@@ -42,7 +40,6 @@ $factory->defineAs(App\EntradaDetalle::class, 'noentrada', function($faker) use 
     $ed = $factory->raw(App\EntradaDetalle::class);
     $producto = factory(App\Producto::class)->create();
     $ed['producto_id'] = $producto->id;
-    $ed['sucursal_id'] = App\Caker::getSucursal()->id;
     $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
@@ -50,7 +47,6 @@ $factory->defineAs(App\EntradaDetalle::class, 'noentrada', function($faker) use 
 $factory->defineAs(App\EntradaDetalle::class, 'noproducto', function($faker) use ($factory){
     $ed = $factory->raw(App\EntradaDetalle::class);
     $ed['entrada_id'] = factory(App\Entrada::class, 'full')->create()->id;
-    $ed['sucursal_id'] = App\Caker::getSucursal()->id;
     $ed['producto_movimiento_id'] = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create()->id;
     return $ed;
 });
@@ -68,6 +64,5 @@ $factory->defineAs(App\EntradaDetalle::class, 'noproductomovimiento', function($
     $ed = $factory->raw(App\EntradaDetalle::class);
     $ed['entrada_id'] = factory(App\Entrada::class, 'full')->create()->id;
     $ed['producto_id'] = factory(App\Producto::class)->create()->id;
-    $ed['sucursal_id'] = App\Caker::getSucursal()->id;
     return $ed;
 });

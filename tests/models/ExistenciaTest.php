@@ -22,11 +22,10 @@ class ExistenciaTest extends TestCase
      */
     public function testModeloEsActualizable()
     {
+        $sucursal = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
-        $producto->addSucursal( factory(App\Sucursal::class)->create() );
-        $ps = $producto->productosSucursales[0];
-        $existencia = factory(App\Existencia::class)->create([
-            'productos_sucursales_id' => $ps->id]);
+        $existencia = $producto->existencias($sucursal);
+
         $existencia->cantidad = 1991.0;
         $this->assertTrue($existencia->isValid('update'));
         $this->assertTrue($existencia->save());

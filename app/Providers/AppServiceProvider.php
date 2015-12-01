@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use DB;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -14,9 +15,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         // Meter en un log cada sentencia SQL ejecutada por la aplicación.
-//        DB::listen(function($sql, $bindings, $time){
-//
-//        });
+        // DB::listen(function($sql, $bindings, $time){
+        //     \Log::info($sql);
+        // });
     }
 
     /**

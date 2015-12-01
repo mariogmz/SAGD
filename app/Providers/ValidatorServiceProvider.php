@@ -46,8 +46,7 @@ class ValidatorServiceProvider extends ServiceProvider {
          */
         Validator::extend('mult', function ($attribute, $value, $parameters, $validator) {
             $data = $validator->getData();
-
-            return $value === $data[$parameters[0]] * $data[$parameters[1]];
+            return (float) $value === (float) $data[$parameters[0]] * $data[$parameters[1]];
         });
         Validator::replacer('mult', function ($message, $attribute, $rule, $parameters) {
             return str_replace([':field1', ':field2'], [$parameters[0], $parameters[1]], $message);

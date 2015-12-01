@@ -4,7 +4,9 @@ namespace App;
 
 
 use App\Events\ProductoActualizado;
+use App\Events\ProductoCreado;
 use DB;
+use Event;
 use Illuminate\Support\MessageBag;
 
 /**
@@ -118,6 +120,9 @@ class Producto extends LGGModel {
         Producto::updated(function ($producto) {
             event(new ProductoActualizado($producto));
         });
+        Producto::created(function ($producto) {
+            Event::fire(new ProductoCreado($producto));
+        });
     }
 
     /**
@@ -204,7 +209,7 @@ class Producto extends LGGModel {
      */
     public function sucursales() {
         return $this->belongsToMany('App\Sucursal', 'productos_sucursales',
-            'producto_id', 'sucursal_id');
+            'producto_id', 'sucursal_id')->withPivot('id');
     }
 
     /**
@@ -224,7 +229,7 @@ class Producto extends LGGModel {
             return $this->hasManyThrough('App\Existencia', 'App\ProductoSucursal',
                 'producto_id', 'productos_sucursales_id');
         } else {
-            return $this->productosSucursales->where('sucursal_id', $sucursal->id)->first()->existencia;
+            return $this->productosSucursales()->where('sucursal_id', $sucursal->id)->first()->existencia;
         }
     }
 
@@ -302,6 +307,9 @@ class Producto extends LGGModel {
      * @return bool
      */
     public function guardarNuevo($parameters) {
+        if (! empty($parameters['producto'])) {
+            $this->fill($parameters['producto']);
+        }
         $dimension = new Dimension($parameters['dimension']);
         $precio = new Precio($parameters['precio']);
         $dimension->producto_id = 0;
@@ -310,13 +318,14 @@ class Producto extends LGGModel {
         if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
             $this->save();
             $this->attachDimension($dimension);
-            $this->attachSucursales();
             $this->guardarPrecios($precio);
-            $this->inicializarExistencias();
 
             return true;
         } else {
             $this->errors || $this->errors = new MessageBag();
+            \Log::info("");
+            \Log::info($this->errors);
+            \Log::info("");
             if ($dimension->errors) {
                 $this->errors->merge($dimension->errors);
             }
@@ -376,7 +385,7 @@ class Producto extends LGGModel {
         $errors = [];
         foreach ($precios_proveedor as $precio_proveedor) {
             $sucursales_id = Sucursal::whereProveedorId($precio_proveedor['proveedor_id'])->get()->pluck('id');
-            $productos_sucursales = ProductoSucursal::with('precio')->whereIn('sucursal_id', $sucursales_id)->whereProductoId($parameters['id'])->get();
+            $productos_sucursales = $this->productosSucursales()->with('precio')->whereIn('sucursal_id', $sucursales_id)->get();
 
             foreach ($productos_sucursales as $producto_sucursal) {
                 if (!$producto_sucursal->precio->update($precio_proveedor)) {
