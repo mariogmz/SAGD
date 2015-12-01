@@ -230,7 +230,24 @@ class TransferenciaController extends Controller
      */
     public function transferir($id)
     {
-
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            if ($this->transferencia->transferir()) {
+                return response()->json([
+                    'message' => 'Transferencia registrada y en progreso'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Transferencia no se marco como transferida',
+                    'error' => 'Ocurrio un error interno. Existencias no se modificaron'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ], 404);
+        }
     }
 
     /**
