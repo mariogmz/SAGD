@@ -15,8 +15,8 @@ class CreateFichasTable extends Migration
         Schema::create('fichas', function (Blueprint $table){
             $table->increments('id');
             $table->integer('producto_id')->unsigned();
-            $table->string('calidad', 45)->default('INTERNO');
-            $table->string('titulo', 45);
+            $table->enum('calidad',['INTERNO','FABRICANTE','ICECAT','NOEDITOR'])->nullable()->default('INTERNO');
+            $table->string('titulo', 50);
             $table->boolean('revisada')->default(false);
         });
     }

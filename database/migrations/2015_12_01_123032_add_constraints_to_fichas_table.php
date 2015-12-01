@@ -25,9 +25,9 @@ class AddConstraintsToFichasTable extends Migration
      */
     public function down()
     {
-        Schema::table('fichas_caracteristicas', function (Blueprint $table){
-            $table->dropForeign('fichas_caracteristicas_producto_id_foreign');
-            $table->dropUnique('fichas_caracteristicas_producto_id_unique');
+        Schema::table('fichas', function (Blueprint $table){
+            $table->dropForeign('fichas_producto_id_foreign');
+            $table->dropUnique('fichas_producto_id_unique');
         });
     }
 }

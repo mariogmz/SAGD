@@ -25,7 +25,7 @@ class AddConstraintsToFichasCaracteristicasTable extends Migration {
     public function down() {
         Schema::table('fichas_caracteristicas', function (Blueprint $table) {
             $table->dropForeign('fichas_caracteristicas_producto_id_foreign');
-            $table->unique('composite_unique');
+            $table->dropUnique('composite_unique');
         });
     }
 }
