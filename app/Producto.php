@@ -238,6 +238,14 @@ class Producto extends LGGModel {
             'producto_id', 'producto_sucursal_id');
     }
 
+    /**
+     * Obtiene la ficha asociada a este producto
+     * @return \App\Ficha
+     */
+    public function ficha(){
+        return $this->hasOne('App\Ficha');
+    }
+
 
     /**
      * Obtiene las Entradas Detalles asociadas con el Producto

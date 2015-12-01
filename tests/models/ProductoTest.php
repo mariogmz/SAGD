@@ -499,6 +499,20 @@ class ProductoTest extends TestCase {
     }
 
     /**
+     * @covers ::ficha
+     * @group relaciones
+     */
+    public function testFicha(){
+        $producto = factory(App\Producto::class)->create();
+        $ficha = factory(App\Ficha::class)->create([
+            'producto_id' => $producto->id
+        ]);
+        $resultado = $producto->ficha;
+        $this->assertInstanceOf('App\Ficha', $resultado);
+        $this->assertEquals($ficha->id, $resultado->id);
+    }
+
+    /**
      * @covers ::entradasDetalles
      * @group relaciones
      * @group feature-salidas-unit-errors
