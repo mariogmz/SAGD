@@ -565,4 +565,65 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::cargar
+     */
+    public function testPostCargar()
+    {
+        $endpoint = $this->endpoint . '/entradas/cargar/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'cargar' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia cargada'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::cargar
+     */
+    public function testPostCargarFindFails()
+    {
+        $endpoint = $this->endpoint . '/entradas/cargar/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::cargar
+     */
+    public function testPostCargarFails()
+    {
+        $endpoint = $this->endpoint . '/entradas/cargar/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'cargar' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Transferencia no se marco como cargada',
+                'error' => 'Ocurrio un error interno. Existencias no se modificaron'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

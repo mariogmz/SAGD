@@ -258,6 +258,23 @@ class TransferenciaController extends Controller
      */
     public function cargar($id)
     {
-
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            if ($this->transferencia->cargar()) {
+                return response()->json([
+                    'message' => 'Transferencia cargada'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Transferencia no se marco como cargada',
+                    'error' => 'Ocurrio un error interno. Existencias no se modificaron'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se pudo encontrar la transferencia',
+                'error' => 'Transferencia no existente'
+            ], 404);
+        }
     }
 }
