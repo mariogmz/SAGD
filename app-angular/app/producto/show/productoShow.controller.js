@@ -1,6 +1,6 @@
 // app/producto/show/producto.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,7 @@
 
   ProductoShowController.$inject = ['$state', '$stateParams', 'api'];
 
-  function ProductoShowController($state, $stateParams, api){
+  function ProductoShowController($state, $stateParams, api) {
 
     var vm = this;
     vm.sortKeys = [
@@ -35,36 +35,38 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerProducto().then(function (){
+    function initialize() {
+      return obtenerProducto().then(function() {
         console.log('Producto obtenido correctamente.');
         $state.go('productoShow.details');
       });
     }
 
-    function obtenerProducto(){
+    function obtenerProducto() {
       return api.get('/producto/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.producto = response.data.producto;
-          if(!vm.producto.margen){
+          if (!vm.producto.margen) {
             vm.producto.margen = {
-              nombre : 'Libre'
-            }
+              nombre: 'Libre'
+            };
           }
+
           vm.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.precios.forEach(function (precio){
+          vm.precios.forEach(function(precio) {
             vm.producto.revisado = vm.producto.revisado && precio.revisado;
           });
+
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }
