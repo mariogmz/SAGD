@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoShowController', ProductoShowController);
 
-  ProductoShowController.$inject = ['$state', '$stateParams', 'api'];
+  ProductoShowController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
 
-  function ProductoShowController($state, $stateParams, api) {
+  function ProductoShowController($state, $stateParams, api, pnotify) {
 
     var vm = this;
     vm.sortKeys = [
@@ -36,34 +36,45 @@
     initialize();
 
     function initialize() {
-      return obtenerProducto().then(function() {
-        console.log('Producto obtenido correctamente.');
-        $state.go('productoShow.details');
-      });
+      obtenerProducto().then(function(response) {
+
+        console.log('Producto obtenido correctamente');
+        vm.producto = response.data.producto;
+        if (!vm.producto.margen) {
+          vm.producto.margen = { nombre: 'Libre'};
+        }
+
+        vm.precios = response.data.precios_proveedor;
+        vm.producto.revisado = true;
+        vm.precios.forEach(function(precio) {
+          vm.producto.revisado = vm.producto.revisado && precio.revisado;
+        });
+
+        return response;
+      }).then(function() {
+
+        obtenerExistencias().then(function(response) {
+          console.log('Existencias de producto obtenidas con exito');
+          vm.producto_existencias = response.data.productos;
+          return response;
+        }).then(function() {
+
+          $state.go('productoShow.details');
+        });
+      }).catch(error);
     }
 
     function obtenerProducto() {
-      return api.get('/producto/', vm.id)
-        .then(function(response) {
-          vm.producto = response.data.producto;
-          if (!vm.producto.margen) {
-            vm.producto.margen = {
-              nombre: 'Libre'
-            };
-          }
+      return api.get('/producto/', vm.id);
+    }
 
-          vm.precios = response.data.precios_proveedor;
-          vm.producto.revisado = true;
-          vm.precios.forEach(function(precio) {
-            vm.producto.revisado = vm.producto.revisado && precio.revisado;
-          });
+    function obtenerExistencias() {
+      return api.get('/producto/' + vm.id + '/existencias');
+    }
 
-          return response.data;
-        })
-        .catch(function(response) {
-          vm.error = response.data;
-          return response.data;
-        });
+    function error(response) {
+      console.log('Hubo un error con la peticion.');
+      pnotity.alert('Error', response.data.message, 'error');
     }
 
     function sort(keyname) {
