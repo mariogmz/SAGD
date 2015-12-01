@@ -2,6 +2,17 @@
   @extend .table;
   @extend .table-hover;
 
+  .disabled {
+
+    background-color: $alto;
+    color: $mine-shaft-faded;
+
+    &:hover {
+      background-color: $alto;
+      color: $mine-shaft-faded;
+    }
+  }
+
   thead {
     background-color: $gray-suit;
     color: $alto;
@@ -19,6 +30,7 @@
     &.invalid {
       @extend .table-danger;
     }
+
   }
 
   td {
@@ -76,7 +88,6 @@
       }
     }
   }
-
 
   .truncate {
     @include transition('all 0.5s ease-in-out');

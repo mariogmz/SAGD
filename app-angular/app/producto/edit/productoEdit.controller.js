@@ -8,12 +8,13 @@
     .module('sagdApp.producto')
     .controller('productoEditController', ProductoEditController);
 
-  ProductoEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'utils'];
+  ProductoEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'utils', 'session'];
 
-  function ProductoEditController($state, $stateParams, api, pnotify, utils) {
+  function ProductoEditController($state, $stateParams, api, pnotify, utils, session) {
 
     var vm = this;
     vm.id = $stateParams.id;
+    vm.empleado = session.obtenerEmpleado();
     vm.sortKeys = [
       {name: 'Proveedor', key: 'clave'},
       {name: 'Costo', key: 'costo'},
@@ -36,6 +37,7 @@
     vm.calcularPrecios = calcularPrecios;
     vm.calcularPreciosMargen = calcularPreciosMargen;
     vm.setClass = utils.setClass;
+    vm.local = sucursalLocal;
     vm.sort = sort;
     vm.back = goBack;
 
@@ -196,6 +198,10 @@
       for (var i = 0; i < cantidadProveedores; i++) {
         calcularPrecios(i);
       }
+    }
+
+    function sucursalLocal(producto) {
+      return vm.empleado.sucursal.nombre === producto.nombre;
     }
 
     //////// Utils /////////

@@ -21,7 +21,8 @@
         </thead>
 
         <tbody>
-          <tr ng-repeat="producto in vm.producto_existencias">
+          <tr ng-repeat="producto in vm.producto_existencias"
+              ng-class="{disabled: vm.local(producto)}">
             <td ng-bind="producto.nombre"></td>
             <td ng-bind="producto.cantidad"></td>
             <td ng-bind="producto.cantidad_pretransferencia"></td>
@@ -30,7 +31,9 @@
             <td ng-bind="producto.cantidad_garantia_cliente"></td>
             <td ng-bind="producto.cantidad_garantia_zegucom"></td>
             <td>
-              <input type="number" min="0" ng-model="vm.pretransferencia[producto.productos_sucursales_id]">
+              <input type="number" min="0"
+                ng-model="vm.pretransferencia[producto.productos_sucursales_id]"
+                ng-if="!vm.local(producto)">
             </td>
           </tr>
         </tbody>
