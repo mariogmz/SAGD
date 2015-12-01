@@ -20,12 +20,12 @@ class EstadoTransferenciaTableSeeder extends Seeder {
          * 6 => Cargando Otra Sucursal.     En proceso de carga en otra sucursal
          * 7 => Cargada Otra Sucursal.      Indica que se realizo la carga exitosamente
          */
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Abierta']);
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Cargando Local']);
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Cargada Local']);
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Iniciando Transferencia']);
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Transferencia Terminada']);
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Cargando Otra Sucursal']);
-        factory(App\EstadoTransferencia::class)->create(['nombre' => 'Cargada Otra Sucursal']);
+        App\EstadoTransferencia::create(['nombre' => 'Abierta']);
+        App\EstadoTransferencia::create(['nombre' => 'Cargando Local']);
+        App\EstadoTransferencia::create(['nombre' => 'Cargada Local']);
+        App\EstadoTransferencia::create(['nombre' => 'Iniciando Transferencia']);
+        App\EstadoTransferencia::create(['nombre' => 'Transferencia Terminada']);
+        App\EstadoTransferencia::create(['nombre' => 'Cargando Otra Sucursal']);
+        App\EstadoTransferencia::create(['nombre' => 'Cargada Otra Sucursal']);
     }
 }
