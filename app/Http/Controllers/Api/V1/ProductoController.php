@@ -145,6 +145,12 @@ class ProductoController extends Controller {
         }
     }
 
+    /**
+     * Buscar un producto por su UPC
+     *
+     * @param string $upc
+     * @return Response
+     */
     public function buscarUpc($upc)
     {
         $this->authorize($this);
