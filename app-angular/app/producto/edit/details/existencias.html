@@ -1,5 +1,5 @@
 <!-- app/producto/show/partials/existencias.html -->
-<section class="card borderless">
+<section class="card borderless productos-existencias">
   <header class="header">
     <h5>Existencias del producto</h5>
   </header>
@@ -31,13 +31,16 @@
             <td ng-bind="producto.cantidad_garantia_cliente"></td>
             <td ng-bind="producto.cantidad_garantia_zegucom"></td>
             <td>
-              <input type="number" min="0"
-                ng-model="vm.pretransferencia[producto.productos_sucursales_id]"
+              <input type="number" min="0" max="{{producto.cantidad}}" value="0"
+                ng-model="vm.pretransferencias[producto.productos_sucursales_id]['pretransferencia']"
                 ng-if="!vm.local(producto)">
             </td>
           </tr>
         </tbody>
       </table>
+    </div>
+    <div class="acciones">
+      <button class="button primary" ng-click="vm.guardarPretransferencias()">Guardar</button>
     </div>
   </article>
 </section>

@@ -30,6 +30,7 @@
       {name: 'P10', key: 'precio_10'},
       {name: 'Dcto%', key: 'descuento'}
     ];
+    vm.pretransferencias = {};
 
     vm.updateClave = updateClave;
     vm.updateSubclave = updateSubclave;
@@ -38,6 +39,7 @@
     vm.calcularPreciosMargen = calcularPreciosMargen;
     vm.setClass = utils.setClass;
     vm.local = sucursalLocal;
+    vm.guardarPretransferencias = guardarPretransferencias;
     vm.sort = sort;
     vm.back = goBack;
 
@@ -126,6 +128,16 @@
     function obtenerExistencias() {
       return api.get('/producto/' + vm.id + '/existencias').then(function(response) {
         vm.producto_existencias = response.data.productos;
+
+        for (var i = vm.producto_existencias.length - 1; i >= 0; i--) {
+          var existencia = vm.producto_existencias[i];
+          var pretransferencia = {
+            id: existencia.productos_sucursales_id,
+            cantidad: existencia.cantidad,
+            pretransferencia: 0
+          };
+          vm.pretransferencias[pretransferencia.id] = pretransferencia;
+        };
       });
     }
 
@@ -202,6 +214,23 @@
 
     function sucursalLocal(producto) {
       return vm.empleado.sucursal.nombre === producto.nombre;
+    }
+
+    function guardarPretransferencias() {
+      vm.pretransferencias = $.map(vm.pretransferencias, function(value, index) {
+        return [value];
+      });
+
+      apiPretransferencias(vm.pretransferencias).then(function(response) {
+        console.log('Pretransferencia guardada');
+        pnotify.alert('Exito', response.data.message, 'success');
+      }).catch(function(response) {
+        pnotify.alertList(response.data.message, response.data.error, 'error');
+      });
+    }
+
+    function apiPretransferencias(data) {
+      return api.post('/producto/' + vm.id + '/existencias/pretransferencia', data);
     }
 
     //////// Utils /////////
