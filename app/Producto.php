@@ -9,7 +9,7 @@ use App\Events\Pretransferir;
 use DB;
 use Event;
 use Illuminate\Support\MessageBag;
-
+use Sagd\SafeTransactions;
 
 /**
  * App\Producto
@@ -71,6 +71,8 @@ use Illuminate\Support\MessageBag;
  */
 class Producto extends LGGModel {
 
+    use SafeTransactions;
+
     protected $table = "productos";
     public $timestamps = true;
     protected $fillable = ['activo', 'clave', 'descripcion', 'descripcion_corta',
@@ -127,7 +129,7 @@ class Producto extends LGGModel {
         });
     }
 
-        /**
+    /**
      * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
      * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
      * los datos asociados en sus dimensiones.
@@ -198,19 +200,22 @@ class Producto extends LGGModel {
      */
     public function pretransferir($data)
     {
-        if (empty($data)) {
-            return false;
-        }
-        $sucursalOrigen = $this->originPretransferencias($data);
-        $dataPretransferencia = $this->purgePretransferencias($data);
-
-        foreach ($dataPretransferencia as $pretransferencia) {
-            $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen))[0];
-            if (gettype($result) === 'object') {
-                return $result;
+        $lambda = function() use ($data) {
+            if (empty($data)) {
+                return false;
             }
-        }
-        return true;
+            $sucursalOrigen = $this->originPretransferencias($data);
+            $dataPretransferencia = $this->purgePretransferencias($data);
+
+            foreach ($dataPretransferencia as $pretransferencia) {
+                $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen))[0];
+                if (gettype($result) === 'object') {
+                    return $result;
+                }
+            }
+            return true;
+        };
+        return $this->safe_transaction($lambda);
     }
 
     /**

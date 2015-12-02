@@ -850,6 +850,46 @@ class ProductoTest extends TestCase {
         $this->assertEquals(30, $cantidad);
     }
 
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     * @group feature-transferencias-rollback
+     */
+    public function testPretransferenciaCuandoUnEventoFallaNoCambiaLaCantidadDeSucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal);
+
+        $cantidadAntes = $productoSucursal->existencia->cantidad;
+
+        $producto->pretransferir($data);
+
+        $cantidadDespues = $producto->productosSucursales()->first()->existencia->cantidad;
+
+        $this->assertEquals($cantidadAntes, $cantidadDespues);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     * @group feature-transferencias-rollback
+     */
+    public function testPretransferenciaCuandoUnEventoFallaNoCambiaLaCantidadPretransferenciaDeSucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->first()->existencia->cantidad_pretransferencia;
+
+        $this->assertEquals(0, $cantidad);
+    }
+
     private function setUpGuardarNuevoExitoso()
     {
         $unique = "A".time();
@@ -937,6 +977,17 @@ class ProductoTest extends TestCase {
             ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
             ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
             ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['sucursal_origen' => $sucursal->id],
+        ];
+    }
+
+    private function setUpPretransferenciaBadData($productoSucursal, $sucursal)
+    {
+        return [
+            ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
+            ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 'c'],
             ['sucursal_origen' => $sucursal->id],
         ];
     }

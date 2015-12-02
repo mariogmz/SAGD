@@ -41,18 +41,25 @@ class EjecutarPretransferencia
         $this->data = $event->data;
         $this->sucursalOrigen = $event->origen;
 
-        $this->actualizarExistencias();
+        return $this->actualizarExistencias();
     }
 
     private function actualizarExistencias()
     {
         $this->existencia = $this->producto->existencias($this->sucursalOrigen);
-        $this->existencia->cantidad -= $this->data['pretransferencia'];
-        $this->existencia->cantidad_pretransferencia += $this->data['pretransferencia'];
+        $pretransferencia = (int)$this->data['pretransferencia'];
 
+        if ($pretransferencia === 0) {
+            $this->existencia->errors = ['cantidad' => 'La cantidad es cero'];
+            return $this->existencia;
+        }
+
+        $this->existencia->cantidad -= $pretransferencia;
+        $this->existencia->cantidad_pretransferencia += $pretransferencia;
         if ($this->existencia->save()) {
             return true;
         } else {
+            \Log::error("Existencia: " . $this->existencia);
             return $this->existencia;
         }
     }
