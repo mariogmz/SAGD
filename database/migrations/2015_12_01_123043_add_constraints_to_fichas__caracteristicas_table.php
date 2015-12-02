@@ -12,8 +12,9 @@ class AddConstraintsToFichasCaracteristicasTable extends Migration {
      */
     public function up() {
         Schema::table('fichas_caracteristicas', function (Blueprint $table) {
-            $table->unique(['producto_id', 'category_feature_id'], 'composite_unique');
-            $table->foreign('producto_id')->references('producto_id')->on('fichas');
+            $table->unique(['ficha_id', 'category_feature_id'], 'composite_unique');
+            $table->foreign('ficha_id')->references('id')->on('fichas');
+            $table->foreign('category_feature_id')->references('id')->on('icecat_categories_feature_groups');
         });
     }
 
@@ -24,7 +25,8 @@ class AddConstraintsToFichasCaracteristicasTable extends Migration {
      */
     public function down() {
         Schema::table('fichas_caracteristicas', function (Blueprint $table) {
-            $table->dropForeign('fichas_caracteristicas_producto_id_foreign');
+            $table->dropForeign('fichas_caracteristicas_category_feature_id_foreign');
+            $table->dropForeign('fichas_caracteristicas_ficha_id_foreign');
             $table->dropUnique('composite_unique');
         });
     }
