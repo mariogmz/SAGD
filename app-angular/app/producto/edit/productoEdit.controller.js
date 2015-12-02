@@ -230,7 +230,7 @@
     }
 
     function apiPretransferencias(data) {
-      return api.post('/producto/' + vm.id + '/existencias/pretransferencia', data);
+      return api.post('/producto/' + vm.id + '/existencias/pretransferir', data);
     }
 
     //////// Utils /////////
