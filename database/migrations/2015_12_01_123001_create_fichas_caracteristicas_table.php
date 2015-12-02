@@ -15,8 +15,7 @@ class CreateFichasCaracteristicasTable extends Migration {
         Schema::create('fichas_caracteristicas', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('producto_id')->unsigned();
-            $table->integer('icecat_feature_id')->unsigned();
-            $table->integer('icecat_feature_group_id')->unsigned();
+            $table->integer('category_feature_id')->unsigned();
             $table->string('valor', 60);
             $table->string('valor_presentacion', 60)->nullable();
         });
