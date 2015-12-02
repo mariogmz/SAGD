@@ -208,9 +208,9 @@ class Producto extends LGGModel {
             $dataPretransferencia = $this->purgePretransferencias($data);
 
             foreach ($dataPretransferencia as $pretransferencia) {
-                $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen))[0];
-                if (gettype($result) === 'object') {
-                    return $result;
+                $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen))[0][0];
+                if (! $result) {
+                    return false;
                 }
             }
             return true;

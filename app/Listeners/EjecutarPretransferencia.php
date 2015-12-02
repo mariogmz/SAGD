@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Existencia;
 use App\Producto;
+use App\ProductoSucursal;
 use App\Sucursal;
 use App\Events\Pretransferir;
 use Illuminate\Queue\InteractsWithQueue;
@@ -15,18 +16,23 @@ class EjecutarPretransferencia
     protected $producto;
     protected $data;
     protected $sucursalOrigen;
-    protected $existencia;
+    protected $existenciaOrigen;
+    protected $existenciaDestino;
 
     /**
      * Create the event listener.
      *
      * @return void
      */
-    public function __construct(Producto $producto, Sucursal $sucursal, Existencia $existencia)
+    public function __construct(Producto $producto, Sucursal $sucursal,
+        Existencia $existenciaOrigen, Existencia $existenciaDestino,
+        ProductoSucursal $productoSucursal)
     {
         $this->producto = $producto;
         $this->sucursalOrigen = $sucursal;
-        $this->existencia = $existencia;
+        $this->existenciaOrigen = $existenciaOrigen;
+        $this->existenciaDestino = $existenciaDestino;
+        $this->productoSucursal = $productoSucursal;
     }
 
     /**
@@ -41,26 +47,28 @@ class EjecutarPretransferencia
         $this->data = $event->data;
         $this->sucursalOrigen = $event->origen;
 
-        return $this->actualizarExistencias();
+        return $this->actualizarExistencias() ? [true] : [false];
     }
 
     private function actualizarExistencias()
     {
-        $this->existencia = $this->producto->existencias($this->sucursalOrigen);
+        $this->existenciaOrigen = $this->producto->existencias($this->sucursalOrigen);
+        $this->productoSucursal = $this->productoSucursal->find($this->data['id']);
+        $this->existenciaDestino = $this->productoSucursal->existencia;
+
         $pretransferencia = (int)$this->data['pretransferencia'];
 
         if ($pretransferencia === 0) {
-            $this->existencia->errors = ['cantidad' => 'La cantidad es cero'];
-            return $this->existencia;
+            $this->existenciaOrigen->errors = ['cantidad' => 'La cantidad es cero'];
+            return $this->existenciaOrigen;
         }
 
-        $this->existencia->cantidad -= $pretransferencia;
-        $this->existencia->cantidad_pretransferencia += $pretransferencia;
-        if ($this->existencia->save()) {
-            return true;
-        } else {
-            \Log::error("Existencia: " . $this->existencia);
-            return $this->existencia;
-        }
+        $this->existenciaOrigen->cantidad -= $pretransferencia;
+        $this->existenciaOrigen->cantidad_pretransferencia += $pretransferencia;
+        $this->existenciaDestino->cantidad_pretransferencia_destino += $pretransferencia;
+
+        $successOrigen = $this->existenciaOrigen->save();
+        $successDestino = $this->existenciaDestino->save();
+        return $successOrigen && $successDestino;
     }
 }

@@ -41,6 +41,7 @@ class Existencia extends LGGModel {
         'cantidad'                  => 'integer|min:0',
         'cantidad_apartado'         => 'integer|min:0',
         'cantidad_pretransferencia' => 'integer|min:0',
+        'cantidad_pretransferencia_destino' => 'integer|min:0',
         'cantidad_transferencia'    => 'integer|min:0',
         'cantidad_garantia_cliente' => 'integer|min:0',
         'cantidad_garantia_zegucom' => 'integer|min:0',
@@ -59,6 +60,7 @@ class Existencia extends LGGModel {
             $e->cantidad || $e->cantidad = 0;
             $e->cantidad_apartado || $e->cantidad_apartado = 0;
             $e->cantidad_pretransferencia || $e->cantidad_pretransferencia = 0;
+            $e->cantidad_pretransferencia_destino || $e->cantidad_pretransferencia_destino = 0;
             $e->cantidad_transferencia || $e->cantidad_transferencia = 0;
             $e->cantidad_garantia_cliente || $e->cantidad_garantia_cliente = 0;
             $e->cantidad_garantia_zegucom || $e->cantidad_garantia_zegucom = 0;
@@ -73,6 +75,7 @@ class Existencia extends LGGModel {
             $e->cantidad || $e->cantidad = 0;
             $e->cantidad_apartado || $e->cantidad_apartado = 0;
             $e->cantidad_pretransferencia || $e->cantidad_pretransferencia = 0;
+            $e->cantidad_pretransferencia_destino || $e->cantidad_pretransferencia_destino = 0;
             $e->cantidad_transferencia || $e->cantidad_transferencia = 0;
             $e->cantidad_garantia_cliente || $e->cantidad_garantia_cliente = 0;
             $e->cantidad_garantia_zegucom || $e->cantidad_garantia_zegucom = 0;

@@ -853,6 +853,24 @@ class ProductoTest extends TestCase {
     /**
      * @covers ::pretransferir
      * @group feature-transferencias
+     */
+    public function testPretransferenciaAumentaCantidadPretransferenciaDestinoASucursalDestino()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->last()->existencia->cantidad_pretransferencia_destino;
+
+        $this->assertEquals(10, $cantidad);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
      * @group feature-transferencias-rollback
      */
     public function testPretransferenciaCuandoUnEventoFallaNoCambiaLaCantidadDeSucursalOrigen()
@@ -986,7 +1004,7 @@ class ProductoTest extends TestCase {
         return [
             ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
             ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
-            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10000],
             ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 'c'],
             ['sucursal_origen' => $sucursal->id],
         ];
