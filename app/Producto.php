@@ -97,6 +97,36 @@ class Producto extends LGGModel {
     public $updateRules = [];
 
     /**
+     * Define the model hooks
+     * @codeCoverageIgnore
+     */
+    public static function boot() {
+        parent::boot();
+        Producto::creating(function ($producto) {
+            $producto->subclave || $producto->subclave = $producto->numero_parte;
+            if (!$producto->isValid()) {
+                return false;
+            }
+
+            return true;
+        });
+        Producto::updating(function ($producto) {
+            $producto->updateRules = self::$rules;
+            $producto->updateRules['clave'] .= ',clave,' . $producto->id;
+            $producto->updateRules['numero_parte'] = ['required', 'max:30', 'regex:`^([\w\-_#\.\(\)\/\+]+\s?)+$`', 'unique:productos,numero_parte,' . $producto->id];
+            $producto->updateRules['upc'] .= ',upc,' . $producto->id;
+
+            return $producto->isValid('update');
+        });
+        Producto::updated(function ($producto) {
+            event(new ProductoActualizado($producto));
+        });
+        Producto::created(function ($producto) {
+            Event::fire(new ProductoCreado($producto));
+        });
+    }
+
+        /**
      * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
      * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
      * los datos asociados en sus dimensiones.
@@ -120,9 +150,6 @@ class Producto extends LGGModel {
             return true;
         } else {
             $this->errors || $this->errors = new MessageBag();
-            \Log::info("");
-            \Log::info($this->errors);
-            \Log::info("");
             if ($dimension->errors) {
                 $this->errors->merge($dimension->errors);
             }
@@ -166,30 +193,7 @@ class Producto extends LGGModel {
      * Define the model hooks
      * @codeCoverageIgnore
      */
-    public static function boot() {
-        parent::boot();
-        Producto::creating(function ($producto) {
-            $producto->subclave || $producto->subclave = $producto->numero_parte;
-            if (!$producto->isValid()) {
-                return false;
-            }
 
-            return true;
-        });
-        Producto::updating(function ($producto) {
-            $producto->updateRules = self::$rules;
-            $producto->updateRules['clave'] .= ',clave,' . $producto->id;
-            $producto->updateRules['numero_parte'] = ['required', 'max:30', 'regex:`^([\w\-_#\.\(\)\/\+]+\s?)+$`', 'unique:productos,numero_parte,' . $producto->id];
-            $producto->updateRules['upc'] .= ',upc,' . $producto->id;
-
-            return $producto->isValid('update');
-        });
-        Producto::updated(function ($producto) {
-            event(new ProductoActualizado($producto));
-        });
-        Producto::created(function ($producto) {
-            Event::fire(new ProductoCreado($producto));
-        });
     }
 
     /**
