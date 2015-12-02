@@ -131,6 +131,10 @@
 
         for (var i = vm.producto_existencias.length - 1; i >= 0; i--) {
           var existencia = vm.producto_existencias[i];
+          if (vm.local(existencia)) {
+            vm.pretransferenciaMaxima = existencia.cantidad;
+          };
+
           var pretransferencia = {
             id: existencia.productos_sucursales_id,
             cantidad: existencia.cantidad,
@@ -226,6 +230,7 @@
       apiPretransferencias(vm.pretransferencias).then(function(response) {
         console.log('Pretransferencia guardada');
         pnotify.alert('Exito', response.data.message, 'success');
+        obtenerExistencias();
       }).catch(function(response) {
         pnotify.alertList(response.data.message, response.data.error, 'error');
       });

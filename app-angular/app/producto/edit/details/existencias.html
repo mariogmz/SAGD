@@ -31,7 +31,7 @@
             <td ng-bind="producto.cantidad_garantia_cliente"></td>
             <td ng-bind="producto.cantidad_garantia_zegucom"></td>
             <td>
-              <input type="number" min="0" max="{{producto.cantidad}}" value="0"
+              <input type="number" min="0" max="{{vm.pretransferenciaMaxima}}" value="0"
                 ng-model="vm.pretransferencias[producto.productos_sucursales_id]['pretransferencia']"
                 ng-if="!vm.local(producto)">
             </td>
