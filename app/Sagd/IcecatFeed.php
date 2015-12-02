@@ -586,7 +586,7 @@ Class IcecatFeed {
             $presentation_value = (string) $product_feature->attributes()['Presentation_Value'];
             $icecat_feature_id = (int) $product_feature->Feature->attributes()['ID'];
             $icecat_category_feature_group_id = (int) $product_feature->attributes()['CategoryFeatureGroup_ID'];
-            array_push($features, compact('icecat_feature_id', 'icecat_category_feature_group_id', 'value', 'presentation_value'));
+            array_push($features, compact('icecat_feature_id', 'icecat_category_feature_group_id', 'icecat_category_id','value', 'presentation_value'));
         }
 
         // Product Supplier

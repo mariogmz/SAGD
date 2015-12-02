@@ -31,7 +31,6 @@ class AddEntradasDetallesConstraints extends Migration {
         Schema::table('entradas_detalles', function ($table) {
             $table->dropForeign('entradas_detalles_entrada_id_foreign');
             $table->dropForeign('entradas_detalles_producto_id_foreign');
-            $table->dropForeign('entradas_detalles_sucursal_id_foreign');
             $table->dropColumn(['entrada_id', 'producto_id']);
         });
     }
