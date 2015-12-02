@@ -221,6 +221,8 @@
         return [value];
       });
 
+      vm.pretransferencias.push({sucursal_origen: vm.empleado.sucursal_id});
+
       apiPretransferencias(vm.pretransferencias).then(function(response) {
         console.log('Pretransferencia guardada');
         pnotify.alert('Exito', response.data.message, 'success');
