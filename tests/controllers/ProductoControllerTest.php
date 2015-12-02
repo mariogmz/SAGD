@@ -366,4 +366,71 @@ class ProductoControllerTest extends TestCase {
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPostPretransferir()
+    {
+        $endpoint = $this->endpoint . '/1/existencias/pretransferir';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'pretransferir' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'Pretransferencias registradas exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPostPretransferirFindProductoFails()
+    {
+        $endpoint = $this->endpoint . '/1/existencias/pretransferir';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'La pretransferencia no se registro debido a que no se encontro el producto',
+                'error' => 'Producto no encontrado'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPostPretransferirFalla()
+    {
+        $endpoint = $this->endpoint . '/1/existencias/pretransferir';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'pretransferir' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'La pretransferencia no se registro debido a un error interno. Las existencias no se modificaron',
+                'error' => 'Pretransferencia fallo'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

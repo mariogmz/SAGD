@@ -29,6 +29,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::group(['prefix' => 'producto', 'as' => 'api.v1.productos'], function(){
             Route::group(['prefix' => '{id}/existencias', 'as' => '.existencias'], function(){
                 Route::get('/', 'ProductoController@indexExistencias');
+                Route::post('pretransferir', ['uses' => 'ProductoController@pretransferir', 'as' => '.pretransferir']);
             });
         });
 

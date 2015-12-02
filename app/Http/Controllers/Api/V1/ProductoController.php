@@ -195,4 +195,36 @@ class ProductoController extends Controller {
             ], 404);
         }
     }
+
+    /**
+     * Llama la funcion para pretransferir las existencias del producto en base
+     * a los parametros enviados
+     *
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
+    public function pretransferir($id, Request $request)
+    {
+        $this->authorize($this);
+        $this->producto = $this->producto->find($id);
+        if ($this->producto) {
+            $params = $request->all();
+            if ($this->producto->pretransferir($params)) {
+                return response()->json([
+                    'message' => 'Pretransferencias registradas exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'La pretransferencia no se registro debido a un error interno. Las existencias no se modificaron',
+                    'error' => 'Pretransferencia fallo'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'La pretransferencia no se registro debido a que no se encontro el producto',
+                'error' => 'Producto no encontrado'
+            ], 404);
+        }
+    }
 }
