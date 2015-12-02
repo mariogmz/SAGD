@@ -97,6 +97,72 @@ class Producto extends LGGModel {
     public $updateRules = [];
 
     /**
+     * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
+     * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
+     * los datos asociados en sus dimensiones.
+     * @param array $parameters
+     * @return bool
+     */
+    public function guardarNuevo($parameters) {
+        if (! empty($parameters['producto'])) {
+            $this->fill($parameters['producto']);
+        }
+        $dimension = new Dimension($parameters['dimension']);
+        $precio = new Precio($parameters['precio']);
+        $dimension->producto_id = 0;
+        $precio->producto_sucursal_id = 0;
+
+        if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
+            $this->save();
+            $this->attachDimension($dimension);
+            $this->guardarPrecios($precio);
+
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            \Log::info("");
+            \Log::info($this->errors);
+            \Log::info("");
+            if ($dimension->errors) {
+                $this->errors->merge($dimension->errors);
+            }
+            if ($precio->errors) {
+                $this->errors->merge($precio->errors);
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Función que hace las operaciones necesarias para la actualización de datos del producto
+     * @param array $parameters
+     * @return bool
+     */
+    public function actualizar($parameters) {
+        DB::beginTransaction();
+        if ($this->update($parameters)
+            && $this->dimension->update($parameters['dimension'])
+            && (empty($precios_errores = $this->actualizarPreciosPorProveedor($parameters)))
+        ) {
+            DB::commit();
+
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            if ($this->dimension->errors) {
+                $this->errors->merge($this->dimension->errors);
+            }
+            if ($precios_errores) {
+                $this->errors->merge(['Precios' => $precios_errores]);
+            }
+            DB::rollback();
+
+            return false;
+        }
+    }
+
+    /**
      * Define the model hooks
      * @codeCoverageIgnore
      */
@@ -297,73 +363,6 @@ class Producto extends LGGModel {
                 'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10', 'precios.descuento', DB::raw('sum(precios.revisado)>0 AS revisado'))
             ->groupBy('proveedores.id')
             ->get();
-    }
-
-
-    /**
-     * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
-     * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
-     * los datos asociados en sus dimensiones.
-     * @param array $parameters
-     * @return bool
-     */
-    public function guardarNuevo($parameters) {
-        if (! empty($parameters['producto'])) {
-            $this->fill($parameters['producto']);
-        }
-        $dimension = new Dimension($parameters['dimension']);
-        $precio = new Precio($parameters['precio']);
-        $dimension->producto_id = 0;
-        $precio->producto_sucursal_id = 0;
-
-        if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
-            $this->save();
-            $this->attachDimension($dimension);
-            $this->guardarPrecios($precio);
-
-            return true;
-        } else {
-            $this->errors || $this->errors = new MessageBag();
-            \Log::info("");
-            \Log::info($this->errors);
-            \Log::info("");
-            if ($dimension->errors) {
-                $this->errors->merge($dimension->errors);
-            }
-            if ($precio->errors) {
-                $this->errors->merge($precio->errors);
-            }
-
-            return false;
-        }
-    }
-
-    /**
-     * Función que hace las operaciones necesarias para la actualización de datos del producto
-     * @param array $parameters
-     * @return bool
-     */
-    public function actualizar($parameters) {
-        DB::beginTransaction();
-        if ($this->update($parameters)
-            && $this->dimension->update($parameters['dimension'])
-            && (empty($precios_errores = $this->actualizarPreciosPorProveedor($parameters)))
-        ) {
-            DB::commit();
-
-            return true;
-        } else {
-            $this->errors || $this->errors = new MessageBag();
-            if ($this->dimension->errors) {
-                $this->errors->merge($this->dimension->errors);
-            }
-            if ($precios_errores) {
-                $this->errors->merge(['Precios' => $precios_errores]);
-            }
-            DB::rollback();
-
-            return false;
-        }
     }
 
     /**
