@@ -141,4 +141,19 @@ class FichaTest extends TestCase {
         $this->assertInstanceOf('App\Producto', $result);
         $this->assertEquals($producto->id, $result->id);
     }
+
+    /**
+     * @covers ::caracteristicas
+     * @group relaciones
+     */
+    public function testCaracteristicas(){
+        $ficha = factory(App\Ficha::class)->create();
+        factory(App\FichaCaracteristica::class, 5)->create([
+            'ficha_id' => $ficha->id
+        ]);
+        $results = $ficha->caracteristicas;
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $results);
+        $this->assertInstanceOf('App\FichaCaracteristica', $results->first());
+        $this->assertSame($ficha->id, $results->first()->ficha_id);
+    }
 }

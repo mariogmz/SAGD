@@ -112,7 +112,7 @@ class Producto extends LGGModel {
         Producto::updating(function ($producto) {
             $producto->updateRules = self::$rules;
             $producto->updateRules['clave'] .= ',clave,' . $producto->id;
-            $producto->updateRules['numero_parte'] .= ',numero_parte,' . $producto->id;
+            $producto->updateRules['numero_parte'] = ['required', 'max:30', 'regex:`^([\w\-_#\.\(\)\/\+]+\s?)+$`', 'unique:productos,numero_parte,' . $producto->id];
             $producto->updateRules['upc'] .= ',upc,' . $producto->id;
 
             return $producto->isValid('update');
@@ -246,6 +246,14 @@ class Producto extends LGGModel {
         return $this->hasOne('App\Ficha');
     }
 
+    /**
+     * Obtiene las características de la ficha asociada a este producto
+     * alias a $producto->ficha->caracteristicas
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fichaCaracteristicas(){
+        return $this->ficha->caracteristicas();
+    }
 
     /**
      * Obtiene las Entradas Detalles asociadas con el Producto

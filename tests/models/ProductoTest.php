@@ -144,8 +144,8 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNumeroDeParteMaximo30Caracteres(){
-        $producto = factory(App\Producto::class,'longnumpart')->make();
+    public function testNumeroDeParteMaximo30Caracteres() {
+        $producto = factory(App\Producto::class, 'longnumpart')->make();
         $this->assertFalse($producto->isValid());
         $producto->numero_parte = 'HelloWorld';
         $this->assertTrue($producto->isValid());
@@ -154,12 +154,12 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNumeroDeParteNoContieneEspaciosEnBlanco(){
+    public function testNumeroDeParteNoContieneEspaciosEnBlanco() {
         $producto = factory(App\Producto::class)->make(
             ['numero_parte' => ' Esp_ac1ios en b1la-nco ']
         );
         $this->assertFalse($producto->isValid());
-        $producto->numero_parte = preg_replace('/\s+/','', $producto->numero_parte);
+        $producto->numero_parte = preg_replace('/\s+/', '', $producto->numero_parte);
         $this->assertTrue($producto->isValid());
     }
 
@@ -177,7 +177,7 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNumeroDeParteEsMaximo30Caracteres(){
+    public function testNumeroDeParteEsMaximo30Caracteres() {
         $producto = factory(App\Producto::class, 'longnumpart')->make();
         $this->assertFalse($producto->save());
         $producto->numero_parte = App\Caker::realUnique(App\Producto::class, 'numero_parte', 'regexify', '\w{30}');
@@ -187,12 +187,12 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNumeroDeParteNoContieneCaracteresInvalidos(){
+    public function testNumeroDeParteNoContieneCaracteresInvalidos() {
         $producto = factory(App\Producto::class)->make([
-            'numero_parte' => 'Psy12&%_  4581·$5' . rand(0.00,9999.99)
+            'numero_parte' => 'Psy12&%_  4581·$5' . rand(0.00, 9999.99)
         ]);
         $this->assertFalse($producto->isvalid());
-        $producto->numero_parte = 'NP3-4100_F #15/' . rand(0.00,9999.99);
+        $producto->numero_parte = 'NP3-4100_F #15/' . rand(0.00, 9999.99);
         $this->assertTrue($producto->isvalid());
     }
 
@@ -502,7 +502,7 @@ class ProductoTest extends TestCase {
      * @covers ::ficha
      * @group relaciones
      */
-    public function testFicha(){
+    public function testFicha() {
         $producto = factory(App\Producto::class)->create();
         $ficha = factory(App\Ficha::class)->create([
             'producto_id' => $producto->id
@@ -510,6 +510,25 @@ class ProductoTest extends TestCase {
         $resultado = $producto->ficha;
         $this->assertInstanceOf('App\Ficha', $resultado);
         $this->assertEquals($ficha->id, $resultado->id);
+    }
+
+    /**
+     * @covers ::fichaCaracteristicas
+     * @group relaciones
+     */
+    public function testFichaCaracteristicas() {
+        $producto = factory(App\Producto::class)->create();
+        $ficha = factory(App\Ficha::class)->create([
+            'producto_id' => $producto->id
+        ]);
+        factory(App\FichaCaracteristica::class, 5)->create([
+            'ficha_id' => $ficha->id
+        ]);
+        $results = $producto->fichaCaracteristicas;
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $results);
+        $this->assertInstanceOf('App\FichaCaracteristica', $results->first());
+        $this->assertSame($ficha->id, $results->first()->ficha_id);
+        $this->assertSame($producto->id, $ficha->producto_id);
     }
 
     /**
@@ -525,9 +544,9 @@ class ProductoTest extends TestCase {
         ]);
 
         $ed = factory(App\EntradaDetalle::class)->create([
-            'producto_id' => $producto->id,
-            'sucursal_id' => $sucursal->id,
-            'entrada_id' => factory(App\Entrada::class, 'full')->create()->id,
+            'producto_id'            => $producto->id,
+            'sucursal_id'            => $sucursal->id,
+            'entrada_id'             => factory(App\Entrada::class, 'full')->create()->id,
             'producto_movimiento_id' => $pm->id
         ]);
         $eds = $producto->entradasDetalles()->get();
@@ -568,8 +587,8 @@ class ProductoTest extends TestCase {
         $producto = factory(App\Producto::class)->create();
 
         $td = factory(App\TransferenciaDetalle::class)->create([
-            'producto_id' => $producto->id,
-            'transferencia_id' => factory(App\Transferencia::class, 'full')->create()->id,
+            'producto_id'            => $producto->id,
+            'transferencia_id'       => factory(App\Transferencia::class, 'full')->create()->id,
             'producto_movimiento_id' => factory(App\ProductoMovimiento::class)->create([
                 'producto_sucursal_id' => $producto->productosSucursales()->first()->id
             ])->id
@@ -594,8 +613,8 @@ class ProductoTest extends TestCase {
         ]);
 
         factory(App\ApartadoDetalle::class)->create([
-            'apartado_id' => factory(App\Apartado::class, 'full')->create()->id,
-            'producto_id' => $producto->id,
+            'apartado_id'            => factory(App\Apartado::class, 'full')->create()->id,
+            'producto_id'            => $producto->id,
             'producto_movimiento_id' => $pm->id
         ]);
 
@@ -622,9 +641,8 @@ class ProductoTest extends TestCase {
      * @covers ::guardarNuevo
      * @group saves
      */
-    public function testGuardarNuevoEsExitoso()
-    {
-        $unique = "A".time();
+    public function testGuardarNuevoEsExitoso() {
+        $unique = "A" . time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -640,8 +658,7 @@ class ProductoTest extends TestCase {
      * @covers ::guardarNuevo
      * @group saves
      */
-    public function testGuardarNuevoCreaLaDimension()
-    {
+    public function testGuardarNuevoCreaLaDimension() {
         $producto = $this->setUpGuardarNuevoExitoso();
 
         $this->assertInstanceOf(App\Dimension::class, $producto->dimension);
@@ -652,8 +669,7 @@ class ProductoTest extends TestCase {
      * @covers ::guardarNuevo
      * @group saves
      */
-    public function testGuardarNuevoCreaElPrecio()
-    {
+    public function testGuardarNuevoCreaElPrecio() {
         $producto = $this->setUpGuardarNuevoExitoso();
 
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $producto->precios);
@@ -664,8 +680,7 @@ class ProductoTest extends TestCase {
      * @covers ::guardarNuevo
      * @group saves
      */
-    public function testGuardarNuevoGuardaParametrosDelModelo()
-    {
+    public function testGuardarNuevoGuardaParametrosDelModelo() {
         $producto = $this->setUpGuardarNuevoExitoso();
 
         $this->assertEquals('jijiji', $producto->descripcion);
@@ -675,9 +690,8 @@ class ProductoTest extends TestCase {
      * @covers ::actualizar
      * @group saves
      */
-    public function testActualizarExitoso()
-    {
-        $unique = "A".time();
+    public function testActualizarExitoso() {
+        $unique = "A" . time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -705,8 +719,7 @@ class ProductoTest extends TestCase {
      * @covers ::actualizar
      * @group saves
      */
-    public function testActualizarPrecioExitoso()
-    {
+    public function testActualizarPrecioExitoso() {
         $producto = $this->setUpActualizarExitoso();
         $sucursal = App\Sucursal::last();
         $productoSucursal = $producto->productosSucursales()->whereSucursalId($sucursal->id)->first();
@@ -719,8 +732,7 @@ class ProductoTest extends TestCase {
      * @covers ::actualizar
      * @group saves
      */
-    public function testActualizarDimensionExitoso()
-    {
+    public function testActualizarDimensionExitoso() {
         $producto = $this->setUpActualizarExitoso();
 
         $this->assertSame(2.00, floatval($producto->dimension->peso));
@@ -730,8 +742,7 @@ class ProductoTest extends TestCase {
      * @covers ::actualizar
      * @group saves
      */
-    public function testActualizarDetallesExitoso()
-    {
+    public function testActualizarDetallesExitoso() {
         $producto = $this->setUpActualizarExitoso();
 
         $this->assertSame('TEST_DESCRIPTION', $producto->descripcion);
@@ -741,9 +752,8 @@ class ProductoTest extends TestCase {
      * @covers ::actualizar
      * @group saves
      */
-    public function testActualizarEnCasoDeFalloHaceRollback()
-    {
-        $unique = "A".time();
+    public function testActualizarEnCasoDeFalloHaceRollback() {
+        $unique = "A" . time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -772,8 +782,7 @@ class ProductoTest extends TestCase {
      * @group saves
      * @group rollbacks
      */
-    public function testActualizarIncorrectoHaceRollbackDePrecios()
-    {
+    public function testActualizarIncorrectoHaceRollbackDePrecios() {
         $producto = $this->setUpActualizarIncorrecto();
         $precio = $producto->precios()->first();
 
@@ -785,8 +794,7 @@ class ProductoTest extends TestCase {
      * @group saves
      * @group rollbacks
      */
-    public function testActualizarIncorrectoHaceRollbackDeDimension()
-    {
+    public function testActualizarIncorrectoHaceRollbackDeDimension() {
         $producto = $this->setUpActualizarIncorrecto();
 
         $this->assertSame(4.00, floatval($producto->dimension->peso));
@@ -797,16 +805,14 @@ class ProductoTest extends TestCase {
      * @group saves
      * @group rollbacks
      */
-    public function testActualizarIncorrectoHaceRollbackDeDetalles()
-    {
+    public function testActualizarIncorrectoHaceRollbackDeDetalles() {
         $producto = $this->setUpActualizarIncorrecto();
 
         $this->assertSame('jijiji', $producto->descripcion);
     }
 
-    private function setUpGuardarNuevoExitoso()
-    {
-        $unique = "A".time();
+    private function setUpGuardarNuevoExitoso() {
+        $unique = "A" . time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -820,9 +826,8 @@ class ProductoTest extends TestCase {
         return $producto;
     }
 
-    private function setUpActualizarExitoso()
-    {
-        $unique = "A".time();
+    private function setUpActualizarExitoso() {
+        $unique = "A" . time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -844,12 +849,12 @@ class ProductoTest extends TestCase {
         ];
 
         $producto->actualizar($params);
+
         return App\Producto::find($producto->id);
     }
 
-    private function setUpActualizarIncorrecto()
-    {
-        $unique = "A".time();
+    private function setUpActualizarIncorrecto() {
+        $unique = "A" . time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -870,6 +875,7 @@ class ProductoTest extends TestCase {
             'revisado'    => true
         ];
         $producto->actualizar($params);
+
         return App\Producto::find($producto->id);
     }
 }

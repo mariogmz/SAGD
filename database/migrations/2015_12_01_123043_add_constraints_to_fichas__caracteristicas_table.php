@@ -14,7 +14,7 @@ class AddConstraintsToFichasCaracteristicasTable extends Migration {
         Schema::table('fichas_caracteristicas', function (Blueprint $table) {
             $table->unique(['ficha_id', 'category_feature_id'], 'composite_unique');
             $table->foreign('ficha_id')->references('id')->on('fichas');
-            $table->foreign('category_feature_id')->references('id')->on('icecat_categories_feature_groups');
+            $table->foreign('category_feature_id')->references('id')->on('icecat_categories_features');
         });
     }
 

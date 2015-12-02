@@ -42,4 +42,12 @@ class Ficha extends LGGModel {
         return $this->belongsTo('App\Producto');
     }
 
+    /**
+     * Obtiene las características asociadas a esta ficha
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function caracteristicas(){
+        return $this->hasMany('App\FichaCaracteristica');
+    }
+
 }
