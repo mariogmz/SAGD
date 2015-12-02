@@ -5,6 +5,7 @@ namespace App;
 
 use App\Events\ProductoActualizado;
 use App\Events\ProductoCreado;
+use App\Events\Pretransferir;
 use DB;
 use Event;
 use Illuminate\Support\MessageBag;
@@ -190,10 +191,26 @@ class Producto extends LGGModel {
     }
 
     /**
-     * Define the model hooks
-     * @codeCoverageIgnore
+     * Invocara la modificacion de existencias para mandarlas a pretransferencia
+     *
+     * @param array $data
+     * @return bool
      */
+    public function pretransferir($data)
+    {
+        if (empty($data)) {
+            return false;
+        }
+        $sucursalOrigen = $this->originPretransferencias($data);
+        $dataPretransferencia = $this->purgePretransferencias($data);
 
+        foreach ($dataPretransferencia as $pretransferencia) {
+            $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen))[0];
+            if (gettype($result) === 'object') {
+                return $result;
+            }
+        }
+        return true;
     }
 
     /**
@@ -406,6 +423,25 @@ class Producto extends LGGModel {
         }
 
         return $errors;
+    }
+
+    private function originPretransferencias($data)
+    {
+        $arr = array_values(array_filter($data, function($element){
+            return !empty($element['sucursal_origen']);
+        }))[0];
+        return Sucursal::findOrFail($arr['sucursal_origen']);
+    }
+
+    /**
+     * Remueve del array los objetos que tengan una pretransferencia menor o
+     * igual a cero
+     */
+    private function purgePretransferencias($data)
+    {
+        return array_filter($data, function($element){
+            return !empty($element['pretransferencia']);
+        });
     }
 
     private function attachDimension($dimension) {

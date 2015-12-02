@@ -768,6 +768,88 @@ class ProductoTest extends TestCase {
         $this->assertSame('jijiji', $producto->descripcion);
     }
 
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferir()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+
+        $this->assertTrue($producto->pretransferir($data));
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirNoDataFails()
+    {
+        $producto = $this->setUpProducto();
+        $data = null;
+
+        $this->assertFalse($producto->pretransferir($data));
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirDisminuyeCantidadASucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+
+        $cantidadAntes = $productoSucursal->existencia->cantidad;
+
+        $producto->pretransferir($data);
+
+        $cantidadDespues = $producto->productosSucursales()->first()->existencia->cantidad;
+
+        $this->assertLessThan($cantidadAntes, $cantidadDespues);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirRestaCantidadExactaASucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->first()->existencia->cantidad;
+
+        $this->assertEquals(70, $cantidad);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferenciaAumentaCantidadPretransferenciaASucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->first()->existencia->cantidad_pretransferencia;
+
+        $this->assertEquals(30, $cantidad);
+    }
+
     private function setUpGuardarNuevoExitoso()
     {
         $unique = "A".time();
@@ -835,5 +917,42 @@ class ProductoTest extends TestCase {
         ];
         $producto->actualizar($params);
         return App\Producto::find($producto->id);
+    }
+
+    private function setUpPretransferenciaData($productoSucursal, $sucursal)
+    {
+        return [
+            ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
+            ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['sucursal_origen' => $sucursal->id],
+        ];
+    }
+
+    private function setUpPretransferenciaDataToSelf($productoSucursal, $sucursal)
+    {
+        return [
+            ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 1],
+            ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['sucursal_origen' => $sucursal->id],
+        ];
+    }
+
+    private function setUpProducto()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+
+        $productoSucursal = $producto->productosSucursales()->first();
+        $productoSucursal->existencia->update([
+            'cantidad' => 100
+        ]);
+        return $producto;
     }
 }

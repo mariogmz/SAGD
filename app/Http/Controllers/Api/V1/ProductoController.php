@@ -210,14 +210,15 @@ class ProductoController extends Controller {
         $this->producto = $this->producto->find($id);
         if ($this->producto) {
             $params = $request->all();
-            if ($this->producto->pretransferir($params)) {
+            $result = $this->producto->pretransferir($params);
+            if (gettype($result) === 'boolean' && $result) {
                 return response()->json([
                     'message' => 'Pretransferencias registradas exitosamente'
                 ], 200);
             } else {
                 return response()->json([
                     'message' => 'La pretransferencia no se registro debido a un error interno. Las existencias no se modificaron',
-                    'error' => 'Pretransferencia fallo'
+                    'error' => $result->errors
                 ], 400);
             }
         } else {
