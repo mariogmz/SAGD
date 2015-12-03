@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use PDF;
 
 class Pretransferencia extends LGGModel
 {
@@ -35,6 +36,32 @@ class Pretransferencia extends LGGModel
         });
     }
 
+    /**
+     * Genera un PDF en base a origen y destino
+     * @param int $origen
+     * @param int $destino
+     * @return Pdf
+     */
+    public function pdf($origen, $destino)
+    {
+        $datos = $this->generarDatos($origen, $destino);
+        $pdf = PDF::loadView('pdf.pretransferencia', ['pretransferencias' => $datos])->setPaper('letter');
+        return $pdf->stream();
+    }
+
+    /**
+     * Genera los datos para la impresion de la pretransferencia
+     * @param int $origen
+     * @param int $destino
+     * @return Collection
+     */
+    private function generarDatos($origen, $destino)
+    {
+        return $this->with('origen', 'destino', 'producto')
+            ->where('sucursal_origen_id', $origen)
+            ->where('sucursal_destino_id', $destino)
+            ->get();
+    }
 
     /**
     * Obtiene el Producto asociado con la Pretransferencia
