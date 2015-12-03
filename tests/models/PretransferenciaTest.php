@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\Pretransferencia
  */
 class PretransferenciaTest extends TestCase {
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing

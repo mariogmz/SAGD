@@ -583,6 +583,21 @@ class ProductoTest extends TestCase {
     }
 
     /**
+     * @covers ::pretransferencias
+     * @group feature-transferencias
+     * @group feature-transferencias-pretransferencias
+     */
+    public function testPretransferencias()
+    {
+        factory(App\Pretransferencia::class)->create();
+        $producto = App\Producto::last();
+        $pretransferencias = $producto->pretransferencias;
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pretransferencias);
+        $this->assertInstanceOf(App\Pretransferencia::class, $pretransferencias->first());
+    }
+
+    /**
      * @covers ::guardarNuevo
      * @group saves
      */

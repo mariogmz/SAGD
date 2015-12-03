@@ -375,6 +375,16 @@ class Producto extends LGGModel {
         return $this->hasMany('App\Reposicion');
     }
 
+
+    /**
+    * Obtiene las Pretransferencias asociadas con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferencias()
+    {
+        return $this->hasMany('App\Pretransferencia', 'producto_id');
+    }
+
     /**
      * Obtienes los precios agrupados por proveedor
      * @return \lluminate\Database\Eloquent\Collection
