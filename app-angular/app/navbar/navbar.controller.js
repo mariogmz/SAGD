@@ -79,6 +79,9 @@
                 name: 'Transferencias',
                 state: 'inventario.transferencia'
               }, {
+                name: 'Por Transferir',
+                state: 'pretransferenciaIndex'
+              }, {
                 name: 'Apartados',
                 state: 'inventario.apartado'
               }, {

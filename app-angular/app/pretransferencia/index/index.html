@@ -1,0 +1,31 @@
+<div class="search-card">
+  <div class="header">
+    <h4>Pretransferencias</h4>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+      <tr>
+        <th class="action">Origen</th>
+        <th class="action">Destino</th>
+        <th class="action">Cantidad pendiente a transferir</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="pretransferencia in vm.pretransferencias">
+        <td>{{vm.empleado.sucursal.nombre}}</td>
+        <td>{{pretransferencia.nombre}}</td>
+        <td>{{pretransferencia.cantidad_pretransferencia_destino}}</td>
+        <td class="actions">
+          <div class="action-buttons" role="group" aria-label="Acciones">
+            <button type="button" class="print" ui-sref="#"><i></i></button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <loader model="vm.pretransferencias"></loader>
+</div>
