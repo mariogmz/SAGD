@@ -3,6 +3,31 @@
 namespace App;
 
 
+use Sagd\IcecatFeed;
+
+/**
+ * App\Ficha
+ *
+ * @property integer $id
+ * @property integer $producto_id
+ * @property string $calidad
+ * @property string $titulo
+ * @property boolean $revisada
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\Producto $producto
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\FichaCaracteristica[] $caracteristicas
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereProductoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereCalidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereTitulo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereRevisada($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Ficha extends LGGModel {
 
     protected $table = "fichas";
@@ -11,7 +36,7 @@ class Ficha extends LGGModel {
 
     public static $rules = [
         'producto_id' => 'integer|required|unique:fichas',
-        'calidad'     => "string|max:45|in:'INTERNO','FABRICANTE','ICECAT','NOEDITOR'",
+        'calidad'     => "string|max:45|in:INTERNO,FABRICANTE,ICECAT,NOEDITOR",
         'titulo'      => 'string|required|max:50',
         'revisada'    => 'boolean'
     ];
@@ -28,25 +53,81 @@ class Ficha extends LGGModel {
         });
         Ficha::updating(function ($model) {
             $model->updateRules = self::$rules;
-            $model->updateRules['producto_id'] = 'integer|required|unique:fichas,id,' . $model->id;
+            $model->updateRules['producto_id'] = 'integer|required|unique:fichas,producto_id,' . $model->id;
 
             return $model->isValid('update');
         });
     }
 
     /**
-     * Obtiene el producto para el cual está definida esta ficha
-     * @return \App\Producto
+     * @param $sheet
+     * @return array|\Illuminate\Database\Eloquent\Collection
      */
-    public function producto(){
+    private function guardarFichaConDetalles($sheet) {
+        // Guardar datos de la ficha
+        $calidad = strtoupper(trim($sheet['quality']));
+        $this->calidad = in_array($calidad, ['INTERNO', 'FABRICANTE', 'ICECAT', 'NOEDITOR']) ? $calidad : null;
+        $this->titulo = $sheet['title'];
+
+        $icecat_category_id = $sheet['icecat_category_id'];
+
+        // Guardar características
+        $fichas_caracteristicas = [];
+        foreach ($sheet['features'] as $caracteristica) {
+            $category_feature =
+                IcecatCategoryFeature::where('icecat_category_id', $icecat_category_id)
+                    ->where('icecat_category_feature_group_id', $caracteristica['icecat_category_feature_group_id'])
+                    ->where('icecat_feature_id', $caracteristica['icecat_feature_id'])
+                    ->first(['id']);
+
+            if (!empty($caracteristica['value']) && !empty($category_feature)) {
+                $ficha_caracteristica = new FichaCaracteristica([
+                    'category_feature_id' => $category_feature->id,
+                    'valor'               => $caracteristica['value'],
+                    'valor_presentacion'  => $caracteristica['presentation_value']
+                ]);
+                array_push($fichas_caracteristicas, $ficha_caracteristica);
+            }
+        }
+
+        if ($this->save()) {
+            return $this->caracteristicas()->saveMany($fichas_caracteristicas);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Intenta obtener la ficha para un producto desde Icecat
+     * @return bool
+     */
+    public function obtenerFichaDesdeIcecat() {
+        $icecat_feed = new IcecatFeed();
+        $sheet = $icecat_feed->getProductSheet($this->producto);
+        if (!empty($sheet)) {
+            return $this->guardarFichaConDetalles($sheet);
+        } else {
+            $this->calidad = 'INTERNO';
+            $this->title = '';
+            $this->revisada = false;
+            $this->save();
+            return false;
+        }
+    }
+
+    /**
+     * Obtiene el producto para el cual está definida esta ficha
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function producto() {
         return $this->belongsTo('App\Producto');
     }
 
     /**
      * Obtiene las características asociadas a esta ficha
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
-    public function caracteristicas(){
+    public function caracteristicas() {
         return $this->hasMany('App\FichaCaracteristica');
     }
 

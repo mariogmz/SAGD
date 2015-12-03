@@ -113,19 +113,19 @@ class FichaTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testCalidadDebeSerUnValorDeLaLista(){
+    public function testCalidadDebeSerUnValorDeLaLista() {
         $ficha = factory(App\Ficha::class)->make([
             'calidad' => 'OTRO'
         ]);
         $this->assertFalse($ficha->isValid());
         $ficha->calidad = 'INTERNO';
-        $this->assertFalse($ficha->isValid());
+        $this->assertTrue($ficha->isValid());
         $ficha->calidad = 'FABRICANTE';
-        $this->assertFalse($ficha->isValid());
+        $this->assertTrue($ficha->isValid());
         $ficha->calidad = 'ICECAT';
-        $this->assertFalse($ficha->isValid());
+        $this->assertTrue($ficha->isValid());
         $ficha->calidad = 'NOEDITOR';
-        $this->assertFalse($ficha->isValid());
+        $this->assertTrue($ficha->isValid());
     }
 
     /**
@@ -146,7 +146,7 @@ class FichaTest extends TestCase {
      * @covers ::caracteristicas
      * @group relaciones
      */
-    public function testCaracteristicas(){
+    public function testCaracteristicas() {
         $ficha = factory(App\Ficha::class)->create();
         factory(App\FichaCaracteristica::class, 5)->create([
             'ficha_id' => $ficha->id
@@ -155,5 +155,114 @@ class FichaTest extends TestCase {
         $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $results);
         $this->assertInstanceOf('App\FichaCaracteristica', $results->first());
         $this->assertSame($ficha->id, $results->first()->ficha_id);
+    }
+
+    /**
+     * @covers ::obtenerFichaDesdeIcecat
+     * @group icecat
+     * @uses \App\Producto
+     * @uses \App\FichaCaracteristica
+     * @uses \Sagd\IcecatFeed
+     */
+    public function testObtenerFichaDesdeIcecatFichaEncontrada() {
+
+        $producto = $this->setUpFichaData();
+
+        $ficha = new App\Ficha();
+        $ficha->producto()->associate($producto);
+        $this->assertNotFalse($ficha->obtenerFichaDesdeIcecat());
+
+        $caracteristicas = $ficha->caracteristicas;
+
+        // Revisar ficha
+        $this->assertGreaterThanOrEqual(1, $caracteristicas->count());
+        $this->assertSame('ICECAT', $ficha->calidad);
+        $this->assertSame('HP Officejet 6000 Wireless Printer - E609n', $ficha->titulo);
+        $this->assertFalse(boolval($ficha->revisada));
+
+        // Revisar características
+        $this->assertLessThanOrEqual(28, $caracteristicas->count());
+
+        foreach ($caracteristicas as $caracteristica) {
+            $this->assertNotEmpty($caracteristica->valor);
+            $this->assertNotEmpty($caracteristica->valor_presentacion);
+        }
+    }
+
+    /**
+     * @covers ::obtenerFichaDesdeIcecat
+     * @group icecat
+     * @uses \App\Producto
+     * @uses \App\FichaCaracteristica
+     * @uses \Sagd\IcecatFeed
+     */
+    public function testObtenerFichaDesdeIcecatFichaNoEncontrada() {
+        $icecat_supplier = App\IcecatSupplier::firstOrNew([
+            'name' => 'hp',
+        ]);
+        $icecat_supplier->marca->update([
+            'nombre' => 'hp'
+        ]);
+        $producto = factory(App\Producto::class)->create([
+            'marca_id'     => $icecat_supplier->marca->id,
+            'numero_parte' => 'CB049AT'
+        ]);
+        if (empty($producto)) {
+            $producto = App\Producto::whereNumeroParte('CB049AT')->first();
+            $producto->marca()->associate($icecat_supplier->marca);
+        }
+
+        $ficha = new App\Ficha();
+        $ficha->producto()->associate($producto);
+
+        $this->assertFalse($ficha->obtenerFichaDesdeIcecat());
+        $caracteristicas = $ficha->caracteristicas;
+
+        // Revisar ficha
+        $this->assertGreaterThanOrEqual(0, $caracteristicas->count());
+        $this->assertSame('INTERNO', $ficha->calidad);
+        $this->assertEmpty($ficha->titulo);
+        $this->assertFalse(boolval($ficha->revisada));
+
+        // Revisar Producto
+
+    }
+
+    private function setUpFichaData() {
+        factory(App\Marca::class)->create([
+            'nombre' => 'hp',
+            'clave'  => 'HP'
+        ]);
+        $marca = App\Marca::whereNombre('hp')->first();
+        factory(App\IcecatSupplier::class)->create([
+            'name'     => 'hp',
+            'marca_id' => $marca->id
+        ]);
+        factory(App\IcecatCategory::class)->create([
+            'icecat_id' => 234
+        ]);
+        factory(App\IcecatFeature::class)->create([
+            'icecat_id' => 460
+        ]);
+        factory(App\IcecatCategoryFeatureGroup::class)->create([
+            'icecat_id' => 46
+        ]);
+        factory(App\IcecatCategoryFeature::class)->create([
+            'icecat_category_id'               => 234,
+            'icecat_feature_id'                => 460,
+            'icecat_category_feature_group_id' => 46
+        ]);
+
+        $producto = App\Producto::whereNumeroParte('CB049A')->first();
+        if ($producto) {
+            $producto->update([
+                'numero_parte' => rand(1, 999999999)
+            ]);
+        }
+
+        return factory(App\Producto::class)->create([
+            'numero_parte' => 'CB049A',
+            'marca_id'     => $marca->id
+        ]);
     }
 }
