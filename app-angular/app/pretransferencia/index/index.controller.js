@@ -14,6 +14,7 @@
 
     var vm = this;
     vm.empleado = session.obtenerEmpleado();
+    vm.print = print;
 
     activate();
 
@@ -28,6 +29,18 @@
 
     function obtenerPretransferencias() {
       return api.get('/inventario/pretransferencias/origen/' + vm.empleado.sucursal_id);
+    }
+
+    function print(pretransferencia) {
+      var origen = pretransferencia.origen.id;
+      var destino = pretransferencia.destino.id;
+      backendPrint(origen, destino).then(function(response) {
+        debugger;
+      });
+    }
+
+    function backendPrint(origen, destino) {
+      return api.get('/inventario/pretransferencias/imprimir/origen/' + origen + '/destino/' + destino);
     }
   }
 })();
