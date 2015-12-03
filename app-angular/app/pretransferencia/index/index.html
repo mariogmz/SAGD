@@ -17,8 +17,8 @@
     <tbody>
       <tr ng-repeat="pretransferencia in vm.pretransferencias">
         <td>{{vm.empleado.sucursal.nombre}}</td>
-        <td>{{pretransferencia.nombre}}</td>
-        <td>{{pretransferencia.cantidad_pretransferencia_destino}}</td>
+        <td>{{pretransferencia.destino.nombre}}</td>
+        <td>{{pretransferencia.cantidad}}</td>
         <td class="actions">
           <div class="action-buttons" role="group" aria-label="Acciones">
             <button type="button" class="print" ui-sref="#"><i></i></button>

@@ -4,17 +4,17 @@ namespace App\Http\Controllers\Api\V1;
 
 use Illuminate\Http\Request;
 
-use App\Sucursal;
+use App\Pretransferencia;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
 class PretransferenciaController extends Controller
 {
-    protected $sucursal;
+    protected $pretransferencia;
 
-    public function __construct(Sucursal $sucursal)
+    public function __construct(Pretransferencia $pretransferencia)
     {
-        $this->sucursal = $sucursal;
+        $this->pretransferencia = $pretransferencia;
         $this->middleware('jwt.auth');
     }
 
@@ -27,13 +27,11 @@ class PretransferenciaController extends Controller
     public function index($id)
     {
         $this->authorize($this);
-        return $this->sucursal
-            ->selectRaw('sucursales.nombre, SUM(existencias.cantidad_pretransferencia_destino) as cantidad_pretransferencia_destino')
-            ->join('productos_sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
-            ->join('existencias', 'existencias.productos_sucursales_id', '=', 'productos_sucursales.id')
-            ->where('existencias.cantidad_pretransferencia_destino', '>', 0)
-            ->where('sucursales.id', '<>', $id)
-            ->groupBy('sucursales.id')
+        return $this->pretransferencia
+            ->with('origen','destino')
+            ->selectRaw('sum(cantidad) as cantidad, sucursal_origen_id, sucursal_destino_id')
+            ->where('sucursal_origen_id', $id)
+            ->groupBy('sucursal_destino_id')
             ->get();
     }
 }

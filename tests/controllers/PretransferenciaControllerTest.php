@@ -36,7 +36,7 @@ class PretransferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/pretransferencias/origen/1';
 
         $this->mock->shouldReceive([
-            'selectRaw->join->join->where->where->groupBy->get' => []
+            'with->selectRaw->where->groupBy->get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Sucursal', $this->mock);
 
