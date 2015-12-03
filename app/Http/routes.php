@@ -34,7 +34,10 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         });
 
         Route::group(['prefix' => 'inventario', 'as' => 'api.v1.inventarios'], function(){
-            Route::get('/pretransferencias/origen/{id}', 'PretransferenciaController@index');
+            Route::group(['prefix' => 'pretransferencias', 'as' => '.pretransferencias'], function(){
+                Route::get('origen/{id}', 'PretransferenciaController@index');
+                Route::get('imprimir/origen/{origen}/destino/{destino}', ['as' => '.imprimir', 'uses' => 'PretransferenciaController@imprimir']);
+            });
         });
 
         Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);

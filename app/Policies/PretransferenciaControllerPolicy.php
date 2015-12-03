@@ -25,6 +25,21 @@ class PretransferenciaControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede listar los Pretransferencias
+     *
+     * @param  User  $user
+     * @param  PretransferenciaController $controller
+     * @return bool
+     */
+    public function imprimir(User $user, PretransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'imprimir')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string

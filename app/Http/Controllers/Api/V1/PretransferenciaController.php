@@ -34,4 +34,16 @@ class PretransferenciaController extends Controller
             ->groupBy('sucursal_destino_id')
             ->get();
     }
+
+    /**
+     * Compila un PDF y lo regresa
+     *
+     * @param int $origen
+     * @param int $destino
+     * @return PDF
+     */
+    public function imprimir($origen, $destino)
+    {
+        return response()->json([], 200);
+    }
 }

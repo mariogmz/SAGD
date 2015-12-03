@@ -43,4 +43,16 @@ class PretransferenciaControllerTest extends TestCase
         $this->get($endpoint)
             ->assertResponseStatus(200);
     }
+
+    /**
+     * @covers ::imprimir
+     * @group feature-transferencias
+     */
+    public function testGetImprimir()
+    {
+        $endpoint = $this->endpoint . '/pretransferencias/imprimir/origen/1/destino/2';
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
 }
