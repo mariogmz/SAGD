@@ -128,6 +128,7 @@
     function obtenerExistencias() {
       return api.get('/producto/' + vm.id + '/existencias').then(function(response) {
         vm.producto_existencias = response.data.productos;
+        vm.pretransferencias = {};
 
         for (var i = vm.producto_existencias.length - 1; i >= 0; i--) {
           var existencia = vm.producto_existencias[i];
