@@ -35,12 +35,14 @@
       var origen = pretransferencia.origen.id;
       var destino = pretransferencia.destino.id;
       backendPrint(origen, destino).then(function(response) {
-        debugger;
+        var file = new Blob([response.data], {type: 'application/pdf'});
+        var fileURL = URL.createObjectURL(file);
+        window.open(fileURL);
       });
     }
 
     function backendPrint(origen, destino) {
-      return api.get('/inventario/pretransferencias/imprimir/origen/' + origen + '/destino/' + destino);
+      return api.get('/inventario/pretransferencias/imprimir/origen/' + origen + '/destino/' + destino, null, true);
     }
   }
 })();
