@@ -923,6 +923,25 @@ class ProductoTest extends TestCase {
         $this->assertEquals(0, $cantidad);
     }
 
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     * @group feature-transferencias-pretransferencias
+     */
+    public function testPretransferirCreaUnModeloDePretransferencia()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+
+        $producto->pretransferir($data);
+
+        $pretransferencia = $producto->pretransferencias()->first();
+
+        $this->assertInstanceOf(App\Pretransferencia::class, $pretransferencia);
+    }
+
     private function setUpGuardarNuevoExitoso()
     {
         $unique = "A".time();
