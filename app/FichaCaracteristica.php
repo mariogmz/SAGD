@@ -25,9 +25,15 @@ class FichaCaracteristica extends LGGModel {
     public static function boot() {
         parent::boot();
         FichaCaracteristica::creating(function ($ficha_caracteristica) {
+            if(empty($ficha_caracteristica->valor_presentacion)){
+                $ficha_caracteristica->valor_presentacion = $ficha_caracteristica->valor;
+            }
             return $ficha_caracteristica->isValid();
         });
         FichaCaracteristica::updating(function ($ficha_caracteristica) {
+            if(empty($ficha_caracteristica->valor_presentacion)){
+                $ficha_caracteristica->valor_presentacion = $ficha_caracteristica->valor;
+            }
             $ficha_caracteristica->updateRules = self::$rules;
             $ficha_caracteristica->updateRules['ficha_id'] = "integer|required|unique_with:fichas_caracteristicas,category_feature_id,{$ficha_caracteristica->id}";
 

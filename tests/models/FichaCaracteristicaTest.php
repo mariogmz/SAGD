@@ -112,6 +112,23 @@ class FichaCaracteristicaTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     */
+    public function testCuandoValorPresentacionEsVacioCopiarElValor(){
+        $ficha_caracteristica = factory(App\FichaCaracteristica::class)->make([
+            'valor' => 'hola',
+        ]);
+        unset($ficha_caracteristica->valor_presentacion);
+        $this->assertTrue($ficha_caracteristica->save());
+        $ficha_caracteristica = $ficha_caracteristica->fresh();
+        $this->assertSame('hola', $ficha_caracteristica->valor_presentacion);
+        $this->assertTrue($ficha_caracteristica->update([
+            'valor_presentacion' => ''
+        ]));
+        $this->assertSame('hola', $ficha_caracteristica->valor_presentacion);
+    }
+
+    /**
      * @covers ::ficha
      * @group relaciones
      */
