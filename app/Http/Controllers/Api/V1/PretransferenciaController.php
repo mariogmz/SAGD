@@ -44,6 +44,7 @@ class PretransferenciaController extends Controller
      */
     public function imprimir($origen, $destino)
     {
-        return response()->json([], 200);
+        $this->authorize($this);
+        return $this->pretransferencia->pdf($origen, $destino);
     }
 }

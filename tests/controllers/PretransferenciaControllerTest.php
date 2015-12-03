@@ -14,7 +14,7 @@ class PretransferenciaControllerTest extends TestCase
     public function setUp()
     {
         parent::setUp();
-        $this->mock = $this->setUpMock('App\Sucursal');
+        $this->mock = $this->setUpMock('App\Pretransferencia');
     }
 
     public function setUpMock($class)
@@ -38,7 +38,7 @@ class PretransferenciaControllerTest extends TestCase
         $this->mock->shouldReceive([
             'with->selectRaw->where->groupBy->get' => []
         ])->withAnyArgs();
-        $this->app->instance('App\Sucursal', $this->mock);
+        $this->app->instance('App\Pretransferencia', $this->mock);
 
         $this->get($endpoint)
             ->assertResponseStatus(200);
@@ -51,6 +51,11 @@ class PretransferenciaControllerTest extends TestCase
     public function testGetImprimir()
     {
         $endpoint = $this->endpoint . '/pretransferencias/imprimir/origen/1/destino/2';
+
+        $this->mock->shouldReceive([
+            'pdf' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Pretransferencia', $this->mock);
 
         $this->get($endpoint)
             ->assertResponseStatus(200);
