@@ -71,6 +71,20 @@ class IcecatSupplierTest extends TestCase {
      * @coversNothing
      * @group icecat
      */
+    public function testNameEsUnico() {
+        $primer_ics = factory(App\IcecatSupplier::class)->create();
+        $segundo_ics = factory(App\IcecatSupplier::class)->make();
+        $name = $segundo_ics->name;
+        $segundo_ics->name = $primer_ics->name;
+        $this->assertFalse($segundo_ics->isValid());
+        $segundo_ics->name = $name;
+        $this->assertTrue($segundo_ics->isValid());
+    }
+
+    /**
+     * @coversNothing
+     * @group icecat
+     */
     public function test_logo_url_es_opcional() {
         $icecat_supplier = factory(App\IcecatSupplier::class)->make();
         unset($icecat_supplier->logo_url);
