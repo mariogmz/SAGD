@@ -60,10 +60,13 @@ class Ficha extends LGGModel {
     }
 
     /**
+     * Este método recibe el array extraído de una ficha de icecat e inicializa una ficha para un producto junto
+     * con sus características, si la bandera de sobreescribir está en TRUE, sobrescribe las descripciones del producto
      * @param $sheet
-     * @return array|\Illuminate\Database\Eloquent\Collection
+     * @param bool|false $sobrescribir_datos_producto
+     * @return array|bool|\Illuminate\Database\Eloquent\Collection
      */
-    private function guardarFichaConDetalles($sheet) {
+    private function guardarFichaConDetalles($sheet, $sobrescribir_datos_producto = false) {
         // Guardar datos de la ficha
         $calidad = strtoupper(trim($sheet['quality']));
         $this->calidad = in_array($calidad, ['INTERNO', 'FABRICANTE', 'ICECAT', 'NOEDITOR']) ? $calidad : null;
@@ -91,6 +94,13 @@ class Ficha extends LGGModel {
         }
 
         if ($this->save()) {
+            if ($sobrescribir_datos_producto) {
+                $this->producto->update([
+                    'descripcion' => substr($sheet['long_summary_description'],0,299),
+                    'descripcion_corta' => substr($sheet['short_summary_description'],0,49)
+                ]);
+            }
+
             return $this->caracteristicas()->saveMany($fichas_caracteristicas);
         } else {
             return false;
@@ -99,18 +109,20 @@ class Ficha extends LGGModel {
 
     /**
      * Intenta obtener la ficha para un producto desde Icecat
+     * @param bool $sobrescribir_datos_producto
      * @return bool
      */
-    public function obtenerFichaDesdeIcecat() {
+    public function obtenerFichaDesdeIcecat($sobrescribir_datos_producto = false) {
         $icecat_feed = new IcecatFeed();
         $sheet = $icecat_feed->getProductSheet($this->producto);
         if (!empty($sheet)) {
-            return $this->guardarFichaConDetalles($sheet);
+            return $this->guardarFichaConDetalles($sheet, $sobrescribir_datos_producto);
         } else {
             $this->calidad = 'INTERNO';
             $this->title = '';
             $this->revisada = false;
             $this->save();
+
             return false;
         }
     }
