@@ -211,6 +211,11 @@ class Ficha extends LGGModel {
         }
     }
 
+    /**
+     * Este método recibe un array de arrays asociativos con atributos válidos para el modelo de FichaCaracteristica
+     * y los asocia con la ficha
+     * @param array $caracteristicas
+     */
     public function agregarCaracteristicas(array $caracteristicas) {
         $caracteristicas = array_map(function($caracteristica){
             return new FichaCaracteristica($caracteristica);
@@ -218,6 +223,11 @@ class Ficha extends LGGModel {
         $this->caracteristicas()->saveMany($caracteristicas);
     }
 
+    /**
+     * Este método recibe un array de arrays asociativos con datos válidos para FichaCaracteristica,
+     * y alguno coincide con una característica existente de la ficha, actualiza sus valores.
+     * @param array $caracteristicas
+     */
     public function actualizarCaracteristicas(array $caracteristicas) {
         foreach($caracteristicas as $caracteristica){
             if(!empty($caracteristica_asociada = FichaCaracteristica::find($caracteristica['id']))){
