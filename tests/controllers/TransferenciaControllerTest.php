@@ -50,7 +50,7 @@ class TransferenciaControllerTest extends TestCase
         ]);
 
         $this->mock->shouldReceive([
-            'where->get' => []
+            'with->where->get' => []
             ])
             ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);
@@ -81,7 +81,7 @@ class TransferenciaControllerTest extends TestCase
         ]);
 
         $this->mock->shouldReceive([
-            'where->get' => []
+            'with->where->get' => []
             ])
             ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);

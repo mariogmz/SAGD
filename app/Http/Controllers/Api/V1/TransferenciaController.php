@@ -33,7 +33,9 @@ class TransferenciaController extends Controller
                 'error' => 'No se pudo encontrar el empleado que realizo esta peticion'
                 ], 404);
         } else {
-            return $this->transferencia->where('sucursal_origen_id', $empleado->sucursal_id)->get();
+            return $this->transferencia
+                ->with('sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'empleadoDestino', 'empleadoRevision', 'estado')
+                ->where('sucursal_origen_id', $empleado->sucursal_id)->get();
         }
     }
 
@@ -51,7 +53,9 @@ class TransferenciaController extends Controller
                 'error' => 'No se pudo encontrar el empleado que realizo esta peticion'
                 ], 404);
         } else {
-            return $this->transferencia->where('sucursal_destino_id', $empleado->sucursal_id)->get();
+            return $this->transferencia
+                ->with('sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'empleadoDestino', 'empleadoRevision', 'estado')
+                ->where('sucursal_destino_id', $empleado->sucursal_id)->get();
         }
     }
 
