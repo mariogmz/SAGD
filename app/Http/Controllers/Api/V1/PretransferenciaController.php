@@ -28,8 +28,9 @@ class PretransferenciaController extends Controller
     {
         $this->authorize($this);
         return $this->pretransferencia
-            ->with('origen','destino')
-            ->selectRaw('sum(cantidad) as cantidad, sucursal_origen_id, sucursal_destino_id')
+            ->with('origen', 'destino', 'empleado')
+            ->selectRaw('sum(cantidad) as cantidad, sucursal_origen_id, sucursal_destino_id, GROUP_CONCAT(DISTINCT empleados.nombre SEPARATOR", ") as empleados')
+            ->join('empleados', 'pretransferencias.empleado_id', '=', 'empleados.id')
             ->where('sucursal_origen_id', $id)
             ->groupBy('sucursal_destino_id')
             ->get();

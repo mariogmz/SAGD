@@ -10,14 +10,16 @@
       <tr>
         <th class="action">Origen</th>
         <th class="action">Destino</th>
+        <th class="action">Creador(es)</th>
         <th class="action">Cantidad pendiente a transferir</th>
         <th>Acciones</th>
       </tr>
     </thead>
     <tbody>
       <tr ng-repeat="pretransferencia in vm.pretransferencias">
-        <td>{{vm.empleado.sucursal.nombre}}</td>
+        <td>{{pretransferencia.origen.nombre}}</td>
         <td>{{pretransferencia.destino.nombre}}</td>
+        <td>{{pretransferencia.empleados}}</td>
         <td>{{pretransferencia.cantidad}}</td>
         <td class="actions">
           <div class="action-buttons" role="group" aria-label="Acciones">

@@ -17,9 +17,16 @@
     <p>Origen: <strong> {{ $pretransferencias->first()->origen->nombre }} </strong> </p>
     <p>Destino: <strong> {{ $pretransferencias->first()->destino->nombre }} </strong></p>
     <p>Fecha creación: <em>{{ \Carbon\Carbon::now()->format('d/m/Y, g:i a') }}</em></p>
+    <p>Creadores: </p>
+    <ul>
+        @foreach($pretransferencias->pluck('empleado')->unique('id') as $empleado)
+        <li>{{$empleado->id}}: {{$empleado->nombre}}</li>
+        @endforeach
+    </ul>
     <table>
         <thead>
             <tr>
+                <th>Creador</th>
                 <th>Descripcion</th>
                 <th>UPC</th>
                 <th>Cantidad</th>
@@ -28,6 +35,7 @@
         <tbody>
             @foreach($pretransferencias as $pretransferencia)
                 <tr>
+                    <td>{{ $pretransferencia->empleado->id }}</td>
                     <td>{{ $pretransferencia->producto->descripcion }}</td>
                     <td>{{ $pretransferencia->producto->upc }}</td>
                     <td>{{ $pretransferencia->cantidad }}</td>

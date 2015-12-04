@@ -9,12 +9,13 @@ class Pretransferencia extends LGGModel
 {
     protected $table = 'pretransferencias';
     public $timestamps = true;
-    protected $fillable = ['producto_id', 'sucursal_origen_id', 'sucursal_destino_id', 'cantidad'];
+    protected $fillable = ['producto_id', 'sucursal_origen_id', 'sucursal_destino_id', 'empleado_id', 'cantidad'];
 
     public static $rules = [
         'producto_id'           => 'required|int|',
         'sucursal_origen_id'    => 'required|int|',
         'sucursal_destino_id'   => 'required|int|',
+        'empleado_id'   => 'required|int|',
         'cantidad'              => 'required|int|min:0'
     ];
 
@@ -57,7 +58,7 @@ class Pretransferencia extends LGGModel
      */
     private function generarDatos($origen, $destino)
     {
-        return $this->with('origen', 'destino', 'producto')
+        return $this->with('origen', 'destino', 'producto', 'empleado')
             ->where('sucursal_origen_id', $origen)
             ->where('sucursal_destino_id', $destino)
             ->get();
