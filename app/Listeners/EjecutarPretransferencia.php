@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Empleado;
 use App\Existencia;
 use App\Pretransferencia;
 use App\Producto;
@@ -21,6 +22,7 @@ class EjecutarPretransferencia
     protected $producto;
     protected $sucursalDestino;
     protected $sucursalOrigen;
+    protected $empleado;
 
     /**
      * Create the event listener.
@@ -30,7 +32,8 @@ class EjecutarPretransferencia
     public function __construct(
         Producto $producto, Sucursal $sucursal,
         Existencia $existenciaOrigen, Existencia $existenciaDestino,
-        ProductoSucursal $productoSucursal, Pretransferencia $pretransferencia)
+        ProductoSucursal $productoSucursal, Pretransferencia $pretransferencia,
+        ProductoMovimiento $productoMovimiento, Empleado $empleado)
     {
         $this->producto = $producto;
         $this->sucursalOrigen = $sucursal;
@@ -39,6 +42,7 @@ class EjecutarPretransferencia
         $this->existenciaDestino = $existenciaDestino;
         $this->productoSucursal = $productoSucursal;
         $this->pretransferencia = $pretransferencia;
+        $this->empleado = $empleado;
     }
 
     /**
@@ -52,6 +56,7 @@ class EjecutarPretransferencia
         $this->producto = $event->producto;
         $this->data = $event->data;
         $this->sucursalOrigen = $event->origen;
+        $this->empleado = $event->empleado;
 
         return $this->actualizarExistencias() ? [true] : [false];
     }
@@ -99,6 +104,7 @@ class EjecutarPretransferencia
         $this->pretransferencia->origen()->associate($this->sucursalOrigen);
         $this->pretransferencia->destino()->associate($this->sucursalDestino);
         $this->pretransferencia->cantidad = $cantidad;
+        $this->pretransferencia->empleado()->associate($this->empleado);
     }
 
     private function guardarModelos()

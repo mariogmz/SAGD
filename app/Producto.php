@@ -206,9 +206,10 @@ class Producto extends LGGModel {
             }
             $sucursalOrigen = $this->originPretransferencias($data);
             $dataPretransferencia = $this->purgePretransferencias($data);
+            $empleado = $this->creadorPretransferencia($data);
 
             foreach ($dataPretransferencia as $pretransferencia) {
-                $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen))[0][0];
+                $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen, $empleado))[0][0];
                 if (! $result) {
                     return false;
                 }
@@ -457,6 +458,14 @@ class Producto extends LGGModel {
         return array_filter($data, function($element){
             return !empty($element['pretransferencia']);
         });
+    }
+
+    private function creadorPretransferencia($data)
+    {
+        $arr = array_values(array_filter($data, function($element) {
+            return !empty($element['empleado_id']);
+        }))[0];
+        return Empleado::findOrFail($arr['empleado_id']);
     }
 
     private function attachDimension($dimension) {

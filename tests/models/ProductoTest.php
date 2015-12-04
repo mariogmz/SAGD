@@ -792,7 +792,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
 
         $this->assertTrue($producto->pretransferir($data));
     }
@@ -818,7 +819,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
 
         $cantidadAntes = $productoSucursal->existencia->cantidad;
 
@@ -838,7 +840,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
 
         $producto->pretransferir($data);
 
@@ -856,7 +859,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
 
         $producto->pretransferir($data);
 
@@ -874,7 +878,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
 
         $producto->pretransferir($data);
 
@@ -893,7 +898,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal, $empleado);
 
         $cantidadAntes = $productoSucursal->existencia->cantidad;
 
@@ -914,7 +920,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal, $empleado);
 
         $producto->pretransferir($data);
 
@@ -933,7 +940,8 @@ class ProductoTest extends TestCase {
         $producto = $this->setUpProducto();
         $productoSucursal = $producto->productosSucursales()->first();
         $sucursal = $producto->sucursales()->first();
-        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal);
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
 
         $producto->pretransferir($data);
 
@@ -1011,7 +1019,7 @@ class ProductoTest extends TestCase {
         return App\Producto::find($producto->id);
     }
 
-    private function setUpPretransferenciaData($productoSucursal, $sucursal)
+    private function setUpPretransferenciaData($productoSucursal, $sucursal, $empleado)
     {
         return [
             ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
@@ -1019,10 +1027,11 @@ class ProductoTest extends TestCase {
             ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
             ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
             ['sucursal_origen' => $sucursal->id],
+            ['empleado_id' => $empleado->id],
         ];
     }
 
-    private function setUpPretransferenciaDataToSelf($productoSucursal, $sucursal)
+    private function setUpPretransferenciaDataToSelf($productoSucursal, $sucursal, $empleado)
     {
         return [
             ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 1],
@@ -1030,10 +1039,11 @@ class ProductoTest extends TestCase {
             ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
             ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
             ['sucursal_origen' => $sucursal->id],
+            ['empleado_id' => $empleado->id],
         ];
     }
 
-    private function setUpPretransferenciaBadData($productoSucursal, $sucursal)
+    private function setUpPretransferenciaBadData($productoSucursal, $sucursal, $empleado)
     {
         return [
             ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
@@ -1041,6 +1051,7 @@ class ProductoTest extends TestCase {
             ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10000],
             ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 'c'],
             ['sucursal_origen' => $sucursal->id],
+            ['empleado_id' => $empleado->id],
         ];
     }
 
@@ -1051,6 +1062,7 @@ class ProductoTest extends TestCase {
         factory(App\Sucursal::class)->create();
         factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
+        $empleado = factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id]);
 
         $productoSucursal = $producto->productosSucursales()->first();
         $productoSucursal->existencia->update([
