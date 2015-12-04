@@ -197,6 +197,21 @@ class Ficha extends LGGModel {
     }
 
     /**
+     * Obtiene la ficha del producto desde Icecat y actualiza los valores que se generaron de una consulta anterior
+     * @param bool $actualizar_datos_producto
+     * @return bool
+     */
+    public function actualizarFichaDesdeIcecat($actualizar_datos_producto = false) {
+        $icecat_feed = new IcecatFeed();
+        $sheet = $icecat_feed->getProductSheet($this->producto);
+        if (!empty($sheet)) {
+            return $this->actualizarFichaConDetalles($sheet, $actualizar_datos_producto);
+        } else {
+            return false;
+        }
+    }
+
+    /**
      * Obtiene el producto para el cual está definida esta ficha
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */

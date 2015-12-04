@@ -261,13 +261,10 @@ class FichaTest extends TestCase {
         $this->assertSame('INTERNO', $ficha->calidad);
         $this->assertEmpty($ficha->titulo);
         $this->assertFalse(boolval($ficha->revisada));
-
-        // Revisar Producto
-
     }
 
     /**
-     * @covers ::obtenerFichaDesdeIcecat
+     * @covers ::actualizarFichaDesdeIcecat
      * @group icecat
      * @uses \App\Producto
      * @uses \App\FichaCaracteristica
@@ -297,7 +294,7 @@ class FichaTest extends TestCase {
     }
 
     /**
-     * @covers ::obtenerFichaDesdeIcecat
+     * @covers ::actualizarFichaDesdeIcecat
      * @group icecat
      * @uses \App\Producto
      * @uses \App\FichaCaracteristica
