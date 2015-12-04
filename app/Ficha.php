@@ -96,8 +96,8 @@ class Ficha extends LGGModel {
         if ($this->save()) {
             if ($sobrescribir_datos_producto) {
                 $this->producto->update([
-                    'descripcion' => substr($sheet['long_summary_description'],0,299),
-                    'descripcion_corta' => substr($sheet['short_summary_description'],0,49)
+                    'descripcion'       => substr($sheet['long_summary_description'], 0, 299),
+                    'descripcion_corta' => substr($sheet['short_summary_description'], 0, 49)
                 ]);
             }
 
@@ -108,7 +108,66 @@ class Ficha extends LGGModel {
     }
 
     /**
-     * Intenta obtener la ficha para un producto desde Icecat
+     * Este método recibe los datos de una ficha para un producto desde icecat, busca si existen las características
+     * en la base de datos y si existen, actualiza sus valores, si no, los agrega
+     * @param $sheet
+     * @param bool|false $actualizar_datos_producto
+     * @return array|bool|\Illuminate\Database\Eloquent\Collection
+     */
+    public function actualizarFichaConDetalles(array $sheet, $actualizar_datos_producto = false) {
+        $calidad = strtoupper(trim($sheet['quality']));
+        $this->calidad = in_array($calidad, ['INTERNO', 'FABRICANTE', 'ICECAT', 'NOEDITOR']) ? $calidad : null;
+        $this->titulo = $sheet['title'];
+
+        $icecat_category_id = $sheet['icecat_category_id'];
+
+        // Guardar características
+        $fichas_caracteristicas = [];
+        foreach ($sheet['features'] as $caracteristica) {
+
+            $category_feature =
+                IcecatCategoryFeature::where('icecat_category_id', $icecat_category_id)
+                    ->where('icecat_category_feature_group_id', $caracteristica['icecat_category_feature_group_id'])
+                    ->where('icecat_feature_id', $caracteristica['icecat_feature_id'])
+                    ->first(['id']);
+
+            if (!empty($caracteristica['value']) && !empty($category_feature)) {
+
+                if (empty($caracteristica_vieja = FichaCaracteristica::whereCategoryFeatureId($category_feature->id)->whereFichaId($this->id)->first())) {
+                    // Característica nueva
+                    $ficha_caracteristica = new FichaCaracteristica([
+                        'category_feature_id' => $category_feature->id,
+                        'valor'               => $caracteristica['value'],
+                        'valor_presentacion'  => $caracteristica['presentation_value']
+                    ]);
+                    array_push($fichas_caracteristicas, $ficha_caracteristica);
+                } else {
+                    // Característica existente
+                    $caracteristica_vieja->update([
+                        'valor'              => $caracteristica['value'],
+                        'valor_presentacion' => $caracteristica['presentation_value']
+                    ]);
+                }
+            }
+        }
+
+        if ($this->save()) {
+            if ($actualizar_datos_producto) {
+                $this->producto->update([
+                    'descripcion'       => substr($sheet['long_summary_description'], 0, 299),
+                    'descripcion_corta' => substr($sheet['short_summary_description'], 0, 49)
+                ]);
+            }
+
+            return $this->caracteristicas()->saveMany($fichas_caracteristicas);
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Intenta obtener la ficha para un producto desde Icecat, guarda los datos encontrados en la base de datos
+     * para poder construir las fichas.
      * @param bool $sobrescribir_datos_producto
      * @return bool
      */
@@ -123,6 +182,21 @@ class Ficha extends LGGModel {
             $this->revisada = false;
             $this->save();
 
+            return false;
+        }
+    }
+
+    /**
+     * Obtiene la ficha del producto desde Icecat y actualiza los valores que se generaron de una consulta anterior
+     * @param bool $actualizar_datos_producto
+     * @return bool
+     */
+    public function actualizarFichaDesdeIcecat($actualizar_datos_producto = false) {
+        $icecat_feed = new IcecatFeed();
+        $sheet = $icecat_feed->getProductSheet($this->producto);
+        if (!empty($sheet)) {
+            return $this->actualizarFichaConDetalles($sheet, $actualizar_datos_producto);
+        } else {
             return false;
         }
     }

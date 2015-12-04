@@ -220,8 +220,8 @@ class FichaTest extends TestCase {
             $this->assertNotEmpty($caracteristica->valor_presentacion);
         }
         $producto = $producto->fresh();
-        $this->assertSame(substr('HP Officejet 6000 Wireless Printer - E609n, Officejet. Velocidad de impresión (color, calidad de bosquejo, A4/US Carta): 31 ppm, Velocidad de impresión (color, calidad normal, A4/US Carta): 10 ppm. Memoria interna: 32 MB. Peso: 5,5 kg. Consumo de energía (apagado): 0,4 W. Cantidad por palé: 50 pieza(s)',0,299), $producto->descripcion);
-        $this->assertSame(substr("HP Officejet Officejet 6000 Wireless Printer - E609n, 5 - 40 °C, -40 - 60 °C, 20 - 90%",0,49), $producto->descripcion_corta);
+        $this->assertSame(substr('HP Officejet 6000 Wireless Printer - E609n, Officejet. Velocidad de impresión (color, calidad de bosquejo, A4/US Carta): 31 ppm, Velocidad de impresión (color, calidad normal, A4/US Carta): 10 ppm. Memoria interna: 32 MB. Peso: 5,5 kg. Consumo de energía (apagado): 0,4 W. Cantidad por palé: 50 pieza(s)', 0, 299), $producto->descripcion);
+        $this->assertSame(substr("HP Officejet Officejet 6000 Wireless Printer - E609n, 5 - 40 °C, -40 - 60 °C, 20 - 90%", 0, 49), $producto->descripcion_corta);
     }
 
     /**
@@ -262,6 +262,71 @@ class FichaTest extends TestCase {
         // Revisar Producto
 
     }
+
+    /**
+     * @covers ::obtenerFichaDesdeIcecat
+     * @group icecat
+     * @uses \App\Producto
+     * @uses \App\FichaCaracteristica
+     * @uses \Sagd\IcecatFeed
+     */
+    public function testCuandoFichaYaExistaActualizarDatosAlSolicitarFichaDesdeIcecatNoActualizarDatosProducto() {
+        $producto = $this->setUpFichaData();
+
+        $ficha = new App\Ficha();
+        $ficha->producto()->associate($producto);
+        $this->assertNotFalse($ficha->obtenerFichaDesdeIcecat());
+
+        $caracteristicas = $ficha->caracteristicas;
+        foreach ($ficha->caracteristicas as $caracteristica) {
+            $caracteristica->valor = 'test_value';
+            $caracteristica->save();
+            $caracteristica = $caracteristica->fresh();
+            $this->assertSame('test_value', $caracteristica->valor);
+        }
+
+        $ficha->actualizarFichaDesdeIcecat();
+
+        for ($i = 0; $i < $ficha->caracteristicas->count(); $i ++) {
+            $this->assertSame($caracteristicas[$i]->valor, $ficha->caracteristicas[$i]->valor);
+            $this->assertSame($caracteristicas[$i]->valor_presentacion, $ficha->caracteristicas[$i]->valor_presentacion);
+        }
+    }
+
+    /**
+     * @covers ::obtenerFichaDesdeIcecat
+     * @group icecat
+     * @uses \App\Producto
+     * @uses \App\FichaCaracteristica
+     * @uses \Sagd\IcecatFeed
+     */
+    public function testCuandoFichaYaExistaActualizarDatosAlSolicitarFichaDesdeIcecatActualizarDatosProducto() {
+        $producto = $this->setUpFichaData();
+
+        $ficha = new App\Ficha();
+        $ficha->producto()->associate($producto);
+        $this->assertNotFalse($ficha->obtenerFichaDesdeIcecat(true));
+
+        $caracteristicas = $ficha->caracteristicas;
+        foreach ($ficha->caracteristicas as $caracteristica) {
+            $caracteristica->valor = 'test_value';
+            $caracteristica->save();
+            $caracteristica = $caracteristica->fresh();
+            $this->assertSame('test_value', $caracteristica->valor);
+        }
+
+        $descripcion = $ficha->producto->descripcion;
+        $ficha->producto->update(['descripcion' => 'test_description']);
+        $ficha->actualizarFichaDesdeIcecat(true);
+
+        for ($i = 0; $i < $ficha->caracteristicas->count(); $i ++) {
+            $this->assertSame($caracteristicas[$i]->valor, $ficha->caracteristicas[$i]->valor);
+            $this->assertSame($caracteristicas[$i]->valor_presentacion, $ficha->caracteristicas[$i]->valor_presentacion);
+        }
+
+        $this->assertSame($descripcion, $ficha->producto->descripcion);
+    }
+
 
     private function setUpFichaData() {
         factory(App\Marca::class)->create([
