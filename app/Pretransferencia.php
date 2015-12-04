@@ -91,4 +91,14 @@ class Pretransferencia extends LGGModel
     {
         return $this->belongsTo('App\Sucursal', 'sucursal_destino_id');
     }
+
+
+    /**
+    * Obtiene el Empleado que realizo la Pretransferencia
+    * @return App\Empleado
+    */
+    public function empleado()
+    {
+        return $this->belongsTo('App\Empleado', 'empleado_id');
+    }
 }

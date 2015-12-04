@@ -20,6 +20,7 @@ $factory->define(App\Pretransferencia::class, function ($faker) {
         'cantidad' => $faker->randomNumber,
         'producto_id' => $producto->id,
         'sucursal_origen_id' => $sucursal_origen->id,
-        'sucursal_destino_id' => $sucursal_destino->id
+        'sucursal_destino_id' => $sucursal_destino->id,
+        'empleado_id' => factory(App\Empleado::class)->create()->id
     ];
 });

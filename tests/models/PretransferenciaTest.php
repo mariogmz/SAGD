@@ -50,4 +50,15 @@ class PretransferenciaTest extends TestCase {
         $destino = $pretransferencia->destino;
         $this->assertInstanceOf(App\Sucursal::class, $destino);
     }
+
+    /**
+     * @covers ::empleado
+     * @group feature-transferencias
+     */
+    public function testEmpleado()
+    {
+        $pretransferencia = factory(App\Pretransferencia::class)->create();
+        $empleado = $pretransferencia->empleado;
+        $this->assertInstanceOf(App\Empleado::class, $empleado);
+    }
 }

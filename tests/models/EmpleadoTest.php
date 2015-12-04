@@ -304,6 +304,19 @@ class EmpleadoTest extends TestCase {
     }
 
     /**
+     * @covers ::pretransferencias
+     * @group feature-transferencias
+     */
+    public function testPretransferencias()
+    {
+        $empleado = factory(App\Empleado::class)->create();
+        factory(App\Pretransferencia::class)->create(['empleado_id' => $empleado->id]);
+        $pretransferencias = $empleado->pretransferencias;
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pretransferencias);
+        $this->assertInstanceOf(App\Pretransferencia::class, $pretransferencias->first());
+    }
+
+    /**
      * @covers ::guardar
      * @group guardar-empleado
      */
