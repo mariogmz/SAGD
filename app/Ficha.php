@@ -211,6 +211,21 @@ class Ficha extends LGGModel {
         }
     }
 
+    public function agregarCaracteristicas(array $caracteristicas) {
+        $caracteristicas = array_map(function($caracteristica){
+            return new FichaCaracteristica($caracteristica);
+        }, $caracteristicas);
+        $this->caracteristicas()->saveMany($caracteristicas);
+    }
+
+    public function actualizarCaracteristicas(array $caracteristicas) {
+        foreach($caracteristicas as $caracteristica){
+            if(!empty($caracteristica_asociada = FichaCaracteristica::find($caracteristica['id']))){
+                $caracteristica_asociada->update($caracteristica);
+            }
+        }
+    }
+
     /**
      * Obtiene el producto para el cual está definida esta ficha
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

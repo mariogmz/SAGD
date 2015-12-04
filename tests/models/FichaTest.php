@@ -374,4 +374,37 @@ class FichaTest extends TestCase {
             'marca_id'     => $marca->id
         ]);
     }
+
+    /**
+     * @covers ::agregarCaracteristicas
+     */
+    public function testAgregarCaracteristicas() {
+        $caracteristicas = factory(App\FichaCaracteristica::class, 5)->make([
+            'ficha_id' => null
+        ])->toArray();
+        $ficha = factory(App\Ficha::class)->create();
+        $ficha->agregarCaracteristicas($caracteristicas);
+        $this->assertCount(5, $ficha->caracteristicas);
+        for ($i = 0; $i < 5; $i ++) {
+            $this->assertSame($caracteristicas[$i]['valor'], $ficha->caracteristicas[$i]->valor);
+        }
+    }
+
+    /**
+     * @covers ::actualizarCaracteristicas
+     */
+    public function testActualizarCaracteristicas() {
+        $ficha = factory(App\Ficha::class)->create();
+        $caracteristicas = factory(App\FichaCaracteristica::class, 5)->create([
+            'ficha_id' => $ficha->id
+        ])->toArray();
+        foreach ($caracteristicas as &$caracteristica) {
+            $caracteristica['valor'] = 'test_value';
+        }
+        $ficha = $ficha->fresh();
+        $ficha->actualizarCaracteristicas($caracteristicas);
+        foreach ($ficha->caracteristicas as $caracteristica) {
+            $this->assertSame('test_value', $caracteristica->valor);
+        }
+    }
 }
