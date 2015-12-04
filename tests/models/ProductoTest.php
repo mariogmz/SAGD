@@ -950,6 +950,102 @@ class ProductoTest extends TestCase {
         $this->assertInstanceOf(App\Pretransferencia::class, $pretransferencia);
     }
 
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirCreaUnProductoMovimiento()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $productoMovimiento);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoTieneMotivoDePretransferencia()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertEquals('Pretransferencia salida', $productoMovimiento->movimiento);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoEntradaYSalidaSonIgualesYEsCorrecto()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertEquals($productoMovimiento->entraron, $productoMovimiento->salieron);
+        $this->assertEquals(10, $productoMovimiento->entraron);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoExistenciasAntesEsCorrecto()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->first();
+
+        $this->assertEquals(0, $productoMovimiento->existencias_antes);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoExistenciasDespuesEsCorrecto()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertEquals(30, $productoMovimiento->existencias_despues);
+    }
+
     private function setUpGuardarNuevoExitoso()
     {
         $unique = "A".time();

@@ -6,6 +6,7 @@ use App\Empleado;
 use App\Existencia;
 use App\Pretransferencia;
 use App\Producto;
+use App\ProductoMovimiento;
 use App\ProductoSucursal;
 use App\Sucursal;
 use App\Events\Pretransferir;
@@ -23,6 +24,8 @@ class EjecutarPretransferencia
     protected $sucursalDestino;
     protected $sucursalOrigen;
     protected $empleado;
+    protected $productoMovimiento;
+    protected $cantidad;
 
     /**
      * Create the event listener.
@@ -42,6 +45,7 @@ class EjecutarPretransferencia
         $this->existenciaDestino = $existenciaDestino;
         $this->productoSucursal = $productoSucursal;
         $this->pretransferencia = $pretransferencia;
+        $this->productoMovimiento = $productoMovimiento;
         $this->empleado = $empleado;
     }
 
@@ -72,9 +76,9 @@ class EjecutarPretransferencia
             $this->existenciaOrigen->errors = ['cantidad' => 'La cantidad es cero'];
             return $this->existenciaOrigen;
         }
-
-        $this->alterarExistencias($pretransferencia);
-        $this->generarPretransferencia($pretransferencia);
+        $this->cantidad = $pretransferencia;
+        $this->alterarExistencias();
+        $this->generarPretransferencia();
 
         return $this->guardarModelos();
     }
@@ -91,20 +95,20 @@ class EjecutarPretransferencia
         $this->sucursalDestino = $this->productoSucursal->sucursal;
     }
 
-    private function alterarExistencias($cantidad)
+    private function alterarExistencias()
     {
-        $this->existenciaOrigen->cantidad -= $cantidad;
-        $this->existenciaOrigen->cantidad_pretransferencia += $cantidad;
-        $this->existenciaDestino->cantidad_pretransferencia_destino += $cantidad;
+        $this->existenciaOrigen->cantidad -= $this->cantidad;
+        $this->existenciaOrigen->cantidad_pretransferencia += $this->cantidad;
+        $this->existenciaDestino->cantidad_pretransferencia_destino += $this->cantidad;
     }
 
-    private function generarPretransferencia($cantidad)
+    private function generarPretransferencia()
     {
         $this->pretransferencia->producto()->associate($this->producto);
         $this->pretransferencia->origen()->associate($this->sucursalOrigen);
         $this->pretransferencia->destino()->associate($this->sucursalDestino);
-        $this->pretransferencia->cantidad = $cantidad;
         $this->pretransferencia->empleado()->associate($this->empleado);
+        $this->pretransferencia->cantidad = $this->cantidad;
     }
 
     private function guardarModelos()
@@ -112,6 +116,23 @@ class EjecutarPretransferencia
         $successOrigen = $this->existenciaOrigen->save();
         $successDestino = $this->existenciaDestino->save();
         $successPretransferencia = $this->pretransferencia->save();
+        $successMovimientos = $this->generarMovimientos($successOrigen, $successDestino);
         return $successOrigen && $successDestino && $successPretransferencia;
+    }
+
+    private function generarMovimientos($successOrigen, $successDestino)
+    {
+        if(!$successOrigen || !$successDestino) { return false; }
+
+        $this->productoMovimiento->movimiento = "Pretransferencia salida";
+        $this->productoMovimiento->entraron = $this->cantidad;
+        $this->productoMovimiento->salieron = $this->cantidad;
+        $this->productoMovimiento->existencias_antes = $this->existenciaOrigen->cantidad_pretransferencia - $this->cantidad;
+        $this->productoMovimiento->existencias_despues = $this->existenciaOrigen->cantidad_pretransferencia;
+
+        $this->productoMovimiento->productoSucursal()
+            ->associate($this->existenciaOrigen->productoSucursal);
+
+        return $this->productoMovimiento->save();
     }
 }
