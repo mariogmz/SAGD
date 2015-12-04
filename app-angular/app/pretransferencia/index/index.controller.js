@@ -37,7 +37,8 @@
       backendPrint(origen, destino).then(function(response) {
         var file = new Blob([response.data], {type: 'application/pdf'});
         var fileURL = URL.createObjectURL(file);
-        window.open(fileURL);
+        var ventana = window.open(fileURL);
+        ventana.print();
       });
     }
 
