@@ -227,6 +227,7 @@
       });
 
       vm.pretransferencias.push({sucursal_origen: vm.empleado.sucursal_id});
+      vm.pretransferencias.push({empleado_id: vm.empleado.id});
 
       apiPretransferencias(vm.pretransferencias).then(function(response) {
         console.log('Pretransferencia guardada');
