@@ -119,7 +119,7 @@ class Ficha extends LGGModel {
             return $this->guardarFichaConDetalles($sheet, $sobrescribir_datos_producto);
         } else {
             $this->calidad = 'INTERNO';
-            $this->title = '';
+            $this->titulo = '';
             $this->revisada = false;
             $this->save();
 
