@@ -22,6 +22,7 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategory[] $icecatCategories
  */
 class Subfamilia extends LGGModel {
 

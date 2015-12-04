@@ -66,6 +66,7 @@ use Illuminate\Support\MessageBag;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Producto whereDeletedAt($value)
+ * @property-read \App\Ficha $ficha
  */
 class Producto extends LGGModel {
 

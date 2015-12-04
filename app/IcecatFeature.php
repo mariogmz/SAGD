@@ -3,6 +3,30 @@
 namespace App;
 
 
+/**
+ * App\IcecatFeature
+ *
+ * @property integer $id
+ * @property integer $icecat_id
+ * @property string $type
+ * @property string $name
+ * @property string $description
+ * @property string $measure
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategoryFeature[] $categoriesFeatures
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereIcecatId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereType($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereMeasure($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeature whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class IcecatFeature extends LGGModel {
 
     protected $table = 'icecat_features';

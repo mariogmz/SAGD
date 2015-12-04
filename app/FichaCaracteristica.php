@@ -3,6 +3,29 @@
 namespace App;
 
 
+/**
+ * App\FichaCaracteristica
+ *
+ * @property integer $id
+ * @property integer $ficha_id
+ * @property integer $category_feature_id
+ * @property string $valor
+ * @property string $valor_presentacion
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\Ficha $ficha
+ * @property-read \App\IcecatCategoryFeature $categoryFeature
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereFichaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereCategoryFeatureId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereValor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereValorPresentacion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\FichaCaracteristica whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class FichaCaracteristica extends LGGModel {
 
     protected $table = "fichas_caracteristicas";

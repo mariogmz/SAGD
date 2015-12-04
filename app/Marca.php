@@ -17,6 +17,7 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatSupplier[] $icecatSuppliers
  */
 class Marca extends LGGModel {
 

@@ -3,6 +3,28 @@
 namespace App;
 
 
+/**
+ * App\IcecatCategoryFeatureGroup
+ *
+ * @property integer $id
+ * @property integer $icecat_id
+ * @property integer $icecat_category_id
+ * @property integer $icecat_feature_group_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategoryFeature[] $categoriesFeatures
+ * @property-read \App\IcecatCategory $category
+ * @property-read \App\IcecatFeatureGroup $featureGroup
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereIcecatId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereIcecatCategoryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereIcecatFeatureGroupId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategoryFeatureGroup whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class IcecatCategoryFeatureGroup extends LGGModel {
 
     protected $table = 'icecat_categories_feature_groups';

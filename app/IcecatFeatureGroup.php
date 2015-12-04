@@ -3,6 +3,24 @@
 namespace App;
 
 
+/**
+ * App\IcecatFeatureGroup
+ *
+ * @property integer $id
+ * @property integer $icecat_id
+ * @property string $name
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategoryFeatureGroup[] $categoriesFeatureGroups
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeatureGroup whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeatureGroup whereIcecatId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeatureGroup whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeatureGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeatureGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatFeatureGroup whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class IcecatFeatureGroup extends LGGModel {
 
     protected $table = 'icecat_feature_groups';

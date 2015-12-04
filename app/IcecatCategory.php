@@ -6,6 +6,32 @@ namespace App;
 /**
  * App\IcecatCategory
  *
+ * @property integer $id
+ * @property integer $icecat_id
+ * @property string $name
+ * @property string $description
+ * @property string $keyword
+ * @property integer $icecat_parent_category_id
+ * @property integer $subfamilia_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\Subfamilia $subfamilia
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategoryFeature[] $categoriesFeatures
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategoryFeatureGroup[] $categoriesFeatureGroups
+ * @property-read \App\IcecatCategory $parentCategory
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategory[] $childrenCategories
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereIcecatId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereName($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereDescription($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereKeyword($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereIcecatParentCategoryId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereSubfamiliaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\IcecatCategory whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class IcecatCategory extends LGGModel {
 
