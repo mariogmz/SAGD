@@ -37,6 +37,7 @@
       'sagdApp.sidebar',
       'sagdApp.subfamilia',
       'sagdApp.sucursal',
+      'sagdApp.transferencia',
       'sagdApp.unidad'
 
   ]);

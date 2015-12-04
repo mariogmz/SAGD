@@ -1,0 +1,26 @@
+<article class="card">
+  <section class="header">
+    <h4>Transferencias</h4>
+  </section>
+  <section class="block">
+    <ul class="tabs" role="tablist">
+      <li class="nav-item">
+        <a href="#salidas" class="active" role="tab" data-toggle="tab">Salidas</a>
+      </li>
+      <li class="nav-item">
+        <a href="#entradas" role="tab" data-toggle="tab">Entradas</a>
+      </li>
+    </ul>
+
+    <section class="transferencia-form">
+      <article class="tab-content">
+        <section role="tabpanel" class="fade in active" id="salidas">
+          <div ui-view="salidas"></div>
+        </section>
+        <section role="tabpanel" class="fade" id="entradas">
+          <div ui-view="entradas"></div>
+        </section>
+      </article>
+    </section>
+  </section>
+</article>

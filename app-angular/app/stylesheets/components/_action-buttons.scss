@@ -11,7 +11,8 @@
   .detach,
   .edit,
   .print,
-  .roles {
+  .roles,
+  .show {
 
     @extend .btn;
 
@@ -62,5 +63,11 @@
     @extend .btn-primary;
 
     i { @extend .fa-users; }
+  }
+
+  .show {
+    @extend .btn-primary;
+
+    i { @extend .fa-search; }
   }
 }
