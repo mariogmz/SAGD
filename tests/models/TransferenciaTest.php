@@ -314,17 +314,241 @@ class TransferenciaTest extends TestCase {
         $this->assertFalse($transferencia->quitarDetalle($detalle_id));
     }
 
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testTransferirEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+
+        $this->assertTrue($transferencia->transferir());
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testTransferirActualizaElEstadoAEnTransferencia()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $this->assertEquals($transferencia->estado->id, App\EstadoTransferencia::enTransferencia());
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testTransferirCreaUnProductoMovimiento()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+
+        $productosMovimientosAntes = App\ProductoMovimiento::count();
+
+        $transferencia->transferir();
+
+        $productosMovimientosDespues = App\ProductoMovimiento::count();
+
+        $this->assertGreaterThan($productosMovimientosAntes, $productosMovimientosDespues);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoDeTranferirTieneMovimientoDeTransferencia()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $productoMovimiento = $producto->movimientos($producto->sucursales->first())->first();
+
+        $this->assertEquals("Transferencia {$transferencia->id}", $productoMovimiento->movimiento);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoDeTransferirEstableceCeroEntraron()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $productoMovimiento = $producto->movimientos($producto->sucursales->first())->first();
+
+        $this->assertEquals(0, $productoMovimiento->entraron);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feaute-transferencias
+     */
+    public function testProductoMovimientoDeTransferirEstableceCorrectamenteSalieron()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $productoMovimiento = $producto->movimientos($producto->sucursales->first())->first();
+
+        $this->assertEquals(5, $productoMovimiento->salieron);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoDeTransferirEstableceCorrectamenteExistenciasAntes()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $productoMovimiento = $producto->movimientos($producto->sucursales->first())->first();
+
+        $this->assertEquals(100, $productoMovimiento->existencias_antes);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoDeTransferirEstableceCorrecatementeExistenciasDespues()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $productoMovimiento = $producto->movimientos($producto->sucursales->first())->first();
+
+        $this->assertEquals(95, $productoMovimiento->existencias_despues);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testExistenciasCantidadOrigenPermaneceIntacto()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $existencia = App\ProductoSucursal::where('producto_id', $producto->id)
+            ->where('sucursal_id', $transferencia->sucursal_origen_id)->first()->existencia()->first();
+
+        $this->assertEquals(95, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testExistenciaCantidadPretransferenciaOrigenRegresaACero()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $existencia = App\ProductoSucursal::where('producto_id', $producto->id)
+            ->where('sucursal_id', $transferencia->sucursal_origen_id)->first()->existencia()->first();
+
+        $this->assertEquals(0, $existencia->cantidad_pretransferencia);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testExistenciaCantidadTransferenciaOrigenAumenta()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $existencia = App\ProductoSucursal::where('producto_id', $producto->id)
+            ->where('sucursal_id', $transferencia->sucursal_origen_id)->first()->existencia()->first();
+
+        $this->assertEquals(5, $existencia->cantidad_transferencia);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testExistenciaCantidadDestinoPermaneceIntacto()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $existencia = App\ProductoSucursal::where('producto_id', $producto->id)
+            ->where('sucursal_id', $transferencia->sucursal_destino_id)->first()->existencia()->first();
+
+        $this->assertEquals(0, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testTransferirHaceRollbacks()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpBadDetalle();
+        $transferencia->transferir();
+
+        $pms = $producto->movimientos($transferencia->sucursalOrigen()->first());
+
+        $this->assertCount(0, $pms);
+    }
+
     private function setUpProducto()
     {
-        factory(App\Sucursal::class)->create();
-        factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
+        $sucursalOrigen = factory(App\Sucursal::class)->create();
+        $sucursalDestino = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursalOrigen);
+        $producto->addSucursal($sucursalDestino);
 
-        $productoSucursal = $producto->productosSucursales()->last();
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursalOrigen->id)->first();
         $productoSucursal->existencia()->create([
-            'cantidad' => 100,
+            'cantidad' => 95,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 5,
+            'cantidad_pretransferencia_destino' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursalDestino->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 0,
             'cantidad_apartado' => 0,
             'cantidad_pretransferencia' => 0,
+            'cantidad_pretransferencia_destino' => 5,
             'cantidad_transferencia' => 0,
             'cantidad_garantia_cliente' => 0,
             'cantidad_garantia_zegucom' => 0
@@ -336,8 +560,8 @@ class TransferenciaTest extends TestCase {
     {
         $this->setUpEstados();
         $producto = App\Producto::last();
-        $sucursalOrigen = App\Sucursal::last();
-        $sucursalDestino = App\Sucursal::find($sucursalOrigen->id - 1);
+        $sucursalOrigen = $producto->sucursales->first();
+        $sucursalDestino = $producto->sucursales->last();
         $empleado = factory(App\Empleado::class)->create(['sucursal_id' => $sucursalOrigen->id]);
 
         $transferencia = new App\Transferencia([
@@ -365,6 +589,19 @@ class TransferenciaTest extends TestCase {
 
         $detalle = [
             'cantidad' => $cantidad,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+        return $transferencia->agregarDetalle($detalle);
+    }
+
+    private function setUpBadDetalle()
+    {
+        $producto = App\Producto::last();
+        $transferencia = App\Transferencia::last();
+
+        $detalle = [
+            'cantidad' => 5000,
             'producto_id' => $producto->id,
             'upc' => $producto->upc
         ];

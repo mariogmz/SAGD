@@ -2,6 +2,9 @@
 
 namespace App;
 
+use Event;
+use App\Events\Transferir;
+use Sagd\SafeTransactions;
 
 /**
  * App\Transferencia
@@ -40,6 +43,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\Transferencia whereDeletedAt($value)
  */
 class Transferencia extends LGGModel {
+
+    use SafeTransactions;
 
     //
     protected $table = "transferencias";
@@ -104,6 +109,21 @@ class Transferencia extends LGGModel {
     public function quitarDetalle($detalle_id)
     {
         return (TransferenciaDetalle::destroy($detalle_id) > 0);
+    }
+
+    /**
+     * Marca esta transferencia como en proceso de transferencia fisica. Actualiza existencias
+     * @return bool
+     */
+    public function transferir()
+    {
+        $lambda = function() {
+            $this->estado_transferencia_id = EstadoTransferencia::enTransferencia();
+            $this->save();
+            $result = Event::fire(new Transferir($this))[0];
+            return $result;
+        };
+        return $this->safe_transaction($lambda);
     }
 
     /**

@@ -40,7 +40,10 @@ class EventServiceProvider extends ServiceProvider
         ],
         'App\Events\Pretransferir' => [
             'App\Listeners\EjecutarPretransferencia'
-        ]
+        ],
+        'App\Events\Transferir' => [
+            'App\Listeners\EjecutarTransferencia'
+        ],
     ];
 
     /**

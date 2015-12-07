@@ -70,6 +70,7 @@ class ProductoMovimiento extends LGGModel {
             $pm->salieron || $pm->salieron = 0;
 
             if($pm->isPretransferenciaSalida()) { return $pm->isValid(); }
+            if($pm->isTransferencia()) { return $pm->isValid(); }
 
             $result = Event::fire(new CreandoProductoMovimiento($pm))[0];
             if ($result['success']) {
@@ -89,6 +90,11 @@ class ProductoMovimiento extends LGGModel {
     public function isPretransferenciaSalida()
     {
         return $this->movimiento === 'Pretransferencia salida';
+    }
+
+    public function isTransferencia()
+    {
+        return preg_match('/^Transferencia\s\d+$/', $this->movimiento) === 1;
     }
 
     /**
