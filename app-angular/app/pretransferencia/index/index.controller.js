@@ -35,10 +35,20 @@
       var origen = pretransferencia.origen.id;
       var destino = pretransferencia.destino.id;
       backendPrint(origen, destino).then(printer.send);
+      createTransferencia(origen, destino);
     }
 
     function backendPrint(origen, destino) {
       return api.get('/inventario/pretransferencias/imprimir/origen/' + origen + '/destino/' + destino, null, true);
+    }
+
+    function createTransferencia(origen, destino) {
+      var transferencia = {
+        sucursal_origen_id: origen,
+        sucursal_destino_id: destino,
+        empleado_origen_id: vm.empleado.id
+      };
+      return api.post('/transferencias/salidas/crear', transferencia);
     }
   }
 })();
