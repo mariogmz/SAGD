@@ -54,6 +54,10 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
         Route::resource('ficha', 'FichaController',['only' => ['index','store','show','update','destroy']]);
+        Route::group(['prefix' => 'icecat', 'as' => 'api.v1.icecat'], function () {
+            Route::get('/{numero_parte}/marca/{marca}','IcecatController@obtenerFicha')->name('.ficha');
+        });
+
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::get('empleado/{id}/roles', 'EmpleadoController@roles');

@@ -27,10 +27,10 @@ class FichaController extends Controller {
         $this->authorize($this);
         $params = $request->all();
         if (array_key_exists('calidad', $params)) {
-            return response()->json($this->ficha->has('ficha')->with('caracteristicas')
+            return response()->json($this->ficha->has('caracteristicas')->with('caracteristicas')
                 ->whereCalidad($params['calidad'])->get(), 200);
         } else {
-            return response()->json($this->ficha->has('ficha')->with('caracteristicas')->get(), 200);
+            return response()->json($this->ficha->has('caracteristicas')->with('caracteristicas')->get(), 200);
         }
     }
 
@@ -47,8 +47,8 @@ class FichaController extends Controller {
         $this->ficha->fill($params['ficha']);
         if ($this->ficha->save()) {
             return response()->json([
-                'message'  => 'Ficha creada exitosamente',
-                'ficha' => $this->ficha->self()
+                'message' => 'Ficha creada exitosamente',
+                'ficha'   => $this->ficha->self()
             ], 201,
                 ['Location' => route('api.v1.ficha.show', $this->ficha->getId())]);
         } else {
