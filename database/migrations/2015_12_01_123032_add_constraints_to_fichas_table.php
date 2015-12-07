@@ -14,7 +14,7 @@ class AddConstraintsToFichasTable extends Migration
     {
         Schema::table('fichas', function (Blueprint $table){
             $table->unique('producto_id');
-            $table->foreign('producto_id')->references('id')->on('productos');
+            $table->foreign('producto_id')->references('id')->on('productos')->onDelete('cascade');
         });
     }
 
