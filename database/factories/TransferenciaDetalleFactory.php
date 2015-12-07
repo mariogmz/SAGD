@@ -37,3 +37,13 @@ $factory->defineAs(App\TransferenciaDetalle::class, 'full', function($faker) use
     ])->id;
     return $td;
 });
+
+$factory->defineAs(App\TransferenciaDetalle::class, 'nopm', function($faker) use ($factory){
+    factory(App\Sucursal::class)->create();
+    $producto = factory(App\Producto::class)->create();
+
+    $td = $factory->raw(App\TransferenciaDetalle::class);
+    $td['transferencia_id'] = factory(App\Transferencia::class, 'full')->create()->id;
+    $td['producto_id'] = $producto->id;
+    return $td;
+});

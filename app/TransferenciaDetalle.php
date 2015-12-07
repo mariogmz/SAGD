@@ -52,7 +52,7 @@ class TransferenciaDetalle extends LGGModel {
         'existencia_destino_despues' => 'required|integer|min:0',
         'transferencia_id'           => 'required|integer',
         'producto_id'                => 'required|integer',
-        'producto_movimiento_id'     => 'required|integer',
+        'producto_movimiento_id'     => 'integer',
     ];
     public $updateRules = [];
 
