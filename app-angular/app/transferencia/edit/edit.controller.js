@@ -7,13 +7,14 @@
     .module('sagdApp.transferencia')
     .controller('transferenciaEditController', transferenciaEditController);
 
-  transferenciaEditController.$inject = ['$stateParams', 'api'];
+  transferenciaEditController.$inject = ['$stateParams', 'api', 'session'];
 
   /* @ngInject */
-  function transferenciaEditController($stateParams, api) {
+  function transferenciaEditController($stateParams, api, session) {
 
     var vm = this;
     vm.id = $stateParams.id;
+    vm.empleado = session.obtenerEmpleado();
     vm.back = goBack;
     vm.agregarDetalle = agregar;
     vm.removerDetalle = remover;
@@ -40,15 +41,23 @@
     function agregar() {
       buscarProducto().then(function(producto) {
         vm.detalle.producto_id = producto.data.producto.id;
-        saveDetalle().then(function(response) {
-          pushDetalle(response.data.detalle, producto.data.producto);
-          resetDetalle();
+        setEmpleadoOrigen().then(function() {
+          saveDetalle().then(function(response) {
+            pushDetalle(response.data.detalle, producto.data.producto);
+            resetDetalle();
+          });
         });
       });
     }
 
     function buscarProducto() {
       return api.get('/producto/buscar/upc/', vm.detalle.upc);
+    }
+
+    function setEmpleadoOrigen() {
+      if (vm.transferencia.detalles.length === 0) {
+        return api.put('/transferencias/salidas/' + vm.id, '', {empleado_origen_id: vm.empleado.id});
+      }
     }
 
     function saveDetalle() {
