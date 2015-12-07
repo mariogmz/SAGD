@@ -56,8 +56,14 @@
 
     function setEmpleadoOrigen() {
       if (vm.transferencia.detalles.length === 0) {
-        return api.put('/transferencias/salidas/' + vm.id, '', {empleado_origen_id: vm.empleado.id});
+        var datos = {
+          empleado_origen_id: vm.empleado.id,
+          estado_transferencia_id: 2 // hardcodeado porque sabemos que el seeder hara el id 2 al de cargando origen
+        };
+        return api.put('/transferencias/salidas/' + vm.id, '', datos);
       }
+
+      return new Promise(function(resolve, reject) { resolve(true); });
     }
 
     function saveDetalle() {

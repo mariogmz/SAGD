@@ -38,6 +38,10 @@
                   ng-if="vm.eliminable(salida.estado.id)">
                   <i></i>
                 </button>
+                <button type="button" class="transferir one-third" ng-click="vm.transferir(salida.id)"
+                  ng-if="vm.transferible(salida.estado.id)">
+                  <i></i>
+                </button>
               </div>
             </td>
           </tr>

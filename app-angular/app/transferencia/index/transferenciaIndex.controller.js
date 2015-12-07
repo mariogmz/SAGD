@@ -30,6 +30,7 @@
     vm.eliminar = eliminar;
     vm.editable = editable;
     vm.eliminable = eliminable;
+    vm.transferible = transferible;
 
     initialize();
 
@@ -84,6 +85,11 @@
     function eliminable(id) {
       // De acuerdo con los estados de transferencia, solo el estado 1 es eliminable
       return id === 1;
+    }
+
+    function transferible(id) {
+      // De acuerdo con los estados de transferencia, el estado de Cargando Origen es transferible
+      return id === 2;
     }
   }
 })();

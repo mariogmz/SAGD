@@ -12,7 +12,8 @@
   .edit,
   .print,
   .roles,
-  .show {
+  .show,
+  .transferir {
 
     @extend .btn;
 
@@ -73,5 +74,11 @@
     @extend .btn-primary;
 
     i { @extend .fa-search; }
+  }
+
+  .transferir {
+    @extend .btn-primary;
+
+    i { @extend .fa-truck; }
   }
 }
