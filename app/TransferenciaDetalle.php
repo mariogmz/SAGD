@@ -46,10 +46,10 @@ class TransferenciaDetalle extends LGGModel {
 
     public static $rules = [
         'cantidad'                   => 'required|integer|min:0',
-        'existencia_origen_antes'    => 'required|integer|min:0',
-        'existencia_origen_despues'  => 'required|integer|min:0',
-        'existencia_destino_antes'   => 'required|integer|min:0',
-        'existencia_destino_despues' => 'required|integer|min:0',
+        'existencia_origen_antes'    => 'integer|min:0',
+        'existencia_origen_despues'  => 'integer|min:0',
+        'existencia_destino_antes'   => 'integer|min:0',
+        'existencia_destino_despues' => 'integer|min:0',
         'transferencia_id'           => 'required|integer',
         'producto_id'                => 'required|integer',
         'producto_movimiento_id'     => 'integer',

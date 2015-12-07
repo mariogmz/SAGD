@@ -78,6 +78,35 @@ class Transferencia extends LGGModel {
     }
 
     /**
+     * Asocia un modelo de detalle a la transferencia o agrupa por cantidad
+     * @param array $detalle
+     * @return TransferenciaDetalle | false
+     */
+    public function agregarDetalle($detalle)
+    {
+        if (! is_null($detalle['upc'])) { unset($detalle['upc']); }
+
+        $transferenciaDetalle = new TransferenciaDetalle();
+        $transferenciaDetalle->fill($detalle);
+        if ($this->detalles->contains('producto_id', $transferenciaDetalle->producto_id)) {
+            $transferenciaDetalleOriginal = $this->detalles()->where('producto_id', $transferenciaDetalle->producto_id)->first();
+            $transferenciaDetalleOriginal->cantidad += $transferenciaDetalle->cantidad;
+            return $transferenciaDetalleOriginal->save() ? $transferenciaDetalleOriginal : false;
+        }
+        return $this->detalles()->save($transferenciaDetalle);
+    }
+
+    /**
+     * Quita un detalle asociado a la transferencia
+     * @param int $detalle_id
+     * @return bool
+     */
+    public function quitarDetalle($detalle_id)
+    {
+        return (TransferenciaDetalle::destroy($detalle_id) > 0);
+    }
+
+    /**
      * Obtiene el Estado Transferencia asociado con la Transferencia
      * @return App\EstadoTransferencia
      */

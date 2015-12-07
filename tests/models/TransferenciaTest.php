@@ -1,9 +1,13 @@
 <?php
 
+use Illuminate\Foundation\Testing\DatabaseTransactions;
+
 /**
  * @coversDefaultClass \App\Transferencia
  */
 class TransferenciaTest extends TestCase {
+
+    use DatabaseTransactions;
 
     /**
      * @coversNothing
@@ -245,5 +249,125 @@ class TransferenciaTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $tds);
         $this->assertInstanceOf(App\TransferenciaDetalle::class, $tds[0]);
         $this->assertCount(1, $tds);
+    }
+
+    /**
+     * @covers ::agregarDetalle
+     * @group feature-transferencias
+     */
+    public function testAgregarDetallesConParametrosCorrectosEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = [
+            'cantidad' => 5,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+
+        $this->assertInstanceOf(App\TransferenciaDetalle::class, $transferencia->agregarDetalle($detalle));
+    }
+
+    /**
+     * @covers ::agregarDetalle
+     * @group feature-transferencias
+     */
+    public function testAgregarDetalleConParametrosIncorrectosNoEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = [
+            'cantidad' => 5,
+            'upc' => $producto->upc
+        ];
+
+        $this->assertFalse($transferencia->agregarDetalle($detalle));
+    }
+
+    /**
+     * @covers ::quitarDetalle
+     * @group feature-transferencias
+     */
+    public function testQuitarDetalleConDetalleCorrectoEsExitoso()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+
+        $detalle_id = App\TransferenciaDetalle::last()->id;
+
+        $this->assertTrue($transferencia->quitarDetalle($detalle_id));
+    }
+
+    /**
+     * @covers ::quitarDetalle
+     * @group feature-transferencias
+     */
+    public function testQuitarDetalleConDetalleIncorrectoFalla()
+    {
+        $producto = $this->setUpProducto();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+
+        $detalle_id = App\TransferenciaDetalle::last()->id + 1;
+
+        $this->assertFalse($transferencia->quitarDetalle($detalle_id));
+    }
+
+    private function setUpProducto()
+    {
+        factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+
+        $productoSucursal = $producto->productosSucursales()->last();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 100,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+        return $producto;
+    }
+
+    private function setUpTransferencia()
+    {
+        $this->setUpEstados();
+        $producto = App\Producto::last();
+        $sucursalOrigen = App\Sucursal::last();
+        $sucursalDestino = App\Sucursal::find($sucursalOrigen->id - 1);
+        $empleado = factory(App\Empleado::class)->create(['sucursal_id' => $sucursalOrigen->id]);
+
+        $transferencia = new App\Transferencia([
+            'sucursal_origen_id' => $sucursalOrigen->id,
+            'sucursal_destino_id' => $sucursalDestino->id,
+            'empleado_origen_id' => $empleado->id
+        ]);
+        $transferencia->save();
+        return $transferencia;
+    }
+
+    private function setUpEstados()
+    {
+        App\EstadoTransferencia::create(['nombre' => 'Abierta']);
+        App\EstadoTransferencia::create(['nombre' => 'Cargando Origen']);
+        App\EstadoTransferencia::create(['nombre' => 'En transferencia']);
+        App\EstadoTransferencia::create(['nombre' => 'Cargando Destino']);
+        App\EstadoTransferencia::create(['nombre' => 'Finalizada']);
+    }
+
+    private function setUpDetalle($cantidad = 5)
+    {
+        $producto = App\Producto::last();
+        $transferencia = App\Transferencia::last();
+
+        $detalle = [
+            'cantidad' => $cantidad,
+            'producto_id' => $producto->id,
+            'upc' => $producto->upc
+        ];
+        return $transferencia->agregarDetalle($detalle);
     }
 }
