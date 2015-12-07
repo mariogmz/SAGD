@@ -35,7 +35,22 @@
       var origen = pretransferencia.origen.id;
       var destino = pretransferencia.destino.id;
       backendPrint(origen, destino).then(printer.send);
-      createTransferencia(origen, destino);
+      modal.confirm({
+        title: 'Crear transferencia',
+        content: '¿Desea crear una transferencia en base a esta pretransferencia?',
+        accept: 'Crear transferencia',
+        type: 'primary'
+      })
+      .then(function() {
+        modal.hide('confirm');
+        createTransferencia(origen, destino).then(function(response) {
+          pnotify.alert('Exito', response.data.message, 'success');
+        });
+      })
+      .catch(function() {
+        modal.hide('confirm');
+        return false;
+      });
     }
 
     function backendPrint(origen, destino) {
