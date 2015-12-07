@@ -18,10 +18,10 @@
       activo: false,
       remate: false,
       subclave: '',
-      spiff : 0.0
+      spiff: 0.0
     };
     vm.precio = {
-      descuento : 0.0
+      descuento: 0.0
     };
     vm.dimension = {};
 
@@ -32,6 +32,7 @@
     vm.calcular = calcular;
     vm.save = crearProducto;
     vm.setClass = utils.setClass;
+    vm.obtenerFicha = obtenerFicha;
 
     initialize();
 
@@ -143,6 +144,24 @@
           calcularPrecios();
         }
       }
+    }
+
+    function obtenerFicha(){
+      return api.get('/icecat/' + vm.producto.numero_parte + '/marca/' + vm.producto.marca_id)
+        .then(function (response){
+          var ficha = response.data.ficha;
+          vm.producto.descripcion = ficha.producto.descripcion;
+          vm.producto.descripcion_corta = ficha.producto.descripcion_corta;
+          if(ficha.producto.subfamilia_id){
+            vm.subfamilia = $.grep(vm.subfamilias, function(subfamilia){
+              return subfamilia.id === ficha.producto.subfamilia_id;
+            })[0];
+            vm.producto.subfamilia_id = ficha.producto.subfamilia_id;
+          }
+          pnotify.alert('Ficha obtenida', response.data.message, 'info');
+        }).catch(function (response){
+          pnotify.alert('Error', response.data.error, 'error');
+        });
     }
 
     function goBack(){
