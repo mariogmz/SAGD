@@ -8,9 +8,9 @@
     .module('sagdApp.transferencia')
     .controller('transferenciaIndexController', transferenciaIndexController);
 
-  transferenciaIndexController.$inject = ['$state', 'api', 'pnotify', 'session'];
+  transferenciaIndexController.$inject = ['$state', 'api', 'pnotify', 'session', 'modal'];
 
-  function transferenciaIndexController($state, api, pnotify, session) {
+  function transferenciaIndexController($state, api, pnotify, session, modal) {
 
     var vm = this;
     vm.sortKeys = [
@@ -31,6 +31,7 @@
     vm.editable = editable;
     vm.eliminable = eliminable;
     vm.transferible = transferible;
+    vm.transferir = transferir;
 
     initialize();
 
@@ -56,7 +57,7 @@
 
     function error(response) {
       console.log('Hubo un error con la peticion.');
-      pnotity.alert('Error', response.data.message, 'error');
+      pnotify.alert('Error', response.data.message, 'error');
     }
 
     function sort(keyname) {
@@ -71,9 +72,9 @@
     function eliminar(id) {
       return api.delete('/transferencias/eliminar/' + id).then(function(response) {
         console.log('Transferencia eliminada exitosamente');
-        pnotity.alert('Exito', response.data.message, 'success');
+        pnotify.alert('Exito', response.data.message, 'success');
       }).catch(function(response) {
-        pnotity.alert(response.data.message, response.data.error, 'error');
+        pnotify.alert(response.data.message, response.data.error, 'error');
       });
     }
 
@@ -90,6 +91,25 @@
     function transferible(id) {
       // De acuerdo con los estados de transferencia, el estado de Cargando Origen es transferible
       return id === 2;
+    }
+
+    function transferir(id) {
+      modal.confirm({
+        title: 'Transferir',
+        content: 'Estas a punto de marcar la transferencia para ser enviada. ¿Deseas continuar?',
+        accept: 'Transferir',
+        type: 'danger'
+      })
+      .then(function() {
+        modal.hide('confirm');
+        return api.post('/transferencias/salidas/transferir/' + id).then(function(response) {
+          pnotify.alert('Exito', response.data.message, 'success');
+        });
+      })
+      .catch(function() {
+        modal.hide('confirm');
+        return false;
+      });
     }
   }
 })();

@@ -38,7 +38,7 @@
             <tr ng-repeat="detalle in vm.transferencia.detalles">
               <td ng-bind="detalle.producto.upc"></td>
               <td ng-bind="detalle.producto.clave"></td>
-              <td ng-bind="detalle.producto.descripción"></td>
+              <td ng-bind="detalle.producto.descripcion"></td>
               <td ng-bind="detalle.cantidad"></td>
               <td>{{detalle.existencia_origen_antes}}/{{detalle.existencia_origen_despues}}</td>
               <td>{{detalle.existencia_destino_antes}}/{{detalle.existencia_destino_despues}}</td>
