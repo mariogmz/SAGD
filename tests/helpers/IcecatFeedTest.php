@@ -128,6 +128,7 @@ class IcecatFeedTest extends TestCase {
      * @covers ::getProductSheet
      * @covers ::downloadSheet
      * @covers ::parseProductSheet
+     * @covers ::sheetIsValid
      * @group icecat
      */
     public function testGetProductSheet() {
@@ -155,6 +156,7 @@ class IcecatFeedTest extends TestCase {
      * @covers ::getProductSheet
      * @covers ::downloadSheet
      * @covers ::parseProductSheet
+     * @covers ::sheetIsValid
      * @group icecat
      */
     public function testGetProductSheetNotExists() {
@@ -176,6 +178,7 @@ class IcecatFeedTest extends TestCase {
      * @covers ::getProductSheet
      * @covers ::downloadSheet
      * @covers ::parseProductSheet
+     * @covers ::sheetIsValid
      * @group icecat
      */
     public function testGetProductSheetOnDisk() {
@@ -208,6 +211,32 @@ class IcecatFeedTest extends TestCase {
         $xml = $this->icecat_feed->downloadSheetRaw('CB049A','hp', true);
         $this->assertFileExists('Icecat/CB049A.xml');
         $this->assertXmlStringEqualsXmlFile('Icecat/CB049A.xml',$xml);
+    }
+
+    /**
+     * @covers ::getProductSheetRaw
+     * @covers ::sheetIsValid
+     * @covers ::prettySheet
+     * @group icecat
+     */
+    public function testGetProductSheetRaw(){
+        $numero_parte = 'CB049A';
+        factory(App\Marca::class)->create([
+            'nombre' => 'HP'
+        ]);
+        $marca = App\Marca::whereNombre('HP')->first();
+        factory(App\IcecatSupplier::class)->create([
+            'marca_id' => $marca->id,
+            'name' => 'hp'
+        ]);
+        App\IcecatSupplier::whereName('hp')->first()->update([
+            'marca_id' => $marca->id
+        ]);
+
+        $product_sheet = $this->icecat_feed->getProductSheetRaw($numero_parte, $marca->id);
+        $this->assertArrayHasKey('producto', $product_sheet);
+        $this->assertArrayHasKey('ficha', $product_sheet);
+        $this->assertArrayHasKey('caracteristicas', $product_sheet);
     }
 
 }

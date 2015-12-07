@@ -288,7 +288,26 @@ Class IcecatFeed {
     }
 
     /**
-     * This method searchs for the sheet from Icecat from a provided eloquent product instance, it tries to find the sheet
+     * @param string $numero_parte
+     * @param int $marca_id
+     * @return array|bool
+     */
+    public function getProductSheetRaw($numero_parte, $marca_id) {
+        $marca = App\Marca::find($marca_id);
+        if (!empty($marca)) {
+            foreach ($marca->icecatSuppliers as $icecat_supplier) {
+                $xml = $this->downloadSheetRaw($numero_parte, $icecat_supplier->name);
+                if (!empty($xml)) {
+                    return $this->prettySheet($this->parseProductSheet($xml));
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * This method search for the sheet from Icecat from a provided eloquent product instance, it tries to find the sheet
      * searching by all the icecat_suppliers associated to the product brand (App\Marca), if the sheet exists, this
      * method returns a string object containing the xml, if it not, this method returns false.
      *
@@ -303,13 +322,8 @@ Class IcecatFeed {
         $suppliers = $product->marca->icecatSuppliers;
 
         foreach ($suppliers as $supplier) {
-            $file = file_get_contents(str_replace('{marca}', $supplier->name, $endpoint));
-            $simple_xml = simplexml_load_string($file);
-            if (empty((string) $simple_xml->Product[0]->attributes()['ErrorMessage'])) {
-                $xml = $file;
-                if ($save) {
-                    file_put_contents('Icecat/' . $product->numero_parte . '.xml', $file);
-                }
+            $xml = $this->sheetIsValid(str_replace('{marca}', $supplier->name, $endpoint), $product->numero_parte, $save);
+            if (!empty($xml)) {
                 break;
             }
         }
@@ -331,16 +345,61 @@ Class IcecatFeed {
         $endpoint = str_replace('{numero_parte}', $part_number, $endpoint);
         $endpoint = str_replace('{marca}', $brand, $endpoint);
 
-        $xml = file_get_contents($endpoint);
+        return $this->sheetIsValid($endpoint, $part_number, $save);
+    }
 
-        if ($save && !empty($xml)) {
-            if (!file_exists('Icecat')) {
-                mkdir('Icecat', 0777, true);
+    /**
+     * This method gets a sheet from Icecat and search for error messages, if errors were found
+     * this method returns false, otherwise returns the xml
+     * @param $endpoint
+     * @param $part_number
+     * @param $save
+     * @return bool|string
+     */
+    private function sheetIsValid($endpoint, $part_number, $save) {
+        $file = file_get_contents($endpoint);
+        $simple_xml = simplexml_load_string($file);
+        if (empty((string) $simple_xml->Product[0]->attributes()['ErrorMessage'])) {
+            $xml = $file;
+            if ($save) {
+                file_put_contents('Icecat/' . $part_number . '.xml', $file);
             }
-            file_put_contents("Icecat/{$part_number}.xml", $xml);
         }
 
-        return $xml ?: false;
+        return isset($xml) ? $xml : false;
+    }
+
+    /**
+     * This method transforms a previous parsed product sheet from icecat and turns it into
+     * a pretty associative array.
+     * @param array $sheet
+     * @return array
+     */
+    private function prettySheet(array $sheet) {
+        $subfamilia = App\IcecatCategory::whereIcecatId($sheet['icecat_category_id'])->first();
+        $producto = [
+            'subfamilia_id'      => $subfamilia ? $subfamilia->id : '',
+            'descripcion'        => $sheet['long_summary_description'],
+            'descripcion_corta'  => $sheet['short_summary_description']
+        ];
+        $ficha = [
+            'calidad' => $sheet['quality'],
+            'titulo'  => $sheet['title']
+        ];
+        $caracteristicas = array_map(function ($feature) use ($sheet) {
+            $icecat_category_feature = App\IcecatCategoryFeature
+                ::whereIcecatFeatureId($feature['icecat_feature_id'])
+                ->whereIcecatCategoryId($sheet['icecat_category_id'])
+                ->whereIcecatCategoryFeatureGroupId($feature['icecat_category_feature_group_id'])->first();
+            if (!empty($icecat_category_feature)) {
+                return [
+                    'icecat_category_feature_id' => $icecat_category_feature->id,
+                    'valor'                      => $feature['value'],
+                    'valor_presentacion'         => $feature['presentation_value']
+                ];
+            }
+        }, $sheet['features']);
+        return compact('producto', 'ficha', 'caracteristicas');
     }
 
     /**
@@ -586,7 +645,7 @@ Class IcecatFeed {
             $presentation_value = (string) $product_feature->attributes()['Presentation_Value'];
             $icecat_feature_id = (int) $product_feature->Feature->attributes()['ID'];
             $icecat_category_feature_group_id = (int) $product_feature->attributes()['CategoryFeatureGroup_ID'];
-            array_push($features, compact('icecat_feature_id', 'icecat_category_feature_group_id', 'icecat_category_id','value', 'presentation_value'));
+            array_push($features, compact('icecat_feature_id', 'icecat_category_feature_group_id', 'icecat_category_id', 'value', 'presentation_value'));
         }
 
         // Product Supplier
