@@ -194,7 +194,7 @@ class TransferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/salidas/ver/1';
 
         $this->mock->shouldReceive([
-            'find' => Mockery::self(),
+            'with->find' => Mockery::self(),
             'self' => []
             ])
         ->withAnyArgs();
@@ -215,7 +215,7 @@ class TransferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/entradas/ver/1';
 
         $this->mock->shouldReceive([
-            'find' => Mockery::self(),
+            'with->find' => Mockery::self(),
             'self' => []
             ])
         ->withAnyArgs();
@@ -236,7 +236,7 @@ class TransferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/salidas/ver/1000';
 
         $this->mock->shouldReceive([
-            'find' => null
+            'with->find' => null
             ])
         ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);

@@ -67,6 +67,7 @@ class Transferencia extends LGGModel {
     public static function boot() {
         parent::boot();
         Transferencia::creating(function ($model) {
+            $model->estado_transferencia_id || $model->estado_transferencia_id = EstadoTransferencia::abierta();
             return $model->isValid();
         });
         Transferencia::updating(function ($model) {
