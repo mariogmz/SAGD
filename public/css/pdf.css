@@ -1,5 +1,9 @@
+/*@page { margin: 0px; }*/
+
 body {
   font-family: Helvetica;
+  font-size: 10px;
+  margin: 0px;
 }
 
 table {

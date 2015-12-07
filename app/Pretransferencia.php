@@ -46,6 +46,7 @@ class Pretransferencia extends LGGModel
     public function pdf($origen, $destino)
     {
         $datos = $this->generarDatos($origen, $destino);
+        // return view('pdf.pretransferencia', ['pretransferencias' => $datos]);
         $pdf = PDF::loadView('pdf.pretransferencia', ['pretransferencias' => $datos])->setPaper('letter');
         return $pdf->stream();
     }
