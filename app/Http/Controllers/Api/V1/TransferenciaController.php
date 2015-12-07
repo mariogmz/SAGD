@@ -91,7 +91,8 @@ class TransferenciaController extends Controller
      */
     public function show($id)
     {
-        $this->transferencia = $this->transferencia->with('detalles', 'sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'estado')->find($id);
+        $this->transferencia = $this->transferencia->with('detalles.producto',
+            'sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'estado')->find($id);
         if ($this->transferencia) {
             return response()->json([
                 'message' => 'Transferencia obtenida exitosamente',

@@ -19,6 +19,10 @@
     font-size: inherit;
   }
 
+  .one-third {
+    padding: .375rem .5rem;
+  }
+
   .create {
     @extend .btn-primary;
 

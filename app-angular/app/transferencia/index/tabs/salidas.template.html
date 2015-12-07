@@ -5,7 +5,7 @@
 
   <article class="block">
     <div class="table-responsive">
-      <table class="item-table">
+      <table class="item-table small-item-table">
         <thead>
           <tr>
             <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
@@ -15,26 +15,26 @@
           </tr>
         </thead>
 
-        <tbody>
+        <tbody class="left-align">
           <tr dir-paginate="salida in vm.salidas | orderBy:vm.sortKey:vm.reverse | itemsPerPage:15">
             <td ng-bind="salida.id"></td>
             <td ng-bind="salida.created_at"></td>
-            <td ng-bind="salida.sucursalOrigen.nombre"></td>
-            <td ng-bind="salida.sucursalDestino.nombre"></td>
-            <td ng-bind="salida.empleadoOrigen.nombre"></td>
-            <td ng-bind="salida.empleadoDestino.nombre"></td>
+            <td ng-bind="salida.sucursal_origen.nombre"></td>
+            <td ng-bind="salida.sucursal_destino.nombre"></td>
+            <td ng-bind="salida.empleado_origen.nombre"></td>
+            <td ng-bind="salida.empleado_destino.nombre"></td>
             <td ng-bind="salida.estado.nombre"></td>
-            <td ng-bind="salida.empleadoRevision.nombre"></td>
+            <td ng-bind="salida.empleado_revision.nombre"></td>
             <td class="actions">
               <div class="action-buttons" role="group" aria-label="Acciones">
-                <button type="button" class="show" ui-sref="transferenciaShow({id:salida.id})">
+                <button type="button" class="show one-third" ui-sref="transferenciaShow({id:salida.id})">
                   <i></i>
                 </button>
-                <button type="button" class="edit" ui-sref="transferenciaEdit({id:salida.id})"
+                <button type="button" class="edit one-third" ui-sref="transferenciaEdit({id:salida.id})"
                   ng-if="vm.editable(salida.estado.id)">
                   <i></i>
                 </button>
-                <button type="button" class="delete" ng-click="vm.delete(salida.id)"
+                <button type="button" class="delete one-third" ng-click="vm.delete(salida.id)"
                   ng-if="vm.eliminable(salida.estado.id)">
                   <i></i>
                 </button>

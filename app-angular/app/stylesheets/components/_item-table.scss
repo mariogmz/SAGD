@@ -33,6 +33,11 @@
 
   }
 
+  .left-align {
+    tr {text-align: left;}
+  }
+
+
   td {
     &.actions {
       @extend .text-center;

@@ -1,5 +1,9 @@
 .transferencia-datos {
 
+  p {
+    margin-bottom: .5rem;
+  }
+
   .half-left,
   .half-right {
     @include make-col();
