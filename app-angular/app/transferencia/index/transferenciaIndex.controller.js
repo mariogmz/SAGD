@@ -32,6 +32,7 @@
     vm.eliminable = eliminable;
     vm.transferible = transferible;
     vm.transferir = transferir;
+    vm.delete = destroy;
 
     initialize();
 
@@ -110,6 +111,30 @@
         modal.hide('confirm');
         return false;
       });
+    }
+
+    function destroy(id) {
+      modal.confirm({
+        title: 'Eliminar transferencia',
+        content: 'Estas a punto de eliminar esta transferencia. Esto podria tener consecuencias en existencias. ¿Estas seguro?',
+        accept: 'Eliminar',
+        type: 'danger'
+      }).then(function() {
+        modal.hide('confirm');
+        return api.delete('/transferencias/eliminar/' + id).then(success).catch(error);
+      }).catch(function() {
+        modal.hide('confirm');
+        return false;
+      });
+    }
+
+    function success(response) {
+      pnotify.alert('Exito', response.data.message, 'success');
+      initialize();
+    }
+
+    function error(response) {
+      pnotify.alert(response.data.message, response.data.error, 'error');
     }
   }
 })();
