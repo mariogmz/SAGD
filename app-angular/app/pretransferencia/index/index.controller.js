@@ -16,7 +16,7 @@
     vm.empleado = session.obtenerEmpleado();
     vm.print = print;
     vm.transferible = isTransferible;
-    vm.delete = delete;
+    vm.delete = destroy;
 
     activate();
 
@@ -36,7 +36,7 @@
     function print(pretransferencia) {
       var origen = pretransferencia.origen.id;
       var destino = pretransferencia.destino.id;
-      backendPrint(origen, destino).then(printer.send);
+      backendPrint(pretransferencia).then(printer.send);
       isTransferible(pretransferencia) && modal.confirm({
         title: 'Crear transferencia',
         content: '¿Desea crear una transferencia en base a esta pretransferencia?',
@@ -48,6 +48,7 @@
         cambiarEstatusPretransferencia(origen, destino).then(function() {
           createTransferencia(origen, destino).then(function(response) {
             pnotify.alert('Exito', response.data.message, 'success');
+            activate();
           });
         });
       })
@@ -64,8 +65,9 @@
       return pretransferencia.estado_pretransferencia_id === 1;
     }
 
-    function backendPrint(origen, destino) {
-      return api.get('/inventario/pretransferencias/imprimir/origen/' + origen + '/destino/' + destino, null, true);
+    function backendPrint(pretransferencia) {
+      var ids = pretransferencia.ids.split('|');
+      return api.post('/inventario/pretransferencias/imprimir', ids, true);
     }
 
     function cambiarEstatusPretransferencia(origen, destino) {
@@ -81,12 +83,14 @@
       return api.post('/transferencias/salidas/crear', transferencia);
     }
 
-    function delete(pretransferencia) {
-      var ids = pretransferencia.ids.split("|");
+    function destroy(pretransferencia) {
+      var ids = pretransferencia.ids.split('|');
       for (var i = ids.length - 1; i >= 0; i--) {
-        api.delete('/inventario/pretransferencia/eliminar/' + ids[i])
+        api.delete('/inventario/pretransferencias/eliminar/' + ids[i])
         .then(deleteSuccess).catch(deleteFail);
       };
+
+      activate();
     }
 
     function deleteSuccess(response) {
