@@ -48,16 +48,17 @@ class PretransferenciaControllerTest extends TestCase
      * @covers ::imprimir
      * @group feature-transferencias
      */
-    public function testGetImprimir()
+    public function testPostImprimir()
     {
-        $endpoint = $this->endpoint . '/pretransferencias/imprimir/origen/1/destino/2';
+        $endpoint = $this->endpoint . '/pretransferencias/imprimir';
+        $data = [1, 2, 3];
 
         $this->mock->shouldReceive([
             'pdf' => []
         ])->withAnyArgs();
         $this->app->instance('App\Pretransferencia', $this->mock);
 
-        $this->get($endpoint)
+        $this->post($endpoint, $data)
             ->assertResponseStatus(200);
     }
 

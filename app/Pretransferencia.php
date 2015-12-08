@@ -45,13 +45,12 @@ class Pretransferencia extends LGGModel
 
     /**
      * Genera un PDF en base a origen y destino
-     * @param int $origen
-     * @param int $destino
+     * @param array $ids
      * @return Pdf
      */
-    public function pdf($origen, $destino)
+    public function pdf($ids)
     {
-        $datos = $this->generarDatos($origen, $destino);
+        $datos = $this->generarDatos($ids);
         // return view('pdf.pretransferencia', ['pretransferencias' => $datos]);
         $pdf = PDF::loadView('pdf.pretransferencia', ['pretransferencias' => $datos])->setPaper('letter');
         return $pdf->stream();
@@ -59,15 +58,13 @@ class Pretransferencia extends LGGModel
 
     /**
      * Genera los datos para la impresion de la pretransferencia
-     * @param int $origen
-     * @param int $destino
+     * @param array $ids
      * @return Collection
      */
-    private function generarDatos($origen, $destino)
+    private function generarDatos($ids)
     {
         return $this->with('origen', 'destino', 'producto', 'empleado')
-            ->where('sucursal_origen_id', $origen)
-            ->where('sucursal_destino_id', $destino)
+            ->whereIn('id', $ids)
             ->get();
     }
 

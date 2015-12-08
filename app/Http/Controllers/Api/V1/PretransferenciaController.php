@@ -39,14 +39,14 @@ class PretransferenciaController extends Controller
     /**
      * Compila un PDF y lo regresa
      *
-     * @param int $origen
-     * @param int $destino
+     * @param Request $request
      * @return PDF
      */
-    public function imprimir($origen, $destino)
+    public function imprimir(Request $request)
     {
         $this->authorize($this);
-        return $this->pretransferencia->pdf($origen, $destino);
+        $ids = $request->all();
+        return $this->pretransferencia->pdf($ids);
     }
 
     public function transferir($origen, $destino)

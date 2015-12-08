@@ -55,6 +55,21 @@ class PretransferenciaControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede marcas las pretransferencias como transferidas
+     *
+     * @param  User  $user
+     * @param  PretransferenciaController $controller
+     * @return bool
+     */
+    public function delete(User $user, PretransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'delete')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string
