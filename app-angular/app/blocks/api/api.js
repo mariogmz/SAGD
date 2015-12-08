@@ -62,9 +62,11 @@
         });
     }
 
-    function postResource(resource, data) {
-      return $http.post(endpoint + resource, data)
-        .then(function(response) {
+    function postResource(resource, data, arraybuffer) {
+      var response = arraybuffer ?
+        $http.post(endpoint + resource, data, {responseType: 'arraybuffer'}) :
+        $http.post(endpoint + resource, data);
+      return response.then(function(response) {
           return response;
         })
         .catch(function(error) {
