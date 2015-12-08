@@ -9,6 +9,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testProductoIdRequerido() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make();
         unset($ficha->producto_id);
         $this->assertFalse($ficha->isValid());
@@ -18,9 +19,11 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testProductoIdEntero() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make();
         $producto_id = $ficha->producto_id;
         $ficha->producto_id = 'texto';
+
         $this->assertFalse($ficha->isValid());
         $ficha->producto_id = $producto_id;
         $this->assertTrue($ficha->isValid());
@@ -30,6 +33,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testProductoIdUnico() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha1 = factory(App\Ficha::class)->create();
         $ficha2 = factory(App\Ficha::class)->make([
             'producto_id' => $ficha1->producto_id
@@ -42,6 +46,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testModeloEsActualizable() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->create();
         $ficha->titulo = 'Titulo';
         $this->assertTrue($ficha->save());
@@ -51,6 +56,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testCalidadEsOpcional() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make();
         unset($ficha->calidad);
         $this->assertTrue($ficha->isValid());
@@ -60,6 +66,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testTituloEsRequerido() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make();
         unset($ficha->titulo);
         $this->assertFalse($ficha->isValid());
@@ -69,6 +76,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testTituloEsMaximo50Caracteres() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class, 'titulolargo')->make();
         $this->assertFalse($ficha->isValid());
         $ficha->titulo = 'TITULO';
@@ -80,6 +88,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testRevisadaEsBooleano() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make([
             'revisada' => 'revisada'
         ]);
@@ -94,6 +103,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testRevisadaEsOpcional() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make();
         unset($ficha->revisada);
         $this->assertTrue($ficha->isValid());
@@ -103,6 +113,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testRevisadaEsPorDefaultFalso() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make();
         unset($ficha->revisada);
         $this->assertTrue($ficha->save());
@@ -114,6 +125,7 @@ class FichaTest extends TestCase {
      * @coversNothing
      */
     public function testCalidadDebeSerUnValorDeLaLista() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->make([
             'calidad' => 'OTRO'
         ]);
@@ -133,6 +145,7 @@ class FichaTest extends TestCase {
      * @group relaciones
      */
     public function testProducto() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $producto = factory(App\Producto::class)->create();
         $ficha = factory(App\Ficha::class)->create([
             'producto_id' => $producto->id
@@ -147,6 +160,7 @@ class FichaTest extends TestCase {
      * @group relaciones
      */
     public function testCaracteristicas() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->create();
         factory(App\FichaCaracteristica::class, 5)->create([
             'ficha_id' => $ficha->id
@@ -235,6 +249,7 @@ class FichaTest extends TestCase {
      * @uses \Sagd\IcecatFeed
      */
     public function testObtenerFichaDesdeIcecatFichaNoEncontrada() {
+        $this->withoutEvents();
         $icecat_supplier = App\IcecatSupplier::firstOrNew([
             'name' => 'hp',
         ]);
@@ -259,7 +274,7 @@ class FichaTest extends TestCase {
         // Revisar ficha
         $this->assertGreaterThanOrEqual(0, $caracteristicas->count());
         $this->assertSame('INTERNO', $ficha->calidad);
-        $this->assertEmpty($ficha->titulo);
+        $this->assertNotEmpty($ficha->titulo);
         $this->assertFalse(boolval($ficha->revisada));
     }
 
@@ -333,6 +348,7 @@ class FichaTest extends TestCase {
 
 
     private function setUpFichaData() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         factory(App\Marca::class)->create([
             'nombre' => 'hp',
             'clave'  => 'HP'
@@ -379,6 +395,7 @@ class FichaTest extends TestCase {
      * @covers ::agregarCaracteristicas
      */
     public function testAgregarCaracteristicas() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $caracteristicas = factory(App\FichaCaracteristica::class, 5)->make([
             'ficha_id' => null
         ])->toArray();
@@ -394,6 +411,7 @@ class FichaTest extends TestCase {
      * @covers ::actualizarCaracteristicas
      */
     public function testActualizarCaracteristicas() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $ficha = factory(App\Ficha::class)->create();
         $caracteristicas = factory(App\FichaCaracteristica::class, 5)->create([
             'ficha_id' => $ficha->id
@@ -401,7 +419,6 @@ class FichaTest extends TestCase {
         foreach ($caracteristicas as &$caracteristica) {
             $caracteristica['valor'] = 'test_value';
         }
-        $ficha = $ficha->fresh();
         $ficha->actualizarCaracteristicas($caracteristicas);
         foreach ($ficha->caracteristicas as $caracteristica) {
             $this->assertSame('test_value', $caracteristica->valor);

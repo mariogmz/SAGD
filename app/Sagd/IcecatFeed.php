@@ -376,9 +376,9 @@ Class IcecatFeed {
      * @return array
      */
     private function prettySheet(array $sheet) {
-        $subfamilia = App\IcecatCategory::whereIcecatId($sheet['icecat_category_id'])->first();
+        $icecat_category = App\IcecatCategory::whereIcecatId($sheet['icecat_category_id'])->first();
         $producto = [
-            'subfamilia_id'      => $subfamilia ? $subfamilia->id : '',
+            'subfamilia_id'      => $icecat_category ? $icecat_category->subfamilia_id : '',
             'descripcion'        => $sheet['long_summary_description'],
             'descripcion_corta'  => $sheet['short_summary_description']
         ];

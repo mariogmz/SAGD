@@ -188,7 +188,7 @@ class Ficha extends LGGModel {
             return $this->guardarFichaConDetalles($sheet, $sobrescribir_datos_producto);
         } else {
             $this->calidad = 'INTERNO';
-            $this->titulo = '';
+            $this->titulo = substr($this->producto, 0, 49);
             $this->revisada = false;
             $this->save();
 
@@ -217,7 +217,7 @@ class Ficha extends LGGModel {
      * @param array $caracteristicas
      */
     public function agregarCaracteristicas(array $caracteristicas) {
-        $caracteristicas = array_map(function($caracteristica){
+        $caracteristicas = array_map(function ($caracteristica) {
             return new FichaCaracteristica($caracteristica);
         }, $caracteristicas);
         $this->caracteristicas()->saveMany($caracteristicas);
@@ -229,8 +229,8 @@ class Ficha extends LGGModel {
      * @param array $caracteristicas
      */
     public function actualizarCaracteristicas(array $caracteristicas) {
-        foreach($caracteristicas as $caracteristica){
-            if(!empty($caracteristica_asociada = FichaCaracteristica::find($caracteristica['id']))){
+        foreach ($caracteristicas as $caracteristica) {
+            if (!empty($caracteristica_asociada = FichaCaracteristica::find($caracteristica['id']))) {
                 $caracteristica_asociada->update($caracteristica);
             }
         }

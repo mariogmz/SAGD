@@ -682,7 +682,6 @@ class ProductoTest extends TestCase {
      */
     public function testGuardarNuevoGuardaParametrosDelModelo() {
         $producto = $this->setUpGuardarNuevoExitoso();
-
         $this->assertEquals('jijiji', $producto->descripcion);
     }
 
@@ -811,6 +810,30 @@ class ProductoTest extends TestCase {
         $this->assertSame('jijiji', $producto->descripcion);
     }
 
+    /**
+     * @covers ::guardarNuevo
+     * @group saves
+     * @group icecat
+     */
+    public function testAlCrearUnProductoSeCreaSuFichaExisteEnIcecat() {
+        $producto = $this->setUpFichaData();
+        $this->assertNotEmpty($producto->ficha);
+        $this->assertNotSame('INTERNO', $producto->ficha->calidad);
+        $this->assertGreaterThanOrEqual(1, $producto->ficha->caracteristicas->count());
+    }
+
+    /**
+     * @covers ::guardarNuevo
+     * @group saves
+     * @group icecat
+     */
+    public function testAlCrearUnProductoSeCreaSuFichaNoExisteEnIcecat() {
+        $producto = $this->setUpGuardarNuevoExitoso();
+        $this->assertNotEmpty($producto->ficha);
+        $this->assertSame('INTERNO', $producto->ficha->calidad);
+        $this->assertEmpty($producto->ficha->caracteristicas);
+    }
+
     private function setUpGuardarNuevoExitoso() {
         $unique = "A" . time();
         $params = [
@@ -824,6 +847,49 @@ class ProductoTest extends TestCase {
         $producto->guardarNuevo($params);
 
         return $producto;
+    }
+
+    private function setUpFichaData() {
+        factory(App\Marca::class)->create([
+            'nombre' => 'hp',
+            'clave'  => 'HP'
+        ]);
+        $marca = App\Marca::whereNombre('hp')->first();
+        factory(App\IcecatSupplier::class)->create([
+            'name'     => 'hp',
+            'marca_id' => $marca->id
+        ]);
+        factory(App\Subfamilia::class)->create([
+            'nombre' => 'impresoras de algo'
+        ]);
+        $subfamilia = App\Subfamilia::whereNombre('impresoras de algo')->first();
+        factory(App\IcecatCategory::class)->create([
+            'icecat_id'     => 234,
+            'subfamilia_id' => $subfamilia->id
+        ]);
+        factory(App\IcecatFeature::class)->create([
+            'icecat_id' => 460
+        ]);
+        factory(App\IcecatCategoryFeatureGroup::class)->create([
+            'icecat_id' => 46
+        ]);
+        factory(App\IcecatCategoryFeature::class)->create([
+            'icecat_category_id'               => 234,
+            'icecat_feature_id'                => 460,
+            'icecat_category_feature_group_id' => 46
+        ]);
+
+        $producto = App\Producto::whereNumeroParte('CB049A')->first();
+        if ($producto) {
+            $producto->update([
+                'numero_parte' => rand(1, 999999999)
+            ]);
+        }
+
+        return factory(App\Producto::class)->create([
+            'numero_parte' => 'CB049A',
+            'marca_id'     => $marca->id
+        ]);
     }
 
     private function setUpActualizarExitoso() {

@@ -37,6 +37,7 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ProductoCreado' => [
             'App\Listeners\AttachSucursales',
             'App\Listeners\InicializarExistencias',
+            'App\Listeners\CrearFicha'
         ]
     ];
 
