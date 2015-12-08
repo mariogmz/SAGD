@@ -25,6 +25,6 @@
     'angularUtils.directives.dirPagination',
     'formly',
     'angular.filter',
-    '720kb.tooltips',
+    '720kb.tooltips'
   ]);
 })();

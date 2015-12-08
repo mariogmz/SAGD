@@ -20,6 +20,7 @@
       'sagdApp.familia',
       'sagdApp.garantia',
       'sagdApp.home',
+      'sagdApp.icecat',
       'sagdApp.layout',
       'sagdApp.logs',
       'sagdApp.marca',
@@ -38,5 +39,5 @@
       'sagdApp.sucursal',
       'sagdApp.unidad'
 
-  ]);
+    ]);
 })();
