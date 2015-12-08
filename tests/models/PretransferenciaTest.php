@@ -61,4 +61,55 @@ class PretransferenciaTest extends TestCase {
         $empleado = $pretransferencia->empleado;
         $this->assertInstanceOf(App\Empleado::class, $empleado);
     }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testTransferirCambiaLosEstadosDeLasPretransferencias()
+    {
+        $data = $this->setUpData();
+        $blank = new App\Pretransferencia;
+
+        $blank->transferir($data['origen'], $data['destino']);
+
+        $pretransferencias = App\Pretransferencia::all();
+
+        $this->assertEquals(App\EstadoPretransferencia::transferido(), $pretransferencias->first()->estado->id);
+    }
+
+    private function setUpData()
+    {
+        App\EstadoPretransferencia::create(['nombre' => 'Sin Transferir']);
+        App\EstadoPretransferencia::create(['nombre' => 'Transferido']);
+
+        $origen = factory(App\Sucursal::class)->create();
+        $destino = factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+        $empleado = factory(App\Empleado::class)->create();
+
+        App\Pretransferencia::create([
+            'cantidad' => 10,
+            'producto_id' => $producto->id,
+            'sucursal_origen_id' => $origen->id,
+            'sucursal_destino_id' => $destino->id,
+            'empleado_id' => $empleado->id,
+            'estado_pretransferencia_id' => App\EstadoPretransferencia::sinTransferir()
+        ]);
+        App\Pretransferencia::create([
+            'cantidad' => 10,
+            'producto_id' => $producto->id,
+            'sucursal_origen_id' => $origen->id,
+            'sucursal_destino_id' => $destino->id,
+            'empleado_id' => $empleado->id,
+            'estado_pretransferencia_id' => App\EstadoPretransferencia::sinTransferir()
+        ]);
+
+        return [
+            'origen' => $origen->id,
+            'destino' => $destino->id,
+            'producto' => $producto->id,
+            'empleado' => $empleado->id,
+        ];
+    }
 }

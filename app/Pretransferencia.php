@@ -4,19 +4,24 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use PDF;
+use Sagd\SafeTransactions;
 
 class Pretransferencia extends LGGModel
 {
+    use SafeTransactions;
+
     protected $table = 'pretransferencias';
     public $timestamps = true;
-    protected $fillable = ['producto_id', 'sucursal_origen_id', 'sucursal_destino_id', 'empleado_id', 'cantidad'];
+    protected $fillable = ['producto_id', 'sucursal_origen_id',
+        'sucursal_destino_id', 'empleado_id', 'cantidad', 'estado_pretransferencia_id'];
 
     public static $rules = [
-        'producto_id'           => 'required|int|',
-        'sucursal_origen_id'    => 'required|int|',
-        'sucursal_destino_id'   => 'required|int|',
-        'empleado_id'   => 'required|int|',
-        'cantidad'              => 'required|int|min:0'
+        'producto_id'                   => 'required|int|',
+        'sucursal_origen_id'            => 'required|int|',
+        'sucursal_destino_id'           => 'required|int|',
+        'empleado_id'                   => 'required|int|',
+        'estado_pretransferencia_id'    => 'required|int|',
+        'cantidad'                      => 'required|int|min:0'
     ];
 
     public $updateRules = [];
@@ -29,6 +34,7 @@ class Pretransferencia extends LGGModel
     {
         parent::boot();
         Pretransferencia::creating(function($model) {
+            $model->estado_pretransferencia_id || $model->estado_pretransferencia_id = EstadoPretransferencia::sinTransferir();
             return $model->isValid();
         });
         Pretransferencia::updating(function($model) {
@@ -63,6 +69,21 @@ class Pretransferencia extends LGGModel
             ->where('sucursal_origen_id', $origen)
             ->where('sucursal_destino_id', $destino)
             ->get();
+    }
+
+    public function transferir($origen, $destino)
+    {
+        $lambda = function() use($origen, $destino) {
+            $pretransferencias = $this
+                ->where('sucursal_origen_id', $origen)->where('sucursal_destino_id', $destino)->get();
+            foreach ($pretransferencias as $pretranferencia) {
+                $pretranferencia->estado_pretransferencia_id = EstadoPretransferencia::transferido();
+                $saved = $pretranferencia->save();
+                if(!$saved) { return false; }
+            }
+            return true;
+        };
+        $this->safe_transaction($lambda);
     }
 
     /**
@@ -102,5 +123,15 @@ class Pretransferencia extends LGGModel
     public function empleado()
     {
         return $this->belongsTo('App\Empleado', 'empleado_id');
+    }
+
+
+    /**
+    * Obtiene el estado asociado con la pretransferencia
+    * @return App\EstadoPretransferencia
+    */
+    public function estado()
+    {
+        return $this->belongsTo('App\EstadoPretransferencia', 'estado_pretransferencia_id');
     }
 }

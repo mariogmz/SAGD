@@ -25,7 +25,7 @@ class PretransferenciaControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede listar los Pretransferencias
+     * Determinar si el usuario puede imprimir la lista de pretransferencia
      *
      * @param  User  $user
      * @param  PretransferenciaController $controller
@@ -36,6 +36,21 @@ class PretransferenciaControllerPolicy
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
         $permiso = $permisos->where('controlador', $controller)->where('accion', 'imprimir')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede marcas las pretransferencias como transferidas
+     *
+     * @param  User  $user
+     * @param  PretransferenciaController $controller
+     * @return bool
+     */
+    public function transferir(User $user, PretransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'transferir')->first();
         return !empty($permiso);
     }
 

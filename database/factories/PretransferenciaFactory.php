@@ -21,6 +21,7 @@ $factory->define(App\Pretransferencia::class, function ($faker) {
         'producto_id' => $producto->id,
         'sucursal_origen_id' => $sucursal_origen->id,
         'sucursal_destino_id' => $sucursal_destino->id,
-        'empleado_id' => factory(App\Empleado::class)->create()->id
+        'empleado_id' => factory(App\Empleado::class)->create()->id,
+        'estado_pretransferencia_id' => factory(App\EstadoPretransferencia::class)->create(['nombre' => 'Sin Transferir'])->id
     ];
 });

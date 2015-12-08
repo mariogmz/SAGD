@@ -36,7 +36,7 @@ class PretransferenciaControllerTest extends TestCase
         $endpoint = $this->endpoint . '/pretransferencias/origen/1';
 
         $this->mock->shouldReceive([
-            'with->where->get' => []
+            'with->selectRaw->join->where->groupBy->get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Pretransferencia', $this->mock);
 
@@ -59,5 +59,45 @@ class PretransferenciaControllerTest extends TestCase
 
         $this->get($endpoint)
             ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testPostTransferir()
+    {
+        $endpoint = $this->endpoint . '/pretransferencias/transferir/origen/1/destino/2';
+
+        $this->mock->shouldReceive([
+            'transferir' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Pretransferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Pretransferencias marcadas como transferidas'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::transferir
+     * @group feature-transferencias
+     */
+    public function testPostTransferirFail()
+    {
+        $endpoint = $this->endpoint . '/pretransferencias/transferir/origen/1/destino/2';
+
+        $this->mock->shouldReceive([
+            'transferir' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Pretransferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Pretranferencias no marcadas como transferidas'
+            ])
+            ->assertResponseStatus(400);
     }
 }

@@ -48,4 +48,18 @@ class PretransferenciaController extends Controller
         $this->authorize($this);
         return $this->pretransferencia->pdf($origen, $destino);
     }
+
+    public function transferir($origen, $destino)
+    {
+        $this->authorize($this);
+        if ($this->pretransferencia->transferir($origen, $destino)) {
+            return response()->json([
+                'message' => 'Pretransferencias marcadas como transferidas'
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Pretranferencias no marcadas como transferidas'
+            ], 400);
+        }
+    }
 }
