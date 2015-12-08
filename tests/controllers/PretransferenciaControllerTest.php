@@ -100,4 +100,68 @@ class PretransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::delete
+     * @group feature-transferencias
+     */
+    public function testDeletePretransferencia()
+    {
+        $endpoint = $this->endpoint . '/pretransferencias/eliminar/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'delete' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Pretransferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Pretransferencia eliminada exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::delete
+     * @group feature-transferencias
+     */
+    public function testDeleteNotFound()
+    {
+        $endpoint = $this->endpoint . '/pretransferencias/eliminar/1';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Pretransferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'No se elimino la pretransferencia',
+                'error' => 'Pretransferencia no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::delete
+     * @group feature-transferencias
+     */
+    public function testDeleteFail()
+    {
+        $endpoint = $this->endpoint . '/pretransferencias/eliminar/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'delete' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Pretransferencia', $this->mock);
+
+        $this->delete($endpoint)
+            ->seeJson([
+                'message' => 'Pretransferencia no eliminada',
+                'error' => 'Pretransferencia no eliminada'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

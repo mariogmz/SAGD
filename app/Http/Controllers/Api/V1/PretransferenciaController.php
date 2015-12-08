@@ -28,11 +28,11 @@ class PretransferenciaController extends Controller
     {
         $this->authorize($this);
         return $this->pretransferencia
-            ->with('origen', 'destino', 'empleado')
-            ->selectRaw('sum(cantidad) as cantidad, sucursal_origen_id, sucursal_destino_id, GROUP_CONCAT(DISTINCT empleados.nombre SEPARATOR", ") as empleados')
+            ->with('origen', 'destino', 'empleado', 'estado')
+            ->selectRaw('sum(cantidad) as cantidad, sucursal_origen_id, sucursal_destino_id, estado_pretransferencia_id, GROUP_CONCAT(DISTINCT empleados.nombre SEPARATOR", ") as empleados, GROUP_CONCAT(DISTINCT pretransferencias.id SEPARATOR"|") as ids')
             ->join('empleados', 'pretransferencias.empleado_id', '=', 'empleados.id')
             ->where('sucursal_origen_id', $id)
-            ->groupBy('sucursal_destino_id')
+            ->groupBy(['sucursal_destino_id', 'estado_pretransferencia_id'])
             ->get();
     }
 
@@ -60,6 +60,34 @@ class PretransferenciaController extends Controller
             return response()->json([
                 'message' => 'Pretranferencias no marcadas como transferidas'
             ], 400);
+        }
+    }
+
+    /**
+     * Borra una pretransferencia
+     * @param int $id
+     * @return Response
+     */
+    public function delete($id)
+    {
+        $this->authorize($this);
+        $this->pretransferencia = $this->pretransferencia->find($id);
+        if ($this->pretransferencia) {
+            if ($this->pretransferencia->delete()) {
+                return response()->json([
+                    'message' => 'Pretransferencia eliminada exitosamente',
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'Pretransferencia no eliminada',
+                    'error' => 'Pretransferencia no eliminada',
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'No se elimino la pretransferencia',
+                'error' => 'Pretransferencia no encontrada'
+            ], 404);
         }
     }
 }

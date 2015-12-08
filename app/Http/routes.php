@@ -38,6 +38,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
                 Route::get('origen/{id}', 'PretransferenciaController@index');
                 Route::get('imprimir/origen/{origen}/destino/{destino}', ['as' => '.imprimir', 'uses' => 'PretransferenciaController@imprimir']);
                 Route::post('transferir/origen/{origen}/destino/{destino}', ['as' => '.transferir', 'uses' => 'PretransferenciaController@transferir']);
+                Route::delete('/eliminar/{id}', ['as' => '.delete', 'uses' => 'PretransferenciaController@delete']);
             });
         });
 

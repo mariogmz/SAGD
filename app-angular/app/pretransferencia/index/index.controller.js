@@ -15,6 +15,8 @@
     var vm = this;
     vm.empleado = session.obtenerEmpleado();
     vm.print = print;
+    vm.transferible = isTransferible;
+    vm.delete = delete;
 
     activate();
 
@@ -35,7 +37,7 @@
       var origen = pretransferencia.origen.id;
       var destino = pretransferencia.destino.id;
       backendPrint(origen, destino).then(printer.send);
-      modal.confirm({
+      isTransferible(pretransferencia) && modal.confirm({
         title: 'Crear transferencia',
         content: '¿Desea crear una transferencia en base a esta pretransferencia?',
         accept: 'Crear transferencia',
@@ -43,8 +45,10 @@
       })
       .then(function() {
         modal.hide('confirm');
-        createTransferencia(origen, destino).then(function(response) {
-          pnotify.alert('Exito', response.data.message, 'success');
+        cambiarEstatusPretransferencia(origen, destino).then(function() {
+          createTransferencia(origen, destino).then(function(response) {
+            pnotify.alert('Exito', response.data.message, 'success');
+          });
         });
       })
       .catch(function() {
@@ -53,8 +57,19 @@
       });
     }
 
+    function isTransferible(pretransferencia) {
+      // De acuerdo con la especificacion de estados de pretransferencia, el
+      // estado 1 es 'Sin Transferir' y por ende, se puede crear una transferencia
+      // a partir de el
+      return pretransferencia.estado_pretransferencia_id === 1;
+    }
+
     function backendPrint(origen, destino) {
       return api.get('/inventario/pretransferencias/imprimir/origen/' + origen + '/destino/' + destino, null, true);
+    }
+
+    function cambiarEstatusPretransferencia(origen, destino) {
+      return api.post('/inventario/pretransferencias/transferir/origen/' + origen + '/destino/' + destino);
     }
 
     function createTransferencia(origen, destino) {
@@ -64,6 +79,22 @@
         empleado_origen_id: vm.empleado.id
       };
       return api.post('/transferencias/salidas/crear', transferencia);
+    }
+
+    function delete(pretransferencia) {
+      var ids = pretransferencia.ids.split("|");
+      for (var i = ids.length - 1; i >= 0; i--) {
+        api.delete('/inventario/pretransferencia/eliminar/' + ids[i])
+        .then(deleteSuccess).catch(deleteFail);
+      };
+    }
+
+    function deleteSuccess(response) {
+      pnotify.alert('Exito', response.data.message, 'success');
+    }
+
+    function deleteFail(response) {
+      pnotify.alert(reponse.data.message, response.data.error, 'error');
     }
   }
 })();

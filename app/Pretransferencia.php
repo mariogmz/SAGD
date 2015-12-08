@@ -83,7 +83,7 @@ class Pretransferencia extends LGGModel
             }
             return true;
         };
-        $this->safe_transaction($lambda);
+        return $this->safe_transaction($lambda);
     }
 
     /**
