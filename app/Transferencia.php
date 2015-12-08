@@ -119,6 +119,7 @@ class Transferencia extends LGGModel {
     {
         $lambda = function() {
             $this->estado_transferencia_id = EstadoTransferencia::enTransferencia();
+            $this->fecha_transferencia = \Carbon\Carbon::now();
             $this->save();
             $result = Event::fire(new Transferir($this))[0];
             return $result;
