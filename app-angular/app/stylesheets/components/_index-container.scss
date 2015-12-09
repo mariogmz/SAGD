@@ -20,7 +20,7 @@
     background-color: $gray-suit;
     transition: background-color 500ms ease-in-out;
 
-    a {
+    h4 {
       color: $alto;
       transition: color 500ms ease-in-out;
     }
@@ -29,9 +29,8 @@
       background-color: $mine-shaft;
       cursor: pointer;
 
-      a {
+      h4 {
         color: $white;
-        text-decoration: none;
       }
     }
   }

@@ -7,8 +7,8 @@
         <div class="block" ng-if="element.icon">
           <i ng-class="'fa fa-' + element.icon +  ' fa-5x'"></i>
         </div>
-        <div class="header">
-          <a ui-sref="{{element.state}}"><h4 ng-bind="element.label"></h4></a>
+        <div class="header" ui-sref="{{element.state}}">
+          <h4 ng-bind="element.label"></h4>
         </div>
       </div>
     </article>
