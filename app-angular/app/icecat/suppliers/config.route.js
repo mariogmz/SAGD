@@ -1,4 +1,4 @@
-// app/icecat/index/config.route.js
+// app/icecat/suppliers/config.route.js
 
 (function() {
   'use strict';
@@ -11,11 +11,11 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-      .state('icecatIndex', {
-        url: '',
+      .state('icecatSuppliers', {
+        url: '/fabricantes',
         parent: 'icecat',
-        templateUrl: 'app/icecat/index/index.html',
-        controller: 'icecatIndexController',
+        templateUrl: 'app/icecat/suppliers/suppliers.html',
+        controller: 'icecatSuppliersController',
         controllerAs: 'vm'
       });
   }

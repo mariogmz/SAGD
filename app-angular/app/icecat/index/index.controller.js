@@ -17,12 +17,10 @@
 
     function initialize() {
       vm.indexElements = [
-        {label: 'Fabricantes', state: 'icecatSuppliersIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'},
-        {label: 'Categorías', state: 'icecatCategoriesIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'},
-        {label: 'Características', state: 'icecatFeaturesIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'},        {label: 'Fabricantes', state: 'icecatSuppliersIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'},
-        {label: 'Categorías', state: 'icecatCategoriesIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'},
-        {label: 'Características', state: 'icecatFeaturesIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'},
-        {label: 'Tareas', state: 'icecatTasksIndex', picUrl: 'https://avatars0.githubusercontent.com/u/139426?v=3&s=400'}
+        {label: 'Fabricantes', state: 'icecatSuppliers', picUrl: '', icon: 'industry'},
+        {label: 'Categorías', state: 'icecatCategoriesIndex', picUrl: '', icon: 'object-group'},
+        {label: 'Características', state: 'icecatFeaturesIndex', picUrl: '', icon: 'tag'},
+        {label: 'Tareas', state: 'icecatTasksIndex', picUrl: '', icon: 'tasks'}
       ];
     }
   }

@@ -326,6 +326,9 @@
           }, {
             name: 'Tipo de Cambio',
             state: 'configuracion.tipocambio'
+          }, {
+            name: 'Icecat',
+            state: 'icecatIndex'
           }
         ]
       }

@@ -13,7 +13,7 @@
     $stateProvider
       .state('icecat', {
         abstract: true,
-        url: '',
+        url: 'icecat',
         parent: 'layout',
         templateUrl: 'app/icecat/icecat.html'
       });
