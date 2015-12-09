@@ -23,7 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Http\Controllers\Api\V1\EntradaController'             => 'App\Policies\EntradaControllerPolicy',
         'App\Http\Controllers\Api\V1\EmpleadoController'            => 'App\Policies\EmpleadoControllerPolicy',
         'App\Http\Controllers\Api\V1\FamiliaController'             => 'App\Policies\FamiliaControllerPolicy',
-        'App\Http\Controllers\Api\V1\LogsAccesoEmpleadoController'  => 'App\Policies\LogsAccesoEmpleadoControllerPolicy',
+        'App\Http\Controllers\Api\V1\LogsAccesoController'          => 'App\Policies\LogsAccesoControllerPolicy',
         'App\Http\Controllers\Api\V1\MarcaController'               => 'App\Policies\MarcaControllerPolicy',
         'App\Http\Controllers\Api\V1\MargenController'              => 'App\Policies\MargenControllerPolicy',
         'App\Http\Controllers\Api\V1\PasswordController'            => 'App\Policies\PasswordControllerPolicy',
