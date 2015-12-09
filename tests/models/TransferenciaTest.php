@@ -770,6 +770,36 @@ class TransferenciaTest extends TestCase {
         $this->assertFalse($transferencia->cargar($params));
     }
 
+    /**
+     * @covers ::escanear
+     * @group feature-transferencias
+     * @group escanear
+     */
+    public function testEscanearExitoso()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $this->assertTrue($transferencia->escanear($detalle->id, 1));
+    }
+
+    /**
+     * @covers ::escanear
+     * @group feature-transferencias
+     * @group escanear
+     */
+    public function testEscanearNoExitoso()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $detalle = $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $this->assertFalse($transferencia->escanear($detalle->id + 1, 1));
+    }
+
     private function setUpProducto()
     {
         $producto = factory(App\Producto::class)->create();

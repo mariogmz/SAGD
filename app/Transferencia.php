@@ -148,6 +148,22 @@ class Transferencia extends LGGModel {
     }
 
     /**
+     * Aumenta la cantidad escaneada del detalle
+     *
+     * @param int $detalle_id
+     * @param int $cantidad
+     * @return bool
+     */
+    public function escanear($detalle_id, $cantidad)
+    {
+        $detalle = $this->detalles()->where('id', $detalle_id)->first();
+        if (empty($detalle)) { return false; }
+
+        $detalle->cantidad_escaneada += $cantidad;
+        return $detalle->save();
+    }
+
+    /**
      * Obtiene el Estado Transferencia asociado con la Transferencia
      * @return App\EstadoTransferencia
      */
