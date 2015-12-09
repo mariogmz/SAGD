@@ -10,17 +10,32 @@ use App\Http\Controllers\Api\V1\TransferenciaController;
 class TransferenciaControllerPolicy
 {
     /**
-     * Determinar si el usuario puede listar los Transferencias
+     * Determinar si el usuario puede listar los Transferencias de Salida
      *
      * @param  User  $user
      * @param  TransferenciaController $controller
      * @return bool
      */
-    public function index(User $user, TransferenciaController $controller)
+    public function indexSalidas(User $user, TransferenciaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'index')->first();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'indexSalidas')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede listar los Transferencias de Entrada
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function indexEntradas(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'indexEntradas')->first();
         return !empty($permiso);
     }
 
@@ -31,11 +46,11 @@ class TransferenciaControllerPolicy
      * @param  TransferenciaController $controller
      * @return bool
      */
-    public function store(User $user, TransferenciaController $controller)
+    public function create(User $user, TransferenciaController $controller)
     {
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'store')->first();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'create')->first();
         return !empty($permiso);
     }
 
@@ -84,6 +99,80 @@ class TransferenciaControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede guardar detalles de una transferencia
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function saveDetalle(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'saveDetalle')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede quitar detalles de una transferencia
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function unsaveDetalle(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'unsaveDetalle')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede transferir un Transferencia
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function transferir(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'transferir')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede cargar un Transferencia
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function cargar(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'cargar')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede escanear productos para la carga
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function escanear(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'escanear')->first();
+        return !empty($permiso);
+    }
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
