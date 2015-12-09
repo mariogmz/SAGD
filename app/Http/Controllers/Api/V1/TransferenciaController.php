@@ -26,6 +26,7 @@ class TransferenciaController extends Controller
      */
     public function indexSalidas()
     {
+        $this->authorize($this);
         $empleado = $this->getLoggedInEmpleado();
         if (is_null($empleado)) {
             return response()->json([
@@ -46,6 +47,7 @@ class TransferenciaController extends Controller
      */
     public function indexEntradas()
     {
+        $this->authorize($this);
         $empleado = $this->getLoggedInEmpleado();
         if (is_null($empleado)) {
             return response()->json([
@@ -67,6 +69,7 @@ class TransferenciaController extends Controller
      */
     public function create(Request $request)
     {
+        $this->authorize($this);
         $params = $request->all();
         $this->transferencia = $this->transferencia->fill($params);
         if ($this->transferencia->save()) {
@@ -91,6 +94,7 @@ class TransferenciaController extends Controller
      */
     public function show($id)
     {
+        $this->authorize($this);
         $this->transferencia = $this->transferencia->with('detalles.producto',
             'sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'estado')->find($id);
         if ($this->transferencia) {
@@ -115,6 +119,7 @@ class TransferenciaController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $this->authorize($this);
         $parameters = $request->all();
         $this->transferencia = $this->transferencia->find($id);
         if( empty($this->transferencia) )
@@ -146,6 +151,7 @@ class TransferenciaController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize($this);
         $this->transferencia = $this->transferencia->find($id);
         if( empty($this->transferencia) )
         {
@@ -176,6 +182,7 @@ class TransferenciaController extends Controller
      */
     public function saveDetalle(Request $request, $id)
     {
+        $this->authorize($this);
         $this->transferencia = $this->transferencia->find($id);
         if ($this->transferencia) {
             $detalle = $request->all();
@@ -207,6 +214,7 @@ class TransferenciaController extends Controller
      */
     public function unsaveDetalle($id, $detalle)
     {
+        $this->authorize($this);
         $this->transferencia = $this->transferencia->find($id);
         if ($this->transferencia) {
             if ($this->transferencia->quitarDetalle($detalle)) {
@@ -235,6 +243,7 @@ class TransferenciaController extends Controller
      */
     public function transferir($id)
     {
+        $this->authorize($this);
         $this->transferencia = $this->transferencia->find($id);
         if ($this->transferencia) {
             if ($this->transferencia->transferir()) {
@@ -264,6 +273,7 @@ class TransferenciaController extends Controller
      */
     public function cargar($id, Request $request)
     {
+        $this->authorize($this);
         $this->transferencia = $this->transferencia->find($id);
         if ($this->transferencia) {
             $params = $request->all();
@@ -283,5 +293,53 @@ class TransferenciaController extends Controller
                 'error' => 'Transferencia no existente'
             ], 404);
         }
+    }
+
+    /**
+     * Agrega a cantidad escaneada de un detalle
+     * Request debe tener un campo de 'cantidad' unicamente
+     *
+     * @param int $id
+     * @param int $detalle
+     * @param Request $request
+     * @return Response
+     */
+    public function escanear($id, $detalle, Request $request)
+    {
+        $this->authorize($this);
+        $parameters = $request->only('cantidad');
+        if (empty($parameters['cantidad'])) {
+            return response()->json([
+                'message' => 'La peticion va vacia o con datos erroneos',
+                'error' => 'Parametros no encontrados'
+            ], 422);
+        }
+        $cantidad = $parameters['cantidad'];
+        $this->transferencia = $this->transferencia->with('detalles')->find($id);
+        if ($this->transferencia) {
+            if ($this->transferencia->detalles->contains('id', $detalle)) {
+                if ($this->transferencia->escanear($detalle, $cantidad)) {
+                    return response()->json([
+                        'message' => 'Producto escaneado exitosamente'
+                    ], 200);
+                } else {
+                    return response()->json([
+                        'message' => 'No se pudo registrar el escaneo del producto, intente nuevamente',
+                        'error' => 'Producto no escaneado'
+                    ], 400);
+                }
+            } else {
+                return response()->json([
+                    'message' => 'El detalle de la transferencia no pudo ser encontrada o no existe',
+                    'error' => 'Transferencia Detalle no encontrada'
+                ], 404);
+            }
+        } else {
+            return response()->json([
+                'message' => 'La transferencia no pudo ser encontrada o no existe',
+                'error' => 'Transferencia no encontrada'
+            ], 404);
+        }
+
     }
 }

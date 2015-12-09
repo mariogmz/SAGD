@@ -626,4 +626,127 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::escanear
+     */
+    public function testPostEscanearExitoso()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/escanear';
+        $data = ['cantidad' => 1];
+
+        $this->mock->shouldReceive([
+            'with->find' => Mockery::self(),
+            'getAttribute' => Mockery::self(),
+            'contains' => Mockery::self(),
+            'escanear' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $data)
+            ->seeJson([
+                'message' => 'Producto escaneado exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::escanear
+     */
+    public function testPostEscanearTransferenciaNoExiste()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/escanear';
+        $data = ['cantidad' => 1];
+
+        $this->mock->shouldReceive([
+            'with->find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $data)
+            ->seeJson([
+                'message' => 'La transferencia no pudo ser encontrada o no existe',
+                'error' => 'Transferencia no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::escanear
+     */
+    public function testPostEscanearDetalleNoExiste()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/escanear';
+        $data = ['cantidad' => 1];
+
+        $this->mock->shouldReceive([
+            'with->find' => Mockery::self(),
+            'getAttribute' => Mockery::self(),
+            'contains' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $data)
+            ->seeJson([
+                'message' => 'El detalle de la transferencia no pudo ser encontrada o no existe',
+                'error' => 'Transferencia Detalle no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::escanear
+     */
+    public function testPostEscanearSinParametros()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/escanear';
+        $data = [];
+
+        $this->post($endpoint, $data)
+            ->seeJson([
+                'message' => 'La peticion va vacia o con datos erroneos',
+                'error' => 'Parametros no encontrados'
+            ])
+            ->assertResponseStatus(422);
+    }
+
+    /**
+     * @covers ::escanear
+     */
+    public function testPostEscanearConParametrosIncorrectos()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/escanear';
+        $data = ['cantidades' => 1];
+
+        $this->post($endpoint, $data)
+            ->seeJson([
+                'message' => 'La peticion va vacia o con datos erroneos',
+                'error' => 'Parametros no encontrados'
+            ])
+            ->assertResponseStatus(422);
+    }
+
+    /**
+     * @covers ::escanear
+     */
+    public function testPostEscanearFalla()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/escanear';
+        $data = ['cantidad' => 1];
+
+        $this->mock->shouldReceive([
+            'with->find' => Mockery::self(),
+            'getAttribute' => Mockery::self(),
+            'contains' => Mockery::self(),
+            'escanear' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint, $data)
+            ->seeJson([
+                'message' => 'No se pudo registrar el escaneo del producto, intente nuevamente',
+                'error' => 'Producto no escaneado'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

@@ -104,6 +104,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
                 Route::get('/', 'TransferenciaController@indexEntradas');
                 Route::get('ver/{id}', 'TransferenciaController@show');
                 Route::post('cargar/{id}', 'TransferenciaController@cargar');
+                Route::post('/{id}/detalle/{detalle}/escanear', 'TransferenciaController@escanear');
                 Route::put('/{id}', 'TransferenciaController@update');
             });
         });
