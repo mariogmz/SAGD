@@ -259,13 +259,15 @@ class TransferenciaController extends Controller
      * Actualiza la transferencia al estado de Cargado
      *
      * @param int $id
+     * @param Request $request
      * @return Response
      */
-    public function cargar($id)
+    public function cargar($id, Request $request)
     {
         $this->transferencia = $this->transferencia->find($id);
         if ($this->transferencia) {
-            if ($this->transferencia->cargar()) {
+            $params = $request->all();
+            if ($this->transferencia->cargar($params)) {
                 return response()->json([
                     'message' => 'Transferencia cargada'
                 ], 200);
