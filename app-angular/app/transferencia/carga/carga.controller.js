@@ -7,10 +7,10 @@
     .module('sagdApp.transferencia')
     .controller('transferenciaCargaController', transferenciaCargaController);
 
-  transferenciaCargaController.$inject = ['$stateParams', 'api', 'session', 'utils'];
+  transferenciaCargaController.$inject = ['$stateParams', 'api', 'session', 'utils', 'pnotify', 'modal'];
 
   /* @ngInject */
-  function transferenciaCargaController($stateParams, api, session, utils) {
+  function transferenciaCargaController($stateParams, api, session, utils, pnotify, modal) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -30,14 +30,12 @@
     ////////////////
 
     function activate() {
+      resetDetalle();
       obtenerTransferencia().then(function(response) {
         console.log('Transferencia obtenida exitosamente');
         vm.transferencia = response.data.transferencia;
         vm.productos = utils.pluck(vm.transferencia.detalles, 'producto');
         vm.upcs = utils.pluck(vm.productos, 'upc');
-        for (var i = vm.transferencia.detalles.length - 1; i >= 0; i--) {
-          vm.transferencia.detalles[i].cantidad_escaneada = 0;
-        }
       });
     }
 
@@ -46,29 +44,45 @@
     }
 
     function agregar() {
-      if (buscarProducto()) {
-        agregarCantidadEscaneada();
-        resetDetalle();
-      }
+      buscarProducto().then(function(response) {
+        var producto = response.data.producto;
+
+        return buscarProductoEnDetalles(producto).then(function(index) {
+
+          return agregarCantidadEscaneada(index).then(function(response) {
+            setCargandoDestino();
+            success(response);
+          });
+        });
+      }).catch(error);
     }
 
     function buscarProducto() {
-      if (vm.upcs.length > 0 && vm.upcs.indexOf(vm.detalle.upc > -1)) {
-        return true;
-      } else {
-        return false;
-      }
+      return api.get('/producto/buscar/upc/', vm.detalle.upc);
     }
 
-    function agregarCantidadEscaneada() {
+    function buscarProductoEnDetalles(producto) {
       for (var i = vm.transferencia.detalles.length - 1; i >= 0; i--) {
-        var producto = vm.transferencia.detalles[i].producto;
-        if (producto.upc === vm.detalle.upc) {
-          if (vm.transferencia.detalles[i].cantidad_escaneada < vm.transferencia.detalles[i].cantidad) {
-            vm.transferencia.detalles[i].cantidad_escaneada += vm.detalle.cantidad;
-          }
+        var producto_detalle = vm.transferencia.detalles[i].producto;
+        if (producto_detalle.id === producto.id) {
+          return Promise.resolve(vm.transferencia.detalles[i].id);
         }
       }
+
+      return Promise.reject({
+        data: {
+          message: 'El producto no esta en el listado de detalles',
+          error: 'Producto no en detalles'
+        }
+      });
+    }
+
+    function agregarCantidadEscaneada(index) {
+      return api.post('/transferencias/entradas/' + vm.id + '/detalle/' + index + '/escanear', {cantidad: vm.detalle.cantidad});
+    }
+
+    function setCargandoDestino() {
+      return api.post('/transferencias/entradas/' + vm.id + '/cargando-destino');
     }
 
     function resetDetalle() {
@@ -114,7 +128,7 @@
 
     function success(response) {
       pnotify.alert('Exito', response.data.message, 'success');
-      initialize();
+      activate();
     }
 
     function error(response) {
