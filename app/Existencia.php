@@ -33,9 +33,8 @@ class Existencia extends LGGModel {
     protected $table = "existencias";
     public $timestamps = false;
     protected $fillable = ['cantidad', 'cantidad_apartado',
-        'cantidad_pretransferencia', 'cantidad_transferencia',
-        'cantidad_garantia_cliente', 'cantidad_garantia_zegucom',
-        'productos_sucursales_id'];
+        'cantidad_pretransferencia', 'cantidad_pretransferencia_destino', 'cantidad_transferencia',
+        'cantidad_garantia_cliente', 'cantidad_garantia_zegucom', 'productos_sucursales_id'];
 
     public static $rules = [
         'cantidad'                  => 'integer|min:0',
