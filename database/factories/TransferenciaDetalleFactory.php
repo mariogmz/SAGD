@@ -15,6 +15,7 @@ $factory->define(App\TransferenciaDetalle::class, function ($faker)
 {
     return [
         'cantidad' => $faker->randomNumber(8),
+        'cantidad_escaneada' => $faker->randomNumber(7),
         'existencia_origen_antes' => $faker->randomNumber,
         'existencia_origen_despues' => $faker->randomNumber,
         'existencia_destino_antes' => $faker->randomNumber,

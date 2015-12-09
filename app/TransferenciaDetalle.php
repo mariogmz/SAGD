@@ -40,12 +40,13 @@ class TransferenciaDetalle extends LGGModel {
     //
     protected $table = "transferencias_detalles";
     public $timestamps = true;
-    protected $fillable = ['cantidad', 'existencia_origen_antes',
+    protected $fillable = ['cantidad', 'cantidad_escaneada', 'existencia_origen_antes',
         'existencia_origen_despues', 'existencia_destino_antes', 'existencia_destino_despues',
         'transferencia_id', 'producto_id', 'producto_movimiento_id'];
 
     public static $rules = [
         'cantidad'                   => 'required|integer|min:0',
+        'cantidad_escaneada'         => 'integer|min:0',
         'existencia_origen_antes'    => 'integer|min:0',
         'existencia_origen_despues'  => 'integer|min:0',
         'existencia_destino_antes'   => 'integer|min:0',
@@ -63,6 +64,7 @@ class TransferenciaDetalle extends LGGModel {
     public static function boot() {
         parent::boot();
         TransferenciaDetalle::creating(function ($model) {
+            $model->cantidad_escaneada || $model->cantidad_escaneada = 0;
             return $model->isValid();
         });
         TransferenciaDetalle::updating(function ($model) {
