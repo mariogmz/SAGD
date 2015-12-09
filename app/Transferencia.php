@@ -128,6 +128,11 @@ class Transferencia extends LGGModel {
         return $this->safe_transaction($lambda);
     }
 
+    /**
+     * Carga a inventario la transferencia
+     * @param $params
+     * @return bool
+     */
     public function cargar($params)
     {
         $lambda = function() use ($params) {
