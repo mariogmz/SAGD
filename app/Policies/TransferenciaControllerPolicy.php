@@ -175,6 +175,21 @@ class TransferenciaControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede cambiar el estatus a cargando destino
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function cargandoDestino(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'cargandoDestino')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string

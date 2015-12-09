@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use Illuminate\Http\Request;
 
 use App\Transferencia;
+use App\EstadoTransferencia;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
@@ -12,10 +13,12 @@ class TransferenciaController extends Controller
 {
 
     protected $transferencia;
+    protected $estado;
 
-    public function __construct(Transferencia $transferencia)
+    public function __construct(Transferencia $transferencia, EstadoTransferencia $estado)
     {
         $this->transferencia = $transferencia;
+        $this->estado = $estado;
         $this->middleware('jwt.auth');
     }
 
@@ -340,6 +343,40 @@ class TransferenciaController extends Controller
                 'error' => 'Transferencia no encontrada'
             ], 404);
         }
+    }
 
+    /**
+     * Cambia el estado de la transferencia a cargando destino
+     * @param int $id
+     * @return Response
+     */
+    public function cargandoDestino($id)
+    {
+        $this->authorize($this);
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            $this->estado = $this->estado->where('nombre', 'Cargando Destino')->first();
+            if ($this->transferencia->estado_transferencia_id === $this->estado->id) {
+                return response()->json([
+                    'message' => 'La transferencia ya esta siendo cargada'
+                ], 304);
+            }
+            $this->transferencia->estado_transferencia_id = $this->estado->id;
+            if ($this->transferencia->save()) {
+                return response()->json([
+                    'message' => 'La transferencia cambio de estado a Cargando Destino'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'La transferencia no se pudo cambiar a estado Cargando Destino',
+                    'error' => 'Transferencia estado no cambio'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'La transferencia no fue encontrada o no existe',
+                'error' => 'Transferencia no encontrada'
+            ], 404);
+        }
     }
 }

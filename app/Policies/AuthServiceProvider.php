@@ -40,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Http\Controllers\Api\V1\SucursalController'            => 'App\Policies\SucursalControllerPolicy',
         'App\Http\Controllers\Api\V1\TelefonoController'            => 'App\Policies\TelefonoControllerPolicy',
         'App\Http\Controllers\Api\V1\TipoGarantiaController'        => 'App\Policies\TipoGarantiaControllerPolicy',
+        'App\Http\Controllers\Api\V1\TransferenciaController'       => 'App\Policies\TransferenciaControllerPolicy',
         'App\Http\Controllers\Api\V1\UnidadController'              => 'App\Policies\UnidadControllerPolicy',
     ];
 
