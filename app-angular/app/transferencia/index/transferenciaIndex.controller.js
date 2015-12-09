@@ -33,6 +33,7 @@
     vm.transferible = transferible;
     vm.transferir = transferir;
     vm.delete = destroy;
+    vm.cargable = cargable;
 
     initialize();
 
@@ -92,6 +93,12 @@
     function transferible(id) {
       // De acuerdo con los estados de transferencia, el estado de Cargando Origen es transferible
       return id === 2;
+    }
+
+    function cargable(id) {
+      // De acuardo con los estados de transferencia, el estado de En Transferencia y Cargando Destino
+      // son cargables
+      return id === 3 || id === 4;
     }
 
     function transferir(id) {
