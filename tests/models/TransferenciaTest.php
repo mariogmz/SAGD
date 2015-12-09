@@ -524,6 +524,252 @@ class TransferenciaTest extends TestCase {
         $this->assertCount(0, $pms);
     }
 
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testCargarEsExitoso()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $this->assertTrue($transferencia->cargar($params));
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testCargarCreaUnProductoMovimiento()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $count = App\ProductoMovimiento::count();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $this->assertGreaterThan($count, App\ProductoMovimiento::count());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testProductoMovimientoEstableceEntraronComoCantidadDelDetalle()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $pm = App\ProductoMovimiento::last();
+
+        $this->assertEquals(5, $pm->entraron);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testProductoMovimientoEstableceCeroSalieron()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $pm = App\ProductoMovimiento::last();
+
+        $this->assertEquals(0, $pm->salieron);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testProductoMovimientoExistenciasAntes()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $pm = App\ProductoMovimiento::last();
+
+        $this->assertEquals(0, $pm->existencias_antes);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testProductoMovimientoExistenciasDespues()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $pm = App\ProductoMovimiento::last();
+
+        $this->assertEquals(5, $pm->existencias_despues);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testExistenciasOrigenTransferenciaRegresaACero()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $existencia = $producto->existencias($producto->sucursales->first());
+
+        $this->assertEquals(0, $existencia->cantidad_transferencia);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testExistenciaDestinoCantidadAumenta()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $existencia = $producto->existencias($producto->sucursales->last());
+
+        $this->assertEquals(5, $existencia->cantidad);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testExistenciaDestinoCantidadPretransferenciaDestinoDisminuye()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $existencia = $producto->existencias($producto->sucursales->last());
+
+        $this->assertEquals(0, $existencia->cantidad_pretransferencia_destino);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testCargarHaceRollbacksCuandoUnModeloNoSeGuarda()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $sucursalDestino = $producto->sucursales->last();
+        $sucursalOrigen = App\Sucursal::find($sucursalDestino->id - 1);
+
+        $existencia = $producto->existencias($sucursalOrigen);
+        $existencia->cantidad_transferencia = 0;
+        $existencia->save();
+
+        $count = App\ProductoMovimiento::count();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $this->assertFalse($transferencia->cargar($params));
+        $this->assertEquals($count, App\ProductoMovimiento::count());
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testCargarNoCargaSiNoEstaEnElEstadoCorrecto()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpBadDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $this->assertFalse($transferencia->cargar($params));
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testCargarSinEmpleadoIdEnParametrosRegresaFalse()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpBadDetalle();
+        $transferencia->transferir();
+
+        $params = [];
+
+        $this->assertFalse($transferencia->cargar($params));
+    }
+
     private function setUpProducto()
     {
         $producto = factory(App\Producto::class)->create();
@@ -556,12 +802,44 @@ class TransferenciaTest extends TestCase {
         return $producto;
     }
 
+    private function setUpProductoForCarga()
+    {
+        $producto = factory(App\Producto::class)->create();
+        $sucursalOrigen = factory(App\Sucursal::class)->create();
+        $sucursalDestino = factory(App\Sucursal::class)->create();
+        $producto->addSucursal($sucursalOrigen);
+        $producto->addSucursal($sucursalDestino);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursalOrigen->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 95,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_pretransferencia_destino' => 0,
+            'cantidad_transferencia' => 5,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+
+        $productoSucursal = $producto->productosSucursales()->where('sucursal_id', $sucursalDestino->id)->first();
+        $productoSucursal->existencia()->create([
+            'cantidad' => 0,
+            'cantidad_apartado' => 0,
+            'cantidad_pretransferencia' => 0,
+            'cantidad_pretransferencia_destino' => 5,
+            'cantidad_transferencia' => 0,
+            'cantidad_garantia_cliente' => 0,
+            'cantidad_garantia_zegucom' => 0
+        ]);
+        return $producto;
+    }
+
     private function setUpTransferencia()
     {
         $this->setUpEstados();
         $producto = App\Producto::last();
-        $sucursalOrigen = $producto->sucursales->first();
         $sucursalDestino = $producto->sucursales->last();
+        $sucursalOrigen = App\Sucursal::find($sucursalDestino->id - 1);
         $empleado = factory(App\Empleado::class)->create(['sucursal_id' => $sucursalOrigen->id]);
 
         $transferencia = new App\Transferencia([

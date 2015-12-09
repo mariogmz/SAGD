@@ -4,6 +4,7 @@ namespace App;
 
 use Event;
 use App\Events\Transferir;
+use App\Events\Cargar;
 use Sagd\SafeTransactions;
 
 /**
@@ -122,6 +123,20 @@ class Transferencia extends LGGModel {
             $this->fecha_transferencia = \Carbon\Carbon::now();
             $this->save();
             $result = Event::fire(new Transferir($this))[0];
+            return $result;
+        };
+        return $this->safe_transaction($lambda);
+    }
+
+    public function cargar($params)
+    {
+        $lambda = function() use ($params) {
+            if (!isset($params['empleado_id'])) { return false; }
+            $this->estado_transferencia_id = EstadoTransferencia::cargandoDestino();
+            $this->fecha_recepcion = \Carbon\Carbon::now();
+            $this->empleado_destino_id = $params['empleado_id'];
+            $this->save();
+            $result = Event::fire(new Cargar($this))[0];
             return $result;
         };
         return $this->safe_transaction($lambda);

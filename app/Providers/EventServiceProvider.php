@@ -39,10 +39,13 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\InicializarExistencias',
         ],
         'App\Events\Pretransferir' => [
-            'App\Listeners\EjecutarPretransferencia'
+            'App\Listeners\EjecutarPretransferencia',
         ],
         'App\Events\Transferir' => [
-            'App\Listeners\EjecutarTransferencia'
+            'App\Listeners\EjecutarTransferencia',
+        ],
+        'App\Events\Cargar' => [
+            'App\Listeners\EjecutarCarga',
         ],
     ];
 
