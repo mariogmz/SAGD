@@ -24,6 +24,7 @@
       var fileURL = URL.createObjectURL(file);
       var ventana = window.open(fileURL);
       ventana.print();
+      return Promise.resolve(true);
     }
   }
 })();

@@ -36,25 +36,26 @@
     function print(pretransferencia) {
       var origen = pretransferencia.origen.id;
       var destino = pretransferencia.destino.id;
-      backendPrint(pretransferencia).then(printer.send);
-      isTransferible(pretransferencia) && modal.confirm({
-        title: 'Crear transferencia',
-        content: '¿Desea crear una transferencia en base a esta pretransferencia?',
-        accept: 'Crear transferencia',
-        type: 'primary'
-      })
-      .then(function() {
-        modal.hide('confirm');
-        cambiarEstatusPretransferencia(origen, destino).then(function() {
-          createTransferencia(origen, destino).then(function(response) {
-            pnotify.alert('Exito', response.data.message, 'success');
-            activate();
+      backendPrint(pretransferencia).then(function(response) {
+        printer.send(response).then(function() {
+          isTransferible(pretransferencia) && modal.confirm({
+            title: 'Crear transferencia',
+            content: '¿Desea crear una transferencia en base a esta pretransferencia?',
+            accept: 'Crear transferencia',
+            type: 'primary'
+          }).then(function() {
+            modal.hide('confirm');
+            cambiarEstatusPretransferencia(origen, destino).then(function() {
+              createTransferencia(origen, destino).then(function(response) {
+                pnotify.alert('Exito', response.data.message, 'success');
+                activate();
+              });
+            });
+          }).catch(function() {
+            modal.hide('confirm');
+            return false;
           });
         });
-      })
-      .catch(function() {
-        modal.hide('confirm');
-        return false;
       });
     }
 
