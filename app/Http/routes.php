@@ -26,7 +26,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
 
         Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);
         Route::get('producto/buscar/upc/{upc}', 'ProductoController@buscarUpc');
-        Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('marca', 'MarcaController', ['only' => ['store','show','update','destroy']]);
+        Route::get('marca/{campo?}/{valor?}', 'MarcaController@index');
         Route::resource('unidad', 'UnidadController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('tipo-garantia', 'TipoGarantiaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('dimension', 'DimensionController', ['only' => ['index','store','show','update','destroy']]);

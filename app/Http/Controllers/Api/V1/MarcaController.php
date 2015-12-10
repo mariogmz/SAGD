@@ -23,10 +23,14 @@ class MarcaController extends Controller
      *
      * @return Response
      */
-    public function index()
+    public function index($campo = null, $valor = null)
     {
         $this->authorize($this);
-        return $this->marca->all();
+        if(isset($campo) && isset($valor)){
+            return $this->marca->where($campo, $valor)->get();
+        } else {
+            return $this->marca->all();
+        }
     }
 
     /**

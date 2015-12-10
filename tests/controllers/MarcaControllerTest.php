@@ -41,6 +41,21 @@ class MarcaControllerTest extends TestCase
     }
 
     /**
+     * @covers ::index
+     */
+    public function test_GET_index_parameters() {
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => ['todas las marcas con filtro']
+        ])->once()->withAnyArgs();
+        $this->app->instance('App\Marca', $this->mock);
+
+        $this->get($this->endpoint . '/nombre/hp')
+            ->seeJson(['todas las marcas con filtro'])
+            ->assertResponseStatus(200);
+    }
+
+    /**
      * @covers ::store
      */
     public function test_POST_store()
