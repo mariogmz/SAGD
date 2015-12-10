@@ -819,4 +819,65 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::reset
+     */
+    public function testResetExitoso()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/reset';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'resetDetalle' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'Cantidad escaneada del detalle reseteada exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::reset
+     */
+    public function testResetTransferenciaNotFound()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/reset';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'La transferencia no fue encontrada o no existe',
+                'error' => 'Transferencia no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::reset
+     */
+    public function testResetDetalleFails()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/detalle/1/reset';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'resetDetalle' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'No se pudo resetear la cantidad escaneada del detalle',
+                'error' => 'Cantidad escaneada no reseteada'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

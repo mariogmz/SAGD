@@ -374,4 +374,34 @@ class TransferenciaController extends Controller
             ], 404);
         }
     }
+
+    /**
+     * Resetea la cantidad de productos escaneados del detalle a 0
+     * @param int $id
+     * @param int $detalle
+     * @return Response
+     */
+    public function reset($id, $detalle)
+    {
+        $this->authorize($this);
+        $this->transferencia = $this->transferencia->find($id);
+        if ($this->transferencia) {
+            if ($this->transferencia->resetDetalle($detalle)) {
+                return response()->json([
+                    'message' => 'Cantidad escaneada del detalle reseteada exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'No se pudo resetear la cantidad escaneada del detalle',
+                    'error' => 'Cantidad escaneada no reseteada'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'La transferencia no fue encontrada o no existe',
+                'error' => 'Transferencia no encontrada'
+            ], 404);
+        }
+
+    }
 }
