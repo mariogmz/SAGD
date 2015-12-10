@@ -749,4 +749,74 @@ class TransferenciaControllerTest extends TestCase
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::cargandoDestino
+     * @group cargandoDestino
+     */
+    public function testPostCargandoDestinoExitoso()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/cargando-destino';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => Mockery::self(),
+            'estado_transferencia_id' => 3,
+            'setAttribute' => Mockery::self(),
+            'save' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'La transferencia cambio de estado a Cargando Destino'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::cargandoDestino
+     * @group cargandoDestino
+     */
+    public function testPostCargandoDestinoNoExiste()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/cargando-destino';
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'La transferencia no fue encontrada o no existe',
+                'error' => 'Transferencia no encontrada'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::cargandoDestino
+     * @group cargandoDestino
+     */
+    public function testPostCargandoDestinoNoGuardada()
+    {
+        $endpoint = $this->endpoint . '/entradas/1/cargando-destino';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'getAttribute' => Mockery::self(),
+            'estado_transferencia_id' => 3,
+            'setAttribute' => Mockery::self(),
+            'save' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Transferencia', $this->mock);
+
+        $this->post($endpoint)
+            ->seeJson([
+                'message' => 'La transferencia no se pudo cambiar a estado Cargando Destino',
+                'error' => 'Transferencia estado no cambio'
+            ])
+            ->assertResponseStatus(400);
+    }
 }

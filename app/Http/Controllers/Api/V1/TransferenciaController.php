@@ -355,13 +355,8 @@ class TransferenciaController extends Controller
         $this->authorize($this);
         $this->transferencia = $this->transferencia->find($id);
         if ($this->transferencia) {
-            $this->estado = $this->estado->where('nombre', 'Cargando Destino')->first();
-            if ($this->transferencia->estado_transferencia_id === $this->estado->id) {
-                return response()->json([
-                    'message' => 'La transferencia ya esta siendo cargada'
-                ], 304);
-            }
-            $this->transferencia->estado_transferencia_id = $this->estado->id;
+            // Fuck it, im hardcoding this
+            $this->transferencia->estado_transferencia_id = 4;
             if ($this->transferencia->save()) {
                 return response()->json([
                     'message' => 'La transferencia cambio de estado a Cargando Destino'
