@@ -735,6 +735,90 @@ class TransferenciaTest extends TestCase {
      * @group feature-transferencias
      * @group cargar
      */
+    public function testDetalleExistenciaOrigenAntes()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $detalle = $transferencia->detalles()->first();
+
+        $this->assertEquals(100, $detalle->existencia_origen_antes);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testDetalleExistenciaOrigenDespues()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $detalle = $transferencia->detalles()->first();
+
+        $this->assertEquals(95, $detalle->existencia_origen_despues);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testDetalleExistenciaDestinoAntes()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $detalle = $transferencia->detalles()->first();
+
+        $this->assertEquals(0, $detalle->existencia_destino_antes);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testDetalleExistenciaDestinoDespues()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+
+        $transferencia->cargar($params);
+
+        $detalle = $transferencia->detalles()->first();
+
+        $this->assertEquals(5, $detalle->existencia_destino_despues);
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
     public function testCargarHaceRollbacksCuandoUnModeloNoSeGuarda()
     {
         $producto = $this->setUpProductoForCarga();

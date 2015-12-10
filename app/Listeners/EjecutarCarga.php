@@ -76,6 +76,7 @@ class EjecutarCarga
             $this->existenciaDestino = $this->productoSucursalDestino->existencia;
 
             $this->crearProductoMovimiento();
+            $this->ajustarExistenciasDetalle();
             $this->ajustarExistenciasOrigen();
             $this->ajustarExistenciasDestino();
 
@@ -107,12 +108,22 @@ class EjecutarCarga
         $this->existenciaDestino->cantidad_pretransferencia_destino -= $this->detalle->cantidad;
     }
 
+    private function ajustarExistenciasDetalle()
+    {
+        $this->detalle->existencia_origen_antes     = $this->existenciaOrigen->cantidad + $this->detalle->cantidad;
+        $this->detalle->existencia_origen_despues   = $this->existenciaOrigen->cantidad;
+        $this->detalle->existencia_destino_antes    = $this->existenciaDestino->cantidad;
+        $this->detalle->existencia_destino_despues  = $this->existenciaDestino->cantidad + $this->detalle->cantidad;
+    }
+
     private function actualizarModelos()
     {
         $successProductoMovimiento = $this->productoMovimiento->save();
         $successExistenciaOrigen = $this->existenciaOrigen->save();
         $successExistenciaDestino = $this->existenciaDestino->save();
+        $successDetalle = $this->detalle->save();
 
-        return $successProductoMovimiento && $successExistenciaOrigen && $successExistenciaDestino;
+        return $successProductoMovimiento && $successExistenciaOrigen
+            && $successExistenciaDestino && $successDetalle;
     }
 }
