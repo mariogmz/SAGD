@@ -39,7 +39,7 @@ class TransferenciaController extends Controller
         } else {
             return $this->transferencia
                 ->with('sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'empleadoDestino', 'empleadoRevision', 'estado')
-                ->where('sucursal_origen_id', $empleado->sucursal_id)->get();
+                ->where('sucursal_origen_id', $empleado->sucursal_id)->orderBy('created_at', 'desc')->get();
         }
     }
 
@@ -60,7 +60,7 @@ class TransferenciaController extends Controller
         } else {
             return $this->transferencia
                 ->with('sucursalOrigen', 'sucursalDestino', 'empleadoOrigen', 'empleadoDestino', 'empleadoRevision', 'estado')
-                ->where('sucursal_destino_id', $empleado->sucursal_id)->get();
+                ->where('sucursal_destino_id', $empleado->sucursal_id)->orderBy('created_at', 'desc')->get();
         }
     }
 

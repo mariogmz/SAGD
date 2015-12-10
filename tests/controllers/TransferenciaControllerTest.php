@@ -50,7 +50,7 @@ class TransferenciaControllerTest extends TestCase
         ]);
 
         $this->mock->shouldReceive([
-            'with->where->get' => []
+            'with->where->orderBy->get' => []
             ])
             ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);
@@ -81,7 +81,7 @@ class TransferenciaControllerTest extends TestCase
         ]);
 
         $this->mock->shouldReceive([
-            'with->where->get' => []
+            'with->where->orderBy->get' => []
             ])
             ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);
@@ -102,7 +102,7 @@ class TransferenciaControllerTest extends TestCase
         ]);
 
         $this->mock->shouldReceive([
-            'where->get' => []
+            'with->where->orderBy->get' => []
             ])
             ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);
@@ -127,7 +127,7 @@ class TransferenciaControllerTest extends TestCase
         ]);
 
         $this->mock->shouldReceive([
-            'where->get' => []
+            'with->where->orderBy->get' => []
             ])
             ->withAnyArgs();
         $this->app->instance('App\Transferencia', $this->mock);
