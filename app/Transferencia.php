@@ -164,6 +164,20 @@ class Transferencia extends LGGModel {
     }
 
     /**
+     * Resetea la cantidad de productos escaneados del detalle a 0
+     * @param int $detalle_id
+     * @return bool
+     */
+    public function resetDetalle($detalle_id)
+    {
+        $detalle = $this->detalles()->where('id', $detalle_id)->first();
+        if (empty($detalle)) { return false; }
+
+        $detalle->cantidad_escaneada = 0;
+        return $detalle->save();
+    }
+
+    /**
      * Obtiene el Estado Transferencia asociado con la Transferencia
      * @return App\EstadoTransferencia
      */
