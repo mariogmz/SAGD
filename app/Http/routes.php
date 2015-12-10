@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('logout', 'AuthenticateController@logout');
         Route::post('password/email', 'PasswordController@postEmail');
         Route::post('password/reset', 'PasswordController@postReset');
+        Route::post('password/verify', 'AuthenticateController@verify');
 
         Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);
         Route::get('producto/buscar/upc/{upc}', 'ProductoController@buscarUpc');
