@@ -190,6 +190,21 @@ class TransferenciaControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede resetear la cantidad escaneada de un detalle
+     *
+     * @param  User  $user
+     * @param  TransferenciaController $controller
+     * @return bool
+     */
+    public function reset(User $user, TransferenciaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'reset')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string
