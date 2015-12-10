@@ -57,7 +57,7 @@ class EstadoTransferencia extends LGGModel {
      */
     public static function abierta()
     {
-        return EstadoTransferencia::where('nombre', 'Abierta')->first()->id;
+        return EstadoTransferencia::where('nombre', 'Abierta')->last()->id;
     }
 
     /**
@@ -65,7 +65,7 @@ class EstadoTransferencia extends LGGModel {
      */
     public static function cargandoOrigen()
     {
-        return EstadoTransferencia::where('nombre', 'Cargando Origen')->first()->id;
+        return EstadoTransferencia::where('nombre', 'Cargando Origen')->last()->id;
     }
 
     /**
@@ -73,7 +73,7 @@ class EstadoTransferencia extends LGGModel {
      */
     public static function enTransferencia()
     {
-        return EstadoTransferencia::where('nombre', 'En transferencia')->first()->id;
+        return EstadoTransferencia::where('nombre', 'En transferencia')->last()->id;
     }
 
     /**
@@ -81,7 +81,7 @@ class EstadoTransferencia extends LGGModel {
      */
     public static function cargandoDestino()
     {
-        return EstadoTransferencia::where('nombre', 'Cargando Destino')->first()->id;
+        return EstadoTransferencia::where('nombre', 'Cargando Destino')->last()->id;
     }
 
     /**
@@ -89,7 +89,7 @@ class EstadoTransferencia extends LGGModel {
      */
     public static function finalizada()
     {
-        return EstadoTransferencia::where('nombre', 'Finalizada')->first()->id;
+        return EstadoTransferencia::where('nombre', 'Finalizada')->last()->id;
     }
 
     /**

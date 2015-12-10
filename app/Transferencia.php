@@ -137,14 +137,23 @@ class Transferencia extends LGGModel {
     {
         $lambda = function() use ($params) {
             if (!isset($params['empleado_id'])) { return false; }
-            $this->estado_transferencia_id = EstadoTransferencia::cargandoDestino();
             $this->fecha_recepcion = \Carbon\Carbon::now();
             $this->empleado_destino_id = $params['empleado_id'];
-            $this->save();
-            $result = Event::fire(new Cargar($this))[0];
-            return $result;
+            $result = $this->parseEventResult(Event::fire(new Cargar($this)));
+            $this->estado_transferencia_id = EstadoTransferencia::finalizada();
+            $success = $this->save();
+            return $result && $success;
         };
         return $this->safe_transaction($lambda);
+    }
+
+    private function parseEventResult($result)
+    {
+        if(is_array($result)) {
+            return $this->parseEventResult($result[0]);
+        } else {
+            return $result;
+        }
     }
 
     /**

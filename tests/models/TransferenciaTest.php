@@ -73,6 +73,7 @@ class TransferenciaTest extends TestCase {
      */
     public function testEstadoTransferenciaPuedeSerNulo()
     {
+        $this->setUpEstados();
         $transferencia = factory(App\Transferencia::class, 'full')->make(['estado_transferencia_id' => null]);
         $this->assertTrue($transferencia->isValid());
         $this->assertTrue($transferencia->save());
@@ -539,6 +540,26 @@ class TransferenciaTest extends TestCase {
         $params = ['empleado_id' => App\Empleado::last()->id];
 
         $this->assertTrue($transferencia->cargar($params));
+    }
+
+    /**
+     * @covers ::cargar
+     * @group feature-transferencias
+     * @group cargar
+     */
+    public function testCargarExitosoPoneElEstadoAFinalizado()
+    {
+        $producto = $this->setUpProductoForCarga();
+        $transferencia = $this->setUpTransferencia();
+        $this->setUpDetalle();
+        $transferencia->transferir();
+
+        $params = ['empleado_id' => App\Empleado::last()->id];
+        $transferencia->cargar($params);
+
+        $estadoFinal = App\EstadoTransferencia::finalizada();
+
+        $this->assertEquals($estadoFinal, $transferencia->estado_transferencia_id);
     }
 
     /**
