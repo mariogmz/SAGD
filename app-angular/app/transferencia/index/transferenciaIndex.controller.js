@@ -102,35 +102,31 @@
     }
 
     function transferir(id) {
-      modal.confirm({
+      modal.password({
         title: 'Transferir',
         content: 'Estas a punto de marcar la transferencia para ser enviada. ¿Deseas continuar?',
         accept: 'Transferir',
         type: 'danger'
       })
       .then(function() {
-        modal.hide('confirm');
         return api.post('/transferencias/salidas/transferir/' + id).then(function(response) {
           pnotify.alert('Exito', response.data.message, 'success');
         });
       })
       .catch(function() {
-        modal.hide('confirm');
         return false;
       });
     }
 
     function destroy(id) {
-      modal.confirm({
+      modal.password({
         title: 'Eliminar transferencia',
         content: 'Estas a punto de eliminar esta transferencia. Esto podria tener consecuencias en existencias. ¿Estas seguro?',
         accept: 'Eliminar',
         type: 'danger'
       }).then(function() {
-        modal.hide('confirm');
         return api.delete('/transferencias/eliminar/' + id).then(success).catch(error);
       }).catch(function() {
-        modal.hide('confirm');
         return false;
       });
     }

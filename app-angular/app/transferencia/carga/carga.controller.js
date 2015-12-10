@@ -106,19 +106,17 @@
 
     function cargar() {
       revisarProductosEscaneados().then(function() {
-        modal.confirm({
+        modal.password({
           title: 'Cargar transferencia',
           content: 'Estas a punto de marcar la transferencia como cargada, esto actualizara las existencias locales. ¿Estás seguro que deseas continuar?',
           accept: 'Cargar transferencia',
           type: 'danger'
         }).then(function() {
-          modal.hide('confirm');
           var payload = {
             empleado_id: vm.empleado.id
           };
           return api.post('/transferencias/entradas/cargar/' + vm.id, payload).then(success).catch(error);
         }).catch(function() {
-          modal.hide('confirm');
           return false;
         });
       });

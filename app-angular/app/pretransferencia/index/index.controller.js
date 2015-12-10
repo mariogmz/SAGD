@@ -38,13 +38,12 @@
       var destino = pretransferencia.destino.id;
       backendPrint(pretransferencia).then(function(response) {
         printer.send(response).then(function() {
-          isTransferible(pretransferencia) && modal.confirm({
+          isTransferible(pretransferencia) && modal.password({
             title: 'Crear transferencia',
             content: '¿Desea crear una transferencia en base a esta pretransferencia?',
             accept: 'Crear transferencia',
             type: 'primary'
           }).then(function() {
-            modal.hide('confirm');
             cambiarEstatusPretransferencia(origen, destino).then(function() {
               createTransferencia(origen, destino).then(function(response) {
                 pnotify.alert('Exito', response.data.message, 'success');
@@ -52,7 +51,6 @@
               });
             });
           }).catch(function() {
-            modal.hide('confirm');
             return false;
           });
         });
