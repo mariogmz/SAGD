@@ -18,6 +18,7 @@
     vm.back = goBack;
     vm.agregarDetalle = agregar;
     vm.cargar = cargar;
+    vm.resetDetalle = resetRemoteDetalle;
     vm.detalle = {
       cantidad: 1,
       upc: ''
@@ -39,8 +40,15 @@
       });
     }
 
+    function resetDetalle() {
+      vm.detalle = {
+        cantidad: 1,
+        upc: ''
+      };
+    }
+
     function obtenerTransferencia() {
-      return api.get('/transferencias/salidas/ver/' + vm.id);
+      return api.get('/transferencias/entradas/ver/' + vm.id);
     }
 
     function agregar() {
@@ -50,7 +58,7 @@
         return buscarProductoEnDetalles(producto).then(function(index) {
 
           return agregarCantidadEscaneada(index).then(function(response) {
-            setCargandoDestino();
+            isEnTransferencia() && setCargandoDestino();
             success(response);
           });
         });
@@ -81,15 +89,15 @@
       return api.post('/transferencias/entradas/' + vm.id + '/detalle/' + index + '/escanear', {cantidad: vm.detalle.cantidad});
     }
 
-    function setCargandoDestino() {
-      return api.post('/transferencias/entradas/' + vm.id + '/cargando-destino');
+    function isEnTransferencia() {
+      // De acuerdo con las especificaciones de estados de transferencia, el
+      // estado 3 significa que esta "En Transferencia" o "En Transito" lo cual
+      // lo convierte en candidato para cambiar de estado a "Cargando Destino"
+      return vm.transferencia.estado.id === 3;
     }
 
-    function resetDetalle() {
-      vm.detalle = {
-        cantidad: 1,
-        upc: ''
-      };
+    function setCargandoDestino() {
+      return api.post('/transferencias/entradas/' + vm.id + '/cargando-destino');
     }
 
     function goBack() {
@@ -124,6 +132,11 @@
       }
 
       return Promise.resolve(true);
+    }
+
+    function resetRemoteDetalle(detalle_id) {
+      return api.post('/transferencias/entradas/' + vm.id + '/detalle/' + detalle_id + '/reset')
+        .then(success).catch(error);
     }
 
     function success(response) {

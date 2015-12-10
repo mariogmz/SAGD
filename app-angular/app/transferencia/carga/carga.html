@@ -46,6 +46,7 @@
               <th class="action">Descripción</th>
               <th class="action">Cantidad entrante</th>
               <th class="action">Cantidad escaneada</th>
+              <th class="action">Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -55,6 +56,13 @@
               <td ng-bind="detalle.producto.descripcion"></td>
               <td ng-bind="detalle.cantidad"></td>
               <td ng-bind="detalle.cantidad_escaneada"></td>
+              <td class="actions">
+                <div class="action-buttons" role="group" aria-label="Acciones">
+                  <button type="button" class="delete one-third" ng-click="vm.resetDetalle(detalle.id)">
+                    <i></i>
+                  </button>
+                </div>
+              </td>
             </tr>
           </tbody>
         </table>
