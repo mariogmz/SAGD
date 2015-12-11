@@ -9,7 +9,7 @@
 
     ClienteIndexController.$inject = ['api', 'pnotify'];
 
-    function ClienteIndexController($auth, $state, api, pnotify) {
+    function ClienteIndexController(api, pnotify) {
 
         var vm = this;
         vm.eliminarCliente = eliminarCliente;
@@ -37,10 +37,7 @@
             return api.delete('/cliente/', id)
                 .then(function(response){
                     pnotify.alert('Exito', response.data.message, 'success');
-                    vm.obtenerClientes()
-                        .then(function(){
-                            //pnotify.alert('Exito', response.data.message, 'success');
-                        });
+                    vm.obtenerClientes();
                 })
                 .catch(function(response){
                     pnotify.alert('Error', response.data.message, 'error');

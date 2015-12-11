@@ -302,12 +302,6 @@ class Cliente extends LGGModel {
 
         DB::beginTransaction();
 
-
-        $parameters['tabuladores'];
-
-        $tabuladores = $this->tabuladores($parameters['tabuladores']);
-
-
         $this->fill($parameters);
         if( $this->save() &&
             $this->autorizaciones()->first()->update(['nombre_autorizado' => $parameters['autorizaciones'][0]['nombre_autorizado']]) &&

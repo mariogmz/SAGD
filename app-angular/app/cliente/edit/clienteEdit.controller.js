@@ -117,7 +117,7 @@
           })
           .catch(function (response){
             vm.error = response.data;
-            pnotify.alertList('No se pudo modificar el cliente', vm.error.error, 'error');
+            pnotify.alertList('No se pudo modificar el cliente', vm.error, 'error');
             return response;
          });
     }

@@ -69,7 +69,7 @@ class ClienteController extends Controller
     public function show($id)
     {
         $this->authorize($this);
-        $this->cliente = $this->cliente->find($id);
+        $this->cliente = $this->cliente->with('user', 'estatus', 'sucursal', 'referencia', 'empleado', 'vendedor', 'autorizaciones', 'razonesSociales', 'tabuladores.sucursal')->find($id);
         if( $this->cliente )
         {
             return response()->json([

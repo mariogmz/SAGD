@@ -33,7 +33,6 @@
 
     function obtenerCliente(){
       return api.get('/cliente/', vm.id)
-          // [{'key': 'base', 'value': 'true'}]
         .then(function (response){
           vm.cliente = response.data.cliente;
           return response.data;
