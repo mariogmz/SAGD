@@ -1,1 +1,11 @@
 <!-- app/icecat/suppliers/suppliers.html -->
+<div class="card">
+  <div class="header">
+    <h3>Relaciones entre fabricantes de Icecat® y marcas.</h3>
+  </div>
+</div>
+<miller-columns
+  one-model="vm.marcas" selected-one="vm.marca" select-one-callback="vm.seleccionarMarca" search-one-callback="vm.obtenerMarcas"
+  many-model="vm.suppliers" selected-many="vm.supplier" search-many-callback="vm.obtenerSuppliers"
+  related-model="vm.suppliersConMarcas" attach="vm.asociarFabricante" detach="vm.desasociarFabricante">
+</miller-columns>
