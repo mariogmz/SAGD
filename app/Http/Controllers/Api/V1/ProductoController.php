@@ -258,8 +258,14 @@ class ProductoController extends Controller {
         }
     }
 
+    /**
+     * Permite la busqueda de productos a traves de 3 paramtros
+     * @param Request $request
+     * @return Response
+     */
 	public function buscar(Request $request)
     {
+        $this->authorize($this);
         $params = $request->only('clave', 'descripcion', 'upc');
 
         $params['clave'] = isset($params['clave']) ? $params['clave'] : '*';
