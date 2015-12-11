@@ -324,4 +324,154 @@ class ProductoControllerTest extends TestCase {
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::indexExistencias
+     * @group feature-transferencias
+     */
+    public function testGetIndexExistencias()
+    {
+        $endpoint = $this->endpoint . '/1/existencias';
+
+        $this->mock->shouldReceive([
+            'leftJoin->join->join->where->where->get' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Productos con existencias obtenidas exitosamente',
+                'productos' => true
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::indexExistencias
+     * @group feature-transferencias
+     */
+    public function testGetIndexExistenciasProductoNoEncontrado()
+    {
+        $endpoint = $this->endpoint . '/1/existencias';
+
+        $this->mock->shouldReceive([
+            'leftJoin->join->join->where->where->get' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Las existencias del producto que solicitaste no se encontraron.',
+                'error' => 'Producto no encontrado'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPostPretransferir()
+    {
+        $endpoint = $this->endpoint . '/1/existencias/pretransferir';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'pretransferir' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'Pretransferencias registradas exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPostPretransferirFindProductoFails()
+    {
+        $endpoint = $this->endpoint . '/1/existencias/pretransferir';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'La pretransferencia no se registro debido a que no se encontro el producto',
+                'error' => 'Producto no encontrado'
+            ])
+            ->assertResponseStatus(404);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPostPretransferirFalla()
+    {
+        $endpoint = $this->endpoint . '/1/existencias/pretransferir';
+        $params = [];
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'pretransferir' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->post($endpoint, $params)
+            ->seeJson([
+                'message' => 'La pretransferencia no se registro debido a un error interno. Las existencias no se modificaron',
+                'error' => 'Pretransferencia fallo'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::indexMovimientos
+     * @group feature-movimientos
+     */
+    public function testIndexMovimientos()
+    {
+        $endpoint = $this->endpoint . '/1/movimientos/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'select->join->join->where->where->orderBy->get' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Productos con movimientos obtenidos exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::indexMovimientos
+     * @group feature-movimientos
+     */
+    public function testIndexMovimientosNotFount()
+    {
+        $endpoint = $this->endpoint . '/1/movimientos/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'select->join->join->where->where->orderBy->get' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Los movimientos del producto que solicitaste no se encontraron.',
+                'error' => 'Producto no encontrado'
+            ])
+            ->assertResponseStatus(404);
+    }
 }

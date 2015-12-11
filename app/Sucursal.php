@@ -238,4 +238,24 @@ class Sucursal extends LGGModel {
             return $this->productosSucursales()->where('producto_id', $producto->id)->first()->movimientos;
         }
     }
+
+
+    /**
+    * Obtiene las Pretransferencias asociadas con la Sucursal como origen
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferenciasOrigen()
+    {
+        return $this->hasMany('App\Pretransferencia', 'sucursal_origen_id');
+    }
+
+
+    /**
+    * Obtiene las Pretransferencias asociadas con la Sucursal como destino
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferenciasDestino()
+    {
+        return $this->hasMany('App\Pretransferencia', 'sucursal_destino_id');
+    }
 }

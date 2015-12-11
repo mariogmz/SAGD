@@ -1,8 +1,8 @@
 .card {
   @extend .card;
 
-  .borderless{
-    border-top: none;
+  .borderless {
+    border-top: zero;
   }
 
   .header {
@@ -25,9 +25,11 @@
 
   .button {
     @extend .btn;
+
     &.primary {
       @extend .btn-primary;
     }
+
     &.secondary {
       @extend .btn-secondary;
     }
