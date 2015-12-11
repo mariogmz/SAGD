@@ -361,8 +361,8 @@ class ProductoControllerTest extends TestCase {
 
         $this->get($endpoint)
             ->seeJson([
-                'message' => 'Producto no encontrado',
-                'error' => 'Las existencias del producto que solicitaste no se encontraron.'
+                'message' => 'Las existencias del producto que solicitaste no se encontraron.',
+                'error' => 'Producto no encontrado'
             ])
             ->assertResponseStatus(404);
     }
@@ -432,5 +432,46 @@ class ProductoControllerTest extends TestCase {
                 'error' => 'Pretransferencia fallo'
             ])
             ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::indexMovimientos
+     * @group feature-movimientos
+     */
+    public function testIndexMovimientos()
+    {
+        $endpoint = $this->endpoint . '/1/movimientos/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'select->join->join->where->where->orderBy->get' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Productos con movimientos obtenidos exitosamente'
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::indexMovimientos
+     * @group feature-movimientos
+     */
+    public function testIndexMovimientosNotFount()
+    {
+        $endpoint = $this->endpoint . '/1/movimientos/sucursal/1';
+
+        $this->mock->shouldReceive([
+            'select->join->join->where->where->orderBy->get' => null
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Los movimientos del producto que solicitaste no se encontraron.',
+                'error' => 'Producto no encontrado'
+            ])
+            ->assertResponseStatus(404);
     }
 }

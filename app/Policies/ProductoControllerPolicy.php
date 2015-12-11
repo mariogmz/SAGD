@@ -130,6 +130,21 @@ class ProductoControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede listar movimientos de un Producto
+     *
+     * @param  User  $user
+     * @param  ProductoController $controller
+     * @return bool
+     */
+    public function indexMovimientos(User $user, ProductoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'indexMovimientos')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string

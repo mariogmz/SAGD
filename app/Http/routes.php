@@ -32,6 +32,9 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
                 Route::get('/', 'ProductoController@indexExistencias');
                 Route::post('pretransferir', ['uses' => 'ProductoController@pretransferir', 'as' => '.pretransferir']);
             });
+            Route::group(['prefix' => '{id}/movimientos', 'as' => '.movimientos'], function(){
+                Route::get('sucursal/{sucursal}', ['as' => '.sucursal', 'uses' => 'ProductoController@indexMovimientos']);
+            });
         });
 
         Route::group(['prefix' => 'inventario', 'as' => 'api.v1.inventarios'], function(){

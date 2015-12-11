@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoShowController', ProductoShowController);
 
-  ProductoShowController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
+  ProductoShowController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'session'];
 
-  function ProductoShowController($state, $stateParams, api, pnotify) {
+  function ProductoShowController($state, $stateParams, api, pnotify, session) {
 
     var vm = this;
     vm.sortKeys = [
@@ -28,7 +28,7 @@
       {name: 'P10', key: 'precio_10'},
       {name: 'Descuento', key: 'descuento'}
     ];
-
+    vm.empleado = session.obtenerEmpleado();
     vm.sort = sort;
     vm.id = $stateParams.id;
     vm.back = goBack;
@@ -52,15 +52,19 @@
 
         return response;
       }).then(function() {
-
         obtenerExistencias().then(function(response) {
           console.log('Existencias de producto obtenidas con exito');
           vm.producto_existencias = response.data.productos;
           return response;
-        }).then(function() {
-
-          $state.go('productoShow.details');
         });
+      }).then(function() {
+        obtenerMovimientos().then(function(response) {
+          console.log('Movimientos de producto obtenidos con exito');
+          vm.producto_movimientos = response.data.productos;
+          return response;
+        });
+      }).then(function() {
+        $state.go('productoShow.details');
       }).catch(error);
     }
 
@@ -70,6 +74,10 @@
 
     function obtenerExistencias() {
       return api.get('/producto/' + vm.id + '/existencias');
+    }
+
+    function obtenerMovimientos() {
+      return api.get('/producto/' + vm.id + '/movimientos/sucursal/' + vm.empleado.sucursal_id);
     }
 
     function error(response) {
