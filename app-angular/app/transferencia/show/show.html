@@ -1,0 +1,52 @@
+<div class="card">
+  <div class="header">
+    <h4>Transferencia #{{vm.transferencia.id}}</h4>
+  </div>
+  <div class="block">
+    <section class="transferencia-datos">
+      <header>Datos de transferencia</header>
+      <hr>
+      <article class="half-left">
+        <p>Número: <span ng-bind="vm.transferencia.id"></span></p>
+        <p>Fecha creada: <em><span ng-bind="vm.transferencia.created_at"></span></em></p>
+        <p>Fecha transferencia: <em><span ng-bind="vm.transferencia.fecha_transferencia"></span></em></p>
+        <p>Fecha recepción: <em><span ng-bind="vm.transferencia.fecha_recepcion"></span></em></p>
+      </article>
+      <article class="half-right">
+        <p>Estado: <span ng-bind="vm.transferencia.estado.nombre"></span></p>
+        <p>Origen: <span ng-bind="vm.transferencia.sucursal_origen.nombre"></span></p>
+        <p>Destino: <span ng-bind="vm.transferencia.sucursal_destino.nombre"></span></p>
+        <p>Crea: <span ng-bind="vm.transferencia.empleado_origen.nombre"></span></p>
+      </article>
+    </section>
+    <section class="transferencia-detalles">
+      <header>Detalles de transferencia</header>
+      <hr>
+      <article>
+        <table class="item-table small-item-table">
+          <thead>
+            <tr>
+              <th class="action">UPC</th>
+              <th class="action">Clave</th>
+              <th class="action">Descripción</th>
+              <th class="action">Cantidad</th>
+              <th class="action">Origen Antes/Después</th>
+              <th class="action">Destino Antes/Después</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="detalle in vm.transferencia.detalles">
+              <td ng-bind="detalle.producto.upc"></td>
+              <td ng-bind="detalle.producto.clave"></td>
+              <td ng-bind="detalle.producto.descripcion"></td>
+              <td ng-bind="detalle.cantidad"></td>
+              <td>{{detalle.existencia_origen_antes}}/{{detalle.existencia_origen_despues}}</td>
+              <td>{{detalle.existencia_destino_antes}}/{{detalle.existencia_destino_despues}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </article>
+    </section>
+    <a ng-click="vm.back()" class="button primary">Regresar</a>
+  </div>
+</div>

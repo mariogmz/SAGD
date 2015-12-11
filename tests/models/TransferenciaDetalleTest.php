@@ -15,6 +15,16 @@ class TransferenciaDetalleTest extends TestCase {
     }
 
     /**
+     * @coversNoting
+     * @group feature-transferencias
+     */
+    public function testModeloEsValidoSinProductoMovimiento()
+    {
+        $td = factory(App\TransferenciaDetalle::class, 'nopm')->create(['producto_movimiento_id' => null]);
+        $this->assertTrue($td->save());
+    }
+
+    /**
      * @coversNothing
      * @group modelo_actualizable
      */

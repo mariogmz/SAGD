@@ -145,6 +145,12 @@ class ProductoController extends Controller {
         }
     }
 
+    /**
+     * Buscar un producto por su UPC
+     *
+     * @param string $upc
+     * @return Response
+     */
     public function buscarUpc($upc)
     {
         $this->authorize($this);
@@ -162,7 +168,97 @@ class ProductoController extends Controller {
         }
     }
 
-    public function buscar(Request $request)
+    /**
+     * Obtener las existencias en todas las sucursales del producto
+     *
+     * @param int $id
+     * @return Response
+     */
+    public function indexExistencias($id)
+    {
+        $this->authorize($this);
+        $this->producto = $this->producto->leftJoin('productos_sucursales', 'productos.id', '=', 'productos_sucursales.producto_id')
+                ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
+                ->join('existencias', 'productos_sucursales.id', '=', 'existencias.id')
+                ->where('sucursales.proveedor_id', '1')
+                ->where('productos.id', $id)
+                ->get();
+        if ($this->producto) {
+            return response()->json([
+                'message' => 'Productos con existencias obtenidas exitosamente',
+                'productos' => $this->producto
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Las existencias del producto que solicitaste no se encontraron.',
+                'error' => 'Producto no encontrado'
+            ], 404);
+        }
+    }
+
+    /**
+     * Llama la funcion para pretransferir las existencias del producto en base
+     * a los parametros enviados
+     *
+     * @param int $id
+     * @param Request $request
+     * @return Response
+     */
+    public function pretransferir($id, Request $request)
+    {
+        $this->authorize($this);
+        $this->producto = $this->producto->find($id);
+        if ($this->producto) {
+            $params = $request->all();
+            if ($this->producto->pretransferir($params)) {
+                return response()->json([
+                    'message' => 'Pretransferencias registradas exitosamente'
+                ], 200);
+            } else {
+                return response()->json([
+                    'message' => 'La pretransferencia no se registro debido a un error interno. Las existencias no se modificaron',
+                    'error' => 'Pretransferencia fallo'
+                ], 400);
+            }
+        } else {
+            return response()->json([
+                'message' => 'La pretransferencia no se registro debido a que no se encontro el producto',
+                'error' => 'Producto no encontrado'
+            ], 404);
+        }
+    }
+
+    /**
+     * Obtiene el listado de los movimientos de un producto filtrados por sucursal
+     * @param int $id
+     * @param int $sucursal
+     * @return Response
+     */
+    public function indexMovimientos($id, $sucursal)
+    {
+        $this->authorize($this);
+        $this->producto = $this->producto
+            ->select('productos_movimientos.*')
+            ->join('productos_sucursales', 'productos.id', '=', 'productos_sucursales.producto_id')
+            ->join('productos_movimientos', 'productos_movimientos.producto_sucursal_id', '=', 'productos_sucursales.id')
+            ->where('productos.id', $id)
+            ->where('productos_sucursales.sucursal_id', $sucursal)
+            ->orderBy('productos_movimientos.created_at', 'desc')
+            ->get();
+        if ($this->producto) {
+            return response()->json([
+                'message' => 'Productos con movimientos obtenidos exitosamente',
+                'productos' => $this->producto
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Los movimientos del producto que solicitaste no se encontraron.',
+                'error' => 'Producto no encontrado'
+            ], 404);
+        }
+    }
+
+	public function buscar(Request $request)
     {
         $params = $request->only('clave', 'descripcion', 'upc');
 
