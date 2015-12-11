@@ -1,0 +1,27 @@
+/*@page { margin: 0px; }*/
+
+body {
+  font-family: Helvetica;
+  font-size: 10px;
+  margin: 0px;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+table,
+td,
+th {
+  border: 1px solid #000000;
+}
+
+th {
+  height: 1.5rem;
+}
+
+td,
+th {
+  padding: 5px;
+}

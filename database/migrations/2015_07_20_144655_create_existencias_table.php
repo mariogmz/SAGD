@@ -16,6 +16,7 @@ class CreateExistenciasTable extends Migration {
             $table->integer('cantidad')->default(0)->unsigned();
             $table->integer('cantidad_apartado')->default(0)->unsigned();
             $table->integer('cantidad_pretransferencia')->default(0)->unsigned();
+            $table->integer('cantidad_pretransferencia_destino')->default(0)->unsigned();
             $table->integer('cantidad_transferencia')->default(0)->unsigned();
             $table->integer('cantidad_garantia_cliente')->default(0)->unsigned();
             $table->integer('cantidad_garantia_zegucom')->default(0)->unsigned();

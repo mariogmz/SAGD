@@ -299,4 +299,14 @@ class Empleado extends LGGModel {
         return $this->belongsToMany('App\Rol', 'empleados_roles', 'empleado_id', 'rol_id')
             ->withTimestamps();
     }
+
+
+    /**
+    * Obtiene las Pretranferencias que ha realizado el Empleado
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferencias()
+    {
+        return $this->hasMany('App\Pretransferencia', 'empleado_id');
+    }
 }

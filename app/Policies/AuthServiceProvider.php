@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Http\Controllers\Api\V1\PasswordController'            => 'App\Policies\PasswordControllerPolicy',
         'App\Http\Controllers\Api\V1\PermisoController'             => 'App\Policies\PermisoControllerPolicy',
         'App\Http\Controllers\Api\V1\PrecioController'              => 'App\Policies\PrecioControllerPolicy',
+        'App\Http\Controllers\Api\V1\PretransferenciaController'    => 'App\Policies\PretransferenciaControllerPolicy',
         'App\Http\Controllers\Api\V1\ProductoController'            => 'App\Policies\ProductoControllerPolicy',
         'App\Http\Controllers\Api\V1\ProductoSucursalController'    => 'App\Policies\ProductoSucursalControllerPolicy',
         'App\Http\Controllers\Api\V1\ProveedorController'           => 'App\Policies\ProveedorControllerPolicy',
@@ -39,6 +40,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Http\Controllers\Api\V1\SucursalController'            => 'App\Policies\SucursalControllerPolicy',
         'App\Http\Controllers\Api\V1\TelefonoController'            => 'App\Policies\TelefonoControllerPolicy',
         'App\Http\Controllers\Api\V1\TipoGarantiaController'        => 'App\Policies\TipoGarantiaControllerPolicy',
+        'App\Http\Controllers\Api\V1\TransferenciaController'       => 'App\Policies\TransferenciaControllerPolicy',
         'App\Http\Controllers\Api\V1\UnidadController'              => 'App\Policies\UnidadControllerPolicy',
     ];
 
