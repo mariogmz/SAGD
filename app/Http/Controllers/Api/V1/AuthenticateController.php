@@ -68,7 +68,6 @@ class AuthenticateController extends Controller
         if (empty($token)) {
             return response()->json([], 400);
         }
-        \Log::error("ouiasdgfudsa");
         return response()->json([], 200);
     }
 
