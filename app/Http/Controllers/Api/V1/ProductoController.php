@@ -257,4 +257,37 @@ class ProductoController extends Controller {
             ], 404);
         }
     }
+
+    /**
+     * Permite la busqueda de productos a traves de 3 paramtros
+     * @param Request $request
+     * @return Response
+     */
+	public function buscar(Request $request)
+    {
+        $this->authorize($this);
+        $params = $request->only('clave', 'descripcion', 'upc');
+
+        $params['clave'] = isset($params['clave']) ? $params['clave'] : '*';
+        $params['descripcion'] = isset($params['descripcion']) ? $params['descripcion'] : '*';
+        $params['upc'] = isset($params['upc']) ? $params['upc'] : '*';
+
+        if (
+            $params['clave'] === '*' &&
+            $params['descripcion'] === '*' &&
+            $params['upc'] === '*'
+            ) {
+            return response()->json([
+                'message' => 'Debes de especificar al menos un valor de busqueda',
+                'error' => 'Busqueda muy larga'
+            ], 400);
+        }
+        foreach ($params as $column => $search) {
+            if ($search === '*') {
+                continue;
+            }
+            $this->producto = $this->producto->where($column, 'like', "%{$search}%");
+        }
+        return $this->producto->get();
+    }
 }
