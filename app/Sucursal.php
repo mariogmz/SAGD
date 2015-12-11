@@ -246,6 +246,22 @@ class Sucursal extends LGGModel {
     public function tabuladores() {
         return $this->hasMany('App\Tabulador');
     }
+	
+	/**
+    * Obtiene las Pretransferencias asociadas con la Sucursal como origen
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferenciasOrigen()
+    {
+        return $this->hasMany('App\Pretransferencia', 'sucursal_origen_id');
+    }
 
-
+    /**
+    * Obtiene las Pretransferencias asociadas con la Sucursal como destino
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferenciasDestino()
+    {
+        return $this->hasMany('App\Pretransferencia', 'sucursal_destino_id');
+    }
 }

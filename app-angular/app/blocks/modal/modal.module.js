@@ -4,5 +4,7 @@
   'use strict';
 
   angular
-    .module('blocks.modal', []);
+    .module('blocks.modal', [
+      'blocks.api', 'blocks.session'
+    ]);
 })();

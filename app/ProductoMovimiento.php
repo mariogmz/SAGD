@@ -69,6 +69,9 @@ class ProductoMovimiento extends LGGModel {
             $pm->entraron || $pm->entraron = 0;
             $pm->salieron || $pm->salieron = 0;
 
+            if($pm->isPretransferenciaSalida()) { return $pm->isValid(); }
+            if($pm->isTransferencia()) { return $pm->isValid(); }
+
             $result = Event::fire(new CreandoProductoMovimiento($pm))[0];
             if ($result['success']) {
                 $pm->existencias_antes || $pm->existencias_antes = $result['antes'];
@@ -82,6 +85,16 @@ class ProductoMovimiento extends LGGModel {
             $pm->updateRules = self::$rules;
             return $pm->isValid('update');
         });
+    }
+
+    public function isPretransferenciaSalida()
+    {
+        return $this->movimiento === 'Pretransferencia salida';
+    }
+
+    public function isTransferencia()
+    {
+        return preg_match('/^Transferencia\s\d+$/', $this->movimiento) === 1;
     }
 
     /**

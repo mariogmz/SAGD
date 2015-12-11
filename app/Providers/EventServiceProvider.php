@@ -37,7 +37,16 @@ class EventServiceProvider extends ServiceProvider
         'App\Events\ProductoCreado' => [
             'App\Listeners\AttachSucursales',
             'App\Listeners\InicializarExistencias',
-        ]
+        ],
+        'App\Events\Pretransferir' => [
+            'App\Listeners\EjecutarPretransferencia',
+        ],
+        'App\Events\Transferir' => [
+            'App\Listeners\EjecutarTransferencia',
+        ],
+        'App\Events\Cargar' => [
+            'App\Listeners\EjecutarCarga',
+        ],
     ];
 
     /**
