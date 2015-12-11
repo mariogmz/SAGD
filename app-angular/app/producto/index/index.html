@@ -55,7 +55,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="producto in vm.productos | orderBy:vm.sortKey:vm.reverse | itemsPerPage:15">
+    <tr dir-paginate="producto in vm.productos | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
       <th scope="row">{{producto.id}}</th>
       <td><a ui-sref="productoShow({id:producto.id})">{{producto.clave}}</a></td>
       <td>{{producto.upc}}</td>
