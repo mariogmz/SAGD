@@ -14,7 +14,7 @@
         <tr class="miller-row-input" ng-if="vm.oneModel">
           <td>
             <input type="text" ng-model="vm.searchOne" placeholder="Búsqueda"
-                   ng-change="vm.searchOneCallbackWrapper(vm.searchOne)" ng-model-options="{debounce: 500}">
+                   ng-change="vm.searchOneCallback(vm.searchOne)" ng-model-options="{debounce: 500}">
           </td>
         </tr>
         </tbody>
@@ -23,7 +23,7 @@
         <table class="miller-table">
           <tbody>
           <tr class="miller-row"
-              ng-repeat="element in vm.oneModel.elements | orderBy:'name' | filter: (!vm.oneCallback || '') &&  {name : vm.searchOne}"
+              ng-repeat="element in vm.oneModel.elements | orderBy:'name' | filter: (!vm.searchOneCallback || '') && {name: vm.searchOne}"
               ng-class="{selected: element===vm.selectedOne}"
               ng-click="vm.selectOne(element)">
             <td ng-bind="element.name"></td>
@@ -44,7 +44,7 @@
         <tbody>
         <tr class="miller-row-input" ng-if="vm.manyModel">
           <td><input type="text" ng-model="vm.searchMany" placeholder="Búsqueda"
-                     ng-change="vm.searchManyCallbackWrapper(vm.searchMany)" ng-model-options="{debounce: 500}"></td>
+                     ng-change="vm.searchManyCallback(vm.searchMany)" ng-model-options="{debounce: 500}"></td>
         </tr>
         </tbody>
       </table>
@@ -52,13 +52,14 @@
         <table class="miller-table">
           <tbody>
           <tr class="miller-row"
-              ng-repeat="element in vm.manyModel.elements | orderBy:'name' | filter: (!vm.manyCallback || '') &&  {name : vm.searchMany}"
+              ng-repeat="element in vm.manyModel.elements | orderBy:'name' | filter: (!vm.searchManyCallback || '') &&  {name : vm.searchMany}"
               ng-class="{selected: element==vm.selectedMany}"
               ng-click="vm.selectMany(element)">
             <td ng-bind="element.name"></td>
-            <td class="miller-row-actions" ng-if="vm.selectedOne">
+            <td class="miller-row-actions">
               <div class="action-buttons" role="group" aria-label="Acciones">
                 <button type="button" class="arrow-right" aria-pressed="false"
+                        ng-class="{selected: vm.able(element)}"
                         ng-click="vm.attach(element)"><i></i></button>
               </div>
             </td>
@@ -88,13 +89,14 @@
         <table class="miller-table">
           <tbody>
           <tr class="miller-row"
-              ng-repeat="element in vm.relatedModel.elements | orderBy:'name' | filter: (vm.relatedCallback || '') && {name : vm.searchRelated}"
+              ng-repeat="element in vm.relatedModel.elements | orderBy:'name' | filter: (!vm.searchRelatedCallback || '') && {name : vm.searchRelated}"
               ng-class="{selected: element==vm.selectedRelated}"
               ng-click="vm.selectRelated(element)">
             <td class="miller-row-actions">
               <div class="action-buttons" role="group" aria-label="Acciones">
                 <button type="button" class="arrow-left" aria-pressed="false"
-                        ng-click="vm.detach(element)"><i></i></button>
+                        ng-class="{selected: vm.able(element)}"
+                        ng-click="vm.attach(element)"><i></i></button>
               </div>
               <div class="name">
                 <span class="ellipsis" ng-bind="element.name"></span>

@@ -1,0 +1,11 @@
+<!-- app/icecat/categories/categories.html -->
+<div class="card">
+  <div class="header">
+    <h3>Relaciones entre Categorías de Icecat® y subfamilias.</h3>
+  </div>
+</div>
+<miller-columns
+  one-model="vm.subfamilia" selected-one="vm.marca" select-one-callback="vm.seleccionarSubfamilia" search-one-callback="vm.obtenerSubfamilias"
+  many-model="vm.categories" selected-many="vm.supplier" search-many-callback="vm.obtenerSuppliers"
+  related-model="vm.categoriesConSubfamilias" attach="vm.asociarCategoria" detach="vm.desasociarCategoria">
+</miller-columns>
