@@ -1,0 +1,11 @@
+.miller-table {
+
+  @extend .table;
+  @extend .table-hover;
+
+  thead {
+
+    background-color: $gray-suit;
+    color: $alto;
+  }
+}

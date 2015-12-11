@@ -1,0 +1,7 @@
+.miller-section {
+
+  @include make-col();
+  @include make-col-span(4);
+
+  padding: 0;
+}

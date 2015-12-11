@@ -10,7 +10,9 @@
   .delete,
   .detach,
   .edit,
-  .roles {
+  .roles,
+  .arrow-right,
+  .arrow-left {
 
     @extend .btn;
 
@@ -88,6 +90,22 @@
     i {
 
       @extend .fa-users;
+    }
+  }
+
+  .arrow-right {
+    @extend .btn-success;
+
+    i {
+      @extend .fa-arrow-circle-right;
+    }
+  }
+
+  .arrow-left {
+    @extend .btn-danger;
+
+    i {
+      @extend .fa-arrow-circle-left;
     }
   }
 }

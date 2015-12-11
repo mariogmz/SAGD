@@ -1,0 +1,110 @@
+<!-- customDirective: miller-columns -->
+<section class="miller">
+
+  <div class="miller-module">
+    <!-- One Model -->
+    <div class="miller-section">
+      <table class="miller-table">
+        <thead>
+        <tr>
+          <th ng-bind="vm.oneModel.label || 'Cargando...'"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="miller-row-input" ng-if="vm.oneModel">
+          <td>
+            <input type="text" ng-model="vm.searchOne" placeholder="Búsqueda"
+                   ng-change="vm.searchOneCallbackWrapper(vm.searchOne)" ng-model-options="{debounce: 500}">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="miller-list">
+        <table class="miller-table">
+          <tbody>
+          <tr class="miller-row"
+              ng-repeat="element in vm.oneModel.elements | orderBy:'name' | filter: (!vm.oneCallback || '') &&  {name : vm.searchOne}"
+              ng-class="{selected: element===vm.selectedOne}"
+              ng-click="vm.selectOne(element)">
+            <td ng-bind="element.name"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Many Model -->
+    <div class="miller-section">
+      <table class="miller-table">
+        <thead>
+        <tr>
+          <th ng-bind="vm.manyModel.label || 'Cargando...'"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="miller-row-input" ng-if="vm.manyModel">
+          <td><input type="text" ng-model="vm.searchMany" placeholder="Búsqueda"
+                     ng-change="vm.searchManyCallbackWrapper(vm.searchMany)" ng-model-options="{debounce: 500}"></td>
+        </tr>
+        </tbody>
+      </table>
+      <div class="miller-list">
+        <table class="miller-table">
+          <tbody>
+          <tr class="miller-row"
+              ng-repeat="element in vm.manyModel.elements | orderBy:'name' | filter: (!vm.manyCallback || '') &&  {name : vm.searchMany}"
+              ng-class="{selected: element==vm.selectedMany}"
+              ng-click="vm.selectMany(element)">
+            <td ng-bind="element.name"></td>
+            <td class="miller-row-actions" ng-if="vm.selectedOne">
+              <div class="action-buttons" role="group" aria-label="Acciones">
+                <button type="button" class="arrow-right" aria-pressed="false"
+                        ng-click="vm.attach(element)"><i></i></button>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Related Model -->
+    <div class="miller-section">
+      <table class="miller-table">
+        <thead>
+        <tr>
+          <th ng-bind="vm.relatedModel.label || 'Cargando...'"></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr class="miller-row-input" ng-if="vm.relatedModel.elements.length > 0">
+          <td><input type="text" ng-model="vm.searchRelated" placeholder="Búsqueda"
+                     ng-change="vm.searchRelatedCallback(vm.searchRelated)" ng-model-options="{debounce: 500}"></td>
+
+        </tr>
+        </tbody>
+      </table>
+      <div class="miller-list">
+        <table class="miller-table">
+          <tbody>
+          <tr class="miller-row"
+              ng-repeat="element in vm.relatedModel.elements | orderBy:'name' | filter: (vm.relatedCallback || '') && {name : vm.searchRelated}"
+              ng-class="{selected: element==vm.selectedRelated}"
+              ng-click="vm.selectRelated(element)">
+            <td class="miller-row-actions">
+              <div class="action-buttons" role="group" aria-label="Acciones">
+                <button type="button" class="arrow-left" aria-pressed="false"
+                        ng-click="vm.detach(element)"><i></i></button>
+              </div>
+              <div class="name">
+                <span class="ellipsis" ng-bind="element.name"></span>
+              </div>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</section>

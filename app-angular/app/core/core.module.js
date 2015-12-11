@@ -16,7 +16,7 @@
     'blocks.api', 'blocks.formly', 'blocks.pnotify',
     'blocks.env', 'blocks.lscache', 'blocks.modal',
     'blocks.notifications', 'blocks.validators', 'blocks.acl',
-    'blocks.index',
+    'blocks.index', 'blocks.miller',
 
     /*
      * 3rd party app modules
