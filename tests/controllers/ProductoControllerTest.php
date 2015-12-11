@@ -324,4 +324,110 @@ class ProductoControllerTest extends TestCase {
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoConTodosLosParametros()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&upc=1';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoSoloPorClave()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=*&upc=*';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoSoloConDescripcion()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=A&upc=*';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoSoloConUpc()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&upc=1';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoSinEspecificarNinguno()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&upc=*';
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Debes de especificar al menos un valor de busqueda',
+                'error' => 'Busqueda muy larga'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoSinEnviarUnParametro()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
 }
