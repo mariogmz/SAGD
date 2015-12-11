@@ -24,6 +24,20 @@ class IcecatSupplierControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede actualizar un IcecatSupplier
+     *
+     * @param User $user
+     * @param IcecatSupplierController $controller
+     * @return bool
+     */
+    public function update(User $user, IcecatSupplierController $controller){
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'update')->first();
+        return !empty($permiso);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

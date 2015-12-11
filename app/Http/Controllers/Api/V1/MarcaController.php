@@ -28,7 +28,8 @@ class MarcaController extends Controller
     {
         $this->authorize($this);
         if(isset($campo) && isset($valor)){
-            return $this->marca->where($campo, $valor)->get();
+            $valor = str_replace(' ', '%', $valor);
+            return $this->marca->where($campo, 'LIKE', "%{$valor}%")->get();
         } else {
             return $this->marca->all();
         }

@@ -57,7 +57,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('ficha', 'FichaController',['only' => ['index','store','show','update','destroy']]);
         Route::group(['prefix' => 'icecat', 'as' => 'api.v1.icecat'], function () {
             Route::get('/{numero_parte}/marca/{marca}','IcecatController@obtenerFicha')->name('.ficha');
-            Route::get('/supplier/{name?}', 'IcecatSupplierController@index')->name('.supplier');
+            Route::get('/supplier/{campo?}/{name?}', 'IcecatSupplierController@index')->name('.supplier');
+            Route::put('/supplier/{id}', 'IcecatSupplierController@update')->name('.supplier.update');
         });
 
 

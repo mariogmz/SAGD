@@ -9,7 +9,7 @@ class IcecatSupplierControllerTest extends TestCase {
 
     use WithoutMiddleware;
 
-    protected $endpoint = '/v1/icecat/supplier/{name}';
+    protected $endpoint = '/v1/icecat/supplier';
 
     public function setUp() {
         parent::setUp();
@@ -27,10 +27,10 @@ class IcecatSupplierControllerTest extends TestCase {
     }
 
     /**
-     * @covers ::obtenerFicha
+     * @covers ::index
      */
     public function test_GET_index_ok() {
-        $endpoint = str_replace('{name}', '', $this->endpoint);
+        $endpoint = $this->endpoint;
 
         $this->mock->shouldReceive([
             'all' => ['supplier']
@@ -41,18 +41,77 @@ class IcecatSupplierControllerTest extends TestCase {
     }
 
     /**
-     * @covers ::obtenerFicha
+     * @covers ::index
      */
     public function test_GET_index_name_ok() {
-        $endpoint = str_replace('{name}', 'hp', $this->endpoint);
+        $endpoint = $this->endpoint . '/name/hp';
 
         $this->mock->shouldReceive([
-            'whereName' => Mockery::self(),
-            'all'       => ['supplier']
+            'where' => Mockery::self(),
+            'get'   => ['supplier']
         ])->withAnyArgs()->once();
         $this->app->instance('App\IcecatSupplier', $this->mock);
         $this->get($endpoint)
             ->seeJson(['supplier'])->assertResponseStatus(200);
     }
 
+    /**
+     * @covers ::update
+     */
+    public function test_PUT_update_ok() {
+        $endpoint = $this->endpoint . '/1';
+
+        $this->mock->shouldReceive([
+            'find'   => Mockery::self(),
+            'update' => true,
+            'self'   => 'hello'
+        ])->withAnyArgs()->once();
+        $this->app->instance('App\IcecatSupplier', $this->mock);
+
+        $this->put($endpoint, ['marca_id' => 1])
+            ->seeJson([
+                'message'  => 'Relación actualizada correctamente',
+                'supplier' => 'hello'
+            ])->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::update
+     */
+    public function test_PUT_update_failure() {
+        $endpoint = $this->endpoint . '/1';
+
+        $this->mock->shouldReceive([
+            'find'   => Mockery::self(),
+            'update' => false,
+        ])->withAnyArgs()->once();
+
+        $this->mock->errors = 'errors';
+        $this->app->instance('App\IcecatSupplier', $this->mock);
+
+        $this->put($endpoint, ['marca_id' => 1])
+            ->seeJson([
+                'message' => 'No se pudo actualizar el Fabricante',
+                'error'   => 'errors'
+            ])->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::update
+     */
+    public function test_PUT_update_not_found() {
+        $endpoint = $this->endpoint . '/1';
+
+        $this->mock->shouldReceive([
+            'find'   => false
+        ])->withAnyArgs()->once();
+
+        $this->app->instance('App\IcecatSupplier', $this->mock);
+
+        $this->put($endpoint, ['marca_id' => 1])
+            ->seeJson([
+                'message' => 'No se pudo actualizar el Fabricante',
+                'error'   => 'El Fabricante no fué encontrado'
+            ])->assertResponseStatus(404);
+    }
 }
