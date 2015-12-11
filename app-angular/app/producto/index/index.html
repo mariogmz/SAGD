@@ -1,24 +1,47 @@
-<div class="search-card">
+<div class="product-search-card">
   <div class="header">
     <h4>Productos</h4>
   </div>
-  <div class="block">
-    <div class="row">
-      <div class="form">
-        <form>
-          <div class="field">
-            <label>Buscar:</label>
-            <input type="text" ng-model="vm.search" autofocus>
+  <section class="block">
+    <section class="product-search" id="product-search">
+      <form name="productSearch" ng-submit="vm.productSearch()">
+        <fieldset>
+          <div>
+            <span class="search-span" id="producto-search-clave"><i class="clave"></i></span>
+            <input type="text" placeholder="Clave" aria-describedby="producto-search-clave" ng-model="vm.search.clave">
           </div>
-        </form>
-      </div>
-      <div class="actions">
+        </fieldset>
+
+        <fieldset>
+          <div>
+            <span class="search-span" id="producto-search-descripcion"><i class="descripcion"></i></span>
+            <input type="text" placeholder="Descripcion" aria-describedby="producto-search-descripcion" ng-model="vm.search.descripcion">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div>
+            <span class="search-span" id="producto-search-upc"><i class="upc"></i></span>
+            <input type="text" placeholder="UPC" aria-describedby="producto-search-upc" ng-model="vm.search.upc">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div>
+            <input type="submit" role="button" class="button primary" value="Buscar">
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section class="product-search-actions" id="new-product">
+      <article class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
           <button type="button" class="create" ng-click="vm.next()"><i></i> Crear nuevo</button>
         </div>
-      </div>
-    </div>
-  </div>
+      </article>
+    </section>
+  </section>
 </div>
 
 <div class="table-responsive">
@@ -32,7 +55,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="producto in vm.productos | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+    <tr dir-paginate="producto in vm.productos | orderBy:vm.sortKey:vm.reverse | itemsPerPage:15">
       <th scope="row">{{producto.id}}</th>
       <td><a ui-sref="productoShow({id:producto.id})">{{producto.clave}}</a></td>
       <td>{{producto.upc}}</td>
@@ -48,7 +71,7 @@
     </tr>
     </tbody>
   </table>
-  <loader model="vm.productos"></loader>
+  <loader ng-show="vm.searching" model="vm.productos"></loader>
 </div>
 <div class="paginator">
   <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>

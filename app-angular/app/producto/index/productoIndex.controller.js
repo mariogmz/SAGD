@@ -1,6 +1,6 @@
 // app/producto/index/productoIndex.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,7 @@
 
   ProductoIndexController.$inject = ['$state', 'api', 'pnotify'];
 
-  function ProductoIndexController($state, api, pnotify){
+  function ProductoIndexController($state, api, pnotify) {
 
     var vm = this;
     vm.sort = sort;
@@ -22,43 +22,60 @@
       {name: 'Descripción', key: 'descripcion'},
       {name: 'Subfamilia', key: 'subfamilia.clave'}
     ];
+    vm.search = {
+      clave: '',
+      descripcion: '',
+      upc: ''
+    };
+    vm.searching = false;
     vm.next = goToCreateStep1;
     vm.delete = eliminarProducto;
+    vm.productSearch = buscar;
 
     initialize();
 
-    function initialize(){
-      return obtenerProductos().then(function (){
-        console.log("Productos obtenidos");
-      });
+    function initialize() {
+
     }
 
-    function obtenerProductos(){
-      return api.get('/producto')
-        .then(function (response){
-          vm.productos = response.data;
-          return vm.productos;
-        });
+    function buscar() {
+      vm.searching = !vm.searching;
+      obtenerProductos().then(success).catch(error);
     }
 
-    function eliminarProducto(id){
+    function obtenerProductos() {
+      return api.get('/productos/buscar/', vm.search);
+    }
+
+    function eliminarProducto(id) {
       return api.delete('/producto/', id)
-        .then(function (response){
-          obtenerProductos().then(function (){
+        .then(function(response) {
+          obtenerProductos().then(function() {
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
-        }).catch(function (response){
+        }).catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }
 
-    function goToCreateStep1(){
+    function goToCreateStep1() {
       $state.go('productoNew.step1');
+    }
+
+    function success(response) {
+      vm.searching = !vm.searching;
+      vm.productos = response.data;
+      return response;
+    }
+
+    function error(response) {
+      vm.searching = !vm.searching;
+      pnotify.alert(response.data.error, response.data.message, 'error');
     }
 
   }
