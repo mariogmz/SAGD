@@ -8,16 +8,16 @@
     .module('sagdApp.logs')
     .controller('logsIndexController', logsIndexController);
 
-  logsIndexController.$inject = ['api', 'pnotify'];
+  logsIndexController.$inject = ['$state'];
 
-  function logsIndexController(api, pnotify){
+  function logsIndexController($state) {
 
     var vm = this;
 
     initialize();
 
-    function initialize(){
-
+    function initialize() {
+      $state.go('logsAcceso');
     }
   }
 
