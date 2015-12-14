@@ -16,7 +16,6 @@ class CreateIcecatFeatureGroupsTable extends Migration {
             $table->integer('icecat_id')->unsigned();
             $table->string('name', 70);
             $table->timestamps();
-            $table->softDeletes();
 
             $table->unique('icecat_id');
         });

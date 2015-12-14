@@ -13,11 +13,9 @@ class AddTimestampsSoftDeletesToFichasAndCaracteristicasTable extends Migration 
     public function up() {
         Schema::table('fichas', function (Blueprint $table) {
             $table->timestamps();
-            $table->softDeletes();
         });
         Schema::table('fichas_caracteristicas', function (Blueprint $table) {
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -28,11 +26,9 @@ class AddTimestampsSoftDeletesToFichasAndCaracteristicasTable extends Migration 
      */
     public function down() {
         Schema::table('fichas_caracteristicas', function (Blueprint $table) {
-            $table->dropSoftDeletes();
             $table->dropTimestamps();
         });
         Schema::table('fichas', function (Blueprint $table) {
-            $table->dropSoftDeletes();
             $table->dropTimestamps();
         });
     }

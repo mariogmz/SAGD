@@ -18,7 +18,6 @@ class CreateIcecatSuppliersTable extends Migration {
             $table->string('logo_url', 100)->nullable();
             $table->integer('marca_id')->unsigned()->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

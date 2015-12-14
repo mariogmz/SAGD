@@ -19,7 +19,6 @@ class CreateIcecatFeaturesTable extends Migration {
             $table->string('description', 100)->nullable();
             $table->string('measure', 10)->nullable();
             $table->timestamps();
-            $table->softDeletes();
 
             $table->unique('icecat_id');
 

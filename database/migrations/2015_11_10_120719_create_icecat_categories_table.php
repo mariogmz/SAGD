@@ -20,7 +20,6 @@ class CreateIcecatCategoriesTable extends Migration {
             $table->integer('icecat_parent_category_id')->unsigned()->nullable();
             $table->integer('subfamilia_id')->unsigned()->nullable();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

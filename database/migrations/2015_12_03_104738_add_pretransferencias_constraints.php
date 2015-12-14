@@ -42,8 +42,8 @@ class AddPretransferenciasConstraints extends Migration
             $table->dropForeign('pretransferencias_sucursal_origen_id_foreign');
             $table->dropForeign('pretransferencias_sucursal_destino_id_foreign');
             $table->dropForeign('pretransferencias_empleado_id_foreign');
-            $table->dropForeign('pretransferencias_estados_pretransferencias_id_foreign');
-            $table->dropColumn(['producto_id', 'sucursal_origen_id', 'sucursal_destino_id', 'empleado_id', 'estados_pretransferencias_id']);
+            $table->dropForeign('pretransferencias_estado_pretransferencia_id_foreign');
+            $table->dropColumn(['producto_id', 'sucursal_origen_id', 'sucursal_destino_id', 'empleado_id', 'estado_pretransferencia_id']);
         });
     }
 }
