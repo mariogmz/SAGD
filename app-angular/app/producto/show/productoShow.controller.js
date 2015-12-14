@@ -82,7 +82,7 @@
 
     function error(response) {
       console.log('Hubo un error con la peticion.');
-      pnotity.alert('Error', response.data.message, 'error');
+      pnotify.alert('Error', response.data.message, 'error');
     }
 
     function sort(keyname) {
