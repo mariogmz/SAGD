@@ -3,9 +3,9 @@
 namespace App;
 
 
+use App\Events\Pretransferir;
 use App\Events\ProductoActualizado;
 use App\Events\ProductoCreado;
-use App\Events\Pretransferir;
 use DB;
 use Event;
 use Illuminate\Support\MessageBag;
@@ -138,7 +138,7 @@ class Producto extends LGGModel {
      * @return bool
      */
     public function guardarNuevo($parameters) {
-        if (! empty($parameters['producto'])) {
+        if (!empty($parameters['producto'])) {
             $this->fill($parameters['producto']);
         }
         $dimension = new Dimension($parameters['dimension']);
@@ -199,9 +199,8 @@ class Producto extends LGGModel {
      * @param array $data
      * @return bool
      */
-    public function pretransferir($data)
-    {
-        $lambda = function() use ($data) {
+    public function pretransferir($data) {
+        $lambda = function () use ($data) {
             if (empty($data)) {
                 return false;
             }
@@ -211,12 +210,14 @@ class Producto extends LGGModel {
 
             foreach ($dataPretransferencia as $pretransferencia) {
                 $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen, $empleado))[0][0];
-                if (! $result) {
+                if (!$result) {
                     return false;
                 }
             }
+
             return true;
         };
+
         return $this->safe_transaction($lambda);
     }
 
@@ -337,7 +338,7 @@ class Producto extends LGGModel {
      * Obtiene la ficha asociada a este producto
      * @return \App\Ficha
      */
-    public function ficha(){
+    public function ficha() {
         return $this->hasOne('App\Ficha');
     }
 
@@ -346,7 +347,7 @@ class Producto extends LGGModel {
      * alias a $producto->ficha->caracteristicas
      * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function fichaCaracteristicas(){
+    public function fichaCaracteristicas() {
         return $this->ficha->caracteristicas();
     }
 
@@ -395,11 +396,10 @@ class Producto extends LGGModel {
 
 
     /**
-    * Obtiene las Pretransferencias asociadas con el Producto
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function pretransferencias()
-    {
+     * Obtiene las Pretransferencias asociadas con el Producto
+     * @return Illuminate\Database\Eloquent\Collection
+     */
+    public function pretransferencias() {
         return $this->hasMany('App\Pretransferencia', 'producto_id');
     }
 
@@ -414,7 +414,7 @@ class Producto extends LGGModel {
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
             ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'proveedores.externo', 'precios.costo', 'precios.precio_1',
                 'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
-                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10','precios.descuento')
+                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10', 'precios.descuento', 'precios.revisado')
             ->groupBy('proveedores.id')
             ->get();
     }
@@ -458,11 +458,11 @@ class Producto extends LGGModel {
         return $errors;
     }
 
-    private function originPretransferencias($data)
-    {
-        $arr = array_values(array_filter($data, function($element){
+    private function originPretransferencias($data) {
+        $arr = array_values(array_filter($data, function ($element) {
             return !empty($element['sucursal_origen']);
         }))[0];
+
         return Sucursal::findOrFail($arr['sucursal_origen']);
     }
 
@@ -470,18 +470,17 @@ class Producto extends LGGModel {
      * Remueve del array los objetos que tengan una pretransferencia menor o
      * igual a cero
      */
-    private function purgePretransferencias($data)
-    {
-        return array_filter($data, function($element){
+    private function purgePretransferencias($data) {
+        return array_filter($data, function ($element) {
             return !empty($element['pretransferencia']);
         });
     }
 
-    private function creadorPretransferencia($data)
-    {
-        $arr = array_values(array_filter($data, function($element) {
+    private function creadorPretransferencia($data) {
+        $arr = array_values(array_filter($data, function ($element) {
             return !empty($element['empleado_id']);
         }))[0];
+
         return Empleado::findOrFail($arr['empleado_id']);
     }
 
