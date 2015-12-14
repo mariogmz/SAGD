@@ -5,9 +5,11 @@ namespace App;
 
 use App\Events\ProductoActualizado;
 use App\Events\ProductoCreado;
+use App\Events\Pretransferir;
 use DB;
 use Event;
 use Illuminate\Support\MessageBag;
+use Sagd\SafeTransactions;
 
 /**
  * App\Producto
@@ -70,6 +72,8 @@ use Illuminate\Support\MessageBag;
  */
 class Producto extends LGGModel {
 
+    use SafeTransactions;
+
     protected $table = "productos";
     public $timestamps = true;
     protected $fillable = ['activo', 'clave', 'descripcion', 'descripcion_corta',
@@ -124,6 +128,96 @@ class Producto extends LGGModel {
         Producto::created(function ($producto) {
             Event::fire(new ProductoCreado($producto));
         });
+    }
+
+    /**
+     * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
+     * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
+     * los datos asociados en sus dimensiones.
+     * @param array $parameters
+     * @return bool
+     */
+    public function guardarNuevo($parameters) {
+        if (! empty($parameters['producto'])) {
+            $this->fill($parameters['producto']);
+        }
+        $dimension = new Dimension($parameters['dimension']);
+        $precio = new Precio($parameters['precio']);
+        $dimension->producto_id = 0;
+        $precio->producto_sucursal_id = 0;
+
+        if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
+            $this->save();
+            $this->attachDimension($dimension);
+            $this->guardarPrecios($precio);
+
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            if ($dimension->errors) {
+                $this->errors->merge($dimension->errors);
+            }
+            if ($precio->errors) {
+                $this->errors->merge($precio->errors);
+            }
+
+            return false;
+        }
+    }
+
+    /**
+     * Función que hace las operaciones necesarias para la actualización de datos del producto
+     * @param array $parameters
+     * @return bool
+     */
+    public function actualizar($parameters) {
+        DB::beginTransaction();
+        if ($this->update($parameters)
+            && $this->dimension->update($parameters['dimension'])
+            && (empty($precios_errores = $this->actualizarPreciosPorProveedor($parameters)))
+        ) {
+            DB::commit();
+
+            return true;
+        } else {
+            $this->errors || $this->errors = new MessageBag();
+            if ($this->dimension->errors) {
+                $this->errors->merge($this->dimension->errors);
+            }
+            if ($precios_errores) {
+                $this->errors->merge(['Precios' => $precios_errores]);
+            }
+            DB::rollback();
+
+            return false;
+        }
+    }
+
+    /**
+     * Invocara la modificacion de existencias para mandarlas a pretransferencia
+     *
+     * @param array $data
+     * @return bool
+     */
+    public function pretransferir($data)
+    {
+        $lambda = function() use ($data) {
+            if (empty($data)) {
+                return false;
+            }
+            $sucursalOrigen = $this->originPretransferencias($data);
+            $dataPretransferencia = $this->purgePretransferencias($data);
+            $empleado = $this->creadorPretransferencia($data);
+
+            foreach ($dataPretransferencia as $pretransferencia) {
+                $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen, $empleado))[0][0];
+                if (! $result) {
+                    return false;
+                }
+            }
+            return true;
+        };
+        return $this->safe_transaction($lambda);
     }
 
     /**
@@ -299,6 +393,16 @@ class Producto extends LGGModel {
         return $this->hasMany('App\Reposicion');
     }
 
+
+    /**
+    * Obtiene las Pretransferencias asociadas con el Producto
+    * @return Illuminate\Database\Eloquent\Collection
+    */
+    public function pretransferencias()
+    {
+        return $this->hasMany('App\Pretransferencia', 'producto_id');
+    }
+
     /**
      * Obtienes los precios agrupados por proveedor
      * @return \Illuminate\Database\Eloquent\Collection
@@ -315,78 +419,13 @@ class Producto extends LGGModel {
             ->get();
     }
 
-
-    /**
-     * Hace las operaciones correspondientes para guardar los datos del producto, inicializar sus existencias,
-     * guardar sus precios por sucursal considerando que son iguales por proveedor, así como también guarda
-     * los datos asociados en sus dimensiones.
-     * @param array $parameters
-     * @return bool
-     */
-    public function guardarNuevo($parameters) {
-        if (! empty($parameters['producto'])) {
-            $this->fill($parameters['producto']);
-        }
-        $dimension = new Dimension($parameters['dimension']);
-        $precio = new Precio($parameters['precio']);
-        $dimension->producto_id = 0;
-        $precio->producto_sucursal_id = 0;
-
-        if ($this->isValid() && $dimension->isValid() && $precio->isValid()) {
-            $this->save();
-            $this->attachDimension($dimension);
-            $this->guardarPrecios($precio);
-
-            return true;
-        } else {
-            $this->errors || $this->errors = new MessageBag();
-            \Log::info("");
-            \Log::info($this->errors);
-            \Log::info("");
-            if ($dimension->errors) {
-                $this->errors->merge($dimension->errors);
-            }
-            if ($precio->errors) {
-                $this->errors->merge($precio->errors);
-            }
-            return false;
-        }
-    }
-
-    /**
-     * Función que hace las operaciones necesarias para la actualización de datos del producto
-     * @param array $parameters
-     * @return bool
-     */
-    public function actualizar($parameters) {
-        DB::beginTransaction();
-        if ($this->update($parameters)
-            && $this->dimension->update($parameters['dimension'])
-            && (empty($precios_errores = $this->actualizarPreciosPorProveedor($parameters)))
-        ) {
-            DB::commit();
-
-            return true;
-        } else {
-            $this->errors || $this->errors = new MessageBag();
-            if ($this->dimension->errors) {
-                $this->errors->merge($this->dimension->errors);
-            }
-            if ($precios_errores) {
-                $this->errors->merge(['Precios' => $precios_errores]);
-            }
-            DB::rollback();
-
-            return false;
-        }
-    }
-
     /**
      * @param Precio $precio_interno
      */
     private function guardarPrecios($precio_interno) {
         $precio_externo = $precio_interno->calcularPrecios($precio_interno->precio_1, $precio_interno->costo, true);
         $precio_externo = new Precio($precio_externo['precios']);
+        $precio_externo->revisado = $precio_interno->revisado;
         $precio_externo->descuento = $precio_interno->descuento;
         foreach ($this->productosSucursales as $producto_sucursal) {
             if ($producto_sucursal->sucursal->proveedor->externo) {
@@ -401,6 +440,7 @@ class Producto extends LGGModel {
         $precios_proveedor = $parameters['precios'];
         $errors = [];
         foreach ($precios_proveedor as $precio_proveedor) {
+            $precio_proveedor['revisado'] = boolval($parameters['revisado']);
             $sucursales_id = Sucursal::whereProveedorId($precio_proveedor['proveedor_id'])->get()->pluck('id');
             $productos_sucursales = $this->productosSucursales()->with('precio')->whereIn('sucursal_id', $sucursales_id)->get();
 
@@ -416,6 +456,33 @@ class Producto extends LGGModel {
         }
 
         return $errors;
+    }
+
+    private function originPretransferencias($data)
+    {
+        $arr = array_values(array_filter($data, function($element){
+            return !empty($element['sucursal_origen']);
+        }))[0];
+        return Sucursal::findOrFail($arr['sucursal_origen']);
+    }
+
+    /**
+     * Remueve del array los objetos que tengan una pretransferencia menor o
+     * igual a cero
+     */
+    private function purgePretransferencias($data)
+    {
+        return array_filter($data, function($element){
+            return !empty($element['pretransferencia']);
+        });
+    }
+
+    private function creadorPretransferencia($data)
+    {
+        $arr = array_values(array_filter($data, function($element) {
+            return !empty($element['empleado_id']);
+        }))[0];
+        return Empleado::findOrFail($arr['empleado_id']);
     }
 
     private function attachDimension($dimension) {

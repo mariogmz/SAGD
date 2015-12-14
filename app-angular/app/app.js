@@ -28,6 +28,7 @@
       'sagdApp.navbar',
       'sagdApp.passwords',
       'sagdApp.permiso',
+      'sagdApp.pretransferencia',
       'sagdApp.producto',
       'sagdApp.proveedor',
       'sagdApp.revisarPrecios',
@@ -37,6 +38,7 @@
       'sagdApp.sidebar',
       'sagdApp.subfamilia',
       'sagdApp.sucursal',
+      'sagdApp.transferencia',
       'sagdApp.unidad'
 
     ]);

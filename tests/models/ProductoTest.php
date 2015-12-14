@@ -638,6 +638,21 @@ class ProductoTest extends TestCase {
     }
 
     /**
+     * @covers ::pretransferencias
+     * @group feature-transferencias
+     * @group feature-transferencias-pretransferencias
+     */
+    public function testPretransferencias()
+    {
+        factory(App\Pretransferencia::class)->create();
+        $producto = App\Producto::last();
+        $pretransferencias = $producto->pretransferencias;
+
+        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pretransferencias);
+        $this->assertInstanceOf(App\Pretransferencia::class, $pretransferencias->first());
+    }
+
+    /**
      * @covers ::guardarNuevo
      * @group saves
      */
@@ -682,6 +697,7 @@ class ProductoTest extends TestCase {
      */
     public function testGuardarNuevoGuardaParametrosDelModelo() {
         $producto = $this->setUpGuardarNuevoExitoso();
+
         $this->assertEquals('jijiji', $producto->descripcion);
     }
 
@@ -834,8 +850,272 @@ class ProductoTest extends TestCase {
         $this->assertEmpty($producto->ficha->caracteristicas);
     }
 
-    private function setUpGuardarNuevoExitoso() {
-        $unique = "A" . time();
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferir()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $this->assertTrue($producto->pretransferir($data));
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirNoDataFails()
+    {
+        $producto = $this->setUpProducto();
+        $data = null;
+
+        $this->assertFalse($producto->pretransferir($data));
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirDisminuyeCantidadASucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $cantidadAntes = $productoSucursal->existencia->cantidad;
+
+        $producto->pretransferir($data);
+
+        $cantidadDespues = $producto->productosSucursales()->first()->existencia->cantidad;
+
+        $this->assertLessThan($cantidadAntes, $cantidadDespues);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirRestaCantidadExactaASucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->first()->existencia->cantidad;
+
+        $this->assertEquals(70, $cantidad);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferenciaAumentaCantidadPretransferenciaASucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->first()->existencia->cantidad_pretransferencia;
+
+        $this->assertEquals(30, $cantidad);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferenciaAumentaCantidadPretransferenciaDestinoASucursalDestino()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->last()->existencia->cantidad_pretransferencia_destino;
+
+        $this->assertEquals(10, $cantidad);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     * @group feature-transferencias-rollback
+     */
+    public function testPretransferenciaCuandoUnEventoFallaNoCambiaLaCantidadDeSucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal, $empleado);
+
+        $cantidadAntes = $productoSucursal->existencia->cantidad;
+
+        $producto->pretransferir($data);
+
+        $cantidadDespues = $producto->productosSucursales()->first()->existencia->cantidad;
+
+        $this->assertEquals($cantidadAntes, $cantidadDespues);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     * @group feature-transferencias-rollback
+     */
+    public function testPretransferenciaCuandoUnEventoFallaNoCambiaLaCantidadPretransferenciaDeSucursalOrigen()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaBadData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $cantidad = $producto->productosSucursales()->first()->existencia->cantidad_pretransferencia;
+
+        $this->assertEquals(0, $cantidad);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     * @group feature-transferencias-pretransferencias
+     */
+    public function testPretransferirCreaUnModeloDePretransferencia()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $pretransferencia = $producto->pretransferencias()->first();
+
+        $this->assertInstanceOf(App\Pretransferencia::class, $pretransferencia);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testPretransferirCreaUnProductoMovimiento()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertInstanceOf(App\ProductoMovimiento::class, $productoMovimiento);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoTieneMotivoDePretransferencia()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertEquals('Pretransferencia salida', $productoMovimiento->movimiento);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoEntradaYSalidaSonIgualesYEsCorrecto()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertEquals($productoMovimiento->entraron, $productoMovimiento->salieron);
+        $this->assertEquals(10, $productoMovimiento->entraron);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoExistenciasAntesEsCorrecto()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->first();
+
+        $this->assertEquals(0, $productoMovimiento->existencias_antes);
+    }
+
+    /**
+     * @covers ::pretransferir
+     * @group feature-transferencias
+     */
+    public function testProductoMovimientoExistenciasDespuesEsCorrecto()
+    {
+        $producto = $this->setUpProducto();
+        $productoSucursal = $producto->productosSucursales()->first();
+        $sucursal = $producto->sucursales()->first();
+        $empleado = App\Empleado::last();
+        $data = $this->setUpPretransferenciaData($productoSucursal, $sucursal, $empleado);
+
+        $producto->pretransferir($data);
+
+        $productoMovimiento = $producto->movimientos()->get()->last();
+
+        $this->assertEquals(30, $productoMovimiento->existencias_despues);
+    }
+
+    private function setUpGuardarNuevoExitoso()
+    {
+        $unique = "A".time();
         $params = [
             "producto"  => ["activo" => 1, "clave" => $unique, "descripcion" => "jijiji", "descripcion_corta" => "jiji", "fecha_entrada" => "2015-10-01", "numero_parte" => $unique, "remate" => 0, "spiff" => 0.5, "subclave" => "asd", "upc" => $unique],
             "dimension" => ["largo" => 1.0, "ancho" => 2.0, "alto" => 3.0, "peso" => 4.0],
@@ -943,5 +1223,57 @@ class ProductoTest extends TestCase {
         $producto->actualizar($params);
 
         return App\Producto::find($producto->id);
+    }
+
+    private function setUpPretransferenciaData($productoSucursal, $sucursal, $empleado)
+    {
+        return [
+            ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
+            ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['sucursal_origen' => $sucursal->id],
+            ['empleado_id' => $empleado->id],
+        ];
+    }
+
+    private function setUpPretransferenciaDataToSelf($productoSucursal, $sucursal, $empleado)
+    {
+        return [
+            ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 1],
+            ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['sucursal_origen' => $sucursal->id],
+            ['empleado_id' => $empleado->id],
+        ];
+    }
+
+    private function setUpPretransferenciaBadData($productoSucursal, $sucursal, $empleado)
+    {
+        return [
+            ['id' => $productoSucursal->id, 'cantidad' => 100, 'pretransferencia'  => 0],
+            ['id' => ($productoSucursal->id + 1), 'cantidad' => 100, 'pretransferencia'  => 10],
+            ['id' => ($productoSucursal->id + 2), 'cantidad' => 100, 'pretransferencia'  => 10000],
+            ['id' => ($productoSucursal->id + 3), 'cantidad' => 100, 'pretransferencia'  => 'c'],
+            ['sucursal_origen' => $sucursal->id],
+            ['empleado_id' => $empleado->id],
+        ];
+    }
+
+    private function setUpProducto()
+    {
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        factory(App\Sucursal::class)->create();
+        $producto = factory(App\Producto::class)->create();
+        $empleado = factory(App\Empleado::class)->create(['sucursal_id' => $sucursal->id]);
+
+        $productoSucursal = $producto->productosSucursales()->first();
+        $productoSucursal->existencia->update([
+            'cantidad' => 100
+        ]);
+        return $producto;
     }
 }

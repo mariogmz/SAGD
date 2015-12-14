@@ -40,11 +40,18 @@
       if (angular.isArray(parameters)) {
         var paramsUrl = '?';
         parameters = parameters.map(function(param) {
-          param = $.map(param, function(value, index) {
-            return [value];
-          });
+          param = $.map(param, function(value, index) {return [value];});
 
           return param.join('=');
+        });
+
+        paramsUrl += parameters.join('&');
+        return paramsUrl;
+      } else if (angular.isObject(parameters)) {
+        var paramsUrl = '?';
+        parameters = $.map(parameters, function(value, key) {
+          value = value.length === 0 ? '*' : value;
+          return key + '=' + value;
         });
 
         paramsUrl += parameters.join('&');

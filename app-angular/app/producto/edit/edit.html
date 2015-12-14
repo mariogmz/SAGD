@@ -15,6 +15,9 @@
       <li class="nav-item">
         <a href="#precios" role="tab" data-toggle="tab">Precios</a>
       </li>
+      <li class="nav-item">
+        <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
+      </li>
       <li class="nav-item save" ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
         <a role="tab" ng-click="vm.save(productoEditForm.$valid && productoEditForm.$dirty)"><i></i> Guardar</a>
       </li>
@@ -43,6 +46,10 @@
           <!-- Precios -->
           <section role="tabpanel" class="fade" id="precios">
             <div ui-view="precios"></div>
+          </section>
+          <!-- Existencias -->
+          <section role="tabpanel" class="fade" id="existencias">
+            <div ui-view="existencias"></div>
           </section>
         </article>
       </form>

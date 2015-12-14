@@ -6,91 +6,87 @@
   }
 
   .attach,
+  .arrow-left,
+  .arrow-right,
   .create,
   .delete,
   .detach,
   .edit,
+  .print,
   .roles,
-  .arrow-right,
-  .arrow-left {
+  .show,
+  .transferir {
 
     @extend .btn;
 
     font-size: inherit;
   }
 
+  .one-third {
+    padding: .375rem .5rem;
+  }
+
   .create {
 
     @extend .btn-primary;
 
-    i {
-
-      @extend .fa-plus;
-    }
+    i { @extend .fa-plus; }
   }
 
   .edit {
 
     @extend .btn-success;
 
-    i {
-
-      @extend .fa-pencil;
-    }
+    i { @extend .fa-pencil; }
   }
 
   .delete {
 
     @extend .btn-danger;
 
-    i {
-
-      @extend .fa-trash;
-    }
+    i { @extend .fa-trash; }
   }
 
   .attach {
 
     @extend .btn-primary-outline;
 
-    &.selected {
+    &.selected { @extend .btn-primary; }
 
-      @extend .btn-primary;
-
-
-    }
-
-    i {
-
-      @extend .fa-check;
-    }
+    i { @extend .fa-check; }
   }
 
   .detach {
 
     @extend .btn-danger-outline;
 
-    &.selected {
+    &.selected { @extend .btn-danger; }
 
-      @extend .btn-danger;
+    i { @extend .fa-times; }
+  }
 
+  .print {
+    @extend .btn-primary;
 
-    }
-
-    i {
-
-      @extend .fa-times;
-    }
+    i { @extend .fa-print; }
   }
 
   .roles {
-
     @extend .btn-primary;
 
-    i {
+    i { @extend .fa-users; }
+  }
 
-      @extend .fa-users;
-    }
+  .show {
+    @extend .btn-primary;
+
+    i { @extend .fa-search; }
+  }
+
+  .transferir {
+    @extend .btn-primary;
+
+    i { @extend .fa-truck; }
   }
 
   .arrow-right {

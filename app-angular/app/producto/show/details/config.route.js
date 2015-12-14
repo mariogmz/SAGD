@@ -1,6 +1,6 @@
 // app/producto/show/details/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -9,7 +9,7 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider){
+  function configureRoutes($stateProvider) {
     $stateProvider
       .state('productoShow.details', {
         parent: 'productoShow',
@@ -20,13 +20,13 @@
           'peso-dimensiones': {
             templateUrl: 'app/producto/show/details/peso-dimensiones.html'
           },
-          'precios': {
+          precios: {
             templateUrl: 'app/producto/show/details/precios.html'
           },
-          'movimientos': {
+          movimientos: {
             templateUrl: 'app/producto/show/details/movimientos.html'
           },
-          'existencias': {
+          existencias: {
             templateUrl: 'app/producto/show/details/existencias.html'
           }
         }
