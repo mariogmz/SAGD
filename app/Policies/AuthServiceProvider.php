@@ -28,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         'App\Http\Controllers\Api\V1\IcecatCategoryController'      => 'App\Policies\IcecatCategoryControllerPolicy',
         'App\Http\Controllers\Api\V1\IcecatFeatureController'       => 'App\Policies\IcecatFeatureControllerPolicy',
         'App\Http\Controllers\Api\V1\IcecatSupplierController'      => 'App\Policies\IcecatSupplierControllerPolicy',
-        'App\Http\Controllers\Api\V1\LogsAccesoController'  		=> 'App\Policies\LogsAccesoEmpleadoControllerPolicy',
+        'App\Http\Controllers\Api\V1\LogsAccesoController'  		=> 'App\Policies\LogsAccesoControllerPolicy',
         'App\Http\Controllers\Api\V1\MarcaController'               => 'App\Policies\MarcaControllerPolicy',
         'App\Http\Controllers\Api\V1\MargenController'              => 'App\Policies\MargenControllerPolicy',
         'App\Http\Controllers\Api\V1\PasswordController'            => 'App\Policies\PasswordControllerPolicy',
