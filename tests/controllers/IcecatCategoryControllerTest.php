@@ -3,17 +3,17 @@
 use Illuminate\Foundation\Testing\WithoutMiddleware;
 
 /**
- * @coversDefaultClass \App\Http\Controllers\Api\V1\IcecatSupplierController
+ * @coversDefaultClass \App\Http\Controllers\Api\V1\IcecatCategoryController
  */
-class IcecatSupplierControllerTest extends TestCase {
+class IcecatCategoryControllerTest extends TestCase {
 
     use WithoutMiddleware;
 
-    protected $endpoint = '/v1/icecat/supplier';
+    protected $endpoint = '/v1/icecat/category';
 
     public function setUp() {
         parent::setUp();
-        $this->mock = $this->setUpMock('App\IcecatSupplier');
+        $this->mock = $this->setUpMock('App\IcecatCategory');
     }
 
     public function setUpMock($class) {
@@ -33,11 +33,11 @@ class IcecatSupplierControllerTest extends TestCase {
         $endpoint = $this->endpoint;
 
         $this->mock->shouldReceive([
-            'all' => ['supplier']
+            'all' => ['category']
         ])->withAnyArgs();
-        $this->app->instance('App\IcecatSupplier', $this->mock);
+        $this->app->instance('App\IcecatCategory', $this->mock);
         $this->get($endpoint)
-            ->seeJson(['supplier'])->assertResponseStatus(200);
+            ->seeJson(['category'])->assertResponseStatus(200);
     }
 
     /**
@@ -48,11 +48,11 @@ class IcecatSupplierControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
-            'get'   => ['supplier']
+            'get'   => ['category']
         ])->withAnyArgs()->once();
-        $this->app->instance('App\IcecatSupplier', $this->mock);
+        $this->app->instance('App\IcecatCategory', $this->mock);
         $this->get($endpoint)
-            ->seeJson(['supplier'])->assertResponseStatus(200);
+            ->seeJson(['category'])->assertResponseStatus(200);
     }
 
     /**
@@ -66,12 +66,12 @@ class IcecatSupplierControllerTest extends TestCase {
             'update' => true,
             'self'   => 'hello'
         ])->withAnyArgs()->once();
-        $this->app->instance('App\IcecatSupplier', $this->mock);
+        $this->app->instance('App\IcecatCategory', $this->mock);
 
-        $this->put($endpoint, ['marca_id' => 1])
+        $this->put($endpoint, ['subfamilia_id' => 1])
             ->seeJson([
                 'message'  => 'Relación actualizada correctamente',
-                'supplier' => 'hello'
+                'category' => 'hello'
             ])->assertResponseStatus(200);
     }
 
@@ -87,11 +87,11 @@ class IcecatSupplierControllerTest extends TestCase {
         ])->withAnyArgs()->once();
 
         $this->mock->errors = 'errors';
-        $this->app->instance('App\IcecatSupplier', $this->mock);
+        $this->app->instance('App\IcecatCategory', $this->mock);
 
-        $this->put($endpoint, ['marca_id' => 1])
+        $this->put($endpoint, ['subfamilia_id' => 1])
             ->seeJson([
-                'message' => 'No se pudo actualizar el Fabricante',
+                'message' => 'No se pudo actualizar la categoría',
                 'error'   => 'errors'
             ])->assertResponseStatus(400);
     }
@@ -106,12 +106,12 @@ class IcecatSupplierControllerTest extends TestCase {
             'find'   => false
         ])->withAnyArgs()->once();
 
-        $this->app->instance('App\IcecatSupplier', $this->mock);
+        $this->app->instance('App\IcecatCategory', $this->mock);
 
-        $this->put($endpoint, ['marca_id' => 1])
+        $this->put($endpoint, ['subfamilia_id' => 1])
             ->seeJson([
-                'message' => 'No se pudo actualizar el Fabricante',
-                'error'   => 'El Fabricante no fué encontrado'
+                'message' => 'No se pudo actualizar la categoría',
+                'error'   => 'La categoría no fué encontrada'
             ])->assertResponseStatus(404);
     }
 }

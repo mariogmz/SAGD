@@ -34,7 +34,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('/calcular-precio','PrecioController@calcular');
         Route::resource('precio', 'PrecioController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('familia', 'FamiliaController', ['only' => ['index','store','show','update','destroy']]);
-        Route::resource('subfamilia', 'SubfamiliaController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('subfamilia', 'SubfamiliaController', ['only' => ['store','show','update','destroy']]);
+        Route::get('subfamilia/{campo?}/{valor?}', 'SubfamiliaController@index');
         Route::resource('margen', 'MargenController', ['only' => ['index','store','show','update','destroy']]);
 		Route::resource('producto-sucursal', 'ProductoSucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('cliente', 'ClienteController', ['only' => ['index','store','show','update','destroy']]);
@@ -57,8 +58,10 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('ficha', 'FichaController',['only' => ['index','store','show','update','destroy']]);
         Route::group(['prefix' => 'icecat', 'as' => 'api.v1.icecat'], function () {
             Route::get('/{numero_parte}/marca/{marca}','IcecatController@obtenerFicha')->name('.ficha');
-            Route::get('/supplier/{campo?}/{name?}', 'IcecatSupplierController@index')->name('.supplier');
+            Route::get('/supplier/{campo?}/{valor?}', 'IcecatSupplierController@index')->name('.supplier');
             Route::put('/supplier/{id}', 'IcecatSupplierController@update')->name('.supplier.update');
+            Route::get('/category/{campo?}/{valor?}', 'IcecatCategoryController@index')->name('.category');
+            Route::put('/category/{id}', 'IcecatCategoryController@update')->name('.category.update');
         });
 
 

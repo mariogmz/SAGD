@@ -18,9 +18,9 @@
     function initialize() {
       vm.indexElements = [
         {label: 'Fabricantes', state: 'icecatSuppliers', picUrl: '', icon: 'industry'},
-        {label: 'Categorías', state: 'icecatCategoriesIndex', picUrl: '', icon: 'object-group'},
-        {label: 'Características', state: 'icecatFeaturesIndex', picUrl: '', icon: 'tag'},
-        {label: 'Tareas', state: 'icecatTasksIndex', picUrl: '', icon: 'tasks'}
+        {label: 'Categorías', state: 'icecatCategories', picUrl: '', icon: 'object-group'},
+        {label: 'Características', state: 'icecatFeatures', picUrl: '', icon: 'tag'},
+        {label: 'Tareas', state: 'icecatTasks', picUrl: '', icon: 'tasks'}
       ];
     }
   }

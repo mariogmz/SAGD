@@ -96,10 +96,10 @@
               <div class="action-buttons" role="group" aria-label="Acciones">
                 <button type="button" class="arrow-left" aria-pressed="false"
                         ng-class="{selected: vm.able(element)}"
-                        ng-click="vm.attach(element)"><i></i></button>
+                        ng-click="vm.detach(element)"><i></i></button>
               </div>
               <div class="name">
-                <span class="ellipsis" ng-bind="element.name"></span>
+                <span ng-bind="element.name"></span>
               </div>
             </td>
           </tr>

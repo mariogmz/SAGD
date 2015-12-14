@@ -33,8 +33,11 @@ class MarcaControllerTest extends TestCase
      */
     public function test_GET_index()
     {
-        $this->mock->shouldReceive('all')->once()->andReturn('[{"id":1,"clave":"Z","nombre":"ZEGUCOM"}]');
-        $this->app->instance('App\Marca', $this->mock);
+        $this->mock->shouldReceive([
+            'with' => Mockery::self(),
+            'get'  => 'success'
+        ])->withAnyArgs();
+        $this->app->instance('App\Subfamilia', $this->mock);
 
         $this->get($this->endpoint)
             ->assertResponseStatus(200);
