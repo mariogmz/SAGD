@@ -20,11 +20,12 @@
       {name: 'Clave', key: 'clave'},
       {name: 'UPC', key: 'upc'},
       {name: 'Descripción', key: 'descripcion'},
-      {name: 'Subfamilia', key: 'subfamilia.clave'}
+      {name: 'Num. Parte', key: 'numero_parte'}
     ];
     vm.search = {
       clave: '',
       descripcion: '',
+      numero_parte: '',
       upc: ''
     };
     vm.searching = false;

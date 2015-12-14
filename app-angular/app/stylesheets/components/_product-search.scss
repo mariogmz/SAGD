@@ -24,6 +24,10 @@
       @extend .fa-list;
     }
 
+    .numero-parte {
+      @extend .fa-gear;
+    }
+
     .upc {
       @extend .fa-barcode;
     }

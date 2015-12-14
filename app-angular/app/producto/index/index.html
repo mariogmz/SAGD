@@ -4,7 +4,7 @@
   </div>
   <section class="block">
     <section class="product-search" id="product-search">
-      <form name="productSearch" ng-submit="vm.productSearch()">
+      <form id="productSearchForm" ng-submit="vm.productSearch()">
         <fieldset>
           <div>
             <span class="search-span" id="producto-search-clave"><i class="clave"></i></span>
@@ -15,7 +15,16 @@
         <fieldset>
           <div>
             <span class="search-span" id="producto-search-descripcion"><i class="descripcion"></i></span>
-            <input type="text" placeholder="Descripcion" aria-describedby="producto-search-descripcion" ng-model="vm.search.descripcion">
+            <input type="text" placeholder="Descripcion" aria-describedby="producto-search-descripcion"
+                   ng-model="vm.search.descripcion">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div>
+            <span class="search-span" id="producto-search-numero-parte"><i class="numero-parte"></i></span>
+            <input type="text" placeholder="Num. de parte" aria-describedby="producto-search-numero-parte"
+                   ng-model="vm.search.numero_parte">
           </div>
         </fieldset>
 
@@ -26,20 +35,14 @@
           </div>
         </fieldset>
 
-        <fieldset>
-          <div>
-            <input type="submit" role="button" class="button primary" value="Buscar">
-          </div>
-        </fieldset>
       </form>
     </section>
 
-    <section class="product-search-actions" id="new-product">
-      <article class="actions">
-        <div class="action-buttons" role="group" aria-label="Acciones">
-          <button type="button" class="create" ng-click="vm.next()"><i></i> Crear nuevo</button>
-        </div>
-      </article>
+    <section class="product-search-actions">
+      <div class="action-buttons" aria-label="Acciones">
+        <button type="submit" class="show" form="productSearchForm"><i></i><span class="hide"> Buscar</span></button>
+        <button type="button" class="create" ng-click="vm.next()"><i></i><span class="hide"> Nuevo</span></button>
+      </div>
     </section>
   </section>
 </div>
@@ -58,9 +61,9 @@
     <tr dir-paginate="producto in vm.productos | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
       <th scope="row">{{producto.id}}</th>
       <td><a ui-sref="productoShow({id:producto.id})">{{producto.clave}}</a></td>
-      <td>{{producto.upc}}</td>
-      <td>{{(producto.descripcion | limitTo:55) + '...'}}</td>
-      <td><a ui-sref="subfamiliaShow({id:producto.subfamilia_id})">{{producto.subfamilia.clave}}</a></td>
+      <td ng-bind="producto.upc"></td>
+      <td ng-bind="(producto.descripcion | limitTo:55) + '...'"></td>
+      <td ng-bind="producto.numero_parte"></a></td>
 
       <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
