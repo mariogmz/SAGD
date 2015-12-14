@@ -83,6 +83,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
             Route::put('/supplier/{id}', 'IcecatSupplierController@update')->name('.supplier.update');
             Route::get('/category/{campo?}/{valor?}', 'IcecatCategoryController@index')->name('.category');
             Route::put('/category/{id}', 'IcecatCategoryController@update')->name('.category.update');
+            Route::get('/feature/{id}', 'IcecatFeatureController@show')->name('.feature.show');
             Route::get('/feature/{campo?}/{valor?}', 'IcecatFeatureController@index')->name('.feature');
         });
 

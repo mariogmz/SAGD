@@ -1,4 +1,4 @@
-// app/icecat/features/config.route.js
+// app/icecat/features/show/config.route.js
 
 (function() {
   'use strict';
@@ -11,11 +11,11 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-      .state('icecatFeatures', {
-        url: '/caracteristicas',
+      .state('icecatFeaturesShow', {
+        url: '/caracteristicas/:id',
         parent: 'icecat',
-        templateUrl: 'app/icecat/features/features.html',
-        controller: 'icecatFeaturesController',
+        templateUrl: 'app/icecat/features/show/show.html',
+        controller: 'icecatFeaturesShowController',
         controllerAs: 'vm'
       });
   }

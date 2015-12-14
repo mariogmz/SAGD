@@ -54,4 +54,35 @@ class IcecatFeatureControllerTest extends TestCase {
         $this->get($endpoint)
             ->seeJson(['feature'])->assertResponseStatus(200);
     }
+
+    /**
+     * @covers ::show
+     */
+    public function test_GET_show_ok() {
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'self' => ['feature']
+        ]);
+        $this->app->instance('App\IcecatFeature', $this->mock);
+        $this->get($this->endpoint . '/1')
+            ->seeJson([
+                'message' => 'Característica obtenida con éxito',
+                'feature' => ['feature']
+            ])->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::show
+     */
+    public function test_GET_show_failure() {
+        $this->mock->shouldReceive([
+            'find' => false
+        ]);
+        $this->app->instance('App\IcecatFeature', $this->mock);
+        $this->get($this->endpoint . '/1')
+            ->seeJson([
+                'message' => 'No se pudo obtener la característica',
+                'error' => 'Característica no encontrada'
+            ])->assertResponseStatus(404);
+    }
 }

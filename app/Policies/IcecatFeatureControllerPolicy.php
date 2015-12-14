@@ -25,6 +25,21 @@ class IcecatFeatureControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede ver un IcecatFeature
+     *
+     * @param  User  $user
+     * @param  IcecatFeatureController $controller
+     * @return bool
+     */
+    public function show(User $user, IcecatFeatureController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'show')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string

@@ -1,4 +1,4 @@
-// app/icecat/categorys/categorys.controller.js
+// app/icecat/categories/categories.controller.js
 
 (function() {
 
