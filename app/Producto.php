@@ -397,7 +397,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las Pretransferencias asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function pretransferencias() {
         return $this->hasMany('App\Pretransferencia', 'producto_id');
@@ -486,19 +486,6 @@ class Producto extends LGGModel {
 
     private function attachDimension($dimension) {
         $this->dimension()->save($dimension);
-    }
-
-    private function attachSucursales() {
-        $sucursales = Sucursal::all();
-        foreach ($sucursales as $sucursal) {
-            $this->addSucursal($sucursal);
-        }
-    }
-
-    private function inicializarExistencias() {
-        $this->productosSucursales->each(function ($productoSucursal) {
-            $productoSucursal->existencia()->save(new \App\Existencia);
-        });
     }
 
 }

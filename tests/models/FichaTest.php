@@ -424,4 +424,16 @@ class FichaTest extends TestCase {
             $this->assertSame('test_value', $caracteristica->valor);
         }
     }
+
+    /**
+     * @covers ::fichaCompleta
+     */
+    public function testFichaCompleta() {
+        $ficha = factory(App\Ficha::class)->create();
+        $ficha_completa = $ficha->fichaCompleta();
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $ficha_completa);
+        foreach($ficha_completa as $caracteristica){
+            $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $caracteristica);
+        }
+    }
 }

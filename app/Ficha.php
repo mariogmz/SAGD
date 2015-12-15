@@ -3,6 +3,7 @@
 namespace App;
 
 
+use Illuminate\Support\Facades\DB;
 use Sagd\IcecatFeed;
 
 /**
@@ -235,6 +236,32 @@ class Ficha extends LGGModel {
             }
         }
     }
+
+    /**
+     * Este método realiza una consulta para obtener de manera organizada los datos listos
+     * para mostrar en la ficha técnica del producto asociado.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fichaCompleta(){
+        return $this->caracteristicas()
+            ->join('icecat_categories_features', 'fichas_caracteristicas.category_feature_id', '=', 'icecat_categories_features.id')
+            ->join('icecat_categories', 'icecat_categories_features.icecat_category_id', '=','icecat_categories.icecat_id')
+            ->join('icecat_features', 'icecat_categories_features.icecat_feature_id', '=', 'icecat_features.icecat_id')
+            ->join('icecat_categories_feature_groups','icecat_categories_features.icecat_category_feature_group_id', '=','icecat_categories_feature_groups.icecat_id')
+            ->join('icecat_feature_groups', 'icecat_categories_feature_groups.icecat_feature_group_id', '=', 'icecat_feature_groups.icecat_id')
+            ->select(
+                'icecat_feature_groups.name as feature_group',
+                'icecat_features.name as feature',
+                'icecat_features.description',
+                'fichas_caracteristicas.valor',
+                'fichas_caracteristicas.valor_presentacion'
+            )
+            ->orderBy('icecat_feature_groups.name')
+            ->orderBy('icecat_features.name')
+            ->get()->groupBy('feature_group');
+    }
+
 
     /**
      * Obtiene el producto para el cual está definida esta ficha
