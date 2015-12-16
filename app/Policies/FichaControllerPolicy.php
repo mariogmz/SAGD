@@ -84,6 +84,21 @@ class FichaControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede consultar una Ficha completa
+     *
+     * @param  User  $user
+     * @param  FichaController $controller
+     * @return bool
+     */
+    public function fichaCompleta(User $user, FichaController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'fichaCompleta')->first();
+        return !empty($permiso);
+    }
+
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

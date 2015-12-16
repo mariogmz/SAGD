@@ -1,0 +1,28 @@
+<!-- app/templates/components/sheet.html -->
+
+<section class="sheet-container">
+  <!-- Loader -->
+  <div class="sheet-loader-container">
+    <loader model="vm.model"></loader>
+  </div>
+  <article class="sheet-table" ng-if="vm.model">
+    <table class="item-table">
+      <thead>
+      <th colspan="5">Ficha técnica del producto</th>
+      </thead>
+      <tbody>
+      <tr ng-repeat="(group, features) in vm.model">
+        <th colspan="2" scope="row" ng-bind="group"></th>
+        <td>
+          <section class="sheet-nested-table">
+            <article ng-repeat="feature in features" ng-class-even="'even'">
+              <span ng-bind="feature.feature"></span>
+              <span ng-bind="feature.valor_presentacion"></span>
+            </article>
+          </section>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </article>
+</section>

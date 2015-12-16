@@ -70,7 +70,7 @@ class FichaController extends Controller {
         $this->ficha = $this->ficha->with('caracteristicas')->find($id);
         if ($this->ficha) {
             return response()->json([
-                'message' => 'Producto obtenido exitosamente',
+                'message' => 'Ficha obtenido exitosamente',
                 'ficha'   => $this->ficha->self()
             ], 200);
         } else {
@@ -135,6 +135,28 @@ class FichaController extends Controller {
                 'message' => 'No se pudo eliminar la ficha',
                 'error'   => 'El metodo de eliminar no se pudo ejecutar'
             ], 400);
+        }
+    }
+
+    /**
+     * Obtiene la ficha en formato de presentacion
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function fichaCompleta($id){
+        $this->authorize($this);
+        $this->ficha = $this->ficha->find($id);
+        if ($this->ficha) {
+            return response()->json([
+                'message' => 'Ficha obtenida exitosamente',
+                'ficha'   => $this->ficha->fichaCompleta()
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Ficha no encontrada o no existente',
+                'error'   => 'No encontrada'
+            ], 404);
         }
     }
 }

@@ -106,12 +106,15 @@ class FichaControllerTest extends TestCase {
         $this->mock->shouldReceive([
             'with' => Mockery::self(),
             'find' => Mockery::self(),
-            'self' => Mockery::self(),
-            'jsonSerialize' => Mockery::self()
+            'self' => ['hello']
         ])->withAnyArgs()->once();
         $this->app->instance('App\Ficha', $this->mock);
 
         $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Ficha obtenido exitosamente',
+                'ficha' => ['hello']
+            ])
             ->assertResponseStatus(200);
     }
 
@@ -257,4 +260,45 @@ class FichaControllerTest extends TestCase {
             ])
             ->assertResponseStatus(400);
     }
+
+        /**
+     * @covers ::fichaCompleta
+     */
+    public function test_GET_ficha_completa_ok() {
+        $endpoint = $this->endpoint . '/completa/1';
+
+        $this->mock->shouldReceive([
+            'find' => Mockery::self(),
+            'fichaCompleta' => ['hello']
+        ])->withAnyArgs()->once();
+        $this->app->instance('App\Ficha', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Ficha obtenida exitosamente',
+                'ficha' => ['hello']
+            ])
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::fichaCompleta
+     */
+    public function test_GET_ficha_completa_no_encontrado() {
+        $endpoint = $this->endpoint . '/completa/10000';
+
+        $this->mock->shouldReceive([
+            'find' => false,
+        ])->withAnyArgs()->once();
+        $this->app->instance('App\Ficha', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Ficha no encontrada o no existente',
+                'error'   => 'No encontrada'
+            ])
+            ->assertResponseStatus(404);
+
+    }
+
 }

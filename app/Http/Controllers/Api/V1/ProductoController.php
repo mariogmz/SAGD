@@ -69,7 +69,7 @@ class ProductoController extends Controller {
     public function show($id)
     {
         $this->authorize($this);
-        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension')->find($id);
+        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension','ficha')->find($id);
         if ($this->producto) {
             return response()->json([
                 'message'           => 'Producto obtenido exitosamente',
