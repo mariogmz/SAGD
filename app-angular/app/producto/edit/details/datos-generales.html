@@ -163,7 +163,8 @@
                     ng-bind="vm.tiposGarantia? 'Seleccione un tipo de garantía' : vm.producto.tipo_garantia.descripcion"></option>
           </select>
           <!-- Validation messages -->
-          <div ng-messages="productoEditForm.tipo_garantia_id.$error" ng-show="productoEditForm.tipo_garantia_id.$touched">
+          <div ng-messages="productoEditForm.tipo_garantia_id.$error"
+               ng-show="productoEditForm.tipo_garantia_id.$touched">
             <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
@@ -175,6 +176,70 @@
           </label>
         </fieldset>
       </div>
+    </div>
+
+    <hr>
+    <h4>Dimensiones</h4>
+    <div class="row">
+      <!-- Peso -->
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.peso)">
+        <label for="peso">Peso:</label>
+
+        <div class="with-icon">
+          <input type="number" id="peso" name="peso" ng-model="vm.producto.dimension.peso"
+                 min="0.1" numeric required step="0.1">
+          <span>kg</span>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoEditForm.peso.$error" ng-show="productoEditForm.peso.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
+      </fieldset>
+
+      <!-- Longitúd -->
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.largo)">
+        <label for="largo">Largo:</label>
+
+        <div class="with-icon">
+          <input type="number" id="largo" name="largo" ng-model="vm.producto.dimension.largo"
+                 min="0.1" numeric required step="0.1">
+          <span>cm</span>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoEditForm.largo.$error" ng-show="productoEditForm.largo.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
+      </fieldset>
+
+      <!-- Ancho -->
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.ancho)">
+        <label for="ancho">Ancho:</label>
+
+        <div class="with-icon">
+          <input type="number" id="ancho" name="ancho" ng-model="vm.producto.dimension.ancho"
+                 min="0.1" numeric required step="0.1">
+          <span>cm</span>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoEditForm.ancho.$error" ng-show="productoEditForm.ancho.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
+      </fieldset>
+
+      <!-- Altura -->
+      <fieldset class="col-sm" ng-class="vm.setClass(productoEditForm.alto)">
+        <label for="alto">Alto:</label>
+
+        <div class="with-icon">
+          <input type="number" id="alto" name="alto" ng-model="vm.producto.dimension.alto"
+                 min="0.1" numeric required step="0.1">
+          <span>cm</span>
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="productoEditForm.alto.$error" ng-show="productoEditForm.alto.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
+      </fieldset>
     </div>
 
   </div>

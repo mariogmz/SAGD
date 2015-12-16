@@ -17,8 +17,8 @@
           'datos-generales': {
             templateUrl: 'app/producto/edit/details/datos-generales.html'
           },
-          'peso-dimensiones': {
-            templateUrl: 'app/producto/edit/details/peso-dimensiones.html'
+          ficha: {
+            templateUrl: 'app/producto/edit/details/ficha.html'
           },
           precios: {
             templateUrl: 'app/producto/edit/details/precios.html'
