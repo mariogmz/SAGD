@@ -11,10 +11,10 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="miller-row-input" ng-if="vm.oneModel">
+        <tr class="miller-row-input" ng-show="vm.oneModel">
           <td>
             <input type="text" ng-model="vm.searchOne" placeholder="Búsqueda"
-                   ng-change="vm.searchOneCallback(vm.searchOne)" ng-model-options="{debounce: 500}">
+                   ng-change="vm.searchOneCallbackWrapper(vm.searchOne)" ng-model-options="{debounce: 500}">
           </td>
         </tr>
         </tbody>
@@ -42,9 +42,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr class="miller-row-input" ng-if="vm.manyModel">
+        <tr class="miller-row-input" ng-show="vm.manyModel">
           <td><input type="text" ng-model="vm.searchMany" placeholder="Búsqueda"
-                     ng-change="vm.searchManyCallback(vm.searchMany)" ng-model-options="{debounce: 500}"></td>
+                     ng-change="vm.searchManyCallbackWrapper(vm.searchMany)" ng-model-options="{debounce: 500}"></td>
         </tr>
         </tbody>
       </table>
@@ -56,10 +56,9 @@
               ng-class="{selected: element==vm.selectedMany}"
               ng-click="vm.selectMany(element)">
             <td ng-bind="element.name"></td>
-            <td class="miller-row-actions">
+            <td class="miller-row-actions" ng-show="vm.showAttachActions()">
               <div class="action-buttons" role="group" aria-label="Acciones">
                 <button type="button" class="arrow-right" aria-pressed="false"
-                        ng-class="{selected: vm.able(element)}"
                         ng-click="vm.attach(element)"><i></i></button>
               </div>
             </td>
@@ -95,7 +94,6 @@
             <td class="miller-row-actions">
               <div class="action-buttons" role="group" aria-label="Acciones">
                 <button type="button" class="arrow-left" aria-pressed="false"
-                        ng-class="{selected: vm.able(element)}"
                         ng-click="vm.detach(element)"><i></i></button>
               </div>
               <div class="name">

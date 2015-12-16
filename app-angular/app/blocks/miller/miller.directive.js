@@ -54,6 +54,7 @@
     vm.selectRelated = selectRelated;
     vm.searchOneCallbackWrapper = searchOneCallbackWrapper;
     vm.searchManyCallbackWrapper = searchManyCallbackWrapper;
+    vm.showAttachActions = showAttachActions;
 
     initialize();
 
@@ -89,6 +90,10 @@
     function searchManyCallbackWrapper(element) {
       vm.selectedMany = undefined;
       vm.searchManyCallback(element);
+    }
+
+    function showAttachActions() {
+      return Object.keys(vm.selectedOne || {}).length;
     }
   }
 
