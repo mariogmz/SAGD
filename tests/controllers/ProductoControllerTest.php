@@ -481,7 +481,7 @@ class ProductoControllerTest extends TestCase {
      */
     public function testBuscarProductoConTodosLosParametros()
     {
-        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&upc=1';
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&numeroParte=A&upc=1';
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
@@ -499,7 +499,7 @@ class ProductoControllerTest extends TestCase {
      */
     public function testBuscarProductoSoloPorClave()
     {
-        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=*&upc=*';
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=*&numeroParte=*&upc=*';
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
@@ -517,7 +517,24 @@ class ProductoControllerTest extends TestCase {
      */
     public function testBuscarProductoSoloConDescripcion()
     {
-        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=A&upc=*';
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=A&numeroParte=*&upc=*';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductoSoloConNumeroDeParte()
+    {
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&numero_parte=A&upc=*';
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
@@ -529,13 +546,14 @@ class ProductoControllerTest extends TestCase {
             ->assertResponseStatus(200);
     }
 
+
     /**
      * @covers ::buscar
      * @group feature-buscador-productos
      */
     public function testBuscarProductoSoloConUpc()
     {
-        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&upc=1';
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&numero_parte=*&upc=1';
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
@@ -553,7 +571,7 @@ class ProductoControllerTest extends TestCase {
      */
     public function testBuscarProductoSinEspecificarNinguno()
     {
-        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&upc=*';
+        $endpoint = '/v1/productos/buscar/?clave=*&descripcion=*&numero_parte=*&upc=*';
 
         $this->get($endpoint)
             ->seeJson([
@@ -569,7 +587,7 @@ class ProductoControllerTest extends TestCase {
      */
     public function testBuscarProductoSinEnviarUnParametro()
     {
-        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A';
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&numero_parte=A';
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),

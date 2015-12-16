@@ -29,9 +29,9 @@
       {name: 'Descuento', key: 'descuento'}
     ];
     vm.empleado = session.obtenerEmpleado();
-    vm.sort = sort;
     vm.id = $stateParams.id;
     vm.back = goBack;
+    vm.sort = sort;
 
     initialize();
 
@@ -41,7 +41,7 @@
         console.log('Producto obtenido correctamente');
         vm.producto = response.data.producto;
         if (!vm.producto.margen) {
-          vm.producto.margen = { nombre: 'Libre'};
+          vm.producto.margen = {nombre: 'Libre'};
         }
 
         vm.precios = response.data.precios_proveedor;
@@ -64,6 +64,11 @@
           return response;
         });
       }).then(function() {
+        cargarFicha().then(function(response) {
+          console.log(response.data.message);
+          vm.ficha = response.data.ficha;
+        });
+      }).then(function() {
         $state.go('productoShow.details');
       }).catch(error);
     }
@@ -80,9 +85,13 @@
       return api.get('/producto/' + vm.id + '/movimientos/sucursal/' + vm.empleado.sucursal_id);
     }
 
+    function cargarFicha() {
+      return api.get('/ficha/completa/', vm.producto.ficha.id);
+    }
+
     function error(response) {
       console.log('Hubo un error con la peticion.');
-      pnotity.alert('Error', response.data.message, 'error');
+      pnotify.alert('Error', response.data.message, 'error');
     }
 
     function sort(keyname) {

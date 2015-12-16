@@ -3,10 +3,11 @@
 namespace App\Http\Controllers\Api\V1;
 
 
-use App\Subfamilia;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Subfamilia;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class SubfamiliaController extends Controller {
 
@@ -20,12 +21,19 @@ class SubfamiliaController extends Controller {
     /**
      * Display a listing of the resource.
      *
+     * @param string $campo
+     * @param mixed $valor
      * @return Response
      */
-    public function index()
-    {
+    public function index($campo = null, $valor = null) {
         $this->authorize($this);
-        return $this->subfamilia->with('familia','margen')->get();
+        if (isset($campo) && isset($valor)) {
+            $valor = str_replace(' ', '%', $valor);
+
+            return $this->subfamilia->where($campo, 'LIKE', "%{$valor}%")->get();
+        } else {
+            return $this->subfamilia->with('familia', 'margen')->get();
+        }
     }
 
     /**
@@ -34,14 +42,13 @@ class SubfamiliaController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->authorize($this);
         $params = $request->all();
         $this->subfamilia->fill($params);
         if ($this->subfamilia->save()) {
             return response()->json([
-                'message' => 'Subfamilia creada exitosamente',
+                'message'    => 'Subfamilia creada exitosamente',
                 'subfamilia' => $this->subfamilia->self()
             ], 201,
                 ['Location' => route('api.v1.subfamilia.show', $this->subfamilia->getId())]);
@@ -59,13 +66,12 @@ class SubfamiliaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $this->authorize($this);
-        $this->subfamilia = $this->subfamilia->with('familia','margen')->find($id);
+        $this->subfamilia = $this->subfamilia->with('familia', 'margen')->find($id);
         if ($this->subfamilia) {
             return response()->json([
-                'message' => 'Subfamilia obtenida exitosamente',
+                'message'    => 'Subfamilia obtenida exitosamente',
                 'subfamilia' => $this->subfamilia->self()
             ], 200);
         } else {
@@ -83,8 +89,7 @@ class SubfamiliaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $this->authorize($this);
         $params = $request->all();
         $this->subfamilia = $this->subfamilia->find($id);
@@ -111,8 +116,7 @@ class SubfamiliaController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $this->authorize($this);
         $this->subfamilia = $this->subfamilia->find($id);
         if (empty($this->subfamilia)) {

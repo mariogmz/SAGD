@@ -20,13 +20,19 @@ class MarcaController extends Controller
 
     /**
      * Display a listing of the resource.
-     *
+     * @param string $campo
+     * @param mixed $valor
      * @return Response
      */
-    public function index()
+    public function index($campo = null, $valor = null)
     {
         $this->authorize($this);
-        return $this->marca->all();
+        if(isset($campo) && isset($valor)){
+            $valor = str_replace(' ', '%', $valor);
+            return $this->marca->where($campo, 'LIKE', "%{$valor}%")->get();
+        } else {
+            return $this->marca->all();
+        }
     }
 
     /**

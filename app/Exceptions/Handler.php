@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\QueryException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -48,6 +49,8 @@ class Handler extends ExceptionHandler
             return response()->json(['token_invalid'], $e->getStatusCode(), $headers);
         } else if ($e instanceof Tymon\JWTAuth\Exceptions\JWTException) {
             return response()->json(['token_absent'], $e->getStatusCode(), $headers);
+        } else if($e instanceof QueryException){
+            return response()->json(['error' => 'invalid_database_transaction'], 501, $headers);
         } else if ($e instanceof HttpException) {
             if ($e->getStatusCode() == 403) {
                 return response()->json([

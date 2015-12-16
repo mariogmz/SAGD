@@ -3,9 +3,9 @@
 namespace App;
 
 
+use App\Events\Pretransferir;
 use App\Events\ProductoActualizado;
 use App\Events\ProductoCreado;
-use App\Events\Pretransferir;
 use DB;
 use Event;
 use Illuminate\Support\MessageBag;
@@ -68,6 +68,7 @@ use Sagd\SafeTransactions;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Producto whereDeletedAt($value)
+ * @property-read \App\Ficha $ficha
  */
 class Producto extends LGGModel {
 
@@ -137,7 +138,7 @@ class Producto extends LGGModel {
      * @return bool
      */
     public function guardarNuevo($parameters) {
-        if (! empty($parameters['producto'])) {
+        if (!empty($parameters['producto'])) {
             $this->fill($parameters['producto']);
         }
         $dimension = new Dimension($parameters['dimension']);
@@ -198,9 +199,8 @@ class Producto extends LGGModel {
      * @param array $data
      * @return bool
      */
-    public function pretransferir($data)
-    {
-        $lambda = function() use ($data) {
+    public function pretransferir($data) {
+        $lambda = function () use ($data) {
             if (empty($data)) {
                 return false;
             }
@@ -210,12 +210,14 @@ class Producto extends LGGModel {
 
             foreach ($dataPretransferencia as $pretransferencia) {
                 $result = Event::fire(new Pretransferir($this, $pretransferencia, $sucursalOrigen, $empleado))[0][0];
-                if (! $result) {
+                if (!$result) {
                     return false;
                 }
             }
+
             return true;
         };
+
         return $this->safe_transaction($lambda);
     }
 
@@ -230,7 +232,7 @@ class Producto extends LGGModel {
 
     /**
      * Gets the Tipo Garantia associated with Producto
-     * @return App\TipoGarantia
+     * @return \App\TipoGarantia
      */
     public function tipoGarantia() {
         return $this->belongsTo('App\TipoGarantia', 'tipo_garantia_id');
@@ -238,7 +240,7 @@ class Producto extends LGGModel {
 
     /**
      * Gets the Marca associated with Producto
-     * @return App\Marca
+     * @return \App\Marca
      */
     public function marca() {
         return $this->belongsTo('App\Marca', 'marca_id');
@@ -246,7 +248,7 @@ class Producto extends LGGModel {
 
     /**
      * Gets the Marge associated with Producto
-     * @return App\Margen
+     * @return \App\Margen
      */
     public function margen() {
         return $this->belongsTo('App\Margen', 'margen_id');
@@ -254,7 +256,7 @@ class Producto extends LGGModel {
 
     /**
      * Get the Unidad associated with Producto
-     * @return App\Unidad
+     * @return \App\Unidad
      */
     public function unidad() {
         return $this->belongsTo('App\Unidad');
@@ -262,7 +264,7 @@ class Producto extends LGGModel {
 
     /**
      * Get the Subfamilia associated with Producto
-     * @return App\Subfamilia
+     * @return \App\Subfamilia
      */
     public function subfamilia() {
         return $this->belongsTo('App\Subfamilia');
@@ -270,7 +272,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene la Dimension de Producto
-     * @return App\Dimension
+     * @return \App\Dimension
      */
     public function dimension() {
         return $this->hasOne('App\Dimension');
@@ -278,7 +280,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los productos_movimientos de todas las sucursales relacionados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function movimientos(Sucursal $sucursal = null) {
         if (is_null($sucursal)) {
@@ -291,7 +293,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los productos_sucursales relacionados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productosSucursales() {
         return $this->hasMany('App\ProductoSucursal');
@@ -299,7 +301,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las sucursales relacionadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function sucursales() {
         return $this->belongsToMany('App\Sucursal', 'productos_sucursales',
@@ -308,7 +310,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los proveedores relacionados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function proveedores() {
         return $this->sucursales()->with('proveedor')->get()->pluck('proveedor')->unique();
@@ -316,7 +318,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las existencias relacionadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function existencias(Sucursal $sucursal = null) {
         if (is_null($sucursal)) {
@@ -332,10 +334,26 @@ class Producto extends LGGModel {
             'producto_id', 'producto_sucursal_id');
     }
 
+    /**
+     * Obtiene la ficha asociada a este producto
+     * @return \App\Ficha
+     */
+    public function ficha() {
+        return $this->hasOne('App\Ficha');
+    }
+
+    /**
+     * Obtiene las características de la ficha asociada a este producto
+     * alias a $producto->ficha->caracteristicas
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function fichaCaracteristicas() {
+        return $this->ficha->caracteristicas();
+    }
 
     /**
      * Obtiene las Entradas Detalles asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function entradasDetalles() {
         return $this->hasMany('App\EntradaDetalle', 'producto_id');
@@ -344,7 +362,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las Salidas Detalles asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function salidasDetalles() {
         return $this->hasMany('App\SalidaDetalle', 'producto_id');
@@ -353,7 +371,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene las Transferencias Detalles asociadas con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function transferenciasDetalles() {
         return $this->hasMany('App\TransferenciaDetalle', 'producto_id');
@@ -362,7 +380,7 @@ class Producto extends LGGModel {
 
     /**
      * Obtiene los Apartados Detalles asociados con el Producto
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function apartadosDetalles() {
         return $this->hasMany('App\ApartadoDetalle', 'producto_id');
@@ -378,17 +396,16 @@ class Producto extends LGGModel {
 
 
     /**
-    * Obtiene las Pretransferencias asociadas con el Producto
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function pretransferencias()
-    {
+     * Obtiene las Pretransferencias asociadas con el Producto
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function pretransferencias() {
         return $this->hasMany('App\Pretransferencia', 'producto_id');
     }
 
     /**
      * Obtienes los precios agrupados por proveedor
-     * @return \lluminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function preciosProveedor() {
         return $this->productosSucursales()
@@ -397,7 +414,7 @@ class Producto extends LGGModel {
             ->join('proveedores', 'sucursales.proveedor_id', '=', 'proveedores.id')
             ->select('proveedores.id AS proveedor_id', 'proveedores.clave', 'proveedores.externo', 'precios.costo', 'precios.precio_1',
                 'precios.precio_2', 'precios.precio_3', 'precios.precio_4', 'precios.precio_5', 'precios.precio_6',
-                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10', 'precios.descuento', DB::raw('sum(precios.revisado)>0 AS revisado'))
+                'precios.precio_7', 'precios.precio_8', 'precios.precio_9', 'precios.precio_10', 'precios.descuento', 'precios.revisado')
             ->groupBy('proveedores.id')
             ->get();
     }
@@ -441,11 +458,11 @@ class Producto extends LGGModel {
         return $errors;
     }
 
-    private function originPretransferencias($data)
-    {
-        $arr = array_values(array_filter($data, function($element){
+    private function originPretransferencias($data) {
+        $arr = array_values(array_filter($data, function ($element) {
             return !empty($element['sucursal_origen']);
         }))[0];
+
         return Sucursal::findOrFail($arr['sucursal_origen']);
     }
 
@@ -453,36 +470,22 @@ class Producto extends LGGModel {
      * Remueve del array los objetos que tengan una pretransferencia menor o
      * igual a cero
      */
-    private function purgePretransferencias($data)
-    {
-        return array_filter($data, function($element){
+    private function purgePretransferencias($data) {
+        return array_filter($data, function ($element) {
             return !empty($element['pretransferencia']);
         });
     }
 
-    private function creadorPretransferencia($data)
-    {
-        $arr = array_values(array_filter($data, function($element) {
+    private function creadorPretransferencia($data) {
+        $arr = array_values(array_filter($data, function ($element) {
             return !empty($element['empleado_id']);
         }))[0];
+
         return Empleado::findOrFail($arr['empleado_id']);
     }
 
     private function attachDimension($dimension) {
         $this->dimension()->save($dimension);
-    }
-
-    private function attachSucursales() {
-        $sucursales = Sucursal::all();
-        foreach ($sucursales as $sucursal) {
-            $this->addSucursal($sucursal);
-        }
-    }
-
-    private function inicializarExistencias() {
-        $this->productosSucursales->each(function ($productoSucursal) {
-            $productoSucursal->existencia()->save(new \App\Existencia);
-        });
     }
 
 }

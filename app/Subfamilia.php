@@ -22,6 +22,7 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Subfamilia whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatCategory[] $icecatCategories
  */
 class Subfamilia extends LGGModel {
 
@@ -30,8 +31,8 @@ class Subfamilia extends LGGModel {
     protected $fillable = ['clave', 'nombre', 'familia_id', 'margen_id'];
 
     public static $rules = [
-        'clave'      => 'required|max:4|alpha|unique:subfamilias',
-        'nombre'     => 'required|max:45',
+        'clave'      => 'required|string|max:4|alpha|unique:subfamilias',
+        'nombre'     => 'required|string|max:45',
         'familia_id' => 'required|integer',
         'margen_id'  => 'integer'
     ];
@@ -61,7 +62,7 @@ class Subfamilia extends LGGModel {
     }
 
     /**
-     * Get the Familia associated with Subfamilia
+     * Obtiene el Familia asociada con Subfamilia
      * @return App\Familia
      */
     public function familia() {
@@ -69,7 +70,7 @@ class Subfamilia extends LGGModel {
     }
 
     /**
-     * Get the Margen associated with Subfamilia
+     * Obtiene el Margen asociado con Subfamilia
      * @return App\Margen
      */
     public function margen() {
@@ -77,10 +78,18 @@ class Subfamilia extends LGGModel {
     }
 
     /**
-     * Get the Productos associated with Subfamilia
-     * @return array
+     * Obtiene los Productos asociados con Subfamilia
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos() {
         return $this->hasMany('App\Producto');
+    }
+
+    /**
+     * Obtiene las categorias de Icecat que pertencen a la subfamilia
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function icecatCategories(){
+        return $this->hasMany('App\IcecatCategory');
     }
 }

@@ -41,6 +41,11 @@ use Sagd\SafeTransactions;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Entrada whereDeletedAt($value)
+ * @property boolean $factura
+ * @property integer $sucursal_id
+ * @property-read \App\Sucursal $sucursal
+ * @method static \Illuminate\Database\Query\Builder|\App\Entrada whereFactura($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Entrada whereSucursalId($value)
  */
 class Entrada extends LGGModel {
 

@@ -149,4 +149,16 @@ class SubfamiliaTest extends TestCase
         $testProducto = $subfamilia->productos[0];
         $this->assertInstanceOf(App\Producto::class, $testProducto);
     }
+
+    /**
+     * @covers ::icecatCategories
+     * @group relaciones
+     * @group icecat
+     */
+    public function testIcecatCategories(){
+        $subfamilia = factory(App\Subfamilia::class)->create();
+        factory(App\IcecatCategory::class)->create(['subfamilia_id' => $subfamilia->id]);
+        $testIcecatCategory = $subfamilia->icecatCategories[0];
+        $this->assertInstanceOf(App\IcecatCategory::class, $testIcecatCategory);
+    }
 }

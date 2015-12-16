@@ -6,6 +6,8 @@
   }
 
   .attach,
+  .arrow-left,
+  .arrow-right,
   .create,
   .delete,
   .detach,
@@ -18,6 +20,7 @@
     @extend .btn;
 
     font-size: inherit;
+
   }
 
   .one-third {
@@ -25,24 +28,28 @@
   }
 
   .create {
+
     @extend .btn-primary;
 
     i { @extend .fa-plus; }
   }
 
   .edit {
+
     @extend .btn-success;
 
     i { @extend .fa-pencil; }
   }
 
   .delete {
+
     @extend .btn-danger;
 
     i { @extend .fa-trash; }
   }
 
   .attach {
+
     @extend .btn-primary-outline;
 
     &.selected { @extend .btn-primary; }
@@ -51,6 +58,7 @@
   }
 
   .detach {
+
     @extend .btn-danger-outline;
 
     &.selected { @extend .btn-danger; }
@@ -80,5 +88,21 @@
     @extend .btn-primary;
 
     i { @extend .fa-truck; }
+  }
+
+  .arrow-right {
+    @extend .btn-success;
+
+    i {
+      @extend .fa-arrow-circle-right;
+    }
+  }
+
+  .arrow-left {
+    @extend .btn-danger;
+
+    i {
+      @extend .fa-arrow-circle-left;
+    }
   }
 }

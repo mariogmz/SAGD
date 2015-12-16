@@ -1,0 +1,42 @@
+.index-container {
+  @extend .container-fluid;
+
+  img {
+    @extend .card-img-top;
+  }
+
+  .element {
+    @extend .card;
+    @extend .text-xs-center;
+    margin-bottom: 1rem;
+  }
+
+  .block {
+    @extend .card-block;
+  }
+
+  .header {
+    @extend .card-header;
+    background-color: $gray-suit;
+    transition: background-color 500ms ease-in-out;
+
+    h4 {
+      color: $alto;
+      transition: color 500ms ease-in-out;
+    }
+
+    &:hover {
+      background-color: $mine-shaft;
+      cursor: pointer;
+
+      h4 {
+        color: $white;
+      }
+    }
+  }
+
+  h4 {
+    @extend .card-title;
+  }
+
+}

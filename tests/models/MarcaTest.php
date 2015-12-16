@@ -3,15 +3,14 @@
 /**
  * @coversDefaultClass \App\Marca
  */
-class MarcaTest extends TestCase
-{
+class MarcaTest extends TestCase {
+
     protected $marca;
 
     /**
      * @coversNothing
      */
-    public function testModeloEsValido()
-    {
+    public function testModeloEsValido() {
         $marca = factory(App\Marca::class)->make();
         $this->assertTrue($marca->isValid());
         $this->assertTrue($marca->save());
@@ -21,8 +20,7 @@ class MarcaTest extends TestCase
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $marca = factory(App\Marca::class)->create();
         $marca->nombre = 'MC Hammer';
         $this->assertTrue($marca->isValid('update'));
@@ -33,8 +31,7 @@ class MarcaTest extends TestCase
     /**
      * @coversNothing
      */
-    public function testClaveNoPuedeSerDuplicada()
-    {
+    public function testClaveNoPuedeSerDuplicada() {
         $marca = factory(App\Marca::class)->create();
         $dup = clone $marca;
         $this->assertFalse($dup->isValid());
@@ -52,8 +49,7 @@ class MarcaTest extends TestCase
     /**
      * @coversNothing
      */
-    public function testNombreVacioNoEsValido()
-    {
+    public function testNombreVacioNoEsValido() {
         $marca = factory(App\Marca::class)->make(['nombre' => '']);
         $this->assertFalse($marca->isValid());
         $this->assertFalse($marca->save());
@@ -62,28 +58,25 @@ class MarcaTest extends TestCase
     /**
      * @coversNothing
      */
-    public function testClaveNoPuedeTenerMasDeTresDigitos()
-    {
-      $marca = factory(App\Marca::class)->make(['clave' => 'AAAA']);
-      $this->assertFalse($marca->isValid());
-      $this->assertFalse($marca->save());
+    public function testClaveNoPuedeTenerMasDeTresDigitos() {
+        $marca = factory(App\Marca::class)->make(['clave' => 'AAAA']);
+        $this->assertFalse($marca->isValid());
+        $this->assertFalse($marca->save());
     }
 
     /**
      * @coversNothing
      */
-    public function testNombreNoPuedeTenerMasDe25Digitos()
-    {
-      $marca = factory(App\Marca::class, 'longname')->make();
-      $this->assertFalse($marca->isValid());
-      $this->assertFalse($marca->save());
+    public function testNombreNoPuedeTenerMasDe25Digitos() {
+        $marca = factory(App\Marca::class, 'longname')->make();
+        $this->assertFalse($marca->isValid());
+        $this->assertFalse($marca->save());
     }
 
     /**
      * @coversNothing
      */
-    public function testClaveDebeSerGuardadaEnMayusculas()
-    {
+    public function testClaveDebeSerGuardadaEnMayusculas() {
         $marca = factory(App\Marca::class, 'lowercase')->make();
         $clave = strtoupper($marca->clave);
         $marca->save();
@@ -94,11 +87,24 @@ class MarcaTest extends TestCase
      * @covers ::productos
      * @group relaciones
      */
-    public function testProductos()
-    {
+    public function testProductos() {
         $marca = factory(App\Marca::class)->create();
         $producto = factory(App\Producto::class)->create(['marca_id' => $marca->id]);
         $testProducto = $marca->productos[0];
         $this->assertInstanceOf(App\Producto::class, $testProducto);
+    }
+
+    /**
+     * @covers ::icecatSuppliers
+     * @group relaciones
+     * @group icecat
+     */
+    public function testIcecatSuppliers() {
+        $marca = factory(App\Marca::class)->create();
+        factory(App\IcecatSupplier::class)->create(
+            ['marca_id' => $marca->id]
+        );
+        $testIcecatSupplier = $marca->icecatSuppliers[0];
+        $this->assertInstanceOf(App\IcecatSupplier::class, $testIcecatSupplier);
     }
 }

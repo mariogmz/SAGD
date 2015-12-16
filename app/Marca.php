@@ -9,6 +9,7 @@ namespace App;
  * @property integer $id
  * @property string $clave
  * @property string $nombre
+ * @property integer $icecat_supplier_id
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Producto[] $productos
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereClave($value)
@@ -16,6 +17,7 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Marca whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\IcecatSupplier[] $icecatSuppliers
  */
 class Marca extends LGGModel {
 
@@ -26,8 +28,8 @@ class Marca extends LGGModel {
     protected $fillable = ['clave', 'nombre'];
 
     public static $rules = [
-        'clave'  => ['required', 'max:3', 'alpha_num', 'unique:marcas'],
-        'nombre' => 'required|max:25'
+        'clave'              => ['required', 'max:3', 'alpha_num', 'unique:marcas'],
+        'nombre'             => 'required|max:25'
     ];
 
     public $updateRules = [];
@@ -57,11 +59,18 @@ class Marca extends LGGModel {
     }
 
     /**
-     * Return the products associated with Marca
-     *
-     * @return array
+     * Obtiene los productos asociados con la Marca
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     public function productos() {
         return $this->hasMany('App\Producto', 'marca_id');
+    }
+
+    /**
+     * Obtiene los suppliers de icecat asociados con la Marca
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function icecatSuppliers() {
+        return $this->hasMany('App\IcecatSupplier', 'marca_id');
     }
 }

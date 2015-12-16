@@ -1,4 +1,11 @@
 .product-search-actions {
   @include make-col();
   @include make-col-span(2);
+
+  // Hide text
+  @media (max-width: 106.1rem) {
+    .hide {
+      display: none;
+    }
+  }
 }

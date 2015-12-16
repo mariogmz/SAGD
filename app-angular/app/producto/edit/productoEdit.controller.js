@@ -56,6 +56,7 @@
           obtenerTiposDeGarantias();
           obtenerMargenes();
           obtenerExistencias();
+          cargarFicha();
         });
 
     }
@@ -134,7 +135,7 @@
           var existencia = vm.producto_existencias[i];
           if (vm.local(existencia)) {
             vm.pretransferenciaMaxima = existencia.cantidad;
-          };
+          }
 
           var pretransferencia = {
             id: existencia.productos_sucursales_id,
@@ -142,7 +143,7 @@
             pretransferencia: 0
           };
           vm.pretransferencias[pretransferencia.id] = pretransferencia;
-        };
+        }
       });
     }
 
@@ -240,6 +241,16 @@
 
     function apiPretransferencias(data) {
       return api.post('/producto/' + vm.id + '/existencias/pretransferir', data);
+    }
+
+    function cargarFicha() {
+      return api.get('/ficha/completa/', vm.producto.ficha.id)
+        .then(function(response) {
+          console.log(response.data.message);
+          vm.ficha = response.data.ficha;
+        }).catch(function(response) {
+          console.error(response.data.error);
+        });
     }
 
     //////// Utils /////////

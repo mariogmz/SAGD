@@ -1,0 +1,17 @@
+<section class="index-container">
+  <div class="row">
+
+    <article ng-class="'col-sm-' + vm.colWidth" ng-repeat="element in vm.elements">
+      <div class="element">
+        <img class="card-img-top" ng-src="{{element.picUrl}}" alt="{{element.label}}" ng-if="element.picUrl"/>
+        <div class="block" ng-if="element.icon">
+          <i ng-class="'fa fa-' + element.icon +  ' fa-5x'"></i>
+        </div>
+        <div class="header" ui-sref="{{element.state}}">
+          <h4 ng-bind="element.label"></h4>
+        </div>
+      </div>
+    </article>
+
+  </div>
+</section>

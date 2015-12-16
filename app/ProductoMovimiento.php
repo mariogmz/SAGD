@@ -40,6 +40,7 @@ use App\Events\CreandoProductoMovimiento;
  * @property-read \App\ProductoSucursal $productoSucursal
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoMovimiento whereProductoSucursalId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\ProductoMovimiento whereDeletedAt($value)
+ * @property-read \App\SalidaDetalle $salidaDetalle
  */
 class ProductoMovimiento extends LGGModel {
 

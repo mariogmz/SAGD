@@ -1,26 +1,22 @@
 <?php
 
-use App\LGGModel;
-
 /**
  * @coversDefaultClass \App\LGGModel
  */
 class LGGModelTest extends TestCase {
 
-    public function setUp()
-    {
+    public function setUp() {
         parent::setUp();
         $this->mock = $this->setUpMock('App\LGGModel');
     }
 
-    public function setUpMock($class)
-    {
+    public function setUpMock($class) {
         $mock = Mockery::mock($class);
+
         return $mock;
     }
 
-    public function tearDown()
-    {
+    public function tearDown() {
         Mockery::close();
     }
 
@@ -28,11 +24,10 @@ class LGGModelTest extends TestCase {
      * @coversNothing
      * Testing on an actual model since LGGModel can't be instantiated nor mocked
      */
-    public function testSoftDeletes()
-    {
+    public function testSoftDeletes() {
         $model = App\Margen::create([
-            'nombre' => 'Margen',
-            'valor' => 0.1,
+            'nombre'              => 'Margen',
+            'valor'               => 0.1,
             'valor_webservice_p1' => 0.1,
             'valor_webservice_p8' => 0.2
         ]);
@@ -57,23 +52,22 @@ class LGGModelTest extends TestCase {
      * @covers ::performBulkUpdateWith
      * @group feature/bulk-updates
      */
-    public function testBulkUpdateDeUnaMarca()
-    {
+    public function testBulkUpdateDeUnaMarca() {
         factory(App\Marca::class, 5)->create();
         $marca = new App\Marca;
-        $time = "Z".time();
+        $time = "Z" . time();
         $lastId = App\Marca::last()->id;
 
         $ret_value = $marca->bulkUpdate('nombre', 'id', [
-            $lastId => $time,
-            $lastId-1 => 'Computo',
-            $lastId-2 => 'Woot'
+            $lastId     => $time,
+            $lastId - 1 => 'Computo',
+            $lastId - 2 => 'Woot'
         ]);
 
         $this->assertGreaterThan(0, $ret_value);
         $this->assertEquals($time, App\Marca::find($lastId)->nombre);
-        $this->assertEquals('Computo', App\Marca::find($lastId-1)->nombre);
-        $this->assertEquals('Woot', App\Marca::find($lastId-2)->nombre);
+        $this->assertEquals('Computo', App\Marca::find($lastId - 1)->nombre);
+        $this->assertEquals('Woot', App\Marca::find($lastId - 2)->nombre);
     }
 
     /**
@@ -81,12 +75,25 @@ class LGGModelTest extends TestCase {
      * @covers ::checkCorrectArrayForBulkUpdate
      * @group feature/bulk-updates
      */
-    public function testBulkUpdateArrayVacioRegresaNegativo()
-    {
+    public function testBulkUpdateArrayVacioRegresaNegativo() {
         $marca = new App\Marca;
 
         $badArray = [];
 
         $this->assertFalse($marca->bulkUpdate('nombre', 'id', $badArray));
+    }
+
+    /**
+     * @covers ::buildQuery
+     */
+    public function testBuildQuery() {
+        $marca = new App\Marca;
+        $conditions = [
+            ['field' => 'clave', 'operator' => '<>', 'value' => 'HP'],
+            ['field' => 'nombre', 'operator' => 'LIKE', 'value' => 'SONY'],
+        ];
+        $result = $marca->buildQuery($conditions);
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Builder', $result);
+        $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $result->get());
     }
 }

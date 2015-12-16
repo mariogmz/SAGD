@@ -1,6 +1,6 @@
 // app/logs/acceso/acceso.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -8,9 +8,9 @@
     .module('sagdApp.logs')
     .controller('logsAccesoController', logsAccesoController);
 
-  logsAccesoController.$inject = ['api', 'pnotify'];
+  logsAccesoController.$inject = ['api'];
 
-  function logsAccesoController(api, pnotify){
+  function logsAccesoController(api) {
 
     var vm = this;
     vm.sort = sort;
@@ -24,21 +24,21 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerLogs().then(function (){
-        console.log("Logs de acceso obtenidos");
+    function initialize() {
+      return obtenerLogs().then(function() {
+        console.log('Logs de acceso obtenidos');
       });
     }
 
-    function obtenerLogs(){
+    function obtenerLogs() {
       return api.get('/logs-acceso')
-        .then(function (response){
+        .then(function(response) {
           vm.logs = response.data;
           return vm.logs;
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

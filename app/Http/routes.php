@@ -47,14 +47,16 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         });
 
         Route::get('productos/buscar', 'ProductoController@buscar');
-        Route::resource('marca', 'MarcaController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('marca', 'MarcaController', ['only' => ['store','show','update','destroy']]);
+        Route::get('marca/{campo?}/{valor?}', 'MarcaController@index');
         Route::resource('unidad', 'UnidadController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('tipo-garantia', 'TipoGarantiaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('dimension', 'DimensionController', ['only' => ['index','store','show','update','destroy']]);
         Route::get('/calcular-precio','PrecioController@calcular');
         Route::resource('precio', 'PrecioController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('familia', 'FamiliaController', ['only' => ['index','store','show','update','destroy']]);
-        Route::resource('subfamilia', 'SubfamiliaController', ['only' => ['index','store','show','update','destroy']]);
+        Route::resource('subfamilia', 'SubfamiliaController', ['only' => ['store','show','update','destroy']]);
+        Route::get('subfamilia/{campo?}/{valor?}', 'SubfamiliaController@index');
         Route::resource('margen', 'MargenController', ['only' => ['index','store','show','update','destroy']]);
 		Route::resource('producto-sucursal', 'ProductoSucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('cliente', 'ClienteController', ['only' => ['index','store','show','update','destroy']]);
@@ -73,6 +75,19 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::delete('rol/{id}/empleados/detach/{empleado}', 'RolController@detachEmpleado');
         Route::resource('permiso', 'PermisoController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
+
+        Route::resource('ficha', 'FichaController',['only' => ['index','store','show','update','destroy']]);
+        Route::get('ficha/completa/{id}', 'FichaController@fichaCompleta');
+        Route::group(['prefix' => 'icecat', 'as' => 'api.v1.icecat'], function () {
+            Route::get('/{numero_parte}/marca/{marca}','IcecatController@obtenerFicha')->name('.ficha');
+            Route::get('/supplier/{campo?}/{valor?}', 'IcecatSupplierController@index')->name('.supplier');
+            Route::put('/supplier/{id}', 'IcecatSupplierController@update')->name('.supplier.update');
+            Route::get('/category/{campo?}/{valor?}', 'IcecatCategoryController@index')->name('.category');
+            Route::put('/category/{id}', 'IcecatCategoryController@update')->name('.category.update');
+            Route::get('/feature/{id}', 'IcecatFeatureController@show')->name('.feature.show');
+            Route::get('/feature/{campo?}/{valor?}', 'IcecatFeatureController@index')->name('.feature');
+        });
+
 
         Route::resource('empleado', 'EmpleadoController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::get('empleado/{id}/roles', 'EmpleadoController@roles');

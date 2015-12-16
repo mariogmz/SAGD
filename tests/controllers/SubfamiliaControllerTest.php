@@ -30,13 +30,21 @@ class SubfamiliaControllerTest extends TestCase {
      * @covers ::index
      */
     public function test_GET_index() {
-        $this->mock->shouldReceive([
-            'with' => Mockery::self(),
-            'get'  => 'success'
-        ])->withAnyArgs();
-        $this->app->instance('App\Subfamilia', $this->mock);
 
-        $this->get($this->endpoint)
+    }
+
+    /**
+     * @covers ::index
+     */
+    public function test_GET_index_parameters() {
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => ['todas las subfamilias con filtro']
+        ])->once()->withAnyArgs();
+        $this->app->instance('App\Sufamilia', $this->mock);
+
+        $this->get($this->endpoint . '/nombre/hp')
+            ->seeJson(['todas las subfamilias con filtro'])
             ->assertResponseStatus(200);
     }
 

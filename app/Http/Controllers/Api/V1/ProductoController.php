@@ -69,7 +69,7 @@ class ProductoController extends Controller {
     public function show($id)
     {
         $this->authorize($this);
-        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension')->find($id);
+        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension','ficha')->find($id);
         if ($this->producto) {
             return response()->json([
                 'message'           => 'Producto obtenido exitosamente',
@@ -266,15 +266,17 @@ class ProductoController extends Controller {
 	public function buscar(Request $request)
     {
         $this->authorize($this);
-        $params = $request->only('clave', 'descripcion', 'upc');
+        $params = $request->only('clave', 'descripcion', 'numero_parte', 'upc');
 
         $params['clave'] = isset($params['clave']) ? $params['clave'] : '*';
         $params['descripcion'] = isset($params['descripcion']) ? $params['descripcion'] : '*';
+        $params['numero_parte'] = isset($params['numero_parte']) ? $params['numero_parte'] : '*';
         $params['upc'] = isset($params['upc']) ? $params['upc'] : '*';
 
         if (
             $params['clave'] === '*' &&
             $params['descripcion'] === '*' &&
+            $params['numero_parte'] === '*' &&
             $params['upc'] === '*'
             ) {
             return response()->json([

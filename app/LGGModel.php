@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Exception;
 use Sagd\BulkUpdates;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -96,7 +97,7 @@ class LGGModel extends Model implements BulkUpdates {
 
     /**
      * Revisa que el array que se envio sea apropiado para el bulk insert
-     * @param $value
+     * @param $values
      * @return void
      * @throws InvalidArrayForBulkUpdateException
      */
@@ -110,7 +111,7 @@ class LGGModel extends Model implements BulkUpdates {
     /**
      * Modifica la colección de valores para que tengan en formato de SQL que se necesita
      * @param $collection
-     * @return Collection
+     * @return \Illuminate\Database\Eloquent\Collection
      */
     protected function prepareValuesForBulkUpdate($collection)
     {
@@ -128,5 +129,17 @@ class LGGModel extends Model implements BulkUpdates {
     {
         $connection = $this->getConnection();
         return $connection->update($statement);
+    }
+
+    /**
+     * @param array $conditions
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function buildQuery(array $conditions){
+        $builder = $this;
+        foreach($conditions as $condition){
+            $builder = $builder->where($condition['field'], $condition['operator'] ?: '=', $condition['value']);
+        }
+        return $builder;
     }
 }

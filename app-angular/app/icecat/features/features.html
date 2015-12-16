@@ -1,0 +1,49 @@
+<!-- app/icecat/features/features.html -->
+<div class="search-card">
+  <div class="header">
+    <h4>Características de Icecat®</h4>
+  </div>
+  <div class="block">
+    <div class="row">
+      <div class="form">
+        <form>
+          <div class="field">
+            <label>Buscar:</label>
+            <input type="text" ng-model="vm.search" ng-model-options="{debounce: 500}" ng-change="vm.obtenerFeatures()" autofocus>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="table-responsive">
+  <table class="item-table">
+    <thead class="sortable">
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr dir-paginate="feature in vm.features | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+      <th scope="row">{{feature.icecat_id}}</th>
+      <td ng-bind="feature.name"></td>
+      <td ng-bind="feature.type"></td>
+      <td ng-bind="feature.measure"></td>
+
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="show" ui-sref="icecatFeaturesShow({id: feature.id})"><i></i></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <loader ng-show="vm.loading" model="vm.features"></loader>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+</div>

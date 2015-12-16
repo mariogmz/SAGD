@@ -38,7 +38,7 @@
 
       <!-- Icecat action button -->
       <span>
-         <button disabled><img width="90px" src="/public/img/icecat_logo.svg"></button>
+         <button ng-disabled="productoNewForm.marca_id.$invalid || productoNewForm.numero_parte.$invalid" ng-click="parentVm.obtenerFicha()"><img width="90px" src="/public/img/icecat_logo.svg"></button>
       </span>
     </div>
   </div>

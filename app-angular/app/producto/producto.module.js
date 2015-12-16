@@ -1,10 +1,10 @@
 // app/producto/producto.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.producto', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.producto', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

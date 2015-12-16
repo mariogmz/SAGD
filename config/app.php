@@ -159,6 +159,9 @@ return [
         // Policies
         App\Policies\AuthServiceProvider::class,
 
+        // UniqueWith
+        Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider::class
+
     ],
 
     /*

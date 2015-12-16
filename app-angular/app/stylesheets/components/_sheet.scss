@@ -1,0 +1,27 @@
+.sheet-container {
+  @extend .container;
+
+}
+
+.sheet-loader-container {
+  text-align: center;
+}
+
+.sheet-nested-table {
+  @include make-container();
+
+  article {
+    @include make-row();
+    padding-bottom: .5rem;
+    padding-top: .5rem;
+
+    &.even {
+      background-color: $table-bg-accent;
+    }
+  }
+
+  span {
+    @include make-col();
+    @include make-col-span(6);
+  }
+}

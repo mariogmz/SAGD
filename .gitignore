@@ -17,6 +17,10 @@ _ide_helper.php
 .DS_Store
 *.gz
 
+### Icecat Related ###
+Icecat/*
+!Icecat/.gitkeep
+
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
