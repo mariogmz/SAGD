@@ -106,11 +106,13 @@
     }
 
     function removeMatches() {
-      if (vm.categoriasSet && vm.categoriasConSubfamilias.elements.length > 0) {
-        var ids = utils.pluck(vm.categoriasConSubfamilias.elements, 'id');
-        vm.categorias.elements = vm.categoriasSet.filter(function(categoria) {
-          return ids.indexOf(categoria.id) == -1;
-        });
+      if (vm.categoriasConSubfamilias.elements) {
+        if (vm.categoriasSet && vm.categoriasConSubfamilias.elements.length > 0) {
+          var ids = utils.pluck(vm.categoriasConSubfamilias.elements, 'id');
+          vm.categorias.elements = vm.categoriasSet.filter(function(categoria) {
+            return ids.indexOf(categoria.id) == -1;
+          });
+        }
       }
     }
   }
