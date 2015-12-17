@@ -15,7 +15,6 @@ $factory->define(App\TransferenciaDetalle::class, function ($faker)
 {
     return [
         'cantidad' => $faker->randomNumber(8),
-        'cantidad_escaneada' => $faker->randomNumber(7),
         'existencia_origen_antes' => $faker->randomNumber,
         'existencia_origen_despues' => $faker->randomNumber,
         'existencia_destino_antes' => $faker->randomNumber,
@@ -36,15 +35,5 @@ $factory->defineAs(App\TransferenciaDetalle::class, 'full', function($faker) use
     $td['producto_movimiento_id'] = factory(App\ProductoMovimiento::class)->create([
         'producto_sucursal_id' => $producto->productosSucursales()->first()->id
     ])->id;
-    return $td;
-});
-
-$factory->defineAs(App\TransferenciaDetalle::class, 'nopm', function($faker) use ($factory){
-    factory(App\Sucursal::class)->create();
-    $producto = factory(App\Producto::class)->create();
-
-    $td = $factory->raw(App\TransferenciaDetalle::class);
-    $td['transferencia_id'] = factory(App\Transferencia::class, 'full')->create()->id;
-    $td['producto_id'] = $producto->id;
     return $td;
 });

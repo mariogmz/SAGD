@@ -32,11 +32,5 @@
   /* @ngInject */
   function modalController() {
     var vm = this;
-    vm.modal_password = '';
-    vm.emptyPassword = emptyPassword;
-
-    function emptyPassword() {
-      return vm.modal_password.length < 7;
-    }
   }
 })();

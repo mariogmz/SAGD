@@ -2,17 +2,6 @@
   @extend .table;
   @extend .table-hover;
 
-  .disabled {
-
-    background-color: $alto;
-    color: $mine-shaft-faded;
-
-    &:hover {
-      background-color: $alto;
-      color: $mine-shaft-faded;
-    }
-  }
-
   thead {
     background-color: $gray-suit;
     color: $alto;
@@ -30,13 +19,7 @@
     &.invalid {
       @extend .table-danger;
     }
-
   }
-
-  .left-align {
-    tr {text-align: left;}
-  }
-
 
   td {
     &.actions {
@@ -73,7 +56,7 @@
         cursor: pointer;
         transition: all 500ms ease-in-out;
       }
-    }
+    }  
 
     &.right { text-align: right; }
 
@@ -94,7 +77,7 @@
     }
   }
 
-  .truncate {
+  span.truncate {
     @include transition('all 0.5s ease-in-out');
 
     display: inline-block;
@@ -103,11 +86,4 @@
     white-space: nowrap;
     width: 300px;
   }
-}
-
-.entrada-table,
-.producto-existencias-table,
-.small-item-table {
-
-  font-size: .8rem;
 }

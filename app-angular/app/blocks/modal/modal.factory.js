@@ -7,16 +7,13 @@
     .module('blocks.modal')
     .factory('modal', modal);
 
-  modal.$inject = ['api', 'session'];
+  modal.$inject = [];
 
   /* @ngInject */
-  function modal(api, session) {
+  function modal() {
     var modal = '';
-    var passwordDOM = '';
-    var empleado = session.obtenerEmpleado();
     var service = {
       confirm: confirm,
-      password: password,
       hide: hide
     };
 
@@ -26,7 +23,11 @@
 
     function confirm(config) {
       modal = $('#confirm-modal');
-      initialSetupForModal(modal, config);
+      configureModal(modal, config);
+      modal.modal('show');
+      setTimeout(function() {
+        modal.find('#modal-dismiss').focus();
+      }, 400);
 
       return new Promise(function(resolve, reject) {
         modal
@@ -39,45 +40,6 @@
       });
     }
 
-    function password(config) {
-      modal = $('#password-confirm-modal');
-      initialSetupForModal(modal, config);
-      passwordDOM = $('#modal-password-input');
-
-      return new Promise(function(resolve, reject) {
-        modal
-        .on('click', '#modal-accept', function(event) {
-          checkLegitness().then(function() {
-            passwordDOM.val('');
-            modal.modal('hide');
-            resolve({click: true});
-          });
-        })
-        .on('click', '#modal-dismiss', function(event) {
-          passwordDOM.val('');
-          modal.modal('hide');
-          reject({click: false});
-        });
-      });
-    }
-
-    function initialSetupForModal(modal, config) {
-      configureModal(modal, config);
-      modal.modal('show');
-      setTimeout(function() {
-        modal.find('#modal-dismiss').focus();
-      }, 400);
-    }
-
-    function checkLegitness() {
-      var payload = {
-        email: empleado.user.email,
-        password: passwordDOM.val()
-      };
-      return api.post('/password/verify', payload);
-    }
-
-    /* Deprecated */
     function hide(type) {
       modal = $('#' + type + '-modal');
       modal.modal('hide');

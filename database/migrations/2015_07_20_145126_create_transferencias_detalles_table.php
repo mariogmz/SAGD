@@ -14,7 +14,6 @@ class CreateTransferenciasDetallesTable extends Migration {
         Schema::create('transferencias_detalles', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('cantidad')->default(0);
-            $table->integer('cantidad_escaneada')->default(0);
             $table->integer('existencia_origen_antes')->default(0)->unsigned();
             $table->integer('existencia_origen_despues')->default(0)->unsigned();
             $table->integer('existencia_destino_antes')->default(0)->unsigned();

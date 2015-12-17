@@ -18,33 +18,3 @@
     </div>
   </div>
 </div>
-
-<div class="modal fade password" id="password-confirm-modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          <span class="sr-only">Close</span>
-        </button>
-        <h4 class="modal-title" id="modal-title">Modal title</h4>
-      </div>
-      <div class="modal-body">
-        <p><span id="modal-content">One fine body&hellip;</span></p>
-      </div>
-      <div class="modal-body">
-        <p><span id="modal-password">Para realizar la operacion solicitada es necesario que indique su contraseña</span></p>
-      </div>
-      <div class="input-group">
-        <span class="input-group-addon" id="password-input-label"><i class="fa fa-unlock-alt"></i></span>
-        <input type="password"
-          class="form-control" placeholder="Contraseña" aria-describedby="basic-addon1"
-          id="modal-password-input" ng-model="vm.modal_password">
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="modal-dismiss">No</button>
-        <button type="button" class="btn btn-primary" id="modal-accept" ng-disabled="vm.emptyPassword()">Guardar cambios</button>
-      </div>
-    </div>
-  </div>
-</div>

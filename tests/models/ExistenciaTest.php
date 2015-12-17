@@ -70,19 +70,4 @@ class ExistenciaTest extends TestCase
         $pss = $existencia->productoSucursal;
         $this->assertInstanceOf(App\ProductoSucursal::class, $pss);
     }
-
-    /**
-     * @covers ::save
-     * @group feature-transferencias
-     */
-    public function testGuardandoUnaCantidadQueNoEsNumeroRegresaFalso()
-    {
-        $sucursal = factory(App\Sucursal::class)->create();
-        $producto = factory(App\Producto::class)->create();
-        $existencia = $producto->existencias($sucursal);
-
-        $existencia->cantidad = 'Holi';
-
-        $this->assertFalse($existencia->save());
-    }
 }

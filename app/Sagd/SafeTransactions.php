@@ -7,8 +7,8 @@ trait SafeTransactions {
     public function safe_transaction($function)
     {
         DB::beginTransaction();
-        $result = call_user_func($function);
-        if ( gettype($result) === 'boolean' && $result ) {
+
+        if ( call_user_func($function) ) {
             DB::commit();
             return true;
         } else {

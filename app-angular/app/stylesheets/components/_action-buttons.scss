@@ -10,75 +10,84 @@
   .delete,
   .detach,
   .edit,
-  .print,
-  .roles,
-  .show,
-  .transferir {
+  .roles {
 
     @extend .btn;
 
     font-size: inherit;
   }
 
-  .one-third {
-    padding: .375rem .5rem;
-  }
-
   .create {
+
     @extend .btn-primary;
 
-    i { @extend .fa-plus; }
+    i {
+
+      @extend .fa-plus;
+    }
   }
 
   .edit {
+
     @extend .btn-success;
 
-    i { @extend .fa-pencil; }
+    i {
+
+      @extend .fa-pencil;
+    }
   }
 
   .delete {
+
     @extend .btn-danger;
 
-    i { @extend .fa-trash; }
+    i {
+
+      @extend .fa-trash;
+    }
   }
 
   .attach {
+
     @extend .btn-primary-outline;
 
-    &.selected { @extend .btn-primary; }
+    &.selected {
 
-    i { @extend .fa-check; }
+      @extend .btn-primary;
+
+
+    }
+
+    i {
+
+      @extend .fa-check;
+    }
   }
 
   .detach {
+
     @extend .btn-danger-outline;
 
-    &.selected { @extend .btn-danger; }
+    &.selected {
 
-    i { @extend .fa-times; }
-  }
+      @extend .btn-danger;
 
-  .print {
-    @extend .btn-primary;
 
-    i { @extend .fa-print; }
+    }
+
+    i {
+
+      @extend .fa-times;
+    }
   }
 
   .roles {
+
     @extend .btn-primary;
 
-    i { @extend .fa-users; }
-  }
+    i {
 
-  .show {
-    @extend .btn-primary;
-
-    i { @extend .fa-search; }
-  }
-
-  .transferir {
-    @extend .btn-primary;
-
-    i { @extend .fa-truck; }
+      @extend .fa-users;
+    }
   }
 }

@@ -9,7 +9,7 @@ namespace App;
  * 2 => Cargando Local.             En proceso de carga, no puede editarse
  * 3 => Cargada Local.              La carga se realizo con exito, no puede editarse
  * 4 => Iniciando Transferencia.
- *
+ * 
  * 5 => Transferencia Terminada.    Lista Para Cargarse Sucursal Destino
  * 6 => Cargando Otra Sucursal.     En proceso de carga en otra sucursal
  * 7 => Cargada Otra Sucursal.      Indica que se realizo la carga exitosamente
@@ -52,45 +52,6 @@ class EstadoTransferencia extends LGGModel {
         });
     }
 
-    /**
-     * Obtiene el estado transferencia de abiera
-     */
-    public static function abierta()
-    {
-        return EstadoTransferencia::where('nombre', 'Abierta')->last()->id;
-    }
-
-    /**
-     * Obtiene el estado transferencia de cargando origen
-     */
-    public static function cargandoOrigen()
-    {
-        return EstadoTransferencia::where('nombre', 'Cargando Origen')->last()->id;
-    }
-
-    /**
-     * Obtiene el estado transferencia de en transferencia
-     */
-    public static function enTransferencia()
-    {
-        return EstadoTransferencia::where('nombre', 'En transferencia')->last()->id;
-    }
-
-    /**
-     * Obtiene el estado transferencia de cargando destino
-     */
-    public static function cargandoDestino()
-    {
-        return EstadoTransferencia::where('nombre', 'Cargando Destino')->last()->id;
-    }
-
-    /**
-     * Obtiene el estado transferencia de finalizada
-     */
-    public static function finalizada()
-    {
-        return EstadoTransferencia::where('nombre', 'Finalizada')->last()->id;
-    }
 
     /**
      * Obtiene las Transferencias asociadas con el Estado

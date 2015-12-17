@@ -14,8 +14,7 @@ class AddTransferenciasDetallesConstraints extends Migration {
             // Foreign Key Fields
             $table->integer('transferencia_id')->unsigned();
             $table->integer('producto_id')->unsigned();
-            $table->integer('producto_movimiento_id')->unsigned()->nullable();
-
+            $table->integer('producto_movimiento_id')->unsigned();
             // Constraints
             $table->foreign('transferencia_id')->references('id')->on('transferencias')->onDelete('cascade');
             $table->foreign('producto_id')->references('id')->on('productos');

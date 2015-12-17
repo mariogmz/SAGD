@@ -22,7 +22,7 @@ class AuthenticateController extends Controller
     {
         $this->user = $user;
         $this->empleado = $empleado;
-        $this->middleware('jwt.auth', ['except' => ['authenticate', 'verify']]);
+        $this->middleware('jwt.auth', ['except' => ['authenticate']]);
     }
 
     public function authenticate(Request $request)
@@ -56,19 +56,6 @@ class AuthenticateController extends Controller
             JWTAuth::invalidate();
             return response()->json(['success' =>  'user logged out successfuly'], 200);
         }
-    }
-
-    public function verify(Request $request)
-    {
-        $credentials = $request->only('email', 'password');
-        if (empty($credentials)) {
-            return response()->json([], 400);
-        }
-        $token = JWTAuth::attempt($credentials);
-        if (empty($token)) {
-            return response()->json([], 400);
-        }
-        return response()->json([], 200);
     }
 
     private function getUser()

@@ -85,7 +85,7 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede buscar un Producto
+     * Determinar si el usuario puede eliminar un Producto
      *
      * @param  User  $user
      * @param  ProductoController $controller
@@ -99,65 +99,6 @@ class ProductoControllerPolicy
         return !empty($permiso);
     }
 
-    /**
-     * Determinar si el usuario puede listar existencias de un Producto
-     *
-     * @param  User  $user
-     * @param  ProductoController $controller
-     * @return bool
-     */
-    public function indexExistencias(User $user, ProductoController $controller)
-    {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'indexExistencias')->first();
-        return !empty($permiso);
-    }
-
-    /**
-     * Determinar si el usuario puede pretransferir existencias de un Producto
-     *
-     * @param  User  $user
-     * @param  ProductoController $controller
-     * @return bool
-     */
-    public function pretransferir(User $user, ProductoController $controller)
-    {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'pretransferir')->first();
-        return !empty($permiso);
-    }
-
-    /**
-     * Determinar si el usuario puede listar movimientos de un Producto
-     *
-     * @param  User  $user
-     * @param  ProductoController $controller
-     * @return bool
-     */
-    public function indexMovimientos(User $user, ProductoController $controller)
-    {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'indexMovimientos')->first();
-        return !empty($permiso);
-    }
-
-    /**
-     * Determinar si el usuario puede listar movimientos de un Producto
-     *
-     * @param  User  $user
-     * @param  ProductoController $controller
-     * @return bool
-     */
-    public function buscar(User $user, ProductoController $controller)
-    {
-        $controller = $this->normalizeControllerName($controller);
-        $permisos = $user->morphable->permisos();
-        $permiso = $permisos->where('controlador', $controller)->where('accion', 'buscar')->first();
-        return !empty($permiso);
-    }
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

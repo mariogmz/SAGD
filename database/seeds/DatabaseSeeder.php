@@ -34,7 +34,6 @@ class DatabaseSeeder extends Seeder {
         $this->call(EstadoEntradaTableSeeder::class);
         $this->call(EstadoSalidaTableSeeder::class);
         $this->call(EstadoTransferenciaTableSeeder::class);
-        $this->call(EstadoPretransferenciaSeeder::class);
         $this->call(ClienteEstatusTableSeeder::class);
         $this->call(ClienteReferenciaTableSeeder::class);
         $this->call(EmpleadoTableSeeder::class);

@@ -1,6 +1,6 @@
 // app/blocks/utils/utils.module.js
 
-(function() {
+(function (){
   'use strict';
 
   angular
@@ -11,24 +11,24 @@
   utils.$inject = [];
 
   /* @ngInject */
-  function utils() {
+  function utils(){
 
     return {
       pluck: pluck,
       strip: stripApiCall,
-      querify: querify,
-      formatPercentage: formatPercentage,
-      parsePercentage: parsePercentage,
-      setClass: setClass
+      querify : querify,
+      formatPercentage : formatPercentage,
+      parsePercentage : parsePercentage,
+      setClass : setClass
     };
 
-    function pluck(collection, key) {
+
+    function pluck(collection, key){
       var result = angular.isArray(collection) ? [] : {};
 
-      angular.forEach(collection, function(val, i) {
+      angular.forEach(collection, function (val, i){
         result[i] = angular.isFunction(key) ? key(val) : val[key];
       });
-
       return result;
     }
 
@@ -36,44 +36,33 @@
       return string.replace(/^\//g, '').replace(/(\/|,)/g, '-');
     }
 
-    function querify(parameters) {
+    function querify(parameters){
       if (angular.isArray(parameters)) {
         var paramsUrl = '?';
-        parameters = parameters.map(function(param) {
-          param = $.map(param, function(value, index) {return [value];});
-
+        parameters = parameters.map(function(param){
+          param = $.map(param, function(value, index){return [value];});
           return param.join('=');
         });
-
         paramsUrl += parameters.join('&');
         return paramsUrl;
-      } else if (angular.isObject(parameters)) {
-        var paramsUrl = '?';
-        parameters = $.map(parameters, function(value, key) {
-          value = value.length === 0 ? '*' : value;
-          return key + '=' + value;
-        });
-
-        paramsUrl += parameters.join('&');
-        return paramsUrl;
-      } else {
+      }else{
         return parameters;
       }
 
     }
 
-    function formatPercentage(value) {
+    function formatPercentage(value){
       return ((value || 0) * 100) + ' %';
     }
 
-    function parsePercentage(value) {
-      return (value || '').replace(/[^0-9\.]/g, '');
+    function parsePercentage(value){
+      return (value || '').replace(/[^0-9\.]/g,'');
     }
 
     function setClass(field) {
       return {
-        'with-error': checkWithError(field),
-        'with-success': checkWithSuccess(field)
+        'with-error' : checkWithError(field),
+        'with-success' : checkWithSuccess(field)
       };
     }
 
@@ -89,8 +78,8 @@
 
   percentage.$inject = ['$filter'];
 
-  function percentage($filter) {
-    return function(input, decimals) {
+  function percentage($filter){
+    return function (input, decimals){
       return $filter('number')(input * 100, decimals) + '%';
     };
   }

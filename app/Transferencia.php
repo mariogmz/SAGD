@@ -2,10 +2,6 @@
 
 namespace App;
 
-use Event;
-use App\Events\Transferir;
-use App\Events\Cargar;
-use Sagd\SafeTransactions;
 
 /**
  * App\Transferencia
@@ -45,8 +41,6 @@ use Sagd\SafeTransactions;
  */
 class Transferencia extends LGGModel {
 
-    use SafeTransactions;
-
     //
     protected $table = "transferencias";
     public $timestamps = true;
@@ -73,7 +67,6 @@ class Transferencia extends LGGModel {
     public static function boot() {
         parent::boot();
         Transferencia::creating(function ($model) {
-            $model->estado_transferencia_id || $model->estado_transferencia_id = EstadoTransferencia::abierta();
             return $model->isValid();
         });
         Transferencia::updating(function ($model) {
@@ -81,109 +74,6 @@ class Transferencia extends LGGModel {
 
             return $model->isValid('update');
         });
-    }
-
-    /**
-     * Asocia un modelo de detalle a la transferencia o agrupa por cantidad
-     * @param array $detalle
-     * @return TransferenciaDetalle | false
-     */
-    public function agregarDetalle($detalle)
-    {
-        if (! is_null($detalle['upc'])) { unset($detalle['upc']); }
-
-        $transferenciaDetalle = new TransferenciaDetalle();
-        $transferenciaDetalle->fill($detalle);
-        if ($this->detalles->contains('producto_id', $transferenciaDetalle->producto_id)) {
-            $transferenciaDetalleOriginal = $this->detalles()->where('producto_id', $transferenciaDetalle->producto_id)->first();
-            $transferenciaDetalleOriginal->cantidad += $transferenciaDetalle->cantidad;
-            return $transferenciaDetalleOriginal->save() ? $transferenciaDetalleOriginal : false;
-        }
-        return $this->detalles()->save($transferenciaDetalle);
-    }
-
-    /**
-     * Quita un detalle asociado a la transferencia
-     * @param int $detalle_id
-     * @return bool
-     */
-    public function quitarDetalle($detalle_id)
-    {
-        return (TransferenciaDetalle::destroy($detalle_id) > 0);
-    }
-
-    /**
-     * Marca esta transferencia como en proceso de transferencia fisica. Actualiza existencias
-     * @return bool
-     */
-    public function transferir()
-    {
-        $lambda = function() {
-            $this->estado_transferencia_id = EstadoTransferencia::enTransferencia();
-            $this->fecha_transferencia = \Carbon\Carbon::now();
-            $this->save();
-            $result = Event::fire(new Transferir($this))[0];
-            return $result;
-        };
-        return $this->safe_transaction($lambda);
-    }
-
-    /**
-     * Carga a inventario la transferencia
-     * @param $params
-     * @return bool
-     */
-    public function cargar($params)
-    {
-        $lambda = function() use ($params) {
-            if (!isset($params['empleado_id'])) { return false; }
-            $this->fecha_recepcion = \Carbon\Carbon::now();
-            $this->empleado_destino_id = $params['empleado_id'];
-            $result = $this->parseEventResult(Event::fire(new Cargar($this)));
-            $this->estado_transferencia_id = EstadoTransferencia::finalizada();
-            $success = $this->save();
-            return $result && $success;
-        };
-        return $this->safe_transaction($lambda);
-    }
-
-    private function parseEventResult($result)
-    {
-        if(is_array($result)) {
-            return $this->parseEventResult($result[0]);
-        } else {
-            return $result;
-        }
-    }
-
-    /**
-     * Aumenta la cantidad escaneada del detalle
-     *
-     * @param int $detalle_id
-     * @param int $cantidad
-     * @return bool
-     */
-    public function escanear($detalle_id, $cantidad)
-    {
-        $detalle = $this->detalles()->where('id', $detalle_id)->first();
-        if (empty($detalle)) { return false; }
-
-        $detalle->cantidad_escaneada += $cantidad;
-        return $detalle->save();
-    }
-
-    /**
-     * Resetea la cantidad de productos escaneados del detalle a 0
-     * @param int $detalle_id
-     * @return bool
-     */
-    public function resetDetalle($detalle_id)
-    {
-        $detalle = $this->detalles()->where('id', $detalle_id)->first();
-        if (empty($detalle)) { return false; }
-
-        $detalle->cantidad_escaneada = 0;
-        return $detalle->save();
     }
 
     /**

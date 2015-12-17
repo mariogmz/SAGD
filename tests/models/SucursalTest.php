@@ -1,13 +1,9 @@
 <?php
 
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
 /**
  * @coversDefaultClass \App\Sucursal
  */
 class SucursalTest extends TestCase {
-
-    use DatabaseTransactions;
 
     /**
      * @coversNothing
@@ -253,36 +249,6 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
         $this->assertCount(1, $pms);
-    }
-
-    /**
-     * @covers ::pretransferenciasOrigen
-     * @group feature-transferencias
-     * @group feature-transferencias-pretransferencias
-     */
-    public function testPretransferenciasComoOrigen()
-    {
-        $pre = factory(App\Pretransferencia::class)->create();
-        $sucursal = $pre->origen;
-        $pre = $sucursal->pretransferenciasOrigen;
-
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pre);
-        $this->assertInstanceOf(App\Pretransferencia::class, $pre->first());
-    }
-
-    /**
-     * @covers ::pretransferenciasDestino
-     * @group feature-transferencias
-     * @group feature-transferencias-pretransferencias
-     */
-    public function testPretransferenciasComoDestino()
-    {
-        $pre = factory(App\Pretransferencia::class)->create();
-        $sucursal = $pre->destino;
-        $pre = $sucursal->pretransferenciasDestino;
-
-        $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pre);
-        $this->assertInstanceOf(App\Pretransferencia::class, $pre->first());
     }
 
     /**
