@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Validator;
  *
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
-class LGGModel extends Model implements BulkUpdates {
+class LGGModel extends Model implements BulkUpdates{
 
     use SoftDeletes;
 
@@ -21,6 +21,10 @@ class LGGModel extends Model implements BulkUpdates {
     protected $hidden = ['deleted_at'];
 
     public $errors;
+
+    public function __construct(array $attributes = []) {
+        parent::__construct($attributes);
+    }
 
     /**
      * This method is responsible for validating the model

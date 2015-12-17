@@ -40,6 +40,8 @@ use Sagd\SafeTransactions;
  * @property \Carbon\Carbon $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\ProductoSucursal[] $productosSucursales
  * @method static \Illuminate\Database\Query\Builder|\App\Sucursal whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Pretransferencia[] $pretransferenciasOrigen
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Pretransferencia[] $pretransferenciasDestino
  */
 class Sucursal extends LGGModel {
 

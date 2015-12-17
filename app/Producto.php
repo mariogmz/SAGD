@@ -69,6 +69,7 @@ use Sagd\SafeTransactions;
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Producto whereDeletedAt($value)
  * @property-read \App\Ficha $ficha
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Pretransferencia[] $pretransferencias
  */
 class Producto extends LGGModel {
 

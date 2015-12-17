@@ -279,4 +279,12 @@ class Ficha extends LGGModel {
         return $this->hasMany('App\FichaCaracteristica');
     }
 
+    /**
+     * Obtiene las imágenes de galería relacionadas con esta ficha
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function galerias(){
+        return $this->hasMany('App\Galeria');
+    }
+
 }

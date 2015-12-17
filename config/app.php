@@ -160,7 +160,10 @@ return [
         App\Policies\AuthServiceProvider::class,
 
         // UniqueWith
-        Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider::class
+        Felixkiss\UniqueWithValidator\UniqueWithValidatorServiceProvider::class,
+
+        // Laravel-Stapler
+        Codesleeve\LaravelStapler\Providers\L5ServiceProvider::class
 
     ],
 
