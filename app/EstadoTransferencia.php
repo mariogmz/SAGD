@@ -9,7 +9,7 @@ namespace App;
  * 2 => Cargando Local.             En proceso de carga, no puede editarse
  * 3 => Cargada Local.              La carga se realizo con exito, no puede editarse
  * 4 => Iniciando Transferencia.
- *
+ * 
  * 5 => Transferencia Terminada.    Lista Para Cargarse Sucursal Destino
  * 6 => Cargando Otra Sucursal.     En proceso de carga en otra sucursal
  * 7 => Cargada Otra Sucursal.      Indica que se realizo la carga exitosamente

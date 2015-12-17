@@ -4,6 +4,17 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\EstadoPretransferencia
+ *
+ * @property integer $id
+ * @property string $nombre
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoPretransferencia whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoPretransferencia whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\EstadoPretransferencia whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class EstadoPretransferencia extends LGGModel
 {
     protected $table = "estados_pretransferencias";

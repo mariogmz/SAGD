@@ -49,6 +49,7 @@ use Sagd\SafeTransactions;
  * @property \Carbon\Carbon $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rol[] $roles
  * @method static \Illuminate\Database\Query\Builder|\App\Empleado whereDeletedAt($value)
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Pretransferencia[] $pretransferencias
  */
 class Empleado extends LGGModel {
 

@@ -6,6 +6,36 @@ use Illuminate\Database\Eloquent\Model;
 use PDF;
 use Sagd\SafeTransactions;
 
+/**
+ * App\Pretransferencia
+ *
+ * @property integer $id
+ * @property integer $cantidad
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $producto_id
+ * @property integer $sucursal_origen_id
+ * @property integer $sucursal_destino_id
+ * @property integer $empleado_id
+ * @property integer $estado_pretransferencia_id
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\Producto $producto
+ * @property-read \App\Sucursal $origen
+ * @property-read \App\Sucursal $destino
+ * @property-read \App\Empleado $empleado
+ * @property-read \App\EstadoPretransferencia $estado
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereCantidad($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereProductoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereSucursalOrigenId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereSucursalDestinoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereEstadoPretransferenciaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Pretransferencia whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ */
 class Pretransferencia extends LGGModel
 {
     use SafeTransactions;

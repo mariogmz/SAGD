@@ -26,6 +26,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\Existencia whereDeletedAt($value)
+ * @property integer $cantidad_pretransferencia_destino
+ * @method static \Illuminate\Database\Query\Builder|\App\Existencia whereCantidadPretransferenciaDestino($value)
  */
 class Existencia extends LGGModel {
 

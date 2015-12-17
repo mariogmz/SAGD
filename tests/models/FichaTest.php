@@ -436,4 +436,16 @@ class FichaTest extends TestCase {
             $this->assertInstanceOf('\Illuminate\Database\Eloquent\Collection', $caracteristica);
         }
     }
+
+    /**
+     * @covers ::galerias
+     */
+    public function testGalerias() {
+        $ficha = factory(App\Producto::class)->create()->ficha;
+        factory(App\Galeria::class)->create([
+            'ficha_id' => $ficha->id
+        ]);
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $ficha->galerias);
+        $this->assertInstanceOf(App\Galeria::class, $ficha->galerias->first());
+    }
 }
