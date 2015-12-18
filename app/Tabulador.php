@@ -43,4 +43,21 @@ class Tabulador extends LGGModel {
             return $tabulador->isValid('update');
         });
     }
+
+    /**
+     * Obtiene el cliente asociado a este tabulador
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cliente(){
+        return $this->belongsTo('App\Cliente');
+    }
+
+    /**
+     * Obtiene la sucursal asociada a este tabulador
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function sucursal(){
+        return $this->belongsTo('App\Sucursal');
+    }
+
 }

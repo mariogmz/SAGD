@@ -189,7 +189,12 @@ class TabuladorTest extends TestCase {
      * @group relaciones
      */
     public function testCliente() {
-        $this->markTestIncomplete('Not implemented yet.');
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $tabulador = factory(App\Tabulador::class)->make([
+            'cliente_id' => $cliente->id
+        ]);
+        $this->assertInstanceOf('App\Cliente', $tabulador->cliente);
+        $this->assertSame($cliente->id, $tabulador->cliente->id);
     }
 
     /**
@@ -197,6 +202,11 @@ class TabuladorTest extends TestCase {
      * @group relaciones
      */
     public function testSucursal() {
-        $this->markTestIncomplete('Not implemented yet.');
+        $sucursal = factory(App\Sucursal::class)->create();
+        $tabulador = factory(App\Tabulador::class)->make([
+            'sucursal_id' => $sucursal->id
+        ]);
+        $this->assertInstanceOf('App\Sucursal', $tabulador->sucursal);
+        $this->assertSame($sucursal->id, $tabulador->sucursal->id);
     }
 }
