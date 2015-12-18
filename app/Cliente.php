@@ -224,4 +224,12 @@ class Cliente extends LGGModel {
     public function user() {
         return $this->morphOne('App\User', 'morphable');
     }
+
+    /**
+     * Obtiene los tabuladores asociados a este cliente
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tabuladores() {
+        return $this->hasMany('App\Tabulador');
+    }
 }

@@ -2,8 +2,7 @@
 
 namespace App;
 
-use App\Precio;
-use App\Producto;
+
 use App\Events\SucursalNueva;
 use Sagd\SafeTransactions;
 
@@ -87,13 +86,13 @@ class Sucursal extends LGGModel {
     /**
      * Save the model to the database.
      *
-     * @param  int  $base
+     * @param  int $base
      * @return bool true
      */
-    public function guardar($base)
-    {
-        if ( $this->save() ) {
+    public function guardar($base) {
+        if ($this->save()) {
             event(new SucursalNueva($this, $base));
+
             return true;
         } else {
             return false;
@@ -102,7 +101,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene el proveedor asociado a la sucursal
-     * @return App\Proveedor
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function proveedor() {
         return $this->belongsTo('App\Proveedor');
@@ -110,7 +109,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene el domicilio asociado a la sucursal
-     * @return App\Domicilio
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function domicilio() {
         return $this->belongsTo('App\Domicilio');
@@ -118,7 +117,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtener los Productos relacionados con la Sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function productos() {
         return $this->belongsToMany('App\Producto', 'productos_sucursales',
@@ -127,7 +126,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene los empleados asociados a la sucursal
-     * @return array
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function empleados() {
         return $this->hasMany('App\Empleado');
@@ -144,7 +143,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene las Salidas asociadas con la Sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function salidas() {
         return $this->hasMany('App\Salida', 'sucursal_id');
@@ -153,7 +152,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene la Razon Social Emisora asociada con la Sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function razonesSocialesEmisores() {
         return $this->hasMany('App\RazonSocialEmisor', 'sucursal_id');
@@ -162,7 +161,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene las Entradas Detalles asociadas con la Sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function entradasDetalles() {
         return $this->hasMany('App\EntradaDetalle', 'sucursal_id');
@@ -171,7 +170,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene las Transferencias asociadas con la Sucursal como origen
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function transferenciasOrigen() {
         return $this->hasMany('App\Transferencia', 'sucursal_origen_id');
@@ -180,7 +179,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene las Transferencias asociadas con la Sucursal como destino
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function transferenciasDestino() {
         return $this->hasMany('App\Transferencia', 'sucursal_destino_id');
@@ -189,7 +188,7 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene los Apartados asociados con la Sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function apartados() {
         return $this->hasMany('App\Apartado', 'sucursal_id');
@@ -197,13 +196,14 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene las cajas asociadas a la sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function cajas() {
         return $this->hasMany('App\Caja');
     }
 
     /**
+     * Obtiene las relaciones de la sucursal con los productos
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function productosSucursales() {
@@ -221,7 +221,8 @@ class Sucursal extends LGGModel {
     }
 
     /**
-     * @return Illuminate\Database\Eloquent\Collection
+     * Obtiene la lista de precios de todos los productos de esta sucursal
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function precios() {
         return $this->hasManyThrough('App\Precio', 'App\ProductoSucursal',
@@ -230,10 +231,11 @@ class Sucursal extends LGGModel {
 
     /**
      * Obtiene los productos_movimientos de todos los productos relacionados con la Sucursal
-     * @return Illuminate\Database\Eloquent\Collection
+     * @param \App\Producto|null $producto
+     * @return \Illuminate\Database\Eloquent\Relations\HasManyThrough
      */
     public function movimientos(Producto $producto = null) {
-        if( is_null($producto) ) {
+        if (is_null($producto)) {
             return $this->hasManyThrough('App\ProductoMovimiento', 'App\ProductoSucursal',
                 'sucursal_id', 'producto_sucursal_id');
         } else {
@@ -241,23 +243,27 @@ class Sucursal extends LGGModel {
         }
     }
 
-
     /**
-    * Obtiene las Pretransferencias asociadas con la Sucursal como origen
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function pretransferenciasOrigen()
-    {
+     * Obtiene las Pretransferencias asociadas con la Sucursal como origen
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pretransferenciasOrigen() {
         return $this->hasMany('App\Pretransferencia', 'sucursal_origen_id');
     }
 
+    /**
+     * Obtiene las Pretransferencias asociadas con la Sucursal como destino
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pretransferenciasDestino() {
+        return $this->hasMany('App\Pretransferencia', 'sucursal_destino_id');
+    }
 
     /**
-    * Obtiene las Pretransferencias asociadas con la Sucursal como destino
-    * @return Illuminate\Database\Eloquent\Collection
-    */
-    public function pretransferenciasDestino()
-    {
-        return $this->hasMany('App\Pretransferencia', 'sucursal_destino_id');
+     * Obtiene los tabuladores para todos los clientes de esta sucursal
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function tabuladores() {
+        return $this->hasMany('App\Tabulador');
     }
 }

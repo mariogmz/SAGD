@@ -344,6 +344,11 @@ class ClienteTest extends TestCase {
      * @group relaciones
      */
     public function testTabuladores(){
-        $this->markTestIncomplete('Not implemented yet.');
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        factory(App\Tabulador::class)->create([
+            'cliente_id' => $cliente->id
+        ]);
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $cliente->tabuladores);
+        $this->assertInstanceOf(App\Tabulador::class, $cliente->tabuladores->first());
     }
 }

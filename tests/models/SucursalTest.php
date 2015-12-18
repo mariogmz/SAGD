@@ -450,6 +450,11 @@ class SucursalTest extends TestCase {
      * @group relaciones
      */
     public function testTabuladores(){
-        $this->markTestIncomplete('Not implemented yet.');
+        $sucursal = factory(App\Sucursal::class)->create();
+        factory(App\Tabulador::class)->create([
+            'sucursal_id' => $sucursal->id
+        ]);
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $sucursal->tabuladores);
+        $this->assertInstanceOf(App\Tabulador::class, $sucursal->tabuladores->first());
     }
 }
