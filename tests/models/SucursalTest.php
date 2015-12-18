@@ -444,4 +444,12 @@ class SucursalTest extends TestCase {
         $this->assertEquals(2, $precios['precio_10']);
 
     }
+
+    /**
+     * @covers ::tabuladores
+     * @group relaciones
+     */
+    public function testTabuladores(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }

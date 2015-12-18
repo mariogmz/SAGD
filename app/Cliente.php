@@ -5,6 +5,57 @@ namespace App;
 
 /**
  * App\Cliente
+ *
+ * @property integer $id
+ * @property string $usuario
+ * @property string $nombre
+ * @property string $fecha_nacimiento
+ * @property string $sexo
+ * @property string $ocupacion
+ * @property string $fecha_verificacion_correo
+ * @property string $fecha_expira_club_zegucom
+ * @property string $referencia_otro
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $cliente_estatus_id
+ * @property integer $sucursal_id
+ * @property integer $cliente_referencia_id
+ * @property integer $empleado_id
+ * @property integer $vendedor_id
+ * @property integer $rol_id
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\ClienteEstatus $estatus
+ * @property-read \App\ClienteReferencia $referencia
+ * @property-read \App\Empleado $empleado
+ * @property-read \App\Empleado $vendedor
+ * @property-read \App\Sucursal $sucursal
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Empleado[] $empleados
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ClienteComentario[] $comentarios
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ClienteAutorizacion[] $autorizaciones
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\PaginaWebDistribuidor[] $paginasWebDistribuidores
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Domicilio[] $domicilios
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\ServicioSoporte[] $serviciosSoportes
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Rma[] $rmas
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\RazonSocialReceptor[] $razonesSociales
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereUsuario($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereNombre($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereFechaNacimiento($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereSexo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereOcupacion($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereFechaVerificacionCorreo($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereFechaExpiraClubZegucom($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereReferenciaOtro($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereClienteEstatusId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereClienteReferenciaId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereEmpleadoId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereVendedorId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereRolId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereDeletedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  */
 class Cliente extends LGGModel {
 

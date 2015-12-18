@@ -338,4 +338,12 @@ class ClienteTest extends TestCase {
         ]);
         $this->assertInstanceOf(App\User::class, $cliente->user);
     }
+
+    /**
+     * @covers ::tabuladores
+     * @group relaciones
+     */
+    public function testTabuladores(){
+        $this->markTestIncomplete('Not implemented yet.');
+    }
 }
