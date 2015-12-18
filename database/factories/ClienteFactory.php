@@ -22,9 +22,9 @@ $factory->define(App\Cliente::class, function ($faker) {
         'fecha_expira_club_zegucom' => $faker->dateTime,
         'referencia_otro'           => $faker->text(50),
         'rol_id'                    => factory(App\Rol::class)->create()->id,
-        'cliente_estatus_id'        => $faker->randomDigit,
         'sucursal_id'               => $faker->randomDigit,
         'cliente_referencia_id'     => $faker->randomDigit,
+        'cliente_estatus_id'        => $faker->randomDigit,
     ];
 });
 
