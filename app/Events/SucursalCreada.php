@@ -16,11 +16,9 @@ class SucursalCreada extends Event implements ShouldBroadcast
     public $payload;
 
     /**
-     * Create a new event instance.
-     *
+     * Create a new event instance
      * @param string $sucursal
      * @param bool $jobStatus
-     * @return void
      */
     public function __construct($sucursal, $jobStatus)
     {

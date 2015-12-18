@@ -457,4 +457,19 @@ class SucursalTest extends TestCase {
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $sucursal->tabuladores);
         $this->assertInstanceOf(App\Tabulador::class, $sucursal->tabuladores->first());
     }
+
+    /**
+     * @coversNothing
+     * @group eventos
+     */
+    public function testCuandoSeCreaUnaNuevaSucursalSeCreaTabuladorParaCadaCliente(){
+        factory(App\Cliente::class, 'full', 10)->create();
+        $sucursal_dummy = factory(App\Sucursal::class)->create();
+        $sucursal = factory(App\Sucursal::class)->create();
+        $sucursal->guardar($sucursal_dummy->id);
+        $tabuladores_sucursales = $sucursal->tabuladores;
+
+        $this->assertGreaterThanOrEqual(10, $tabuladores_sucursales->count());
+    }
+
 }

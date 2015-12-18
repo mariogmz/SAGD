@@ -91,6 +91,9 @@ class Sucursal extends LGGModel {
      */
     public function guardar($base) {
         if ($this->save()) {
+            // Se manda a llamar el evento desde aquí y no desde Sucursal::created
+            // ya que se ocupa forzosamente el id de la sucursal desde la cual se van
+            // a tomar como referencia los precios de los productos
             event(new SucursalNueva($this, $base));
 
             return true;

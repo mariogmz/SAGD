@@ -16,10 +16,8 @@ class SucursalNueva extends Event
 
     /**
      * Create a new event instance.
-     *
      * @param Sucursal $sucursal
-     * @param int base
-     * @return void
+     * @param $base
      */
     public function __construct(Sucursal $sucursal, $base)
     {

@@ -3,6 +3,9 @@
 namespace App;
 
 
+use App\Events\ClienteCreado;
+
+
 /**
  * App\Cliente
  *
@@ -103,6 +106,22 @@ class Cliente extends LGGModel {
         });
     }
 
+    /**
+     * Guardar el modelo a la base de datos
+     * @param int $tabulador
+     * @return bool
+     */
+    public function guardar($tabulador) {
+        if ($this->save()) {
+            // Ya que el evento ocupa un parámetro, no se llama desde Cliente::created
+            event(new ClienteCreado($this, $tabulador));
+
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 
     /**
      * Obtiene el Cliente Estatus asociado con el Cliente
@@ -156,7 +175,6 @@ class Cliente extends LGGModel {
         return $this->belongsToMany('App\Empleado', 'clientes_comentarios',
             'cliente_id', 'empleado_id');
     }
-
 
     /**
      * Obtiene los Comentarios asociado con el Cliente

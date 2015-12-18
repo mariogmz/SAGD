@@ -351,4 +351,20 @@ class ClienteTest extends TestCase {
         $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $cliente->tabuladores);
         $this->assertInstanceOf(App\Tabulador::class, $cliente->tabuladores->first());
     }
+
+    /**
+     * @coversNothing
+     * @group eventos
+     */
+    public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursal(){
+        factory(App\Sucursal::class, 10)->create();
+        $cliente = factory(App\Cliente::class, 'full')->make();
+        $this->assertTrue($cliente->guardar(5));
+
+        $tabuladores_nuevos = $cliente->tabuladores;
+        $this->assertSame(App\Sucursal::count(), $tabuladores_nuevos->count());
+        foreach($tabuladores_nuevos as $tabulador){
+            $this->assertSame(5, $tabulador->valor_original);
+        }
+    }
 }
