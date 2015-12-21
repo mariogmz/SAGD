@@ -49,6 +49,7 @@ Este archivo no esta versionado y solo será visible aquí. Hay que copiar y peg
 APP_ENV=local
 APP_DEBUG=true
 APP_KEY=anK2OwTLR0C4w2SgePIj7qTjaPMKx8dt
+BROADCAST_DRIVER=redis
 
 DB_HOST=localhost
 DB_DATABASE=sagd_local
@@ -63,22 +64,28 @@ TEST_DB_PASSWORD=zegucomtest
 DB_HOST_LEGACY=server.grupodicotech.com.mx
 DB_DATABASE_LEGACY=sazcentralizado
 DB_USERNAME_LEGACY=development
-DB_PASSWORD_LEGACY=test123!
+DB_PASSWORD_LEGACY=dicodev2015
 
-BROADCAST_DRIVER=redis
 CACHE_DRIVER=file
 SESSION_DRIVER=file
-QUEUE_DRIVER=redis
+QUEUE_DRIVER=sync
 
 MAIL_DRIVER=log
 MAIL_HOST=www.zegucom.com.mx
 MAIL_PORT=995
-MAIL_USERNAME=correo@zegucom.com.mx
+MAIL_USERNAME=mgomez@zegucom.com.mx
 MAIL_PASSWORD=
 MAIL_ENCRYPTION=tls
 FRONTEND_URL="http://sagd.app/password/reset/"
+CDN_URL="http://cdn.sagd.app/"
+
+ICECAT_USERNAME=jlopez
+ICECAT_PASSWORD=zegucom123
+
+RESOURCE_PAGINATION=15
 
 TOKEN_TTL=20160
+
 
 ```
 
