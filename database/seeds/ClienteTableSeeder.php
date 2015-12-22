@@ -14,6 +14,8 @@ class ClienteTableSeeder extends Seeder {
     private $domicilios;
     private $telefonos;
 
+    private $relacion;
+
     protected $progress_bar;
     protected $errors;
     protected $success;
@@ -33,7 +35,8 @@ class ClienteTableSeeder extends Seeder {
             $this->seedComentarios();
             $this->seedDomicilios();
             $this->seedTelefonos();
-            DB::commit();
+//            DB::commit();
+            DB::rollBack();
         } catch (Exception $ex) {
             DB::rollBack();
             $this->command->getOutput()->writeln("");
@@ -57,14 +60,15 @@ class ClienteTableSeeder extends Seeder {
         $this->success = 0;
         $this->errors = 0;
 
+        $this->relacion = [];
     }
 
     private function obtenerDatos() {
         // Clientes
         $this->clientes = $this->legacy->select("
         SELECT
-          clave,
-          IF(usuario IS NULL OR usuario = '',clave,usuario) AS usuario,
+          TRIM(clave) AS clave,
+          IF(usuario IS NULL OR usuario = '',LOWER(TRIM(clave)),LOWER(TRIM(usuario))) AS usuario,
           nombre,
           NULL AS fecha_nacimiento,
           'HOMBRE' AS sexo,
@@ -88,9 +92,9 @@ class ClienteTableSeeder extends Seeder {
         // Usuarios
         $this->usuarios = $this->legacy->select("
         SELECT
-          clave,
-          IF(usuario IS NULL OR usuario = '',clave,usuario) AS usuario,
-          REPLACE(email,' ','') as email,
+          TRIM(clave) AS clave,
+          IF(usuario IS NULL OR usuario = '',LOWER(TRIM(clave)),LOWER(TRIM(usuario))) AS usuario,
+          TRIM(email) AS email,
           password
         FROM clientes
         WHERE
@@ -100,18 +104,17 @@ class ClienteTableSeeder extends Seeder {
         // Comentarios
         $this->comentarios = $this->legacy->select("
         SELECT
-          IF(usuario IS NULL OR usuario = '',clave,usuario) AS usuario,
+          TRIM(cliente_clave) AS clave,
           comentario,
           1 AS empleado_id,
           fecha AS updated_at
-        FROM cliente_comentario
-        JOIN clientes ON clientes.clave = cliente_comentario.cliente_clave;");
+        FROM cliente_comentario;");
 
         // Domicilios
         $this->domicilios = $this->legacy->select("
-        SELECT
-         IF(usuario IS NULL OR usuario = '',clave,usuario) AS usuario,
-          IF(domicilio = '' OR domicilio IS NULL,lugar,domicilio) AS calle,
+       SELECT
+          TRIM(clave) AS clave,
+          IF(domicilio = '' OR domicilio IS NULL,IFNULL(lugar,'MEXICO'),domicilio) AS calle,
           lugar AS localidad,
           TRIM(cp) AS codigo_postal
         FROM clientes
@@ -122,7 +125,7 @@ class ClienteTableSeeder extends Seeder {
         // Teléfonos
         $this->telefonos = $this->legacy->select("
         SELECT
-          IF(usuario IS NULL OR usuario = '',clave,usuario) AS usuario,
+          TRIM(clave) AS clave,
           telefono AS numero,
           'FIJO' AS tipo
         FROM clientes
@@ -132,20 +135,23 @@ class ClienteTableSeeder extends Seeder {
           AND telefono <> 'NULL'
         UNION
         SELECT
-          IF(usuario IS NULL OR usuario = '',clave,usuario) AS usuario,
+          TRIM(clave) AS clave,
           celular AS numero,
           'CELULAR' AS tipo
         FROM clientes
         WHERE
-          telefono IS NOT NULL
-          AND telefono <> ''
-          AND telefono <> 'NULL';");
+          celular IS NOT NULL
+          AND celular <> ''
+          AND celular <> 'NULL';");
     }
 
     private function seedClientes() {
-        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($this->clientes) + 1);
+        $total = count($this->clientes);
+        $this->progress_bar = new ProgressBar($this->command->getOutput(), $total + 1);
         $this->progress_bar->setFormat("<info>Seeding:</info> Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $this->progress_bar->start();
+        $taken_usernames = [];
+
         foreach ($this->clientes as $cliente) {
             $nuevo_cliente = new App\Cliente();
             // Workaround when the name is empty (which shouldn't)
@@ -153,13 +159,81 @@ class ClienteTableSeeder extends Seeder {
                 $cliente->nombre = $cliente->usuario;
             }
             // Workaround when the username was already taken
-            if (!empty(App\Cliente::where('usuario',$cliente->usuario)->get())) {
+            if (in_array($cliente->usuario, $taken_usernames)) {
                 $cliente->usuario = $cliente->clave;
             }
+
+            array_push($taken_usernames, $cliente->usuario);
             $nuevo_cliente->fill((array) $cliente);
+
             if (!$nuevo_cliente->save()) {
                 $this->errors ++;
                 $this->logErrors($nuevo_cliente);
+            } else {
+                $this->relacion[$cliente->clave] = $nuevo_cliente->id;
+                $this->success ++;
+            }
+            $this->progress_bar->advance();
+        }
+        $this->progress_bar->finish();
+        $this->command->getOutput()->writeln("");
+        $this->printErrors();
+        $this->printResults($total);
+    }
+
+    private function seedUsuarios() {
+        $total = count($this->usuarios);
+        $this->errors = 0;
+        $this->success = 0;
+        $usuarios = $this->usuarios;
+        reindexar('clave', $usuarios);
+        $usuarios = array_intersect_key($usuarios, $this->relacion);
+
+        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($usuarios) + 1);
+        $this->progress_bar->setFormat("<info>Seeding:</info> Usuarios-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+        $this->progress_bar->start();
+
+        foreach ($usuarios as $usuario) {
+            $nuevo_usuario = new App\User();
+            $nuevo_usuario->email = $usuario['email'];
+            $nuevo_usuario->password = \Hash::make($usuario['password']);
+            $nuevo_usuario->morphable_id = $this->relacion[$usuario['clave']];
+            $nuevo_usuario->morphable_type = 'App\Cliente';
+            if (!$nuevo_usuario->save()) {
+                $this->errors ++;
+                $this->logErrors($nuevo_usuario);
+            } else {
+                $this->success ++;
+            }
+
+            $this->progress_bar->advance();
+        }
+        $this->progress_bar->finish();
+        $this->command->getOutput()->writeln("");
+        $this->printErrors();
+        $this->printResults($total);
+    }
+
+    private function seedComentarios() {
+        $total = count($this->comentarios);
+        $this->errors = 0;
+        $this->success = 0;
+
+        $comentarios = $this->comentarios;
+        reindexar('clave', $comentarios);
+        $comentarios = array_intersect_key($comentarios, $this->relacion);
+
+        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($comentarios) + 1);
+        $this->progress_bar->setFormat("<info>Seeding:</info> Comentarios-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+        $this->progress_bar->start();
+
+        foreach ($comentarios as $comentario) {
+            $cliente_comentario = new App\ClienteComentario();
+            $cliente_comentario->fill((array) $comentario);
+            $cliente_comentario->cliente_id = $this->relacion[$comentario['clave']];
+            if (!$cliente_comentario->save()) {
+                $this->errors ++;
+                $this->logErrors($cliente_comentario);
             } else {
                 $this->success ++;
             }
@@ -168,126 +242,90 @@ class ClienteTableSeeder extends Seeder {
         $this->progress_bar->finish();
         $this->command->getOutput()->writeln("");
         $this->printErrors();
-        $this->printResults();
-    }
-
-    private function seedUsuarios() {
-        $this->errors = 0;
-        $this->success = 0;
-        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($this->usuarios) + 1);
-        $this->progress_bar->setFormat("<info>Seeding:</info> Usuarios-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
-        $this->progress_bar->start();
-
-        foreach ($this->usuarios as $usuario) {
-            if (!empty($cliente = App\Cliente::where('usuario',$usuario->usuario)->orWhere('usuario', $usuario->clave)->first())) {
-                $nuevo_usuario = new App\User();
-                $nuevo_usuario->email = $usuario->email;
-                $nuevo_usuario->password = \Hash::make($usuario->password);
-                $nuevo_usuario->morphable_id = $cliente->id;
-                $nuevo_usuario->morphable_type = 'App\Cliente';
-                if (!$nuevo_usuario->save()) {
-                    $this->errors ++;
-                    $this->logErrors($nuevo_usuario);
-                } else {
-                    $this->success ++;
-                }
-            }
-
-            $this->progress_bar->advance();
-        }
-        $this->progress_bar->finish();
-        $this->command->getOutput()->writeln("");
-        $this->printErrors();
-        $this->printResults();
-    }
-
-    private function seedComentarios() {
-        $this->errors = 0;
-        $this->success = 0;
-        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($this->comentarios) + 1);
-        $this->progress_bar->setFormat("<info>Seeding:</info> Comentarios-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
-        $this->progress_bar->start();
-
-        foreach ($this->comentarios as $comentario) {
-            if (!empty($cliente = App\Cliente::where('usuario',$comentario->usuario))) {
-                $cliente_comentario = new App\ClienteComentario();
-                $cliente_comentario->fill((array) $comentario);
-                $cliente_comentario->cliente_id = $cliente->id;
-                if (!$cliente_comentario->save()) {
-                    $this->errors ++;
-                    $this->logErrors($cliente_comentario);
-                } else {
-                    $this->success ++;
-                }
-            }
-            $this->progress_bar->advance();
-        }
-        $this->progress_bar->finish();
-        $this->command->getOutput()->writeln("");
-        $this->printErrors();
-        $this->printResults();
+        $this->printResults($total);
     }
 
     private function seedDomicilios() {
+        $total = count($this->domicilios);
         $this->errors = 0;
         $this->success = 0;
-        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($this->domicilios) + 1);
+        $domicilios = $this->domicilios;
+        reindexar('clave', $domicilios);
+        $domicilios = array_intersect_key($domicilios, $this->relacion);
+
+        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($domicilios) + 1);
         $this->progress_bar->setFormat("<info>Seeding:</info> Domicilios-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $this->progress_bar->start();
 
-        $clientes = App\Cliente::all(['id', 'usuario'])->groupBy('usuario');
-        $clientes = empty($clientes) ? [] : $clientes->toArray();
-
-        foreach ($this->domicilios as $domicilio) {
-            if (array_key_exists($domicilio->usuario, $clientes) && !empty($codigo_postal = App\CodigoPostal::where('codigo_postal', $domicilio->codigo_postal)->first())) {
+        foreach ($domicilios as $domicilio) {
+            if (!empty($codigo_postal = App\CodigoPostal::where('codigo_postal', $domicilio['codigo_postal'])->first())) {
                 $domicilio_nuevo = new App\Domicilio();
                 $domicilio_nuevo->fill((array) $domicilio);
-                $domicilio_nuevo->codigo_postal_id =$codigo_postal->id;
-                if (!$domicilio_nuevo->save()) {
+                $domicilio_nuevo->codigo_postal_id = $codigo_postal->id;
+                if ($domicilio_nuevo->save()) {
+                    $cliente = App\Cliente::find($this->relacion[$domicilio['clave']]);
+                    $cliente->domicilios()->attach($domicilio_nuevo);
+                    $this->success ++;
+                } else {
                     $this->errors ++;
                     $this->logErrors($domicilio_nuevo);
-                } else {
-                    $this->success ++;
                 }
+            }else{
+                Log::alert('Codigo postal no encontrado.', [
+                    'codigo_postal' => $domicilio['codigo_postal']
+                ]);
             }
             $this->progress_bar->advance();
         }
         $this->progress_bar->finish();
         $this->command->getOutput()->writeln("");
         $this->printErrors();
-        $this->printResults();
+        $this->printResults($total);
     }
 
     private function seedTelefonos() {
+        $total = count($this->telefonos);
         $this->errors = 0;
         $this->success = 0;
-        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($this->telefonos) + 1);
+
+        $telefonos = collect($this->telefonos)->groupBy('clave')->toArray();
+        $telefonos = array_intersect_key($telefonos, $this->relacion);
+        $this->fixFormat($telefonos);
+
+        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($telefonos) + 1);
         $this->progress_bar->setFormat("<info>Seeding:</info> Telefonos-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $this->progress_bar->start();
 
-        foreach ($this->telefonos as $telefono) {
-            $cliente = App\Cliente::where('usuario', $telefono->usuario)->first();
-            if (!empty($cliente)) {
-                $domicilio = $cliente->domicilios->first();
-                if (!empty($domicilio)) {
+
+        foreach ($telefonos as $telefono) {
+            foreach ($telefono as $numero) {
+                if (!empty($cliente = App\Cliente::find($this->relacion[$numero['clave']]))) {
                     $telefono_nuevo = new App\Telefono();
-                    $telefono_nuevo->fill(array_merge((array) $telefono, [
-                        'domicilio_id' => $domicilio->id
-                    ]));
-                    if (!$telefono_nuevo->save()) {
+                    $telefono_nuevo->fill((array) $numero);
+                    $domicilio = $cliente->domicilios()->first();
+                    if (empty($domicilio)) {
                         $this->errors ++;
-                        $this->logErrors($telefono_nuevo);
+                        Log::error('Error en seed de App\Telefono, domicilio no existente para cliente.', [
+                            'cliente'  => $cliente,
+                            'telefono' => $numero
+                        ]);
                     } else {
-                        $this->success ++;
+                        $telefono_nuevo->domicilio_id = $domicilio->id;
+                        if ($telefono_nuevo->save()) {
+                            $this->success ++;
+                        } else {
+                            $this->errors ++;
+                            $this->logErrors($telefono_nuevo);
+                        }
                     }
                 }
+                $this->progress_bar->advance();
             }
-            $this->progress_bar->advance();
         }
         $this->progress_bar->finish();
         $this->command->getOutput()->writeln("");
         $this->printErrors();
-        $this->printResults();
+        $this->printResults($total);
     }
 
     private function logErrors(Model $model) {
@@ -298,10 +336,32 @@ class ClienteTableSeeder extends Seeder {
     }
 
     private function printErrors() {
-        $this->command->getOutput()->writeLn("<error>Unsuccessful: {$this->errors}</error>");
+        if ($this->errors > 0) {
+            $this->command->getOutput()->writeLn("<error>Unsuccessful: {$this->errors}</error>");
+            $this->command->getOutput()->writeLn("<error>This may be because some legacy records didn't match the new model validation rules, check laravel logs for additional info</error>");
+        }
     }
 
-    private function printResults() {
-        $this->command->getOutput()->writeLn("<info>Seeded: {$this->success}</info>");
+    private function printResults($total) {
+        if ($this->success < $total) {
+            $this->command->getOutput()->writeLn("<info>Seeded: {$this->success} of {$total}</info>");
+            $this->command->getOutput()->writeLn("<info>The difference may be because some clients weren't seeded, and they have some dependencies</info>");
+        } else {
+            $this->command->getOutput()->writeLn("<info>Done!</info>");
+        }
+    }
+
+    /**
+     * This method performs a regexp replace on an effort to give a correct format the the phone numbers
+     * @param array $telephones
+     */
+    private function fixFormat(array &$telephones) {
+        $pattern = '/\D/';
+        foreach ($telephones as &$telephone) {
+            foreach ($telephone as &$number) {
+                $number = (array) $number;
+                $number['numero'] = preg_replace($pattern, "", $number['numero']);
+            }
+        }
     }
 }
