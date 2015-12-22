@@ -82,7 +82,7 @@ class Cliente extends LGGModel {
         'cliente_estatus_id'        => 'required|integer',
         'rol_id'                    => 'required|integer',
         'sucursal_id'               => 'required|integer',
-        'cliente_referencia_id'     => 'required|integer',
+        'cliente_referencia_id'     => 'integer',
         'empleado_id'               => 'integer',
         'vendedor_id'               => 'integer',
     ];

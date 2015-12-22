@@ -14,7 +14,7 @@ class AddClientesConstraints extends Migration {
         Schema::table('clientes', function ($table) {
             $table->integer('cliente_estatus_id')->unsigned();
             $table->integer('sucursal_id')->unsigned();
-            $table->integer('cliente_referencia_id')->unsigned();
+            $table->integer('cliente_referencia_id')->unsigned()->nullable();
             $table->integer('empleado_id')->unsigned()->nullable();
             $table->integer('vendedor_id')->unsigned()->nullable();
             $table->integer('rol_id')->unsigned();
