@@ -13,6 +13,7 @@ class ClienteTableSeeder extends Seeder {
     private $comentarios;
     private $domicilios;
     private $telefonos;
+    private $tabuladores;
 
     private $relacion;
 
@@ -31,12 +32,12 @@ class ClienteTableSeeder extends Seeder {
             DB::beginTransaction();
             $this->obtenerDatos();
             $this->seedClientes();
+            $this->seedTabuladores();
             $this->seedUsuarios();
             $this->seedComentarios();
             $this->seedDomicilios();
             $this->seedTelefonos();
-//            DB::commit();
-            DB::rollBack();
+            DB::commit();
         } catch (Exception $ex) {
             DB::rollBack();
             $this->command->getOutput()->writeln("");
@@ -56,6 +57,7 @@ class ClienteTableSeeder extends Seeder {
         $this->comentarios = [];
         $this->domicilios = [];
         $this->telefonos = [];
+        $this->tabuladores = [];
 
         $this->success = 0;
         $this->errors = 0;
@@ -143,6 +145,23 @@ class ClienteTableSeeder extends Seeder {
           celular IS NOT NULL
           AND celular <> ''
           AND celular <> 'NULL';");
+
+        // Tabuladores
+        $this->tabuladores = $this->legacy->select("
+        SELECT
+          TRIM(cliente_clave) AS clave,
+          tabulador AS valor,
+          tabulador_original AS valor_original,
+          venta_especial AS especial,
+          CASE sucursal_clave
+            WHEN 'dicotech' THEN 1
+            WHEN 'leon' THEN 2
+            WHEN 'Zacatecas' THEN 3
+            WHEN 'Arboledas' THEN 4
+          END AS sucursal_id
+        FROM cliente_sucursal
+        HAVING
+          sucursal_id IS NOT NULL;");
     }
 
     private function seedClientes() {
@@ -174,6 +193,38 @@ class ClienteTableSeeder extends Seeder {
                 $this->success ++;
             }
             $this->progress_bar->advance();
+        }
+        $this->progress_bar->finish();
+        $this->command->getOutput()->writeln("");
+        $this->printErrors();
+        $this->printResults($total);
+    }
+
+    private function seedTabuladores(){
+        $total = count($this->tabuladores);
+        $this->errors = 0;
+        $this->success = 0;
+        $tabuladores = collect($this->tabuladores)->groupBy('clave')->toArray();
+        $tabuladores = array_intersect_key($tabuladores, $this->relacion);
+
+        $this->progress_bar = new ProgressBar($this->command->getOutput(), count($tabuladores) + 1);
+        $this->progress_bar->setFormat("<info>Seeding:</info> Tabuladores-Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
+        $this->progress_bar->start();
+
+        foreach ($tabuladores as $tabulador) {
+            foreach($tabulador as $valor){
+                $nuevo_tabulador = new App\Tabulador();
+                $nuevo_tabulador->fill((array) $valor);
+                $nuevo_tabulador->cliente_id = $this->relacion[$valor->clave];
+                if (!$nuevo_tabulador->save()) {
+                    $this->errors ++;
+                    $this->logErrors($nuevo_tabulador);
+                } else {
+                    $this->success ++;
+                }
+            }
+                $this->progress_bar->advance();
+
         }
         $this->progress_bar->finish();
         $this->command->getOutput()->writeln("");
