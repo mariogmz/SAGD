@@ -1,10 +1,11 @@
 <?php
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @coversDefaultClass \App\Cliente
  */
 class ClienteTest extends TestCase {
-
+    use DatabaseTransactions;
     /**
      * @coversNothing
      */
@@ -357,7 +358,7 @@ class ClienteTest extends TestCase {
      * @group eventos
      */
     public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursal(){
-        factory(App\Sucursal::class, 10)->create();
+        factory(App\Sucursal::class, 'interna', 10)->create();
         $cliente = factory(App\Cliente::class, 'full')->make();
         $this->assertTrue($cliente->guardar(5));
 

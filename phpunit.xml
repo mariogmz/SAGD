@@ -25,6 +25,15 @@
             <file>./tests/controllers/EntradaControllerTest.php</file>
             <file>./tests/controllers/RazonSocialEmisorControllerTest.php</file>
         </testsuite>
+        <testsuite name="clientes">
+            <file>./tests/models/ClienteTest.php</file>
+            <file>./tests/models/TabuladorTest.php</file>
+            <file>./tests/models/SucursalTest.php</file>
+            <file>./tests/models/DomicilioClienteTest.php</file>
+            <file>./tests/models/DomicilioTest.php</file>
+            <file>./tests/models/TelefonoTest.php</file>
+            <file>./tests/models/CodigoPostalTest.php</file>
+        </testsuite>
     </testsuites>
     <filter>
         <whitelist>

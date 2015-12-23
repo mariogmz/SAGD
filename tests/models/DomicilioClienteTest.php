@@ -1,9 +1,11 @@
 <?php
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @coversDefaultClass \App\DomicilioCliente
  */
 class DomicilioClienteTest extends TestCase {
+    use DatabaseTransactions;
 
     /**
      * @coversNothing

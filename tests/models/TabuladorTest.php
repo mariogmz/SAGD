@@ -1,9 +1,11 @@
 <?php
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @coversDefaultClass \App\Tabulador
  */
 class TabuladorTest extends TestCase {
+    use DatabaseTransactions;
 
     /**
      * @coversNothing

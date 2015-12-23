@@ -248,7 +248,7 @@ class SucursalTest extends TestCase {
         $pm = factory(App\ProductoMovimiento::class, 'withproductosucursal')->create();
         $producto = $pm->productoSucursal->producto;
         $sucursal = $pm->productoSucursal->sucursal;
-        $producto->addSucursal( factory(App\Sucursal::class)->create() );
+        $producto->addSucursal(factory(App\Sucursal::class)->create());
         $pms = $sucursal->movimientos($producto);
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $pms);
         $this->assertInstanceOf(App\ProductoMovimiento::class, $pms[0]);
@@ -260,8 +260,7 @@ class SucursalTest extends TestCase {
      * @group feature-transferencias
      * @group feature-transferencias-pretransferencias
      */
-    public function testPretransferenciasComoOrigen()
-    {
+    public function testPretransferenciasComoOrigen() {
         $pre = factory(App\Pretransferencia::class)->create();
         $sucursal = $pre->origen;
         $pre = $sucursal->pretransferenciasOrigen;
@@ -275,8 +274,7 @@ class SucursalTest extends TestCase {
      * @group feature-transferencias
      * @group feature-transferencias-pretransferencias
      */
-    public function testPretransferenciasComoDestino()
-    {
+    public function testPretransferenciasComoDestino() {
         $pre = factory(App\Pretransferencia::class)->create();
         $sucursal = $pre->destino;
         $pre = $sucursal->pretransferenciasDestino;
@@ -288,8 +286,7 @@ class SucursalTest extends TestCase {
     /**
      * @covers ::precios
      */
-    public function testObtenerTodosLosPrecios()
-    {
+    public function testObtenerTodosLosPrecios() {
         $sucursal = factory(App\Sucursal::class)->create();
 
         $producto1 = factory(App\Producto::class)->create();
@@ -309,23 +306,20 @@ class SucursalTest extends TestCase {
      * @covers ::guardar
      * @group bases
      */
-    public function testGuardarSucursalOverride()
-    {
-
+    public function testGuardarSucursalOverride() {
+        $sucursal_id = factory(App\Sucursal::class)->create()->id;
         $sucursal = factory(App\Sucursal::class)->make();
-        $this->assertTrue($sucursal->guardar(1));
+        $this->assertTrue($sucursal->guardar($sucursal_id));
     }
 
     /**
      * @covers ::guardar
      * @group bases
      */
-    public function testGuardarSucursalDebeCrearRegistrosDeProductosSucursales()
-    {
+    public function testGuardarSucursalDebeCrearRegistrosDeProductosSucursales() {
         $base = factory(App\Sucursal::class)->create();
-        $producto = factory(App\Producto::class)->create();
+        factory(App\Producto::class)->create();
 
-        $producto->addSucursal($base);
         factory(App\Precio::class)->create(['producto_sucursal_id' => App\ProductoSucursal::last()->id]);
 
         $sucursal = factory(App\Sucursal::class)->make();
@@ -340,8 +334,7 @@ class SucursalTest extends TestCase {
      * @covers ::guardar
      * @group bases
      */
-    public function testGuardarSucursalDebeCopiarRegistrosDePrecios()
-    {
+    public function testGuardarSucursalDebeCopiarRegistrosDePrecios() {
         $base = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
         $producto->addSucursal($base);
@@ -350,11 +343,11 @@ class SucursalTest extends TestCase {
         $sucursal = factory(App\Sucursal::class)->make();
         $sucursal->guardar($base->id);
 
-        $precios_base = App\Precio::whereHas('productoSucursal', function($query) use ($base) {
+        $precios_base = App\Precio::whereHas('productoSucursal', function ($query) use ($base) {
             $query->where('sucursal_id', $base->id);
         })->get();
 
-        $precios = App\Precio::whereHas('productoSucursal', function($query) use ($sucursal) {
+        $precios = App\Precio::whereHas('productoSucursal', function ($query) use ($sucursal) {
             $query->where('sucursal_id', $sucursal->id);
         })->get();
 
@@ -366,8 +359,7 @@ class SucursalTest extends TestCase {
      * @group bases
      * @group transactions
      */
-    public function testGuardarSucursalHaceRollbacks()
-    {
+    public function testGuardarSucursalHaceRollbacks() {
         $this->mock = Mockery::mock('App\Listeners\CrearPreciosParaSucursalNueva[asignarPrecios]');
         $this->mock
             ->shouldReceive('asignarPrecios')
@@ -376,11 +368,12 @@ class SucursalTest extends TestCase {
         $this->app->instance('App\Listeners\CrearPreciosParaSucursalNueva', $this->mock);
 
         $sucursal = App\Sucursal::whereClave('ROLLBACK')->first();
-        if ($sucursal){
+        if ($sucursal) {
             $sucursal->forceDelete();
         }
+        $sucursal_base = factory(App\Sucursal::class)->create();
         $sucursal = factory(App\Sucursal::class)->make(['clave' => 'ROLLBACK']);
-        $this->assertTrue($sucursal->guardar(1));
+        $this->assertTrue($sucursal->guardar($sucursal_base->id));
         $this->assertNull(App\Sucursal::whereClave('ROLLBACK')->first());
     }
 
@@ -389,34 +382,33 @@ class SucursalTest extends TestCase {
      * @group bases
      * @group in-depth
      */
-    public function testInDepthTestOfGuardar()
-    {
+    public function testInDepthTestOfGuardar() {
         $base = factory(App\Sucursal::class)->create();
         $producto = factory(App\Producto::class)->create();
         $producto->addSucursal($base);
         factory(App\Precio::class)->create([
-            'costo' => 1,
-            'precio_1' => 11,
-            'precio_2' => 10,
-            'precio_3' => 9,
-            'precio_4' => 8,
-            'precio_5' => 7,
-            'precio_6' => 6,
-            'precio_7' => 5,
-            'precio_8' => 4,
-            'precio_9' => 3,
-            'precio_10' => 2,
+            'costo'                => 1,
+            'precio_1'             => 11,
+            'precio_2'             => 10,
+            'precio_3'             => 9,
+            'precio_4'             => 8,
+            'precio_5'             => 7,
+            'precio_6'             => 6,
+            'precio_7'             => 5,
+            'precio_8'             => 4,
+            'precio_9'             => 3,
+            'precio_10'            => 2,
             'producto_sucursal_id' => App\ProductoSucursal::last()->id
         ]);
 
         $sucursal = factory(App\Sucursal::class)->make();
         $sucursal->guardar($base->id);
 
-        $precios_base = App\Precio::whereHas('productoSucursal', function($query) use ($base) {
+        $precios_base = App\Precio::whereHas('productoSucursal', function ($query) use ($base) {
             $query->where('sucursal_id', $base->id);
         })->first();
 
-        $precios = App\Precio::whereHas('productoSucursal', function($query) use ($sucursal) {
+        $precios = App\Precio::whereHas('productoSucursal', function ($query) use ($sucursal) {
             $query->where('sucursal_id', $sucursal->id);
         })->first();
 
@@ -426,7 +418,7 @@ class SucursalTest extends TestCase {
         $precios_base = array_intersect_key($precios_base->toArray(), $columns);
         $precios = array_intersect_key($precios->toArray(), $columns);
 
-        for ($i=1; $i < 11; $i++) {
+        for ($i = 1; $i < 11; $i ++) {
             $column = 'precio_' . $i;
             $this->assertEquals($precios_base[$column], $precios[$column]);
         }
@@ -449,7 +441,7 @@ class SucursalTest extends TestCase {
      * @covers ::tabuladores
      * @group relaciones
      */
-    public function testTabuladores(){
+    public function testTabuladores() {
         $sucursal = factory(App\Sucursal::class)->create();
         factory(App\Tabulador::class)->create([
             'sucursal_id' => $sucursal->id
@@ -462,10 +454,10 @@ class SucursalTest extends TestCase {
      * @coversNothing
      * @group eventos
      */
-    public function testCuandoSeCreaUnaNuevaSucursalSeCreaTabuladorParaCadaCliente(){
+    public function testCuandoSeCreaUnaNuevaSucursalSeCreaTabuladorParaCadaCliente() {
         factory(App\Cliente::class, 'full', 10)->create();
-        $sucursal_dummy = factory(App\Sucursal::class)->create();
-        $sucursal = factory(App\Sucursal::class)->create();
+        $sucursal_dummy = factory(App\Sucursal::class, 'interna')->create();
+        $sucursal = factory(App\Sucursal::class, 'interna')->create();
         $sucursal->guardar($sucursal_dummy->id);
         $tabuladores_sucursales = $sucursal->tabuladores;
 
