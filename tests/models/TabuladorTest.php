@@ -209,4 +209,19 @@ class TabuladorTest extends TestCase {
         $this->assertInstanceOf('App\Sucursal', $tabulador->sucursal);
         $this->assertSame($sucursal->id, $tabulador->sucursal->id);
     }
+
+    /**
+     * @covers ::sucursal
+     * @group relaciones
+     */
+    public function testAlGuardarSucursalAsociadaSoloDebeSerInterna(){
+        $sucursal = factory(App\Sucursal::class, 'externa')->create();
+        $tabulador = factory(App\Tabulador::class)->make([
+            'sucursal_id' => $sucursal->id
+        ]);
+        $this->assertFalse($tabulador->save());
+        $sucursal = factory(App\Sucursal::class, 'interna')->create();
+        $tabulador->sucursal_id = $sucursal->id;
+        $this->assertTrue($tabulador->save());
+    }
 }

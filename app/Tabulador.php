@@ -45,10 +45,21 @@ class Tabulador extends LGGModel {
     }
 
     /**
+     * Este override de isValid es para agregar validación adicional
+     * @param null $method
+     * @return bool
+     */
+    public function isValid($method = null) {
+        return parent::isValid($method)
+        && !empty($sucursal = Sucursal::find($this->sucursal_id))
+        && !$sucursal->proveedor->externo;
+    }
+
+    /**
      * Obtiene el cliente asociado a este tabulador
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function cliente(){
+    public function cliente() {
         return $this->belongsTo('App\Cliente');
     }
 
@@ -56,7 +67,7 @@ class Tabulador extends LGGModel {
      * Obtiene la sucursal asociada a este tabulador
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function sucursal(){
+    public function sucursal() {
         return $this->belongsTo('App\Sucursal');
     }
 
