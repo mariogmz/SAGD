@@ -132,7 +132,7 @@ class ClienteController extends Controller {
     }
 
     /**
-     * Permite la busqueda de productos a traves de 3 paramtros
+     * Permite la búsqueda de Clientes usando 3 parámetros
      * @param Request $request
      * @return Response
      */
@@ -164,6 +164,6 @@ class ClienteController extends Controller {
             $this->cliente = $this->cliente->where($column, 'like', "%{$search}%");
         }
 
-        return $this->cliente->get();
+        return $this->cliente->with('user')->get();
     }
 }

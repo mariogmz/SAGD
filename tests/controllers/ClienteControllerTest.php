@@ -241,6 +241,7 @@ class ClienteControllerTest extends TestCase {
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
             'user' => Mockery::self(),
+            'with' => Mockery::self(),
             'get' => [],
         ])->withAnyArgs();
         $this->app->instance('App\Cliente', $this->mock);
@@ -259,6 +260,7 @@ class ClienteControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'with' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Cliente', $this->mock);
@@ -277,6 +279,7 @@ class ClienteControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'with' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Cliente', $this->mock);
@@ -311,6 +314,7 @@ class ClienteControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'with' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Cliente', $this->mock);
