@@ -24,7 +24,7 @@ class ClienteController extends Controller {
     public function index() {
         $this->authorize($this);
 
-        return response()->json($this->cliente->with('estatus')->get(), 200);
+        return response()->json($this->cliente->with('estatus', 'user')->get(), 200);
     }
 
     /**
@@ -129,5 +129,41 @@ class ClienteController extends Controller {
                 'error'   => 'El metodo de eliminar no se pudo ejecutar'
             ], 400);
         }
+    }
+
+    /**
+     * Permite la busqueda de productos a traves de 3 paramtros
+     * @param Request $request
+     * @return Response
+     */
+    public function buscar(Request $request) {
+        $this->authorize($this);
+        $params = $request->only('nombre', 'usuario', 'email');
+
+        $params['nombre'] = isset($params['nombre']) ? $params['nombre'] : '*';
+        $params['usuario'] = isset($params['usuario']) ? $params['usuario'] : '*';
+        $params['email'] = isset($params['email']) ? $params['email'] : '*';
+
+        if (
+            $params['nombre'] === '*' &&
+            $params['usuario'] === '*' &&
+            $params['email'] === '*'
+        ) {
+            return response()->json([
+                'message' => 'Debes de especificar al menos un valor de búsqueda',
+                'error'   => 'Faltan parámetros de búsqueda'
+            ], 400);
+        }
+        foreach ($params as $column => $search) {
+            if ($search === '*') {
+                continue;
+            }
+            if($column === 'email'){
+                $this->cliente = $this->cliente->user();
+            }
+            $this->cliente = $this->cliente->where($column, 'like', "%{$search}%");
+        }
+
+        return $this->cliente->get();
     }
 }

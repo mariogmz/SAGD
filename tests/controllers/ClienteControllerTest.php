@@ -229,4 +229,93 @@ class ClienteControllerTest extends TestCase {
             ])
             ->assertResponseStatus(400);
     }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-clientes
+     */
+    public function testBuscarClienteConTodosLosParametros()
+    {
+        $endpoint = '/v1/clientes/buscar/?nombre=A&usuario=A&email=A';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'user' => Mockery::self(),
+            'get' => [],
+        ])->withAnyArgs();
+        $this->app->instance('App\Cliente', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-clientes
+     */
+    public function testBuscarClienteSoloPorNombre()
+    {
+        $endpoint = '/v1/clientes/buscar/?nombre=A&usuario=*&email=*';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Cliente', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-clientes
+     */
+    public function testBuscarClienteSoloPorEmail()
+    {
+        $endpoint = '/v1/clientes/buscar/?nombre=A&usuario=*&email=*';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Cliente', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-clientes
+     */
+    public function testBuscarClienteSinEspecificarNinguno()
+    {
+        $endpoint = '/v1/clientes/buscar/?nombre=*&usuario=*&email=*';
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'Debes de especificar al menos un valor de búsqueda',
+                'error' => 'Faltan parámetros de búsqueda'
+            ])
+            ->assertResponseStatus(400);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-clientes
+     */
+    public function testBuscarClienteSinEnviarUnoDeLosParametros()
+    {
+        $endpoint = '/v1/clientes/buscar/?nombre=A&usuario=A';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Cliente', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
 }
