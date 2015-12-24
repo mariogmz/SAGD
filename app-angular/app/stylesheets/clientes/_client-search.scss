@@ -1,0 +1,35 @@
+.client-search {
+  @include make-col();
+  @include make-col-span(9);
+
+  @media (min-width: 106.2rem) {
+    @include make-col-span(9.5);
+  }
+
+  fieldset {
+    @include make-col();
+    @include make-col-span(4);
+
+    padding-left: 0;
+
+    div { @extend .input-group; }
+    input { @extend .form-control; }
+    span { @extend .input-group-addon; }
+  }
+
+  .search-span {
+    i { @extend .fa; }
+
+    .nombre {
+      @extend .fa-book;
+    }
+
+    .usuario {
+      @extend .fa-user;
+    }
+
+    .email {
+      @extend .fa-envelope;
+    }
+  }
+}

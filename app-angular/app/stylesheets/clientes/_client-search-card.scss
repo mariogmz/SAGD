@@ -1,0 +1,11 @@
+.client-search-card {
+  @extend .card;
+
+  .header { @extend .card-header; }
+
+  .block {
+    @extend .card-block;
+    @include make-container();
+    @include make-row();
+  }
+}

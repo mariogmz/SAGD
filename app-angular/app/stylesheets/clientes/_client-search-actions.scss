@@ -1,0 +1,8 @@
+.client-search-actions {
+  @include make-col();
+  @include make-col-span(3);
+
+  @media (min-width: 106.2rem) {
+    @include make-col-span(2.5);
+  }
+}

@@ -1,0 +1,117 @@
+.client-form {
+
+  fieldset {
+    @extend .form-group;
+  }
+
+  label {
+    @extend .form-control-label;
+  }
+
+  button,
+  input:not([type='submit']),
+  textarea,
+  select {
+    @extend .form-control
+  }
+
+  select {
+    @extend .c-select;
+  }
+
+  .approved {
+    @extend .text-center;
+    font-size: 1.5rem;
+
+    button {
+
+      @extend .btn;
+
+      &.revisado {
+        @extend .btn-success;
+
+        i {
+          @extend .fa;
+          @extend .fa-thumbs-up;
+        }
+      }
+
+      &.no-revisado {
+        @extend .btn-danger;
+
+        i {
+          @extend .fa;
+          @extend .fa-thumbs-down;
+        }
+      }
+
+      &.back {
+        @extend .btn-secondary;
+
+        i {
+          @extend .fa;
+          @extend .fa-arrow-left;
+        }
+      }
+    }
+  }
+
+  .card .block {
+    @include make-container();
+    @extend .text-left;
+  }
+
+  .checkbox {
+
+    label {
+      @extend .c-input;
+      @extend .c-checkbox;
+
+      span {
+        @extend .c-indicator;
+      }
+    }
+  }
+
+  .col-xsm {
+    @include make-col();
+    @include make-col-span(2);
+  }
+
+  .col-sm {
+    @include make-col();
+    @include make-col-span(3);
+  }
+
+  .col-lg {
+    @include make-col();
+    @include make-col-span(6);
+  }
+
+  .col-mlg {
+    @include make-col();
+    @include make-col-span(5);
+  }
+
+  .with-icon {
+    @extend .input-group;
+
+    i {
+      @extend .fa;
+      @extend .fa-fw;
+    }
+
+    i.money {
+      @extend .fa-usd;
+    }
+
+    span {
+      @extend .input-group-addon;
+    }
+  }
+
+  .row {
+    @include make-row();
+  }
+
+}
