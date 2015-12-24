@@ -112,9 +112,9 @@
     }
 
     span {
+      @extend .text-center;
       @include make-col();
       @include make-col-span(2);
-      @extend .text-center;
 
       button {
         @extend .btn;
