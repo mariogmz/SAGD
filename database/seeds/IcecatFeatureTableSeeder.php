@@ -32,6 +32,7 @@ class IcecatFeatureTableSeeder extends Seeder {
         $this->icecat_feed = new Sagd\IcecatFeed();
         $this->command->getOutput()->writeln('Fetching Icecat Features...');
         $this->icecat_feed->downloadAndDecode('features');
+        $this->command->getOutput()->writeln('Parsing...');
 
         return $this->icecat_feed->getFeatures(true);
     }

@@ -251,6 +251,8 @@ Class IcecatFeed {
         if (isset($this->refs[$ref_name])) {
             if ($ref_name == 'category_features') {
                 $this->downloadAndDecodeCategoriesFeatures();
+            } elseif ($ref_name == 'features'){
+                $this->downloadAndDecodeFeatures();
             } else {
                 $xml = file_get_contents($this->refs_endpoint . $this->refs[$ref_name]);
                 if ($xml === false) {
@@ -317,12 +319,13 @@ Class IcecatFeed {
      */
     private function downloadSheet(App\Producto $product, $save) {
         $endpoint = $this->sheet_endpoint;
-        $endpoint = str_replace('{numero_parte}', $product->numero_parte, $endpoint);
+        $numero_parte = preg_replace('/\s/', '%', $product->numero_parte);
+        $endpoint = str_replace('{numero_parte}', $numero_parte, $endpoint);
 
         $suppliers = $product->marca->icecatSuppliers;
 
         foreach ($suppliers as $supplier) {
-            $xml = $this->sheetIsValid(str_replace('{marca}', $supplier->name, $endpoint), $product->numero_parte, $save);
+            $xml = $this->sheetIsValid(str_replace('{marca}', $supplier->name, $endpoint), $numero_parte, $save);
             if (!empty($xml)) {
                 break;
             }
@@ -342,6 +345,7 @@ Class IcecatFeed {
      */
     public function downloadSheetRaw($part_number, $brand, $save = false) {
         $endpoint = $this->sheet_endpoint;
+        $part_number = preg_replace('/\s/', '%', $part_number);
         $endpoint = str_replace('{numero_parte}', $part_number, $endpoint);
         $endpoint = str_replace('{marca}', $brand, $endpoint);
 
@@ -604,6 +608,24 @@ Class IcecatFeed {
     private function downloadAndDecodeCategoriesFeatures() {
         curlDownload($this->refs_endpoint . $this->refs['category_features'], 'Icecat/categories_features.xml.gz');
         $file_name = 'Icecat/categories_features.xml.gz';
+        $buffer_size = 4096;
+        $out_file_name = str_replace('.gz', '', $file_name);
+        $file = gzopen($file_name, 'rb');
+        $out_file = fopen($out_file_name, 'wb');
+        while (!gzeof($file)) {
+            fwrite($out_file, gzread($file, $buffer_size));
+        }
+        fclose($out_file);
+        gzclose($file);
+    }
+
+    /**
+     * This method performs a download using CURL for Features, because Icecat XML file size is too big
+     * for normal file_get_contents, also XML must be decoded in chunks instead.
+     */
+    private function downloadAndDecodeFeatures(){
+        curlDownload($this->refs_endpoint . $this->refs['features'], 'Icecat/features.xml.gz');
+        $file_name = 'Icecat/features.xml.gz';
         $buffer_size = 4096;
         $out_file_name = str_replace('.gz', '', $file_name);
         $file = gzopen($file_name, 'rb');
