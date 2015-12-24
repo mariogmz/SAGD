@@ -27,30 +27,38 @@ class ClienteTableSeeder extends Seeder {
      * @return void
      */
     public function run() {
-        $this->setUp();
-        try {
-            DB::beginTransaction();
-            $this->obtenerDatos();
-            $this->seedClientes();
-            $this->seedTabuladores();
-            $this->seedUsuarios();
-            $this->seedComentarios();
-            $this->seedDomicilios();
-            $this->seedTelefonos();
-            DB::commit();
-        } catch (Exception $ex) {
-            DB::rollBack();
-            $this->command->getOutput()->writeln("");
-            $this->command->getOutput()->writeln("<error>{$ex->getMessage()}</error>");
-            $this->command->getOutput()->writeln("<error>{$ex->getFile()}</error>");
-            $this->command->getOutput()->writeln("<error>{$ex->getLine()}</error>");
-            Log::error('Error on ClienteTableSeeder', [
-                'stackTrace' => $ex->getTraceAsString()
-            ]);
+        if ($this->command->confirm('Do you want to seed Clients database? This may take a very long time to complete.', false)) {
+            $this->setUp();
+            try {
+                DB::beginTransaction();
+                Model::reguard();
+                $this->obtenerDatos();
+                $this->seedClientes();
+                $this->seedTabuladores();
+                $this->seedUsuarios();
+                $this->seedComentarios();
+                $this->seedDomicilios();
+                $this->seedTelefonos();
+                Model::unguard();
+                DB::commit();
+            } catch (Exception $ex) {
+                Model::unguard();
+                DB::rollBack();
+                $this->command->getOutput()->writeln("");
+                $this->command->getOutput()->writeln("<error>{$ex->getMessage()}</error>");
+                $this->command->getOutput()->writeln("<error>{$ex->getFile()}</error>");
+                $this->command->getOutput()->writeln("<error>{$ex->getLine()}</error>");
+                Log::error('Error on ClienteTableSeeder', [
+                    'stackTrace' => $ex->getTraceAsString(),
+                    'file'       => $ex->getFile(),
+                    'line'       => $ex->getLine()
+                ]);
+            }
         }
     }
 
     private function setUp() {
+
         $this->legacy = DB::connection('mysql_legacy');
         $this->clientes = [];
         $this->usuarios = [];
@@ -200,7 +208,7 @@ class ClienteTableSeeder extends Seeder {
         $this->printResults($total);
     }
 
-    private function seedTabuladores(){
+    private function seedTabuladores() {
         $total = count($this->tabuladores);
         $this->errors = 0;
         $this->success = 0;
@@ -212,7 +220,7 @@ class ClienteTableSeeder extends Seeder {
         $this->progress_bar->start();
 
         foreach ($tabuladores as $tabulador) {
-            foreach($tabulador as $valor){
+            foreach ($tabulador as $valor) {
                 $nuevo_tabulador = new App\Tabulador();
                 $nuevo_tabulador->fill((array) $valor);
                 $nuevo_tabulador->cliente_id = $this->relacion[$valor->clave];
@@ -223,7 +231,7 @@ class ClienteTableSeeder extends Seeder {
                     $this->success ++;
                 }
             }
-                $this->progress_bar->advance();
+            $this->progress_bar->advance();
 
         }
         $this->progress_bar->finish();
@@ -321,7 +329,7 @@ class ClienteTableSeeder extends Seeder {
                     $this->errors ++;
                     $this->logErrors($domicilio_nuevo);
                 }
-            }else{
+            } else {
                 Log::alert('Codigo postal no encontrado.', [
                     'codigo_postal' => $domicilio['codigo_postal']
                 ]);
