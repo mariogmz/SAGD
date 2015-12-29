@@ -61,7 +61,7 @@ class ClienteController extends Controller {
      */
     public function show($id) {
         $this->authorize($this);
-        $this->cliente = $this->cliente->with('tabuladores.sucursal')->find($id);
+        $this->cliente = $this->cliente->with('domicilios.telefonos','domicilios.codigoPostal','tabuladores.sucursal')->find($id);
         if (!empty($this->cliente)) {
             return response()->json([
                 'message' => 'Cliente obtenido exitosamente',
