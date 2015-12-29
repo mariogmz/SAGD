@@ -655,4 +655,37 @@ class RolControllerTest extends TestCase {
             ])
             ->assertResponseStatus(404);
     }
+
+    /**
+     * @covers ::rolesClientes
+     */
+    public function testRolesClientes(){
+        $endpoint = '/v1/roles/clientes';
+        $this->mock->shouldReceive([
+            'whereIn' => Mockery::self(),
+            'get' => true
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::rolesClientes
+     */
+    public function testRolesClientesNoEncontrados(){
+        $endpoint = '/v1/roles/clientes';
+        $this->mock->shouldReceive([
+            'whereIn' => Mockery::self(),
+            'get' => false
+        ])->withAnyArgs();
+        $this->app->instance('App\Rol', $this->mock);
+
+        $this->get($endpoint)
+            ->seeJson([
+                'message' => 'No se encontraron roles para clientes'
+            ])
+            ->assertResponseStatus(404);
+    }
 }

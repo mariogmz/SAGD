@@ -29,7 +29,7 @@ class CrearTabuladoresParaClienteNuevo {
      */
     public function handle(ClienteCreado $event) {
         $this->cliente = $event->cliente;
-        $this->valor_tabulador = $event->valor_tabulador;
+        $this->valor_tabulador = $event->datos;
         $this->agregarTabuladores();
     }
 

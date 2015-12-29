@@ -51,7 +51,8 @@ class EventServiceProvider extends ServiceProvider {
             'App\Listeners\EjecutarCarga',
         ],
         'App\Events\ClienteCreado'             => [
-            'App\Listeners\CrearTabuladoresParaClienteNuevo'
+            'App\Listeners\CrearTabuladoresParaClienteNuevo',
+            'App\Listeners\CrearDomiciliosParaClienteNuevo',
         ]
     ];
 

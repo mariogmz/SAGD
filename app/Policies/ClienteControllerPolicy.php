@@ -99,7 +99,6 @@ class ClienteControllerPolicy
         return !empty($permiso);
     }
 
-
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller

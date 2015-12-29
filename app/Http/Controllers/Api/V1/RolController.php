@@ -2,21 +2,20 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use Illuminate\Http\Request;
 
-use App\Http\Requests;
 use App\Empleado;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
 use App\Permiso;
 use App\Rol;
+use Illuminate\Http\Request;
 
-class RolController extends Controller
-{
+class RolController extends Controller {
+
     protected $rol;
     protected $permiso;
 
-    public function __construct(Rol $rol, Permiso $permiso, Empleado $empleado)
-    {
+    public function __construct(Rol $rol, Permiso $permiso, Empleado $empleado) {
         $this->rol = $rol;
         $this->permiso = $permiso;
         $this->empleado = $empleado;
@@ -28,9 +27,9 @@ class RolController extends Controller
      *
      * @return Response
      */
-    public function index()
-    {
+    public function index() {
         $this->authorize($this);
+
         return $this->rol->all();
     }
 
@@ -40,15 +39,14 @@ class RolController extends Controller
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->authorize($this);
         $params = $request->all();
         $this->rol->fill($params);
         if ($this->rol->save()) {
             return response()->json([
                 'message' => 'Rol creado exitosamente',
-                'rol' => $this->rol->self()
+                'rol'     => $this->rol->self()
             ], 201,
                 ['Location' => route('api.v1.rol.show', $this->rol->getId())]);
         } else {
@@ -65,14 +63,13 @@ class RolController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $this->authorize($this);
         $this->rol = $this->rol->find($id);
         if ($this->rol) {
             return response()->json([
                 'message' => 'Rol obtenido exitosamente',
-                'rol' => $this->rol->self()
+                'rol'     => $this->rol->self()
             ], 200);
         } else {
             return response()->json([
@@ -89,8 +86,7 @@ class RolController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $this->authorize($this);
         $params = $request->all();
         $this->rol = $this->rol->find($id);
@@ -117,8 +113,7 @@ class RolController extends Controller
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $this->authorize($this);
         $this->rol = $this->rol->find($id);
         if (empty($this->rol)) {
@@ -143,9 +138,9 @@ class RolController extends Controller
      *
      * @return Response
      */
-    public function generales()
-    {
+    public function generales() {
         $this->authorize($this);
+
         return $this->rol->permisosRoles();
     }
 
@@ -154,9 +149,9 @@ class RolController extends Controller
      *
      * @return Response
      */
-    public function individuales()
-    {
+    public function individuales() {
         $this->authorize($this);
+
         return $this->rol->permisosIndividuales();
     }
 
@@ -167,20 +162,20 @@ class RolController extends Controller
      * @param int $permiso
      * @return Response
      */
-    public function attach(Request $request, $rol, $permiso)
-    {
+    public function attach(Request $request, $rol, $permiso) {
         $this->authorize($this);
         $this->rol = $this->rol->find($rol);
         $this->permiso = $this->permiso->find($permiso);
         if ($this->rol && $this->permiso) {
             $this->rol->permisos()->attach($this->permiso->id);
+
             return response()->json([
                 'message' => 'Permiso asignado a rol exitosamente'
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Rol o Permiso no encontrado, intente nuevamente',
-                'error' => 'No se asigno permiso a rol'
+                'error'   => 'No se asigno permiso a rol'
             ], 400);
         }
     }
@@ -192,20 +187,20 @@ class RolController extends Controller
      * @param int $permiso
      * @return Response
      */
-    public function detach(Request $request, $rol, $permiso)
-    {
+    public function detach(Request $request, $rol, $permiso) {
         $this->authorize($this);
         $this->rol = $this->rol->find($rol);
         $this->permiso = $this->permiso->find($permiso);
         if ($this->rol && $this->permiso) {
             $this->rol->permisos()->detach($this->permiso->id);
+
             return response()->json([
                 'message' => 'Permiso removido del rol exitosamente'
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Rol o Permiso no encontrado, intente nuevamente',
-                'error' => 'No se removio permiso del rol'
+                'error'   => 'No se removio permiso del rol'
             ], 400);
         }
     }
@@ -217,20 +212,20 @@ class RolController extends Controller
      * @param int $empleado
      * @return Response
      */
-    public function attachEmpleado(Request $request, $id, $empleado)
-    {
+    public function attachEmpleado(Request $request, $id, $empleado) {
         $this->authorize($this);
         $this->rol = $this->rol->find($id);
         $this->empleado = $this->empleado->find($empleado);
         if ($this->rol && $this->empleado) {
             $this->rol->empleados()->attach($this->empleado->id);
+
             return response()->json([
                 'message' => 'Empleado asignado a rol exitosamente'
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Rol o Empleado no encontrado, intente nuevamente',
-                'error' => 'No se asigno empleado a rol'
+                'error'   => 'No se asigno empleado a rol'
             ], 400);
         }
     }
@@ -242,20 +237,20 @@ class RolController extends Controller
      * @param int $empleado
      * @return Response
      */
-    public function detachEmpleado(Request $request, $rol, $empleado)
-    {
+    public function detachEmpleado(Request $request, $rol, $empleado) {
         $this->authorize($this);
         $this->rol = $this->rol->find($rol);
         $this->empleado = $this->empleado->find($empleado);
         if ($this->rol && $this->empleado) {
             $this->rol->empleados()->detach($this->empleado->id);
+
             return response()->json([
                 'message' => 'Empleado removido del rol exitosamente'
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Rol o Empleado no encontrado, intente nuevamente',
-                'error' => 'No se removio empleado del rol'
+                'error'   => 'No se removio empleado del rol'
             ], 400);
         }
     }
@@ -266,8 +261,7 @@ class RolController extends Controller
      * @param int $id
      * @return Response
      */
-    public function empleados(Request $request, $id)
-    {
+    public function empleados(Request $request, $id) {
         $this->authorize($this);
         $this->rol = $this->rol->find($id);
         if ($this->rol) {
@@ -277,8 +271,25 @@ class RolController extends Controller
         } else {
             return response()->json([
                 'message' => 'No se pudo encontrar el rol',
-                'error' => 'Rol no existente'
+                'error'   => 'Rol no existente'
             ], 404);
+        }
+    }
+
+    /**
+     * Regresa los roles que se le pueden asignar a clientes
+     * @param Request $request
+     * @return Response
+     */
+    public function rolesClientes(Request $request) {
+        $this->authorize($this);
+        $roles = $this->rol->whereIn('nombre', ['USUARIO FINAL', 'DISTRIBUIDOR'])->get();
+        if(empty($roles)){
+            return response()->json([
+                'message' => 'No se encontraron roles para clientes'
+            ], 404);
+        }else{
+            return response()->json($roles, 200);
         }
     }
 }

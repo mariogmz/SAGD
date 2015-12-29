@@ -47,7 +47,7 @@ class ClienteControllerTest extends TestCase {
         $this->mock
             ->shouldReceive([
                 'fill'  => Mockery::self(),
-                'save'  => true,
+                'guardar'  => true,
                 'self'  => 'self',
                 'getId' => 1
             ])
@@ -67,7 +67,7 @@ class ClienteControllerTest extends TestCase {
      */
     public function test_POST_store_bad_data() {
         $this->mock
-            ->shouldReceive(['fill' => Mockery::self(), 'save' => false])->withAnyArgs();
+            ->shouldReceive(['fill' => Mockery::self(), 'guardar' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
         $this->app->instance('App\Cliente', $this->mock);
 

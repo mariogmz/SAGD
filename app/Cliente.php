@@ -111,10 +111,10 @@ class Cliente extends LGGModel {
      * @param int $tabulador
      * @return bool
      */
-    public function guardar($tabulador) {
+    public function guardar($datos) {
         if ($this->save()) {
             // Ya que el evento ocupa un parámetro, no se llama desde Cliente::created
-            event(new ClienteCreado($this, $tabulador));
+            event(new ClienteCreado($this, $datos));
 
             return true;
         } else {

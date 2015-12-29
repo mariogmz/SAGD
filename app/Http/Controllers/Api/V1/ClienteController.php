@@ -37,7 +37,7 @@ class ClienteController extends Controller {
         $this->authorize($this);
         $params = $request->all();
         $this->cliente->fill($params);
-        if ($this->cliente->save()) {
+        if ($this->cliente->guardar($params)) {
             return response()->json(
                 [
                     'message' => 'Cliente creado exitosamente',

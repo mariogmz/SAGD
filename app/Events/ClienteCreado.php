@@ -10,7 +10,7 @@ class ClienteCreado extends Event {
 
     use SerializesModels;
     public $cliente;
-    public $valor_tabulador;
+    public $datos;
 
     /**
      * Create a new event instance.
@@ -21,11 +21,11 @@ class ClienteCreado extends Event {
     /**
      * Create a new event instance.
      * @param Cliente $cliente
-     * @param int $valor_tabulador
+     * @param int $datos
      */
-    public function __construct(Cliente $cliente, $valor_tabulador) {
+    public function __construct(Cliente $cliente, $datos) {
         $this->cliente = $cliente;
-        $this->valor_tabulador = $valor_tabulador;
+        $this->datos = $datos;
     }
 
     /**
