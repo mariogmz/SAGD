@@ -84,6 +84,20 @@ class ClienteControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede buscar un Cliente
+     *
+     * @param  User  $user
+     * @param  ClienteController $controller
+     * @return bool
+     */
+    public function buscar(User $user, ClienteController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'buscar')->first();
+        return !empty($permiso);
+    }
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

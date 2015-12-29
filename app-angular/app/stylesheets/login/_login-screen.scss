@@ -1,0 +1,117 @@
+.signin-screen {
+  background-image: url('../../public/img/cross_scratches.png');
+  background-repeat: repeat;
+  bottom: 0;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.login-card {
+  @extend .card;
+  @extend .container;
+  @include box-shadow(#777);
+
+  background-color: $white;
+  margin: 8% auto auto;
+  max-width: 420px;
+  min-width: 280px;
+
+  button[type="submit"] {
+    @extend .btn;
+    @extend .btn-primary;
+    @extend .btn-block;
+
+  }
+
+  fieldset {
+    @extend .form-group;
+  }
+
+  input {
+    @extend .form-control;
+  }
+
+  .login-card-block {
+    @extend .card-block;
+
+    a {
+
+      cursor: pointer;
+    }
+
+    h4 {
+      @extend .card-title;
+    }
+
+    h6 {
+      @extend .card-subtitle;
+      @extend .text-muted;
+      margin-bottom: 10px;
+    }
+
+    form.error {
+      fieldset {
+        @extend .form-group;
+        @extend .has-error;
+      }
+
+      input {
+        @extend .form-control;
+        @extend .form-control-error;
+      }
+
+      p {
+        @extend .help-block;
+      }
+    }
+  }
+
+  .login-card-logo {
+    @extend .container;
+    margin: 30px 30px 5px 30px;
+    text-align: center;
+
+    i.loading {
+      @extend .fa;
+      @extend .fa-spinner;
+      @extend .fa-spin;
+      @extend .fa-5x;
+
+      color: $gray-suit;
+    }
+    img {
+      @extend .card-img-top;
+
+      padding-top: 15px;
+      width: 70%;
+    }
+  }
+
+  .with-icon {
+    @extend .input-group;
+    margin-bottom: 5px;
+
+    span {
+      @extend .input-group-addon;
+    }
+
+    i {
+      @extend .fa;
+      @extend .fa-fw;
+
+      &.email {
+        @extend .fa-envelope-o;
+      }
+
+      &.user {
+        @extend .fa-user;
+      }
+
+      &.key {
+        @extend .fa-key;
+      }
+    }
+  }
+}

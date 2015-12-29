@@ -17,7 +17,7 @@ class CreateEmpleadosTable extends Migration {
             $table->string('usuario', 20);
             $table->boolean('activo')->default(false);
             $table->string('puesto', 45)->nullable();
-            $table->timestamp('fecha_cambio_password')->default(DB::raw('CURRENT_TIMESTAMP'));
+            $table->timestamp('fecha_cambio_password')->nullable()->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('fecha_ultimo_ingreso')->nullable();
 
             $table->unique('usuario');

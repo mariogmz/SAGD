@@ -1,15 +1,15 @@
 <?php
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @coversDefaultClass \App\Cliente
  */
 class ClienteTest extends TestCase {
-
+    use DatabaseTransactions;
     /**
      * @coversNothing
      */
-    public function testModeloEsValido()
-    {
+    public function testModeloEsValido() {
         $cliente = factory(App\Cliente::class)->make();
         $this->assertTrue($cliente->isValid());
     }
@@ -18,20 +18,18 @@ class ClienteTest extends TestCase {
      * @coversNothing
      * @group modelo_actualizable
      */
-    public function testModeloEsActualizable()
-    {
+    public function testModeloEsActualizable() {
         $cliente = factory(App\Cliente::class, 'full')->create();
-        $cliente->nombre = 'MC Hammer';
+        $cliente->nombre = 'Anthony Hoskins';
         $this->assertTrue($cliente->isValid('update'));
         $this->assertTrue($cliente->save());
-        $this->assertSame('MC Hammer', $cliente->nombre);
+        $this->assertSame('Anthony Hoskins', $cliente->nombre);
     }
 
     /**
      * @coversNothing
      */
-    public function testUsuarioEsObligatorio()
-    {
+    public function testUsuarioEsObligatorio() {
         $cliente = factory(App\Cliente::class)->make(['usuario' => null]);
         $this->assertFalse($cliente->isValid());
     }
@@ -39,8 +37,21 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testUsuarioNoEsLargo()
-    {
+    public function testUsuarioEsUnico() {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $cliente_test = factory(App\Cliente::class, 'full')->make();
+        $usuario = $cliente_test->usuario;
+        $cliente_test->usuario = $cliente->usuario;
+        $this->assertFalse($cliente_test->isValid());
+        $cliente_test->usuario = $usuario;
+        $this->assertTrue($cliente_test->isValid());
+    }
+
+
+    /**
+     * @coversNothing
+     */
+    public function testUsuarioNoEsLargo() {
         $cliente = factory(App\Cliente::class, 'longusername')->make();
         $this->assertFalse($cliente->isValid());
     }
@@ -48,8 +59,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreEsObligatorio()
-    {
+    public function testNombreEsObligatorio() {
         $cliente = factory(App\Cliente::class)->make(['nombre' => null]);
         $this->assertFalse($cliente->isValid());
     }
@@ -57,8 +67,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNombreNoEsLargo()
-    {
+    public function testNombreNoEsLargo() {
         $cliente = factory(App\Cliente::class, 'longname')->make();
         $this->assertFalse($cliente->isValid());
     }
@@ -66,8 +75,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaDeNacimientoNoEsObligatoria()
-    {
+    public function testFechaDeNacimientoNoEsObligatoria() {
         $cliente = factory(App\Cliente::class)->make(['fecha_nacimiento' => null]);
         $this->assertTrue($cliente->isValid());
     }
@@ -75,8 +83,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaDeNacimientoEsTimestamp()
-    {
+    public function testFechaDeNacimientoEsTimestamp() {
         $cliente = factory(App\Cliente::class)->make(['fecha_nacimiento' => 'asd']);
         $this->assertFalse($cliente->isValid());
     }
@@ -84,8 +91,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testSexoEsObligatorio()
-    {
+    public function testSexoEsObligatorio() {
         $cliente = factory(App\Cliente::class)->make(['sexo' => null]);
         $this->assertFalse($cliente->isValid());
     }
@@ -93,17 +99,19 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testSexoEsHombreOMujer()
-    {
+    public function testSexoEsHombreOMujer() {
         $cliente = factory(App\Cliente::class)->make(['sexo' => 'aaa']);
         $this->assertFalse($cliente->isValid());
+        $cliente->sexo = 'HOMBRE';
+        $this->assertTrue($cliente->isValid());
+        $cliente->sexo = 'MUJER';
+        $this->assertTrue($cliente->isValid());
     }
 
     /**
      * @coversNothing
      */
-    public function testOcupacionNoEsObligatoria()
-    {
+    public function testOcupacionNoEsObligatoria() {
         $cliente = factory(App\Cliente::class)->make(['ocupacion' => null]);
         $this->assertTrue($cliente->isValid());
     }
@@ -111,8 +119,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testOcupacionNoPuedeSerLarga()
-    {
+    public function testOcupacionNoPuedeSerLarga() {
         $cliente = factory(App\Cliente::class, 'longocc')->make();
         $this->assertFalse($cliente->isValid());
     }
@@ -120,8 +127,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaVerificacionCorreoEsOpcional()
-    {
+    public function testFechaVerificacionCorreoEsOpcional() {
         $cliente = factory(App\Cliente::class)->make(['fecha_verificacion_correo' => null]);
         $this->assertTrue($cliente->isValid());
     }
@@ -129,8 +135,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaVerificacionCorreoEsTimestamp()
-    {
+    public function testFechaVerificacionCorreoEsTimestamp() {
         $cliente = factory(App\Cliente::class)->make(['fecha_verificacion_correo' => 'aaa']);
         $this->assertFalse($cliente->isValid());
     }
@@ -138,8 +143,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaExpiraClubZegucomEsOpcional()
-    {
+    public function testFechaExpiraClubZegucomEsOpcional() {
         $cliente = factory(App\Cliente::class)->make(['fecha_expira_club_zegucom' => null]);
         $this->assertTrue($cliente->isValid());
     }
@@ -147,8 +151,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testFechaExpiraClubZegucomEsTimestamp()
-    {
+    public function testFechaExpiraClubZegucomEsTimestamp() {
         $cliente = factory(App\Cliente::class)->make(['fecha_expira_club_zegucom' => 'aaa']);
         $this->assertFalse($cliente->isValid());
     }
@@ -156,8 +159,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testReferenciaOtroEsOpcional()
-    {
+    public function testReferenciaOtroEsOpcional() {
         $cliente = factory(App\Cliente::class)->make(['referencia_otro' => null]);
         $this->assertTrue($cliente->isValid());
     }
@@ -165,8 +167,7 @@ class ClienteTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testReferenciaOtroNoEsLargo()
-    {
+    public function testReferenciaOtroNoEsLargo() {
         $cliente = factory(App\Cliente::class, 'longref')->make();
         $this->assertFalse($cliente->isValid());
     }
@@ -175,8 +176,7 @@ class ClienteTest extends TestCase {
      * @covers ::estatus
      * @group relaciones
      */
-    public function testEstatus()
-    {
+    public function testEstatus() {
         $estatus = factory(App\ClienteEstatus::class)->create();
         $cliente = factory(App\Cliente::class)->make();
         $cliente->estatus()->associate($estatus);
@@ -187,8 +187,7 @@ class ClienteTest extends TestCase {
      * @covers ::referencia
      * @group relaciones
      */
-    public function testReferencia()
-    {
+    public function testReferencia() {
         $referencia = factory(App\ClienteReferencia::class)->create();
         $cliente = factory(App\Cliente::class)->make();
         $cliente->referencia()->associate($referencia);
@@ -199,8 +198,7 @@ class ClienteTest extends TestCase {
      * @covers ::comentarios
      * @group relaciones
      */
-    public function testComentarios()
-    {
+    public function testComentarios() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $empleado = factory(App\Empleado::class)->create();
         $cliente->empleados()->attach($empleado, ['comentario' => "Balalalala"]);
@@ -210,40 +208,18 @@ class ClienteTest extends TestCase {
     }
 
     /**
-     * @covers ::autoriza
-     * @group relaciones
-     */
-    public function testAutorizaConCliente()
-    {
-        $cliente = factory(App\Cliente::class, 'full')->create();
-        $autorizado = factory(App\Cliente::class, 'full')->create();
-        $this->assertTrue($cliente->autoriza($autorizado));
-    }
-
-    /**
-     * @covers ::autoriza
-     * @group relaciones
-     */
-    public function testAutorizaConNombre()
-    {
-        $cliente = factory(App\Cliente::class, 'full')->create();
-        $autorizado = "Neil deGrasse Tyson";
-        $this->assertTrue($cliente->autoriza($autorizado));
-    }
-
-    /**
      * @covers ::autorizaciones
      * @group relaciones
      */
-    public function testAutorizaciones()
-    {
+    public function testAutorizaciones() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $autorizado = factory(App\Cliente::class, 'full')->create();
 
         factory(App\ClienteAutorizacion::class)->create([
-            'cliente_id' => $cliente->id,
+            'cliente_id'            => $cliente->id,
             'cliente_autorizado_id' => $autorizado->id,
-            'nombre_autorizado' => null]);
+            'nombre_autorizado'     => null
+        ]);
         $autorizaciones = $cliente->autorizaciones;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $autorizaciones);
         $this->assertInstanceOf(App\ClienteAutorizacion::class, $autorizaciones[0]);
@@ -253,8 +229,7 @@ class ClienteTest extends TestCase {
      * @covers ::empleado
      * @group relaciones
      */
-    public function testEmpleado()
-    {
+    public function testEmpleado() {
         $cliente = factory(App\Cliente::class)->make();
         $empleado = factory(App\Empleado::class)->create();
         $cliente->empleado()->associate($empleado);
@@ -265,8 +240,7 @@ class ClienteTest extends TestCase {
      * @covers ::vendedor
      * @group relaciones
      */
-    public function testVendedor()
-    {
+    public function testVendedor() {
         $cliente = factory(App\Cliente::class)->make();
         $empleado = factory(App\Empleado::class)->create();
         $cliente->vendedor()->associate($empleado);
@@ -277,8 +251,7 @@ class ClienteTest extends TestCase {
      * @covers ::sucursal
      * @group relaciones
      */
-    public function testSucursal()
-    {
+    public function testSucursal() {
         $cliente = factory(App\Cliente::class)->make();
         $sucursal = factory(App\Sucursal::class)->create();
         $cliente->sucursal()->associate($sucursal);
@@ -289,8 +262,7 @@ class ClienteTest extends TestCase {
      * @covers ::paginasWebDistribuidores
      * @group relaciones
      */
-    public function testPaginasWebDistribuidores()
-    {
+    public function testPaginasWebDistribuidores() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $pwd = factory(App\PaginaWebDistribuidor::class)->make();
         $cliente->paginasWebDistribuidores()->save($pwd);
@@ -303,8 +275,7 @@ class ClienteTest extends TestCase {
      * @covers ::domicilios
      * @group relaciones
      */
-    public function testDomicilios()
-    {
+    public function testDomicilios() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $domicilio = factory(App\Domicilio::class)->create();
         $cliente->domicilios()->attach($domicilio);
@@ -317,15 +288,13 @@ class ClienteTest extends TestCase {
      * @covers ::serviciosSoportes
      * @group relaciones
      */
-    public function testServiciosSoportes()
-    {
+    public function testServiciosSoportes() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $servicios_soportes = factory(App\ServicioSoporte::class, 5)->create([
             'cliente_id' => $cliente->id
         ]);
         $servicios_soportes_resultado = $cliente->serviciosSoportes;
-        for ($i = 0; $i < 5; $i ++)
-        {
+        for ($i = 0; $i < 5; $i ++) {
             $this->assertEquals($servicios_soportes[$i]->id, $servicios_soportes_resultado[$i]->id);
         }
     }
@@ -334,9 +303,9 @@ class ClienteTest extends TestCase {
      * @covers ::rmas
      * @group relaciones
      */
-    public function testRmas(){
+    public function testRmas() {
         $cliente = factory(App\Cliente::class, 'full')->create();
-        $rmas = factory(App\Rma::class, 5)->create([
+        factory(App\Rma::class, 5)->create([
             'cliente_id' => $cliente->id
         ]);
         $rmas_resultado = $cliente->rmas;
@@ -348,10 +317,9 @@ class ClienteTest extends TestCase {
      * @covers ::razonesSociales
      * @group relaciones
      */
-    public function testRazonesSociales()
-    {
+    public function testRazonesSociales() {
         $cliente = factory(App\Cliente::class, 'full')->create();
-        $rsr = factory(App\RazonSocialReceptor::class, 'full')->create([
+        factory(App\RazonSocialReceptor::class, 'full')->create([
             'cliente_id' => $cliente->id]);
         $rsrs = $cliente->razonesSociales;
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rsrs);
@@ -363,13 +331,41 @@ class ClienteTest extends TestCase {
      * @covers ::user
      * @group relaciones
      */
-    public function testUser()
-    {
+    public function testUser() {
         $cliente = factory(App\Cliente::class, 'full')->create();
-        $user = factory(App\User::class)->create([
-            'morphable_id' => $cliente->id,
+        factory(App\User::class)->create([
+            'morphable_id'   => $cliente->id,
             'morphable_type' => get_class($cliente)
         ]);
         $this->assertInstanceOf(App\User::class, $cliente->user);
+    }
+
+    /**
+     * @covers ::tabuladores
+     * @group relaciones
+     */
+    public function testTabuladores(){
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        factory(App\Tabulador::class)->create([
+            'cliente_id' => $cliente->id
+        ]);
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $cliente->tabuladores);
+        $this->assertInstanceOf(App\Tabulador::class, $cliente->tabuladores->first());
+    }
+
+    /**
+     * @coversNothing
+     * @group eventos
+     */
+    public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursal(){
+        factory(App\Sucursal::class, 'interna', 10)->create();
+        $cliente = factory(App\Cliente::class, 'full')->make();
+        $this->assertTrue($cliente->guardar(5));
+
+        $tabuladores_nuevos = $cliente->tabuladores;
+        $this->assertSame(App\Sucursal::count(), $tabuladores_nuevos->count());
+        foreach($tabuladores_nuevos as $tabulador){
+            $this->assertSame(5, $tabulador->valor_original);
+        }
     }
 }

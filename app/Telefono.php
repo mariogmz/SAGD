@@ -26,7 +26,7 @@ class Telefono extends LGGModel {
 
     protected $fillable = ['numero', 'tipo'];
     public static $rules = [
-        'numero'       => ['required', 'unique:telefonos', 'regex:/[0-9]{7,11}/'],
+        'numero'       => ['required', 'unique:telefonos', 'regex:/[\d]{7,12}/'],
         'tipo'         => 'required|max:45',
         'domicilio_id' => 'required|integer'
     ];
@@ -51,7 +51,7 @@ class Telefono extends LGGModel {
             $telefono->updateRules['numero'] = [
                 'required',
                 'unique:telefonos,numero,' . $telefono->id,
-                'regex:/[0-9]{7,11}/'
+                'regex:/[\d]{7,12}/'
             ];
 
             return $telefono->isValid('update');

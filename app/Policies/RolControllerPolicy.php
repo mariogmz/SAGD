@@ -189,6 +189,20 @@ class RolControllerPolicy
         return !empty($permiso);
     }
 
+    /**
+     * Determinar si el usuario puede ver los roles para clientes
+     *
+     * @param  User  $user
+     * @param  ClienteController $controller
+     * @return bool
+     */
+    public function rolesClientes(User $user, RolController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'rolesClientes')->first();
+        return !empty($permiso);
+    }
 
     /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente

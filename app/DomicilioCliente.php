@@ -22,12 +22,16 @@ namespace App;
  */
 class DomicilioCliente extends LGGModel {
 
-    //
     protected $table = "domicilios_clientes";
     public $timestamps = false;
-    protected $fillable = [];
+    protected $fillable = ['domicilio_id','cliente_id'];
 
-    public static $rules = [];
+    public static $rules = [
+        'domicilio_id' => 'required|integer|unique_with:domicilios_clientes, cliente_id',
+        'cliente_id' => 'required|integer'
+    ];
+
+    public $updateRules = [];
 
     /**
      * Define the model hooks
@@ -35,12 +39,31 @@ class DomicilioCliente extends LGGModel {
      */
     public static function boot() {
         parent::boot();
-        DomicilioCliente::creating(function ($model) {
-            if (!$model->isValid()) {
-                return false;
-            }
+        DomicilioCliente::creating(function (DomicilioCliente $dc) {
+            return $dc->isValid();
+        });
 
-            return true;
+        DomicilioCliente::updating(function(DomicilioCliente $dc){
+            $dc->updateRules = self::$rules;
+            $dc->updateRules['domicilio_id'] = 'required|integer|unique_with:domicilios_clientes, cliente_id,' . $dc->id;
+            return $dc->isValid('update');
         });
     }
+
+    /**
+     * Obtiene el Domicilio asociado a esta relación
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function domicilio(){
+        return $this->belongsTo('App\Domicilio');
+    }
+
+    /**
+     * Obtiene el Cliente asociado a esta relación
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function cliente(){
+        return $this->belongsTo('App\Cliente');
+    }
+
 }

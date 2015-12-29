@@ -1,6 +1,6 @@
 // app/cliente/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -11,12 +11,12 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-        .state('clienteIndex', {
-          url: 'cliente',
-          parent: 'cliente',
-          templateUrl: 'app/cliente/index/index.html',
-          controller: 'clienteIndexController',
-          controllerAs: 'vm'
-        });
+      .state('clienteIndex', {
+        url: 'cliente',
+        parent: 'cliente',
+        templateUrl: 'app/cliente/index/index.html',
+        controller: 'clienteIndexController',
+        controllerAs: 'vm'
+      });
   }
 })();

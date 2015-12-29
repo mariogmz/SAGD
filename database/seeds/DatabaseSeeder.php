@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder {
         $this->call(ClienteReferenciaTableSeeder::class);
         $this->call(EmpleadoTableSeeder::class);
         $this->call(PermisosInicialesSeeder::class);
+        $this->call(ClienteTableSeeder::class);
         $this->call(MarcaTableSeeder::class);
         $this->call(TipoGarantiaTableSeeder::class);
         $this->call(UnidadTableSeeder::class);
@@ -60,9 +61,9 @@ class DatabaseSeeder extends Seeder {
 
     private function seedIcecat(){
         if($this->command->confirm('Do you want to seed Icecat database? This may take a very long time to complete.', false)){
+            $this->call(IcecatFeatureTableSeeder::class);
             $this->call(IcecatSupplierTableSeeder::class);
             $this->call(IcecatCategoryTableSeeder::class);
-            $this->call(IcecatFeatureTableSeeder::class);
             $this->call(IcecatFeatureGroupTableSeeder::class);
             $this->call(IcecatCategoryFeatureGroupTableSeeder::class);
             $this->call(IcecatCategoryFeatureTableSeeder::class);

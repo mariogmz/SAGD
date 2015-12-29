@@ -1,55 +1,73 @@
-<div class="search-card">
-    <div class="header">
-        <h4>Clientes</h4>
-    </div>
-    <div class="block">
-        <div class="row">
-            <div class="form">
-                <form>
-                    <div class="field">
-                        <label>Buscar:</label>
-                        <input type="text" ng-model="vm.search" autofocus>
-                    </div>
-                </form>
-            </div>
-            <div class="actions">
-                <div class="action-buttons" role="group" aria-label="Acciones">
-                    <button type="button" class="create" ui-sref="clienteNew"><i></i> Crear nuevo</button>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="client-search-card">
+  <div class="header">
+    <h4>Clientes</h4>
+  </div>
+  <section class="block">
+    <section class="client-search" id="client-search">
+      <form id="clientSearchForm" ng-submit="vm.buscar()">
+        <fieldset>
+          <div>
+            <span class="search-span" id="client-search-nombre"><i class="nombre"></i></span>
+            <input type="text" placeholder="Nombre" aria-describedby="client-search-nombre" ng-model="vm.search.nombre">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div>
+            <span class="search-span" id="client-search-usuario"><i class="usuario"></i></span>
+            <input type="text" placeholder="Usuario" aria-describedby="client-search-usuario"
+                   ng-model="vm.search.usuario">
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <div>
+            <span class="search-span" id="client-search-email"><i class="email"></i></span>
+            <input type="text" placeholder="Email" aria-describedby="client-search-email"
+                   ng-model="vm.search.user.email">
+          </div>
+        </fieldset>
+
+      </form>
+    </section>
+
+    <section class="client-search-actions">
+      <div class="action-buttons" aria-label="Acciones">
+        <button type="submit" class="show" form="clientSearchForm"><i></i> Buscar</button>
+        <button type="button" class="create" ui-sref="clienteNew"><i></i> Nuevo</button>
+      </div>
+    </section>
+  </section>
 </div>
 
 <div class="table-responsive">
-    <table class="item-table">
-        <thead class="sortable">
-            <tr>
-                <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-                    {{sortKey.name}}
-                </th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage: 10">
-            <td>{{cliente.id}}</td>
-            <td><a ui-sref="clienteShow({id:cliente.id})">{{cliente.usuario}}</a></td>
-            <td>{{cliente.nombre}}</td>
-            <td>{{cliente.cliente_estatus.nombre}}</td>
-            <td>
-                <div class="action-buttons" role="group" aria-label="Acciones">
-                    <button type="button" class="edit" ui-sref="clienteEdit({id:cliente.id})"><i></i></button>
-                    <button type="button" class="delete" ng-click="vm.eliminarCliente(cliente.id)"><i></i></button>
-                </div>
-            </td>
-        </tr>
+  <table class="item-table">
+    <thead class="sortable">
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr dir-paginate="cliente in vm.clientes | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+      <th scope="row">{{cliente.id}}</th>
+      <td><a ui-sref="clienteShow({id:cliente.id})" ng-bind="cliente.nombre"></a></td>
+      <td ng-bind="cliente.usuario"></td>
+      <td ng-bind="cliente.email"></td>
 
-        </tbody>
-    </table>
-
-    <div class="pull-right">
-        <dir-pagination-controls on-page-change="pageChanged(newPageNumber)"></dir-pagination-controls>
-    </div>
-
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="clienteEdit({id:cliente.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.delete(cliente.id)"><i></i></button>
+        </div>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <loader ng-show="vm.searching" model="vm.clientes"></loader>
+</div>
+<div class="paginator">
+  <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
 </div>

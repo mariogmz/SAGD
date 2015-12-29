@@ -28,6 +28,7 @@ use Sagd\IcecatFeed;
  * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Ficha whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Galeria[] $galerias
  */
 class Ficha extends LGGModel {
 

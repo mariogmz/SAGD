@@ -1,13 +1,14 @@
 <?php
 
 use App\Telefono;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 /**
  * @coversDefaultClass \App\Telefono
  */
 
 class TelefonoTest extends TestCase {
-
+    use DatabaseTransactions;
     /**
      * @coversNothing
      * @group modelo_actualizable

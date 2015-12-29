@@ -38,6 +38,7 @@
       'sagdApp.sidebar',
       'sagdApp.subfamilia',
       'sagdApp.sucursal',
+      'sagdApp.telefono',
       'sagdApp.transferencia',
       'sagdApp.unidad'
 
