@@ -1,21 +1,19 @@
-// app/producto/new/step2/config.route.js
+// app/cliente/new/step2/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
-    .module('sagdApp.producto')
+    .module('sagdApp.cliente')
     .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider){
+  function configureRoutes($stateProvider) {
     $stateProvider
-      .state('productoNew.step2', {
-        parent: 'productoNew',
-        templateUrl: 'app/producto/new/step2/step2.html',
-        controller: 'productoNewStepController',
-        controllerAs: 'vm'
+      .state('clienteNew.step2', {
+        parent: 'clienteNew',
+        templateUrl: 'app/cliente/new/step2/step2.html'
       });
   }
 })();
