@@ -28,8 +28,8 @@ class AddClientesAutorizacionesConstraints extends Migration {
     public function down() {
         //
         Schema::table('clientes_autorizaciones', function ($table) {
-            $table->dropForeign('clientes_autorizaciones_cliente_id_foreign');
             $table->dropForeign('clientes_autorizaciones_cliente_autorizado_id_foreign');
+            $table->dropForeign('clientes_autorizaciones_cliente_id_foreign');
 
             $table->dropColumn(['cliente_id', 'cliente_autorizado_id']);
         });

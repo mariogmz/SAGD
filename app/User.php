@@ -88,7 +88,7 @@ class User extends LGGModel implements AuthenticatableContract, AuthorizableCont
 
     /**
     * Obtiene el modelo asociado con el User
-    * @return App\Cliente | App\Empleado
+    * @return \App\Cliente | \App\Empleado
     */
     public function morphable()
     {

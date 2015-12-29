@@ -29,6 +29,7 @@ class LGGModel extends Model implements BulkUpdates{
     /**
      * This method is responsible for validating the model
      * @codeCoverageIgnore
+     * @param null $method
      * @return bool
      */
     public function isValid($method = null) {

@@ -5,6 +5,7 @@
         <legend>Domicilio</legend>
         <formly-form model="vm.domicilio" fields="vm.fields"></formly-form>
         <show-codigo-postal model="vm.domicilio.codigo_postal"></show-codigo-postal>
+        <show-telefono model="vm.domicilio.telefono" ng-if="vm.telephone"></show-telefono>
       </fieldset>
     </form>
   </article>

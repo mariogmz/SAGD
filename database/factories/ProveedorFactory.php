@@ -27,3 +27,15 @@ $factory->defineAs(\App\Proveedor::class, 'uppercaseKey', function ($faker) use 
 
     return array_merge($proveedor, ['clave' => strtoupper($proveedor['clave'])]);
 });
+
+$factory->defineAs(\App\Proveedor::class, 'externo', function ($faker) use ($factory) {
+    return array_merge($factory->raw(\App\Proveedor::class),[
+        'externo' => 1
+    ]);
+});
+
+$factory->defineAs(\App\Proveedor::class, 'interno', function ($faker) use ($factory) {
+    return array_merge($factory->raw(\App\Proveedor::class),[
+        'externo' => 0
+    ]);
+});

@@ -20,7 +20,8 @@
       restrict: 'E',
       scope: {
         domicilio: '=model',
-        form: '='
+        form: '=',
+        telephone: '='
       },
       templateUrl: 'app/domicilio/new/new-domicilio.template.html'
     };
@@ -51,5 +52,7 @@
         }
       }
     ];
+
+    vm.telephone = vm.telephone || false;
   }
 })();

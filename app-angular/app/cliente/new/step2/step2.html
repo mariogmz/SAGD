@@ -1,0 +1,7 @@
+<formly-form model="vm.model" fields="vm.fieldsStepTwo" form="newClientForm"></formly-form>
+<new-domicilio model="vm.model.domicilio" form="newClientForm" telephone="vm.telephone"></new-domicilio>
+<hr>
+<div class="pull-right">
+  <a ui-sref="clienteNew.step1" class="button secondary">Atrás</a>
+  <input type="submit" class="button primary" ng-disabled="newClientForm.$invalid" value="Guardar cambios">
+</div>

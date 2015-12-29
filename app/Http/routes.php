@@ -60,6 +60,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('margen', 'MargenController', ['only' => ['index','store','show','update','destroy']]);
 		Route::resource('producto-sucursal', 'ProductoSucursalController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('cliente', 'ClienteController', ['only' => ['index','store','show','update','destroy']]);
+        Route::get('clientes/buscar', 'ClienteController@buscar');
         Route::resource('cliente-referencia', 'ClienteReferenciaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('cliente-estatus', 'ClienteEstatusController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('codigo-postal', 'CodigoPostalController', ['only' => ['index','store','show','update','destroy']]);
@@ -73,6 +74,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('rol/{id}/empleados', 'RolController@empleados');
         Route::post('rol/{id}/empleados/attach/{empleado}', 'RolController@attachEmpleado');
         Route::delete('rol/{id}/empleados/detach/{empleado}', 'RolController@detachEmpleado');
+        Route::get('roles/clientes', 'RolController@rolesClientes');
         Route::resource('permiso', 'PermisoController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('telefono', 'TelefonoController', ['only' => ['index','store','show','update','destroy']]);
 
