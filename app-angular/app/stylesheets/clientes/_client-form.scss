@@ -19,40 +19,10 @@
     @extend .c-select;
   }
 
-  .approved {
-    @extend .text-center;
-    font-size: 1.5rem;
-
-    button {
-
-      @extend .btn;
-
-      &.revisado {
-        @extend .btn-success;
-
-        i {
-          @extend .fa;
-          @extend .fa-thumbs-up;
-        }
-      }
-
-      &.no-revisado {
-        @extend .btn-danger;
-
-        i {
-          @extend .fa;
-          @extend .fa-thumbs-down;
-        }
-      }
-
-      &.back {
-        @extend .btn-secondary;
-
-        i {
-          @extend .fa;
-          @extend .fa-arrow-left;
-        }
-      }
+  button {
+    @extend .btn;
+    &.password {
+      @extend .btn-primary;
     }
   }
 
