@@ -176,6 +176,6 @@ class ClienteController extends Controller {
         $this->cliente = $this->cliente->whereHas('estatus', function($query) {
             $query->where('nombre','Activo');
         })->get(['id','nombre']);
-        return response()->json($this->cliente->self(), 200);
+        return response()->json($this->cliente, 200);
     }
 }
