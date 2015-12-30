@@ -322,4 +322,21 @@ class ClienteControllerTest extends TestCase {
         $this->get($endpoint)
             ->assertResponseStatus(200);
     }
+
+    /**
+     * @covers ::listar
+     */
+    public function testListarClientes(){
+        $endpoint = '/v1/clientes/listar';
+
+        $this->mock->shouldReceive('whereHas')->withAnyArgs()->andReturn(Mockery::self());
+        $this->mock->shouldReceive('get')->with(['id','nombre'])->andReturn(Mockery::self());
+        $this->mock->shouldReceive('self')->withNoArgs()->andReturn('Hello');
+
+        $this->app->instance('App\Cliente', $this->mock);
+        $this->get($endpoint)
+            ->seeJson([
+                'Hello'
+            ])->assertResponseOk();
+    }
 }

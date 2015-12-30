@@ -61,7 +61,7 @@ class ClienteController extends Controller {
      */
     public function show($id) {
         $this->authorize($this);
-        $this->cliente = $this->cliente->with('domicilios.telefonos','domicilios.codigoPostal','tabuladores.sucursal')->find($id);
+        $this->cliente = $this->cliente->with('domicilios.telefonos','domicilios.codigoPostal','tabuladores.sucursal','user')->find($id);
         if (!empty($this->cliente)) {
             return response()->json([
                 'message' => 'Cliente obtenido exitosamente',
@@ -165,5 +165,17 @@ class ClienteController extends Controller {
         }
 
         return $this->cliente->with('user')->get();
+    }
+
+    /**
+     * Obtiene una lista de todos los empleados activos para los casos
+     * donde se requiera enlistarlos
+     */
+    public function listar() {
+        $this->authorize($this);
+        $this->cliente = $this->cliente->whereHas('estatus', function($query) {
+            $query->where('nombre','Activo');
+        })->get(['id','nombre']);
+        return response()->json($this->cliente->self(), 200);
     }
 }
