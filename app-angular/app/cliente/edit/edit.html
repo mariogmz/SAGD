@@ -1,6 +1,6 @@
 <article class="card">
   <section class="header">
-    <h4>Producto</h4>
+    <h4>Cliente</h4>
   </section>
   <section class="block">
 
@@ -10,46 +10,43 @@
         <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
       </li>
       <li class="nav-item">
-        <a href="#ficha" role="tab" data-toggle="tab">Ficha</a>
+        <a href="#contacto" role="tab" data-toggle="tab">Contacto</a>
       </li>
       <li class="nav-item">
-        <a href="#precios" role="tab" data-toggle="tab">Precios</a>
+        <a href="#preferencias" role="tab" data-toggle="tab">Preferencias</a>
       </li>
       <li class="nav-item">
-        <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
+        <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
       </li>
-      <li class="nav-item save" ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
-        <a role="tab" ng-click="vm.save(productoEditForm.$valid && productoEditForm.$dirty)"><i></i> Guardar</a>
-      </li>
-      <li class="nav-item save">
-        <a role="tab"><img width="70px" src="/public/img/icecat_logo.svg"></a>
+      <li class="nav-item save" ng-class="{'disabled-tab' : clienteEditForm.$invalid && clienteEditForm.$dirty || clienteEditForm.$pristine}">
+        <a role="tab" ng-click="vm.save(clienteEditForm.$valid && clienteEditForm.$dirty)"><i></i> Guardar</a>
       </li>
       <li class="nav-item back">
-        <a ui-sref="productoIndex" role="tab"><i></i> Regresar</a>
+        <a ui-sref="clienteIndex" role="tab"><i></i> Regresar</a>
       </li>
     </ul>
 
 
-    <div class="product-form">
-      <form name="productoEditForm" novalidate>
+    <div class="client-form">
+      <form name="clienteEditForm" novalidate>
       <!-- Tab panes -->
         <article class="tab-content">
-          <loader class="text-center" model="vm.producto"></loader>
+          <loader class="text-center" model="vm.cliente"></loader>
           <!-- Datos Generales -->
           <section role="tabpanel" class="fade in active" id="datos-generales">
             <div ui-view="datos-generales"></div>
           </section>
           <!-- Pesos & Dimensiones -->
-          <section role="tabpanel" class="fade" id="ficha">
-            <div ui-view="ficha"></div>
+          <section role="tabpanel" class="fade" id="contacto">
+            <div ui-view="contacto"></div>
           </section>
           <!-- Precios -->
-          <section role="tabpanel" class="fade" id="precios">
-            <div ui-view="precios"></div>
+          <section role="tabpanel" class="fade" id="preferencias">
+            <div ui-view="preferencias"></div>
           </section>
           <!-- Existencias -->
-          <section role="tabpanel" class="fade" id="existencias">
-            <div ui-view="existencias"></div>
+          <section role="tabpanel" class="fade" id="tabuladores">
+            <div ui-view="tabuladores"></div>
           </section>
         </article>
       </form>

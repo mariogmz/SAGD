@@ -1,22 +1,22 @@
-// app/producto/edit/config.route.js
+// app/cliente/edit/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.producto')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.cliente')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('productoEdit', {
-                url: 'producto/editar/:id',
-                parent: 'producto',
-                templateUrl: 'app/producto/edit/edit.html',
-                controller: 'productoEditController',
-                controllerAs: 'vm'
-            });
-    }
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('clienteEdit', {
+        url: 'cliente/editar/:id',
+        parent: 'cliente',
+        templateUrl: 'app/cliente/edit/edit.html',
+        controller: 'clienteEditController',
+        controllerAs: 'vm'
+      });
+  }
 })();

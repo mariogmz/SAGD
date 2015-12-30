@@ -6,25 +6,6 @@
 
     <section class="row">
 
-      <!-- Spiff -->
-      <div class="col-sm">
-        <fieldset ng-class="vm.setClass(productoEditForm.spiff)">
-          <label for="spiff">Spiff: </label>
-
-          <div class="with-icon">
-            <span><i class="money"></i></span>
-            <input type="number" id="spiff" name="spiff" ng-model="vm.producto.spiff"
-                   min="0"
-                   numeric
-                   required
-                   step="1">
-          </div>
-          <!-- Validation messages -->
-          <div ng-messages="productoEditForm.spiff.$error" ng-show="productoEditForm.spiff.$touched">
-            <div ng-messages-include="app/templates/fields/messages.html"></div>
-          </div>
-        </fieldset>
-      </div>
 
       <!-- Margen -->
       <div class="col-lg">
