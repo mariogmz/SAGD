@@ -217,7 +217,10 @@
     function obtenerSucursales() {
       return api.get('/sucursal')
         .then(function(response) {
-          vm.sucursales = response.data;
+          vm.sucursales = response.data.filter(function(sucursal){
+            return !sucursal.proveedor.externo;
+          });
+
           return response;
         })
         .catch(function(response) {

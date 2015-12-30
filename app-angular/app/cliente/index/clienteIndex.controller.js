@@ -36,7 +36,8 @@
     }
 
     function buscar() {
-      vm.searching = !vm.searching;
+      vm.searching = true;
+      vm.clientes = undefined;
       obtenerClientes().then(success).catch(error);
     }
 
@@ -61,7 +62,7 @@
     }
 
     function success(response) {
-      vm.searching = !vm.searching;
+      vm.searching = false;
       vm.clientes = response.data.map(function(cliente) {
         cliente.email = cliente.user ? cliente.user.email : '';
         return cliente;
@@ -71,7 +72,7 @@
     }
 
     function error(response) {
-      vm.searching = !vm.searching;
+      vm.searching = false;
       pnotify.alert(response.data.error, response.data.message, 'error');
     }
 
