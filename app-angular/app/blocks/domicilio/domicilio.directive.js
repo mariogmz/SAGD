@@ -41,6 +41,7 @@
 
     function activate() {
       vm.domicilios = vm.cliente.domicilios;
+      vm.tipos = [{tipo: 'FIJO'}, {tipo: 'CELULAR'}, {tipo: 'FAX'}];
       getCodigosPostales().then(function(response) {
         return response;
       });

@@ -19,7 +19,7 @@
           <td class="with-input"><input type="text" ng-model="domicilio.localidad"></td>
           <td class="with-input">
             <angucomplete-alt
-              id="id"
+              id="cp-id"
               placeholder="C.P."
               pause="100"
               selected-object="vm.selectCp"
@@ -34,6 +34,13 @@
           <td class="with-input"><input type="text" ng-model="domicilio.codigoPostal.estado" disabled></td>
           <td class="with-input"><input type="text" ng-model="domicilio.codigoPostal.municipio" disabled></td>
         </tr>
+        <tr>
+          <td></td>
+          <td colspan="3">
+            <button type="button" class="add-item"><i></i> Agregar domicilio</button>
+          </td>
+          <td></td>
+        </tr>
         </tbody>
       </table>
     </section>
@@ -47,12 +54,25 @@
           <th>Tipo</th>
         </tr>
         </thead>
-        <tbody>
+        <tbody ng-show="vm.domicilio">
         <tr ng-repeat="telefono in vm.domicilio.telefonos">
           <td class="with-input"><input type="text" ng-model="telefono.numero"></td>
-          <td class="with-input"><input type="text" ng-model="telefono.tipo"></td>
-          <td></td>
+          <td class="with-input">
+            <angucomplete-alt
+              id="tipo-id"
+              placeholder="TIPO"
+              pause="100"
+              selected-object="telefono.tipo"
+              local-data="vm.tipos"
+              search-fields="tipo"
+              title-field="tipo"
+              text-searching="Buscando..."
+              text-no-results="No hay resultados"
+              minlength="0">
+            </angucomplete-alt>
+          </td>
         </tr>
+        <tr><td colspan="2"><button type="button" class="add-item"><i></i></button></td></tr>
         </tbody>
       </table>
     </section>
