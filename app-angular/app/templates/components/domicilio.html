@@ -1,10 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-        
-    </body>
-</html>
+<div class="domicilios-directive">
+  <div class="row">
+
+    <!--Left Column with Table-->
+    <section class="domicilios-list">
+      <table class="item-table">
+        <thead class="sortable">
+        <tr>
+          <th>Calle</th>
+          <th>Localidad</th>
+          <th>C.P.</th>
+          <th>Estado</th>
+          <th>Municipio</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="domicilio in vm.domicilios" ng-click="vm.selectDomicilio(domicilio)">
+          <td class="with-input"><input type="text" ng-model="domicilio.calle"></td>
+          <td class="with-input"><input type="text" ng-model="domicilio.localidad"></td>
+          <td class="with-input">
+            <angucomplete-alt
+              id="id"
+              placeholder="C.P."
+              pause="100"
+              selected-object="vm.selectCp"
+              local-data="vm.codigosPostales"
+              search-fields="codigo_postal"
+              title-field="codigo_postal"
+              text-searching="Buscando..."
+              text-no-results="No hay resultados"
+              minlength="3">
+            </angucomplete-alt>
+          </td>
+          <td class="with-input"><input type="text" ng-model="domicilio.codigoPostal.estado" disabled></td>
+          <td class="with-input"><input type="text" ng-model="domicilio.codigoPostal.municipio" disabled></td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!--Right Column with Table-->
+    <section class="telefonos-list">
+      <table class="item-table">
+        <thead class="sortable">
+        <tr>
+          <th>Número</th>
+          <th>Tipo</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="telefono in vm.domicilio.telefonos">
+          <td class="with-input"><input type="text" ng-model="telefono.numero"></td>
+          <td class="with-input"><input type="text" ng-model="telefono.tipo"></td>
+          <td></td>
+        </tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>

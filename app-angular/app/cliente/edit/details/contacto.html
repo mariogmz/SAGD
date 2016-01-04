@@ -5,8 +5,6 @@
   </header>
 
   <article class="block">
-    <div ng-repeat="domicilio in vm.cliente.domicilios">
-      <edit-domicilio model="domicilio" telephone="domicilio.telefonos"></edit-domicilio>
-    </div>
+    <domicilio cliente="vm.cliente"></domicilio>
   </article>
 </section>

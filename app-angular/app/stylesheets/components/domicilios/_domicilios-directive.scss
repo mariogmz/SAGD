@@ -1,0 +1,21 @@
+.domicilios-directive {
+  @include make-container();
+  @include make-row();
+
+  input[type="text"] {
+    font-size: .75rem;
+  }
+
+  @media (max-width: 106.1rem) {
+    th {
+      font-size: .75rem;
+    }
+
+    input[type="text"] {
+      font-size: .625rem;
+    }
+
+    max-height: 50vh;
+  }
+
+}

@@ -1,3 +1,8 @@
-/**
- * Created by mario on 31/12/15.
- */
+// app/blocks/domicilio/domicilio.module.js
+
+(function() {
+  'use strict';
+
+  angular
+    .module('blocks.domicilio', ['angucomplete-alt']);
+})();

@@ -1,0 +1,6 @@
+.telefonos-list {
+  @extend .table-responsive;
+  @include make-col();
+  @include make-col-span(2.5);
+  padding-left: 0;
+}
