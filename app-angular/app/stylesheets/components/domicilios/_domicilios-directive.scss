@@ -2,20 +2,31 @@
   @include make-container();
   @include make-row();
 
-  input[type="text"] {
+  input[type="text"],
+  select {
     font-size: .75rem;
   }
 
   @media (max-width: 106.1rem) {
+    max-height: 50vh;
     th {
       font-size: .75rem;
     }
 
-    input[type="text"] {
+    input[type="text"],
+    select {
       font-size: .625rem;
     }
+  }
 
-    max-height: 50vh;
+  .add-item {
+    @extend .btn;
+    @extend .btn-primary;
+
+    i {
+      @extend .fa;
+      @extend .fa-plus-circle;
+    }
   }
 
 }
