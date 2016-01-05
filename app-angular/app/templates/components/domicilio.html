@@ -1,5 +1,8 @@
 <div class="domicilios-directive">
-  <div class="row">
+  <section class="row">
+
+  </section>
+  <section class="row">
 
     <!--Left Column with Table-->
     <section class="domicilios-list">
@@ -14,15 +17,19 @@
         </tr>
         </thead>
         <tbody>
-        <tr ng-repeat="domicilio in vm.domicilios" ng-click="vm.selectDomicilio(domicilio)">
-          <td class="with-input"><input type="text" ng-model="domicilio.calle"></td>
-          <td class="with-input"><input type="text" ng-model="domicilio.localidad"></td>
+        <tr ng-repeat="domicilio in vm.domicilios | filter:vm.visible" ng-click="vm.selectDomicilio(domicilio)"
+            ng-class="{'table-info': vm.domicilio == domicilio}">
+          <td class="with-input"><input type="text" ng-model="domicilio.calle"
+                                        ng-change="vm.setUpdateDomicilio()"></td>
+          <td class="with-input"><input type="text" ng-model="domicilio.localidad"
+                                        ng-change="vm.setUpdateDomicilio()"></td>
           <td class="with-input">
             <angucomplete-alt
               id="cp-id"
               placeholder="C.P."
               pause="100"
               selected-object="vm.selectCp"
+              initial-value="domicilio.codigo_postal.codigo_postal"
               local-data="vm.codigosPostales"
               search-fields="codigo_postal"
               title-field="codigo_postal"
@@ -31,13 +38,16 @@
               minlength="3">
             </angucomplete-alt>
           </td>
-          <td class="with-input"><input type="text" ng-model="domicilio.codigoPostal.estado" disabled></td>
-          <td class="with-input"><input type="text" ng-model="domicilio.codigoPostal.municipio" disabled></td>
+          <td class="with-input"><input type="text" ng-model="domicilio.codigo_postal.estado" disabled></td>
+          <td class="with-input"><input type="text" ng-model="domicilio.codigo_postal.municipio" disabled></td>
         </tr>
         <tr>
           <td></td>
-          <td colspan="3">
-            <button type="button" class="add-item"><i></i> Agregar domicilio</button>
+          <td colspan="{{vm.domicilio ? 2 : 3}}">
+            <button type="button" class="add-item" ng-click="vm.agregarDomicilio()"><i></i> Nuevo</button>
+          </td>
+          <td ng-show="vm.domicilio">
+            <button type="button" class="remove-item" ng-click="vm.removerDomicilio()"><i></i> Eliminar</button>
           </td>
           <td></td>
         </tr>
@@ -55,14 +65,16 @@
         </tr>
         </thead>
         <tbody ng-show="vm.domicilio">
-        <tr ng-repeat="telefono in vm.domicilio.telefonos">
+        <tr ng-repeat="telefono in vm.domicilio.telefonos | filter:vm.visible" ng-click="vm.selectTelefono(telefono)"
+            ng-class="{'table-info': vm.telefono == telefono}">
           <td class="with-input"><input type="text" ng-model="telefono.numero"></td>
           <td class="with-input">
             <angucomplete-alt
               id="tipo-id"
               placeholder="TIPO"
               pause="100"
-              selected-object="telefono.tipo"
+              selected-object="vm.selectTipo"
+              initial-value="telefono.tipo"
               local-data="vm.tipos"
               search-fields="tipo"
               title-field="tipo"
@@ -72,9 +84,16 @@
             </angucomplete-alt>
           </td>
         </tr>
-        <tr><td colspan="2"><button type="button" class="add-item"><i></i></button></td></tr>
+        <tr>
+          <td colspan="{{vm.telefono ? 1 : 2}}">
+            <button type="button" class="add-item" ng-click="vm.agregarTelefono()"><i></i></button>
+          </td>
+          <td ng-show="vm.telefono">
+            <button type="button" class="remove-item" ng-click="vm.removerTelefono()"><i></i></button>
+          </td>
+        </tr>
         </tbody>
       </table>
     </section>
-  </div>
+  </section>
 </div>

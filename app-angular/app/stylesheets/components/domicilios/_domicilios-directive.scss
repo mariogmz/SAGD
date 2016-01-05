@@ -1,6 +1,5 @@
 .domicilios-directive {
   @include make-container();
-  @include make-row();
 
   input[type="text"],
   select {
@@ -19,14 +18,27 @@
     }
   }
 
-  .add-item {
+  button {
     @extend .btn;
-    @extend .btn-primary;
+    &.add-item {
 
-    i {
-      @extend .fa;
-      @extend .fa-plus-circle;
+      @extend .btn-primary;
+
+      i {
+        @extend .fa;
+        @extend .fa-plus-circle;
+      }
+    }
+    &.remove-item {
+
+      @extend .btn-danger;
+
+      i {
+        @extend .fa;
+        @extend .fa-minus-circle;
+      }
     }
   }
+
 
 }
