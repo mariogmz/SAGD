@@ -76,7 +76,7 @@
 
     function selectDomicilio(domicilio) {
       vm.domicilio = domicilio;
-      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos || []);
+      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
     }
 
     function selectTelefono(telefono) {
@@ -109,7 +109,8 @@
       vm.domicilios.push({
         action: 0
       });
-      vm.domicilio = vm.domicilios[vm.domicilios.length - 1];
+      vm.domicilio = ultimoSeleccionable(vm.domicilios);
+      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
     }
 
     function agregarTelefono() {
@@ -120,7 +121,7 @@
       vm.domicilio.telefonos.push({
         action: 0
       });
-      vm.telefono = vm.domicilio.telefonos[vm.domicilio.telefonos.length - 1];
+      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
     }
 
     function removerDomicilio() {
@@ -132,6 +133,7 @@
       }
 
       vm.domicilio = ultimoSeleccionable(vm.domicilios);
+      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
     }
 
     function removerTelefono() {
@@ -163,6 +165,7 @@
     }
 
     function ultimoSeleccionable(array) {
+      array = array || [];
       for (var i = array.length - 1; i >= 0; i--) {
         if (!array[i].hasOwnProperty('action')) {
           return array[i];
