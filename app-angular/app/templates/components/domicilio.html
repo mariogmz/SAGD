@@ -20,9 +20,9 @@
         <tr ng-repeat="domicilio in vm.domicilios | filter:vm.visible" ng-click="vm.selectDomicilio(domicilio)"
             ng-class="{'table-info': vm.domicilio == domicilio}">
           <td class="with-input"><input type="text" ng-model="domicilio.calle"
-                                        ng-change="vm.setUpdateDomicilio()"></td>
+                                        ng-blur="vm.setUpdateDomicilio()"></td>
           <td class="with-input"><input type="text" ng-model="domicilio.localidad"
-                                        ng-change="vm.setUpdateDomicilio()"></td>
+                                        ng-blur="vm.setUpdateDomicilio()"></td>
           <td class="with-input">
             <angucomplete-alt
               id="cp-id"
@@ -67,7 +67,7 @@
         <tbody ng-show="vm.domicilio">
         <tr ng-repeat="telefono in vm.domicilio.telefonos | filter:vm.visible" ng-click="vm.selectTelefono(telefono)"
             ng-class="{'table-info': vm.telefono == telefono}">
-          <td class="with-input"><input type="text" ng-model="telefono.numero"></td>
+          <td class="with-input"><input type="text" ng-model="telefono.numero" ng-blur="vm.setUpdateTelefono()"></td>
           <td class="with-input">
             <angucomplete-alt
               id="tipo-id"

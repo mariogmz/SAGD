@@ -91,6 +91,8 @@
         vm.domicilio.codigo_postal = null;
         vm.domicilio.codigo_postal_id = null;
       }
+
+      setUpdateDomicilio();
     }
 
     function selectTipo($item) {
@@ -99,6 +101,8 @@
       } else {
         vm.telefono.tipo = null;
       }
+
+      setUpdateTelefono();
     }
 
     function agregarDomicilio() {
@@ -110,7 +114,7 @@
         action: 0
       });
       vm.domicilio = ultimoSeleccionable(vm.domicilios);
-      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
+      vm.telefono = vm.domicilio ? ultimoSeleccionable(vm.domicilio.telefonos) : null;
     }
 
     function agregarTelefono() {
@@ -133,7 +137,7 @@
       }
 
       vm.domicilio = ultimoSeleccionable(vm.domicilios);
-      vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
+      vm.telefono = vm.domicilio ? ultimoSeleccionable(vm.domicilio.telefonos) : null;
     }
 
     function removerTelefono() {
@@ -148,10 +152,15 @@
     }
 
     function setUpdateDomicilio() {
-
+      if (!vm.domicilio.hasOwnProperty('action')) {
+        vm.domicilio.action = 1; // Acción actualizar
+      }
     }
 
     function setUpdateTelefono() {
+      if (!vm.telefono.hasOwnProperty('action')) {
+        vm.telefono.action = 1; // Acción actualizar
+      }
     }
 
     ////////////////////// UTILS //////////////////////
