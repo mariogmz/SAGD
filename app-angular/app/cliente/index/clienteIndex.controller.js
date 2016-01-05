@@ -7,10 +7,10 @@
     .module('sagdApp.cliente')
     .controller('clienteIndexController', ClienteIndexController);
 
-  ClienteIndexController.$inject = ['api', 'pnotify'];
+  ClienteIndexController.$inject = ['Cliente'];
 
   /* @ngInject */
-  function ClienteIndexController(api, pnotify) {
+  function ClienteIndexController(Cliente) {
     var vm = this;
     vm.sort = sort;
     vm.eliminarProducto = eliminarCliente;
@@ -38,42 +38,29 @@
     function buscar() {
       vm.searching = true;
       vm.clientes = undefined;
-      obtenerClientes().then(success).catch(error);
-    }
-
-    function obtenerClientes() {
-      return api.get('/clientes/buscar/', vm.search);
+      Cliente.buscar(vm.search).then(success);
     }
 
     function eliminarCliente(id) {
-      return api.delete('/cliente/', id)
+      return Cliente.delete(id)
         .then(function(response) {
-          obtenerClientes().then(function() {
-            pnotify.alert('¡Exito!', response.data.message, 'success');
-          });
-        }).catch(function(response) {
-          pnotify.alert('¡Error!', response.data.message, 'error');
+          return response;
         });
+    }
+
+    function success(clientes) {
+      vm.searching = false;
+      vm.clientes = clientes.map(function(cliente) {
+        cliente.email = cliente.user ? cliente.user.email : '';
+        return cliente;
+      });
+
+      return clientes;
     }
 
     function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
-    }
-
-    function success(response) {
-      vm.searching = false;
-      vm.clientes = response.data.map(function(cliente) {
-        cliente.email = cliente.user ? cliente.user.email : '';
-        return cliente;
-      });
-
-      return response;
-    }
-
-    function error(response) {
-      vm.searching = false;
-      pnotify.alert(response.data.error, response.data.message, 'error');
     }
 
   }

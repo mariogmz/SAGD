@@ -1,6 +1,6 @@
 // app/cliente/show/cliente.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -8,9 +8,9 @@
     .module('sagdApp.cliente')
     .controller('clienteShowController', ClienteShowController);
 
-  ClienteShowController.$inject = ['$stateParams', 'api'];
+  ClienteShowController.$inject = ['$stateParams', 'api', 'Cliente'];
 
-  function ClienteShowController($stateParams, api){
+  function ClienteShowController($stateParams, api, Cliente) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -25,7 +25,7 @@
           placeholder: 'Introduzca el usuario',
           required: true
         }
-      },{
+      }, {
         type: 'input',
         key: 'nombre',
         templateOptions: {
@@ -37,8 +37,8 @@
         templateOptions: {
           label: 'Sexo:',
           options: [
-            {value: "HOMBRE", name: "Hombre"},
-            {value: "MUJER", name: "Mujer"}
+            {value: 'HOMBRE', name: 'Hombre'},
+            {value: 'MUJER', name: 'Mujer'}
           ]
         }
       }, {
@@ -50,8 +50,8 @@
           options: [],
           ngOptions: 'clientes_referencias.id as clientes_referencias.nombre for clientes_referencias in to.options'
         },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/cliente-referencia').then(function (response){
+        controller: /* @ngInject */ function($scope) {
+          $scope.to.loading = api.get('/cliente-referencia').then(function(response) {
             $scope.to.options = response.data;
             return response;
           });
@@ -65,8 +65,8 @@
           options: [],
           ngOptions: 'roles.id as roles.nombre for roles in to.options'
         },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/rol').then(function (response){
+        controller: /* @ngInject */ function($scope) {
+          $scope.to.loading = api.get('/rol').then(function(response) {
             $scope.to.options = response.data;
             return response;
           });
@@ -80,8 +80,8 @@
           options: [],
           ngOptions: 'clientes_estatus.id as clientes_estatus.nombre for clientes_estatus in to.options'
         },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/cliente-estatus').then(function (response){
+        controller: /* @ngInject */ function($scope) {
+          $scope.to.loading = api.get('/cliente-estatus').then(function(response) {
             $scope.to.options = response.data;
             return response;
           });
@@ -95,8 +95,8 @@
           options: [],
           ngOptions: 'sucursales.id as sucursales.nombre for sucursales in to.options'
         },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/sucursal').then(function (response){
+        controller: /* @ngInject */ function($scope) {
+          $scope.to.loading = api.get('/sucursal').then(function(response) {
             $scope.to.options = response.data;
             return response;
           });
@@ -105,21 +105,17 @@
     ];
     initialize();
 
-    function initialize(){
-      return obtenerClientes().then(function (response){
-        console.log(response.message);
+    function initialize() {
+      return obtenerCliente().then(function(cliente) {
+        console.log('Cliente obtenido');
       });
     }
 
-    function obtenerClientes(){
-      return api.get('/cliente/', vm.id)
-        .then(function (response){
-          vm.cliente = response.data.cliente;
-          return response.data;
-        })
-        .catch(function (response){
-          vm.error = response.data;
-          return response.data;
+    function obtenerCliente() {
+      return Cliente.show(vm.id)
+        .then(function(cliente) {
+          vm.cliente = cliente;
+          return cliente;
         });
     }
 
@@ -128,5 +124,4 @@
     }
   }
 
-})
-();
+})();

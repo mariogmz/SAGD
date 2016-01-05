@@ -27,10 +27,10 @@
     }
   }
 
-  DomicilioController.$inject = ['Domicilio', 'CodigoPostal'];
+  DomicilioController.$inject = ['CodigoPostal'];
 
   /* @ngInject */
-  function DomicilioController(Domicilio, CodigoPostal) {
+  function DomicilioController(CodigoPostal) {
 
     var vm = this;
     vm.selectDomicilio = selectDomicilio;
@@ -55,7 +55,7 @@
      * Cualquier otro -> No hacer nada
      */
 
-    ////////////////////////
+    ///////////////////// Resources ///////////////////////////
 
     function activate() {
       vm.domicilios = vm.cliente.domicilios;
@@ -73,6 +73,8 @@
           return vm.codigosPostales;
         });
     }
+
+    /////////////////// UI Handling methods /////////////////////
 
     function selectDomicilio(domicilio) {
       vm.domicilio = domicilio;

@@ -1,10 +1,7 @@
 // app/cliente/cliente.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.cliente', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.cliente', []);
 })();
