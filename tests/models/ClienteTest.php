@@ -5,7 +5,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
  * @coversDefaultClass \App\Cliente
  */
 class ClienteTest extends TestCase {
+
     use DatabaseTransactions;
+
     /**
      * @coversNothing
      */
@@ -344,7 +346,7 @@ class ClienteTest extends TestCase {
      * @covers ::tabuladores
      * @group relaciones
      */
-    public function testTabuladores(){
+    public function testTabuladores() {
         $cliente = factory(App\Cliente::class, 'full')->create();
         factory(App\Tabulador::class)->create([
             'cliente_id' => $cliente->id
@@ -357,15 +359,31 @@ class ClienteTest extends TestCase {
      * @coversNothing
      * @group eventos
      */
-    public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursal(){
+    public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursal() {
         factory(App\Sucursal::class, 'interna', 10)->create();
         $cliente = factory(App\Cliente::class, 'full')->make();
         $this->assertTrue($cliente->guardar(5));
 
         $tabuladores_nuevos = $cliente->tabuladores;
         $this->assertSame(App\Sucursal::count(), $tabuladores_nuevos->count());
-        foreach($tabuladores_nuevos as $tabulador){
+        foreach ($tabuladores_nuevos as $tabulador) {
             $this->assertSame(5, $tabulador->valor_original);
         }
+    }
+
+    /**
+     * @covers ::actualizar
+     * @covers ::guardarDomicilios
+     * @covers ::crearNuevosDomicilios
+     * @covers ::actualizarDomicilios
+     * @covers ::eliminarDomicilios
+     * @covers ::actualizarTabuladores
+     */
+    public function testCuandoSeEditaUnClienteSeGuardanCambiosEnLosModelosRelacionados() {
+        $this->setUpClienteConRelaciones();
+    }
+
+    private function setUpClienteConRelaciones() {
+        
     }
 }

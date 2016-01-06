@@ -38,7 +38,7 @@
       <div class="col-sm">
         <fieldset ng-class="vm.setClass(clienteEditForm.ocupacion)">
           <label for="ocupacion">Ocupación:</label>
-          <input type="text" id="ocupacion" name="ocupacion" ng-model="vm.cliente.ocupacion" required maxlength="45">
+          <input type="text" id="ocupacion" name="ocupacion" ng-model="vm.cliente.ocupacion" maxlength="45">
           <!-- Validation messages -->
           <div ng-messages="clienteEditForm.ocupacion.$error" ng-show="clienteEditForm.ocupacion.$touched">
             <div ng-messages-include="app/templates/fields/messages.html"></div>
@@ -65,14 +65,9 @@
 
       <!-- Fecha de alta -->
       <div class="col-sm">
-        <fieldset ng-class="vm.setClass(clienteEditForm.created_at)">
+        <fieldset ng-class="vm.setClass(clienteEditForm.created_at)" disabled>
           <label for="created_at">Creado el:</label>
-          <input type="date" id="created_at" name="created_at" ng-model="vm.cliente.created_at" required>
-          <!-- Validation messages -->
-          <div ng-messages="clienteEditForm.created_at.$error"
-               ng-show="clienteEditForm.created_at.$touched">
-            <div ng-messages-include="app/templates/fields/messages.html"></div>
-          </div>
+          <input type="date" id="created_at" name="created_at" ng-model="vm.cliente.created_at">
         </fieldset>
       </div>
 
@@ -92,10 +87,10 @@
 
       <!-- Fecha de expiración de club zegucom -->
       <div class="col-sm">
-        <fieldset ng-class="vm.setClass(clienteEditForm.upc)">
+        <fieldset ng-class="vm.setClass(clienteEditForm.fecha_expira_club_zegucom)">
           <label for="fecha_expira_club_zegucom">Club Zegucom expira el:</label>
           <input type="date" id="fecha_expira_club_zegucom" name="fecha_expira_club_zegucom"
-                 ng-model="vm.cliente.fecha_expira_club_zegucom" required>
+                 ng-model="vm.cliente.fecha_expira_club_zegucom">
           <!-- Validation messages -->
           <div ng-messages="clienteEditForm.fecha_expira_club_zegucom.$error"
                ng-show="clienteEditForm.fecha_expira_club_zegucom.$touched">

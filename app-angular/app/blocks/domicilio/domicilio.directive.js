@@ -16,7 +16,8 @@
       link: link,
       restrict: 'E',
       scope: {
-        cliente: '='
+        cliente: '=',
+        form: '='
       },
       templateUrl: 'app/templates/components/domicilio.html'
     };
@@ -140,6 +141,7 @@
 
       vm.domicilio = ultimoSeleccionable(vm.domicilios);
       vm.telefono = vm.domicilio ? ultimoSeleccionable(vm.domicilio.telefonos) : null;
+      vm.form.$setDirty();
     }
 
     function removerTelefono() {
@@ -151,18 +153,23 @@
       }
 
       vm.telefono = ultimoSeleccionable(vm.domicilio.telefonos);
+      vm.form.$setDirty();
     }
 
     function setUpdateDomicilio() {
       if (!vm.domicilio.hasOwnProperty('action')) {
         vm.domicilio.action = 1; // Acción actualizar
       }
+
+      vm.form.$setDirty();
     }
 
     function setUpdateTelefono() {
       if (!vm.telefono.hasOwnProperty('action')) {
         vm.telefono.action = 1; // Acción actualizar
       }
+
+      vm.form.$setDirty();
     }
 
     ////////////////////// UTILS //////////////////////

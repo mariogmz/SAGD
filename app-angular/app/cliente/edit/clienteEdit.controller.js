@@ -8,12 +8,14 @@
     .module('sagdApp.cliente')
     .controller('clienteEditController', ClienteEditController);
 
-  ClienteEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
+  ClienteEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'utils'];
 
-  function ClienteEditController($state, $stateParams, api, pnotify) {
+  function ClienteEditController($state, $stateParams, api, pnotify, Cliente, utils) {
 
     var vm = this;
     vm.id = $stateParams.id;
+    vm.save = guardarCambios;
+    vm.setClass = utils.setClass;
 
     ///////////////////////////////////
 
@@ -23,7 +25,7 @@
 
       obtenerCliente()
         .then(function() {
-          $state.go('details');
+          return $state.go('details');
         })
         .then(obtenerEmpleados)
         .then(obtenerReferencias)
@@ -32,15 +34,14 @@
         .then(obtenerSucursales);
     }
 
+    /////////////// Get resources ///////////////
+
     function obtenerCliente() {
-      return api.get('/cliente/', vm.id)
-        .then(function(response) {
-          vm.cliente = formatDates(response.data.cliente);
-          console.log('Cliente ' + vm.cliente.nombre + ' obtenido');
-        })
-        .catch(function(response) {
-          vm.cliente = {};
-          console.error(response.data.message);
+      return Cliente.show(vm.id)
+        .then(function(cliente) {
+          vm.cliente = cliente;
+          console.log('Cliente ' + cliente.nombre + ' obtenido');
+          return cliente;
         });
     }
 
@@ -49,6 +50,7 @@
         .then(function(response) {
           vm.empleados = response.data;
           console.log('Empleados obtenidos correctamente.');
+          return response.data;
         })
         .catch(function(response) {
           console.log('No se pudieron obtener los empleados', response.data);
@@ -60,6 +62,7 @@
         .then(function(response) {
           vm.clientes_referencias = response.data;
           console.log('Catálogo de referencias obtenido correctamente.');
+          return response.data;
         })
         .catch(function(response) {
           console.log('No se pudo obtener el catálogo de referencias.');
@@ -83,39 +86,46 @@
       return api.get('/cliente-estatus')
         .then(function(response) {
           vm.estatus = response.data;
-          return response;
+          return response.data;
         })
         .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('Hubo un problema al obtener los Estatus', vm.error.error, 'error');
-          return response;
         });
     }
 
     function obtenerSucursales() {
       return api.get('/sucursal')
         .then(function(response) {
-          vm.sucursales = response.data.filter(function(sucursal){
+          vm.sucursales = response.data.filter(function(sucursal) {
             return !sucursal.proveedor.externo;
           });
 
-          return response;
+          return response.data;
         })
         .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('Hubo un problema al obtener las Sucursales', vm.error.error, 'error');
-          return response;
         });
     }
 
-    //////////// UTILS ////////////////
+    ////////////// Saves and updates /////////////
 
-    function formatDates(cliente) {
-      cliente.fecha_nacimiento = new Date(Date.parse(cliente.fecha_nacimiento));
-      cliente.fecha_expira_club_zegucom = new Date(Date.parse(cliente.fecha_expira_club_zegucom));
-      cliente.fecha_verificacion_correo = new Date(Date.parse(cliente.fecha_verificacion_correo));
-      cliente.created_at = new Date(Date.parse(cliente.created_at));
-      return cliente;
+    function guardarCambios(valid) {
+      if (valid) {
+        return actualizarCliente()
+          .then(function(data) {
+            $state.go('clienteShow', {id: vm.id});
+            return data;
+          });
+      }
+    }
+
+    function actualizarCliente() {
+      return Cliente.update(vm.id, vm.cliente)
+        .then(function(data) {
+          return data;
+        });
     }
   }
 

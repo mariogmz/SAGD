@@ -43,7 +43,7 @@
 
       function crearComplete(response) {
         pnotify.alert('¡Exito!', response.data.message, 'success');
-        return response.cliente;
+        return response.data.cliente;
       }
 
       function crearFailed(error) {
@@ -57,7 +57,7 @@
         .catch(mostrarFailed);
 
       function mostrarComplete(response) {
-        return response.data.cliente;
+        return formatDates(response.data.cliente);
       }
 
       function mostrarFailed(error) {
@@ -65,14 +65,14 @@
       }
     }
 
-    function actualizarCliente(data, id) {
+    function actualizarCliente(id, data) {
       return api.put('/cliente/', id, data)
         .then(actualizarComplete)
         .catch(actualizarFailed);
 
       function actualizarComplete(response) {
         pnotify.alert('¡Exito!', response.data.message, 'success');
-        return response;
+        return response.data;
       }
 
       function actualizarFailed(error) {
@@ -121,6 +121,16 @@
       function listarFailed(error) {
         console.error(error.data);
       }
+    }
+
+    //////////// UTILS ////////////////
+
+    function formatDates(cliente) {
+      cliente.fecha_nacimiento = new Date(Date.parse(cliente.fecha_nacimiento));
+      cliente.fecha_expira_club_zegucom = new Date(Date.parse(cliente.fecha_expira_club_zegucom));
+      cliente.fecha_verificacion_correo = new Date(Date.parse(cliente.fecha_verificacion_correo));
+      cliente.created_at = new Date(Date.parse(cliente.created_at));
+      return cliente;
     }
 
   }

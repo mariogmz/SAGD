@@ -8,6 +8,7 @@
 
   @media (max-width: 106.1rem) {
     max-height: 50vh;
+
     th {
       font-size: .75rem;
     }
@@ -20,6 +21,7 @@
 
   button {
     @extend .btn;
+
     &.add-item {
 
       @extend .btn-primary;
@@ -29,6 +31,7 @@
         @extend .fa-plus-circle;
       }
     }
+
     &.remove-item {
 
       @extend .btn-danger;
@@ -40,5 +43,12 @@
     }
   }
 
+  .notice {
+    @extend .pull-right;
+
+    color: $persian-red;
+    font-size: .8rem;
+    font-style: italic;
+  }
 
 }

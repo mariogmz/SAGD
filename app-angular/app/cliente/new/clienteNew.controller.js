@@ -8,9 +8,9 @@
     .module('sagdApp.cliente')
     .controller('clienteNewController', ClienteNewController);
 
-  ClienteNewController.$inject = ['$state', 'api', 'pnotify'];
+  ClienteNewController.$inject = ['$state', 'api', 'pnotify', 'Cliente'];
 
-  function ClienteNewController($state, api, pnotify) {
+  function ClienteNewController($state, api, pnotify, Cliente) {
 
     var vm = this;
 
@@ -22,16 +22,6 @@
 
     function activate() {
       vm.fieldsStepOne = [
-        {
-          type: 'input',
-          key: 'usuario',
-          templateOptions: {
-            type: 'text',
-            label: 'Usuario:',
-            placeholder: 'Introduzca el usuario',
-            required: true
-          }
-        },
         {
           type: 'input',
           key: 'nombre',
@@ -158,6 +148,9 @@
         .then(function(cliente) {
           $state.go('clienteShow', {id: cliente.id});
           return cliente;
+        })
+        .catch(function(error) {
+          console.error(error);
         });
     }
 

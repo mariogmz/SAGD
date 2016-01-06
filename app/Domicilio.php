@@ -59,8 +59,85 @@ class Domicilio extends LGGModel {
     }
 
     /**
+     * Guarda los cambios solicitados para los telefonos asociados, de acuerdo
+     * al parametro de "action" que tengan:
+     *
+     * - 0. Crear nuevo
+     * - 1. Actualizar existente
+     * - 2. Eliminar registro
+     *
+     * @param array $telefonos
+     * @return bool
+     */
+    public function guardarTelefonos(array $telefonos) {
+        $nuevos = [];
+        $por_actualizar = [];
+        $por_eliminar = [];
+        foreach($telefonos as $telefono) {
+            if(array_key_exists('action', $telefono) ){
+                switch ($telefono['action']) {
+                    case 0:
+                        array_push($nuevos, $telefono);
+                        break;
+                    case 1:
+                        array_push($por_actualizar, $telefono);
+                        break;
+                    case 2:
+                        array_push($por_eliminar, $telefono);
+                        break;
+                }
+            }
+        }
+
+        return ($this->crearNuevosTelefonos($nuevos)
+            && $this->actualizarTelefonos($por_actualizar)
+            && $this->eliminarTelefonos($por_eliminar));
+    }
+
+    /**
+     * Da de alta nuevos teléfonos para este domicilio
+     * @param array $telefonos
+     * @return bool
+     */
+    private function crearNuevosTelefonos(array $telefonos) {
+        foreach($telefonos as $telefono) {
+            $nuevo_telefono = new Telefono();
+            $nuevo_telefono->fill($telefono);
+            if(empty($this->telefonos()->save($nuevo_telefono))){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Actualiza los teléfonos para este domiclio
+     * @param array $telefonos
+     * @return bool
+     */
+    private function actualizarTelefonos(array $telefonos) {
+        foreach($telefonos as $telefono_raw) {
+            $telefono = Telefono::find($telefono_raw['id']);
+            if(empty($telefono) || !$telefono->update($telefono_raw)){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Elimina los teléfonos solicitados para este domicilio
+     * @param array $telefonos
+     * @return bool
+     */
+    private function eliminarTelefonos(array $telefonos) {
+        $telefonos_ids = collect($telefonos)->lists('id');
+        return (count($telefonos) == 0 || Telefono::whereIn('id', $telefonos_ids)->delete() > 0);
+    }
+
+    /**
      * Obtiene el código postal asociado al domicilio
-     * @return App\CodigoPostal
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function codigoPostal() {
         return $this->belongsTo('App\CodigoPostal');
@@ -68,7 +145,7 @@ class Domicilio extends LGGModel {
 
     /**
      * Obtiene el teléfono asociado al domicilio
-     * @return App\Telefonos
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function telefonos() {
         return $this->hasMany('App\Telefono');
@@ -76,7 +153,7 @@ class Domicilio extends LGGModel {
 
     /**
      * Obtiene las sucursales asociadas al domicilio
-     * @return \Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function sucursales() {
         return $this->hasMany('App\Sucursal');
@@ -85,17 +162,16 @@ class Domicilio extends LGGModel {
 
     /**
      * Obtiene los Clientes asociados con el Domicilio
-     * @return Illuminate\Database\Eloquent\Collection::class
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function clientes() {
         return $this->belongsToMany('App\Cliente', 'domicilios_clientes',
             'domicilio_id', 'cliente_id');
     }
 
-
     /**
      * Obtiene las Razones Sociales Emisores asociadas con el Domicilio
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function razonesSocialesEmisores() {
         return $this->hasMany('App\RazonSocialEmisor', 'domicilio_id');
@@ -104,7 +180,7 @@ class Domicilio extends LGGModel {
 
     /**
      * Obtiene las Razones Sociales Receptores asociadas con el Domicilio
-     * @return Illuminate\Database\Eloquent\Collection
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function razonesSocialesReceptores() {
         return $this->hasMany('App\RazonSocialReceptor', 'domicilio_id');
