@@ -44,7 +44,7 @@ class PasswordController extends Controller
      */
     public function postEmail(Request $request)
     {
-        $this->authorize($this);
+//        $this->authorize($this);
         if (!$request->has('email')) {
             return response()->json([
                 'message' => 'No se envio el correo',
