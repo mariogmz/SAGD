@@ -17,7 +17,8 @@
       restrict: 'E',
       scope: {
         cliente: '=',
-        form: '='
+        form: '=',
+        readOnly: '='
       },
       templateUrl: 'app/templates/components/domicilio.html'
     };
@@ -59,6 +60,7 @@
     ///////////////////// Resources ///////////////////////////
 
     function activate() {
+      vm.readOnly = vm.readOnly || false;
       vm.domicilios = vm.cliente.domicilios;
       vm.tipos = [{tipo: 'FIJO'}, {tipo: 'CELULAR'}, {tipo: 'FAX'}];
 
