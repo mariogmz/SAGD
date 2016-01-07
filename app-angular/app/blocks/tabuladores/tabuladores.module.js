@@ -1,3 +1,7 @@
-/**
- * Created by mario on 7/01/16.
- */
+(function() {
+  'use strict';
+
+  angular
+    .module('blocks.tabuladores', []);
+
+})();
