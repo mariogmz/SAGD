@@ -46,6 +46,7 @@ class Tabulador extends LGGModel {
 
     /**
      * Este override de isValid es para agregar validación adicional
+     * @codeCoverageIgnore
      * @param null $method
      * @return bool
      */

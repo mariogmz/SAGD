@@ -380,10 +380,30 @@ class ClienteTest extends TestCase {
      * @covers ::actualizarTabuladores
      */
     public function testCuandoSeEditaUnClienteSeGuardanCambiosEnLosModelosRelacionados() {
-        $this->setUpClienteConRelaciones();
+        $cliente = $this->setUpClienteConRelaciones();
+        $cliente['domicilios'][0]['telefonos'][0]['action'] = 1;
+        $cliente['domicilios'][0]['telefonos'][0]['numero'] = '5555555555';
+        $cliente['domicilios'][0]['telefonos'][1]['action'] = 2;
+        $telefono_eliminar = $cliente['domicilios'][0]['telefonos'][1];
+
+        $cliente_test = App\Cliente::find($cliente['id']);
+        $tel_id = $cliente['domicilios'][0]['telefonos'][0]['id'];
+
+        $this->assertTrue($cliente_test->actualizar($cliente));
+        $this->assertSame('5555555555', App\Telefono::where('id', $tel_id)->first()->numero);
+        $this->assertEmpty(App\Telefono::find($telefono_eliminar['id']));
+
     }
 
     private function setUpClienteConRelaciones() {
-        
+        $domicilio = factory(App\Domicilio::class)->create();
+        factory(App\Telefono::class, 5)->create([
+            'domicilio_id' => $domicilio->id
+        ]);
+        factory(App\Sucursal::class, 5, 'interna')->create();
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $cliente->domicilios()->save($domicilio);
+
+        return App\Cliente::with('domicilios.telefonos','domicilios.codigoPostal','tabuladores.sucursal','user')->find($cliente->id)->toArray();
     }
 }
