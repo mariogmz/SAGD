@@ -1,10 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-        
-    </body>
-</html>
+<!-- app/templates/components/tabuladores.html -->
+
+<div class="tabuladores-directive">
+  <section class="row">
+
+    <fieldset ng-disabled="vm.readOnly">
+      <article class="tabuladores-item" ng-repeat="tabulador in vm.cliente.tabuladores">
+        <div class="card">
+          <div class="header">
+            <h6 ng-bind="tabulador.sucursal.nombre"></h6>
+          </div>
+          <div class="block">
+            <div class="tabuladores-fields">
+              <span>Actual:  </span>
+              <input type="number" ng-model="tabulador.valor">
+            </div>
+            <div class="tabuladores-fields">
+              <span>Original:</span>
+              <input type="number" ng-model="tabulador.valor_original">
+            </div>
+          </div>
+        </div>
+      </article>
+    </fieldset>
+
+  </section>
+</div>
