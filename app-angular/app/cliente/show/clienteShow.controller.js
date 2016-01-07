@@ -14,8 +14,6 @@
 
     var vm = this;
     vm.id = $stateParams.id;
-    vm.save = guardarCambios;
-    vm.setClass = utils.setClass;
 
     ///////////////////////////////////
 
@@ -25,7 +23,7 @@
 
       obtenerCliente()
         .then(function() {
-          return $state.go('details');
+          return $state.go('clienteShow.details');
         })
         .then(obtenerEmpleados)
         .then(obtenerReferencias)
@@ -109,24 +107,6 @@
         });
     }
 
-    ////////////// Saves and updates /////////////
-
-    function guardarCambios(valid) {
-      if (valid) {
-        return actualizarCliente()
-          .then(function(data) {
-            $state.go('clienteShow', {id: vm.id});
-            return data;
-          });
-      }
-    }
-
-    function actualizarCliente() {
-      return Cliente.update(vm.id, vm.cliente)
-        .then(function(data) {
-          return data;
-        });
-    }
   }
 
 })();

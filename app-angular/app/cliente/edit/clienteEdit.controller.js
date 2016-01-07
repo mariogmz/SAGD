@@ -25,7 +25,7 @@
 
       obtenerCliente()
         .then(function() {
-          return $state.go('details');
+          return $state.go('clienteEdit.details');
         })
         .then(obtenerEmpleados)
         .then(obtenerReferencias)

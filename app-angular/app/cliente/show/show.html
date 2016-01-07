@@ -18,8 +18,8 @@
       <li class="nav-item">
         <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
       </li>
-      <li class="nav-item edit" ng-class="{'disabled-tab' : clienteEditForm.$invalid && clienteEditForm.$dirty || clienteEditForm.$pristine}">
-        <a role="tab" ng-click="vm.save(clienteEditForm.$valid && clienteEditForm.$dirty)"><i></i> Guardar</a>
+      <li class="nav-item edit-tab">
+        <a ui-sref="clienteEdit({id:vm.id})" role="tab"><i></i> Editar</a>
       </li>
       <li class="nav-item back">
         <a ui-sref="clienteIndex" role="tab"><i></i> Regresar</a>
@@ -28,8 +28,8 @@
 
 
     <div class="client-form">
-      <form name="clienteEditForm" novalidate>
-      <!-- Tab panes -->
+      <fieldset disabled>
+        <!-- Tab panes -->
         <article class="tab-content">
           <loader class="text-center" model="vm.cliente"></loader>
           <!-- Datos Generales -->
@@ -49,7 +49,7 @@
             <div ui-view="tabuladores"></div>
           </section>
         </article>
-      </form>
+      </fieldset>
     </div>
   </section>
 </show>

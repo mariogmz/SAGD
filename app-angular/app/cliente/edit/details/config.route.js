@@ -11,7 +11,7 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-      .state('details', {
+      .state('clienteEdit.details', {
         parent: 'clienteEdit',
         views: {
           'datos-generales': {
