@@ -411,4 +411,12 @@ class Cliente extends LGGModel {
     public function tabuladores() {
         return $this->hasMany('App\Tabulador');
     }
+
+    /**
+     * Obtiene el rol asociado al cliente
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rol() {
+        return $this->belongsTo('App\Rol');
+    }
 }

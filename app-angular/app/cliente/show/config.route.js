@@ -1,4 +1,4 @@
-// app/cliente/show/config.route.js
+// app/cliente/edit/config.route.js
 
 (function() {
   'use strict';
@@ -11,11 +11,11 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-      .state('clienteShow', {
-        url: 'cliente/:id',
+      .state('clienteEdit', {
+        url: 'cliente/editar/:id',
         parent: 'cliente',
-        templateUrl: 'app/cliente/show/show.html',
-        controller: 'clienteShowController',
+        templateUrl: 'app/cliente/edit/edit.html',
+        controller: 'clienteEditController',
         controllerAs: 'vm'
       });
   }

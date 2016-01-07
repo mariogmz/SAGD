@@ -356,6 +356,19 @@ class ClienteTest extends TestCase {
     }
 
     /**
+     * @covers ::rol
+     * @group relaciones
+     */
+    public function testRol() {
+        $rol = factory(App\Rol::class)->create();
+        $cliente = factory(App\Cliente::class, 'full')->create([
+            'rol_id' => $rol->id
+        ]);
+        $this->assertInstanceOf(App\Rol::class, $cliente->rol);
+        $this->assertSame($rol->id, $cliente->rol->id);
+    }
+
+    /**
      * @coversNothing
      * @group eventos
      */

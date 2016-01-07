@@ -1,0 +1,195 @@
+<!-- app/cliente/show/partials/datos-generales.html -->
+
+<div class="card borderless">
+  <div class="block">
+
+    <!-- Datos generales -->
+    <div class="row">
+
+      <!-- Nombre -->
+      <div class="col-lg">
+        <fieldset ng-class="vm.setClass(clienteEditForm.nombre)">
+          <label for="nombre">Nombre:</label>
+          <input type="text" id="nombre" name="nombre" ng-model="vm.cliente.nombre" required maxlength="200">
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.nombre.$error" ng-show="clienteEditForm.nombre.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Sexo -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.sexo)">
+          <label for="sexo">Sexo:</label>
+          <select id="sexo" name="sexo" ng-model="vm.cliente.sexo" required>
+            <option value="" ng-bind="vm.cliente.sexo? 'Seleccione sexo' : vm.cliente.sexo"></option>
+            <option value="HOMBRE">HOMBRE</option>
+            <option value="MUJER">MUJER</option>
+          </select>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.sexo.$error" ng-show="clienteEditForm.sexo.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Ocupación -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.ocupacion)">
+          <label for="ocupacion">Ocupación:</label>
+          <input type="text" id="ocupacion" name="ocupacion" ng-model="vm.cliente.ocupacion" maxlength="45">
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.ocupacion.$error" ng-show="clienteEditForm.ocupacion.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- Fechas -->
+    <div class="row">
+      <!-- Fecha de nacimiento -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.fecha_nacimiento)">
+          <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+          <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" ng-model="vm.cliente.fecha_nacimiento"
+                 required>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.fecha_nacimiento.$error"
+               ng-show="clienteEditForm.fecha_nacimiento.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Fecha de alta -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.created_at)" disabled>
+          <label for="created_at">Creado el:</label>
+          <input type="date" id="created_at" name="created_at" ng-model="vm.cliente.created_at">
+        </fieldset>
+      </div>
+
+      <!-- Fecha de verificación de correo -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.fecha_verificacion_correo)">
+          <label for="fecha_verificacion_correo">Verificó correo el:</label>
+          <input type="date" id="fecha_verificacion_correo" name="fecha_verificacion_correo"
+                 ng-model="vm.cliente.fecha_verificacion_correo" required>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.fecha_verificacion_correo.$error"
+               ng-show="clienteEditForm.fecha_verificacion_correo.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Fecha de expiración de club zegucom -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.fecha_expira_club_zegucom)">
+          <label for="fecha_expira_club_zegucom">Club Zegucom expira el:</label>
+          <input type="date" id="fecha_expira_club_zegucom" name="fecha_expira_club_zegucom"
+                 ng-model="vm.cliente.fecha_expira_club_zegucom">
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.fecha_expira_club_zegucom.$error"
+               ng-show="clienteEditForm.fecha_expira_club_zegucom.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <div class="row">
+
+      <!-- Vendedor -->
+      <div class="col-lg">
+        <fieldset ng-class="vm.setClass(clienteEditForm.vendedor)">
+          <label for="vendedor">Vendedor de preferencia:</label>
+          <select id="vendedor" name="vendedor" ng-model="vm.cliente.vendedor_id"
+                  ng-options="empleado.id as empleado.nombre for empleado in vm.empleados | orderBy: 'nombre'">
+            <option value="" ng-bind="vm.cliente.vendedor_id == null? 'Seleccione vendedor' : vm.cliente.vendedor.nombre"></option>
+          </select>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.vendedor.$error"
+               ng-show="clienteEditForm.vendedor.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Referencia -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.cliente_referencia)">
+          <label for="cliente_referencia">Se enteró:</label>
+          <select id="cliente_referencia" name="cliente_referencia" ng-model="vm.cliente.cliente_referencia_id"
+                  ng-options="referencia.id as referencia.nombre for referencia in vm.clientes_referencias | orderBy: 'nombre'">
+            <option value="" ng-bind="vm.cliente.cliente_referencia_id == null? 'Seleccione referencia' : vm.cliente.referencia.nombre"></option>
+          </select>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.cliente_referencia.$error"
+               ng-show="clienteEditForm.cliente_referencia.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Otra referencia -->
+      <div class="col-sm">
+        <fieldset ng-class="vm.setClass(clienteEditForm.referencia_otro)">
+          <label for="referencia_otro">Otra referencia:</label>
+          <input type="text" id="referencia_otro" name="referencia_otro" ng-model="vm.cliente.referencia_otro">
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.referencia_otro.$error"
+               ng-show="clienteEditForm.referencia_otro.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+    </div>
+    <hr />
+    <h4>Sistema</h4>
+    <div class="row">
+
+      <div class="col-sm">
+
+        <!-- Usuario -->
+        <fieldset ng-class="vm.setClass(clienteEditForm.usuario)">
+          <label for="usuario">Usuario: </label>
+          <input type="text" id="usuario" name="usuario" ng-model="vm.cliente.usuario" required maxlength="20">
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.usuario.$error" ng-show="clienteEditForm.usuario.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+
+      </div>
+
+      <div class="col-sm">
+
+        <!-- Password -->
+        <fieldset>
+          <label for="password">Contraseña</label>
+          <button type="button" class="password" id="password" ng-model="vm.cliente.usuario" ng-click="vm.resetPassword()">Restablecer</button>
+        </fieldset>
+
+      </div>
+
+      <div class="col-lg">
+
+        <!-- Email -->
+        <fieldset ng-class="vm.setClass(clienteEditForm.email)">
+          <label for="email">Email: </label>
+          <input type="email" id="email" name="email" ng-model="vm.cliente.user.email" required maxlength="60">
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.email.$error" ng-show="clienteEditForm.email.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+    </div>
+
+  </div>
+</div>
