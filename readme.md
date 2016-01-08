@@ -82,6 +82,8 @@ CDN_URL="http://cdn.sagd.app/"
 ICECAT_USERNAME=jlopez
 ICECAT_PASSWORD=zegucom123
 
+STUB_EMAIL_DOMAIN=clientes.grupodicotech.com.mx
+
 RESOURCE_PAGINATION=15
 
 TOKEN_TTL=20160
