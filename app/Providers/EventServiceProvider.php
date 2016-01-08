@@ -53,6 +53,7 @@ class EventServiceProvider extends ServiceProvider {
         'App\Events\ClienteCreado'             => [
             'App\Listeners\CrearTabuladoresParaClienteNuevo',
             'App\Listeners\CrearDomiciliosParaClienteNuevo',
+            'App\Listeners\CrearUsuarioParaClienteNuevo',
         ]
     ];
 

@@ -98,6 +98,7 @@ class Cliente extends LGGModel {
         parent::boot();
         Cliente::creating(function ($cliente) {
             if (empty($cliente->usuario)) {
+                // Se le asigna un Unix timestamp para que sea un username único
                 $cliente->usuario = str_replace(".", "", microtime(true));
             }
 
