@@ -1,22 +1,22 @@
 // app/cliente/show/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.cliente')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.cliente')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('clienteShow', {
-                url: 'cliente/:id',
-                parent: 'cliente',
-                templateUrl: 'app/cliente/show/show.html',
-                controller: 'clienteShowController',
-                controllerAs: 'vm'
-            });
-    }
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('clienteShow', {
+        url: 'cliente/:id',
+        parent: 'cliente',
+        templateUrl: 'app/cliente/show/show.html',
+        controller: 'clienteShowController',
+        controllerAs: 'vm'
+      });
+  }
 })();

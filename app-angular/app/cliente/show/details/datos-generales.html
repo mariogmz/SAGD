@@ -1,0 +1,106 @@
+<!-- app/cliente/show/partials/datos-generales.html -->
+
+<div class="card borderless">
+  <div class="block">
+
+    <!-- Datos generales -->
+    <div class="row">
+
+      <!-- Nombre -->
+      <div class="col-lg">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" ng-model="vm.cliente.nombre" required maxlength="200">
+      </div>
+
+      <!-- Sexo -->
+      <div class="col-sm">
+
+        <label for="sexo">Sexo:</label>
+        <input type="text" name="sexo" ng-model="vm.cliente.sexo">
+
+      </div>
+
+      <!-- Ocupación -->
+      <div class="col-sm">
+        <label for="ocupacion">Ocupación:</label>
+        <input type="text" id="ocupacion" name="ocupacion" ng-model="vm.cliente.ocupacion" maxlength="45">
+      </div>
+    </div>
+
+    <!-- Fechas -->
+    <div class="row">
+      <!-- Fecha de nacimiento -->
+      <div class="col-sm">
+        <label for="fecha_nacimiento">Fecha de nacimiento:</label>
+        <input type="date" id="fecha_nacimiento" name="fecha_nacimiento" ng-model="vm.cliente.fecha_nacimiento">
+      </div>
+
+    <!-- Fecha de alta -->
+    <div class="col-sm">
+      <label for="created_at">Creado el:</label>
+      <input type="date" id="created_at" name="created_at" ng-model="vm.cliente.created_at">
+    </div>
+
+    <!-- Fecha de verificación de correo -->
+    <div class="col-sm">
+      <label for="fecha_verificacion_correo">Verificó correo el:</label>
+      <input type="date" id="fecha_verificacion_correo" name="fecha_verificacion_correo"
+             ng-model="vm.cliente.fecha_verificacion_correo">
+    </div>
+
+    <!-- Fecha de expiración de club zegucom -->
+    <div class="col-sm">
+      <label for="fecha_expira_club_zegucom">Club Zegucom expira el:</label>
+      <input type="date" id="fecha_expira_club_zegucom" name="fecha_expira_club_zegucom"
+             ng-model="vm.cliente.fecha_expira_club_zegucom">
+    </div>
+  </div>
+
+  <div class="row">
+
+    <!-- Vendedor -->
+    <div class="col-lg">
+      <label for="vendedor">Vendedor de preferencia:</label>
+      <input type="text" name="vendedor" ng-model="vm.cliente.vendedor.nombre">
+    </div>
+
+    <!-- Referencia -->
+    <div class="col-sm">
+      <label for="cliente_referencia">Se enteró:</label>
+      <input type="text" name="cliente_referencia" ng-model="vm.cliente.referencia.nombre">
+    </div>
+
+    <!-- Otra referencia -->
+    <div class="col-sm">
+      <label for="referencia_otro">Otra referencia:</label>
+      <input type="text" id="referencia_otro" name="referencia_otro" ng-model="vm.cliente.referencia_otro">
+    </div>
+
+  </div>
+  <hr/>
+  <h4>Sistema</h4>
+  <div class="row">
+
+    <div class="col-lg">
+
+      <!-- Usuario -->
+      <label for="usuario">Usuario: </label>
+      <input type="text" id="usuario" name="usuario" ng-model="vm.cliente.usuario" required maxlength="20">
+    </div>
+
+
+    <div class="col-lg">
+
+      <!-- Email -->
+      <label for="email">Email: </label>
+      <input type="email" id="email" name="email" ng-model="vm.cliente.user.email" required maxlength="60">
+      <!-- Validation messages -->
+      <div ng-messages="clienteEditForm.email.$error" ng-show="clienteEditForm.email.$touched">
+        <div ng-messages-include="app/templates/fields/messages.html"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+</div>

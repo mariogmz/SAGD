@@ -1,0 +1,17 @@
+.tabuladores-directive {
+
+  .tabuladores-item {
+    @include make-col();
+    @include make-col-span(4);
+  }
+
+  .tabuladores-fields {
+    @extend .input-group;
+    span { @extend .input-group-addon; }
+    i { @extend .fa; }
+  }
+
+
+
+
+}

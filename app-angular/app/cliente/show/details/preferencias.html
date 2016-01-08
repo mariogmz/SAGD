@@ -1,0 +1,39 @@
+<!-- app/cliente/edit/details/preferencias.html -->
+
+<div class="card borderless">
+  <div class="block">
+
+    <div class="row">
+
+      <!-- Estatus del cliente -->
+      <div class="col-lg">
+        <label for="cliente_estatus">Estatus:</label>
+        <input type="text" name="cliente_estatus" ng-model="vm.cliente.estatus.nombre">
+      </div>
+
+      <!-- Creado por -->
+      <div class="col-lg">
+        <label for="empleado">Creado por:</label>
+        <input type="text" id="empleado" name="empleado" ng-model="vm.cliente.empleado.nombre" disabled>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+      <!-- Tipo de cliente -->
+      <div class="col-lg">
+        <label for="rol">Tipo de cliente:</label>
+        <input type="text" name="rol" ng-model="vm.cliente.rol.nombre">
+      </div>
+
+      <!-- Sucursal predeterminada -->
+      <div class="col-lg">
+        <label for="sucursal_predeterminada">Sucursal predeterminada:</label>
+        <input type="text" name="sucursal" ng-model="vm.cliente.sucursal.nombre">
+      </div>
+
+    </div>
+
+  </div>
+</div>

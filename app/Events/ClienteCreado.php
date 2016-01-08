@@ -21,9 +21,9 @@ class ClienteCreado extends Event {
     /**
      * Create a new event instance.
      * @param Cliente $cliente
-     * @param int $datos
+     * @param array $datos
      */
-    public function __construct(Cliente $cliente, $datos) {
+    public function __construct(Cliente $cliente, array $datos) {
         $this->cliente = $cliente;
         $this->datos = $datos;
     }

@@ -129,7 +129,7 @@ class ClienteControllerTest extends TestCase {
         $parameters = ['nombre' => 'Useless'];
 
         $this->mock
-            ->shouldReceive(['find' => Mockery::self(), 'update' => true])->withAnyArgs();
+            ->shouldReceive(['find' => Mockery::self(), 'actualizar' => true])->withAnyArgs();
         $this->app->instance('App\Cliente', $this->mock);
 
         $this->put($endpoint, $parameters)
@@ -165,7 +165,7 @@ class ClienteControllerTest extends TestCase {
         $parameters = ['clave' => 'Z'];
 
         $this->mock
-            ->shouldReceive(['find' => Mockery::self(), 'update' => false])->withAnyArgs();
+            ->shouldReceive(['find' => Mockery::self(), 'actualizar' => false])->withAnyArgs();
         $this->mock->errors = "Errors";
         $this->app->instance('App\Cliente', $this->mock);
 
@@ -321,5 +321,21 @@ class ClienteControllerTest extends TestCase {
 
         $this->get($endpoint)
             ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::listar
+     */
+    public function testListarClientes(){
+        $endpoint = '/v1/clientes/listar';
+
+        $this->mock->shouldReceive('whereHas')->withAnyArgs()->andReturn(Mockery::self());
+        $this->mock->shouldReceive('get')->with(['id','nombre'])->andReturn('Hello');
+
+        $this->app->instance('App\Cliente', $this->mock);
+        $this->get($endpoint)
+            ->seeJson([
+                'Hello'
+            ])->assertResponseOk();
     }
 }

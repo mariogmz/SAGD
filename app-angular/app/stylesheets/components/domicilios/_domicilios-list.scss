@@ -1,0 +1,7 @@
+.domicilios-list {
+  @extend .table-responsive;
+  @include make-col();
+  @include make-col-span(9.5);
+  padding-right: 0;
+
+}

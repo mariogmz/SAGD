@@ -27,7 +27,8 @@
     "angular-messages": "~1.4.7",
     "angular-filter": "~0.5.7",
     "angular-tooltips": "~0.1.25",
-    "tether": "~1.1.1"
+    "tether": "~1.1.1",
+    "angucomplete-alt": "~2.1.0"
   },
   "resolutions": {
     "bootstrap": "v4-dev"

@@ -178,6 +178,7 @@ class ClienteTableSeeder extends Seeder {
         $this->progress_bar->setFormat("<info>Seeding:</info> Clientes : [%bar%] %percent:3s%% %elapsed:6s%/%estimated:-6s%");
         $this->progress_bar->start();
         $taken_usernames = [];
+        $administrador_id = App\Empleado::first()->id;
 
         foreach ($this->clientes as $cliente) {
             $nuevo_cliente = new App\Cliente();
@@ -192,6 +193,7 @@ class ClienteTableSeeder extends Seeder {
 
             array_push($taken_usernames, $cliente->usuario);
             $nuevo_cliente->fill((array) $cliente);
+            $nuevo_cliente->empleado_id = $nuevo_cliente->empleado_id ?: $administrador_id;
 
             if (!$nuevo_cliente->save()) {
                 $this->errors ++;

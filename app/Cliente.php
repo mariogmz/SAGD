@@ -3,8 +3,11 @@
 namespace App;
 
 
+use Event;
+use App\Events\ClienteActualizado;
 use App\Events\ClienteCreado;
-
+use DB;
+use Illuminate\Support\MessageBag;
 
 /**
  * App\Cliente
@@ -96,6 +99,11 @@ class Cliente extends LGGModel {
     public static function boot() {
         parent::boot();
         Cliente::creating(function ($cliente) {
+            if (empty($cliente->usuario)) {
+                // Se le asigna un Unix timestamp para que sea un username único
+                $cliente->usuario = str_replace(".", "", microtime(true));
+            }
+
             return $cliente->isValid();
         });
         Cliente::updating(function ($cliente) {
@@ -108,13 +116,13 @@ class Cliente extends LGGModel {
 
     /**
      * Guardar el modelo a la base de datos
-     * @param int $tabulador
+     * @param array $datos
      * @return bool
      */
-    public function guardar($datos) {
+    public function guardar(array $datos) {
         if ($this->save()) {
             // Ya que el evento ocupa un parámetro, no se llama desde Cliente::created
-            event(new ClienteCreado($this, $datos));
+            Event::fire(new ClienteCreado($this, $datos));
 
             return true;
         } else {
@@ -122,6 +130,169 @@ class Cliente extends LGGModel {
         }
     }
 
+    /**
+     * Encapsula todas las operaciones solicitadas sobre el cliente y sus modelos relacionados
+     * de domicilios con teléfonos, y tabuladores.
+     * @param array $datos
+     * @return bool
+     */
+    public function actualizar($datos) {
+
+        if ($this->update($datos)) {
+            DB::beginTransaction();
+            $domicilios_guardados = array_key_exists('domicilios', $datos) && count($datos['domicilios']) > 0?
+                $this->guardarDomicilios($datos) : true;
+
+            if ($domicilios_guardados) {
+                DB::commit();
+            } else {
+                $this->errors = empty($this->errors) ? new MessageBag() : $this->errors;
+                $this->errors->add('Domicilios', 'Algunos domicilios y/o teléfonos están vacíos o incorrectos.');
+                DB::rollBack();
+            }
+
+            DB::beginTransaction();
+            $tabuladores_actualizados = array_key_exists('tabuladores', $datos) && count($datos['tabuladores']) > 0 ?
+                $this->actualizarTabuladores($datos) : true;
+
+            if ($tabuladores_actualizados) {
+                DB::commit();
+
+            } else {
+                $this->errors = empty($this->errors) ? new MessageBag() : $this->errors;
+                $this->errors->add('Tabuladores', 'No se pudieron guardar los tabuladores.');
+                DB::rollBack();
+            }
+
+            Event::fire(new ClienteActualizado($this, $datos));
+            return $domicilios_guardados && $tabuladores_actualizados;
+        } else {
+
+            return false;
+        }
+    }
+
+    /**
+     * Recibe un array de domicilios con sus relaciones, separa los que van a ser creados,
+     * de los que van a ser actualizados y los que van a ser eliminados, de acuerdo
+     * al parametro de "action" que tengan:
+     *
+     * - 0. Crear nuevo
+     * - 1. Actualizar existente
+     * - 2. Eliminar registro
+     *
+     * @param array $data
+     * @return bool
+     */
+    private function guardarDomicilios($data) {
+        $solo_telefonos = [];
+        $nuevos = [];
+        $por_actualizar = [];
+        $por_eliminar = [];
+        foreach ($data['domicilios'] as $domicilio) {
+            if (array_key_exists('action', $domicilio)) {
+                switch ($domicilio['action']) {
+                    case 0:
+                        array_push($nuevos, $domicilio);
+                        break;
+                    case 1:
+                        array_push($por_actualizar, $domicilio);
+                        break;
+                    case 2:
+                        array_push($por_eliminar, $domicilio);
+                        break;
+                }
+            } else {
+                array_push($solo_telefonos, $domicilio);
+            }
+        }
+
+        return ($this->crearNuevosDomicilios($nuevos)
+            && $this->actualizarDomicilios($por_actualizar)
+            && $this->eliminarDomicilios($por_eliminar)
+            && $this->actualizarDomicilios($solo_telefonos, true));
+    }
+
+    /**
+     * Realiza la creación de nuevos domicilios junto con los nuevos teléfonos
+     * asociados.
+     * @param array $domicilios
+     * @return bool
+     */
+    private function crearNuevosDomicilios(array $domicilios) {
+        foreach ($domicilios as $domicilio) {
+            $nuevo_domicilio = new Domicilio();
+            $nuevo_domicilio->fill($domicilio);
+
+            if ($nuevo_domicilio->isValid()) {
+                $this->domicilios()->save($nuevo_domicilio);
+                if (array_key_exists('telefonos', $domicilio)) {
+                    foreach ($domicilio['telefonos'] as $telefono) {
+
+                        $nuevo_telefono = new Telefono();
+                        $nuevo_telefono->fill($telefono);
+                        if ($nuevo_telefono->isValid()) {
+                            $nuevo_domicilio->telefonos()->save($nuevo_telefono);
+                        } else {
+
+                            return false;
+                        }
+                    }
+                }
+            } else {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Realiza la actualización de los domicilios, y de cada uno de estos, realiza
+     * la acción solicitada sobre los teléfonos asociados.
+     * @param array $domicilios
+     * @return bool
+     */
+    private function actualizarDomicilios(array $domicilios, $solo_telefonos = false) {
+        foreach ($domicilios as $domicilio_raw) {
+            $domicilio = Domicilio::find($domicilio_raw['id']);
+            if (empty($domicilio)
+                || ($solo_telefonos ? false : !$domicilio->update($domicilio_raw))
+                || !$domicilio->guardarTelefonos($domicilio_raw['telefonos'])
+            ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * Elimina los domicilios solicitados
+     * @param array $domicilios
+     * @return bool
+     */
+    private function eliminarDomicilios(array $domicilios) {
+        $domicilios_ids = collect($domicilios)->lists('id');
+
+        return (count($domicilios) == 0 || Domicilio::whereIn('id', $domicilios_ids)->delete() > 0);
+    }
+
+    /**
+     * Actualiza los tabuladores
+     * @param array $data
+     * @return bool
+     */
+    private function actualizarTabuladores($data) {
+        foreach ($data['tabuladores'] as $tabulador_raw) {
+            $tabulador = Tabulador::find($tabulador_raw['id']);
+            if (empty($tabulador) || !$tabulador->update($tabulador_raw)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     /**
      * Obtiene el Cliente Estatus asociado con el Cliente
@@ -249,5 +420,17 @@ class Cliente extends LGGModel {
      */
     public function tabuladores() {
         return $this->hasMany('App\Tabulador');
+    }
+
+    /**
+     * Obtiene el rol asociado al cliente
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rol() {
+        return $this->belongsTo('App\Rol');
+    }
+
+    private function initErrors() {
+        if(empty($this->errors) ) { new MessageBag(); };
     }
 }

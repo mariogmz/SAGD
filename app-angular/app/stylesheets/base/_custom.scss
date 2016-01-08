@@ -23,6 +23,13 @@
   }
 }
 
-textarea{
+textarea {
   resize: none;
+}
+
+.angucomplete-dropdown {
+  @media (max-width: 106.1rem) {
+    font-size: .75rem;
+  }
+  overflow-y: auto;
 }

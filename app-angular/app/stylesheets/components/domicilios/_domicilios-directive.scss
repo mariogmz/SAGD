@@ -1,0 +1,54 @@
+.domicilios-directive {
+  @include make-container();
+
+  input[type="text"],
+  select {
+    font-size: .75rem;
+  }
+
+  @media (max-width: 106.1rem) {
+    max-height: 50vh;
+
+    th {
+      font-size: .75rem;
+    }
+
+    input[type="text"],
+    select {
+      font-size: .625rem;
+    }
+  }
+
+  button {
+    @extend .btn;
+
+    &.add-item {
+
+      @extend .btn-primary;
+
+      i {
+        @extend .fa;
+        @extend .fa-plus-circle;
+      }
+    }
+
+    &.remove-item {
+
+      @extend .btn-danger;
+
+      i {
+        @extend .fa;
+        @extend .fa-minus-circle;
+      }
+    }
+  }
+
+  .notice {
+    @extend .pull-right;
+
+    color: $persian-red;
+    font-size: .8rem;
+    font-style: italic;
+  }
+
+}

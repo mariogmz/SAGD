@@ -1,6 +1,6 @@
 // app/margen/show/margen.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -8,9 +8,9 @@
     .module('sagdApp.margen')
     .controller('margenShowController', MargenShowController);
 
-  MargenShowController.$inject = ['$stateParams', 'api'];
+  MargenShowController.$inject = ['$stateParams', 'api', 'utils'];
 
-  function MargenShowController($stateParams, api){
+  function MargenShowController($stateParams, api, utils) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -52,25 +52,25 @@
     ];
     initialize();
 
-    function initialize(){
-      return obtenerMargen().then(function (response){
+    function initialize() {
+      return obtenerMargen().then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerMargen(){
+    function obtenerMargen() {
       return api.get('/margen/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.margen = response.data.margen;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
     }
 
-    function goBack(){
+    function goBack() {
       window.history.back();
     }
   }

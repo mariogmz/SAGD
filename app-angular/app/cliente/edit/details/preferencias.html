@@ -1,0 +1,67 @@
+<!-- app/cliente/edit/details/preferencias.html -->
+
+<div class="card borderless">
+  <div class="block">
+
+    <div class="row">
+
+      <!-- Estatus del cliente -->
+      <div class="col-lg">
+        <fieldset ng-class="vm.setClass(clienteEditForm.cliente_estatus)">
+          <label for="cliente_estatus">Estatus:</label>
+          <select id="cliente_estatus" name="cliente_estatus" ng-model="vm.cliente.cliente_estatus_id"
+                  ng-options="estatus.id as estatus.nombre for estatus in vm.estatus | orderBy:'nombre'" required>
+            <option value="" ng-hide="vm.cliente.cliente_estatus_id">Seleccione estatus del cliente</option>
+          </select>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.cliente_estatus.$error" ng-show="clienteEditForm.cliente_estatus.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- Creado por -->
+      <div class="col-lg">
+        <fieldset>
+          <label for="empleado">Creado por:</label>
+          <input type="text" id="empleado" name="empleado" ng-model="vm.cliente.empleado.nombre" disabled>
+        </fieldset>
+      </div>
+
+    </div>
+
+    <div class="row">
+
+    <!-- Tipo de cliente -->
+      <div class="col-lg">
+        <fieldset ng-class="vm.setClass(clienteEditForm.rol)">
+          <label for="rol">Tipo de cliente:</label>
+          <select id="rol" name="rol" ng-model="vm.cliente.rol_id" ng-options="rol.id as rol.nombre for rol in vm.roles | orderBy:'nombre'" required>
+            <option value="" ng-hide="vm.cliente.rol_id">Seleccione estatus del cliente></option>
+          </select>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.cliente_estatus.$error" ng-show="clienteEditForm.cliente_estatus.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+    <!-- Sucursal predeterminada -->
+      <div class="col-lg">
+        <fieldset ng-class="vm.setClass(clienteEditForm.sucursal_predeterminada)">
+          <label for="sucursal_predeterminada">Sucursal predeterminada:</label>
+          <select id="sucursal_predeterminada" name="sucursal_predeterminada" ng-model="vm.cliente.sucursal_id"
+                  ng-options="sucursal.id as sucursal.nombre for sucursal in vm.sucursales | orderBy:'nombre'" required>
+            <option value="" ng-hide="vm.cliente.sucursal_id">Seleccione sucursal</option>
+          </select>
+          <!-- Validation messages -->
+          <div ng-messages="clienteEditForm.sucursal_predeterminada.$error" ng-show="clienteEditForm.sucursal_predeterminada.$touched">
+            <div ng-messages-include="app/templates/fields/messages.html"></div>
+          </div>
+        </fieldset>
+      </div>
+
+  </div>
+
+  </div>
+</div>

@@ -1,15 +1,55 @@
-<div class="card">
-  <div class="header">
-    Detalle
-  </div>
-  <div class="block">
-    <form class="item-form" novalidate disabled>
-      <fieldset disabled>
-        <legend>Cliente #<strong>{{vm.cliente.id}}</strong></legend>
-        <formly-form model="vm.cliente" fields="vm.fields"></formly-form>
-      </fieldset>
-    </form>
-    <a ng-click="vm.back()" class="button primary">Regresar</a>
-  </div>
-</div>
+<show class="card">
+  <section class="header">
+    <h4>Cliente</h4>
+  </section>
+  <section class="block">
 
+    <!-- Nav tabs -->
+    <ul class="tabs" role="tablist">
+      <li class="nav-item">
+        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
+      </li>
+      <li class="nav-item">
+        <a href="#contacto" role="tab" data-toggle="tab">Contacto</a>
+      </li>
+      <li class="nav-item">
+        <a href="#preferencias" role="tab" data-toggle="tab">Preferencias</a>
+      </li>
+      <li class="nav-item">
+        <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
+      </li>
+      <li class="nav-item edit-tab">
+        <a ui-sref="clienteEdit({id:vm.id})" role="tab"><i></i> Editar</a>
+      </li>
+      <li class="nav-item back">
+        <a ui-sref="clienteIndex" role="tab"><i></i> Regresar</a>
+      </li>
+    </ul>
+
+
+    <div class="client-form">
+      <fieldset disabled>
+        <!-- Tab panes -->
+        <article class="tab-content">
+          <loader class="text-center" model="vm.cliente"></loader>
+          <!-- Datos Generales -->
+          <section role="tabpanel" class="fade in active" id="datos-generales">
+            <div ui-view="datos-generales"></div>
+          </section>
+          <!-- Contacto -->
+          <section role="tabpanel" class="fade" id="contacto">
+            <div ui-view="contacto"></div>
+          </section>
+          <!-- Preferencias -->
+          <section role="tabpanel" class="fade" id="preferencias">
+            <div ui-view="preferencias"></div>
+          </section>
+          <!-- Tabuladores -->
+          <section role="tabpanel" class="fade" id="tabuladores">
+            <div ui-view="tabuladores"></div>
+          </section>
+        </article>
+      </fieldset>
+    </div>
+  </section>
+</show>

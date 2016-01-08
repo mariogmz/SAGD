@@ -66,7 +66,7 @@ class DomicilioTest extends TestCase {
             'codigo_postal_id' => $codigo_postal->id
         ]);
         $codigo_postal_resultado = $domicilio->codigoPostal;
-        $this->assertInstanceOf(App\CodigoPostal::class , $codigo_postal_resultado);
+        $this->assertInstanceOf(App\CodigoPostal::class, $codigo_postal_resultado);
     }
 
     /**
@@ -138,5 +138,41 @@ class DomicilioTest extends TestCase {
         $this->assertInstanceOf(Illuminate\Database\Eloquent\Collection::class, $rsrs);
         $this->assertInstanceOf(App\RazonSocialReceptor::class, $rsrs[0]);
         $this->assertCount(1, $rsrs);
+    }
+
+    /**
+     * @covers ::guardarTelefonos
+     * @covers ::crearNuevosTelefonos
+     * @covers ::actualizarTelefonos
+     * @covers ::eliminarTelefonos
+     */
+    public function testGuardarTelefonosParaDomiciliosAsignadosAClientes() {
+        $domicilio = $this->setUpTelefonosDomicilio();
+        $telefonos = $domicilio->telefonos->toArray();
+        $telefonos[0]['action'] = 1;
+        $telefonos[0]['tipo'] = 'PRUEBA';
+        $telefonos[1]['action'] = 2;
+
+        $nuevo = factory(App\Telefono::class)->make()->toArray();
+        $nuevo['action'] = 0;
+        array_push($telefonos, $nuevo);
+
+        $this->assertTrue($domicilio->guardarTelefonos($telefonos));
+        $this->assertSame('PRUEBA', App\Telefono::find($telefonos[0]['id'])->tipo);
+        $this->assertEmpty(App\Telefono::find($telefonos[1]['id']));
+        $this->assertNotEmpty(App\Telefono::where('numero', $nuevo['numero'])->first());
+    }
+
+    /**
+     * @coversNothing
+     */
+    private function setUpTelefonosDomicilio() {
+        $domicilio = factory(App\Domicilio::class)->create();
+        factory(App\Telefono::class, 5)->create([
+            'domicilio_id' => $domicilio->id
+        ]);
+        $domicilio->load('telefonos');
+
+        return $domicilio;
     }
 }

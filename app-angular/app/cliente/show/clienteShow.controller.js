@@ -1,6 +1,6 @@
-// app/cliente/show/cliente.controller.js
+// app/cliente/show/clienteShow.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -8,125 +8,105 @@
     .module('sagdApp.cliente')
     .controller('clienteShowController', ClienteShowController);
 
-  ClienteShowController.$inject = ['$stateParams', 'api'];
+  ClienteShowController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'utils'];
 
-  function ClienteShowController($stateParams, api){
+  function ClienteShowController($state, $stateParams, api, pnotify, Cliente, utils) {
 
     var vm = this;
     vm.id = $stateParams.id;
-    vm.back = goBack;
 
-    vm.fields = [
-      {
-        type: 'input',
-        key: 'usuario',
-        templateOptions: {
-          label: 'Usuario',
-          placeholder: 'Introduzca el usuario',
-          required: true
-        }
-      },{
-        type: 'input',
-        key: 'nombre',
-        templateOptions: {
-          label: 'Nombre',
-        }
-      }, {
-        type: 'select',
-        key: 'sexo',
-        templateOptions: {
-          label: 'Sexo:',
-          options: [
-            {value: "HOMBRE", name: "Hombre"},
-            {value: "MUJER", name: "Mujer"}
-          ]
-        }
-      }, {
-        type: 'select',
-        key: 'cliente_referencia_id',
-        templateOptions: {
-          label: 'Referencia:',
-          required: true,
-          options: [],
-          ngOptions: 'clientes_referencias.id as clientes_referencias.nombre for clientes_referencias in to.options'
-        },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/cliente-referencia').then(function (response){
-            $scope.to.options = response.data;
-            return response;
-          });
-        }
-      }, {
-        type: 'select',
-        key: 'rol_id',
-        templateOptions: {
-          label: 'Rol:',
-          required: true,
-          options: [],
-          ngOptions: 'roles.id as roles.nombre for roles in to.options'
-        },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/rol').then(function (response){
-            $scope.to.options = response.data;
-            return response;
-          });
-        }
-      }, {
-        type: 'select',
-        key: 'cliente_estatus_id',
-        templateOptions: {
-          label: 'Estatus:',
-          required: true,
-          options: [],
-          ngOptions: 'clientes_estatus.id as clientes_estatus.nombre for clientes_estatus in to.options'
-        },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/cliente-estatus').then(function (response){
-            $scope.to.options = response.data;
-            return response;
-          });
-        }
-      }, {
-        type: 'select',
-        key: 'sucursal_id',
-        templateOptions: {
-          label: 'Sucursal de preferencia:',
-          required: true,
-          options: [],
-          ngOptions: 'sucursales.id as sucursales.nombre for sucursales in to.options'
-        },
-        controller: /* @ngInject */ function ($scope){
-          $scope.to.loading = api.get('/sucursal').then(function (response){
-            $scope.to.options = response.data;
-            return response;
-          });
-        }
-      }
-    ];
-    initialize();
+    ///////////////////////////////////
 
-    function initialize(){
-      return obtenerClientes().then(function (response){
-        console.log(response.message);
-      });
+    activate();
+
+    function activate() {
+
+      obtenerCliente()
+        .then(function() {
+          return $state.go('clienteShow.details');
+        })
+        .then(obtenerEmpleados)
+        .then(obtenerReferencias)
+        .then(obtenerRoles)
+        .then(obtenerEstatus)
+        .then(obtenerSucursales);
     }
 
-    function obtenerClientes(){
-      return api.get('/cliente/', vm.id)
-        .then(function (response){
-          vm.cliente = response.data.cliente;
-          return response.data;
-        })
-        .catch(function (response){
-          vm.error = response.data;
-          return response.data;
+    /////////////// Get resources ///////////////
+
+    function obtenerCliente() {
+      return Cliente.show(vm.id)
+        .then(function(cliente) {
+          vm.cliente = cliente;
+          console.log('Cliente ' + cliente.nombre + ' obtenido');
+          return cliente;
         });
     }
 
-    function goBack() {
-      window.history.back();
+    function obtenerEmpleados() {
+      return api.get('/empleado')
+        .then(function(response) {
+          vm.empleados = response.data;
+          console.log('Empleados obtenidos correctamente.');
+          return response.data;
+        })
+        .catch(function(response) {
+          console.log('No se pudieron obtener los empleados', response.data);
+        });
     }
+
+    function obtenerReferencias() {
+      return api.get('/cliente-referencia')
+        .then(function(response) {
+          vm.clientes_referencias = response.data;
+          console.log('Catálogo de referencias obtenido correctamente.');
+          return response.data;
+        })
+        .catch(function(response) {
+          console.log('No se pudo obtener el catálogo de referencias.');
+        });
+    }
+
+    function obtenerRoles() {
+      return api.get('/roles/clientes')
+        .then(function(response) {
+          vm.roles = response.data;
+          return response;
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          pnotify.alert('Hubo un problema al obtener los Roles', vm.error.message, 'error');
+          return response;
+        });
+    }
+
+    function obtenerEstatus() {
+      return api.get('/cliente-estatus')
+        .then(function(response) {
+          vm.estatus = response.data;
+          return response.data;
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          pnotify.alert('Hubo un problema al obtener los Estatus', vm.error.error, 'error');
+        });
+    }
+
+    function obtenerSucursales() {
+      return api.get('/sucursal')
+        .then(function(response) {
+          vm.sucursales = response.data.filter(function(sucursal) {
+            return !sucursal.proveedor.externo;
+          });
+
+          return response.data;
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          pnotify.alert('Hubo un problema al obtener las Sucursales', vm.error.error, 'error');
+        });
+    }
+
   }
 
-})
-();
+})();

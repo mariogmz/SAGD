@@ -8,9 +8,9 @@
     .module('sagdApp.cliente')
     .controller('clienteNewController', ClienteNewController);
 
-  ClienteNewController.$inject = ['$state', 'api', 'pnotify'];
+  ClienteNewController.$inject = ['$state', 'api', 'pnotify', 'Cliente'];
 
-  function ClienteNewController($state, api, pnotify) {
+  function ClienteNewController($state, api, pnotify, Cliente) {
 
     var vm = this;
 
@@ -22,16 +22,6 @@
 
     function activate() {
       vm.fieldsStepOne = [
-        {
-          type: 'input',
-          key: 'usuario',
-          templateOptions: {
-            type: 'text',
-            label: 'Usuario:',
-            placeholder: 'Introduzca el usuario',
-            required: true
-          }
-        },
         {
           type: 'input',
           key: 'nombre',
@@ -83,6 +73,25 @@
             type: 'date',
             label: 'Fecha de expiración de club zegucom:',
             placeholder: 'Fecha expiración club zegucom'
+          }
+        }
+      ];
+      vm.fieldsUser = [
+        {
+          type: 'input',
+          key: 'usuario',
+          templateOptions: {
+            type: 'text',
+            label: 'Usuario:',
+            placeholder: 'Nombre de usuario',
+          }
+        }, {
+          type: 'input',
+          key: 'email',
+          templateOptions: {
+            type: 'email',
+            label: 'Correo electrónico:',
+            placeholder: 'usuario@hotmail.com',
           }
         }
       ];
@@ -154,16 +163,13 @@
     }
 
     function onSubmit() {
-      return api.post('/cliente', vm.model)
-        .then(function(response) {
-          vm.message = response.data.message;
-          pnotify.alert('Exito', vm.message, 'success');
-          $state.go('clienteShow', {id: response.data.cliente.id});
+      return Cliente.create(vm.model)
+        .then(function(cliente) {
+          $state.go('clienteShow', {id: cliente.id});
+          return cliente;
         })
-        .catch(function(response) {
-          vm.error = response.data;
-          pnotify.alertList('No se pudo guardar el cliente', vm.error.error, 'error');
-          return response;
+        .catch(function(error) {
+          console.error(error);
         });
     }
 
@@ -217,7 +223,10 @@
     function obtenerSucursales() {
       return api.get('/sucursal')
         .then(function(response) {
-          vm.sucursales = response.data;
+          vm.sucursales = response.data.filter(function(sucursal) {
+            return !sucursal.proveedor.externo;
+          });
+
           return response;
         })
         .catch(function(response) {

@@ -100,6 +100,21 @@ class ClienteControllerPolicy
     }
 
     /**
+     * Determinar si el usuario puede listar clientes
+     *
+     * @param  User  $user
+     * @param  ClienteController $controller
+     * @return bool
+     */
+    public function listar(User $user, ClienteController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'listar')->first();
+        return !empty($permiso);
+    }
+
+    /**
      * Normaliza el nombre del controlador a su nombre de clase unicamente
      * @param $controller
      * @return string

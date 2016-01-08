@@ -7,16 +7,16 @@
     .module('sagdApp.cliente')
     .controller('clienteIndexController', ClienteIndexController);
 
-  ClienteIndexController.$inject = ['api', 'pnotify'];
+  ClienteIndexController.$inject = ['Cliente', 'modal'];
 
   /* @ngInject */
-  function ClienteIndexController(api, pnotify) {
+  function ClienteIndexController(Cliente, modal) {
     var vm = this;
     vm.sort = sort;
     vm.eliminarProducto = eliminarCliente;
 
     vm.searching = false;
-    vm.delete = eliminarCliente;
+    vm.delete = eliminar;
     vm.buscar = buscar;
 
     initialize();
@@ -36,43 +36,48 @@
     }
 
     function buscar() {
-      vm.searching = !vm.searching;
-      obtenerClientes().then(success).catch(error);
+      vm.searching = true;
+      vm.clientes = undefined;
+      Cliente.buscar(vm.search).then(success);
     }
 
-    function obtenerClientes() {
-      return api.get('/clientes/buscar/', vm.search);
+    function eliminar(cliente) {
+      modal.confirm({
+        title: 'Eliminar cliente ' + cliente.nombre,
+        content: 'Estás a punto de eliminar un cliente. ¿Estás seguro?',
+        accept: 'Eliminar cliente',
+        type: 'danger'
+      })
+        .then(function(response) {
+          modal.hide('confirm');
+          return eliminarCliente(cliente.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
     function eliminarCliente(id) {
-      return api.delete('/cliente/', id)
+      return Cliente.delete(id)
         .then(function(response) {
-          obtenerClientes().then(function() {
-            pnotify.alert('¡Exito!', response.data.message, 'success');
-          });
-        }).catch(function(response) {
-          pnotify.alert('¡Error!', response.data.message, 'error');
+          return buscar();
         });
+    }
+
+    function success(clientes) {
+      vm.searching = false;
+      vm.clientes = clientes.map(function(cliente) {
+        cliente.email = cliente.user ? cliente.user.email : '';
+        return cliente;
+      });
+
+      return clientes;
     }
 
     function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
-    }
-
-    function success(response) {
-      vm.searching = !vm.searching;
-      vm.clientes = response.data.map(function(cliente) {
-        cliente.email = cliente.user ? cliente.user.email : '';
-        return cliente;
-      });
-
-      return response;
-    }
-
-    function error(response) {
-      vm.searching = !vm.searching;
-      pnotify.alert(response.data.error, response.data.message, 'error');
     }
 
   }

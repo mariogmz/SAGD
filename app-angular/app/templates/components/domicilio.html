@@ -1,0 +1,114 @@
+<!-- app/templates/components/domicilio.html -->
+
+<div class="domicilios-directive">
+  <section class="row">
+    <div class="notice">*Por favor, evite dejar campos vacíos.</div>
+  </section>
+  <section class="row">
+
+    <fieldset ng-disabled="vm.readOnly">
+      <!--Left Column with Table-->
+      <section class="domicilios-list">
+        <table class="item-table">
+          <thead class="sortable">
+          <tr>
+            <th>Calle</th>
+            <th>Localidad</th>
+            <th>C.P.</th>
+            <th>Estado</th>
+            <th>Municipio</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="domicilio in vm.domicilios | filter:vm.visible" ng-click="vm.selectDomicilio(domicilio)"
+              ng-class="{'table-info': vm.domicilio == domicilio}">
+            <td class="with-input"><input type="text" name="domicilio_calle_{{$index}}" ng-model="domicilio.calle"
+                                          ng-blur="vm.setUpdateDomicilio()"
+                                          required maxlength="45"></td>
+            <td class="with-input"><input type="text" name="domicilio_localidad_{{$index}}"
+                                          ng-model="domicilio.localidad"
+                                          ng-blur="vm.setUpdateDomicilio()"
+                                          required maxlength="45"></td>
+            <td class="with-input">
+              <angucomplete-alt
+                id="cp-id"
+                placeholder="C.P."
+                pause="100"
+                selected-object="vm.selectCp"
+                initial-value="domicilio.codigo_postal.codigo_postal"
+                local-data="vm.codigosPostales"
+                search-fields="codigo_postal"
+                title-field="codigo_postal"
+                text-searching="Buscando..."
+                text-no-results="No hay resultados"
+                field-required="true"
+                minlength="3"
+                input-name="codigo_postal_{{$index}}"
+              >
+              </angucomplete-alt>
+            </td>
+            <td class="with-input"><input type="text" ng-model="domicilio.codigo_postal.estado" disabled></td>
+            <td class="with-input"><input type="text" ng-model="domicilio.codigo_postal.municipio" disabled></td>
+          </tr>
+          <tr>
+            <td></td>
+            <td colspan="{{vm.domicilio ? 2 : 3}}">
+              <button type="button" class="add-item" ng-click="vm.agregarDomicilio()"><i></i> Nuevo</button>
+            </td>
+            <td ng-show="vm.domicilio">
+              <button type="button" class="remove-item" ng-click="vm.removerDomicilio()"><i></i> Eliminar</button>
+            </td>
+            <td></td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!--Right Column with Table-->
+      <section class="telefonos-list">
+        <table class="item-table">
+          <thead class="sortable">
+          <tr>
+            <th>Número</th>
+            <th>Tipo</th>
+          </tr>
+          </thead>
+          <tbody ng-show="vm.domicilio">
+          <tr ng-repeat="telefono in vm.domicilio.telefonos | filter:vm.visible" ng-click="vm.selectTelefono(telefono)"
+              ng-class="{'table-info': vm.telefono == telefono}">
+            <td class="with-input">
+              <input type="text" name="telefono_numero_{{$index}}" ng-model="telefono.numero"
+                     ng-blur="vm.setUpdateTelefono()" required maxlength="12" placeholder="Sólo números">
+            </td>
+            <td class="with-input">
+              <angucomplete-alt
+                id="tipo-id"
+                placeholder="TIPO"
+                pause="100"
+                selected-object="vm.selectTipo"
+                initial-value="telefono.tipo"
+                local-data="vm.tipos"
+                search-fields="tipo"
+                title-field="tipo"
+                text-searching="Buscando..."
+                text-no-results="No hay resultados"
+                field-required="true"
+                maxlength="45"
+                input-name="telefono_tipo{{$index}}">
+              </angucomplete-alt>
+            </td>
+          </tr>
+          <tr>
+            <td colspan="{{vm.telefono? 1 : 2}}">
+              <button type="button" class="add-item" ng-click="vm.agregarTelefono()"><i></i></button>
+            </td>
+            <td ng-show="vm.telefono">
+              <button type="button" class="remove-item" ng-click="vm.removerTelefono()"><i></i></button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </section>
+    </fieldset>
+  </section>
+</div>
