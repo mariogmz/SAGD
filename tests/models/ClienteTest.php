@@ -175,6 +175,19 @@ class ClienteTest extends TestCase {
     }
 
     /**
+     * @coversNothing
+     */
+    public function testCuandoNoSeProporcionaNombreDeUsuarioSeGeneraUnoBasadoEnTimestamp() {
+        $cliente = factory(App\Cliente::class, 'full')->make();
+        unset($cliente->usuario);
+        $this->assertTrue($cliente->save(), $cliente->errors);
+        $this->assertNotEmpty($cliente->usuario);
+        $expected = substr(microtime(true), 0, 6);
+        $test = substr($cliente->usuario, 0, 6);
+        $this->assertSame($expected, $test);
+    }
+
+    /**
      * @covers ::estatus
      * @group relaciones
      */
@@ -372,13 +385,19 @@ class ClienteTest extends TestCase {
      * @coversNothing
      * @group eventos
      */
-    public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursal() {
+    public function testCuandoSeCreaUnClienteSeCreanTabuladoresPorSucursalInterna() {
         factory(App\Sucursal::class, 'interna', 10)->create();
         $cliente = factory(App\Cliente::class, 'full')->make();
-        $this->assertTrue($cliente->guardar(5));
+        $data = $cliente->toArray();
+        $data['tabulador'] = 5;
+        $this->assertTrue($cliente->guardar($data));
 
         $tabuladores_nuevos = $cliente->tabuladores;
-        $this->assertSame(App\Sucursal::count(), $tabuladores_nuevos->count());
+        $cantidad_sucursales_internas = App\Sucursal::whereHas('proveedor', function ($query) {
+            $query->where('externo', false);
+        })->get()->count();
+
+        $this->assertSame($cantidad_sucursales_internas, $tabuladores_nuevos->count());
         foreach ($tabuladores_nuevos as $tabulador) {
             $this->assertSame(5, $tabulador->valor_original);
         }
@@ -394,18 +413,43 @@ class ClienteTest extends TestCase {
      */
     public function testCuandoSeEditaUnClienteSeGuardanCambiosEnLosModelosRelacionados() {
         $cliente = $this->setUpClienteConRelaciones();
+        $telefono = factory(App\Telefono::class)->make();
         $cliente['domicilios'][0]['telefonos'][0]['action'] = 1;
-        $cliente['domicilios'][0]['telefonos'][0]['numero'] = '5555555555';
+        $cliente['domicilios'][0]['telefonos'][0]['numero'] = $telefono->numero;
         $cliente['domicilios'][0]['telefonos'][1]['action'] = 2;
         $telefono_eliminar = $cliente['domicilios'][0]['telefonos'][1];
 
         $cliente_test = App\Cliente::find($cliente['id']);
         $tel_id = $cliente['domicilios'][0]['telefonos'][0]['id'];
 
-        $this->assertTrue($cliente_test->actualizar($cliente));
-        $this->assertSame('5555555555', App\Telefono::where('id', $tel_id)->first()->numero);
+        $this->assertTrue($cliente_test->actualizar($cliente), $cliente_test->errors);
+        $this->assertSame($telefono->numero, App\Telefono::where('id', $tel_id)->first()->numero);
         $this->assertEmpty(App\Telefono::find($telefono_eliminar['id']));
 
+    }
+
+    /**
+     * @covers ::guardar
+     */
+    public function testCuandoSeCreaUnClienteNuevoSeCreaSuUsario() {
+        $cliente = factory(App\Cliente::class, 'full')->make();
+        $data = array_merge($cliente->toArray(), [
+            'email'     => 'usuario@hotmail.com',
+            'tabulador' => 1
+        ]);
+
+        $this->assertTrue($cliente->guardar($data));
+        $this->assertNotEmpty(App\User::whereEmail('usuario@hotmail.com')->first());
+    }
+
+    /**
+     * @covers ::guardar
+     */
+    public function testCuandoSeCreaUnClienteNuevoSinEmailSeAsignaUnoPorDefault() {
+        $cliente = factory(App\Cliente::class, 'full')->make();
+        $data = $cliente->toArray();
+        $this->assertTrue($cliente->guardar($data));
+        $this->assertNotEmpty(App\User::whereEmail('usuario@hotmail.com')->first());
     }
 
     private function setUpClienteConRelaciones() {
@@ -417,6 +461,6 @@ class ClienteTest extends TestCase {
         $cliente = factory(App\Cliente::class, 'full')->create();
         $cliente->domicilios()->save($domicilio);
 
-        return App\Cliente::with('domicilios.telefonos','domicilios.codigoPostal','tabuladores.sucursal','user')->find($cliente->id)->toArray();
+        return App\Cliente::with('domicilios.telefonos', 'domicilios.codigoPostal', 'tabuladores.sucursal', 'user')->find($cliente->id)->toArray();
     }
 }

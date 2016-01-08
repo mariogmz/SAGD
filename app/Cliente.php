@@ -97,6 +97,10 @@ class Cliente extends LGGModel {
     public static function boot() {
         parent::boot();
         Cliente::creating(function ($cliente) {
+            if (empty($cliente->usuario)) {
+                $cliente->usuario = str_replace(".", "", microtime(true));
+            }
+
             return $cliente->isValid();
         });
         Cliente::updating(function ($cliente) {
@@ -109,11 +113,10 @@ class Cliente extends LGGModel {
 
     /**
      * Guardar el modelo a la base de datos
-     * @param $datos
+     * @param array $datos
      * @return bool
-     * @internal param int $tabulador
      */
-    public function guardar($datos) {
+    public function guardar(array $datos) {
         if ($this->save()) {
             // Ya que el evento ocupa un parámetro, no se llama desde Cliente::created
             event(new ClienteCreado($this, $datos));

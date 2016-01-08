@@ -119,6 +119,7 @@ class Domicilio extends LGGModel {
         foreach($telefonos as $telefono_raw) {
             $telefono = Telefono::find($telefono_raw['id']);
             if(empty($telefono) || !$telefono->update($telefono_raw)){
+                $telefono->isValid();
                 return false;
             }
         }
