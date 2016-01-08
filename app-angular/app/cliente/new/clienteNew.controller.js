@@ -76,6 +76,25 @@
           }
         }
       ];
+      vm.fieldsUser = [
+        {
+          type: 'input',
+          key: 'usuario',
+          templateOptions: {
+            type: 'text',
+            label: 'Usuario:',
+            placeholder: 'Nombre de usuario',
+          }
+        }, {
+          type: 'input',
+          key: 'email',
+          templateOptions: {
+            type: 'email',
+            label: 'Correo electrónico:',
+            placeholder: 'usuario@hotmail.com',
+          }
+        }
+      ];
       vm.fieldsStepTwo = [
         {
           type: 'select',

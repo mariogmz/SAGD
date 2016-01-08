@@ -234,6 +234,7 @@ class Cliente extends LGGModel {
                         if ($nuevo_telefono->isValid()) {
                             $nuevo_domicilio->telefonos()->save($nuevo_telefono);
                         } else {
+
                             return false;
                         }
                     }
@@ -427,5 +428,9 @@ class Cliente extends LGGModel {
      */
     public function rol() {
         return $this->belongsTo('App\Rol');
+    }
+
+    private function initErrors() {
+        if(empty($this->errors) ) { new MessageBag(); };
     }
 }
