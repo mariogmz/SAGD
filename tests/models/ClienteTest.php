@@ -433,23 +433,45 @@ class ClienteTest extends TestCase {
      */
     public function testCuandoSeCreaUnClienteNuevoSeCreaSuUsario() {
         $cliente = factory(App\Cliente::class, 'full')->make();
+        $user = factory(App\User::class)->make();
         $data = array_merge($cliente->toArray(), [
-            'email'     => 'usuario@hotmail.com',
+            'email'     => $user->email,
             'tabulador' => 1
         ]);
 
         $this->assertTrue($cliente->guardar($data));
-        $this->assertNotEmpty(App\User::whereEmail('usuario@hotmail.com')->first());
+        $this->assertNotEmpty(App\User::whereEmail($user->email)->first());
+    }
+
+    /**
+     * @covers ::actualizar
+     */
+    public function testSeCreaUsuarioEnClienteActualizadoSiAntesNoExistia() {
+        $cliente = factory(App\Cliente::class, 'full')->create();
+        $cliente->load('user');
+        $user = factory(App\User::class)->make([
+            'remember_token' => null,
+            'morphable_id'   => null,
+            'morphable_type' => null
+        ])->toArray();
+        $data = array_merge($cliente->toArray(),[
+            'user' => $user
+        ]);
+
+        $this->assertTrue($cliente->actualizar($data));
+        $this->assertNotEmpty(App\User::whereEmail($user['email'])->first());
+        $cliente->load('user');
+        $this->assertSame($user['email'], $cliente->user->email);
     }
 
     /**
      * @covers ::guardar
      */
-    public function testCuandoSeCreaUnClienteNuevoSinEmailSeAsignaUnoPorDefault() {
+    public function testCuandoSeCreaUnClienteNuevoSinEmailSeAsignaUnoPorDefaultASuUsuario() {
         $cliente = factory(App\Cliente::class, 'full')->make();
         $data = $cliente->toArray();
         $this->assertTrue($cliente->guardar($data));
-        $this->assertNotEmpty(App\User::whereEmail('usuario@hotmail.com')->first());
+        $this->assertNotEmpty(App\User::whereEmail($cliente->usuario . '@' . env('STUB_EMAIL_DOMAIN', 'clientes.grupodicotech.com.mx'))->first());
     }
 
     private function setUpClienteConRelaciones() {

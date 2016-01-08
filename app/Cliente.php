@@ -3,6 +3,8 @@
 namespace App;
 
 
+use Event;
+use App\Events\ClienteActualizado;
 use App\Events\ClienteCreado;
 use DB;
 use Illuminate\Support\MessageBag;
@@ -120,7 +122,7 @@ class Cliente extends LGGModel {
     public function guardar(array $datos) {
         if ($this->save()) {
             // Ya que el evento ocupa un parámetro, no se llama desde Cliente::created
-            event(new ClienteCreado($this, $datos));
+            Event::fire(new ClienteCreado($this, $datos));
 
             return true;
         } else {
@@ -138,7 +140,8 @@ class Cliente extends LGGModel {
 
         if ($this->update($datos)) {
             DB::beginTransaction();
-            $domicilios_guardados = $this->guardarDomicilios($datos);
+            $domicilios_guardados = array_key_exists('domicilios', $datos) && count($datos['domicilios']) > 0?
+                $this->guardarDomicilios($datos) : true;
 
             if ($domicilios_guardados) {
                 DB::commit();
@@ -149,7 +152,8 @@ class Cliente extends LGGModel {
             }
 
             DB::beginTransaction();
-            $tabuladores_actualizados = $this->actualizarTabuladores($datos);
+            $tabuladores_actualizados = array_key_exists('tabuladores', $datos) && count($datos['tabuladores']) > 0 ?
+                $this->actualizarTabuladores($datos) : true;
 
             if ($tabuladores_actualizados) {
                 DB::commit();
@@ -160,6 +164,7 @@ class Cliente extends LGGModel {
                 DB::rollBack();
             }
 
+            Event::fire(new ClienteActualizado($this, $datos));
             return $domicilios_guardados && $tabuladores_actualizados;
         } else {
 
