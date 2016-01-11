@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoShowController', ProductoShowController);
 
-  ProductoShowController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'session'];
+  ProductoShowController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'session', 'utils'];
 
-  function ProductoShowController($state, $stateParams, api, pnotify, session) {
+  function ProductoShowController($location, $state, $stateParams, api, pnotify, session, utils) {
 
     var vm = this;
     vm.sortKeys = [
@@ -36,6 +36,7 @@
     initialize();
 
     function initialize() {
+      utils.whichTab($location.hash() || 'datos-generales');
       obtenerProducto().then(function(response) {
 
         console.log('Producto obtenido correctamente');

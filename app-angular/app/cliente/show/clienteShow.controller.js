@@ -8,9 +8,9 @@
     .module('sagdApp.cliente')
     .controller('clienteShowController', ClienteShowController);
 
-  ClienteShowController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'utils'];
+  ClienteShowController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'utils'];
 
-  function ClienteShowController($state, $stateParams, api, pnotify, Cliente, utils) {
+  function ClienteShowController($location, $state, $stateParams, api, pnotify, Cliente, utils) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -23,6 +23,7 @@
 
       obtenerCliente()
         .then(function() {
+          utils.whichTab($location.hash() || 'datos-generales');
           return $state.go('clienteShow.details');
         })
         .then(obtenerEmpleados)

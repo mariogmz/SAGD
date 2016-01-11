@@ -30,6 +30,7 @@
       obtenerCliente()
         .then(function() {
           vm.empleado = JSON.parse(localStorage.getItem('empleado'));
+          utils.whichTab($location.hash() || 'datos-generales');
           return $state.go('clienteEdit.details');
         })
         .then(obtenerEmpleados)

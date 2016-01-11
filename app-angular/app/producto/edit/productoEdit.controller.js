@@ -8,9 +8,9 @@
     .module('sagdApp.producto')
     .controller('productoEditController', ProductoEditController);
 
-  ProductoEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'utils', 'session'];
+  ProductoEditController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'utils', 'session'];
 
-  function ProductoEditController($state, $stateParams, api, pnotify, utils, session) {
+  function ProductoEditController($location, $state, $stateParams, api, pnotify, utils, session) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -48,6 +48,7 @@
     initialize();
 
     function initialize() {
+      utils.whichTab($location.hash() || 'datos-generales');
       obtenerProducto()
         .then(function() {
           obtenerMarcas();

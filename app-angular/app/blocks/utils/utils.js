@@ -19,7 +19,8 @@
       querify: querify,
       formatPercentage: formatPercentage,
       parsePercentage: parsePercentage,
-      setClass: setClass
+      setClass: setClass,
+      whichTab: whichTab
     };
 
     function pluck(collection, key) {
@@ -40,7 +41,9 @@
       if (angular.isArray(parameters)) {
         var paramsUrl = '?';
         parameters = parameters.map(function(param) {
-          param = $.map(param, function(value, index) {return [value];});
+          param = $.map(param, function(value, index) {
+            return [value];
+          });
 
           return param.join('=');
         });
@@ -83,6 +86,17 @@
 
     function checkWithSuccess(field) {
       return field.$touched && field.$valid;
+    }
+
+    function whichTab(tabName) {
+      var hashTab = tabName;
+      var tab = document.querySelector('[href="#' + hashTab + '"]');
+      var view = document.querySelector('#' + hashTab);
+
+      if (tab && view) {
+        view.setAttribute('class', 'in active');
+        tab.setAttribute('class', 'active');
+      }
     }
 
   }
