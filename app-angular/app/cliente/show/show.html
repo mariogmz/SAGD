@@ -18,6 +18,9 @@
       <li class="nav-item">
         <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
       </li>
+      <li class="nav-item">
+        <a href="#comentarios" role="tab" data-toggle="tab">Comentarios</a>
+      </li>
       <li class="nav-item edit-tab">
         <a ui-sref="clienteEdit({id:vm.id})" role="tab"><i></i> Editar</a>
       </li>
@@ -47,6 +50,10 @@
           <!-- Tabuladores -->
           <section role="tabpanel" class="fade" id="tabuladores">
             <div ui-view="tabuladores"></div>
+          </section>
+          <!-- Comentarios -->
+          <section role="tabpanel" class="fade" id="comentarios">
+            <div ui-view="comentarios"></div>
           </section>
         </article>
       </fieldset>

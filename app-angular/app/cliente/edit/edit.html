@@ -7,7 +7,7 @@
     <!-- Nav tabs -->
     <ul class="tabs" role="tablist">
       <li class="nav-item">
-        <a href="#datos-generales" role="tab" data-toggle="tab">Datos Generales</a>
+        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
       </li>
       <li class="nav-item">
         <a href="#contacto" role="tab" data-toggle="tab">Contacto</a>
@@ -19,7 +19,7 @@
         <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
       </li>
       <li class="nav-item">
-        <a href="#comentarios" class="active" role="tab" data-toggle="tab">Comentarios</a>
+        <a href="#comentarios" role="tab" data-toggle="tab">Comentarios</a>
       </li>
       <li class="nav-item save" ng-class="{'disabled-tab' : clienteEditForm.$invalid && clienteEditForm.$dirty || clienteEditForm.$pristine}">
         <a role="tab" ng-click="vm.save(clienteEditForm.$valid && clienteEditForm.$dirty)"><i></i> Guardar</a>
@@ -36,7 +36,7 @@
         <article class="tab-content">
           <loader class="text-center" model="vm.cliente"></loader>
           <!-- Datos Generales -->
-          <section role="tabpanel" class="fade" id="datos-generales">
+          <section role="tabpanel" class="fade in active" id="datos-generales">
             <div ui-view="datos-generales"></div>
           </section>
           <!-- Contacto -->
@@ -48,7 +48,7 @@
             <div ui-view="preferencias"></div>
           </section>
           <!-- Comentarios -->
-          <section role="tabpanel" class="fade in active" id="comentarios">
+          <section role="tabpanel" class="fade" id="comentarios">
             <div ui-view="comentarios"></div>
           </section>
           <!-- Tabuladores -->

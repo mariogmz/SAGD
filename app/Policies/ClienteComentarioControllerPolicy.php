@@ -4,6 +4,7 @@ namespace App\Policies;
 
 
 use App\Http\Controllers\Api\V1\ClienteComentarioController;
+use App\User;
 
 class ClienteComentarioControllerPolicy
 {

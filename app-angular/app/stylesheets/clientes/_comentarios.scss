@@ -21,3 +21,22 @@
   @include make-row();
   margin-top: .2rem;
 }
+
+.cliente-comentarios-agregar {
+  @extend .pull-right;
+  @include make-container();
+  margin-top: 2rem;
+
+  .row {
+    @include make-row();
+  }
+
+  .agregar {
+    @extend .btn-primary;
+
+    i {
+      @extend .fa;
+      @extend .fa-plus;
+    }
+  }
+}
