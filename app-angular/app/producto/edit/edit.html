@@ -7,7 +7,7 @@
     <!-- Nav tabs -->
     <ul class="tabs" role="tablist">
       <li class="nav-item">
-        <a href="#datos-generales" class="active" role="tab" data-toggle="tab">Datos Generales</a>
+        <a href="#datos-generales" role="tab" data-toggle="tab">Datos Generales</a>
       </li>
       <li class="nav-item">
         <a href="#ficha" role="tab" data-toggle="tab">Ficha</a>
@@ -36,7 +36,7 @@
         <article class="tab-content">
           <loader class="text-center" model="vm.producto"></loader>
           <!-- Datos Generales -->
-          <section role="tabpanel" class="fade in active" id="datos-generales">
+          <section role="tabpanel" class="fade" id="datos-generales">
             <div ui-view="datos-generales"></div>
           </section>
           <!-- Pesos & Dimensiones -->

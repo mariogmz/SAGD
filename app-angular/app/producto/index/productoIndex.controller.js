@@ -36,7 +36,6 @@
     initialize();
 
     function initialize() {
-
     }
 
     function buscar() {
