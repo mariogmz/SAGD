@@ -18,6 +18,9 @@
       <li class="nav-item">
         <a href="#tabuladores" role="tab" data-toggle="tab">Tabuladores</a>
       </li>
+      <li class="nav-item">
+        <a href="#comentarios" role="tab" data-toggle="tab">Comentarios</a>
+      </li>
       <li class="nav-item save" ng-class="{'disabled-tab' : clienteEditForm.$invalid && clienteEditForm.$dirty || clienteEditForm.$pristine}">
         <a role="tab" ng-click="vm.save(clienteEditForm.$valid && clienteEditForm.$dirty)"><i></i> Guardar</a>
       </li>
@@ -43,6 +46,10 @@
           <!-- Preferencias -->
           <section role="tabpanel" class="fade" id="preferencias">
             <div ui-view="preferencias"></div>
+          </section>
+          <!-- Comentarios -->
+          <section role="tabpanel" class="fade" id="comentarios">
+            <div ui-view="comentarios"></div>
           </section>
           <!-- Tabuladores -->
           <section role="tabpanel" class="fade" id="tabuladores">

@@ -25,6 +25,9 @@
           },
           tabuladores: {
             templateUrl: 'app/cliente/show/details/tabuladores.html'
+          },
+          comentarios: {
+            templateUrl: 'app/cliente/show/details/comentarios.html'
           }
         }
       });

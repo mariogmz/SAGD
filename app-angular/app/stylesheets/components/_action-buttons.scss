@@ -78,6 +78,12 @@
     i { @extend .fa-users; }
   }
 
+  .save {
+    @extend .btn-success;
+
+    i { @extend .fa-floppy-o; }
+  }
+
   .show {
     @extend .btn-primary;
 

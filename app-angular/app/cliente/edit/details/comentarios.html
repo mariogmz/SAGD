@@ -1,0 +1,40 @@
+<!--app/cliente/edit/details/comentarios.html-->
+
+<!-- Costos -->
+<div class="card borderless">
+  <article class="block">
+    <section class="cliente-comentarios">
+      <div class="cliente-comentarios-item" ng-repeat="comentario in vm.cliente.comentarios">
+
+        <div class="comentario">
+          <label for="comentario_{{comentario.id}}">Comentario:</label>
+          <textarea maxlength="200" name="comentario_{{comentario.id}}" ng-model="comentario.comentario"></textarea>
+        </div>
+
+        <div class="autor">
+          <label for="comentario_autor_{{comentario.id}}">Actualizó:</label>
+          <input type="text" name="comentario_autor_{{comentario.id}}" ng-model="comentario.empleado.usuario"
+                 disabled>
+
+          <div class="cliente-comentarios-actions">
+            <div class="action-buttons">
+              <button type="button" role="button" class="save" aria-label="Guardar cambios"
+                      ng-click="vm.guardarComentario(comentario)"
+                      ng-disabled="comentario.comentario.length < 1"
+                      required><i></i></button>
+              <button type="button" role="button" class="delete" aria-label="Eliminar comentario" ng-click="vm.eliminarComentario(comentario)"><i></i></button>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <section class="cliente-comentarios-agregar">
+      <div class="row">
+        <button type="button" role="button" class="agregar" aria-label="Agregar nuevo comentario" ng-click="vm.agregarComentario()"><i></i> Nuevo</button>
+      </div>
+    </section>
+  </article>
+</div>

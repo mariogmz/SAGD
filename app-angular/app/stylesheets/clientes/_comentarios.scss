@@ -1,0 +1,42 @@
+.cliente-comentarios {
+  @include make-container();
+}
+
+.cliente-comentarios-item {
+  @include make-row();
+
+  .comentario {
+    @include make-col();
+    @include make-col-span(10);
+  }
+
+  .autor {
+    @extend .text-xs-center;
+    @include make-col();
+    @include make-col-span(2);
+  }
+}
+
+.cliente-comentarios-actions {
+  @include make-row();
+  margin-top: .2rem;
+}
+
+.cliente-comentarios-agregar {
+  @extend .pull-right;
+  @include make-container();
+  margin-top: 2rem;
+
+  .row {
+    @include make-row();
+  }
+
+  .agregar {
+    @extend .btn-primary;
+
+    i {
+      @extend .fa;
+      @extend .fa-plus;
+    }
+  }
+}

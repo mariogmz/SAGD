@@ -26,7 +26,6 @@ namespace App;
  */
 class ClienteComentario extends LGGModel {
 
-    //
     protected $table = "clientes_comentarios";
     public $timestamps = false;
     protected $fillable = ['comentario', 'cliente_id', 'empleado_id'];
@@ -62,7 +61,7 @@ class ClienteComentario extends LGGModel {
 
     /**
      * Obtiene el Cliente asociado con el Comentario
-     * @return App\Cliente
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function cliente() {
         return $this->belongsTo('App\Cliente', 'cliente_id');
@@ -71,7 +70,7 @@ class ClienteComentario extends LGGModel {
 
     /**
      * Obtiene el Empleado asociado con el Comentario
-     * @return App\Empleado
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function empleado() {
         return $this->belongsTo('App\Empleado', 'empleado_id');

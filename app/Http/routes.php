@@ -62,6 +62,7 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::resource('cliente', 'ClienteController', ['only' => ['index','store','show','update','destroy']]);
         Route::get('clientes/buscar', 'ClienteController@buscar');
         Route::get('clientes/listar', 'ClienteController@listar');
+        Route::resource('cliente-comentario', 'ClienteComentarioController', ['only' => ['index', 'store', 'show', 'update', 'destroy']]);
         Route::resource('cliente-referencia', 'ClienteReferenciaController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('cliente-estatus', 'ClienteEstatusController', ['only' => ['index','store','show','update','destroy']]);
         Route::resource('codigo-postal', 'CodigoPostalController', ['only' => ['index','store','show','update','destroy']]);

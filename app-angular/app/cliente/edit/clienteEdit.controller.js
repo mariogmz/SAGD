@@ -8,14 +8,18 @@
     .module('sagdApp.cliente')
     .controller('clienteEditController', ClienteEditController);
 
-  ClienteEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'utils'];
+  ClienteEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'ClienteComentario', 'utils'];
 
-  function ClienteEditController($state, $stateParams, api, pnotify, Cliente, utils) {
+  function ClienteEditController($state, $stateParams, api, pnotify, Cliente, ClienteComentario, utils) {
 
     var vm = this;
     vm.id = $stateParams.id;
+    vm.empleado = {};
     vm.save = guardarCambios;
     vm.setClass = utils.setClass;
+    vm.agregarComentario = agregarComentario;
+    vm.guardarComentario = guardarComentario;
+    vm.eliminarComentario = eliminarComentario;
 
     ///////////////////////////////////
 
@@ -25,6 +29,7 @@
 
       obtenerCliente()
         .then(function() {
+          vm.empleado = JSON.parse(localStorage.getItem('empleado'));
           return $state.go('clienteEdit.details');
         })
         .then(obtenerEmpleados)
@@ -126,6 +131,44 @@
         .then(function(data) {
           return data;
         });
+    }
+
+    function agregarComentario() {
+      if (!vm.cliente.comentarios) {
+        vm.cliente.comentarios = [];
+      }
+
+      vm.cliente.comentarios.push({
+        empleado: {
+          usuario: vm.empleado.usuario
+        }
+      });
+    }
+
+    function guardarComentario(comentario) {
+      comentario.empleado_id = vm.empleado.id;
+      if (!comentario.id) {
+        comentario.cliente_id = vm.cliente.id;
+        return ClienteComentario.create(comentario)
+          .then(function(data) {
+            return data;
+          });
+      } else {
+        return ClienteComentario.update(comentario.id, comentario)
+          .then(function(comentarioNuevo) {
+            comentario.empleado.usuario = vm.empleado.usuario;
+            return comentarioNuevo;
+          });
+      }
+    }
+
+    function eliminarComentario(comentario) {
+      var index = vm.cliente.comentarios.indexOf(comentario);
+      vm.cliente.comentarios.splice(index, 1);
+      if (comentario.id) {
+        return ClienteComentario.delete(comentario.id);
+      }
+
     }
   }
 
