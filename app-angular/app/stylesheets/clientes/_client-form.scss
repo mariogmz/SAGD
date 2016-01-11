@@ -8,7 +8,7 @@
     @extend .form-control-label;
   }
 
-  button,
+  button:not([role="button"]),
   input:not([type='submit']),
   textarea,
   select {

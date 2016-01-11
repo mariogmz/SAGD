@@ -70,7 +70,7 @@ class ClienteController extends Controller {
             'empleado',
             'vendedor',
             'sucursal',
-            'comentarios',
+            'comentarios.empleado',
             'rol',
             'user')->find($id);
         if (!empty($this->cliente)) {
