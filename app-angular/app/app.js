@@ -21,6 +21,7 @@
       'sagdApp.garantia',
       'sagdApp.home',
       'sagdApp.icecat',
+      'sagdApp.inventario',
       'sagdApp.layout',
       'sagdApp.logs',
       'sagdApp.marca',

@@ -83,10 +83,10 @@
                 state: 'pretransferenciaIndex'
               }, {
                 name: 'Apartados',
-                state: 'inventario.apartado'
+                state: 'apartadoIndex'
               }, {
                 name: 'Resurtir',
-                state: 'inventario.resutir'
+                state: 'resurtir'
               }, {
                 name: 'Historial de movimientos',
                 state: 'producto.movimiento'
