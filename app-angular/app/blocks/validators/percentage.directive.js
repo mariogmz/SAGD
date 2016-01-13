@@ -1,6 +1,6 @@
 // app/blocks/utils/percentage.directive.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -10,7 +10,7 @@
   percentage.$inject = ['utils'];
 
   /* @ngInject */
-  function percentage(utils){
+  function percentage(utils) {
     var directive = {
       link: link,
       require: 'ngModel',
@@ -18,7 +18,7 @@
     };
     return directive;
 
-    function link(scope, element, attrs, ngModel){
+    function link(scope, element, attrs, ngModel) {
 
       // Format text going to user (model to view)
       ngModel.$formatters.push(utils.formatPercentage);

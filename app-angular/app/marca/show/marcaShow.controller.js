@@ -1,6 +1,6 @@
 // app/marca/show/marca.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   MarcaShowController.$inject = ['$stateParams', 'api'];
 
-  function MarcaShowController($stateParams, api){
+  /* @ngInject */
+  function MarcaShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -35,19 +36,19 @@
     ];
     initialize();
 
-    function initialize(){
-      return obtenerMarca().then(function (response){
+    function initialize() {
+      return obtenerMarca().then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerMarca(){
+    function obtenerMarca() {
       return api.get('/marca/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.marca = response.data.marca;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

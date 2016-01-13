@@ -1,9 +1,9 @@
 // app/navbar/navbar.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.navbar', [
-      'sagdApp.core'
-    ]);
+  angular.module('sagdApp.navbar', [
+    'sagdApp.core'
+  ]);
 })();

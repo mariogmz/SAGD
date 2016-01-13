@@ -1,22 +1,23 @@
 // app/familia/index/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.familia')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.familia')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('familiaIndex', {
-                url: 'familia',
-                parent: 'familia',
-                templateUrl: 'app/familia/index/index.html',
-                controller: 'familiaIndexController',
-                controllerAs: 'vm'
-            });
-    }
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('familiaIndex', {
+        url: 'familia',
+        parent: 'familia',
+        templateUrl: 'app/familia/index/index.html',
+        controller: 'familiaIndexController',
+        controllerAs: 'vm'
+      });
+  }
 })();

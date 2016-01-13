@@ -1,3 +1,4 @@
+<!-- app/entrada/index/index.html -->
 <div class="search-card">
   <div class="header">
     <h4>Entradas</h4>
@@ -24,31 +25,33 @@
 <div class="table-responsive">
   <table class="item-table entrada-table">
     <thead class="sortable">
-      <tr>
-        <th class="action" ng-class="{'num-factura': sortKey.key === 'factura_extena_numero'}" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-          {{sortKey.name}}
-        </th>
-        <th>Acciones</th>
-      </tr>
+    <tr>
+      <th class="action" ng-class="{'num-factura': sortKey.key === 'factura_extena_numero'}"
+          ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
     </thead>
     <tbody>
-      <tr dir-paginate="entrada in vm.entradas | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
-        <th scope="row"><a ui-sref="entradaShow({id:entrada.id})">{{entrada.id}}</a></th>
-        <td>{{entrada.proveedor.razon_social}}</td>
-        <td>{{entrada.factura_externa_numero}}</td>
-        <td>{{entrada.factura_fecha}}</td>
-        <td>{{entrada.created_at}}</td>
-        <td>{{entrada.estado.nombre}}</td>
-        <td>{{entrada.razon_social.razon_social}}</td>
-        <td>{{entrada.empleado.nombre}}</td>
+    <tr dir-paginate="entrada in vm.entradas | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+      <th scope="row"><a ui-sref="entradaShow({id:entrada.id})">{{entrada.id}}</a></th>
+      <td>{{entrada.proveedor.razon_social}}</td>
+      <td>{{entrada.factura_externa_numero}}</td>
+      <td>{{entrada.factura_fecha}}</td>
+      <td>{{entrada.created_at}}</td>
+      <td>{{entrada.estado.nombre}}</td>
+      <td>{{entrada.razon_social.razon_social}}</td>
+      <td>{{entrada.empleado.nombre}}</td>
 
-        <td class="actions">
-          <div class="action-buttons" role="group" aria-label="Acciones">
-            <button type="button" class="edit" ui-sref="entradaEdit({id:entrada.id})"><i></i></button>
-            <button type="button" class="delete" ng-click="vm.eliminarEntrada(entrada)" ng-if="entrada.estado_entrada_id == 1"><i></i></button>
-          </div>
-        </td>
-      </tr>
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="entradaEdit({id:entrada.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarEntrada(entrada)"
+                  ng-if="entrada.estado_entrada_id == 1"><i></i></button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
   <loader model="vm.entradas"></loader>

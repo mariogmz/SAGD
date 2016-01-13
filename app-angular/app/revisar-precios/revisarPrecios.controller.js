@@ -1,6 +1,6 @@
 // app/revisar-precios/show/revisarPrecios.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   RevisarPreciosController.$inject = ['$state', 'api', 'pnotify'];
 
-  function RevisarPreciosController($state, api, pnotify){
+  /* @ngInject */
+  function RevisarPreciosController($state, api, pnotify) {
 
     var vm = this;
     vm.sortKeys = [
@@ -45,68 +46,68 @@
 
     initialize();
 
-    function initialize(){
+    function initialize() {
       return obtenerProductosNoRevisados()
         .then(obtenerMargenes)
-        .then(function (){
+        .then(function() {
           console.log('Productos obtenidos correctamente.');
           $state.go('revisarPreciosIndex');
         });
     }
 
-    function obtenerProductosNoRevisados(){
+    function obtenerProductosNoRevisados() {
       return api.get('/producto/', [{key: 'revisados', value: false}])
-        .then(function (response){
+        .then(function(response) {
           vm.productos = response.data;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           console.log('Hubo un error al obtener los productos.')
         });
     }
 
-    function obtenerProducto(){
+    function obtenerProducto() {
       return api.get('/producto/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.producto = response.data.producto;
           vm.producto.precios = response.data.precios_proveedor;
           vm.producto.revisado = true;
-          vm.producto.precios.forEach(function (precio){
+          vm.producto.precios.forEach(function(precio) {
             vm.producto.revisado = vm.producto.revisado && precio.revisado;
             precio.descuento *= 100;
           });
           return response;
-        }).catch(function (response){
+        }).catch(function(response) {
           console.log(response.data);
         });
     }
 
-    function obtenerMargenes(){
-      return api.get('/margen').then(function (response){
+    function obtenerMargenes() {
+      return api.get('/margen').then(function(response) {
         vm.margenes = response.data;
         console.log('Margenes obtenidos correctamente');
       });
     }
 
-    function guardarProducto(){
+    function guardarProducto() {
       vm.producto.revisado = true;
-      vm.producto.precios.forEach(function (precio){
+      vm.producto.precios.forEach(function(precio) {
         precio.descuento /= 100;
       });
       return api.put('/producto/', vm.id, vm.producto)
-        .then(function (response){
+        .then(function(response) {
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
           return response;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alertList('No se pudo guardar el producto', vm.error.error, 'error');
           return response;
         });
     }
 
-    function calcularPrecios(index){
+    function calcularPrecios(index) {
       var params = [
         {key: 'precio', value: vm.producto.precios[index].precio_1},
         {key: 'costo', value: vm.producto.precios[index].costo},
@@ -114,40 +115,40 @@
         {key: 'externo', value: vm.producto.precios[index].externo}
       ];
       return api.get('/calcular-precio', params)
-        .then(function (response){
+        .then(function(response) {
           console.log(response.data.message);
           for (var attr in response.data.resultado.precios) {
             vm.producto.precios[index][attr] = response.data.resultado.precios[attr];
           }
           vm.utilidad = response.data.resultado.utilidades;
 
-        }).catch(function (response){
+        }).catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }
 
-    function calcularPreciosMargen(){
+    function calcularPreciosMargen() {
       var cantidadProveedores = vm.producto.precios.length;
       for (var i = 0; i < cantidadProveedores; i++) {
         calcularPrecios(i);
       }
     }
 
-    function revisar(index){
+    function revisar(index) {
       vm.index = index;
       vm.id = vm.productos[index].id;
       return obtenerProducto()
-        .then(function (){
+        .then(function() {
           $state.go('revisarPreciosEdit');
         });
     }
 
-    function revisarSiguiente(){
+    function revisarSiguiente() {
       return guardarProducto()
-        .then(function (response){
+        .then(function(response) {
           vm.productos.splice(vm.index, 1);
-          if (vm.productos[vm.index - 1] ||  vm.productos[vm.index]) {
-            vm.index = vm.productos[vm.index] ? vm.index : vm.index -1;
+          if (vm.productos[vm.index - 1] || vm.productos[vm.index]) {
+            vm.index = vm.productos[vm.index] ? vm.index : vm.index - 1;
             vm.id = vm.productos[vm.index].id;
             obtenerProducto();
           } else {
@@ -157,7 +158,7 @@
         })
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

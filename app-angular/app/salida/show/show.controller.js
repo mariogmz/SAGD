@@ -24,19 +24,19 @@
 
     function activate() {
       return obtenerSalida().then(function(response) {
-          console.log(response.message);
-        });
+        console.log(response.message);
+      });
     }
 
     function obtenerSalida() {
       return api.get('/salida/', vm.id).then(function(response) {
-        vm.salida = response.data.salida;
-        return response.data;
-      })
-      .catch(function(response) {
-        vm.error = response.data;
-        return response.data;
-      });
+          vm.salida = response.data.salida;
+          return response.data;
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          return response.data;
+        });
     }
 
     function cargar() {

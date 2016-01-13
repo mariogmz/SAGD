@@ -1,10 +1,10 @@
 // app/proveedor/proveedor.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.proveedor', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.proveedor', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

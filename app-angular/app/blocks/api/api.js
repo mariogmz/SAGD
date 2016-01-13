@@ -9,6 +9,7 @@
 
   ApiProvider.$inject = ['$http', 'ENV', 'lscache', 'utils'];
 
+  /* @ngInject */
   function ApiProvider($http, ENV, cache, utils) {
     var applicationFqdn = ENV.applicationFqdn;
     var apiNamespace = ENV.apiNamespace;

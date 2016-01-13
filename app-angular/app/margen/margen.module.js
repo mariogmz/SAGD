@@ -1,10 +1,10 @@
 // app/margen/margen.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.margen', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.margen', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

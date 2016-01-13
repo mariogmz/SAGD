@@ -1,10 +1,10 @@
 // app/revisar-precios/revisarPrecios.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.revisarPrecios', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.revisarPrecios', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

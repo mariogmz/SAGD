@@ -9,6 +9,7 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('icecatSuppliers', {

@@ -39,7 +39,7 @@
     ////////////////
 
     function activate() {
-      return obtenerUnidad().then(function(response){
+      return obtenerUnidad().then(function(response) {
         console.log(response.message);
       });
     }
@@ -50,7 +50,7 @@
           vm.unidad = response.data.unidad;
           return response.data;
         })
-        .catch(function(response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

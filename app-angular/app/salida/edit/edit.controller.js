@@ -47,13 +47,13 @@
 
     function create() {
       api.put('/salida/', vm.salida.id, vm.salida)
-      .then(function(response) {
-        pnotify.alert('Exito', response.data.message, 'success');
-        $state.go('salidaShow', {id: response.data.salida.id});
-      })
-      .catch(function(response) {
-        pnotify.alertList(response.data.message, response.data.error, 'error');
-      });
+        .then(function(response) {
+          pnotify.alert('Exito', response.data.message, 'success');
+          $state.go('salidaShow', {id: response.data.salida.id});
+        })
+        .catch(function(response) {
+          pnotify.alertList(response.data.message, response.data.error, 'error');
+        });
     }
 
     function agregarSalidaDetalle(salidaDetalle) {

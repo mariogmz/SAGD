@@ -19,7 +19,6 @@ nav.top-navbar {
   .hamburguer {
     @extend .navbar-toggler;
 
-
     color: $alto;
     display: none;
     float: left;
@@ -203,8 +202,8 @@ a.submodule-style {
 
   .caret {
     @extend .pull-right;
-    position:absolute;
+    position: absolute;
     font-style: normal;
-    right:4px;
+    right: 4px;
   }
 }

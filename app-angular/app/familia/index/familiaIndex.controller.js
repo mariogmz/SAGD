@@ -1,6 +1,6 @@
 // app/familia/index/margenIndex.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   FamiliaIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function FamiliaIndexController(api, pnotify, modal){
+  /* @ngInject */
+  function FamiliaIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;
@@ -23,15 +24,15 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerFamilias().then(function (){
+    function initialize() {
+      return obtenerFamilias().then(function() {
         console.log("Familias obtenidas");
       });
     }
 
-    function obtenerFamilias(){
+    function obtenerFamilias() {
       return api.get('/familia')
-        .then(function (response){
+        .then(function(response) {
           vm.familias = response.data;
           return vm.familias;
         });
@@ -39,33 +40,33 @@
 
     function eliminar(familia) {
       modal.confirm({
-        title: 'Eliminar Familia',
-        content: 'Estas a punto de eliminar una familia. ¿Estás seguro?',
-        accept: 'Eliminar Familia',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarFamilia(familia.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Familia',
+          content: 'Estas a punto de eliminar una familia. ¿Estás seguro?',
+          accept: 'Eliminar Familia',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarFamilia(familia.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
-    function eliminarFamilia(id){
+    function eliminarFamilia(id) {
       return api.delete('/familia/', id)
-        .then(function (response){
-          obtenerFamilias().then(function(){
+        .then(function(response) {
+          obtenerFamilias().then(function() {
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
-        }).catch(function (response){
+        }).catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

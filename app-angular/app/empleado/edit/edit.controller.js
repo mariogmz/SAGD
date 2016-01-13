@@ -51,7 +51,7 @@
         templateOptions: {
           type: 'select',
           label: 'Sucursal:',
-          options: [{ value: 0, name: 'Seleccione a que sucursal pertenecerá'}],
+          options: [{value: 0, name: 'Seleccione a que sucursal pertenecerá'}],
           ngOptions: 'sucursal.id as sucursal.nombre group by sucursal.proveedor.razon_social for sucursal in to.options | orderBy:"nombre"',
           required: true
         }
@@ -76,22 +76,22 @@
     ////////////////
 
     function activate() {
-      return obtenerSucursales().then(function (response) {
-          console.log("Sucursales obtenidas");
-          obtenerEmpleado().then(function (response) {
-            console.log(response.message);
-            assignFields();
-          });
+      return obtenerSucursales().then(function(response) {
+        console.log("Sucursales obtenidas");
+        obtenerEmpleado().then(function(response) {
+          console.log(response.message);
+          assignFields();
         });
+      });
     }
 
     function obtenerEmpleado() {
       return api.get('/empleado/', vm.id)
-        .then(function (response) {
+        .then(function(response) {
           vm.empleado = response.data.empleado;
           return response.data;
         })
-        .catch(function (response) {
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
@@ -105,20 +105,20 @@
 
     function guardarEmpleado() {
       return api.put('/empleado/', vm.id, vm.empleado)
-      .then(function(response){
-        vm.message = response.data.message;
-        pnotify.alert('Exito', vm.message, 'success');
-      })
-      .catch(updateError);
+        .then(function(response) {
+          vm.message = response.data.message;
+          pnotify.alert('Exito', vm.message, 'success');
+        })
+        .catch(updateError);
     }
 
     function obtenerSucursales() {
       return api.get('/sucursal')
-        .then(function (response) {
+        .then(function(response) {
           vm.sucursales = response.data;
           return response;
         })
-        .catch(function (response) {
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('No se pudo obtener las sucursales', vm.error.error, 'error');
           return response;
@@ -131,7 +131,7 @@
 
     function assignFields() {
       vm.fields = vm.fields.map(function(object) {
-        if(object.key == "sucursal_id") {
+        if (object.key == "sucursal_id") {
           object.templateOptions.options = vm.sucursales;
         }
         return object;

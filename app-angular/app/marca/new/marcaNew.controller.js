@@ -1,6 +1,6 @@
 // app/marca/marca.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   MarcaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function MarcaNewController($state, api, pnotify){
+  /* @ngInject */
+  function MarcaNewController($state, api, pnotify) {
 
     var vm = this;
     vm.back = goBack;
@@ -40,13 +41,13 @@
 
     vm.create = create;
 
-    function create(){
+    function create() {
       api.post('/marca', vm.marca)
-        .then(function (response){
+        .then(function(response) {
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('marcaShow', {id: response.data.marca.id});
         })
-        .catch(function (response){
+        .catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }

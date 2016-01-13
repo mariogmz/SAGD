@@ -10,6 +10,7 @@
 
   ClienteEditController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'ClienteComentario', 'utils'];
 
+  /* @ngInject */
   function ClienteEditController($location, $state, $stateParams, api, pnotify, Cliente, ClienteComentario, utils) {
 
     var vm = this;

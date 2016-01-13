@@ -1,6 +1,6 @@
 // app/subfamilia/subfamilia.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   SubfamiliaEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
-  function SubfamiliaEditController($stateParams, api, pnotify){
+  /* @ngInject */
+  function SubfamiliaEditController($stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -30,7 +31,7 @@
         },
         validators: {
           validKey: {
-            expression: function ($formValue, $modelValue, scope){
+            expression: function($formValue, $modelValue, scope) {
               return /^[\w]+$/.test($formValue || $modelValue);
             },
             message: '$viewValue + " contiene caracteres inválidos"'
@@ -68,32 +69,32 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerSubfamilia('/subfamilia/', vm.id).then(function (response){
+    function initialize() {
+      return obtenerSubfamilia('/subfamilia/', vm.id).then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerSubfamilia(){
+    function obtenerSubfamilia() {
       return api.get('/subfamilia/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.subfamilia = response.data.subfamilia;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
     }
 
-    function guardarSubfamilia(){
+    function guardarSubfamilia() {
       return api.put('/subfamilia/', vm.id, vm.subfamilia)
-        .then(function (response){
+        .then(function(response) {
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
           return response;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alertList('No se pudo guardar la subfamilia', vm.error.error, 'error');
           return response;

@@ -9,6 +9,7 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('empleadoRoles', {
@@ -18,5 +19,5 @@
         controller: 'empleadoRolesController',
         controllerAs: 'vm'
       });
-    }
+  }
 })();

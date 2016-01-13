@@ -1,3 +1,4 @@
+<!-- app/sidebar/sidebar.template.html -->
 <aside class="notification-bar" id="notification-bar" ng-class="{collapsed: vm.collapsed}">
 
   <section class="notification-bar-title">
@@ -33,16 +34,17 @@
   <section class="notification-card" ng-show="vm.collection.length">
     <article class="card-block channels">
       <div class="notification-cell" id="{{'notification-cel-'+$index}}"
-          ng-class="{new: item.isNew, deleting: item.wasDeleted}"
-          ng-repeat="item in vm.collection"
-          ng-show="vm.showable(item)">
+           ng-class="{new: item.isNew, deleting: item.wasDeleted}"
+           ng-repeat="item in vm.collection"
+           ng-show="vm.showable(item)">
         <div class="notification-type" ng-class="item.level">
           <span>&nbsp;</span>
         </div>
         <div class="notification-message">
           <p>
             {{item.message}}<br/>
-            <small>por <em>{{item.user}}</em></small> -
+            <small>por <em>{{item.user}}</em></small>
+            -
             <small> {{item.timestamp}}</small>
           </p>
         </div>

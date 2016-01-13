@@ -10,6 +10,7 @@
 
   MargenShowController.$inject = ['$stateParams', 'api', 'utils'];
 
+  /* @ngInject */
   function MargenShowController($stateParams, api, utils) {
 
     var vm = this;

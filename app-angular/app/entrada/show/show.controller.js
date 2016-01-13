@@ -25,27 +25,28 @@
 
     function activate() {
       return obtenerEntrada().then(function(response) {
-          console.log(response.message);
-          calcularSubtotal();
-        });
+        console.log(response.message);
+        calcularSubtotal();
+      });
     }
 
     function obtenerEntrada() {
       return api.get('/entrada/', vm.id).then(function(response) {
-        vm.entrada = response.data.entrada;
-        return response.data;
-      })
-      .catch(function(response) {
-        vm.error = response.data;
-        return response.data;
-      });
+          vm.entrada = response.data.entrada;
+          return response.data;
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          return response.data;
+        });
     }
 
     function calcularSubtotal() {
       for (var i = vm.entrada.detalles.length - 1; i >= 0; i--) {
         var detalle = vm.entrada.detalles[i];
         vm.subtotal += detalle.importe;
-      };
+      }
+      ;
     }
 
     function cargar() {

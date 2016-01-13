@@ -4,19 +4,20 @@
   'use strict';
 
   angular
-  .module('sagdApp.empleado')
-  .config(configureRoutes);
+    .module('sagdApp.empleado')
+    .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
-    .state('empleadoShow', {
-      url: 'empleado/:id',
-      parent: 'empleado',
-      templateUrl: 'app/empleado/show/show.html',
-      controller: 'empleadoShowController',
-      controllerAs: 'vm'
-    });
+      .state('empleadoShow', {
+        url: 'empleado/:id',
+        parent: 'empleado',
+        templateUrl: 'app/empleado/show/show.html',
+        controller: 'empleadoShowController',
+        controllerAs: 'vm'
+      });
   }
 })();

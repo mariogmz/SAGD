@@ -28,6 +28,7 @@
         .catch(obtenerFailed);
 
       function obtenerComplete(response) {
+
         return response.data;
       }
 
@@ -43,7 +44,9 @@
 
       function crearComplete(response) {
         pnotify.alert('¡Exito!', response.data.message, 'success');
-        return response.data.cliente;
+        var cliente = formatDates(response.data.cliente);
+        cliente.tabuladores = formatTabuladores(cliente.tabuladores);
+        return cliente;
       }
 
       function crearFailed(error) {
@@ -57,7 +60,9 @@
         .catch(mostrarFailed);
 
       function mostrarComplete(response) {
-        return formatDates(response.data.cliente);
+        var cliente = formatDates(response.data.cliente);
+        cliente.tabuladores = formatTabuladores(cliente.tabuladores);
+        return cliente;
       }
 
       function mostrarFailed(error) {
@@ -131,6 +136,20 @@
       cliente.fecha_verificacion_correo = new Date(Date.parse(cliente.fecha_verificacion_correo));
       cliente.created_at = new Date(Date.parse(cliente.created_at));
       return cliente;
+    }
+
+    function formatTabuladores(tabuladores) {
+      if (tabuladores) {
+        tabuladores.forEach(function(tabulador) {
+          tabulador.valor = parseInt(tabulador.valor);
+          tabulador.valor_original = parseInt(tabulador.valor_original);
+        });
+
+        return tabuladores;
+      } else {
+        return null;
+      }
+
     }
 
   }

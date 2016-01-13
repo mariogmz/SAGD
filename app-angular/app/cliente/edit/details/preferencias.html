@@ -32,11 +32,12 @@
 
     <div class="row">
 
-    <!-- Tipo de cliente -->
+      <!-- Tipo de cliente -->
       <div class="col-lg">
         <fieldset ng-class="vm.setClass(clienteEditForm.rol)">
           <label for="rol">Tipo de cliente:</label>
-          <select id="rol" name="rol" ng-model="vm.cliente.rol_id" ng-options="rol.id as rol.nombre for rol in vm.roles | orderBy:'nombre'" required>
+          <select id="rol" name="rol" ng-model="vm.cliente.rol_id"
+                  ng-options="rol.id as rol.nombre for rol in vm.roles | orderBy:'nombre'" required>
             <option value="" ng-hide="vm.cliente.rol_id">Seleccione estatus del cliente></option>
           </select>
           <!-- Validation messages -->
@@ -46,7 +47,7 @@
         </fieldset>
       </div>
 
-    <!-- Sucursal predeterminada -->
+      <!-- Sucursal predeterminada -->
       <div class="col-lg">
         <fieldset ng-class="vm.setClass(clienteEditForm.sucursal_predeterminada)">
           <label for="sucursal_predeterminada">Sucursal predeterminada:</label>
@@ -55,13 +56,14 @@
             <option value="" ng-hide="vm.cliente.sucursal_id">Seleccione sucursal</option>
           </select>
           <!-- Validation messages -->
-          <div ng-messages="clienteEditForm.sucursal_predeterminada.$error" ng-show="clienteEditForm.sucursal_predeterminada.$touched">
+          <div ng-messages="clienteEditForm.sucursal_predeterminada.$error"
+               ng-show="clienteEditForm.sucursal_predeterminada.$touched">
             <div ng-messages-include="app/templates/fields/messages.html"></div>
           </div>
         </fieldset>
       </div>
 
-  </div>
+    </div>
 
   </div>
 </div>

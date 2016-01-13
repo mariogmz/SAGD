@@ -1,15 +1,16 @@
 // app/blocks/session/session.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
     .module('blocks.session')
     .factory('session', session);
 
-  session.$inject = ['$auth', '$state', '$http', 'api'];
+  session.$inject = ['$auth', '$state', 'api'];
 
-  function session($auth, $state, $http, api){
+  /* @ngInject */
+  function session($auth, $state, api) {
 
     var auth = $auth;
     var state = $state;
@@ -19,36 +20,36 @@
 
     var isAuthenticated = auth.isAuthenticated;
 
-    var redirectToHomeIfAuthenticated = function (){
+    var redirectToHomeIfAuthenticated = function() {
       if (isAuthenticated()) {
         state.go('home', {});
       }
     };
 
-    var logoutUserIfAuthenticated = function (){
+    var logoutUserIfAuthenticated = function() {
       if (isAuthenticated()) {
         auth.removeToken();
         localStorage.removeItem('empleado');
       }
     };
 
-    var getEmpleado = function (){
+    var getEmpleado = function() {
       api.get('/authenticate/empleado').then(setEmpleadoToLocalStorage);
     };
 
-    var setEmpleadoToLocalStorage = function (response){
+    var setEmpleadoToLocalStorage = function(response) {
       localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
       $state.go('home', {});
     };
 
-    var loginWithCredentials = function (credentials){
-      return auth.login(credentials).then(getEmpleado, function (error){
+    var loginWithCredentials = function(credentials) {
+      return auth.login(credentials).then(getEmpleado, function(error) {
         loginError = true;
         loginErrorText = error.data.error;
       });
     };
 
-    var login = function (email, password){
+    var login = function(email, password) {
       redirectToHomeIfAuthenticated();
       var credentials = {
         email: email,
@@ -57,14 +58,17 @@
       return loginWithCredentials(credentials);
     };
 
-    var logout = function (){
+    var logout = function() {
       logoutUserIfAuthenticated();
       state.go('login', {});
     };
 
     function resetEmpleado() {
-      return api.get('/authenticate/empleado').then(function(response){
-        if (typeof response == "undefined") {return};
+      return api.get('/authenticate/empleado').then(function(response) {
+        if (typeof response == 'undefined') {
+          return;
+        }
+
         localStorage.setItem('empleado', JSON.stringify(response.data.empleado));
       });
     }
@@ -72,19 +76,23 @@
     return {
       isAuthenticated: isAuthenticated,
       resetEmpleado: resetEmpleado,
-      obtenerEmpleado: function (){
+      obtenerEmpleado: function() {
         return JSON.parse(localStorage.getItem('empleado'));
       },
+
       login: login,
-      getLoginError: function (){
+      getLoginError: function() {
         return loginError;
       },
-      cleanLoginError: function (){
+
+      cleanLoginError: function() {
         loginError = false;
       },
-      getLoginErrorText: function (){
+
+      getLoginErrorText: function() {
         return loginErrorText;
       },
+
       logout: logout
     };
 

@@ -1,3 +1,4 @@
+<!-- app/empleado/roles/roles.html -->
 <section class="search-card">
   <div class="header">
     <h4>Roles de {{vm.empleado.nombre}}</h4>
@@ -26,35 +27,35 @@
 </section>
 
 <div class="empleados-roles">
-    <div class="roles-list">
-        <table class="roles-table">
-          <thead>
-            <tr>
-              <th>Clave</th>
-              <th>Nombre del Rol</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="roles-row"
-                dir-paginate="rol in vm.roles | orderBy:['individual','nombre'] | filter:vm.search | itemsPerPage:10">
-              <td>{{rol.clave}}</td>
-              <td>{{rol.nombre}}</td>
-              <td class="roles-actions">
-                <div class="action-buttons">
-                  <button type="button" class="attach"
-                          ng-class="{selected: vm.empleadoHas(rol)}"
-                          ng-click="vm.attach(rol)"><i></i></button>
-                  <button type="button" class="detach"
-                          ng-class="{selected: vm.empleadoDoesntHave(rol)}"
-                          ng-click="vm.detach(rol)"><i></i></button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <loader model="vm.roles"></loader>
-    </div>
+  <div class="roles-list">
+    <table class="roles-table">
+      <thead>
+      <tr>
+        <th>Clave</th>
+        <th>Nombre del Rol</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="roles-row"
+          dir-paginate="rol in vm.roles | orderBy:['individual','nombre'] | filter:vm.search | itemsPerPage:10">
+        <td>{{rol.clave}}</td>
+        <td>{{rol.nombre}}</td>
+        <td class="roles-actions">
+          <div class="action-buttons">
+            <button type="button" class="attach"
+                    ng-class="{selected: vm.empleadoHas(rol)}"
+                    ng-click="vm.attach(rol)"><i></i></button>
+            <button type="button" class="detach"
+                    ng-class="{selected: vm.empleadoDoesntHave(rol)}"
+                    ng-click="vm.detach(rol)"><i></i></button>
+          </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+    <loader model="vm.roles"></loader>
+  </div>
 </div>
 <div class="paginator">
   <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>

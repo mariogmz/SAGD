@@ -10,6 +10,7 @@
 
   transferenciaIndexController.$inject = ['$state', 'api', 'pnotify', 'session', 'modal'];
 
+  /* @ngInject */
   function transferenciaIndexController($state, api, pnotify, session, modal) {
 
     var vm = this;
@@ -103,19 +104,19 @@
 
     function transferir(id) {
       modal.password({
-        title: 'Transferir',
-        content: 'Estas a punto de marcar la transferencia para ser enviada. ¿Deseas continuar?',
-        accept: 'Transferir',
-        type: 'danger'
-      })
-      .then(function() {
-        return api.post('/transferencias/salidas/transferir/' + id).then(function(response) {
-          pnotify.alert('Exito', response.data.message, 'success');
+          title: 'Transferir',
+          content: 'Estas a punto de marcar la transferencia para ser enviada. ¿Deseas continuar?',
+          accept: 'Transferir',
+          type: 'danger'
+        })
+        .then(function() {
+          return api.post('/transferencias/salidas/transferir/' + id).then(function(response) {
+            pnotify.alert('Exito', response.data.message, 'success');
+          });
+        })
+        .catch(function() {
+          return false;
         });
-      })
-      .catch(function() {
-        return false;
-      });
     }
 
     function destroy(id) {

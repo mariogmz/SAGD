@@ -1,6 +1,6 @@
 // app/blocks/formly/formly.module.js
 
-(function (){
+(function() {
   'use strict';
 
   angular.module('blocks.formly', ['formly']);

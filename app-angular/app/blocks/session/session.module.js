@@ -1,9 +1,9 @@
 // app/blocks/session/session.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('blocks.session', [
-      'blocks.api'
-    ]);
+  angular.module('blocks.session', [
+    'blocks.api'
+  ]);
 })();

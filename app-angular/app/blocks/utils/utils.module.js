@@ -1,6 +1,6 @@
 // app/blocks/utils/utils.module.js
 
-(function (){
+(function() {
   'use strict';
 
   angular.module('blocks.utils', []);

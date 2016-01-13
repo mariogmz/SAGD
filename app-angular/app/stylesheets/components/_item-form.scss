@@ -60,7 +60,7 @@ form.item-form {
       @extend .form-control-error;
     }
 
-    .field{
+    .field {
       @extend .has-error;
     }
   }
@@ -72,7 +72,7 @@ form.item-form {
       @extend .form-control-success;
     }
 
-    .field{
+    .field {
       @extend .has-success;
     }
   }
@@ -84,7 +84,7 @@ form.item-form {
       @extend .form-control-warning;
     }
 
-    .field{
+    .field {
       @extend .has-warning;
     }
   }

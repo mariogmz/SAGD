@@ -9,7 +9,9 @@
 
     @include make-col();
 
-    label { float: left; }
+    label {
+      float: left;
+    }
 
     select {
       @extend .c-select;
@@ -30,7 +32,11 @@
     text-align: center;
   }
 
-  .entrada-fieldset-3 { @include make-col-span(4); }
-  .entrada-fieldset-4 { @include make-col-span(3); }
+  .entrada-fieldset-3 {
+    @include make-col-span(4);
+  }
+  .entrada-fieldset-4 {
+    @include make-col-span(3);
+  }
 
 }

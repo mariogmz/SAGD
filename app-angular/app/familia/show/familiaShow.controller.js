@@ -1,6 +1,6 @@
 // app/familia/show/familia.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   FamiliaShowController.$inject = ['$stateParams', 'api'];
 
-  function FamiliaShowController($stateParams, api){
+  /* @ngInject */
+  function FamiliaShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -41,19 +42,19 @@
     ];
     initialize();
 
-    function initialize(){
-      return obtenerFamilia().then(function (response){
+    function initialize() {
+      return obtenerFamilia().then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerFamilia(){
+    function obtenerFamilia() {
       return api.get('/familia/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.familia = response.data.familia;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

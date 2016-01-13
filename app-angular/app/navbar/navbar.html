@@ -1,3 +1,4 @@
+<!-- app/margen/show/show.html -->
 <nav class="top-navbar">
   <button class="hamburguer" type="button" data-toggle="collapse" data-target=".module-list">
     &#9776;
@@ -14,9 +15,9 @@
       <a class="module-style" ui-sref="{{module.state}}" aria-haspopup="true" aria-expanded="false">
         {{module.name}}
       </a>
-      <div  class="submodule-menu menu"
-            ng-if="module.submodules"
-            ng-class="{show: showSubmenu}">
+      <div class="submodule-menu menu"
+           ng-if="module.submodules"
+           ng-class="{show: showSubmenu}">
         <ul class="submodule-list">
           <li class="submodule-list-item list-item"
               ng-repeat="submodule in module.submodules"
@@ -25,9 +26,9 @@
             <a class="submodule-style" ui-sref="{{submodule.state}}">
               <span>{{submodule.name}}</span><span ng-if="submodule.actions" class="caret">&#9657;</span>
             </a>
-            <div  class="action-menu menu"
-                  ng-if="submodule.actions"
-                  ng-class="{show: showActionmenu}">
+            <div class="action-menu menu"
+                 ng-if="submodule.actions"
+                 ng-class="{show: showActionmenu}">
               <ul class="action-list">
                 <li class="action-list-item" ng-repeat="action in submodule.actions"
                     ng-mouseleave="vm.elementHasHover($event)">
@@ -49,8 +50,8 @@
         <span class="sucursal">{{vm.empleado.sucursal.clave}}</span>
       </a>
 
-      <div  class="empleado-menu menu"
-            ng-class="{show: showLogoutActions}">
+      <div class="empleado-menu menu"
+           ng-class="{show: showLogoutActions}">
         <ul class="empleado-list list-item">
           <cambiar-sucursal class="dropdown"></cambiar-sucursal>
           <li class="empleado-item">

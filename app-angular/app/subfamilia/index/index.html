@@ -1,3 +1,4 @@
+<!--app/subfamilia/index/index.html -->
 <div class="search-card">
   <div class="header">
     <h4>Subfamilias</h4>
@@ -32,7 +33,8 @@
     </tr>
     </thead>
     <tbody>
-    <tr dir-paginate="subfamilia in vm.subfamilias | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+    <tr
+      dir-paginate="subfamilia in vm.subfamilias | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
       <th scope="row">{{subfamilia.id}}</th>
       <td><a ui-sref="subfamiliaShow({id:subfamilia.id})">{{subfamilia.clave}}</a></td>
       <td>{{subfamilia.nombre}}</td>

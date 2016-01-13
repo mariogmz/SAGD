@@ -87,30 +87,30 @@
     ////////////////
 
     function activate() {
-      return obtenerProveedores().then(function (response) {
-          obtenerBases().then(function(response) {
-            assignFields();
-          });
+      return obtenerProveedores().then(function(response) {
+        obtenerBases().then(function(response) {
+          assignFields();
         });
+      });
     }
 
     function crearModelos() {
       obtenerCodigoPostal()
-      .then(function(response) {
-        vm.domicilio.codigo_postal_id = response.data.codigo_postal.id;
-        crearDomicilio()
         .then(function(response) {
-          vm.sucursal.domicilio_id = response.data.domicilio.id;
-          crearSucursal()
-          .then(function (response){
-            pnotify.alert('Exito', response.data.message, 'success');
-            $state.go('sucursalShow', {id: response.data.sucursal.id});
-          })
-          .catch(createError);
+          vm.domicilio.codigo_postal_id = response.data.codigo_postal.id;
+          crearDomicilio()
+            .then(function(response) {
+              vm.sucursal.domicilio_id = response.data.domicilio.id;
+              crearSucursal()
+                .then(function(response) {
+                  pnotify.alert('Exito', response.data.message, 'success');
+                  $state.go('sucursalShow', {id: response.data.sucursal.id});
+                })
+                .catch(createError);
+            })
+            .catch(createError);
         })
-        .catch(createError);
-      })
-      .catch(findError);
+        .catch(findError);
     }
 
     function findError(response) {
@@ -139,7 +139,7 @@
       return api.get('/sucursal', [{'key': 'base', 'value': 'true'}]).then(function(response) {
         vm.bases = response.data;
         return response;
-      }).catch(function(response){
+      }).catch(function(response) {
         vm.error = response.data;
         pnotify.alert('No se pudo obtener las sucursales', vm.error.error, 'error');
         return response;
@@ -148,11 +148,11 @@
 
     function obtenerProveedores() {
       return api.get('/proveedor')
-        .then(function (response) {
+        .then(function(response) {
           vm.proveedores = response.data;
           return response;
         })
-        .catch(function (response) {
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('No se pudo obtener los proveedores', vm.error.error, 'error');
           return response;
@@ -165,10 +165,10 @@
 
     function assignFields() {
       vm.fields = vm.fields.map(function(object) {
-        if(object.key == "proveedor_id") {
+        if (object.key == "proveedor_id") {
           object.templateOptions.options = vm.proveedores;
         }
-        if(object.key == "base_id") {
+        if (object.key == "base_id") {
           object.templateOptions.options = vm.bases;
         }
         return object;

@@ -1,6 +1,6 @@
 // app/logs/index/index.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,6 +10,7 @@
 
   logsIndexController.$inject = ['$state'];
 
+  /* @ngInject */
   function logsIndexController($state) {
 
     var vm = this;

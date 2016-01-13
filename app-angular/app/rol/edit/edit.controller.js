@@ -43,18 +43,18 @@
 
     function activate() {
       return obtenerRol('/rol/', vm.id)
-        .then(function(response){
+        .then(function(response) {
           console.log(response.message);
         })
     }
 
     function obtenerRol() {
       return api.get('/rol/', vm.id)
-        .then(function(response){
+        .then(function(response) {
           vm.rol = response.data.rol;
           return response.data;
         })
-        .catch(function(response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
@@ -62,12 +62,12 @@
 
     function guardarRol() {
       return api.put('/rol/', vm.id, vm.rol)
-        .then(function (response){
+        .then(function(response) {
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
           return response;
         })
-        .catch(function(response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('No se pudo guardar el rol', vm.error.error, 'error');
           return response;

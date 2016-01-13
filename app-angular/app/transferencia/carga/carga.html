@@ -1,3 +1,4 @@
+<!-- app/transferencia/carga/carga.html -->
 <div class="card">
   <div class="header">
     <h4>Cargar transferencia #{{vm.transferencia.id}}</h4>
@@ -40,30 +41,30 @@
       <article>
         <table class="item-table small-item-table">
           <thead>
-            <tr>
-              <th class="action">UPC</th>
-              <th class="action">Clave</th>
-              <th class="action">Descripción</th>
-              <th class="action">Cantidad entrante</th>
-              <th class="action">Cantidad escaneada</th>
-              <th class="action">Acciones</th>
-            </tr>
+          <tr>
+            <th class="action">UPC</th>
+            <th class="action">Clave</th>
+            <th class="action">Descripción</th>
+            <th class="action">Cantidad entrante</th>
+            <th class="action">Cantidad escaneada</th>
+            <th class="action">Acciones</th>
+          </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="detalle in vm.transferencia.detalles">
-              <td ng-bind="detalle.producto.upc"></td>
-              <td ng-bind="detalle.producto.clave"></td>
-              <td ng-bind="detalle.producto.descripcion"></td>
-              <td ng-bind="detalle.cantidad"></td>
-              <td ng-bind="detalle.cantidad_escaneada"></td>
-              <td class="actions">
-                <div class="action-buttons" role="group" aria-label="Acciones">
-                  <button type="button" class="delete one-third" ng-click="vm.resetDetalle(detalle.id)">
-                    <i></i>
-                  </button>
-                </div>
-              </td>
-            </tr>
+          <tr ng-repeat="detalle in vm.transferencia.detalles">
+            <td ng-bind="detalle.producto.upc"></td>
+            <td ng-bind="detalle.producto.clave"></td>
+            <td ng-bind="detalle.producto.descripcion"></td>
+            <td ng-bind="detalle.cantidad"></td>
+            <td ng-bind="detalle.cantidad_escaneada"></td>
+            <td class="actions">
+              <div class="action-buttons" role="group" aria-label="Acciones">
+                <button type="button" class="delete one-third" ng-click="vm.resetDetalle(detalle.id)">
+                  <i></i>
+                </button>
+              </div>
+            </td>
+          </tr>
           </tbody>
         </table>
       </article>

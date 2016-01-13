@@ -26,14 +26,14 @@
     ////////////////
 
     function activate() {
-      return obtenerRoles().then(function (){
+      return obtenerRoles().then(function() {
         console.log('Roles obtenidas');
       });
     }
 
-    function obtenerRoles(){
+    function obtenerRoles() {
       return api.get('/rol')
-        .then(function(response){
+        .then(function(response) {
           vm.roles = response.data;
           return vm.roles;
         });
@@ -41,34 +41,34 @@
 
     function eliminar(sucursal) {
       modal.confirm({
-        title: 'Eliminar Rol',
-        content: 'Estas a punto de eliminar una rol. ¿Estás seguro?',
-        accept: 'Eliminar Rol',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarRol(sucursal.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      })
+          title: 'Eliminar Rol',
+          content: 'Estas a punto de eliminar una rol. ¿Estás seguro?',
+          accept: 'Eliminar Rol',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarRol(sucursal.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        })
     }
 
     function eliminarRol(id) {
       return api.delete('/rol/', id)
-        .then(function(response){
+        .then(function(response) {
           obtenerRoles().then(function() {
             pnotify.alert('¡Éxito!', response.data.message, 'success');
           });
         })
-        .catch(function(response){
+        .catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

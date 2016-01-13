@@ -10,6 +10,7 @@
 
   FamiliaNewController.$inject = ['$state', 'api', 'pnotify'];
 
+  /* @ngInject */
   function FamiliaNewController($state, api, pnotify) {
 
     var vm = this;

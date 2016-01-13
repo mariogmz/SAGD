@@ -19,8 +19,7 @@
       controllerAs: 'vm',
       link: link,
       restrict: 'E',
-      scope: {
-      },
+      scope: {},
       templateUrl: 'app/templates/components/modal.html'
     };
     return directive;

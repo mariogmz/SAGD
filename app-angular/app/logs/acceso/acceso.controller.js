@@ -10,6 +10,7 @@
 
   logsAccesoController.$inject = ['api'];
 
+  /* @ngInject */
   function logsAccesoController(api) {
 
     var vm = this;

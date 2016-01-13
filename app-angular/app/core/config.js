@@ -10,6 +10,7 @@
 
   configure.$inject = ['$urlRouterProvider', '$urlMatcherFactoryProvider', '$authProvider', '$locationProvider', '$httpProvider', 'apiProvider', 'paginationTemplateProvider'];
 
+  /* @ngInject */
   function configure($urlRouterProvider, $urlMatcherFactoryProvider, $authProvider, $locationProvider, $httpProvider, api, paginationTemplateProvider) {
     $httpProvider.interceptors.push('apiObserver');
     $authProvider.loginUrl = api.$get().endpoint + '/authenticate';

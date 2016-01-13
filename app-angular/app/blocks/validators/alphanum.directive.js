@@ -1,6 +1,6 @@
 // app/blocks/validators/alphanum.directive.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -10,7 +10,7 @@
   alphaNumValidator.$inject = [];
 
   /* @ngInject */
-  function alphaNumValidator(){
+  function alphaNumValidator() {
     var directive = {
       link: link,
       require: 'ngModel',
@@ -18,17 +18,17 @@
     };
     return directive;
 
-    function link(scope, element, attrs, ngModel){
+    function link(scope, element, attrs, ngModel) {
 
       // For DOM to Model validation
-      ngModel.$parsers.unshift(function (value){
+      ngModel.$parsers.unshift(function(value) {
         var valid = /^[a-zA-Z0-9\s]*$/.test(value);
         ngModel.$setValidity('alphanum', valid);
         return valid ? value : undefined;
       });
 
       // For Model to DOM validation
-      ngModel.$formatters.unshift(function (value){
+      ngModel.$formatters.unshift(function(value) {
         ngModel.$setValidity('alphanum', /^[a-zA-Z0-9\s]*$/.test(value));
         return value;
       });

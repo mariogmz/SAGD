@@ -39,7 +39,7 @@
     ////////////////
 
     function activate() {
-      return obtenerRol().then(function(response){
+      return obtenerRol().then(function(response) {
         console.log(response.message);
       });
     }
@@ -50,7 +50,7 @@
           vm.rol = response.data.rol;
           return response.data;
         })
-        .catch(function(response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

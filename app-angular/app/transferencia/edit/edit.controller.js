@@ -63,7 +63,9 @@
         return api.put('/transferencias/salidas/' + vm.id, '', datos);
       }
 
-      return new Promise(function(resolve, reject) { resolve(true); });
+      return new Promise(function(resolve, reject) {
+        resolve(true);
+      });
     }
 
     function saveDetalle() {

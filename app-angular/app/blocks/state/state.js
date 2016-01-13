@@ -1,6 +1,6 @@
 // app/blocks/state/state.module.js
 
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -9,20 +9,21 @@
 
   state.$inject = [];
 
+  /* @ngInject */
   function state() {
     var fromState;
     var toState;
 
-    var setNewState = function (from, to) {
+    var setNewState = function(from, to) {
       fromState = from;
       toState = to;
     };
 
-    var getPreviousState = function () {
-      return fromState || "home";
+    var getPreviousState = function() {
+      return fromState || 'home';
     };
 
-    var getCurrentState = function () {
+    var getCurrentState = function() {
       return toState;
     };
 

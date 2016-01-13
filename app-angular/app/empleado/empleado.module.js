@@ -1,10 +1,10 @@
 // app/empleado/empleado.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.empleado', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.empleado', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

@@ -46,7 +46,7 @@
     ////////////////
 
     function activate() {
-      return obtenerGarantia().then(function(response){
+      return obtenerGarantia().then(function(response) {
         console.log(response.message);
       })
     }

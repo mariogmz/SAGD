@@ -1,10 +1,10 @@
 // app/permiso/permiso.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.permiso', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.permiso', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

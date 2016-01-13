@@ -10,6 +10,7 @@
 
   ClienteShowController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'utils'];
 
+  /* @ngInject */
   function ClienteShowController($location, $state, $stateParams, api, pnotify, Cliente, utils) {
 
     var vm = this;

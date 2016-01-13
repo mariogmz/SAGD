@@ -1,6 +1,6 @@
 // app/producto/new/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -9,10 +9,11 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider){
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
     $stateProvider
       .state('productoNew', {
-        url : 'producto/nuevo',
+        url: 'producto/nuevo',
         parent: 'producto',
         templateUrl: 'app/producto/new/new.html',
         controller: 'productoNewController',

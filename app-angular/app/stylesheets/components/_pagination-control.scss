@@ -1,9 +1,9 @@
 ul.pagination {
   @extend .pagination;
 
-  a{
+  a {
     color: $persian-red;
-    &:hover{
+    &:hover {
       color: $old-brick;
     }
   }
@@ -13,12 +13,12 @@ ul.pagination {
       background-color: $gray-suit;
       border-color: $gray-suit;
 
-      &:focus{
+      &:focus {
         background-color: $gray-suit;
         border-color: $gray-suit;
       }
 
-      &:hover{
+      &:hover {
         background-color: $mine-shaft;
         border-color: $mine-shaft;
 

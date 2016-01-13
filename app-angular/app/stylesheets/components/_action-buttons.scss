@@ -31,69 +31,93 @@
 
     @extend .btn-primary;
 
-    i { @extend .fa-plus; }
+    i {
+      @extend .fa-plus;
+    }
   }
 
   .edit {
 
     @extend .btn-success;
 
-    i { @extend .fa-pencil; }
+    i {
+      @extend .fa-pencil;
+    }
   }
 
   .delete {
 
     @extend .btn-danger;
 
-    i { @extend .fa-trash; }
+    i {
+      @extend .fa-trash;
+    }
   }
 
   .attach {
 
     @extend .btn-primary-outline;
 
-    &.selected { @extend .btn-primary; }
+    &.selected {
+      @extend .btn-primary;
+    }
 
-    i { @extend .fa-check; }
+    i {
+      @extend .fa-check;
+    }
   }
 
   .detach {
 
     @extend .btn-danger-outline;
 
-    &.selected { @extend .btn-danger; }
+    &.selected {
+      @extend .btn-danger;
+    }
 
-    i { @extend .fa-times; }
+    i {
+      @extend .fa-times;
+    }
   }
 
   .print {
     @extend .btn-primary;
 
-    i { @extend .fa-print; }
+    i {
+      @extend .fa-print;
+    }
   }
 
   .roles {
     @extend .btn-primary;
 
-    i { @extend .fa-users; }
+    i {
+      @extend .fa-users;
+    }
   }
 
   .save {
     @extend .btn-success;
 
-    i { @extend .fa-floppy-o; }
+    i {
+      @extend .fa-floppy-o;
+    }
   }
 
   .show {
     @extend .btn-primary;
 
-    i { @extend .fa-search; }
+    i {
+      @extend .fa-search;
+    }
   }
 
   .transferir {
     @extend .btn-primary;
 
-    i { @extend .fa-truck; }
+    i {
+      @extend .fa-truck;
+    }
   }
 
   .arrow-right {

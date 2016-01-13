@@ -1,10 +1,10 @@
 // app/passwords/passwords.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.passwords', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.passwords', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

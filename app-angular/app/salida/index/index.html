@@ -1,3 +1,4 @@
+<!-- app/salida/index/index.html -->
 <div class="search-card">
   <div class="header">
     <h4>Salidas</h4>
@@ -24,28 +25,29 @@
 <div class="table-responsive">
   <table class="item-table">
     <thead class="sortable">
-      <tr>
-        <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-          {{sortKey.name}}
-        </th>
-        <th>Acciones</th>
-      </tr>
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
     </thead>
     <tbody>
-      <tr dir-paginate="salida in vm.salidas | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
-        <th scope="row"><a ui-sref="salidaShow({id:salida.id})">{{salida.id}}</a></th>
-        <td>{{salida.fecha}}</td>
-        <td>{{salida.motivo}}</td>
-        <td>{{salida.empleado.usuario}}</td>
-        <td>{{salida.estado.nombre}}</td>
+    <tr dir-paginate="salida in vm.salidas | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+      <th scope="row"><a ui-sref="salidaShow({id:salida.id})">{{salida.id}}</a></th>
+      <td>{{salida.fecha}}</td>
+      <td>{{salida.motivo}}</td>
+      <td>{{salida.empleado.usuario}}</td>
+      <td>{{salida.estado.nombre}}</td>
 
-        <td class="actions">
-          <div class="action-buttons" role="group" aria-label="Acciones">
-            <button type="button" class="edit" ui-sref="salidaEdit({id:salida.id})"><i></i></button>
-            <button type="button" class="delete" ng-click="vm.eliminarSalida(salida)" ng-if="salida.estado_salida_id == 1"><i></i></button>
-          </div>
-        </td>
-      </tr>
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="salidaEdit({id:salida.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarSalida(salida)"
+                  ng-if="salida.estado_salida_id == 1"><i></i></button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
   <loader model="vm.salidas"></loader>

@@ -5,9 +5,9 @@
   </label>
   <formly-transclude></formly-transclude>
   <div class="formly-validation-messages" ng-messages="fc.$error" ng-if="showError">
-      <div ng-messages-include="app/templates/fields/messages.html"></div>
-      <div ng-message="{{::name}}" ng-repeat="(name, message) in ::options.validation.messages">
-        {{message(fc.$viewValue, fc.$modelValue, this)}}
-      </div>
+    <div ng-messages-include="app/templates/fields/messages.html"></div>
+    <div ng-message="{{::name}}" ng-repeat="(name, message) in ::options.validation.messages">
+      {{message(fc.$viewValue, fc.$modelValue, this)}}
+    </div>
   </div>
 </fieldset>

@@ -3,6 +3,5 @@
 (function() {
   'use strict';
 
-  angular.module('blocks.printer', [
-  ]);
+  angular.module('blocks.printer', []);
 })();

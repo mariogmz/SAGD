@@ -62,6 +62,8 @@ use Illuminate\Support\MessageBag;
  * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereRolId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Cliente whereDeletedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Tabulador[] $tabuladores
+ * @property-read \App\Rol $rol
  */
 class Cliente extends LGGModel {
 

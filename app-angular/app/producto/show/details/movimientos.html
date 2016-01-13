@@ -8,25 +8,25 @@
     <div class="table-responsive">
       <table class="item-table producto-existencias-table">
         <thead>
-          <tr>
-            <th class="action">Fecha</th>
-            <th class="action">Movmiento</th>
-            <th class="action">Entraron</th>
-            <th class="action">Salieron</th>
-            <th class="action">Exis. Antes</th>
-            <th class="action">Exis. Después</th>
-          </tr>
+        <tr>
+          <th class="action">Fecha</th>
+          <th class="action">Movmiento</th>
+          <th class="action">Entraron</th>
+          <th class="action">Salieron</th>
+          <th class="action">Exis. Antes</th>
+          <th class="action">Exis. Después</th>
+        </tr>
         </thead>
 
         <tbody>
-          <tr dir-paginate="movimiento in vm.producto_movimientos | itemsPerPage:15">
-            <td ng-bind="movimiento.created_at"></td>
-            <td ng-bind="movimiento.movimiento"></td>
-            <td ng-bind="movimiento.entraron"></td>
-            <td ng-bind="movimiento.salieron"></td>
-            <td ng-bind="movimiento.existencias_antes"></td>
-            <td ng-bind="movimiento.existencias_despues"></td>
-          </tr>
+        <tr dir-paginate="movimiento in vm.producto_movimientos | itemsPerPage:15">
+          <td ng-bind="movimiento.created_at"></td>
+          <td ng-bind="movimiento.movimiento"></td>
+          <td ng-bind="movimiento.entraron"></td>
+          <td ng-bind="movimiento.salieron"></td>
+          <td ng-bind="movimiento.existencias_antes"></td>
+          <td ng-bind="movimiento.existencias_despues"></td>
+        </tr>
         </tbody>
       </table>
     </div>

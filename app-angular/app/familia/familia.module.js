@@ -1,10 +1,10 @@
 // app/familia/familia.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.familia', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.familia', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

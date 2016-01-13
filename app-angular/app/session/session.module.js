@@ -1,9 +1,9 @@
 // app/session/session.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.session', [
-      'sagdApp.core'
-    ]);
+  angular.module('sagdApp.session', [
+    'sagdApp.core'
+  ]);
 })();

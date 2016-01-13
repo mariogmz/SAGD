@@ -1,6 +1,6 @@
 // app/subfamilia/show/subfamilia.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   SubfamiliaShowController.$inject = ['$stateParams', 'api'];
 
-  function SubfamiliaShowController($stateParams, api){
+  /* @ngInject */
+  function SubfamiliaShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -49,19 +50,19 @@
     ];
     initialize();
 
-    function initialize(){
-      return obtenerSubfamilia().then(function (response){
+    function initialize() {
+      return obtenerSubfamilia().then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerSubfamilia(){
+    function obtenerSubfamilia() {
       return api.get('/subfamilia/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.subfamilia = response.data.subfamilia;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

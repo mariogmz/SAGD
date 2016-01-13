@@ -38,27 +38,27 @@
 
     function obtenerEntradas() {
       return api.get('/entrada').then(function(response) {
-          vm.entradas = response.data;
-          return vm.entradas;
-        });
+        vm.entradas = response.data;
+        return vm.entradas;
+      });
     }
 
     function eliminar(entrada) {
       (entrada.estado_entrada_id == 1) &&
       modal.confirm({
-        title: 'Eliminar Entrada',
-        content: 'Estas a punto de eliminar una entrada. ¿Estás seguro?',
-        accept: 'Eliminar Entrada',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarEntrada(entrada.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Entrada',
+          content: 'Estas a punto de eliminar una entrada. ¿Estás seguro?',
+          accept: 'Eliminar Entrada',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarEntrada(entrada.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
     function eliminarEntrada(id) {

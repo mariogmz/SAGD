@@ -35,27 +35,27 @@
 
     function obtenerSalidas() {
       return api.get('/salida').then(function(response) {
-          vm.salidas = response.data;
-          return vm.salidas;
-        });
+        vm.salidas = response.data;
+        return vm.salidas;
+      });
     }
 
     function eliminar(salida) {
       (salida.estado_salida_id == 1) &&
       modal.confirm({
-        title: 'Eliminar Salida',
-        content: 'Estas a punto de eliminar una salida. ¿Estás seguro?',
-        accept: 'Eliminar Salida',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarSalida(salida.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Salida',
+          content: 'Estas a punto de eliminar una salida. ¿Estás seguro?',
+          accept: 'Eliminar Salida',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarSalida(salida.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
     function eliminarSalida(id) {

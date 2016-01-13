@@ -1,6 +1,6 @@
 // app/blocks/formly/formly.js
 
-(function (){
+(function() {
     'use strict';
 
     angular
@@ -9,13 +9,14 @@
 
     FormlyConfigDecorator.$inject = ['$delegate'];
 
-    function FormlyConfigDecorator($delegate){
+    /* @ngInject */
+    function FormlyConfigDecorator($delegate) {
 
       var formlyConfigWrapper = $delegate;
 
       return wrap();
 
-      function wrap(){
+      function wrap() {
 
         /**
          * Common wrappers
@@ -27,7 +28,7 @@
 
         var commonWrappers = ['label'];
 
-        angular.forEach(['radio', 'select'], function (fieldName){
+        angular.forEach(['radio', 'select'], function(fieldName) {
           formlyConfigWrapper.setType({
             name: fieldName,
             templateUrl: 'app/templates/fields/' + fieldName + '.html',
@@ -57,7 +58,7 @@
           templateUrl: 'app/templates/fields/checkbox.html'
         });
 
-        formlyConfigWrapper.templateManipulators.preWrapper.push(function ariaDescribedBy(template, options, scope){
+        formlyConfigWrapper.templateManipulators.preWrapper.push(function ariaDescribedBy(template, options, scope) {
           if (options.templateOptions && angular.isDefined(options.templateOptions.description) &&
             options.type !== 'radio' && options.type !== 'checkbox') {
             var el = angular.element('<a></a>');
