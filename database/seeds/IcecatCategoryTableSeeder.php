@@ -58,11 +58,10 @@ class IcecatCategoryTableSeeder extends Seeder {
             'icecat_id'                 => 1,
             'description'               => 'Icecat Master Category',
             'name'                      => 'Icecat Master Category',
-            'keyword'                   => 'null',
-            'icecat_parent_category_id' => 'null'
+            'keyword'                   => null,
+            'icecat_parent_category_id' => null
         ]);
         $this->command->getOutput()->writeln('Parsed!');
-
         return $icecat_categories;
     }
 
@@ -77,6 +76,10 @@ class IcecatCategoryTableSeeder extends Seeder {
         $icecat_source = $this->getIcecatCategories();
         $subfamilias = App\Subfamilia::all(['id', 'clave'])->toArray();
 
+        /** Al reindexar el $icecat_source por name, puede que algunos registros se hayan perdido en el proceso
+         *  de ser así esos N registros habría que darlos de alta a mano a la tabla de Icecat Categories y después hacer
+         *  a mano la relación entre la subfamilia y la categoria
+         */
         reindexar('name', $icecat_source);
         reindexar('clave', $subfamilias);
 
@@ -103,7 +106,14 @@ class IcecatCategoryTableSeeder extends Seeder {
         $progress_bar->start();
         DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         foreach ($categories as $category) {
-            App\IcecatCategory::create($category);
+            $ic = new App\IcecatCategory();
+            $ic->fill($category);
+            if(!$ic->save()){
+                \Log::error("Icecat Category was not saved because: ", [
+                    'category' => $category,
+                    'errors' => $ic->errors
+                ]);
+            }
             $progress_bar->advance();
         }
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');

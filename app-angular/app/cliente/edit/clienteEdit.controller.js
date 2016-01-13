@@ -8,9 +8,9 @@
     .module('sagdApp.cliente')
     .controller('clienteEditController', ClienteEditController);
 
-  ClienteEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'ClienteComentario', 'utils'];
+  ClienteEditController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'Cliente', 'ClienteComentario', 'utils'];
 
-  function ClienteEditController($state, $stateParams, api, pnotify, Cliente, ClienteComentario, utils) {
+  function ClienteEditController($location, $state, $stateParams, api, pnotify, Cliente, ClienteComentario, utils) {
 
     var vm = this;
     vm.id = $stateParams.id;
