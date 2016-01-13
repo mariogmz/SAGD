@@ -19,6 +19,8 @@ namespace App;
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
  * @property \Carbon\Carbon $deleted_at
  * @method static \Illuminate\Database\Query\Builder|\App\DomicilioCliente whereDeletedAt($value)
+ * @property-read \App\Domicilio $domicilio
+ * @property-read \App\Cliente $cliente
  */
 class DomicilioCliente extends LGGModel {
 

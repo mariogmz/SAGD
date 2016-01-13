@@ -29,6 +29,8 @@ use Codesleeve\Stapler\ORM\StaplerableInterface;
  * @method static \Illuminate\Database\Query\Builder|\App\Galeria whereImagenContentType($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Galeria whereImagenUpdatedAt($value)
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property \Carbon\Carbon $deleted_at
+ * @method static \Illuminate\Database\Query\Builder|\App\Galeria whereDeletedAt($value)
  */
 class Galeria extends LGGModel implements StaplerableInterface {
 

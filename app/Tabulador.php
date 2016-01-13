@@ -7,6 +7,26 @@ namespace App;
  * App\Tabulador
  *
  * @method static \Illuminate\Database\Query\Builder|\App\LGGModel last()
+ * @property integer $id
+ * @property integer $valor
+ * @property integer $valor_original
+ * @property boolean $especial
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property integer $cliente_id
+ * @property integer $sucursal_id
+ * @property \Carbon\Carbon $deleted_at
+ * @property-read \App\Cliente $cliente
+ * @property-read \App\Sucursal $sucursal
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereValor($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereValorOriginal($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereEspecial($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereClienteId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereSucursalId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Tabulador whereDeletedAt($value)
  */
 class Tabulador extends LGGModel {
 
