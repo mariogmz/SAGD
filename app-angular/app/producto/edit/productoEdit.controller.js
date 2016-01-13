@@ -10,6 +10,7 @@
 
   ProductoEditController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'utils', 'session'];
 
+  /* @ngInject */
   function ProductoEditController($location, $state, $stateParams, api, pnotify, utils, session) {
 
     var vm = this;

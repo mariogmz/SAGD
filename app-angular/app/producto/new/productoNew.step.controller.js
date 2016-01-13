@@ -1,6 +1,6 @@
 // app/producto/new/productoNew.step.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,14 +10,14 @@
 
   ProductoNewStepController.$inject = ['$state'];
 
-  function ProductoNewStepController($state){
+  /* @ngInject */
+  function ProductoNewStepController($state) {
 
     var vm = this;
 
     vm.go = goToStep;
 
-
-    function goToStep(step){
+    function goToStep(step) {
       $state.go('productoNew.step' + step);
     }
 

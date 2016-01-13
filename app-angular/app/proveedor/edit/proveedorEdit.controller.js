@@ -10,6 +10,7 @@
 
   ProveedorEditController.$inject = ['$state', '$stateParams', '$location', 'api', 'pnotify'];
 
+  /* @ngInject */
   function ProveedorEditController($state, $stateParams, $location, api, pnotify){
 
     var vm = this;

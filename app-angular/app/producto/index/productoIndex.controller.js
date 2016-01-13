@@ -10,6 +10,7 @@
 
   ProductoIndexController.$inject = ['$state', 'api', 'pnotify'];
 
+  /* @ngInject */
   function ProductoIndexController($state, api, pnotify) {
 
     var vm = this;
