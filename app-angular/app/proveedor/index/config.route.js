@@ -1,6 +1,6 @@
 // app/proveedor/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -9,14 +9,15 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
-        .state('proveedorIndex', {
-          url: 'proveedor',
-          parent: 'proveedor',
-          templateUrl: 'app/proveedor/index/index.html',
-          controller: 'proveedorIndexController',
-          controllerAs: 'vm'
-        });
+      .state('proveedorIndex', {
+        url: 'proveedor',
+        parent: 'proveedor',
+        templateUrl: 'app/proveedor/index/index.html',
+        controller: 'proveedorIndexController',
+        controllerAs: 'vm'
+      });
   }
 })();

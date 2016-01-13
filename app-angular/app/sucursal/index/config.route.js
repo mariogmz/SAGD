@@ -1,22 +1,23 @@
 // app/sucursal/index/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.sucursal')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.sucursal')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('sucursalIndex', {
-                url: 'sucursal',
-                parent: 'sucursal',
-                templateUrl: 'app/sucursal/index/index.html',
-                controller: 'sucursalIndexController',
-                controllerAs: 'vm'
-            });
-    }
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('sucursalIndex', {
+        url: 'sucursal',
+        parent: 'sucursal',
+        templateUrl: 'app/sucursal/index/index.html',
+        controller: 'sucursalIndexController',
+        controllerAs: 'vm'
+      });
+  }
 })();

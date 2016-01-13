@@ -1,6 +1,6 @@
 // app/home/home.controller.js
 
-(function () {
+(function() {
 
   'use strict';
 
@@ -10,10 +10,11 @@
 
   LayoutController.$inject = ['$auth', '$state'];
 
+  /* @ngInject */
   function LayoutController($auth, $state) {
     var vm = this;
     vm.isAuthenticated = $auth.isAuthenticated;
-    if(! $auth.isAuthenticated()){
+    if (!$auth.isAuthenticated()) {
       $state.go('login', {});
     }
   }

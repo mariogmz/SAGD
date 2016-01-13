@@ -67,13 +67,13 @@
 
     function create() {
       api.put('/entrada/', vm.entrada.id, vm.entrada)
-      .then(function(response) {
-        pnotify.alert('Exito', response.data.message, 'success');
-        $state.go('entradaShow', {id: response.data.entrada.id});
-      })
-      .catch(function(response) {
-        pnotify.alertList(response.data.message, response.data.error, 'error');
-      });
+        .then(function(response) {
+          pnotify.alert('Exito', response.data.message, 'success');
+          $state.go('entradaShow', {id: response.data.entrada.id});
+        })
+        .catch(function(response) {
+          pnotify.alertList(response.data.message, response.data.error, 'error');
+        });
     }
 
     function agregarEntradaDetalle(entradaDetalle) {

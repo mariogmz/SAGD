@@ -21,8 +21,7 @@
       controllerAs: 'vm',
       link: link,
       restrict: 'E',
-      scope: {
-      },
+      scope: {},
       templateUrl: 'app/sidebar/sidebar.template.html'
     };
     return directive;
@@ -76,10 +75,13 @@
     }
 
     function deleteNotification(index, event) {
-      if (vm.collection.length <= 1) { return; }
+      if (vm.collection.length <= 1) {
+        return;
+      }
+
       var payload = {
-        'user': session.obtenerEmpleado().usuario,
-        'index': index
+        user: session.obtenerEmpleado().usuario,
+        index: index
       };
       notifications.emit('delete', payload);
       vm.collection[index].wasDeleted = true;
@@ -87,25 +89,25 @@
     }
 
     function removeFromDOM(index) {
-      $timeout(1000).then(function(){
+      $timeout(1000).then(function() {
         vm.collection.splice(index, 1);
       });
     }
 
     function toggle(channel) {
-      if(channel === "info") {
+      if (channel === 'info') {
         vm.showInfo = !vm.showInfo;
-      } else if (channel === "warn") {
+      } else if (channel === 'warn') {
         vm.showWarn = !vm.showWarn;
-      } else if (channel === "error") {
+      } else if (channel === 'error') {
         vm.showError = !vm.showError;
       }
     }
 
     function canShow(item) {
-      return  (item.channel == 'info' && vm.showInfo) ||
-              (item.channel == 'warn' && vm.showWarn) ||
-              (item.channel == 'error' && vm.showError);
+      return (item.channel == 'info' && vm.showInfo) ||
+        (item.channel == 'warn' && vm.showWarn) ||
+        (item.channel == 'error' && vm.showError);
     }
 
     function collapse() {

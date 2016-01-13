@@ -1,16 +1,16 @@
 .item-radio {
 
-  label{
+  label {
     @extend .c-input;
     @extend .c-radio;
 
-    span{
+    span {
       @extend .c-indicator;
     }
   }
 }
 
-.item-radio-stack{
+.item-radio-stack {
   @extend .item-radio;
   @extend .c-inputs-stacked;
 }

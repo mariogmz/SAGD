@@ -4,19 +4,20 @@
   'use strict';
 
   angular
-  .module('sagdApp.salida')
-  .config(configureRoutes);
+    .module('sagdApp.salida')
+    .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
-    .state('salidaShow', {
-      url: 'salida/:id',
-      parent: 'salida',
-      templateUrl: 'app/salida/show/show.html',
-      controller: 'salidaShowController',
-      controllerAs: 'vm'
-    });
+      .state('salidaShow', {
+        url: 'salida/:id',
+        parent: 'salida',
+        templateUrl: 'app/salida/show/show.html',
+        controller: 'salidaShowController',
+        controllerAs: 'vm'
+      });
   }
 })();

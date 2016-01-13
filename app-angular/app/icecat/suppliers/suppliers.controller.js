@@ -10,6 +10,7 @@
 
   IcecatSuppliersController.$inject = ['api', 'utils', 'pnotify'];
 
+  /* @ngInject */
   function IcecatSuppliersController(api, utils, pnotify) {
     var vm = this;
     vm.obtenerMarcas = obtenerMarcas;

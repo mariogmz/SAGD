@@ -1,10 +1,10 @@
 // app/subfamilia/subfamilia.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.subfamilia', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.subfamilia', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

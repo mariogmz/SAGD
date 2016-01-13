@@ -1,6 +1,6 @@
 // app/permiso/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -9,7 +9,7 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider){
+  function configureRoutes($stateProvider) {
     $stateProvider
       .state('permiso', {
         abstract: true,

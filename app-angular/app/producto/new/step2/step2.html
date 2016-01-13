@@ -275,7 +275,8 @@
           <fieldset ng-class="parentVm.setClass(productoNewForm.precio_10)">
             <div class="with-icon">
               <span>5</span>
-              <input type="number" id="precio_10" name="precio_10" placeholder="0.00" ng-model="parentVm.precio.precio_10"
+              <input type="number" id="precio_10" name="precio_10" placeholder="0.00"
+                     ng-model="parentVm.precio.precio_10"
                      ng-disabled="parentVm.producto.margen_id"
                      min="1" numeric required step="1">
             </div>
@@ -327,4 +328,5 @@
   </article>
 </div>
 <a ng-click="vm.go(1)" class="button secondary">Atrás</a>
-<input type="submit" class="button primary" value="Guardar cambios" ng-disabled="productoNewForm.$invalid" ng-click="parentVm.save()">
+<input type="submit" class="button primary" value="Guardar cambios" ng-disabled="productoNewForm.$invalid"
+       ng-click="parentVm.save()">

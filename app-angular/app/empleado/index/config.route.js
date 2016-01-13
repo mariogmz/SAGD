@@ -9,6 +9,7 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('empleadoIndex', {
@@ -18,5 +19,5 @@
         controller: 'empleadoIndexController',
         controllerAs: 'vm'
       });
-    }
+  }
 })();

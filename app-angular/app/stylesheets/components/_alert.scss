@@ -13,20 +13,20 @@
     opacity: 0;
   }
 
-  a{
+  a {
     @extend .alert-link;
   }
 
-  button{
+  button {
     @extend .close;
 
-    span.sr{
+    span.sr {
       @extend .sr-only;
     }
   }
 }
 
-.dismissible{
+.dismissible {
   @extend .alert-dismissible;
   @extend .fade;
   @extend .in;

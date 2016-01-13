@@ -5,7 +5,7 @@
     @extend .form-control-error;
   }
 
-  .with-icon{
+  .with-icon {
     @extend .has-error;
   }
 }
@@ -13,10 +13,10 @@
 .with-success {
   @extend .has-success;
 
-  input:not([type="submit"]){
+  input:not([type="submit"]) {
     @extend .form-control-success;
   }
-  .with-icon{
+  .with-icon {
     @extend .has-success;
   }
 
@@ -29,7 +29,7 @@
     @extend .form-control-warning;
   }
 
-  .with-icon{
+  .with-icon {
     @extend .has-warning;
   }
 }

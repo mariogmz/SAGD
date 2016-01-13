@@ -17,7 +17,6 @@
     vm.sendEmail = sendEmail;
     vm.empleado = session.obtenerEmpleado();
 
-
     activate();
 
     ////////////////
@@ -26,16 +25,19 @@
     }
 
     function sendEmail() {
-      if (vm.disabled) { return; };
+      if (vm.disabled) {
+        return;
+      }
+      ;
       postEmailToEndpoint()
-      .then(function(){
-        vm.disabled = true;
-        pnotify.alert('¡Exito!', "Su link para cambiar su contraseña llegará momentaneamente", 'success');
-      })
-      .catch(function(){
-        vm.disabled = true;
-        pnotify.alert('Error', 'Hubo un error al enviar el correo, intente más tarde', 'error');
-      });
+        .then(function() {
+          vm.disabled = true;
+          pnotify.alert('¡Exito!', "Su link para cambiar su contraseña llegará momentaneamente", 'success');
+        })
+        .catch(function() {
+          vm.disabled = true;
+          pnotify.alert('Error', 'Hubo un error al enviar el correo, intente más tarde', 'error');
+        });
     }
 
     function postEmailToEndpoint() {

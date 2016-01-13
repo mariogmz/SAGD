@@ -86,8 +86,9 @@
       var ids = pretransferencia.ids.split('|');
       for (var i = ids.length - 1; i >= 0; i--) {
         api.delete('/inventario/pretransferencias/eliminar/' + ids[i])
-        .then(deleteSuccess).catch(deleteFail);
-      };
+          .then(deleteSuccess).catch(deleteFail);
+      }
+      ;
 
       activate();
     }

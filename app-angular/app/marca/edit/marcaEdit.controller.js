@@ -1,6 +1,6 @@
 // app/marca/marca.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   MarcaEditController.$inject = ['$state', '$stateParams', 'api', 'pnotify'];
 
-  function MarcaEditController($state, $stateParams, api, pnotify){
+  /* @ngInject */
+  function MarcaEditController($state, $stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -39,33 +40,33 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerMarca('/marca/', vm.id).then(function (response){
+    function initialize() {
+      return obtenerMarca('/marca/', vm.id).then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerMarca(){
+    function obtenerMarca() {
       return api.get('/marca/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.marca = response.data.marca;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
     }
 
-    function guardarMarca(){
+    function guardarMarca() {
       return api.put('/marca/', vm.id, vm.marca)
-        .then(function (response){
+        .then(function(response) {
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
           $state.go('marcaIndex');
           return response;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alertList('No se pudo guardar la marca', vm.error.error, 'error');
           return response;

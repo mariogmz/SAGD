@@ -1,6 +1,6 @@
 // app/cliente/new/onfig.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
@@ -11,13 +11,13 @@
 
   function configureRoutes($stateProvider) {
     $stateProvider
-        .state('clienteNew', {
-          url: 'cliente/nuevo',
-          parent: 'cliente',
-          templateUrl: 'app/cliente/new/new.html',
-          controller: 'clienteNewController',
-          controllerAs: 'vm'
-        });
+      .state('clienteNew', {
+        url: 'cliente/nuevo',
+        parent: 'cliente',
+        templateUrl: 'app/cliente/new/new.html',
+        controller: 'clienteNewController',
+        controllerAs: 'vm'
+      });
 
   }
 })();

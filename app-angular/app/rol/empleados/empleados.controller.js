@@ -51,34 +51,40 @@
     }
 
     function obtenerEmpleadosDelRol(rolId) {
-      return api.get('/rol/'+rolId+'/empleados').then(function(response) {
+      return api.get('/rol/' + rolId + '/empleados').then(function(response) {
         vm.empleadosRol = response.data.empleados;
       });
     }
 
     function attach(empleado) {
-      var endpoint = '/empleado/'+vm.rolId+'/roles/attach/'+empleado;
+      var endpoint = '/empleado/' + vm.rolId + '/roles/attach/' + empleado;
       return api.post(endpoint);
     }
 
     function detach(empleado) {
-      var endpoint = '/empleado/'+vm.rolId+'/roles/detach/'+empleado;
+      var endpoint = '/empleado/' + vm.rolId + '/roles/detach/' + empleado;
       return api.delete(endpoint);
     }
 
     function attachLocal(empleado) {
-      if (rolHas(empleado)) {return};
-      attach(empleado.id).then(function(){
+      if (rolHas(empleado)) {
+        return
+      }
+      ;
+      attach(empleado.id).then(function() {
         vm.empleadosRol.push(empleado);
       });
     }
 
     function detachLocal(empleado) {
-      if (rolDoesntHave(empleado)) {return};
+      if (rolDoesntHave(empleado)) {
+        return
+      }
+      ;
       detach(empleado.id).then(function() {
         for (var i = vm.empleadosRol.length - 1; i >= 0; i--) {
-          if (vm.empleadosRol[i].id === empleado.id){
-            vm.empleadosRol.splice(i,1);
+          if (vm.empleadosRol[i].id === empleado.id) {
+            vm.empleadosRol.splice(i, 1);
             return;
           }
         }

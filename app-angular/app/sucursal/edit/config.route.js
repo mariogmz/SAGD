@@ -1,22 +1,23 @@
 // app/sucursal/edit/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.sucursal')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.sucursal')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('sucursalEdit', {
-                url: 'sucursal/editar/:id',
-                parent: 'sucursal',
-                templateUrl: 'app/sucursal/edit/edit.html',
-                controller: 'sucursalEditController',
-                controllerAs: 'vm'
-            });
-    }
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('sucursalEdit', {
+        url: 'sucursal/editar/:id',
+        parent: 'sucursal',
+        templateUrl: 'app/sucursal/edit/edit.html',
+        controller: 'sucursalEditController',
+        controllerAs: 'vm'
+      });
+  }
 })();

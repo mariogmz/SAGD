@@ -1,10 +1,10 @@
 // app/rol/rol.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.rol', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.rol', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

@@ -1,10 +1,10 @@
 // app/unidad/unidad.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.unidad', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.unidad', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

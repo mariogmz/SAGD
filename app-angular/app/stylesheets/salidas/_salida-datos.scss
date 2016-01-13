@@ -8,6 +8,8 @@
     @include make-col();
     @include make-col-span(6);
 
-    label { float: left; }
+    label {
+      float: left;
+    }
   }
 }

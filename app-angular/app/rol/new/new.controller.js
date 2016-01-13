@@ -48,11 +48,11 @@
 
     function create() {
       api.post('/rol', vm.rol)
-        .then(function(response){
+        .then(function(response) {
           pnotify.alert('Exito', response.data.message, 'success');
           $state.go('rolShow', {id: response.data.rol.id});
         })
-        .catch(function(response){
+        .catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }

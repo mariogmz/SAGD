@@ -68,20 +68,20 @@
     ////////////////
 
     function activate() {
-      return obtenerEmpleado().then(function (response) {
-          console.log(response.message);
-        });
+      return obtenerEmpleado().then(function(response) {
+        console.log(response.message);
+      });
     }
 
     function obtenerEmpleado() {
-      return api.get('/empleado/', vm.id).then(function (response) {
-        vm.empleado = response.data.empleado;
-        return response.data;
-      })
-      .catch(function (response) {
-        vm.error = response.data;
-        return response.data;
-      });
+      return api.get('/empleado/', vm.id).then(function(response) {
+          vm.empleado = response.data.empleado;
+          return response.data;
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          return response.data;
+        });
     }
 
     function goBack() {

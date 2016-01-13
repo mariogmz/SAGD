@@ -34,9 +34,10 @@
   }
 
   .left-align {
-    tr {text-align: left;}
+    tr {
+      text-align: left;
+    }
   }
-
 
   td {
     &.actions {
@@ -75,11 +76,17 @@
       }
     }
 
-    &.right { text-align: right; }
+    &.right {
+      text-align: right;
+    }
 
-    &.thin { width: 20%; }
+    &.thin {
+      width: 20%;
+    }
 
-    &:last-child { text-align: center; }
+    &:last-child {
+      text-align: center;
+    }
 
     &:hover {
 

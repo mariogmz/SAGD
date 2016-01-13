@@ -27,12 +27,12 @@
           placeholder: 'Máximo 4 letras',
           required: true
         },
-        validators : {
-          validKey : {
-            expression : function($viewValue, $modelValue, $scope){
+        validators: {
+          validKey: {
+            expression: function($viewValue, $modelValue, $scope) {
               return /^[a-zA-Z]{1,4}$/.test($modelValue || $viewValue);
             },
-            message : '$viewValue + " no es una clave válida"'
+            message: '$viewValue + " no es una clave válida"'
           }
         }
       }, {
@@ -57,11 +57,11 @@
 
     function create() {
       api.post('/unidad', vm.unidad)
-        .then(function(response){
+        .then(function(response) {
           pnotify.alert('Exito', response.data.message, 'success');
           $state.go('unidadShow', {id: response.data.unidad.id});
         })
-        .catch(function(response){
+        .catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }

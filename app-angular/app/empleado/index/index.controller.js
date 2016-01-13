@@ -1,6 +1,6 @@
 // app/empleado/index/index.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   EmpleadoIndexController.$inject = ['api', 'pnotify', 'modal', 'session'];
 
-  function EmpleadoIndexController(api, pnotify, modal, session){
+  /* @ngInject */
+  function EmpleadoIndexController(api, pnotify, modal, session) {
 
     var vm = this;
     vm.showInactive = false;
@@ -33,48 +34,48 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerEmpleados().then(function (){
+    function initialize() {
+      return obtenerEmpleados().then(function() {
         console.log("Empleados obtenidos");
       });
     }
 
-    function obtenerEmpleados(){
-      return api.get('/empleado').then(function (response){
-          vm.mainCollection = response.data;
-          filterCollection();
-          return vm.mainCollection;
-        });
+    function obtenerEmpleados() {
+      return api.get('/empleado').then(function(response) {
+        vm.mainCollection = response.data;
+        filterCollection();
+        return vm.mainCollection;
+      });
     }
 
     function eliminar(empleado) {
       modal.confirm({
-        title: 'Eliminar Empleado',
-        content: 'Estas a punto de eliminar una empleado. ¿Estás seguro?',
-        accept: 'Eliminar Empleado',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarEmpleado(empleado.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
-    }
-
-    function eliminarEmpleado(id){
-      return api.delete('/empleado/', id).then(function (response){
-          obtenerEmpleados().then(function(){
-            pnotify.alert('¡Exito!', response.data.message, 'success');
-          });
-        }).catch(function (response){
-          pnotify.alert('¡Error!', response.data.message, 'error');
+          title: 'Eliminar Empleado',
+          content: 'Estas a punto de eliminar una empleado. ¿Estás seguro?',
+          accept: 'Eliminar Empleado',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarEmpleado(empleado.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
         });
     }
 
-    function sort(keyname){
+    function eliminarEmpleado(id) {
+      return api.delete('/empleado/', id).then(function(response) {
+        obtenerEmpleados().then(function() {
+          pnotify.alert('¡Exito!', response.data.message, 'success');
+        });
+      }).catch(function(response) {
+        pnotify.alert('¡Error!', response.data.message, 'error');
+      });
+    }
+
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }
@@ -90,8 +91,10 @@
           (empleado.activo && vm.showAllSucursales)
         ) {
           vm.empleados.push(empleado);
-        };
-      };
+        }
+        ;
+      }
+      ;
     }
 
   }

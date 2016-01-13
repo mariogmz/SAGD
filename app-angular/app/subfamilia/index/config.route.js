@@ -1,22 +1,23 @@
 // app/subfamilia/index/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.subfamilia')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.subfamilia')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('subfamiliaIndex', {
-                url: 'subfamilia',
-                parent: 'subfamilia',
-                templateUrl: 'app/subfamilia/index/index.html',
-                controller: 'subfamiliaIndexController',
-                controllerAs: 'vm'
-            });
-    }
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('subfamiliaIndex', {
+        url: 'subfamilia',
+        parent: 'subfamilia',
+        templateUrl: 'app/subfamilia/index/index.html',
+        controller: 'subfamiliaIndexController',
+        controllerAs: 'vm'
+      });
+  }
 })();

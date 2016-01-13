@@ -43,11 +43,11 @@
 
     function eliminar(cliente) {
       modal.confirm({
-        title: 'Eliminar cliente ' + cliente.nombre,
-        content: 'Estás a punto de eliminar un cliente. ¿Estás seguro?',
-        accept: 'Eliminar cliente',
-        type: 'danger'
-      })
+          title: 'Eliminar cliente ' + cliente.nombre,
+          content: 'Estás a punto de eliminar un cliente. ¿Estás seguro?',
+          accept: 'Eliminar cliente',
+          type: 'danger'
+        })
         .then(function(response) {
           modal.hide('confirm');
           return eliminarCliente(cliente.id);

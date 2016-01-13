@@ -1,9 +1,7 @@
 // URL imports
 @import url('https://fonts.googleapis.com/css?family=Roboto:300italic,700italic,400,900');
-
 // Base variables (this goes first because we want to override libraries defaults)
 @import 'base/variables';
-
 // Bower imports
 @import '../../bower_components/bootstrap/scss/bootstrap';
 @import '../../bower_components/font-awesome/scss/font-awesome';
@@ -11,15 +9,12 @@
 @import '../../bower_components/pnotify/src/pnotify.buttons.css';
 @import '../../bower_components/pnotify/src/pnotify.picon.css';
 @import '../../bower_components/angucomplete-alt/angucomplete-alt.css';
-
 // Base styles
 @import 'base/mixins';
 @import 'base/base';
 @import 'base/custom';
-
 // Reusable styles
 @import 'components/components';
-
 // Module-specific styles
 @import 'clientes/clientes';
 @import 'empleados/empleados';

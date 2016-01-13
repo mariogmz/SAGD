@@ -10,6 +10,7 @@
 
   IcecatIndexController.$inject = [];
 
+  /* ngInject */
   function IcecatIndexController() {
     var vm = this;
 

@@ -4,19 +4,20 @@
   'use strict';
 
   angular
-  .module('sagdApp.entrada')
-  .config(configureRoutes);
+    .module('sagdApp.entrada')
+    .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
-    .state('entradaShow', {
-      url: 'entrada/:id',
-      parent: 'entrada',
-      templateUrl: 'app/entrada/show/show.html',
-      controller: 'entradaShowController',
-      controllerAs: 'vm'
-    });
+      .state('entradaShow', {
+        url: 'entrada/:id',
+        parent: 'entrada',
+        templateUrl: 'app/entrada/show/show.html',
+        controller: 'entradaShowController',
+        controllerAs: 'vm'
+      });
   }
 })();

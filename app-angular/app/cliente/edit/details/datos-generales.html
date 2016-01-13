@@ -108,7 +108,8 @@
           <label for="vendedor">Vendedor de preferencia:</label>
           <select id="vendedor" name="vendedor" ng-model="vm.cliente.vendedor_id"
                   ng-options="empleado.id as empleado.nombre for empleado in vm.empleados | orderBy: 'nombre'">
-            <option value="" ng-bind="vm.cliente.vendedor_id == null? 'Seleccione vendedor' : vm.cliente.vendedor.nombre"></option>
+            <option value=""
+                    ng-bind="vm.cliente.vendedor_id == null? 'Seleccione vendedor' : vm.cliente.vendedor.nombre"></option>
           </select>
           <!-- Validation messages -->
           <div ng-messages="clienteEditForm.vendedor.$error"
@@ -124,7 +125,8 @@
           <label for="cliente_referencia">Se enteró:</label>
           <select id="cliente_referencia" name="cliente_referencia" ng-model="vm.cliente.cliente_referencia_id"
                   ng-options="referencia.id as referencia.nombre for referencia in vm.clientes_referencias | orderBy: 'nombre'">
-            <option value="" ng-bind="vm.cliente.cliente_referencia_id == null? 'Seleccione referencia' : vm.cliente.referencia.nombre"></option>
+            <option value=""
+                    ng-bind="vm.cliente.cliente_referencia_id == null? 'Seleccione referencia' : vm.cliente.referencia.nombre"></option>
           </select>
           <!-- Validation messages -->
           <div ng-messages="clienteEditForm.cliente_referencia.$error"
@@ -148,7 +150,7 @@
       </div>
 
     </div>
-    <hr />
+    <hr/>
     <h4>Sistema</h4>
     <div class="row">
 
@@ -171,7 +173,9 @@
         <!-- Password -->
         <fieldset>
           <label for="password">Contraseña</label>
-          <button type="button" class="password" id="password" ng-model="vm.cliente.usuario" ng-click="vm.resetPassword()">Restablecer</button>
+          <button type="button" class="password" id="password" ng-model="vm.cliente.usuario"
+                  ng-click="vm.resetPassword()">Restablecer
+          </button>
         </fieldset>
 
       </div>

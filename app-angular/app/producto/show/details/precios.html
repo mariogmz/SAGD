@@ -29,7 +29,9 @@
       <!-- Precios Revisados -->
       <div class="col-sm approved">
         <fieldset>
-          <button ng-class="vm.producto.revisado ? 'revisado' : 'no-revisado'"><i></i> {{vm.producto.revisado ? 'Revisado' : 'Sin revisar'}}</button>
+          <button ng-class="vm.producto.revisado ? 'revisado' : 'no-revisado'"><i></i> {{vm.producto.revisado ?
+            'Revisado' : 'Sin revisar'}}
+          </button>
         </fieldset>
       </div>
 
@@ -38,40 +40,40 @@
 
 
   <!-- Precios -->
-    <article class="header">
-      <h5>Precios por proveedor</h5>
-    </article>
-    <article class="block">
-      <div class="table-responsive">
-        <table class="item-table">
-          <thead class="sortable">
-          <tr>
-            <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-              {{sortKey.name}}
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr dir-paginate="precio in vm.precios | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
-            <td>{{precio.clave != 'DICO' ? precio.clave : ''}}<img ng-if="precio.clave == 'DICO'" width="90px"
-                                                                   src="/public/img/logo_dicotechSF.svg"></td>
-            <td ng-bind="precio.costo | currency"></td>
-            <td ng-bind="precio.precio_1 | currency"></td>
-            <td ng-bind="precio.precio_2 | currency"></td>
-            <td ng-bind="precio.precio_3 | currency"></td>
-            <td ng-bind="precio.precio_4 | currency"></td>
-            <td ng-bind="precio.precio_5 | currency"></td>
-            <td ng-bind="precio.precio_6 | currency"></td>
-            <td ng-bind="precio.precio_7 | currency"></td>
-            <td ng-bind="precio.precio_8 | currency"></td>
-            <td ng-bind="precio.precio_9 | currency"></td>
-            <td ng-bind="precio.precio_10 | currency"></td>
-            <td ng-bind="precio.descuento | percentage"></td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
-      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
-    </article>
-  </div>
+  <article class="header">
+    <h5>Precios por proveedor</h5>
+  </article>
+  <article class="block">
+    <div class="table-responsive">
+      <table class="item-table">
+        <thead class="sortable">
+        <tr>
+          <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+            {{sortKey.name}}
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr dir-paginate="precio in vm.precios | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:15">
+          <td>{{precio.clave != 'DICO' ? precio.clave : ''}}<img ng-if="precio.clave == 'DICO'" width="90px"
+                                                                 src="/public/img/logo_dicotechSF.svg"></td>
+          <td ng-bind="precio.costo | currency"></td>
+          <td ng-bind="precio.precio_1 | currency"></td>
+          <td ng-bind="precio.precio_2 | currency"></td>
+          <td ng-bind="precio.precio_3 | currency"></td>
+          <td ng-bind="precio.precio_4 | currency"></td>
+          <td ng-bind="precio.precio_5 | currency"></td>
+          <td ng-bind="precio.precio_6 | currency"></td>
+          <td ng-bind="precio.precio_7 | currency"></td>
+          <td ng-bind="precio.precio_8 | currency"></td>
+          <td ng-bind="precio.precio_9 | currency"></td>
+          <td ng-bind="precio.precio_10 | currency"></td>
+          <td ng-bind="precio.descuento | percentage"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+  </article>
+</div>
 </div>

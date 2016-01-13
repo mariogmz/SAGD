@@ -1,6 +1,6 @@
 // app/subfamilia/index/margenIndex.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,7 @@
 
   SubfamiliaIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function SubfamiliaIndexController(api, pnotify, modal){
+  function SubfamiliaIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;
@@ -25,49 +25,49 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerSubfamilias().then(function (){
+    function initialize() {
+      return obtenerSubfamilias().then(function() {
         console.log("Subfamilias obtenidas");
       });
     }
 
-    function obtenerSubfamilias(){
+    function obtenerSubfamilias() {
       return api.get('/subfamilia')
-        .then(function (response){
+        .then(function(response) {
           vm.subfamilias = response.data;
           return vm.subfamilias;
         });
     }
 
     function eliminar(subfamilia) {
-       modal.confirm({
-        title: 'Eliminar Subfamilia',
-        content: 'Estas a punto de eliminar la subfamilia ' + subfamilia.nombre + '. ¿Estás seguro?',
-        accept: 'Eliminar Subfamilia',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarSubfamilia(subfamilia.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+      modal.confirm({
+          title: 'Eliminar Subfamilia',
+          content: 'Estas a punto de eliminar la subfamilia ' + subfamilia.nombre + '. ¿Estás seguro?',
+          accept: 'Eliminar Subfamilia',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarSubfamilia(subfamilia.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
-    function eliminarSubfamilia(id){
+    function eliminarSubfamilia(id) {
       return api.delete('/subfamilia/', id)
-        .then(function (response){
-          obtenerSubfamilias().then(function (){
+        .then(function(response) {
+          obtenerSubfamilias().then(function() {
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
-        }).catch(function (response){
+        }).catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

@@ -44,7 +44,7 @@
         templateOptions: {
           type: 'select',
           label: 'Seriado:',
-          placeholder : 'Si/No',
+          placeholder: 'Si/No',
           options: [
             {value: 0, name: 'No'},
             {value: 1, name: 'Si'}
@@ -63,11 +63,11 @@
 
     function create() {
       api.post('/tipo-garantia', vm.garantia)
-        .then(function(response){
+        .then(function(response) {
           pnotify.alert('Exito', response.data.message, 'success');
           $state.go('garantiaShow', {id: response.data.tipoGarantia.id});
         })
-        .catch(function(response){
+        .catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }

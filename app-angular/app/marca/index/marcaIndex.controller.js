@@ -1,6 +1,6 @@
 // app/marca/index/margenIndex.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   MarcaIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function MarcaIndexController(api, pnotify, modal){
+  /* @ngInject */
+  function MarcaIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;
@@ -23,15 +24,15 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerMarcas().then(function (){
+    function initialize() {
+      return obtenerMarcas().then(function() {
         console.log("Marcas obtenidas");
       });
     }
 
-    function obtenerMarcas(){
+    function obtenerMarcas() {
       return api.get('/marca')
-        .then(function (response){
+        .then(function(response) {
           vm.marcas = response.data;
           return vm.marcas;
         });
@@ -39,33 +40,33 @@
 
     function eliminar(marca) {
       modal.confirm({
-        title: 'Eliminar Marca',
-        content: 'Estas a punto de eliminar una marca. ¿Estás seguro?',
-        accept: 'Eliminar Marca',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarMarca(marca.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Marca',
+          content: 'Estas a punto de eliminar una marca. ¿Estás seguro?',
+          accept: 'Eliminar Marca',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarMarca(marca.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
-    function eliminarMarca(id){
+    function eliminarMarca(id) {
       return api.delete('/marca/', id)
-        .then(function (response){
-          obtenerMarcas().then(function(){
+        .then(function(response) {
+          obtenerMarcas().then(function() {
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
-        }).catch(function (response){
+        }).catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

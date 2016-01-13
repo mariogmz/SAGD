@@ -1,6 +1,6 @@
 // app/blocks/validators/validators.module.js
 
-(function (){
+(function() {
   'use strict';
 
   angular.module('blocks.validators', []);

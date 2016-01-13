@@ -1,10 +1,10 @@
 // app/home/home.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.home', [
-      'sagdApp.core',
-      'satellizer'
-    ]);
+  angular.module('sagdApp.home', [
+    'sagdApp.core',
+    'satellizer'
+  ]);
 })();

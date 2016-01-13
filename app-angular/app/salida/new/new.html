@@ -1,3 +1,4 @@
+<!-- app/salida/new/new.html -->
 <div class="card">
   <div class="header">
     <h4>Crear nueva salida</h4>
@@ -9,12 +10,13 @@
       <div class="salida-datos">
         <fieldset class="salida-fieldset">
           <label for="motivo">Motivo:</label>
-          <textarea rows="2" type="text" id="motivo" name="motivo" maxlength="140" ng-model="vm.salida.motivo" required></textarea>
+          <textarea rows="2" type="text" id="motivo" name="motivo" maxlength="140" ng-model="vm.salida.motivo"
+                    required></textarea>
         </fieldset>
 
         <fieldset class="salida-fieldset">
           <label for="fecha_salida">Fecha salida:</label>
-          <input type="date" id="fecha_salida" name="fecha_salida" ng-model="vm.salida.fecha_salida" >
+          <input type="date" id="fecha_salida" name="fecha_salida" ng-model="vm.salida.fecha_salida">
         </fieldset>
       </div>
 
@@ -42,26 +44,26 @@
 
       <table class="item-table">
         <thead>
-          <tr>
-            <th class="thin">Cantidad</th>
-            <th>UPC</th>
-            <th>Clave</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-          </tr>
+        <tr>
+          <th class="thin">Cantidad</th>
+          <th>UPC</th>
+          <th>Clave</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
         </thead>
         <tbody>
-          <tr ng-repeat="salidaDetalle in vm.salida.salidas_detalles">
-            <td>{{salidaDetalle.cantidad}}</td>
-            <td>{{salidaDetalle.producto.upc}}</td>
-            <td>{{salidaDetalle.producto.clave}}</td>
-            <td>{{salidaDetalle.producto.descripcion}}</td>
-            <td class="actions">
-              <div class="action-buttons" role="group" aria-label="Acciones">
-                <button type="button" class="delete" ng-click="vm.removerSalidaDetalle(salidaDetalle)"><i></i></button>
-              </div>
-            </td>
-          </tr>
+        <tr ng-repeat="salidaDetalle in vm.salida.salidas_detalles">
+          <td>{{salidaDetalle.cantidad}}</td>
+          <td>{{salidaDetalle.producto.upc}}</td>
+          <td>{{salidaDetalle.producto.clave}}</td>
+          <td>{{salidaDetalle.producto.descripcion}}</td>
+          <td class="actions">
+            <div class="action-buttons" role="group" aria-label="Acciones">
+              <button type="button" class="delete" ng-click="vm.removerSalidaDetalle(salidaDetalle)"><i></i></button>
+            </div>
+          </td>
+        </tr>
         </tbody>
       </table>
 

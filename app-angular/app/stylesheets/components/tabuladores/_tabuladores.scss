@@ -7,11 +7,12 @@
 
   .tabuladores-fields {
     @extend .input-group;
-    span { @extend .input-group-addon; }
-    i { @extend .fa; }
+    span {
+      @extend .input-group-addon;
+    }
+    i {
+      @extend .fa;
+    }
   }
-
-
-
 
 }

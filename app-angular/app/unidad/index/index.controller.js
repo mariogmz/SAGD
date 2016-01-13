@@ -26,14 +26,14 @@
     ////////////////
 
     function activate() {
-      return obtenerUnidades().then(function (){
+      return obtenerUnidades().then(function() {
         console.log('Unidades obtenidas');
       });
     }
 
-    function obtenerUnidades(){
+    function obtenerUnidades() {
       return api.get('/unidad')
-        .then(function(response){
+        .then(function(response) {
           vm.unidades = response.data;
           return vm.unidades;
         });
@@ -41,34 +41,34 @@
 
     function eliminar(sucursal) {
       modal.confirm({
-        title: 'Eliminar Unidad',
-        content: 'Estas a punto de eliminar una unidad. ¿Estás seguro?',
-        accept: 'Eliminar Unidad',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarUnidad(sucursal.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      })
+          title: 'Eliminar Unidad',
+          content: 'Estas a punto de eliminar una unidad. ¿Estás seguro?',
+          accept: 'Eliminar Unidad',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarUnidad(sucursal.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        })
     }
 
     function eliminarUnidad(id) {
       return api.delete('/unidad/', id)
-        .then(function(response){
+        .then(function(response) {
           obtenerUnidades().then(function() {
             pnotify.alert('¡Éxito!', response.data.message, 'success');
           });
         })
-        .catch(function(response){
+        .catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

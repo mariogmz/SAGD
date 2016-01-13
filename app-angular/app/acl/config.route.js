@@ -1,6 +1,6 @@
 // app/acl/config.route.js
 
-(function () {
+(function() {
   'use strict';
 
   angular
@@ -9,6 +9,7 @@
 
   configureRoutes.$inject = ['$stateProvider'];
 
+  /* @ngInject */
   function configureRoutes($stateProvider) {
     $stateProvider
       .state('unauthorized', {

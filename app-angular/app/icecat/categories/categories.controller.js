@@ -10,6 +10,7 @@
 
   IcecatCategoriesController.$inject = ['api', 'utils', 'pnotify'];
 
+  /* @ngInject */
   function IcecatCategoriesController(api, utils, pnotify) {
     var vm = this;
     vm.obtenerSubfamilias = obtenerSubfamilias;

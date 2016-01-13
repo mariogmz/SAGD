@@ -1,6 +1,6 @@
 // app/proveedor/proveedorNew.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   ProveedorNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function ProveedorNewController($state, api, pnotify){
+  /* @ngInject */
+  function ProveedorNewController($state, api, pnotify) {
 
     var vm = this;
 
@@ -57,14 +58,14 @@
 
     ];
 
-    function onSubmit(){
+    function onSubmit() {
       return api.post('/proveedor', vm.model)
-        .then(function (response){
+        .then(function(response) {
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
           $state.go('proveedorShow', {id: response.data.proveedor.id});
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alertList('No se pudo guardar el proveedor', vm.error.error, 'error');
           return response;

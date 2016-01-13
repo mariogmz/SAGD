@@ -1,6 +1,6 @@
 // app/margen/index/margenIndex.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,7 @@
 
   MargenIndexController.$inject = ['api', 'pnotify', 'modal'];
 
-  function MargenIndexController(api, pnotify, modal){
+  function MargenIndexController(api, pnotify, modal) {
 
     var vm = this;
     vm.sort = sort;
@@ -25,15 +25,15 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerMargenes().then(function (){
+    function initialize() {
+      return obtenerMargenes().then(function() {
         console.log("Margenes obtenidos");
       });
     }
 
-    function obtenerMargenes(){
+    function obtenerMargenes() {
       return api.get('/margen')
-        .then(function (response){
+        .then(function(response) {
           vm.margenes = response.data;
           return vm.margenes;
         });
@@ -41,33 +41,33 @@
 
     function eliminar(margen) {
       modal.confirm({
-        title: 'Eliminar Margen',
-        content: 'Estas a punto de eliminar un margen. ¿Estás seguro?',
-        accept: 'Eliminar Margen',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarMargen(margen.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Margen',
+          content: 'Estas a punto de eliminar un margen. ¿Estás seguro?',
+          accept: 'Eliminar Margen',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarMargen(margen.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
-    function eliminarMargen(id){
+    function eliminarMargen(id) {
       return api.delete('/margen/', id)
-        .then(function (response){
-          obtenerMargenes().then(function(){
+        .then(function(response) {
+          obtenerMargenes().then(function() {
             pnotify.alert('¡Exito!', response.data.message, 'success');
           });
-        }).catch(function (response){
+        }).catch(function(response) {
           pnotify.alert('¡Error!', response.data.message, 'error');
         });
     }
 
-    function sort(keyname){
+    function sort(keyname) {
       vm.sortKey = keyname;
       vm.reverse = !vm.reverse;
     }

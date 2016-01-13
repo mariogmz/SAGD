@@ -25,7 +25,9 @@
       @include make-col();
       @include make-col-span(6);
 
-      label { float: left; }
+      label {
+        float: left;
+      }
     }
   }
 
@@ -34,6 +36,8 @@
     @include make-col();
     @include make-col-span(2);
 
-    fieldset { padding-top: 36px; }
+    fieldset {
+      padding-top: 36px;
+    }
   }
 }

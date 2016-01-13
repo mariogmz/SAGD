@@ -27,14 +27,14 @@
     ////////////////
 
     function activate() {
-      return obtenerGarantias().then(function(){
+      return obtenerGarantias().then(function() {
         console.log('Garantias obtenidas');
       });
     }
 
     function obtenerGarantias() {
       return api.get('/tipo-garantia')
-        .then(function(response){
+        .then(function(response) {
           vm.garantias = response.data;
           return vm.garantias;
         });
@@ -42,30 +42,30 @@
 
     function eliminar(garantia) {
       modal.confirm({
-        title: 'Eliminar Tipo de Garantia',
-        content: 'Estas a punto de eliminar un tipo de Garantia. ¿Estás seguro?',
-        accept: 'Eliminar',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarGarantia(garantia.id);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Tipo de Garantia',
+          content: 'Estas a punto de eliminar un tipo de Garantia. ¿Estás seguro?',
+          accept: 'Eliminar',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarGarantia(garantia.id);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
     function eliminarGarantia(id) {
       return api.delete('/tipo-garantia/', id)
-        .then(function(response){
+        .then(function(response) {
           obtenerGarantias()
-            .then(function(){
+            .then(function() {
               pnotify.alert('Exito', response.data.message, 'success');
             });
         })
-        .catch(function(response){
+        .catch(function(response) {
           pnotify.alert('Error', response.data.message, 'error');
         });
     }

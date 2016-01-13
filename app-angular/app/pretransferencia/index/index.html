@@ -1,3 +1,4 @@
+<!-- app/pretransferencia/index/index.html -->
 <div class="search-card">
   <div class="header">
     <h4>Pretransferencias</h4>
@@ -7,34 +8,34 @@
 <div class="table-responsive">
   <table class="item-table">
     <thead class="sortable">
-      <tr>
-        <th class="action">Origen</th>
-        <th class="action">Destino</th>
-        <th class="action">Creador(es)</th>
-        <th class="action">Cantidad pendiente a transferir</th>
-        <th class="action">Transferido</th>
-        <th>Acciones</th>
-      </tr>
+    <tr>
+      <th class="action">Origen</th>
+      <th class="action">Destino</th>
+      <th class="action">Creador(es)</th>
+      <th class="action">Cantidad pendiente a transferir</th>
+      <th class="action">Transferido</th>
+      <th>Acciones</th>
+    </tr>
     </thead>
     <tbody>
-      <tr ng-repeat="pretransferencia in vm.pretransferencias">
-        <td>{{pretransferencia.origen.nombre}}</td>
-        <td>{{pretransferencia.destino.nombre}}</td>
-        <td>{{pretransferencia.empleados}}</td>
-        <td>{{pretransferencia.cantidad}}</td>
-        <td>{{pretransferencia.estado.nombre}}</td>
-        <td class="actions">
-          <div class="action-buttons" role="group" aria-label="Acciones">
-            <button type="button" class="print" ng-click="vm.print(pretransferencia)">
-              <i></i>
-            </button>
-            <button type="button" class="delete" ng-click="vm.delete(pretransferencia)"
-              ng-if="!vm.transferible(pretransferencia)">
-              <i></i>
-            </button>
-          </div>
-        </td>
-      </tr>
+    <tr ng-repeat="pretransferencia in vm.pretransferencias">
+      <td>{{pretransferencia.origen.nombre}}</td>
+      <td>{{pretransferencia.destino.nombre}}</td>
+      <td>{{pretransferencia.empleados}}</td>
+      <td>{{pretransferencia.cantidad}}</td>
+      <td>{{pretransferencia.estado.nombre}}</td>
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="print" ng-click="vm.print(pretransferencia)">
+            <i></i>
+          </button>
+          <button type="button" class="delete" ng-click="vm.delete(pretransferencia)"
+                  ng-if="!vm.transferible(pretransferencia)">
+            <i></i>
+          </button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
   <loader model="vm.pretransferencias"></loader>

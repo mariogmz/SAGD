@@ -1,75 +1,75 @@
 @media screen and (max-width: 1355px) {
 
-nav.top-navbar {
+  nav.top-navbar {
 
-  .brand {
+    .brand {
+      display: none;
+    }
+
+    .hamburguer {
+      display: block;
+    }
+  }
+
+  ul.module-list {
+
+    @include make-col();
+    @include make-col-span(4);
+
     display: none;
+    height: 100vh;
+    left: 0;
+    margin-top: 50px;
+    padding-left: 0;
+    position: fixed;
   }
 
-  .hamburguer {
-    display: block;
+  li.module-list-item {
+
+    float: none !important;
   }
-}
 
-ul.module-list {
+  div.empleado-menu,
+  div.submodule-menu {
 
-  @include make-col();
-  @include make-col-span(4);
-
-  display: none;
-  height: 100vh;
-  left: 0;
-  margin-top: 50px;
-  padding-left: 0;
-  position: fixed;
-}
-
-li.module-list-item {
-
-  float: none !important;
-}
-
-div.empleado-menu,
-div.submodule-menu {
-
-  @include transform(none);
-  max-width: 250px;
-  min-width: 200px !important;
-  top: 0;
-  z-index: 1;
-
-  &.show {
     @include transform(none);
+    max-width: 250px;
+    min-width: 200px !important;
+    top: 0;
+    z-index: 1;
+
+    &.show {
+      @include transform(none);
+    }
   }
-}
 
-a.module-style,
-a.submodule-style,
-a.action-style {
+  a.module-style,
+  a.submodule-style,
+  a.action-style {
 
-  font-size: 20px;
-}
+    font-size: 20px;
+  }
 
-a.module-style {
+  a.module-style {
 
-  padding: 15px 0 !important;
-}
+    padding: 15px 0 !important;
+  }
 
-li.module-list-item.list-item.empleado {
+  li.module-list-item.list-item.empleado {
 
-  max-width: 326px !important;
-  width: auto !important;
-}
+    max-width: 326px !important;
+    width: auto !important;
+  }
 
-a.empleado-style {
+  a.empleado-style {
 
-  font-size: 25px;
-  margin: 0 auto;
-}
+    font-size: 25px;
+    margin: 0 auto;
+  }
 
-div.empleado-menu.show {
+  div.empleado-menu.show {
 
-  @include transform(translateX(100%));
-}
+    @include transform(translateX(100%));
+  }
 
 }

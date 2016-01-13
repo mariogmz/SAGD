@@ -1,6 +1,6 @@
 // app/proveedor/show/proveedor.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   ProveedorShowController.$inject = ['$stateParams', 'api'];
 
-  function ProveedorShowController($stateParams, api){
+  /* @ngInject */
+  function ProveedorShowController($stateParams, api) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -38,34 +39,33 @@
           type: 'text',
           label: 'Página web:'
         }
-      },{
+      }, {
         type: 'select',
         key: 'externo',
         templateOptions: {
           label: '¿Es Externo?',
-          options:
-              [
-                { value: 0, name: "No" },
-                { value: 1, name: "Si" }
-              ]
+          options: [
+            {value: 0, name: "No"},
+            {value: 1, name: "Si"}
+          ]
         }
       }
     ];
     initialize();
 
-    function initialize(){
-      return obtenerProveedor().then(function (response){
+    function initialize() {
+      return obtenerProveedor().then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerProveedor(){
+    function obtenerProveedor() {
       return api.get('/proveedor/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.proveedor = response.data.proveedor;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

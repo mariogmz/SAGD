@@ -1,6 +1,6 @@
 // app/subfamilia/subfamilia.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   SubfamiliaNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function SubfamiliaNewController($state, api, pnotify){
+  /* @ngInject */
+  function SubfamiliaNewController($state, api, pnotify) {
 
     var vm = this;
     vm.back = goBack;
@@ -28,7 +29,7 @@
         },
         validators: {
           validKey: {
-            expression: function ($formValue, $modelValue, scope){
+            expression: function($formValue, $modelValue, scope) {
               return /^[\w]+$/.test($formValue || $modelValue);
             },
             message: '$viewValue + " contiene caracteres inválidos"'
@@ -69,57 +70,57 @@
 
     activate();
 
-    function activate(){
-      obtenerFamilias().then(function (response){
-        obtenerMargenes().then(function (response){
+    function activate() {
+      obtenerFamilias().then(function(response) {
+        obtenerMargenes().then(function(response) {
           assignFields();
         })
       })
     }
 
-    function create(){
+    function create() {
       api.post('/subfamilia', vm.subfamilia)
-        .then(function (response){
+        .then(function(response) {
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('subfamiliaShow', {id: response.data.subfamilia.id});
         })
-        .catch(function (response){
+        .catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }
 
-    function obtenerFamilias(){
+    function obtenerFamilias() {
       return api.get('/familia')
-        .then(function (response){
+        .then(function(response) {
           vm.familias = response.data;
           return response;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('No se pudo obtener las familias', vm.error.error, 'error');
           return response;
         });
     }
 
-    function obtenerMargenes(){
+    function obtenerMargenes() {
       return api.get('/margen')
-        .then(function (response){
+        .then(function(response) {
           vm.margenes = response.data;
           return response;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alert('No se pudo obtener los margenes', vm.error.error, 'error');
           return response;
         });
     }
 
-    function goBack(){
+    function goBack() {
       window.history.back();
     }
 
-    function assignFields(){
-      vm.fields = vm.fields.map(function (field){
+    function assignFields() {
+      vm.fields = vm.fields.map(function(field) {
         if (field.key == "familia_id") {
           field.templateOptions.options = vm.familias;
         }

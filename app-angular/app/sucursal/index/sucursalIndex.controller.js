@@ -29,47 +29,47 @@
 
     function activate() {
       return obtenerSucursales()
-        .then(function (){
+        .then(function() {
           console.log("Sucursales obtenidas");
         });
     }
 
     function obtenerSucursales() {
       return api.get('/sucursal')
-        .then(function (response) {
+        .then(function(response) {
           vm.sucursales = response.data;
           return vm.sucursales;
         })
-        .catch(function (response) {
+        .catch(function(response) {
           pnotify.alert('Error', response.data.message, 'error');
         });
     }
 
     function eliminar(sucursal) {
       modal.confirm({
-        title: 'Eliminar Sucursal',
-        content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre + '. ¿Estás seguro?',
-        accept: 'Eliminar Sucursal',
-        type: 'danger'
-      })
-      .then(function(response) {
-        modal.hide('confirm');
-        eliminarSucursal(sucursal);
-      })
-      .catch(function(response) {
-        modal.hide('confirm');
-        return false;
-      });
+          title: 'Eliminar Sucursal',
+          content: 'Estas a punto de eliminar la sucursal ' + sucursal.nombre + '. ¿Estás seguro?',
+          accept: 'Eliminar Sucursal',
+          type: 'danger'
+        })
+        .then(function(response) {
+          modal.hide('confirm');
+          eliminarSucursal(sucursal);
+        })
+        .catch(function(response) {
+          modal.hide('confirm');
+          return false;
+        });
     }
 
     function eliminarSucursal(sucursal) {
       return api.delete('/sucursal/', sucursal.id)
-        .then(function (response) {
-          obtenerSucursales().then(function () {
+        .then(function(response) {
+          obtenerSucursales().then(function() {
             pnotify.alert('Exito', response.data.message, 'success');
           });
         })
-        .catch(function (response) {
+        .catch(function(response) {
           pnotify.alert('Error', response.data.message, 'error');
         })
     }

@@ -18,7 +18,8 @@
       <li class="nav-item">
         <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
       </li>
-      <li class="nav-item save" ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
+      <li class="nav-item save"
+          ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
         <a role="tab" ng-click="vm.save(productoEditForm.$valid && productoEditForm.$dirty)"><i></i> Guardar</a>
       </li>
       <li class="nav-item save">
@@ -32,7 +33,7 @@
 
     <div class="product-form">
       <form name="productoEditForm" novalidate>
-      <!-- Tab panes -->
+        <!-- Tab panes -->
         <article class="tab-content">
           <loader class="text-center" model="vm.producto"></loader>
           <!-- Datos Generales -->

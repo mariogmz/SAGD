@@ -1,6 +1,6 @@
 // app/margen/margen.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   MargenNewController.$inject = ['$state', 'api', 'pnotify'];
 
-  function MargenNewController($state, api, pnotify){
+  /* @ngInject */
+  function MargenNewController($state, api, pnotify) {
 
     var vm = this;
 
@@ -64,23 +65,23 @@
 
     vm.create = create;
 
-    function create(){
+    function create() {
       angular.merge(vm.margen, {
         valor: vm.margen.valor / 100,
         valor_webservice_p1: vm.margen.valor_webservice_p1 / 100,
         valor_webservice_p8: vm.margen.valor_webservice_p8 / 100
       });
       api.post('/margen', vm.margen)
-        .then(function (response){
+        .then(function(response) {
           pnotify.alert('¡Exito!', response.data.message, 'success');
           $state.go('margenShow', {id: response.data.margen.id});
         })
-        .catch(function (response){
+        .catch(function(response) {
           pnotify.alertList(response.data.message, response.data.error, 'error');
         });
     }
 
-    function goBack(){
+    function goBack() {
       window.history.back();
     }
   }

@@ -1,3 +1,4 @@
+<!-- app/transferencia/show/show.html -->
 <div class="card">
   <div class="header">
     <h4>Transferencia #{{vm.transferencia.id}}</h4>
@@ -25,24 +26,24 @@
       <article>
         <table class="item-table small-item-table">
           <thead>
-            <tr>
-              <th class="action">UPC</th>
-              <th class="action">Clave</th>
-              <th class="action">Descripción</th>
-              <th class="action">Cantidad</th>
-              <th class="action">Origen Antes/Después</th>
-              <th class="action">Destino Antes/Después</th>
-            </tr>
+          <tr>
+            <th class="action">UPC</th>
+            <th class="action">Clave</th>
+            <th class="action">Descripción</th>
+            <th class="action">Cantidad</th>
+            <th class="action">Origen Antes/Después</th>
+            <th class="action">Destino Antes/Después</th>
+          </tr>
           </thead>
           <tbody>
-            <tr ng-repeat="detalle in vm.transferencia.detalles">
-              <td ng-bind="detalle.producto.upc"></td>
-              <td ng-bind="detalle.producto.clave"></td>
-              <td ng-bind="detalle.producto.descripcion"></td>
-              <td ng-bind="detalle.cantidad"></td>
-              <td>{{detalle.existencia_origen_antes}}/{{detalle.existencia_origen_despues}}</td>
-              <td>{{detalle.existencia_destino_antes}}/{{detalle.existencia_destino_despues}}</td>
-            </tr>
+          <tr ng-repeat="detalle in vm.transferencia.detalles">
+            <td ng-bind="detalle.producto.upc"></td>
+            <td ng-bind="detalle.producto.clave"></td>
+            <td ng-bind="detalle.producto.descripcion"></td>
+            <td ng-bind="detalle.cantidad"></td>
+            <td>{{detalle.existencia_origen_antes}}/{{detalle.existencia_origen_despues}}</td>
+            <td>{{detalle.existencia_destino_antes}}/{{detalle.existencia_destino_despues}}</td>
+          </tr>
           </tbody>
         </table>
       </article>

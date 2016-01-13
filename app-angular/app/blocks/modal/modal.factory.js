@@ -30,12 +30,12 @@
 
       return new Promise(function(resolve, reject) {
         modal
-        .on('click', '#modal-accept', function(event) {
-          resolve({click: true});
-        })
-        .on('click', '#modal-dismiss', function(event) {
-          reject({click: false});
-        });
+          .on('click', '#modal-accept', function(event) {
+            resolve({click: true});
+          })
+          .on('click', '#modal-dismiss', function(event) {
+            reject({click: false});
+          });
       });
     }
 
@@ -46,18 +46,18 @@
 
       return new Promise(function(resolve, reject) {
         modal
-        .on('click', '#modal-accept', function(event) {
-          checkLegitness().then(function() {
+          .on('click', '#modal-accept', function(event) {
+            checkLegitness().then(function() {
+              passwordDOM.val('');
+              modal.modal('hide');
+              resolve({click: true});
+            });
+          })
+          .on('click', '#modal-dismiss', function(event) {
             passwordDOM.val('');
             modal.modal('hide');
-            resolve({click: true});
+            reject({click: false});
           });
-        })
-        .on('click', '#modal-dismiss', function(event) {
-          passwordDOM.val('');
-          modal.modal('hide');
-          reject({click: false});
-        });
       });
     }
 
@@ -84,11 +84,11 @@
     }
 
     function configureModal(modal, config) {
-      config.title      ? modal.find('#modal-title').text(config.title)             : '';
-      config.content    ? modal.find('#modal-content').text(config.content)         : '';
-      config.dismiss    ? modal.find('#modal-dismiss').text(config.dismiss)         : '';
-      config.accept     ? modal.find('#modal-accept').text(config.accept)           : '';
-      config.type       ? modal.find('#modal-accept').addClass('btn btn-' + config.type) : '';
+      config.title ? modal.find('#modal-title').text(config.title) : '';
+      config.content ? modal.find('#modal-content').text(config.content) : '';
+      config.dismiss ? modal.find('#modal-dismiss').text(config.dismiss) : '';
+      config.accept ? modal.find('#modal-accept').text(config.accept) : '';
+      config.type ? modal.find('#modal-accept').addClass('btn btn-' + config.type) : '';
     }
   }
 })();

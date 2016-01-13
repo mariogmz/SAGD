@@ -1,21 +1,22 @@
 // app/proveedor/config.route.js
 
-(function (){
+(function() {
   'use strict';
 
   angular
-      .module('sagdApp.proveedor')
-      .config(configureRoutes);
+    .module('sagdApp.proveedor')
+    .config(configureRoutes);
 
   configureRoutes.$inject = ['$stateProvider'];
 
-  function configureRoutes($stateProvider){
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
     $stateProvider
-        .state('proveedor', {
-          abstract: true,
-          url: '',
-          parent: 'layout',
-          templateUrl: 'app/proveedor/proveedor.html'
-        });
+      .state('proveedor', {
+        abstract: true,
+        url: '',
+        parent: 'layout',
+        templateUrl: 'app/proveedor/proveedor.html'
+      });
   }
 })();

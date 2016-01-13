@@ -1,6 +1,6 @@
 // app/familia/familia.controller.js
 
-(function (){
+(function() {
 
   'use strict';
 
@@ -10,7 +10,8 @@
 
   FamiliaEditController.$inject = ['$stateParams', 'api', 'pnotify'];
 
-  function FamiliaEditController($stateParams, api, pnotify){
+  /* @ngInject */
+  function FamiliaEditController($stateParams, api, pnotify) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -29,7 +30,7 @@
         },
         validators: {
           validKey: {
-            expression: function ($viewValue, $modelValue, scope){
+            expression: function($viewValue, $modelValue, scope) {
               return /^[\w]+$/.test($viewValue || $modelValue);
             },
             message: '$viewValue + " contiene caracteres inválidos"'
@@ -57,39 +58,39 @@
 
     initialize();
 
-    function initialize(){
-      return obtenerFamilia('/familia/', vm.id).then(function (response){
+    function initialize() {
+      return obtenerFamilia('/familia/', vm.id).then(function(response) {
         console.log(response.message);
       });
     }
 
-    function obtenerFamilia(){
+    function obtenerFamilia() {
       return api.get('/familia/', vm.id)
-        .then(function (response){
+        .then(function(response) {
           vm.familia = response.data.familia;
           return response.data;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });
     }
 
-    function guardarFamilia(){
+    function guardarFamilia() {
       return api.put('/familia/', vm.id, vm.familia)
-        .then(function (response){
+        .then(function(response) {
           vm.message = response.data.message;
           pnotify.alert('Exito', vm.message, 'success');
           return response;
         })
-        .catch(function (response){
+        .catch(function(response) {
           vm.error = response.data;
           pnotify.alertList('No se pudo guardar la familia', vm.error.error, 'error');
           return response;
         });
     }
 
-    function goBack(){
+    function goBack() {
       window.history.back();
     }
   }

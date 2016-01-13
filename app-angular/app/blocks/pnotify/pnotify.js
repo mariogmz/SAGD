@@ -9,6 +9,7 @@
 
   pNotifyProvider.$inject = [];
 
+  /* @ngInject */
   function pNotifyProvider() {
     // Set default style to bootstrap3, I hope someday this changes to bootstrap4
     setStyling();
@@ -81,7 +82,7 @@
       var html = '<ul>';
       if (typeof list == 'string') {
         return alert(title, list, type);
-      };
+      }
 
       angular.forEach(list, function(value, key) {
         html += '<li><strong>' + key + '</strong><ul>';

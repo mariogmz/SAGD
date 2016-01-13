@@ -8,13 +8,21 @@
 
     padding-left: 0;
 
-    div { @extend .input-group; }
-    input { @extend .form-control; }
-    span { @extend .input-group-addon; }
+    div {
+      @extend .input-group;
+    }
+    input {
+      @extend .form-control;
+    }
+    span {
+      @extend .input-group-addon;
+    }
   }
 
   .search-span {
-    i { @extend .fa; }
+    i {
+      @extend .fa;
+    }
 
     .clave {
       @extend .fa-key;

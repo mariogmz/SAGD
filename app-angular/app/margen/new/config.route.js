@@ -1,22 +1,23 @@
 // app/margen/new/config.route.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular
-        .module('sagdApp.margen')
-        .config(configureRoutes);
+  angular
+    .module('sagdApp.margen')
+    .config(configureRoutes);
 
-    configureRoutes.$inject = ['$stateProvider'];
+  configureRoutes.$inject = ['$stateProvider'];
 
-    function configureRoutes($stateProvider) {
-        $stateProvider
-            .state('margenNew', {
-                url: 'margen/nueva',
-                parent: 'margen',
-                templateUrl: 'app/margen/new/new.html',
-                controller: 'margenNewController',
-                controllerAs: 'vm'
-            });
-    }
+  /* @ngInject */
+  function configureRoutes($stateProvider) {
+    $stateProvider
+      .state('margenNew', {
+        url: 'margen/nueva',
+        parent: 'margen',
+        templateUrl: 'app/margen/new/new.html',
+        controller: 'margenNewController',
+        controllerAs: 'vm'
+      });
+  }
 })();

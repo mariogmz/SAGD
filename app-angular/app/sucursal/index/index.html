@@ -1,3 +1,4 @@
+<!-- app/sucursal/index/index.html -->
 <div class="search-card">
   <div class="header">
     <h4>Sucursales</h4>
@@ -24,28 +25,28 @@
 <div class="table-responsive">
   <table class="item-table">
     <thead class="sortable">
-      <tr>
-        <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-          {{sortKey.name}}
-        </th>
-        <th>Acciones</th>
-      </tr>
+    <tr>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+        {{sortKey.name}}
+      </th>
+      <th>Acciones</th>
+    </tr>
     </thead>
     <tbody>
-      <tr dir-paginate="sucursal in vm.sucursales | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
-        <th scope="row">{{sucursal.id}}</th>
-        <td><a ui-sref="sucursalShow({id:sucursal.id})">{{sucursal.clave}}</a></td>
-        <td>{{sucursal.nombre}}</td>
-        <td><a ui-sref="proveedorShow({id:sucursal.proveedor.id})"></a>{{sucursal.proveedor.clave}}</td>
-        <td><span class="truncate">{{sucursal.domicilio.calle}}</span></td>
+    <tr dir-paginate="sucursal in vm.sucursales | orderBy:vm.sortKey:vm.reverse | filter:vm.search | itemsPerPage:10">
+      <th scope="row">{{sucursal.id}}</th>
+      <td><a ui-sref="sucursalShow({id:sucursal.id})">{{sucursal.clave}}</a></td>
+      <td>{{sucursal.nombre}}</td>
+      <td><a ui-sref="proveedorShow({id:sucursal.proveedor.id})"></a>{{sucursal.proveedor.clave}}</td>
+      <td><span class="truncate">{{sucursal.domicilio.calle}}</span></td>
 
-        <td class="actions">
-          <div class="action-buttons" role="group" aria-label="Acciones">
-            <button type="button" class="edit" ui-sref="sucursalEdit({id:sucursal.id})"><i></i></button>
-            <button type="button" class="delete" ng-click="vm.eliminarSucursal(sucursal)"><i></i></button>
-          </div>
-        </td>
-      </tr>
+      <td class="actions">
+        <div class="action-buttons" role="group" aria-label="Acciones">
+          <button type="button" class="edit" ui-sref="sucursalEdit({id:sucursal.id})"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminarSucursal(sucursal)"><i></i></button>
+        </div>
+      </td>
+    </tr>
     </tbody>
   </table>
   <loader model="vm.sucursales"></loader>

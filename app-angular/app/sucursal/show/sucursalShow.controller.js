@@ -65,18 +65,18 @@
 
     function activate() {
       return obtenerSucursal()
-        .then(function (response) {
+        .then(function(response) {
           console.log(response.message);
         });
     }
 
     function obtenerSucursal() {
       return api.get('/sucursal/', vm.id)
-        .then(function (response) {
+        .then(function(response) {
           vm.sucursal = response.data.sucursal;
           return response.data;
         })
-        .catch(function (response) {
+        .catch(function(response) {
           vm.error = response.data;
           return response.data;
         });

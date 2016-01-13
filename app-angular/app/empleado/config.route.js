@@ -1,6 +1,6 @@
 // app/empleado/config.route.js
 
-(function () {
+(function() {
   'use strict';
 
   angular

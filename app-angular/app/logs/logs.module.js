@@ -1,10 +1,10 @@
 // app/logs/logs.module.js
 
 (function() {
-    'use strict';
+  'use strict';
 
-    angular.module('sagdApp.logs', [
-      'sagdApp.core',
-      'blocks.api'
-    ]);
+  angular.module('sagdApp.logs', [
+    'sagdApp.core',
+    'blocks.api'
+  ]);
 })();

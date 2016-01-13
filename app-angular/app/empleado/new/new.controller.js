@@ -54,7 +54,7 @@
         templateOptions: {
           type: 'select',
           label: 'Sucursal:',
-          options: [{ value: 0, name: 'Seleccione a que sucursal pertenecerá'}],
+          options: [{value: 0, name: 'Seleccione a que sucursal pertenecerá'}],
           ngOptions: 'sucursal.id as sucursal.nombre group by sucursal.proveedor.razon_social for sucursal in to.options | orderBy:"nombre"',
           required: true
         }
@@ -86,21 +86,21 @@
 
     function crearEmpleado() {
       return api.post('/empleado', vm.empleado)
-      .then(function(response){
-        pnotify.alert('Exito', response.data.message, 'success');
-        $state.go('empleadoShow', {id: response.data.sucursal.id});
-      })
-      .catch(function(response){
-        vm.error = response.data;
-        pnotify.alert('No se pudo crear el empleado', vm.error.error, 'error');
-      });
+        .then(function(response) {
+          pnotify.alert('Exito', response.data.message, 'success');
+          $state.go('empleadoShow', {id: response.data.sucursal.id});
+        })
+        .catch(function(response) {
+          vm.error = response.data;
+          pnotify.alert('No se pudo crear el empleado', vm.error.error, 'error');
+        });
     }
 
     function obtenerSucursales() {
       return api.get('/sucursal', [{'key': 'base', 'value': 'true'}]).then(function(response) {
         vm.sucursales = response.data;
         return response;
-      }).catch(function(response){
+      }).catch(function(response) {
         vm.error = response.data;
         pnotify.alert('No se pudo obtener las sucursales', vm.error.error, 'error');
         return response;
@@ -113,7 +113,7 @@
 
     function assignFields() {
       vm.fields = vm.fields.map(function(object) {
-        if(object.key == "sucursal_id") {
+        if (object.key == "sucursal_id") {
           object.templateOptions.options = vm.sucursales;
         }
         return object;

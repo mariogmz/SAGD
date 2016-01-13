@@ -1,7 +1,9 @@
 .product-search-card {
   @extend .card;
 
-  .header { @extend .card-header; }
+  .header {
+    @extend .card-header;
+  }
 
   .block {
     @extend .card-block;

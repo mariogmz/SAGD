@@ -1,3 +1,4 @@
+<!-- app/garantia/edit/edit.html -->
 <div class="card">
   <div class="header">
     <h4>Editar tipo de garantía ({{vm.garantia.descripcion}})</h4>
@@ -8,7 +9,8 @@
         <legend>Tipo de Garantía #<strong>{{vm.garantia.id}}</strong></legend>
         <formly-form model="vm.garantia" fields="vm.fields" form="tipoGarantiaEditForm">
           <a ng-click="vm.back()" class="button secondary">Regresar</a>
-          <input type="submit" class="button primary" ng-disabled="tipoGarantiaEditForm.$invalid" value="Guardar cambios">
+          <input type="submit" class="button primary" ng-disabled="tipoGarantiaEditForm.$invalid"
+                 value="Guardar cambios">
         </formly-form>
       </fieldset>
     </form>
