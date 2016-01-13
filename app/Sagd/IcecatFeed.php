@@ -62,7 +62,7 @@ Class IcecatFeed {
         while ($node = $streamer->getNode()) {
             $category = simplexml_load_string($node);
             $result = $this->parseCategoryNode($category, $with_parent);
-            if ($result) {
+            if (!empty($result)) {
                 array_push($icecat_categories, $result);
             }
         }
@@ -362,10 +362,11 @@ Class IcecatFeed {
      * @return bool|string
      */
     private function sheetIsValid($endpoint, $part_number, $save) {
-        $file = file_get_contents($endpoint);
         try {
+            $file = file_get_contents($endpoint);
             $simple_xml = simplexml_load_string($file);
         } catch (Exception $ex) {
+            \Log::error($ex->getTraceAsString());
             return false;
         }
         if (empty((string) $simple_xml->Product[0]->attributes()['ErrorMessage'])) {
@@ -434,7 +435,6 @@ Class IcecatFeed {
             } else {
                 $icecat_parent_category_id = null;
             }
-
             return compact('icecat_id', 'description', 'keyword', 'name', 'icecat_parent_category_id');
         } else {
             return null;
