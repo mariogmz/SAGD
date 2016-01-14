@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('sagdApp.cliente')
+    .module('sagdApp.resources')
     .factory('ClienteComentario', ClienteComentario);
 
   ClienteComentario.$inject = ['api', 'pnotify'];

@@ -2,7 +2,7 @@
   'use strict';
 
   angular
-    .module('sagdApp.sucursal')
+    .module('sagdApp.resources')
     .factory('Sucursal', Sucursal);
 
   Sucursal.$inject = ['api', 'pnotify'];

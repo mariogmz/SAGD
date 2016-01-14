@@ -8,7 +8,6 @@
     .module('sagdApp', [
       'sagdApp.core',
       'sagdApp.loader',
-
       'sagdApp.acl',
       'sagdApp.cambiar-sucursal',
       'sagdApp.cliente',
@@ -33,6 +32,7 @@
       'sagdApp.producto',
       'sagdApp.proveedor',
       'sagdApp.revisarPrecios',
+      'sagdApp.resources',
       'sagdApp.rol',
       'sagdApp.salida',
       'sagdApp.session',
