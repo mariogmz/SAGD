@@ -59,7 +59,6 @@
         <fieldset ng-class="parentVm.setClass(productoNewForm.upc)">
           <label for="upc">UPC:</label>
           <input type="text" id="upc" name="upc" ng-model="parentVm.producto.upc"
-                 required
                  maxlength="20">
           <!-- Validation messages -->
           <div ng-messages="productoNewForm.upc.$error" ng-show="productoNewForm.upc.$touched">
