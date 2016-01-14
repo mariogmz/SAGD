@@ -299,8 +299,15 @@ Class IcecatFeed {
         $marca = App\Marca::find($marca_id);
         if (!empty($marca)) {
             foreach ($marca->icecatSuppliers as $icecat_supplier) {
-                $xml = $this->downloadSheetRaw($numero_parte, $icecat_supplier->name);
+                $possible_names = $this->getPossibleSupplierNames($icecat_supplier->name);
+                foreach ($possible_names as $name) {
+                    $xml = $this->downloadSheetRaw($numero_parte, $name);
+                    if (!empty($xml)) {
+                        break;
+                    }
+                }
                 if (!empty($xml)) {
+
                     return $this->prettySheet($this->parseProductSheet($xml));
                 }
             }
@@ -326,7 +333,13 @@ Class IcecatFeed {
         $suppliers = $product->marca->icecatSuppliers;
 
         foreach ($suppliers as $supplier) {
-            $xml = $this->sheetIsValid(str_replace('{marca}', $supplier->name, $endpoint), $numero_parte, $save);
+            $possible_names = $this->getPossibleSupplierNames($supplier->name);
+            foreach ($possible_names as $name) {
+                $xml = $this->sheetIsValid(str_replace('{marca}', $name, $endpoint), $numero_parte, $save);
+                if (!empty($xml)) {
+                    break;
+                }
+            }
             if (!empty($xml)) {
                 break;
             }
@@ -367,6 +380,7 @@ Class IcecatFeed {
             $simple_xml = simplexml_load_string($file);
         } catch (Exception $ex) {
             \Log::error($ex->getTraceAsString());
+
             return false;
         }
         if (empty((string) $simple_xml->Product[0]->attributes()['ErrorMessage'])) {
@@ -435,6 +449,7 @@ Class IcecatFeed {
             } else {
                 $icecat_parent_category_id = null;
             }
+
             return compact('icecat_id', 'description', 'keyword', 'name', 'icecat_parent_category_id');
         } else {
             return null;
@@ -712,5 +727,19 @@ Class IcecatFeed {
 
         return compact('quality', 'icecat_product_id', 'high_pic_url', 'low_pic_url', 'thumb_pic_url',
             'title', 'icecat_category_id', 'icecat_supplier_id', 'long_summary_description', 'short_summary_description', 'features', 'gallery', 'related');
+    }
+
+    /**
+     * Builds an array with the possible suppliers' names and makes them "url-friendly"
+     * when looking for a sheet from Icecat
+     * @param $supplier_name
+     * @return array
+     */
+    private function getPossibleSupplierNames($supplier_name) {
+        $words = explode(' ', $supplier_name);
+        $concatenated_name = implode($words);
+        array_push($words, $concatenated_name);
+
+        return $words;
     }
 }

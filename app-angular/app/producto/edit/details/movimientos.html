@@ -1,0 +1,38 @@
+<!-- app/producto/show/partials/movimientos.html -->
+<section class="card borderless">
+  <header class="header">
+    <h5>Movimientos del producto en sucursal {{vm.empleado.sucursal.nombre}}</h5>
+  </header>
+
+  <article class="block">
+    <div class="table-responsive">
+      <table class="item-table producto-existencias-table">
+        <thead>
+        <tr>
+          <th class="action">Fecha</th>
+          <th class="action">Movmiento</th>
+          <th class="action">Entraron</th>
+          <th class="action">Salieron</th>
+          <th class="action">Exis. Antes</th>
+          <th class="action">Exis. Después</th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr dir-paginate="movimiento in vm.producto_movimientos | itemsPerPage:15">
+          <td ng-bind="movimiento.created_at"></td>
+          <td ng-bind="movimiento.movimiento"></td>
+          <td ng-bind="movimiento.entraron"></td>
+          <td ng-bind="movimiento.salieron"></td>
+          <td ng-bind="movimiento.existencias_antes"></td>
+          <td ng-bind="movimiento.existencias_despues"></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="paginator">
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+  </article>
+</section>
+
