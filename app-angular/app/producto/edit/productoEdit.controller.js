@@ -41,6 +41,7 @@
     vm.setClass = utils.setClass;
     vm.local = sucursalLocal;
     vm.guardarPretransferencias = guardarPretransferencias;
+    vm.obtenerFicha = obtenerFicha;
     vm.sort = sort;
     vm.back = goBack;
 
@@ -50,15 +51,17 @@
 
     function initialize() {
       utils.whichTab($location.hash() || 'datos-generales');
+      vm.empleado = JSON.parse(localStorage.getItem('empleado'));
       obtenerProducto()
         .then(function() {
           obtenerMarcas();
           obtenerSubfamilias();
           obtenerUnidades();
           obtenerTiposDeGarantias();
+          cargarFicha();
           obtenerMargenes();
           obtenerExistencias();
-          cargarFicha();
+          obtenerMovimientos();
         });
 
     }
@@ -147,6 +150,16 @@
           vm.pretransferencias[pretransferencia.id] = pretransferencia;
         }
       });
+    }
+
+    function obtenerMovimientos() {
+      return api.get('/producto/' + vm.id + '/movimientos/sucursal/' + vm.empleado.sucursal_id)
+        .then(function(response) {
+          console.log('Movimientos de producto obtenidos con éxito');
+          vm.producto_movimientos = response.data.productos;
+          return response.data.productos;
+        });
+
     }
 
     function updateSubclave() {
@@ -252,6 +265,27 @@
           vm.ficha = response.data.ficha;
         }).catch(function(response) {
           console.error(response.data.error);
+        });
+    }
+
+    function obtenerFicha() {
+      return api.get('/icecat/' + vm.producto.numero_parte + '/marca/' + vm.producto.marca_id)
+        .then(function(response) {
+          var ficha = response.data.ficha;
+          vm.producto.descripcion = ficha.producto.descripcion.substr(0, 299);
+          vm.producto.descripcion_corta = ficha.producto.descripcion_corta.substr(0, 50);
+          if (ficha.producto.subfamilia_id) {
+            vm.subfamilia = $.grep(vm.subfamilias, function(subfamilia) {
+              return subfamilia.id === ficha.producto.subfamilia_id;
+            })[0];
+
+            vm.producto.subfamilia_id = ficha.producto.subfamilia_id;
+            updateClave();
+          }
+
+          pnotify.alert('Ficha obtenida', response.data.message, 'info');
+        }).catch(function(response) {
+          pnotify.alert('Error', response.data.error, 'error');
         });
     }
 

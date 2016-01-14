@@ -133,7 +133,6 @@
         <fieldset class="checkbox">
           <label>
             <input type="checkbox" ng-model="parentVm.producto.remate">
-            <span></span>
             ¿En remate?
           </label>
         </fieldset>
@@ -152,7 +151,6 @@
         <fieldset class="checkbox">
           <label>
             <input type="checkbox" ng-model="parentVm.producto.activo">
-            <span></span>
             ¿Activo?
           </label>
         </fieldset>
@@ -263,7 +261,9 @@
     </div>
   </div>
 </div>
-<!-- Botones de acción -->
-<a ng-click="parentVm.back()" class="button secondary">Regresar</a>
-<a ng-click="vm.go(2)" class="button primary">Siguiente</a>
+<div class="pull-right">
+  <!-- Botones de acción -->
+  <a ng-click="parentVm.back()" class="button secondary">Regresar</a>
+  <a ng-click="vm.go(2)" class="button primary">Siguiente</a>
+</div>
 

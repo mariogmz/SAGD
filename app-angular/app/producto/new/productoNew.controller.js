@@ -157,9 +157,11 @@
             vm.subfamilia = $.grep(vm.subfamilias, function(subfamilia) {
               return subfamilia.id === ficha.producto.subfamilia_id;
             })[0];
+
             vm.producto.subfamilia_id = ficha.producto.subfamilia_id;
             updateClave();
           }
+
           pnotify.alert('Ficha obtenida', response.data.message, 'info');
         }).catch(function(response) {
           pnotify.alert('Error', response.data.error, 'error');

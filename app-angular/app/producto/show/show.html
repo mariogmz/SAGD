@@ -1,7 +1,8 @@
 <!-- app/producto/show/show.html -->
 <article class="card">
   <section class="header">
-    <h4>Producto</h4>
+    <h4  ng-bind="'Producto #' + vm.producto.id"></h4>
+    <h6 ng-bind="(vm.producto.descripcion | limitTo:100) + '...'"></h6>
   </section>
   <section class="block">
 

@@ -75,7 +75,7 @@
           <label for="margen_id">Margen: </label>
           <select id="margen_id" name="margen_id" ng-model="parentVm.producto.margen_id"
                   ng-options="margen.id as margen.nombre for margen in parentVm.margenes | orderBy:'nombre'"
-                  ng-change="parentVm.calular()">
+                  ng-change="parentVm.calcular()">
             <option value="">Seleccione un margen</option>
           </select>
         </fieldset>
@@ -121,7 +121,7 @@
             <div class="with-icon">
               <span>2</span>
               <input type="number" id="precio_2" name="precio_2" placeholder="0.00" ng-model="parentVm.precio.precio_2"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -134,7 +134,7 @@
             <div class="with-icon">
               <span>3</span>
               <input type="number" id="precio_3" name="precio_3" placeholder="0.00" ng-model="parentVm.precio.precio_3"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -147,7 +147,7 @@
             <div class="with-icon">
               <span>4</span>
               <input type="number" id="precio_4" name="precio_4" placeholder="0.00" ng-model="parentVm.precio.precio_4"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -160,7 +160,7 @@
             <div class="with-icon">
               <span>5</span>
               <input type="number" id="precio_5" name="precio_5" placeholder="0.00" ng-model="parentVm.precio.precio_5"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -218,9 +218,9 @@
             <label>Precios ( $ )</label>
 
             <div class="with-icon">
-              <span>1</span>
+              <span>6</span>
               <input type="number" id="precio_6" name="precio_6" placeholder="0.00" ng-model="parentVm.precio.precio_6"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -232,9 +232,9 @@
           <!-- Precio 7 -->
           <fieldset ng-class="parentVm.setClass(productoNewForm.precio_7)">
             <div class="with-icon">
-              <span>2</span>
+              <span>7</span>
               <input type="number" id="precio_7" name="precio_7" placeholder="0.00" ng-model="parentVm.precio.precio_7"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -246,9 +246,9 @@
           <!-- Precio 8 -->
           <fieldset ng-class="parentVm.setClass(productoNewForm.precio_8)">
             <div class="with-icon">
-              <span>3</span>
+              <span>8</span>
               <input type="number" id="precio_8" name="precio_8" placeholder="0.00" ng-model="parentVm.precio.precio_8"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -260,9 +260,9 @@
           <!-- Precio 9 -->
           <fieldset ng-class="parentVm.setClass(productoNewForm.precio_9)">
             <div class="with-icon">
-              <span>4</span>
+              <span>9</span>
               <input type="number" id="precio_9" name="precio_9" placeholder="0.00" ng-model="parentVm.precio.precio_9"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -274,10 +274,10 @@
           <!-- Precio 10 -->
           <fieldset ng-class="parentVm.setClass(productoNewForm.precio_10)">
             <div class="with-icon">
-              <span>5</span>
+              <span>10</span>
               <input type="number" id="precio_10" name="precio_10" placeholder="0.00"
                      ng-model="parentVm.precio.precio_10"
-                     ng-disabled="parentVm.producto.margen_id"
+                     disabled
                      min="1" numeric required step="1">
             </div>
             <!-- Validation messages -->
@@ -327,6 +327,8 @@
 
   </article>
 </div>
-<a ng-click="vm.go(1)" class="button secondary">Atrás</a>
-<input type="submit" class="button primary" value="Guardar cambios" ng-disabled="productoNewForm.$invalid"
-       ng-click="parentVm.save()">
+<div class="pull-right">
+  <a ng-click="vm.go(1)" class="button secondary">Atrás</a>
+  <input type="submit" class="button primary" value="Guardar cambios" ng-disabled="productoNewForm.$invalid"
+         ng-click="parentVm.save()">
+</div>

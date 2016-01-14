@@ -1,6 +1,7 @@
 <article class="card">
   <section class="header">
-    <h4>Producto</h4>
+    <h4  ng-bind="'Producto #' + vm.producto.id"></h4>
+    <h6 ng-bind="(vm.producto.descripcion | limitTo:100) + '...'"></h6>
   </section>
   <section class="block">
 
@@ -16,6 +17,9 @@
         <a href="#precios" role="tab" data-toggle="tab">Precios</a>
       </li>
       <li class="nav-item">
+        <a href="#movimientos" role="tab" data-toggle="tab">Movimientos</a>
+      </li>
+      <li class="nav-item">
         <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
       </li>
       <li class="nav-item save"
@@ -23,7 +27,7 @@
         <a role="tab" ng-click="vm.save(productoEditForm.$valid && productoEditForm.$dirty)"><i></i> Guardar</a>
       </li>
       <li class="nav-item save">
-        <a role="tab"><img width="70px" src="/public/img/icecat_logo.svg"></a>
+        <a role="tab" ng-click="vm.obtenerFicha()"><img width="70px" src="/public/img/icecat_logo.svg"></a>
       </li>
       <li class="nav-item back">
         <a ui-sref="productoIndex" role="tab"><i></i> Regresar</a>
@@ -40,13 +44,17 @@
           <section role="tabpanel" class="fade" id="datos-generales">
             <div ui-view="datos-generales"></div>
           </section>
-          <!-- Pesos & Dimensiones -->
+          <!-- Ficha -->
           <section role="tabpanel" class="fade" id="ficha">
             <div ui-view="ficha"></div>
           </section>
           <!-- Precios -->
           <section role="tabpanel" class="fade" id="precios">
             <div ui-view="precios"></div>
+          </section>
+          <!-- Movimientos -->
+          <section role="tabpanel" class="fade" id="movimientos">
+            <div ui-view="movimientos"></div>
           </section>
           <!-- Existencias -->
           <section role="tabpanel" class="fade" id="existencias">

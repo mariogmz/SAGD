@@ -61,18 +61,6 @@
     @extend .text-left;
   }
 
-  .checkbox {
-
-    label {
-      @extend .c-input;
-      @extend .c-checkbox;
-
-      span {
-        @extend .c-indicator;
-      }
-    }
-  }
-
   .col-xsm {
     @include make-col();
     @include make-col-span(2);

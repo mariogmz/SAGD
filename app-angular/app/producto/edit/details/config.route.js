@@ -26,6 +26,9 @@
           },
           existencias: {
             templateUrl: 'app/producto/edit/details/existencias.html'
+          },
+          movimientos: {
+            templateUrl: 'app/producto/edit/details/movimientos.html'
           }
         }
       });
