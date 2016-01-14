@@ -1,27 +1,27 @@
-ul.pagination {
-  @extend .pagination;
+.pagination {
 
-  a {
-    color: $persian-red;
-    &:hover {
-      color: $old-brick;
+  li {
+
+    .page-link {
+      @include normalize-link($persian-red);
+      color: $persian-red;
     }
-  }
 
-  .active {
-    a {
-      background-color: $gray-suit;
-      border-color: $gray-suit;
-
-      &:focus {
+    &.active {
+      .page-link {
         background-color: $gray-suit;
         border-color: $gray-suit;
-      }
 
-      &:hover {
-        background-color: $mine-shaft;
-        border-color: $mine-shaft;
+        &:focus {
+          background-color: $gray-suit;
+          border-color: $gray-suit;
+        }
 
+        &:hover {
+          background-color: $mine-shaft;
+          border-color: $mine-shaft;
+          color: $old-brick;
+        }
       }
     }
   }
