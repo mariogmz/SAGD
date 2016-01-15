@@ -4,7 +4,7 @@
   'use strict';
 
   angular
-    .module('blocks.resources')
+    .module('sagdApp.resources')
     .factory('Domicilio', Domicilio);
 
   Domicilio.$inject = ['api', 'pnotify'];
