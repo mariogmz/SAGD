@@ -5,7 +5,8 @@
   <div class="sheet-loader-container">
     <loader model="vm.model"></loader>
   </div>
-  <article class="sheet-table" ng-if="vm.model">
+  <div class="text-xs-center" ng-show="vm.sheetNotFound()"> No existe una ficha para este producto</div>
+  <article class="sheet-table" ng-if="!vm.sheetNotFound()">
     <table class="item-table">
       <thead>
       <th colspan="5">Ficha técnica del producto</th>

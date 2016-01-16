@@ -1,0 +1,102 @@
+<article class="block">
+
+  <section class="row">
+
+    <!-- Spiff -->
+    <div class="col-sm">
+      <fieldset ng-class="vm.setClass(vm.form.spiff)">
+        <label for="spiff">Spiff: </label>
+
+        <div class="with-icon">
+          <span><i class="money"></i></span>
+          <input type="number" id="spiff" name="spiff" ng-model="vm.producto.spiff"
+                 min="0"
+                 numeric
+                 required
+                 step="1">
+        </div>
+        <!-- Validation messages -->
+        <div ng-messages="vm.form.spiff.$error" ng-show="vm.form.spiff.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Margen -->
+    <div class="col-lg">
+      <fieldset ng-class="vm.setClass(vm.form.margen_id)">
+        <label for="margen_id">Margen: </label>
+        <select id="margen_id" name="margen_id" ng-model="vm.producto.margen_id"
+                ng-options="margen.id as margen.nombre for margen in vm.margenes | orderBy:'nombre'"
+                ng-change="vm.calcularPreciosMargen()">
+          <option value="" ng-bind="vm.margenes? 'Seleccione un margen' : vm.producto.margen.nombre"></option>
+        </select>
+        <!-- Validation messages -->
+        <div ng-messages="vm.form.margen_id.$error" ng-show="vm.form.margen_id.$touched">
+          <div ng-messages-include="app/templates/fields/messages.html"></div>
+        </div>
+      </fieldset>
+    </div>
+
+    <!-- Precios Revisados -->
+    <div class="col-sm approved">
+      <fieldset>
+        <button type="button" ng-class="vm.producto.revisado ? 'revisado' : 'no-revisado'">
+          <i></i>
+          <span ng-bind="vm.producto.revisado ? 'Revisado' : 'Sin revisar'"></span>
+        </button>
+      </fieldset>
+    </div>
+
+  </section>
+</article>
+
+
+<!-- Precios -->
+<div class="card">
+  <article class="header">
+    <h5>Precios por proveedor</h5>
+  </article>
+  <article class="block">
+    <div class="table-responsive">
+      <table class="item-table">
+        <thead class="sortable">
+        <tr>
+          <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
+            {{sortKey.name}}
+          </th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="precio in vm.producto.precios | orderBy:vm.sortKey:vm.reverse">
+          <td>{{precio.clave != 'DICO' ? precio.clave : ''}}<img ng-if="precio.clave == 'DICO'" width="90px"
+                                                                 src="/public/img/logo_dicotechSF.svg"></td>
+          <td class="with-input"><input type="text" ng-model="precio.costo" ng-blur="vm.calcularPrecios($index)"></td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_1" ng-blur="vm.calcularPrecios($index)">
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_2" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_3" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_4" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_5" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_6" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_7" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_8" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_9" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.precio_10" disabled>
+          </td>
+          <td class="with-input"><input type="text" ng-model="precio.descuento">
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </article>
+</div>
