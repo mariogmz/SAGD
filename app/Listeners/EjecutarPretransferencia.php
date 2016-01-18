@@ -53,7 +53,7 @@ class EjecutarPretransferencia
      * Handle the event.
      *
      * @param  Pretransferir  $event
-     * @return void
+     * @return boolean
      */
     public function handle(Pretransferir $event)
     {

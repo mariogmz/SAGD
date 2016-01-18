@@ -1,29 +1,29 @@
-// app/blocks/domicilio/domicilio.resource.js
+// app/blocks/codigoPostal/codigoPostal.resource.js
 
 (function() {
   'use strict';
 
   angular
-    .module('blocks.domicilio')
-    .factory('Domicilio', Domicilio);
+    .module('sagdApp.resources')
+    .factory('CodigoPostal', CodigoPostal);
 
-  Domicilio.$inject = ['api', 'pnotify'];
+  CodigoPostal.$inject = ['api', 'pnotify'];
 
   /* @ngInject */
-  function Domicilio(api, pnotify) {
+  function CodigoPostal(api, pnotify) {
     var resource = {
-      all: obtenerDomicilios,
-      create: crearDomicilio,
-      show: mostrarDomicilio,
-      update: actualizarDomicilio,
-      delete: eliminarDomicilio
+      all: obtenerCodigoPostal,
+      create: crearCodigoPostal,
+      show: mostrarCodigoPostal,
+      update: actualizarCodigoPostal,
+      delete: eliminarCodigoPostal
     };
     return resource;
 
     ////////////////
 
-    function obtenerDomicilios() {
-      return api.get('/domicilio')
+    function obtenerCodigoPostal() {
+      return api.get('/codigo-postal')
         .then(obtenerComplete)
         .catch(obtenerFailed);
 
@@ -32,17 +32,17 @@
       }
 
       function obtenerFailed(error) {
-        console.error('No se pudieron obtener los domicilios ' + error.data);
+        console.error('No se pudieron obtener los codigos postales ' + error.data);
       }
     }
 
-    function crearDomicilio(data) {
-      return api.post('/domicilio', data)
+    function crearCodigoPostal(data) {
+      return api.post('/codigo-postal', data)
         .then(crearComplete)
         .catch(crearFailed);
 
       function crearComplete(response) {
-        return response.data.domicilio;
+        return response.data.codigo_postal;
       }
 
       function crearFailed(error) {
@@ -50,22 +50,22 @@
       }
     }
 
-    function mostrarDomicilio(id) {
-      return api.get('/domicilio/', id)
+    function mostrarCodigoPostal(id) {
+      return api.get('/codigo-postal/', id)
         .then(mostrarComplete)
         .catch(mostrarFailed);
 
       function mostrarComplete(response) {
-        return response.data.domicilio;
+        return response.data.codigo_postal;
       }
 
       function mostrarFailed(error) {
-        console.error('No se pudo obtener el domicilio ' + error.error);
+        console.error('No se pudo obtener el codigo postal ' + error.error);
       }
     }
 
-    function actualizarDomicilio(id, data) {
-      return api.put('/domicilio/', id, data)
+    function actualizarCodigoPostal(id, data) {
+      return api.put('/codigo-postal/', id, data)
         .then(actualizarComplete)
         .catch(actualizarFailed);
 
@@ -78,8 +78,8 @@
       }
     }
 
-    function eliminarDomicilio(id) {
-      return api.delete('/domicilio/', id)
+    function eliminarCodigoPostal(id) {
+      return api.delete('/codigo-postal/', id)
         .then(eliminarComplete)
         .catch(eliminarFailed);
 

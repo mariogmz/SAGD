@@ -1,27 +1,31 @@
+// app/resources/marca.resource.js
 (function() {
   'use strict';
 
   angular
-    .module('sagdApp.cliente')
-    .factory('ClienteComentario', ClienteComentario);
+    .module('sagdApp.resources')
+    .factory('Marca', Marca);
 
-  ClienteComentario.$inject = ['api', 'pnotify'];
+  Marca.$inject = ['api'];
 
   /* @ngInject */
-  function ClienteComentario(api, pnotify) {
-    var service = {
-      all: obtenerClienteComentarioComentario,
-      create: crearClienteComentario,
-      show: mostrarClienteComentario,
-      update: actualizarClienteComentario,
-      delete: eliminarClienteComentario
+  function Marca(api, pnotify) {
+    var endpoint = '/marca';
+    var modelName = 'Marca';
+
+    var resource = {
+      all: obtenerMarcas,
+      create: crearMarca,
+      show: mostrarMarca,
+      update: actualizarMarca,
+      delete: eliminarMarca
     };
-    return service;
+    return resource;
 
-    ////////////////
+    //////////////////////////////////////////////////
 
-    function obtenerClienteComentarioComentario() {
-      return api.get('/cliente-comentario')
+    function obtenerMarcas() {
+      return api.get(endpoint)
         .then(obtenerComplete)
         .catch(obtenerFailed);
 
@@ -30,18 +34,18 @@
       }
 
       function obtenerFailed(error) {
-        console.error('No se pudieron obtener los comentarios ' + error.data);
+        console.error('No se pudo obtener el recurso ' + modelName + ' ' + error.data);
       }
     }
 
-    function crearClienteComentario(data) {
-      return api.post('/cliente-comentario', data)
+    function crearMarca(data) {
+      return api.post(endpoint, data)
         .then(crearComplete)
         .catch(crearFailed);
 
       function crearComplete(response) {
         pnotify.alert('¡Exito!', response.data.message, 'success');
-        return response.data.cliente_comentario;
+        return response.data.marca;
       }
 
       function crearFailed(error) {
@@ -49,13 +53,13 @@
       }
     }
 
-    function mostrarClienteComentario(id) {
-      return api.get('/cliente-comentario/', id)
+    function mostrarMarca(id) {
+      return api.get(endpoint + '/', id)
         .then(mostrarComplete)
         .catch(mostrarFailed);
 
       function mostrarComplete(response) {
-        return formatDates(response.data.cliente_comentario);
+        return response.data.marca;
       }
 
       function mostrarFailed(error) {
@@ -63,8 +67,8 @@
       }
     }
 
-    function actualizarClienteComentario(id, data) {
-      return api.put('/cliente-comentario/', id, data)
+    function actualizarMarca(id, data) {
+      return api.put(endpoint + '/', id, data)
         .then(actualizarComplete)
         .catch(actualizarFailed);
 
@@ -78,8 +82,8 @@
       }
     }
 
-    function eliminarClienteComentario(id) {
-      return api.delete('/cliente-comentario/', id)
+    function eliminarMarca(id) {
+      return api.delete(endpoint + '/', id)
         .then(eliminarComplete)
         .catch(eliminarFailed);
 

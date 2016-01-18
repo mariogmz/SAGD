@@ -33,11 +33,19 @@
   /* @ngInject */
   function sheetController() {
     var vm = this;
+    vm.sheetNotFound = sheetNotFound;
 
     initialize();
 
     function initialize() {
+    }
 
+    function sheetNotFound() {
+      if (typeof vm.model == 'undefined') {
+        return true;
+      } else {
+        return Object.keys(vm.model).length == 0;
+      }
     }
 
   }

@@ -166,12 +166,12 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testNumeroDeParteEsUnico() {
+    public function testNumeroDeParteNoEsUnico() {
         $producto = factory(App\Producto::class)->create();
         $segundoProducto = factory(App\Producto::class)->make([
             'numero_parte' => $producto->numero_parte
         ]);
-        $this->assertFalse($segundoProducto->isValid());
+        $this->assertTrue($segundoProducto->isValid());
     }
 
     /**
@@ -248,9 +248,9 @@ class ProductoTest extends TestCase {
     /**
      * @coversNothing
      */
-    public function testUpcEsRequerido() {
+    public function testUpcNoEsRequerido() {
         $producto = factory(App\Producto::class)->make(['upc' => null]);
-        $this->assertFalse($producto->isValid());
+        $this->assertTrue($producto->isValid());
     }
 
     /**
@@ -260,6 +260,16 @@ class ProductoTest extends TestCase {
         $producto = factory(App\Producto::class)->create();
         $segundoProducto = factory(App\Producto::class)->make(['upc' => $producto->upc]);
         $this->assertFalse($segundoProducto->isValid());
+    }
+
+    /**
+     * @coversNothing
+     */
+    public function testCuandoUpcEsVacioSeLeAsignaElValorDelId(){
+        $producto = factory(App\Producto::class)->make();
+        unset($producto->upc);
+        $this->assertTrue($producto->save());
+        $this->assertSame($producto->id, $producto->upc);
     }
 
     /**
@@ -503,6 +513,7 @@ class ProductoTest extends TestCase {
      * @group relaciones
      */
     public function testFicha() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $producto = factory(App\Producto::class)->create();
         $ficha = factory(App\Ficha::class)->create([
             'producto_id' => $producto->id
@@ -517,6 +528,7 @@ class ProductoTest extends TestCase {
      * @group relaciones
      */
     public function testFichaCaracteristicas() {
+        $this->expectsEvents(App\Events\ProductoCreado::class);
         $producto = factory(App\Producto::class)->create();
         $ficha = factory(App\Ficha::class)->create([
             'producto_id' => $producto->id
@@ -1263,6 +1275,8 @@ class ProductoTest extends TestCase {
 
     private function setUpProducto()
     {
+        factory(App\EstadoPretransferencia::class)->create(['nombre' => 'Sin Transferir']);
+        factory(App\EstadoPretransferencia::class)->create(['nombre' => 'Transferido']);
         $sucursal = factory(App\Sucursal::class)->create();
         factory(App\Sucursal::class)->create();
         factory(App\Sucursal::class)->create();

@@ -21,11 +21,11 @@
           ficha: {
             templateUrl: 'app/producto/edit/details/ficha.html'
           },
-          precios: {
-            templateUrl: 'app/producto/edit/details/precios.html'
+          'precios-existencias': {
+            templateUrl: 'app/producto/edit/details/precios-existencias.html'
           },
-          existencias: {
-            templateUrl: 'app/producto/edit/details/existencias.html'
+          movimientos: {
+            templateUrl: 'app/producto/edit/details/movimientos.html'
           }
         }
       });

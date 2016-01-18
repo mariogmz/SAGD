@@ -27,11 +27,14 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
 
         Route::resource('producto', 'ProductoController', ['only' => ['index','store','show','update','destroy']]);
         Route::get('producto/buscar/upc/{upc}', 'ProductoController@buscarUpc');
+        Route::get('productos/buscar', 'ProductoController@buscar');
+
         Route::group(['prefix' => 'producto', 'as' => 'api.v1.productos'], function(){
             Route::group(['prefix' => '{id}/existencias', 'as' => '.existencias'], function(){
                 Route::get('/', 'ProductoController@indexExistencias');
                 Route::post('pretransferir', ['uses' => 'ProductoController@pretransferir', 'as' => '.pretransferir']);
             });
+
             Route::group(['prefix' => '{id}/movimientos', 'as' => '.movimientos'], function(){
                 Route::get('sucursal/{sucursal}', ['as' => '.sucursal', 'uses' => 'ProductoController@indexMovimientos']);
             });
@@ -46,7 +49,6 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
             });
         });
 
-        Route::get('productos/buscar', 'ProductoController@buscar');
         Route::resource('marca', 'MarcaController', ['only' => ['store','show','update','destroy']]);
         Route::get('marca/{campo?}/{valor?}', 'MarcaController@index');
         Route::resource('unidad', 'UnidadController', ['only' => ['index','store','show','update','destroy']]);

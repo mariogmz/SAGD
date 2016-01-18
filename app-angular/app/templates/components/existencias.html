@@ -1,4 +1,4 @@
-<!-- app/producto/show/partials/existencias.html -->
+<!-- app/templates/components/existencias.html -->
 <section class="card borderless productos-existencias">
   <header class="header">
     <h5>Existencias del producto</h5>
@@ -17,13 +17,12 @@
           <th class="action">Apartado</th>
           <th class="action">Garantia Cliente</th>
           <th class="action">Garantia Zegucom</th>
-          <th class="action"></th>
+          <th class="action" ng-if="!vm.readOnly"></th>
         </tr>
         </thead>
 
         <tbody>
-        <tr ng-repeat="producto in vm.producto_existencias"
-            ng-class="{disabled: vm.local(producto)}">
+        <tr ng-repeat="producto in vm.existencias" ng-class="{'table-info': vm.local(producto)}">
           <td ng-bind="producto.nombre"></td>
           <td ng-bind="producto.cantidad"></td>
           <td ng-bind="producto.cantidad_pretransferencia"></td>
@@ -32,16 +31,16 @@
           <td ng-bind="producto.cantidad_apartado"></td>
           <td ng-bind="producto.cantidad_garantia_cliente"></td>
           <td ng-bind="producto.cantidad_garantia_zegucom"></td>
-          <td>
-            <input type="number" min="0" max="{{vm.pretransferenciaMaxima}}" value="0"
+          <td  ng-if="!vm.readOnly">
+            <input type="number" min="0" value="0"
                    ng-model="vm.pretransferencias[producto.productos_sucursales_id]['pretransferencia']"
-                   ng-if="!vm.local(producto)">
+                   ng-blur="vm.cambiarPretransferenciaMaxima(producto.productos_sucursales_id)">
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-    <div class="acciones">
+    <div class="acciones" ng-if="!vm.readOnly">
       <button class="button primary" ng-click="vm.guardarPretransferencias()">Guardar</button>
     </div>
   </article>

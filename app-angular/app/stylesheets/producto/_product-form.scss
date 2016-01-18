@@ -16,7 +16,7 @@
   }
 
   select {
-    @extend .c-select;
+    @extend .custom-select;
   }
 
   .approved {
@@ -59,18 +59,6 @@
   .card .block {
     @include make-container();
     @extend .text-left;
-  }
-
-  .checkbox {
-
-    label {
-      @extend .c-input;
-      @extend .c-checkbox;
-
-      span {
-        @extend .c-indicator;
-      }
-    }
   }
 
   .col-xsm {

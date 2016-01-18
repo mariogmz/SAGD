@@ -8,10 +8,12 @@
     .module('sagdApp.producto')
     .controller('productoEditController', ProductoEditController);
 
-  ProductoEditController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'utils', 'session'];
+  ProductoEditController.$inject = ['$location', '$state', '$stateParams', 'utils', 'session',
+    'Producto', 'Marca', 'Subfamilia', 'Unidad', 'TipoGarantia', 'Ficha', 'Icecat'];
 
   /* @ngInject */
-  function ProductoEditController($location, $state, $stateParams, api, pnotify, utils, session) {
+  function ProductoEditController($location, $state, $stateParams, utils, session,
+                                  Producto, Marca, Subfamilia, Unidad, TipoGarantia, Ficha, Icecat) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -33,16 +35,13 @@
     ];
     vm.pretransferencias = {};
 
+    vm.back = goBack;
+    vm.obtenerFicha = obtenerFicha;
+    vm.save = save;
+    vm.setClass = utils.setClass;
+    vm.sort = sort;
     vm.updateClave = updateClave;
     vm.updateSubclave = updateSubclave;
-    vm.save = save;
-    vm.calcularPrecios = calcularPrecios;
-    vm.calcularPreciosMargen = calcularPreciosMargen;
-    vm.setClass = utils.setClass;
-    vm.local = sucursalLocal;
-    vm.guardarPretransferencias = guardarPretransferencias;
-    vm.sort = sort;
-    vm.back = goBack;
 
     ///////////////////////////////////
 
@@ -56,98 +55,96 @@
           obtenerSubfamilias();
           obtenerUnidades();
           obtenerTiposDeGarantias();
-          obtenerMargenes();
-          obtenerExistencias();
           cargarFicha();
+          obtenerMovimientos();
         });
 
     }
 
-    function obtenerProducto() {
-      return api.get('/producto/', vm.id)
-        .then(function(response) {
-          vm.producto = response.data.producto;
-          vm.subfamilia = vm.producto.subfamilia;
-          vm.producto.precios = response.data.precios_proveedor;
-          vm.producto.revisado = true;
-          vm.producto.precios.forEach(function(precio) {
-            vm.producto.revisado = vm.producto.revisado && precio.revisado;
-            precio.descuento *= 100;
-          });
+    ////////////// API Calls  //////////////
 
-          console.log('Producto #' + vm.id + ' obtenido.');
+    function obtenerProducto() {
+      return Producto.show(vm.id)
+        .then(function(producto) {
+          vm.producto = producto || {id: null};
+          console.log('Producto #' + vm.producto.id + ' obtenido.');
           $state.go('productoEdit.details');
-          return response.data;
-        })
-        .catch(function(response) {
-          vm.error = response.data;
-          return response.data;
+          return producto;
         });
     }
 
     function obtenerMarcas() {
-      return api.get('/marca').then(function(response) {
-        vm.marcas = response.data;
-        vm.marca = vm.marcas.filter(function(element) {
-          return vm.producto.marca_id == element.id;
-        })[0];
+      return Marca.all()
+        .then(function(marcas) {
+          vm.marcas = marcas;
+          vm.marca = vm.marcas.filter(function(element) {
+            return vm.producto.marca_id == element.id;
+          })[0];
 
-        console.log('Marcas obtenidas correctamente');
-      });
+          return marcas;
+        });
     }
 
     function obtenerSubfamilias() {
-      return api.get('/subfamilia').then(function(response) {
-        vm.subfamilias = response.data;
-        vm.subfamilia = vm.subfamilias.filter(function(element) {
-          return vm.producto.subfamilia_id == element.id;
-        })[0];
+      return Subfamilia.all()
+        .then(function(subfamilias) {
+          vm.subfamilias = subfamilias;
+          vm.subfamilia = vm.subfamilias.filter(function(element) {
+            return vm.producto.subfamilia_id == element.id;
+          })[0];
 
-        console.log('Subfamilias obtenidas');
-      });
+          return subfamilias;
+        });
     }
 
     function obtenerUnidades() {
-      return api.get('/unidad').then(function(response) {
-        vm.unidades = response.data;
-        console.log('Unidades obtenidas correctamente');
-      });
+      return Unidad.all()
+        .then(function(unidades) {
+          vm.unidades = unidades;
+          return unidades;
+        });
     }
 
     function obtenerTiposDeGarantias() {
-      return api.get('/tipo-garantia').then(function(response) {
-        vm.tiposGarantia = response.data;
-        console.log('Tipos de garantía obtenidos correctamente');
-      });
+      return TipoGarantia.all()
+        .then(function(tiposGarantia) {
+          vm.tiposGarantia = tiposGarantia;
+          return tiposGarantia;
+        });
     }
 
-    function obtenerMargenes() {
-      return api.get('/margen').then(function(response) {
-        vm.margenes = response.data;
-        console.log('Margenes obtenidos correctamente');
-      });
+    function obtenerMovimientos() {
+      return Producto.movimientos(vm.id)
+        .then(function(movimientos) {
+          vm.producto_movimientos = movimientos;
+          console.log('Movimientos de producto obtenidos con éxito');
+          return movimientos;
+        });
     }
 
-    function obtenerExistencias() {
-      return api.get('/producto/' + vm.id + '/existencias').then(function(response) {
-        vm.producto_existencias = response.data.productos;
-        vm.pretransferencias = {};
-
-        for (var i = vm.producto_existencias.length - 1; i >= 0; i--) {
-          var existencia = vm.producto_existencias[i];
-          if (vm.local(existencia)) {
-            vm.pretransferenciaMaxima = existencia.cantidad;
+    function guardarProducto() {
+      return Producto.update(vm.id, vm.producto)
+        .then(function(data) {
+          if (data) {
+            $state.go('productoShow', {id: vm.id});
           }
-
-          var pretransferencia = {
-            id: existencia.productos_sucursales_id,
-            cantidad: existencia.cantidad,
-            pretransferencia: 0
-          };
-          vm.pretransferencias[pretransferencia.id] = pretransferencia;
-        }
-      });
+        });
     }
+
+    function cargarFicha() {
+      return Ficha.completa(vm.producto.ficha.id)
+        .then(function(ficha) {
+          vm.ficha = ficha || {};
+          return ficha;
+        });
+    }
+
+    function obtenerFicha() {
+      return Icecat.ficha(vm.producto.numero_parte, vm.producto.marca_id)
+        .then(resultadosFicha);
+    }
+
+    ////////////// UI Behavior //////////////
 
     function updateSubclave() {
       if (vm.producto) {
@@ -169,90 +166,27 @@
 
     function save(formIsValid) {
       if (formIsValid) {
+        vm.producto.precios.forEach(function(precio) {
+          precio.descuento /= 100;
+        });
+
         guardarProducto();
       }
     }
 
-    function guardarProducto() {
-      vm.producto.precios.forEach(function(precio) {
-        precio.descuento /= 100;
-      });
+    function resultadosFicha(ficha) {
+      vm.producto.descripcion = ficha.producto.descripcion.substr(0, 299);
+      vm.producto.descripcion_corta = ficha.producto.descripcion_corta.substr(0, 50);
+      if (ficha.producto.subfamilia_id) {
+        vm.subfamilia = $.grep(vm.subfamilias, function(subfamilia) {
+          return subfamilia.id === ficha.producto.subfamilia_id;
+        })[0];
 
-      return api.put('/producto/', vm.id, vm.producto)
-        .then(function(response) {
-          vm.message = response.data.message;
-          pnotify.alert('Exito', vm.message, 'success');
-          $state.go('productoShow', {id: vm.id});
-          return response;
-        })
-        .catch(function(response) {
-          vm.error = response.data;
-          pnotify.alertList('No se pudo guardar el producto', vm.error.error, 'error');
-          return response;
-        });
-    }
-
-    function calcularPrecios(index) {
-      var params = [
-        {key: 'precio', value: vm.producto.precios[index].precio_1},
-        {key: 'costo', value: vm.producto.precios[index].costo},
-        {key: 'margen_id', value: vm.producto.margen_id},
-        {key: 'externo', value: vm.producto.precios[index].externo}
-      ];
-      return api.get('/calcular-precio', params)
-        .then(function(response) {
-          console.log(response.data.message);
-          for (var attr in response.data.resultado.precios) {
-            vm.producto.precios[index][attr] = response.data.resultado.precios[attr];
-          }
-
-          vm.utilidad = response.data.resultado.utilidades;
-
-        }).catch(function(response) {
-          pnotify.alertList(response.data.message, response.data.error, 'error');
-        });
-    }
-
-    function calcularPreciosMargen() {
-      var cantidadProveedores = vm.producto.precios.length;
-      for (var i = 0; i < cantidadProveedores; i++) {
-        calcularPrecios(i);
+        vm.producto.subfamilia_id = ficha.producto.subfamilia_id;
+        updateClave();
       }
-    }
 
-    function sucursalLocal(producto) {
-      return vm.empleado.sucursal.nombre === producto.nombre;
-    }
-
-    function guardarPretransferencias() {
-      vm.pretransferencias = $.map(vm.pretransferencias, function(value, index) {
-        return [value];
-      });
-
-      vm.pretransferencias.push({sucursal_origen: vm.empleado.sucursal_id});
-      vm.pretransferencias.push({empleado_id: vm.empleado.id});
-
-      apiPretransferencias(vm.pretransferencias).then(function(response) {
-        console.log('Pretransferencia guardada');
-        pnotify.alert('Exito', response.data.message, 'success');
-        obtenerExistencias();
-      }).catch(function(response) {
-        pnotify.alertList(response.data.message, response.data.error, 'error');
-      });
-    }
-
-    function apiPretransferencias(data) {
-      return api.post('/producto/' + vm.id + '/existencias/pretransferir', data);
-    }
-
-    function cargarFicha() {
-      return api.get('/ficha/completa/', vm.producto.ficha.id)
-        .then(function(response) {
-          console.log(response.data.message);
-          vm.ficha = response.data.ficha;
-        }).catch(function(response) {
-          console.error(response.data.error);
-        });
+      return ficha;
     }
 
     //////// Utils /////////
