@@ -6,7 +6,7 @@
     .module('sagdApp.resources')
     .factory('Producto', Producto);
 
-  Producto.$inject = ['api'];
+  Producto.$inject = ['api', 'pnotify'];
 
   /* @ngInject */
   function Producto(api, pnotify) {

@@ -36,8 +36,6 @@
     vm.pretransferencias = {};
 
     vm.back = goBack;
-    vm.guardarPretransferencias = guardarPretransferencias;
-    vm.local = sucursalLocal;
     vm.obtenerFicha = obtenerFicha;
     vm.save = save;
     vm.setClass = utils.setClass;
@@ -58,7 +56,6 @@
           obtenerUnidades();
           obtenerTiposDeGarantias();
           cargarFicha();
-          obtenerExistencias();
           obtenerMovimientos();
         });
 
@@ -116,18 +113,6 @@
         });
     }
 
-    function obtenerExistencias() {
-      return Producto.existencias(vm.id)
-        .then(function(existencias) {
-          vm.producto_existencias = existencias;
-          vm.pretransferencias = {};
-          setupExistencias();
-          console.log('Movimientos de producto obtenidos con éxito');
-
-          return existencias;
-        });
-    }
-
     function obtenerMovimientos() {
       return Producto.movimientos(vm.id)
         .then(function(movimientos) {
@@ -143,17 +128,6 @@
           if (data) {
             $state.go('productoShow', {id: vm.id});
           }
-        });
-    }
-
-    function solicitarPretransferencia(data) {
-      return Producto.pretransferir(vm.id, data)
-        .then(function(data) {
-          if (data) {
-            obtenerExistencias();
-          }
-
-          return data;
         });
     }
 
@@ -197,37 +171,6 @@
         });
 
         guardarProducto();
-      }
-    }
-
-    function sucursalLocal(producto) {
-      return vm.empleado.sucursal.nombre === producto.nombre;
-    }
-
-    function guardarPretransferencias() {
-      vm.pretransferencias = $.map(vm.pretransferencias, function(value, index) {
-        return [value];
-      });
-
-      vm.pretransferencias.push({sucursal_origen: vm.empleado.sucursal_id});
-      vm.pretransferencias.push({empleado_id: vm.empleado.id});
-
-      solicitarPretransferencia(vm.pretransferencias);
-    }
-
-    function setupExistencias() {
-      for (var i = vm.producto_existencias.length - 1; i >= 0; i--) {
-        var existencia = vm.producto_existencias[i];
-        if (sucursalLocal(existencia)) {
-          vm.pretransferenciaMaxima = existencia.cantidad;
-        }
-
-        var pretransferencia = {
-          id: existencia.productos_sucursales_id,
-          cantidad: existencia.cantidad,
-          pretransferencia: 0
-        };
-        vm.pretransferencias[pretransferencia.id] = pretransferencia;
       }
     }
 
