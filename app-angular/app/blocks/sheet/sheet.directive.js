@@ -41,7 +41,11 @@
     }
 
     function sheetNotFound() {
-      return vm.model.keys({}).length != 0;
+      if (typeof vm.model == 'undefined') {
+        return true;
+      } else {
+        return Object.keys(vm.model).length == 0;
+      }
     }
 
   }

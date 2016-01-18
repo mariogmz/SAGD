@@ -9,12 +9,11 @@
     .controller('productoEditController', ProductoEditController);
 
   ProductoEditController.$inject = ['$location', '$state', '$stateParams', 'utils', 'session',
-    'Producto', 'Marca', 'Subfamilia', 'Unidad', 'TipoGarantia', 'Margen', 'Precio', 'Ficha', 'Icecat'];
+    'Producto', 'Marca', 'Subfamilia', 'Unidad', 'TipoGarantia', 'Ficha', 'Icecat'];
 
   /* @ngInject */
   function ProductoEditController($location, $state, $stateParams, utils, session,
-                                  Producto, Marca, Subfamilia, Unidad, TipoGarantia, Margen,
-                                  Precio, Ficha, Icecat) {
+                                  Producto, Marca, Subfamilia, Unidad, TipoGarantia, Ficha, Icecat) {
 
     var vm = this;
     vm.id = $stateParams.id;
@@ -230,14 +229,6 @@
         };
         vm.pretransferencias[pretransferencia.id] = pretransferencia;
       }
-    }
-
-    function asignarResultado(resultado) {
-      for (var attr in resultado.precios) {
-        vm.producto.precios[index][attr] = resultado.precios[attr];
-      }
-
-      vm.utilidad = resultado.utilidades;
     }
 
     function resultadosFicha(ficha) {
