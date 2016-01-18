@@ -3,6 +3,6 @@
   'use strict';
 
   angular
-    .module('blocks.existencias', []);
+    .module('blocks.entradas', []);
 
 })();
