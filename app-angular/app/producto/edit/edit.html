@@ -14,13 +14,10 @@
         <a href="#ficha" role="tab" data-toggle="tab">Ficha</a>
       </li>
       <li class="nav-item">
-        <a href="#precios" role="tab" data-toggle="tab">Precios</a>
+        <a href="#precios-existencias" role="tab" data-toggle="tab">Precios & Existencias</a>
       </li>
       <li class="nav-item">
         <a href="#movimientos" role="tab" data-toggle="tab">Movimientos</a>
-      </li>
-      <li class="nav-item">
-        <a href="#existencias" role="tab" data-toggle="tab">Existencias</a>
       </li>
       <li class="nav-item save"
           ng-class="{'disabled-tab' : productoEditForm.$invalid && productoEditForm.$dirty || productoEditForm.$pristine}">
@@ -49,16 +46,12 @@
             <div ui-view="ficha"></div>
           </section>
           <!-- Precios -->
-          <section role="tabpanel" class="fade" id="precios">
-            <div ui-view="precios"></div>
+          <section role="tabpanel" class="fade" id="precios-existencias">
+            <div ui-view="precios-existencias"></div>
           </section>
           <!-- Movimientos -->
           <section role="tabpanel" class="fade" id="movimientos">
             <div ui-view="movimientos"></div>
-          </section>
-          <!-- Existencias -->
-          <section role="tabpanel" class="fade" id="existencias">
-            <div ui-view="existencias"></div>
           </section>
         </article>
       </form>
