@@ -27,10 +27,10 @@
     }
   }
 
-  EntradasController.$inject = [];
+  EntradasController.$inject = ['Producto'];
 
   /* @ngInject */
-  function EntradasController() {
+  function EntradasController(Producto) {
     var vm = this;
 
     activate();
@@ -38,7 +38,23 @@
     //////////////////////////////
 
     function activate() {
+      return obtenerEntradas();
+    }
 
+    function obtenerEntradas() {
+      return Producto.entradas(vm.productoId)
+        .then(function(detallesEntradas) {
+          vm.detallesEntradas = detallesEntradas.map(checkCurrencies);
+          return detallesEntradas;
+        });
+    }
+
+    function checkCurrencies(detalle) {
+      if (detalle.entrada.tipo_cambio != 1) {
+        detalle.costo_dolar = detalle.costo;
+      }
+
+      return detalle;
     }
   }
 })();

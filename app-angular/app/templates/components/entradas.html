@@ -1,1 +1,43 @@
 <!-- app/templates/components/entradas.html -->
+<section class="card borderless">
+  <header class="header">
+    <h5>Entradas</h5>
+  </header>
+
+  <article class="block">
+    <div class="table-responsive">
+      <table class="item-table">
+        <thead>
+        <tr>
+          <th class="action">ID</th>
+          <th class="action">Fecha</th>
+          <th class="action">Sucursal</th>
+          <th class="action">Proveedor</th>
+          <th class="action">Cantidad</th>
+          <th class="action">Costo</th>
+          <th class="action">Costo + IVA</th>
+          <th class="action">Tipo de cambio</th>
+          <th class="action">Costo en Dólares</th>
+        </thead>
+
+        <tbody>
+        <tr dir-paginate="detalle in vm.detallesEntradas | itemsPerPage: 10">
+          <td ng-bind="detalle.entrada.id"></td>
+          <td ng-bind="detalle.entrada.updated_at"></td>
+          <td ng-bind="detalle.entrada.sucursal.nombre"></td>
+          <td ng-bind="detalle.entrada.proveedor.clave"></td>
+          <td ng-bind="detalle.cantidad"></td>
+          <td ng-bind="detalle.costo | currency:'$':2"></td>
+          <td ng-bind="detalle.costo * 1.16| currency:'$':2"></td>
+          <td ng-bind="detalle.entrada.tipo_cambio | currency:'$':2"></td>
+          <td ng-if="detalle.entrada.costo_dolar" ng-bind="detalle.entrada.costo_dolar | currency:'USD$':2"></td>
+          <td ng-if="!detalle.entrada.costo_dolar" class="text-xs-center"> - </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="paginator">
+      <dir-pagination-controls max-size="5" direction-links="true" boundary-links="true"></dir-pagination-controls>
+    </div>
+  </article>
+</section>

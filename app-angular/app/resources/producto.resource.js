@@ -23,7 +23,8 @@
       existencias: existencias,
       pretransferir: pretransferir,
       movimientos: movimientos,
-      buscar: buscar
+      buscar: buscar,
+      entradas: obtenerEntradas
     };
     return resource;
 
@@ -182,6 +183,21 @@
 
       function buscarFailed(error) {
         pnotify.alert(response.data.error, response.data.message, 'error');
+      }
+    }
+
+    function obtenerEntradas(id) {
+      return api.get(endpoint + '/' + id + '/entradas')
+        .then(obtenerEntradasComplete)
+        .catch(obtenerEntradasFailed);
+
+      function obtenerEntradasComplete(response) {
+        console.log(response.data.message);
+        return response.data.entradas;
+      }
+
+      function obtenerEntradasFailed(error) {
+        console.error(error.data.error);
       }
     }
 
