@@ -22,15 +22,15 @@ class ProductoController extends Controller {
      *
      * @return Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request) {
         $this->authorize($this);
         if ($request->has('revisados')) {
-            $productos = $this->producto->whereHas('precios', function ($query) use ($request){
+            $productos = $this->producto->whereHas('precios', function ($query) use ($request) {
                 $query->where('revisado', $request->revisados);
             })->get();
+
             return $productos;
-        }else{
+        } else {
             return $this->producto->with('subfamilia')->get();
         }
     }
@@ -41,8 +41,7 @@ class ProductoController extends Controller {
      * @param  Request $request
      * @return Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request) {
         $this->authorize($this);
         $params = $request->all();
         $this->producto->fill($params['producto']);
@@ -66,10 +65,9 @@ class ProductoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function show($id)
-    {
+    public function show($id) {
         $this->authorize($this);
-        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension','ficha')->find($id);
+        $this->producto = $this->producto->with('tipoGarantia', 'marca', 'margen', 'unidad', 'subfamilia', 'dimension', 'ficha')->find($id);
         if ($this->producto) {
             return response()->json([
                 'message'           => 'Producto obtenido exitosamente',
@@ -91,8 +89,7 @@ class ProductoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id) {
         $this->authorize($this);
         $params = $request->all();
         $this->producto = $this->producto->find($id);
@@ -124,8 +121,7 @@ class ProductoController extends Controller {
      * @param  int $id
      * @return Response
      */
-    public function destroy($id)
-    {
+    public function destroy($id) {
         $this->authorize($this);
         $this->producto = $this->producto->find($id);
         if (empty($this->producto)) {
@@ -151,19 +147,18 @@ class ProductoController extends Controller {
      * @param string $upc
      * @return Response
      */
-    public function buscarUpc($upc)
-    {
+    public function buscarUpc($upc) {
         $this->authorize($this);
         $this->producto = $this->producto->where('upc', $upc)->get();
         if ($this->producto->count() === 1) {
             return response()->json([
-                'message' => 'Producto encontrado',
+                'message'  => 'Producto encontrado',
                 'producto' => $this->producto->first()
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Producto no encontrado',
-                'error' => 'Producto no existente'
+                'error'   => 'Producto no existente'
             ], 404);
         }
     }
@@ -174,24 +169,23 @@ class ProductoController extends Controller {
      * @param int $id
      * @return Response
      */
-    public function indexExistencias($id)
-    {
+    public function indexExistencias($id) {
         $this->authorize($this);
         $this->producto = $this->producto->leftJoin('productos_sucursales', 'productos.id', '=', 'productos_sucursales.producto_id')
-                ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
-                ->join('existencias', 'productos_sucursales.id', '=', 'existencias.id')
-                ->where('sucursales.proveedor_id', '1')
-                ->where('productos.id', $id)
-                ->get();
+            ->join('sucursales', 'productos_sucursales.sucursal_id', '=', 'sucursales.id')
+            ->join('existencias', 'productos_sucursales.id', '=', 'existencias.id')
+            ->where('sucursales.proveedor_id', '1')
+            ->where('productos.id', $id)
+            ->get();
         if ($this->producto) {
             return response()->json([
-                'message' => 'Productos con existencias obtenidas exitosamente',
+                'message'   => 'Productos con existencias obtenidas exitosamente',
                 'productos' => $this->producto
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Las existencias del producto que solicitaste no se encontraron.',
-                'error' => 'Producto no encontrado'
+                'error'   => 'Producto no encontrado'
             ], 404);
         }
     }
@@ -204,8 +198,7 @@ class ProductoController extends Controller {
      * @param Request $request
      * @return Response
      */
-    public function pretransferir($id, Request $request)
-    {
+    public function pretransferir($id, Request $request) {
         $this->authorize($this);
         $this->producto = $this->producto->find($id);
         if ($this->producto) {
@@ -217,13 +210,13 @@ class ProductoController extends Controller {
             } else {
                 return response()->json([
                     'message' => 'La pretransferencia no se registro debido a un error interno. Las existencias no se modificaron',
-                    'error' => 'Pretransferencia fallo'
+                    'error'   => 'Pretransferencia fallo'
                 ], 400);
             }
         } else {
             return response()->json([
                 'message' => 'La pretransferencia no se registro debido a que no se encontro el producto',
-                'error' => 'Producto no encontrado'
+                'error'   => 'Producto no encontrado'
             ], 404);
         }
     }
@@ -234,8 +227,7 @@ class ProductoController extends Controller {
      * @param int $sucursal
      * @return Response
      */
-    public function indexMovimientos($id, $sucursal)
-    {
+    public function indexMovimientos($id, $sucursal) {
         $this->authorize($this);
         $this->producto = $this->producto
             ->select('productos_movimientos.*')
@@ -247,13 +239,13 @@ class ProductoController extends Controller {
             ->get();
         if ($this->producto) {
             return response()->json([
-                'message' => 'Productos con movimientos obtenidos exitosamente',
+                'message'   => 'Productos con movimientos obtenidos exitosamente',
                 'productos' => $this->producto
             ], 200);
         } else {
             return response()->json([
                 'message' => 'Los movimientos del producto que solicitaste no se encontraron.',
-                'error' => 'Producto no encontrado'
+                'error'   => 'Producto no encontrado'
             ], 404);
         }
     }
@@ -263,8 +255,7 @@ class ProductoController extends Controller {
      * @param Request $request
      * @return Response
      */
-	public function buscar(Request $request)
-    {
+    public function buscar(Request $request) {
         $this->authorize($this);
         $params = $request->only('clave', 'descripcion', 'numero_parte', 'upc');
 
@@ -278,10 +269,10 @@ class ProductoController extends Controller {
             $params['descripcion'] === '*' &&
             $params['numero_parte'] === '*' &&
             $params['upc'] === '*'
-            ) {
+        ) {
             return response()->json([
                 'message' => 'Debes de especificar al menos un valor de busqueda',
-                'error' => 'Busqueda muy larga'
+                'error'   => 'Busqueda muy larga'
             ], 400);
         }
         foreach ($params as $column => $search) {
@@ -290,6 +281,30 @@ class ProductoController extends Controller {
             }
             $this->producto = $this->producto->where($column, 'like', "%{$search}%");
         }
+
         return $this->producto->get();
+    }
+
+    /**
+     * Obtiene las entradas relacionadas a un producto en específico
+     * @param $id
+     * @return Response
+     */
+    public function entradas($id) {
+        $this->authorize($this);
+        $this->producto = $this->producto->find($id);
+        if ($this->producto) {
+            $entradas = $this->producto->entradasDetalles()->groupBy('entrada_id')->with('entrada.sucursal', 'entrada.proveedor')->get();
+
+            return response()->json([
+                'message'  => 'Entradas obtenidas correctamente.',
+                'entradas' => $entradas
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'No se pudieron obtener las entradas.',
+                'error'   => 'Producto no encontrado.'
+            ], 404);
+        }
     }
 }

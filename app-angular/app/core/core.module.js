@@ -18,6 +18,7 @@
     'blocks.notifications', 'blocks.validators', 'blocks.acl',
     'blocks.index', 'blocks.miller', 'blocks.printer', 'blocks.sheet',
     'blocks.domicilio', 'blocks.tabuladores', 'blocks.precios', 'blocks.existencias',
+    'blocks.entradas',
 
     /*
      * 3rd party app modules

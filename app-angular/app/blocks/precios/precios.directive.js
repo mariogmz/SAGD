@@ -36,7 +36,6 @@
     vm.sort = sort;
     vm.calcularPrecios = calcularPrecios;
     vm.calcularPreciosMargen = calcularPreciosMargen;
-    vm.setClass = utils.setClass;
 
     activate();
 
@@ -56,6 +55,7 @@
         {name: 'P10', key: 'precio_10'},
         {name: 'Dcto%', key: 'descuento'}
       ];
+      vm.setClass = vm.form ? utils.setClass : angular.noop;
       preciosRevisados();
       obtenerMargenes();
     }
@@ -92,6 +92,7 @@
     }
 
     function preciosRevisados() {
+      vm.producto.margen = vm.producto.margen || {name: 'Libre'};
       vm.producto.revisado = true;
       vm.producto.precios.forEach(function(precio) {
         vm.producto.revisado = vm.producto.revisado && precio.revisado;

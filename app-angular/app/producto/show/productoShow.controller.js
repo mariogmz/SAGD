@@ -8,12 +8,14 @@
     .module('sagdApp.producto')
     .controller('productoShowController', ProductoShowController);
 
-  ProductoShowController.$inject = ['$location', '$state', '$stateParams', 'api', 'pnotify', 'session', 'utils'];
+  ProductoShowController.$inject = ['$location', '$state', '$stateParams', 'api', 'session', 'utils', 'Producto', 'Ficha'];
 
   /* @ngInject */
-  function ProductoShowController($location, $state, $stateParams, api, pnotify, session, utils) {
+  function ProductoShowController($location, $state, $stateParams, api, session, utils, Producto, Ficha) {
 
     var vm = this;
+    vm.id = $stateParams.id;
+    vm.empleado = session.obtenerEmpleado();
     vm.sortKeys = [
       {name: 'Proveedor', key: 'clave'},
       {name: 'Costo', key: 'costo'},
@@ -29,8 +31,7 @@
       {name: 'P10', key: 'precio_10'},
       {name: 'Descuento', key: 'descuento'}
     ];
-    vm.empleado = session.obtenerEmpleado();
-    vm.id = $stateParams.id;
+
     vm.back = goBack;
     vm.sort = sort;
 
@@ -38,63 +39,42 @@
 
     function initialize() {
       utils.whichTab($location.hash() || 'datos-generales');
-      obtenerProducto().then(function(response) {
-
-        console.log('Producto obtenido correctamente');
-        vm.producto = response.data.producto;
-        if (!vm.producto.margen) {
-          vm.producto.margen = {nombre: 'Libre'};
-        }
-
-        vm.precios = response.data.precios_proveedor;
-        vm.producto.revisado = true;
-        vm.precios.forEach(function(precio) {
-          vm.producto.revisado = vm.producto.revisado && precio.revisado;
-        });
-
-        return response;
-      }).then(function() {
-        obtenerExistencias().then(function(response) {
-          console.log('Existencias de producto obtenidas con exito');
-          vm.producto_existencias = response.data.productos;
-          return response;
-        });
-      }).then(function() {
-        obtenerMovimientos().then(function(response) {
-          console.log('Movimientos de producto obtenidos con exito');
-          vm.producto_movimientos = response.data.productos;
-          return response;
-        });
-      }).then(function() {
-        cargarFicha().then(function(response) {
-          console.log(response.data.message);
-          vm.ficha = response.data.ficha;
-        });
-      }).then(function() {
-        $state.go('productoShow.details');
-      }).catch(error);
+      return obtenerProducto()
+        .then(function(producto) {
+          $state.go('productoShow.details', {id: vm.id});
+          return producto;
+        })
+        .then(cargarFicha)
+        .then(obtenerMovimientos);
     }
+
+    ////////////////// API CALLS ///////////////////////
 
     function obtenerProducto() {
-      return api.get('/producto/', vm.id);
-    }
-
-    function obtenerExistencias() {
-      return api.get('/producto/' + vm.id + '/existencias');
+      return Producto.show(vm.id)
+        .then(function(producto) {
+          vm.producto = producto;
+          return producto;
+        });
     }
 
     function obtenerMovimientos() {
-      return api.get('/producto/' + vm.id + '/movimientos/sucursal/' + vm.empleado.sucursal_id);
+      return Producto.movimientos(vm.id, vm.empleado.sucursal_id)
+        .then(function(movimientos) {
+          vm.movimientos = movimientos;
+          return movimientos;
+        });
     }
 
-    function cargarFicha() {
-      return api.get('/ficha/completa/', vm.producto.ficha.id);
+    function cargarFicha(producto) {
+      return Ficha.completa(producto.ficha.id)
+        .then(function(ficha) {
+          vm.ficha = ficha || {};
+          return ficha;
+        });
     }
 
-    function error(response) {
-      console.log('Hubo un error con la peticion.');
-      pnotify.alert('Error', response.data.message, 'error');
-    }
+    ///////////////// UTILS ///////////////////
 
     function sort(keyname) {
       vm.sortKey = keyname;

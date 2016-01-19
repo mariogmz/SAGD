@@ -145,7 +145,7 @@ class ProductoControllerPolicy
     }
 
     /**
-     * Determinar si el usuario puede listar movimientos de un Producto
+     * Determinar si el usuario puede realizar una búsqueda de un Producto
      *
      * @param  User  $user
      * @param  ProductoController $controller
@@ -156,6 +156,21 @@ class ProductoControllerPolicy
         $controller = $this->normalizeControllerName($controller);
         $permisos = $user->morphable->permisos();
         $permiso = $permisos->where('controlador', $controller)->where('accion', 'buscar')->first();
+        return !empty($permiso);
+    }
+
+    /**
+     * Determinar si el usuario puede listar entradas de un Producto
+     *
+     * @param  User  $user
+     * @param  ProductoController $controller
+     * @return bool
+     */
+    public function entradas(User $user, ProductoController $controller)
+    {
+        $controller = $this->normalizeControllerName($controller);
+        $permisos = $user->morphable->permisos();
+        $permiso = $permisos->where('controlador', $controller)->where('accion', 'entradas')->first();
         return !empty($permiso);
     }
 
