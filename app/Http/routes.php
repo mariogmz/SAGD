@@ -30,6 +30,8 @@ Route::group(['namespace' => 'Api', 'prefix' => 'api'], function(){
         Route::get('productos/buscar', 'ProductoController@buscar');
 
         Route::group(['prefix' => 'producto', 'as' => 'api.v1.productos'], function(){
+            Route::get('{id}/entradas', ['uses' => 'ProductoController@entradas', 'as' => '.entradas']);
+
             Route::group(['prefix' => '{id}/existencias', 'as' => '.existencias'], function(){
                 Route::get('/', 'ProductoController@indexExistencias');
                 Route::post('pretransferir', ['uses' => 'ProductoController@pretransferir', 'as' => '.pretransferir']);

@@ -598,4 +598,42 @@ class ProductoControllerTest extends TestCase {
         $this->get($endpoint)
             ->assertResponseStatus(200);
     }
+
+    /**
+     * @covers ::entradas
+     */
+    public function testObtenerEntradasParaUnProducto() {
+        $producto_id = 10;
+        $endpoint = "/v1/producto/{$producto_id}/entradas";
+
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->mock->shouldReceive('find')->with($producto_id)->andReturn(Mockery::self());
+        $this->mock->shouldReceive('entradasDetalles')->withNoArgs()->andReturn(Mockery::self());
+        $this->mock->shouldReceive('groupBy')->with('entrada_id')->andReturn(Mockery::self());
+        $this->mock->shouldReceive('with')->with('entrada')->andReturn(Mockery::self());
+        $this->mock->shouldReceive('get')->withNoArgs()->andReturn('success');
+
+        $this->get($endpoint)->seeJson([
+            'message'  => 'Entradas obtenidas correctamente.',
+            'entradas' => 'success'
+        ])->assertResponseOk();
+    }
+
+    /**
+     * @covers ::entradas
+     */
+    public function testObtenerEntradasParaUnProductoFailed() {
+        $producto_id = 10;
+        $endpoint = "/v1/producto/{$producto_id}/entradas";
+
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->mock->shouldReceive('find')->with($producto_id)->andReturnNull();
+
+        $this->get($endpoint)->seeJson([
+            'message' => 'No se pudieron obtener las entradas.',
+            'error'   => 'Producto no encontrado.'
+        ])->assertResponseStatus(404);
+    }
 }
