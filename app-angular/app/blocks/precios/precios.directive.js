@@ -56,6 +56,7 @@
         {name: 'P10', key: 'precio_10'},
         {name: 'Dcto%', key: 'descuento'}
       ];
+      vm.form = vm.form || 'none';
       preciosRevisados();
       obtenerMargenes();
     }

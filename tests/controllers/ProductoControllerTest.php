@@ -611,7 +611,7 @@ class ProductoControllerTest extends TestCase {
         $this->mock->shouldReceive('find')->with($producto_id)->andReturn(Mockery::self());
         $this->mock->shouldReceive('entradasDetalles')->withNoArgs()->andReturn(Mockery::self());
         $this->mock->shouldReceive('groupBy')->with('entrada_id')->andReturn(Mockery::self());
-        $this->mock->shouldReceive('with')->with('entrada')->andReturn(Mockery::self());
+        $this->mock->shouldReceive('with')->with('entrada.sucursal','entrada.proveedor')->andReturn(Mockery::self());
         $this->mock->shouldReceive('get')->withNoArgs()->andReturn('success');
 
         $this->get($endpoint)->seeJson([

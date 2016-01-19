@@ -294,7 +294,7 @@ class ProductoController extends Controller {
         $this->authorize($this);
         $this->producto = $this->producto->find($id);
         if ($this->producto) {
-            $entradas = $this->producto->entradasDetalles()->groupBy('entrada_id')->with('entrada')->get();
+            $entradas = $this->producto->entradasDetalles()->groupBy('entrada_id')->with('entrada.sucursal', 'entrada.proveedor')->get();
 
             return response()->json([
                 'message'  => 'Entradas obtenidas correctamente.',
