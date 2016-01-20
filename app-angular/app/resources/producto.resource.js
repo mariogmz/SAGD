@@ -166,13 +166,15 @@
       }
     }
 
-    function buscar(clave, descripcion, numeroParte, upc) {
+    function buscar(clave, descripcion, numeroParte, upc, conExistencias) {
       var searchParameters = {
         clave: clave || '',
         descripcion: descripcion || '',
         numero_parte: numeroParte || '',
-        upc: upc || ''
+        upc: upc || '',
+        existencia: typeof conExistencias == 'undefined' ? 1 : conExistencias ? 1 : 0
       };
+
       return api.get(endpoint + 's/buscar/', searchParameters)
         .then(buscarComplete)
         .catch(buscarFailed);
@@ -182,7 +184,7 @@
       }
 
       function buscarFailed(error) {
-        pnotify.alert(response.data.error, response.data.message, 'error');
+        pnotify.alert(error.data.error, error.data.message, 'error');
       }
     }
 

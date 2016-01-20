@@ -485,6 +485,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
@@ -503,6 +504,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
@@ -521,6 +523,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
@@ -538,6 +541,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
@@ -557,6 +561,7 @@ class ProductoControllerTest extends TestCase {
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
             'get' => []
         ])->withAnyArgs();
         $this->app->instance('App\Producto', $this->mock);
@@ -588,6 +593,60 @@ class ProductoControllerTest extends TestCase {
     public function testBuscarProductoSinEnviarUnParametro()
     {
         $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&numero_parte=A';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductosEstaPorDefaultSoloConExistencia() {
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&numero_parte=A&upc=A';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductosSoloConExistencia() {
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&numero_parte=A&upc=A&existencia=true';
+
+        $this->mock->shouldReceive([
+            'where' => Mockery::self(),
+            'whereHas' => Mockery::self(),
+            'get' => []
+        ])->withAnyArgs();
+        $this->app->instance('App\Producto', $this->mock);
+
+        $this->get($endpoint)
+            ->assertResponseStatus(200);
+    }
+
+    /**
+     * @covers ::buscar
+     * @group feature-buscador-productos
+     */
+    public function testBuscarProductosIncluirSinExistencia() {
+        $endpoint = '/v1/productos/buscar/?clave=A&descripcion=A&numero_parte=A&upc=A&existencia=0';
 
         $this->mock->shouldReceive([
             'where' => Mockery::self(),

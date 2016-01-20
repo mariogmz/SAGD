@@ -5,7 +5,7 @@
   </div>
   <section class="block">
     <section class="product-search" id="product-search">
-      <form id="productSearchForm" ng-submit="vm.productSearch()">
+      <form id="productSearchForm" ng-submit="vm.buscar()">
         <fieldset>
           <div>
             <span class="search-span" id="producto-search-clave"><i class="clave"></i></span>
@@ -41,8 +41,15 @@
 
     <section class="product-search-actions">
       <div class="action-buttons" aria-label="Acciones">
-        <button type="submit" class="show" form="productSearchForm"><i></i><span class="hide"> Buscar</span></button>
-        <button type="button" class="create" ng-click="vm.next()"><i></i><span class="hide"> Nuevo</span></button>
+        <button type="submit" class="show" form="productSearchForm" title="Buscar"><i></i><span class="hide"> Buscar</span></button>
+        <button type="button" class="create" ng-click="vm.goToNew()" title="Crear nuevo producto"><i></i><span class="hide"> Nuevo</span></button>
+        <button type="button" class="existencias" data-toggle="toggle" aria-pressed="{{vm.conExistencias}}"
+                ng-class="{'active': vm.conExistencias}" ng-click="vm.existencias()"
+                title="Filtrar con existencias o sin existencias"
+                autocomplete="off">
+          <i></i><span class="hide"> Existencias</span>
+        </button>
+
       </div>
     </section>
   </section>
@@ -52,9 +59,7 @@
   <table class="item-table">
     <thead class="sortable">
     <tr>
-      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)">
-        {{sortKey.name}}
-      </th>
+      <th class="action" ng-repeat="sortKey in vm.sortKeys" ng-click="vm.sort(sortKey.key)" ng-bind="sortKey.name"></th>
       <th>Acciones</th>
     </tr>
     </thead>
@@ -69,7 +74,7 @@
       <td class="actions">
         <div class="action-buttons" role="group" aria-label="Acciones">
           <button type="button" class="edit" ui-sref="productoEdit({id:producto.id})"><i></i></button>
-          <button type="button" class="delete" ng-click="vm.delete(producto.id)"><i></i></button>
+          <button type="button" class="delete" ng-click="vm.eliminar(producto.id)"><i></i></button>
         </div>
       </td>
     </tr>
