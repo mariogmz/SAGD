@@ -172,7 +172,7 @@
         descripcion: descripcion || '',
         numero_parte: numeroParte || '',
         upc: upc || '',
-        existencias: conExistencias || 1
+        existencia: typeof conExistencias == 'undefined' ? 1 : conExistencias ? 1 : 0
       };
 
       return api.get(endpoint + 's/buscar/', searchParameters)

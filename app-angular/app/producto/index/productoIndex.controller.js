@@ -16,6 +16,7 @@
     var vm = this;
     vm.eliminar = eliminar;
     vm.buscar = buscar;
+    vm.existencias = existencias;
     vm.goToNew = goToNew;
     vm.sort = sort;
 
@@ -74,6 +75,11 @@
     function eliminar(id) {
       return eliminarProducto(id)
         .then(buscar);
+    }
+
+    function existencias() {
+      vm.conExistencias = !vm.conExistencias;
+      return buscar();
     }
 
     /////////////////// UTILS //////////////////

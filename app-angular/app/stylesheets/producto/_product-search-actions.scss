@@ -1,11 +1,23 @@
 .product-search-actions {
   @include make-col();
-  @include make-col-span(2);
+  @include make-col-span(3);
+  padding-left: 0;
 
-  // Hide text
   @media (max-width: 106.1rem) {
+    @include make-col-span(2);
+    // Hide text
     .hide {
       display: none;
+    }
+  }
+
+  .existencias {
+    @extend .btn;
+    @extend .btn-secondary;
+
+    > i {
+      @extend .fa;
+      @extend .fa-check-circle-o;
     }
   }
 }

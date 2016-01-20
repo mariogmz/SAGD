@@ -41,8 +41,15 @@
 
     <section class="product-search-actions">
       <div class="action-buttons" aria-label="Acciones">
-        <button type="submit" class="show" form="productSearchForm"><i></i><span class="hide"> Buscar</span></button>
-        <button type="button" class="create" ng-click="vm.goToNew()"><i></i><span class="hide"> Nuevo</span></button>
+        <button type="submit" class="show" form="productSearchForm" title="Buscar"><i></i><span class="hide"> Buscar</span></button>
+        <button type="button" class="create" ng-click="vm.goToNew()" title="Crear nuevo producto"><i></i><span class="hide"> Nuevo</span></button>
+        <button type="button" class="existencias" data-toggle="toggle" aria-pressed="{{vm.conExistencias}}"
+                ng-class="{'active': vm.conExistencias}" ng-click="vm.existencias()"
+                title="Filtrar con existencias o sin existencias"
+                autocomplete="off">
+          <i></i><span class="hide"> Existencias</span>
+        </button>
+
       </div>
     </section>
   </section>
