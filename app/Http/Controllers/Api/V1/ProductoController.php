@@ -263,6 +263,7 @@ class ProductoController extends Controller {
         $params['descripcion'] = isset($params['descripcion']) ? $params['descripcion'] : '*';
         $params['numero_parte'] = isset($params['numero_parte']) ? $params['numero_parte'] : '*';
         $params['upc'] = isset($params['upc']) ? $params['upc'] : '*';
+        $con_existencia = $request->has('existencia') ? $request->get('existencia') : true;
 
         if (
             $params['clave'] === '*' &&
@@ -274,15 +275,23 @@ class ProductoController extends Controller {
                 'message' => 'Debes de especificar al menos un valor de busqueda',
                 'error'   => 'Busqueda muy larga'
             ], 400);
-        }
-        foreach ($params as $column => $search) {
-            if ($search === '*') {
-                continue;
+        } else {
+
+            foreach ($params as $column => $search) {
+                if ($search === '*') {
+                    continue;
+                }
+                $this->producto = $this->producto->where($column, 'like', "%{$search}%");
             }
-            $this->producto = $this->producto->where($column, 'like', "%{$search}%");
+            if ($con_existencia) {
+                $this->producto = $this->producto->whereHas('existencias', function ($query) {
+                    $query->where('cantidad', '>', 0);
+                });
+            }
+
+            return $this->producto->get();
         }
 
-        return $this->producto->get();
     }
 
     /**
