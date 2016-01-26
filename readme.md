@@ -114,12 +114,32 @@ Esto hay que ejecutarlo en la base de datos de nuestra máquina virtual de Homes
 
 Después de esto ya podemos iniciar la base de datos con las migraciones y datos iniciales.
 
-Para eso se ejecutan los siguientes comandos: 
+Para eso se ejecutan los siguientes comandos:
 
 ```
 php artisan migrate
 php artisan db:seed
 ```
+
+Para evitar seedear los módulos completos de `Clientes` se puede generar un dump y colocarlo en
+la carpeta raíz del proyecto. Nombrar este archivo `clientes_module_seed.sql`.
+
+Si ya seedeaste los clientes crea el dump de las tablas de:
+
+- `clientes`
+- `clientes_autorizaciones`
+- `clientes_comentarios`
+- `clientes_referencias`
+- `domicilios`
+- `domicilios_clientes`
+- `paginas_web_distribuidores`
+- `tabuladores`
+- `telefonos`
+- `users`
+
+La siguiente vez que realices el seed, tomará este archivo y lo importará en lugar de seedear normalmente.
+Esto agiliza el seeding.
+
 
 Para `testing` y poder correr las pruebas son los siguientes comandos:
 
