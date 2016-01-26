@@ -12,6 +12,7 @@ Homestead.yaml
 composer.lock
 /vendor
 codigos_postales.txt
+clientes_module_seed.sql
 _ide_helper.php
 .phpstorm.meta.php
 .DS_Store
