@@ -136,6 +136,8 @@ Si ya seedeaste los clientes crea el dump de las tablas de:
 - `telefonos`
 - `users`
 
+En la tabla de `domicilios` se tienen que quitar los primeros 6 domicilios manualmente, es decir, editar a mano el dump.
+
 La siguiente vez que realices el seed, tomará este archivo y lo importará en lugar de seedear normalmente.
 Esto agiliza el seeding.
 
