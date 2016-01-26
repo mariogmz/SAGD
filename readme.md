@@ -137,7 +137,13 @@ Si ya seedeaste los clientes crea el dump de las tablas de:
 - `users`
 
 Abre el archivo de dump y para los `INSERT` de `domicilios`, `telefonos` y `users` cambiar los
-`INSERT INTO` a `INSERT IGNORE INTO`.
+`INSERT INTO` a `INSERT IGNORE INTO`. De igualmanera se puede configurar el dump para que use `INSERT IGNORE INTO` por default.
+
+Igualmente para evitar seedear los módulos de `Icecat` se puede hacer un dump de las tablas:
+
+- `icecat_*`
+
+Y colocarlo en la raíz del proyecto y nombrarlo `icecat_module_seed.sql`.
 
 La siguiente vez que realices el seed, tomará este archivo y lo importará en lugar de seedear normalmente.
 Esto agiliza el seeding.
