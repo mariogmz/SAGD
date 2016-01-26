@@ -129,7 +129,6 @@ Si ya seedeaste los clientes crea el dump de las tablas de:
 - `clientes`
 - `clientes_autorizaciones`
 - `clientes_comentarios`
-- `clientes_referencias`
 - `domicilios`
 - `domicilios_clientes`
 - `paginas_web_distribuidores`
